@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace Lyyneheym
 {
@@ -22,6 +23,114 @@ namespace Lyyneheym
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.BO_MessageBoxLayer.Visibility == System.Windows.Visibility.Hidden)
+            {
+                this.BO_MainName.Visibility = this.BO_MainText.Visibility = 
+                    this.BO_MessageBoxLayer.Visibility = System.Windows.Visibility.Visible;
+                
+            }
+            else
+            {
+                this.BO_MainName.Visibility = this.BO_MainText.Visibility =
+                    this.BO_MessageBoxLayer.Visibility = System.Windows.Visibility.Hidden;
+            }
+        }
+
+        bool flag = false;
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (flag == false)
+            {
+                Uri bg = new Uri(@"PictureAssets\background\bg1.png", UriKind.RelativeOrAbsolute);
+                this.BO_MainGrid.Background = new ImageBrush(new BitmapImage(bg));
+                flag = true;
+            }
+            else
+            {
+                Uri bg = new Uri(@"PictureAssets\background\bg2.png", UriKind.RelativeOrAbsolute);
+                this.BO_MainGrid.Background = new ImageBrush(new BitmapImage(bg));
+                flag = false;
+            }
+            
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            BitmapImage myBitmapImage = new BitmapImage();
+            myBitmapImage.BeginInit();
+            myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA01.png", UriKind.RelativeOrAbsolute);
+            myBitmapImage.EndInit();
+            this.BO_LeftChara.Width = myBitmapImage.Width;
+            this.BO_LeftChara.Height = myBitmapImage.Height;
+            this.BO_LeftChara.Source = myBitmapImage;
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            BitmapImage myBitmapImage = new BitmapImage();
+            myBitmapImage.BeginInit();
+            myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA02.png", UriKind.RelativeOrAbsolute);
+            myBitmapImage.EndInit();
+            this.BO_RightChara.Width = myBitmapImage.Width;
+            this.BO_RightChara.Height = myBitmapImage.Height;
+            this.BO_RightChara.Source = myBitmapImage;
+        }
+
+        bool flag2 = false;
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            if (flag2 == false)
+            {
+                Panel.SetZIndex(this.BO_MessageBoxLayer, 91);
+                flag2 = true;
+            }
+            else
+            {
+                Panel.SetZIndex(this.BO_MessageBoxLayer, -1);
+                flag2 = false;
+            }
+            
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            Image img = new Image();
+            BitmapImage myBitmapImage = new BitmapImage();
+            myBitmapImage.BeginInit();
+            myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\uuz.jpg", UriKind.RelativeOrAbsolute);
+            myBitmapImage.EndInit();
+            img.Width = myBitmapImage.Width * 2;
+            img.Height = myBitmapImage.Height * 2;
+            img.Source = myBitmapImage;
+            img.Margin = new Thickness(0, 0, 0, 0);
+            img.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            img.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            img.Name = "UBO_PIC_01";
+            this.BO_MainGrid.Children.Add(img);
+            
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            foreach (UIElement c in this.BO_MainGrid.Children)
+            {
+                if (c is Image)
+                {
+                    Image obc = (Image)c;
+                    if (obc.Name == "UBO_PIC_01")
+                    {
+                        obc.Visibility = obc.Visibility == System.Windows.Visibility.Collapsed ?
+                            System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+                        this.BO_MainGrid.Children.Remove(c);
+                        break;
+                    }
+                }
+            }
+
         }
     }
 }
