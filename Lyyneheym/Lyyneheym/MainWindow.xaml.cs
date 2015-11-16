@@ -64,8 +64,8 @@ namespace Lyyneheym
             myBitmapImage.BeginInit();
             myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA01.png", UriKind.RelativeOrAbsolute);
             myBitmapImage.EndInit();
-            this.BO_LeftChara.Width = myBitmapImage.Width;
-            this.BO_LeftChara.Height = myBitmapImage.Height;
+            this.BO_LeftChara.Width = myBitmapImage.PixelWidth;
+            this.BO_LeftChara.Height = myBitmapImage.PixelHeight;
             this.BO_LeftChara.Source = myBitmapImage;
         }
 
@@ -75,8 +75,8 @@ namespace Lyyneheym
             myBitmapImage.BeginInit();
             myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA02.png", UriKind.RelativeOrAbsolute);
             myBitmapImage.EndInit();
-            this.BO_RightChara.Width = myBitmapImage.Width;
-            this.BO_RightChara.Height = myBitmapImage.Height;
+            this.BO_RightChara.Width = myBitmapImage.PixelWidth;
+            this.BO_RightChara.Height = myBitmapImage.PixelHeight;
             this.BO_RightChara.Source = myBitmapImage;
         }
 
@@ -131,6 +131,41 @@ namespace Lyyneheym
                 }
             }
 
+        }
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            this.BO_MainName.Text = "【蓬莱山辉夜】";
+            this.BO_MainText.Text = "Erin Erin" + Environment.NewLine + "助けてErin～！";
+        }
+
+
+        MediaPlayer mp = null;
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            mp = new MediaPlayer();
+            mp.Open(new Uri(@"Sound\bgm\bgm01.mp3", UriKind.RelativeOrAbsolute));
+            mp.Play();
+        }
+
+        bool playflag = false;
+        private void Button_Click_8(object sender, RoutedEventArgs e)
+        {
+            if (playflag == false)
+            {
+                mp.Pause();
+                playflag = true;
+            }
+            else
+            {
+                mp.Play();
+                playflag = false;
+            }
+            
+        }
+
+        private void Button_Click_9(object sender, RoutedEventArgs e)
+        {
+            mp.Stop();
         }
     }
 }
