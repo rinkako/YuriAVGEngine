@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LyyneheymCore.SlyviaPile
+namespace LyyneheymCore.Utils
 {
     /// <summary>
     /// 输入输出类：管理整个游戏环境的IO动作

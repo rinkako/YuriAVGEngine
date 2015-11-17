@@ -6,8 +6,7 @@ using System.Text;
 namespace LyyneheymCore.SlyviaPile
 {
     /// <summary>
-    /// <para>匹配器类：负责把用户脚本翻译成游戏场景实例的类</para>
-    /// <para>这个类可以并行化</para>
+    /// 语法匹配器类：负责把单词流匹配成语法树的类
     /// </summary>
     public class Parser
     {

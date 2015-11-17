@@ -49,8 +49,10 @@
     <Compile Include="SlyviaCore\Scene.cs" />
     <Compile Include="SlyviaCore\SceneManager.cs" />
     <Compile Include="SlyviaCore\SpiritContainer.cs" />
-    <Compile Include="SlyviaPile\IOUtils.cs" />
-    <Compile Include="SlyviaPile\PackageUtils.cs" />
+    <Compile Include="SlyviaPile\Token.cs" />
+    <Compile Include="Utils\IOUtils.cs" />
+    <Compile Include="SlyviaPile\Lexer.cs" />
+    <Compile Include="Utils\PackageUtils.cs" />
     <Compile Include="SlyviaPile\Parser.cs" />
     <Compile Include="SlyviaCore\Consta.cs" />
   </ItemGroup>
