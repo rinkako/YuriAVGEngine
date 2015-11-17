@@ -10,9 +10,9 @@ using LyyneheymCore.SlyviaPile;
 
 namespace LyynePacker
 {
-    public partial class Form1 : Form
+    public partial class UserPackerForm : Form
     {
-        public Form1()
+        public UserPackerForm()
         {
             InitializeComponent();
         }
@@ -37,15 +37,8 @@ namespace LyynePacker
                 this.pendingList = new List<string>();
                 foreach (string fname in fnameList)
                 {
-                    //if (fname.EndsWith(".jpg") || fname.EndsWith(".bmp") || fname.EndsWith(".png"))
-                    //{
                     this.pendingList.Add(fname);
                     this.listBox1.Items.Add(fname);
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show("文件 " + fname + " 格式不匹配，必须是jpg、bmp或png格式。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    //}
                 }
             }
             catch
@@ -72,27 +65,66 @@ namespace LyynePacker
                 {
                     flist.Add(s);
                 }
-                SlyviaPackageUtil.pack(flist, fwindow.FileName);
+                PackageUtils.pack(flist, fwindow.FileName);
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void listBox2_DragEnter(object sender, DragEventArgs e)
         {
-            string s1 = "", s2 = "";
-            FileDialog fwindow = new OpenFileDialog();
-            fwindow.Filter = "dat文件|*.dat";
-            if (fwindow.ShowDialog() == DialogResult.OK)
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                s1 = fwindow.FileName;
+                e.Effect = DragDropEffects.All;
             }
-            FileDialog fwindow2 = new SaveFileDialog();
-            if (fwindow2.ShowDialog() == DialogResult.OK)
+            else
             {
-                s2 = fwindow2.FileName;
+                e.Effect = DragDropEffects.None;
             }
-            SlyviaPackageUtil.unpack(s1, this.textBox1.Text, s2);
         }
 
+        private string exPakName = "";
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            if (exPakName == "")
+            {
+                MessageBox.Show("你还没拉入文件呢");
+                return;
+            }
+            string savePath = "";
+            FolderBrowserDialog fdg = new FolderBrowserDialog();
+            fdg.Description = "选择资源提取到哪个目录";
+            if (fdg.ShowDialog() == DialogResult.OK)
+            {
+                savePath = fdg.SelectedPath;
+            }
+            foreach (object ob in this.listBox2.SelectedItems)
+            {
+                string obs = ob.ToString();
+                PackageUtils.unpack(this.exPakName, obs, savePath + "\\" + obs);
+            }
+        }
+
+        private void listBox2_DragDrop(object sender, DragEventArgs e)
+        {
+            this.listBox2.Items.Clear();
+            this.exPakName = (e.Data.GetData(DataFormats.FileDrop, false) as String[])[0];
+            List<string> pakFileList = PackageUtils.getPackList(this.exPakName);
+            foreach (string s in pakFileList)
+            {
+                this.listBox2.Items.Add(s);
+            }
+        }
+
+        private void UserPackerForm_ResizeEnd(object sender, EventArgs e)
+        {
+            if (this.Width < 500)
+            {
+                this.Width = 500;
+            }
+            if (this.Height < 450)
+            {
+                this.Height = 450;
+            }
+        }
 
     }
 }

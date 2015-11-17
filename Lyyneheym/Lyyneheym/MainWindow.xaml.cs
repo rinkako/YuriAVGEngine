@@ -20,6 +20,8 @@ namespace Lyyneheym
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Slyvia core = Slyvia.getInstance();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -43,19 +45,19 @@ namespace Lyyneheym
         bool flag = false;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (flag == false)
-            {
-                Uri bg = new Uri(@"PictureAssets\background\bg1.png", UriKind.RelativeOrAbsolute);
-                this.BO_MainGrid.Background = new ImageBrush(new BitmapImage(bg));
-                flag = true;
-            }
-            else
-            {
-                Uri bg = new Uri(@"PictureAssets\background\bg2.png", UriKind.RelativeOrAbsolute);
-                this.BO_MainGrid.Background = new ImageBrush(new BitmapImage(bg));
-                flag = false;
-            }
-            
+            //if (flag == false)
+            //{
+            //    Uri bg = new Uri(@"PictureAssets\background\bg1.png", UriKind.RelativeOrAbsolute);
+            //    this.BO_MainGrid.Background = new ImageBrush(new BitmapImage(bg));
+            //    flag = true;
+            //}
+            //else
+            //{
+            //    Uri bg = new Uri(@"PictureAssets\background\bg2.png", UriKind.RelativeOrAbsolute);
+            //    this.BO_MainGrid.Background = new ImageBrush(new BitmapImage(bg));
+            //    flag = false;
+            //}
+            this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage());
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
