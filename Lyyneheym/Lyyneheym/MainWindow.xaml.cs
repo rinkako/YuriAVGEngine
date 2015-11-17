@@ -45,27 +45,26 @@ namespace Lyyneheym
         bool flag = false;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //if (flag == false)
-            //{
-            //    Uri bg = new Uri(@"PictureAssets\background\bg1.png", UriKind.RelativeOrAbsolute);
-            //    this.BO_MainGrid.Background = new ImageBrush(new BitmapImage(bg));
-            //    flag = true;
-            //}
-            //else
-            //{
-            //    Uri bg = new Uri(@"PictureAssets\background\bg2.png", UriKind.RelativeOrAbsolute);
-            //    this.BO_MainGrid.Background = new ImageBrush(new BitmapImage(bg));
-            //    flag = false;
-            //}
-            this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage());
+            if (flag == false)
+            {
+                this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage("bg1.png"));
+                flag = true;
+            }
+            else
+            {
+                this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage("bg2.png"));
+                flag = false;
+            }
+            
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            BitmapImage myBitmapImage = new BitmapImage();
-            myBitmapImage.BeginInit();
-            myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA01.png", UriKind.RelativeOrAbsolute);
-            myBitmapImage.EndInit();
+            //BitmapImage myBitmapImage = new BitmapImage();
+            //myBitmapImage.BeginInit();
+            //myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA01.png", UriKind.RelativeOrAbsolute);
+            //myBitmapImage.EndInit();
+            BitmapImage myBitmapImage = core.testCharaStand("CA01.png");
             this.BO_LeftChara.Width = myBitmapImage.PixelWidth;
             this.BO_LeftChara.Height = myBitmapImage.PixelHeight;
             this.BO_LeftChara.Source = myBitmapImage;
@@ -73,10 +72,11 @@ namespace Lyyneheym
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            BitmapImage myBitmapImage = new BitmapImage();
-            myBitmapImage.BeginInit();
-            myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA02.png", UriKind.RelativeOrAbsolute);
-            myBitmapImage.EndInit();
+            //BitmapImage myBitmapImage = new BitmapImage();
+            //myBitmapImage.BeginInit();
+            //myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA02.png", UriKind.RelativeOrAbsolute);
+            //myBitmapImage.EndInit();
+            BitmapImage myBitmapImage = core.testCharaStand("CA02.png");
             this.BO_RightChara.Width = myBitmapImage.PixelWidth;
             this.BO_RightChara.Height = myBitmapImage.PixelHeight;
             this.BO_RightChara.Source = myBitmapImage;

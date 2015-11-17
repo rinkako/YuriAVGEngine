@@ -11,7 +11,7 @@ namespace LyyneheymCore.SlyviaPile
     public class IOUtils
     {
 
-        public static string parseURItoURL(string uri, string folder = "\\")
+        public static string parseURItoURL(string uri)
         {
             return Environment.CurrentDirectory + uri;
         }

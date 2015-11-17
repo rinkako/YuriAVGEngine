@@ -7,8 +7,8 @@ using System.IO;
 namespace LyyneheymCore.SlyviaPile
 {
     /// <summary>
-    /// 包管理类：负责资源包的封装、解封、寻址和维护的类
-    /// 她是一个静态类
+    /// <para>包管理类：负责资源包的封装、解封、寻址和维护的类</para>
+    /// <para>她是一个静态类</para>
     /// </summary>
     public static class PackageUtils
     {

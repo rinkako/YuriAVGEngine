@@ -7,8 +7,8 @@ using System.Windows.Media.Imaging;
 namespace LyyneheymCore.SlyviaCore
 {
     /// <summary>
-    /// 常量类：维护整个游戏环境的常量
-    /// 她是一个静态类
+    /// <para>常量类：维护整个游戏环境的常量</para>
+    /// <para>她是一个静态类</para>
     /// </summary>
     public static class Consta
     {
@@ -50,6 +50,15 @@ namespace LyyneheymCore.SlyviaCore
         public static readonly string PackURI_SO_VOCAL = "SLVOCAL";
         #endregion
 
+        #region 系统变量名称
+        // 背景音轨字典键名
+        public static readonly string CVarName_BGMTrack = "CVar_BGMTrackNum";
+        // 音效音轨字典键名
+        public static readonly string CVarName_SETrack = "CVar_SETrackNum";
+        // 语音音轨字典键名
+        public static readonly string CVarName_VocalTrack = "CVar_VocalTrackNum";
+        #endregion
+
         #region 枚举类型
         // 资源的类型
         public enum ResourceType
@@ -68,6 +77,20 @@ namespace LyyneheymCore.SlyviaCore
             Res_se,
             // 声效->语音
             Res_vocal
+        }
+        // 用户变量类型
+        public enum UserVarType
+        {
+            // 未定式
+            UVT_VOID,
+            // 整数型
+            UVT_INT,
+            // 浮点数形
+            UVT_FLOAT,
+            // 字符串
+            UVT_STRING,
+            // 布尔
+            UVT_BOOLEAN
         }
         #endregion
     }
