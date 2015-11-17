@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lyyneheym.SlyviaCore
+namespace LyyneheymCore.SlyviaCore
 {
     /// <summary>
     /// 资源管理器类：负责维护游戏的资源

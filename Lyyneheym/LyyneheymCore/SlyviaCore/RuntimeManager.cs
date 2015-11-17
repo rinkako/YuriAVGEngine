@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lyyneheym.SlyviaCore
+namespace LyyneheymCore.SlyviaCore
 {
     /// <summary>
     /// 运行时管理器：维护运行时的所有信息

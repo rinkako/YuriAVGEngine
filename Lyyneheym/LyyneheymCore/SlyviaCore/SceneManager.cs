@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lyyneheym.SlyviaCore
+namespace LyyneheymCore.SlyviaCore
 {
     /// <summary>
     /// 场景管理器：负责控制整个剧本的演绎过程

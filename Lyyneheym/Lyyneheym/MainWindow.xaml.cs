@@ -165,7 +165,9 @@ namespace Lyyneheym
 
         private void Button_Click_9(object sender, RoutedEventArgs e)
         {
-            mp.Stop();
+            //mp.Stop();
+            System.Media.SoundPlayer sp = new System.Media.SoundPlayer(@"Sound\se\se01.wav");
+            sp.Play();
         }
     }
 }
