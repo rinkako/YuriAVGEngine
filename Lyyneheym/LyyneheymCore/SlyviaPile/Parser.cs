@@ -8,7 +8,7 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 语法匹配器类：负责把单词流匹配成语法树的类
     /// </summary>
-    public class Parser
+    internal sealed class Parser
     {
 
     }

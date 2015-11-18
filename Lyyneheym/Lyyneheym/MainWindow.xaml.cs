@@ -26,19 +26,20 @@ namespace Lyyneheym
         public MainWindow()
         {
             InitializeComponent();
+            this.testFontEffect(this.BO_MainText);
         }
 
         private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (this.BO_MessageBoxLayer.Visibility == System.Windows.Visibility.Hidden)
             {
-                this.BO_MainName.Visibility = this.BO_MainText.Visibility = 
+                this.BO_MainName.Visibility = this.BO_MainText.Visibility = this.BO_MsgTria.Visibility =
                     this.BO_MessageBoxLayer.Visibility = System.Windows.Visibility.Visible;
                 
             }
             else
             {
-                this.BO_MainName.Visibility = this.BO_MainText.Visibility =
+                this.BO_MainName.Visibility = this.BO_MainText.Visibility = this.BO_MsgTria.Visibility =
                     this.BO_MessageBoxLayer.Visibility = System.Windows.Visibility.Hidden;
             }
         }
@@ -57,6 +58,30 @@ namespace Lyyneheym
                 flag = false;
             }
             
+        }
+
+        private void testFontEffect(TextBlock label)
+        {
+            //LinearGradientBrush brush = new LinearGradientBrush();
+
+            //GradientStop gradientStop1 = new GradientStop();
+            //gradientStop1.Offset = 0;
+            //gradientStop1.Color = Color.FromArgb(255, 251, 100, 17);
+            //brush.GradientStops.Add(gradientStop1);
+
+            //GradientStop gradientStop2 = new GradientStop();
+            //gradientStop2.Offset = 1;
+            //gradientStop2.Color = Color.FromArgb(255, 247, 238, 52);
+            //brush.GradientStops.Add(gradientStop2);
+
+            
+            //brush.StartPoint = new Point(0.5, 0);
+            //brush.EndPoint = new Point(0.5, 1);
+            //label.Foreground = brush;
+            System.Windows.Media.Effects.DropShadowEffect ds = new System.Windows.Media.Effects.DropShadowEffect();
+            ds.ShadowDepth = 2;
+            ds.Opacity = 0.5;
+            label.Effect = ds;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
