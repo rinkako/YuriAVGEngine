@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 using System.IO;
 
 namespace Lyyneheym
@@ -136,8 +137,7 @@ namespace Lyyneheym
         }
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-            this.BO_MainName.Text = "【蓬莱山辉夜】";
-            this.BO_MainText.Text = "Erin Erin" + Environment.NewLine + "助けてErin～！";
+            TypewriteTextblock("测试文本测试文本测试文本测试文本测试文本", this.BO_MainText, TimeSpan.FromMilliseconds(800));
         }
 
 
@@ -163,6 +163,50 @@ namespace Lyyneheym
                 playflag = false;
             }
             
+        }
+
+        private void TypewriteTextblock(string textToAnimate, TextBlock txt, TimeSpan timeSpan)
+        {
+            this.BO_MsgTria.Visibility = System.Windows.Visibility.Hidden;
+            Storyboard story = new Storyboard();
+            story.FillBehavior = FillBehavior.HoldEnd;
+            DiscreteStringKeyFrame discreteStringKeyFrame;
+            StringAnimationUsingKeyFrames stringAnimationUsingKeyFrames = new StringAnimationUsingKeyFrames();
+            stringAnimationUsingKeyFrames.Duration = new Duration(timeSpan);
+            string tmp = string.Empty;
+            foreach (char c in textToAnimate)
+            {
+                discreteStringKeyFrame = new DiscreteStringKeyFrame();
+                discreteStringKeyFrame.KeyTime = KeyTime.Paced;
+                tmp += c;
+                discreteStringKeyFrame.Value = tmp;
+                stringAnimationUsingKeyFrames.KeyFrames.Add(discreteStringKeyFrame);
+            }
+            Storyboard.SetTargetName(stringAnimationUsingKeyFrames, txt.Name);
+            Storyboard.SetTargetProperty(stringAnimationUsingKeyFrames, new PropertyPath(TextBlock.TextProperty));
+            story.Children.Add(stringAnimationUsingKeyFrames);
+            story.Completed += new EventHandler(callback_typing);
+            story.Begin(txt);
+        }
+
+        private void callback_typing(object sender, EventArgs e)
+        {
+            this.BO_MsgTria.Visibility = Visibility.Visible;
+            this.BO_MsgTria.RenderTransform = new TranslateTransform();
+            Storyboard sb = new Storyboard();
+            DoubleAnimation da = new DoubleAnimation(0, 10, new Duration(TimeSpan.FromSeconds(1)));
+            da.RepeatBehavior = RepeatBehavior.Forever;
+            da.AutoReverse = true;
+            da.AccelerationRatio = 0.8;
+            Storyboard.SetTargetName(da, this.BO_MsgTria.Name);
+            DependencyProperty[] propertyChain = new DependencyProperty[]
+            {
+                Image.RenderTransformProperty,
+                TranslateTransform.YProperty,
+            };
+            Storyboard.SetTargetProperty(da, new PropertyPath("(0).(1)", propertyChain));
+            sb.Children.Add(da);
+            sb.Begin(this);
         }
 
         private void Button_Click_9(object sender, RoutedEventArgs e)

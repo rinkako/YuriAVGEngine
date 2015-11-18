@@ -2,13 +2,14 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="576" Width="1024" ResizeMode="NoResize" MouseRightButtonDown="Window_MouseRightButtonDown">
-    <Grid Name="BO_MainGrid">
-        <Image Name="BO_MessageBoxLayer" Opacity="0.75" Panel.ZIndex="91" Height="170" VerticalAlignment="Bottom" Width="1018" Stretch="UniformToFill" Source="ImageAssets/originMessageBox2.png"/>
-        <TextBlock x:Name="BO_MainName" HorizontalAlignment="Left" Panel.ZIndex="92" Margin="35,0,0,105" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="22" Width="300" FontFamily="FZXiaoBiaoSong-B05" LineHeight="36" LineStackingStrategy="BlockLineHeight" Height="30"><Run Language="zh-cn" Text="春日野穹"/></TextBlock>
-        <TextBlock x:Name="BO_MainText" HorizontalAlignment="Left" Panel.ZIndex="93" Margin="75,0,0,8" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="933" Height="91" LineHeight="22" FontSize="16" TextDecorations="{x:Null}" FontFamily="FZXiaoBiaoSong-B05" LineStackingStrategy="BlockLineHeight"><Run Language="zh-cn" Text="这是一个测试语句块，她很可爱"/><LineBreak/><Run Language="zh-cn" Text="哎呀呀，喜欢的果然是依媛奈绪姐姐呢"/><LineBreak/><Run Language="zh-cn" Text="穹妹穹妹"/><LineBreak/><Run Language="zh-cn" Text="Sora Cyan"/></TextBlock>
+    <Canvas Name="BO_MainGrid">
+        <Image Name="BO_MessageBoxLayer" Opacity="0.75" Panel.ZIndex="91" Height="170" VerticalAlignment="Bottom" Width="1018" Stretch="UniformToFill" Source="ImageAssets/originMessageBox2.png" Canvas.Top="377"/>
+        <TextBlock x:Name="BO_MainName" HorizontalAlignment="Left" Panel.ZIndex="92" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="22" Width="300" FontFamily="FZXiaoBiaoSong-B05" LineHeight="36" LineStackingStrategy="BlockLineHeight" Height="30" Canvas.Left="35" Canvas.Top="411"><Run Language="zh-cn" Text="春日野穹"/></TextBlock>
+        <TextBlock x:Name="BO_MainText" HorizontalAlignment="Left" Panel.ZIndex="93" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="935" Height="91" LineHeight="22" FontSize="16" TextDecorations="{x:Null}" FontFamily="FZXiaoBiaoSong-B05" LineStackingStrategy="BlockLineHeight" Canvas.Left="60" Canvas.Top="446"><Run Language="zh-cn" Text="这是一个测试语句块，她很可爱"/><LineBreak/><Run Language="zh-cn" Text="哎呀呀，喜欢的果然是依媛奈绪姐姐呢"/><LineBreak/><Run Language="zh-cn" Text="穹妹穹妹"/><LineBreak/><Run Language="zh-cn" Text="Sora Cyan"/></TextBlock>
+        <Image Name="BO_MsgTria" Panel.ZIndex="999" Visibility="Hidden" Opacity="0.55" Height="20" Width="20" Canvas.Left="950" Canvas.Top="496" Source="ImageAssets/MessageTria.png"/>
 
-        <Image Name="BO_LeftChara" HorizontalAlignment="Left" Height="515" VerticalAlignment="Bottom" Width="500" Margin="10,0,0,0" Stretch="None"/>
-        <Image Name="BO_RightChara" HorizontalAlignment="Right" Height="515" VerticalAlignment="Bottom" Width="500" Margin="0,0,10,0" Stretch="None"/>
+        <Image Name="BO_LeftChara" HorizontalAlignment="Left" Height="515" VerticalAlignment="Bottom" Width="500" Stretch="None" Canvas.Left="10" Canvas.Top="32"/>
+        <Image Name="BO_RightChara" HorizontalAlignment="Right" Height="515" VerticalAlignment="Bottom" Width="500" Stretch="None" Canvas.Left="508" Canvas.Top="32"/>
 
 
         <Button Content="Button" HorizontalAlignment="Left" Margin="933,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
@@ -21,7 +22,8 @@
         <Button Content="Button" HorizontalAlignment="Left" Margin="594,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="674,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_8"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="754,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_9"/>
+        
 
 
-    </Grid>
+    </Canvas>
 </Window>
