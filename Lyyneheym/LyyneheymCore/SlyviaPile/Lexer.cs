@@ -92,89 +92,86 @@ namespace LyyneheymCore.SlyviaPile
         }
 
 
-
-
-
         // 原剧本字串
         private string sourceCode = "";
-
-        /// <summary>
-        /// 枚举：字符类型
-        /// </summary>
-        private enum CharacterType
-        {
-            // 未知
-            cUnknown,
-            // 字母
-            Letter,
-            // 中文
-            Chinese,
-            // 数字
-            Number,
-            // _
-            UnderLine,
-            // .
-            Dot,
-            // ,
-            Comma,
-            // +
-            Plus,
-            // -
-            Minus,
-            // *
-            Multiply,
-            // /
-            Divide,
-            // %
-            Percent,
-            // ^
-            Xor,
-            // &;
-            And,
-            // |
-            Or,
-            // ~
-            Reverse,
-            // $
-            Dollar,
-            // <
-            LessThan,
-            // >
-            GreaterThan,
-            // (
-            LeftParentheses,
-            // )
-            RightParentheses,
-            // [
-            LeftBracket,
-            // ]
-            RightBracket,
-            // {
-            LeftBrace,
-            // }
-            RightBrace,
-            // !
-            Not,
-            // #
-            Pound,
-            // "\\"
-            Slash,
-            // ?
-            Question,
-            // '
-            Quotation,
-            // "
-            DoubleQuotation,
-            // :
-            Colon,
-            // ;
-            Semicolon,
-            // =
-            Equality,
-            // @
-            At,
-            // space Tab \r\n
-            Space
-        };
     }
+
+    /// <summary>
+    /// 枚举：字符类型
+    /// </summary>
+    public enum CharacterType
+    {
+        // 未知
+        cUnknown,
+        // 字母
+        Letter,
+        // 中文
+        Chinese,
+        // 数字
+        Number,
+        // _
+        UnderLine,
+        // .
+        Dot,
+        // ,
+        Comma,
+        // +
+        Plus,
+        // -
+        Minus,
+        // *
+        Multiply,
+        // /
+        Divide,
+        // %
+        Percent,
+        // ^
+        Xor,
+        // &;
+        And,
+        // |
+        Or,
+        // ~
+        Reverse,
+        // $
+        Dollar,
+        // <
+        LessThan,
+        // >
+        GreaterThan,
+        // (
+        LeftParentheses,
+        // )
+        RightParentheses,
+        // [
+        LeftBracket,
+        // ]
+        RightBracket,
+        // {
+        LeftBrace,
+        // }
+        RightBrace,
+        // !
+        Not,
+        // #
+        Pound,
+        // "\\"
+        Slash,
+        // ?
+        Question,
+        // '
+        Quotation,
+        // "
+        DoubleQuotation,
+        // :
+        Colon,
+        // ;
+        Semicolon,
+        // =
+        Equality,
+        // @
+        At,
+        // space Tab \r\n
+        Space
+    };
 }
