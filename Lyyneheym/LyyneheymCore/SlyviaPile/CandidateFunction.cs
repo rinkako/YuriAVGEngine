@@ -10,7 +10,7 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 候选式类：指导编译路径的最小单元
     /// </summary>
-    internal sealed class CandidateFunction
+    public sealed class CandidateFunction
     {
         /// <summary>
         /// 构造函数
@@ -37,7 +37,7 @@ namespace LyyneheymCore.SlyviaPile
         /// 获得产生式的类型
         /// </summary>
         /// <returns>该候选式的类型</returns>
-        public CFunctionType GetType()
+        public CFunctionType GetCFType()
         {
             return this.candidateType;
         }
@@ -57,16 +57,16 @@ namespace LyyneheymCore.SlyviaPile
         // 处理器指针
         private iHandle candidateProcessor = null;
         // 产生式类型
-        private CFunctionType candidateType = CFunctionType.CFT_None;
+        private CFunctionType candidateType = CFunctionType.None;
     }
 
     /// <summary>
     /// 枚举：候选式类型
     /// </summary>
-    internal enum CFunctionType
+    public enum CFunctionType
     {
         // null
-        CFT_None,
+        None,
         // <disjunct> -> <conjunct> <disjunct_pi>
         deri___disjunct__conjunct__disjunct_pi_35,
         // <disjunct_pi> -> "||" <conjunct> <disjunct_pi>

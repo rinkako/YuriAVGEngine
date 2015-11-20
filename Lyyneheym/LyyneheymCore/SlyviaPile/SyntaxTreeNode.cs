@@ -8,7 +8,7 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 语法节点类：构成语法树的最小单元
     /// </summary>
-    internal sealed class SyntaxTreeNode
+    public sealed class SyntaxTreeNode
     {
         // 绑定处理函数
         public CandidateFunction candidateFunction = null;
@@ -21,7 +21,7 @@ namespace LyyneheymCore.SlyviaPile
         // 命中token附加值
         public string nodeValue = null;
         // 命中产生式类型
-        public CFunctionType nodeType = CFunctionType.CFT_None;
+        public CFunctionType nodeType = CFunctionType.None;
         // 节点名字
         public string nodeName = "";
         // 附加值
@@ -46,7 +46,7 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 枚举：语法节点类型
     /// </summary>
-    internal enum SyntaxType
+    public enum SyntaxType
     {
         // 显示文本
         synr_a,

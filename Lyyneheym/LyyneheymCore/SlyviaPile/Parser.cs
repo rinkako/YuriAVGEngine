@@ -8,7 +8,7 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 语法匹配器类：负责把单词流匹配成语法树的类
     /// </summary>
-    internal sealed class Parser
+    public sealed class Parser
     {
         /// <summary>
         /// 构造函数
@@ -64,6 +64,14 @@ namespace LyyneheymCore.SlyviaPile
         }
 
         /// <summary>
+        /// 初始化预测分析表、链接向量和LL1文法预测表
+        /// </summary>
+        private void Init()
+        {
+
+        }
+
+        /// <summary>
         /// 取下一节点的指针
         /// </summary>
         /// <param name="res">父母节点</param>
@@ -74,15 +82,16 @@ namespace LyyneheymCore.SlyviaPile
         }
 
         /// <summary>
-        /// 初始化预测分析表、链接向量和LL1文法预测表
+        /// 预处理器：将所有非推导项构造到语法树上
         /// </summary>
-        private void Init() 
+        /// <returns></returns>
+        private SyntaxTreeNode Kaguya()
         {
- 
+            return null;
         }
 
         /// <summary>
-        /// 通用产生式处理器
+        /// 核心处理器：通用产生式处理函数
         /// </summary>
         /// <param name="myNode">产生式节点</param>
         /// <param name="myType">候选式类型</param>

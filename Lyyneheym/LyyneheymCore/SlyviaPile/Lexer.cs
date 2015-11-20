@@ -8,7 +8,7 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 词法分析器类：负责把用户脚本分割为单词流的类
     /// </summary>
-    internal sealed class Lexer
+    public sealed class Lexer
     {
         /// <summary>
         /// 构造函数
@@ -43,7 +43,6 @@ namespace LyyneheymCore.SlyviaPile
         /// <param name="resetFloatPointer">是否重置游标</param>
         public void Init(string scenario, bool resetFloatPointer = false)
         {
-            this.finFlag = true;
             this.blockFlag = false;
             this.sourceCode = scenario;
             this.nextCharPointer = 0;
@@ -53,34 +52,6 @@ namespace LyyneheymCore.SlyviaPile
                 this.currentColumn = ColStartNum;
                 this.currentLine = RowStartNum;
             }
-        }
-
-        /// <summary>
-        /// 启动词法分析DFA自动机
-        /// </summary>
-        /// <returns>词法分析完毕的的单词流</returns>
-        public List<Token> Analyse()
-        {
-            // 如果上一轮词法分析完成，那么就要重新构造结果向量
-            if (this.finFlag == true)
-            {
-                this.resultVector = new List<Token>();
-            }
-            // 分析这个句子
-            bool sentenceFlag = false;
-            while (this.nextCharPointer < this.sourceCode.Length)
-            {
-                Token nextToken;
-                sentenceFlag = this.DFA(out nextToken);
-                if (nextToken != null)
-                {
-                    this.resultVector.Add(nextToken);
-                }
-            }
-            // 如果句子标志位还没有成功这一轮分析就没有完成
-            this.finFlag = sentenceFlag;
-            // 把结果向量返回给上层
-            return this.resultVector;
         }
 
         /// <summary>
@@ -111,6 +82,35 @@ namespace LyyneheymCore.SlyviaPile
         }
 
         /// <summary>
+        /// 启动词法分析DFA自动机
+        /// </summary>
+        /// <returns>词法分析完毕的的单词流</returns>
+        public List<Token> Analyse()
+        {
+            // 如果上一轮词法分析完成，那么就要重新构造结果向量
+            if (this.finFlag == true)
+            {
+                this.resultVector = new List<Token>();
+            }
+            // 分析这个句子
+            //bool sentenceFlag = false;
+            while (this.nextCharPointer < this.sourceCode.Length)
+            {
+                Token nextToken;
+                //sentenceFlag = this.DFA(out nextToken);
+                this.DFA(out nextToken);
+                if (nextToken != null)
+                {
+                    this.resultVector.Add(nextToken);
+                }
+            }
+            // 如果句子标志位还没有成功这一轮分析就没有完成
+            //this.finFlag = sentenceFlag;
+            // 把结果向量返回给上层
+            return this.resultVector;
+        }
+
+        /// <summary>
         /// <para>DFA自动机</para>
         /// <para>处理当前代码指针所在的单词，并移动指针</para>
         /// <para>如果遇到未知的字符，将抛出错误</para>
@@ -127,60 +127,75 @@ namespace LyyneheymCore.SlyviaPile
             int alen = this.sourceCode.Length;
             // 获取下一个字符来判断自动机路径
             bool successFlag = false;
-            CharacterType cara = this.GetCharType(this.sourceCode[this.nextCharPointer]);
-            switch (cara)
+            // 如果finFlag还没有成立，直接进入剧本自动机路径
+            if (finFlag == false)
             {
-                // 单字符token
-                case CharacterType.Plus:
-                case CharacterType.Minus:
-                case CharacterType.Multiply:
-                case CharacterType.Divide:
-                case CharacterType.Not:
-                case CharacterType.At:
-                case CharacterType.LeftParentheses:
-                case CharacterType.LeftBracket:
-                case CharacterType.RightParentheses:
-                case CharacterType.RightBracket:
-                    successFlag = this.GetSingleCharaCalculator(res);
-                    break;
-                // 可能双字符token
-                case CharacterType.Equality:
-                case CharacterType.LessThan:
-                case CharacterType.GreaterThan:
-                case CharacterType.And:
-                case CharacterType.Or:
-                    successFlag = this.GetDoubleCharaCalculator(res);
-                    break;
-                // 关键字
-                case CharacterType.Letter:
-                    successFlag = this.GetReservedCalculator(res);
-                    break;
-                // 标识符
-                case CharacterType.Dollar:
-                    successFlag = this.GetIdentifierCalculator(res);
-                    break;
-                // 字符串
-                case CharacterType.Quotation:
-                case CharacterType.DoubleQuotation:
-                    successFlag = this.GetCluster(res);
-                    break;
-                // 剧本对白
-                case CharacterType.LeftBrace:
-                case CharacterType.RightBrace:
-                    successFlag = this.GetSceneCluster(res);
-                    break;
-                // 常数
-                case CharacterType.Number:
-                    successFlag = this.GetConstant(res);
-                    break;
-                // 空白
-                case CharacterType.Space:
-                    successFlag = this.GetSpace(res);
-                    break;
-                // 谜
-                default:
-                    successFlag = this.GetUnknown(res);
-                    break;
+                successFlag = this.GetSceneCluster(res);
+            }
+            else
+            {
+                CharacterType cara = this.GetCharType(this.sourceCode[this.nextCharPointer]);
+                switch (cara)
+                {
+                    // 单字符token
+                    case CharacterType.Plus:
+                    case CharacterType.Minus:
+                    case CharacterType.Multiply:
+                    case CharacterType.Divide:
+                    case CharacterType.Not:
+                    case CharacterType.At:
+                    case CharacterType.LeftParentheses:
+                    case CharacterType.LeftBracket:
+                    case CharacterType.RightParentheses:
+                    case CharacterType.RightBracket:
+                        successFlag = this.GetSingleCharaCalculator(res);
+                        break;
+                    // 可能双字符token
+                    case CharacterType.Equality:
+                    case CharacterType.LessThan:
+                    case CharacterType.GreaterThan:
+                    case CharacterType.And:
+                    case CharacterType.Or:
+                        successFlag = this.GetDoubleCharaCalculator(res);
+                        break;
+                    // 关键字
+                    case CharacterType.Letter:
+                        successFlag = this.GetReservedCalculator(res);
+                        break;
+                    // 标识符
+                    case CharacterType.Dollar:
+                        successFlag = this.GetIdentifierCalculator(res);
+                        break;
+                    // 字符串
+                    case CharacterType.Quotation:
+                    case CharacterType.DoubleQuotation:
+                        successFlag = this.GetCluster(res);
+                        break;
+                    // 剧本对白
+                    case CharacterType.LeftBrace:
+                        successFlag = this.GetSceneCluster(res);
+                        break;
+                    // 剧本对白结束：
+                    case CharacterType.RightBrace:
+                        successFlag = this.EndSceneCluster(res);
+                        break;
+                    // 常数
+                    case CharacterType.Number:
+                        successFlag = this.GetConstant(res);
+                        break;
+                    // 中文（finFlag不成立）
+                    case CharacterType.Chinese:
+                        successFlag = this.GetSceneCluster(res);
+                        break;
+                    // 空白
+                    case CharacterType.Space:
+                        successFlag = this.GetSpace(res);
+                        break;
+                    // 谜
+                    default:
+                        successFlag = this.GetUnknown(res);
+                        break;
+                }
             }
             // 如果成功获得了token，就返回给Lexer
             if (successFlag)
@@ -872,7 +887,8 @@ namespace LyyneheymCore.SlyviaPile
                     return true;
                 }
             }
-            return false;
+            // 在标识符中没有命中，转到文本内容自动机路径
+            return this.GetSceneCluster(res);
         }
 
         /// <summary>
@@ -913,31 +929,49 @@ namespace LyyneheymCore.SlyviaPile
         private bool GetSceneCluster(Token res)
         {
             // 跳过左花括弧
-            this.Jump(1);
+            if (this.GetCharType(this.sourceCode[this.nextCharPointer]) == CharacterType.LeftBrace)
+            {
+                this.Jump(1);
+                this.finFlag = false;
+            }
             // 构造字符串
-            bool lattice = false;
             StringBuilder sb = new StringBuilder();
+            bool entityFlag = false;
             while (this.nextCharPointer < this.sourceCode.Length)
             {
                 CharacterType cara = this.GetCharType(this.sourceCode[this.nextCharPointer]);
                 // 在右花括弧之前的输入都接受，并且这个花括弧不能是转义的
                 if (this.GetCharType(this.sourceCode[this.nextCharPointer]) == CharacterType.RightBrace)
                 {
-                    // 跳游程并标志封闭性成立
-                    this.Jump(1);
-                    lattice = true;
+                    // 不跳游程，等待DFA进入段落终止符路径，并标志封闭性成立
+                    finFlag = true;
                     break;
                 }
                 else
                 {
                     // 处理转义字符并压入字符串构造器，游程在escaping里跳动
                     sb.Append(this.Escaping(this.sourceCode[this.nextCharPointer]));
+                    entityFlag = true;
                 }
             }
             // 如果成功封闭
             res.aType = TokenType.scenecluster;
             res.detail = sb.ToString();
-            res.errorBit = lattice == false;
+            return entityFlag;
+        }
+
+        /// <summary>
+        /// 剧本对白段落终止符的自动机路径
+        /// </summary>
+        /// <param name="res"></param>
+        /// <returns></returns>
+        private bool EndSceneCluster(Token res)
+        {
+            // 跳过游程
+            this.Jump(1);
+            // 修改token信息
+            res.aType = TokenType.sceneterminator;
+            res.detail = "}";
             return true;
         }
 
@@ -1168,7 +1202,7 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 枚举：字符类型
     /// </summary>
-    internal enum CharacterType
+    public enum CharacterType
     {
         // 未知
         cUnknown,

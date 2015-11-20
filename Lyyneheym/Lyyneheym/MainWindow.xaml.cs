@@ -14,6 +14,9 @@ using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using System.IO;
 
+using LyyneheymCore.SlyviaPile;
+using LyyneheymCore.Utils;
+
 namespace Lyyneheym
 {
     /// <summary>
@@ -59,6 +62,20 @@ namespace Lyyneheym
             }
             
         }
+
+
+        private void testLexer()
+        {
+            Lexer lex = new Lexer();
+            List<string> sl = IOUtils.ReadScenarioFromFile(@"C:\Users\Kako\Desktop\test.txt");
+            foreach (string s in sl)
+            {
+                lex.Init(s);
+                lex.Analyse();
+                Console.WriteLine(lex.ToString());
+            }
+        }
+
 
         private void testFontEffect(TextBlock label)
         {
@@ -169,9 +186,10 @@ namespace Lyyneheym
         MediaPlayer mp = null;
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
-            mp = new MediaPlayer();
-            mp.Open(new Uri(@"Sound\bgm\bgm01.mp3", UriKind.RelativeOrAbsolute));
-            mp.Play();
+            //mp = new MediaPlayer();
+            //mp.Open(new Uri(@"Sound\bgm\bgm01.mp3", UriKind.RelativeOrAbsolute));
+            //mp.Play();
+            this.testLexer();
         }
 
         bool playflag = false;

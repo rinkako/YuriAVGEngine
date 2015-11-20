@@ -8,7 +8,7 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 单词类：负责装填词法分析阶段的结果的最小单元
     /// </summary>
-    internal sealed class Token
+    public sealed class Token
     {
         // 命中行
         public int aLine = -1;
@@ -31,7 +31,7 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 枚举：单词类型
     /// </summary>
-    internal enum TokenType
+    public enum TokenType
     {
         // 未知
         unknown,
@@ -41,6 +41,8 @@ namespace LyyneheymCore.SlyviaPile
         cluster,
         // 剧本字符串
         scenecluster,
+        // 剧本段落终结符
+        sceneterminator,
         // 整数数字
         number,
         // 起始终止标记

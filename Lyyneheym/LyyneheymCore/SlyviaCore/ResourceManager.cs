@@ -28,7 +28,7 @@ namespace LyyneheymCore.SlyviaCore
         {
             // 总是先查看是否有为封包的数据
             string furi = Consta.DevURI_RT_PICTUREASSETS + "\\" + Consta.DevURI_PA_BACKGROUND + "\\" + sourceName;
-            if (File.Exists(IOUtils.parseURItoURL("\\" + furi)))
+            if (File.Exists(IOUtils.ParseURItoURL("\\" + furi)))
             {
                 Uri bg = new Uri(furi, UriKind.RelativeOrAbsolute);
                 BitmapImage bpi = new BitmapImage();
@@ -41,7 +41,7 @@ namespace LyyneheymCore.SlyviaCore
                 this.resourceTable[Consta.DevURI_PA_BACKGROUND].ContainsKey(sourceName))
             {
                 KeyValuePair<long, long> sourceLocation = this.resourceTable[Consta.DevURI_PA_BACKGROUND][sourceName];
-                byte[] ob = PackageUtils.getObjectBytes(IOUtils.parseURItoURL("\\" + Consta.PackURI_PA_BACKGROUND + Consta.PackPostfix),
+                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL("\\" + Consta.PackURI_PA_BACKGROUND + Consta.PackPostfix),
                     sourceName, sourceLocation.Key, sourceLocation.Value);
                 MemoryStream ms = new MemoryStream(ob);
                 BitmapImage bpi = new BitmapImage();
@@ -65,7 +65,7 @@ namespace LyyneheymCore.SlyviaCore
         {
             // 总是先查看是否有为封包的数据
             string furi = Consta.DevURI_RT_PICTUREASSETS + "\\" + Consta.DevURI_PA_CHARASTAND + "\\" + sourceName;
-            if (File.Exists(IOUtils.parseURItoURL("\\" + furi)))
+            if (File.Exists(IOUtils.ParseURItoURL("\\" + furi)))
             {
                 Uri bg = new Uri(furi, UriKind.RelativeOrAbsolute);
                 BitmapImage bpi = new BitmapImage();
@@ -78,7 +78,7 @@ namespace LyyneheymCore.SlyviaCore
                 this.resourceTable[Consta.DevURI_PA_CHARASTAND].ContainsKey(sourceName))
             {
                 KeyValuePair<long, long> sourceLocation = this.resourceTable[Consta.DevURI_PA_CHARASTAND][sourceName];
-                byte[] ob = PackageUtils.getObjectBytes(IOUtils.parseURItoURL("\\" + Consta.PackURI_PA_CHARASTAND + Consta.PackPostfix),
+                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL("\\" + Consta.PackURI_PA_CHARASTAND + Consta.PackPostfix),
                     sourceName, sourceLocation.Key, sourceLocation.Value);
                 MemoryStream ms = new MemoryStream(ob);
                 BitmapImage bpi = new BitmapImage();
