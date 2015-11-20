@@ -19,9 +19,11 @@ namespace LyyneheymCore.SlyviaPile
         // 配对长
         public int length = 0;
         // 附加值
-        public string aTag = "";
+        public object aTag = null;
         // 原字串
         public string detail = "";
+        // 错误位
+        public bool errorBit = false;
         // 词类型
         public TokenType aType = TokenType.Token_NOP;
     }

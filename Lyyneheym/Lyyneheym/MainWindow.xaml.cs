@@ -219,7 +219,7 @@ namespace Lyyneheym
             this.BO_MsgTria.Visibility = Visibility.Visible;
             this.BO_MsgTria.RenderTransform = new TranslateTransform();
             Storyboard sb = new Storyboard();
-            DoubleAnimation da = new DoubleAnimation(0, 10, new Duration(TimeSpan.FromSeconds(1)));
+            DoubleAnimation da = new DoubleAnimation(0, 10, new Duration(TimeSpan.FromMilliseconds(500)));
             da.RepeatBehavior = RepeatBehavior.Forever;
             da.AutoReverse = true;
             da.AccelerationRatio = 0.8;
