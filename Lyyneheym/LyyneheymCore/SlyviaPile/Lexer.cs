@@ -41,7 +41,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="scenario">待分析的剧本文本</param>
         /// <param name="resetFloatPointer">是否重置游标</param>
-        public void init(string scenario, bool resetFloatPointer = false)
+        public void Init(string scenario, bool resetFloatPointer = false)
         {
             this.finFlag = true;
             this.blockFlag = false;
@@ -87,7 +87,7 @@ namespace LyyneheymCore.SlyviaPile
         /// 立即获得结果向量
         /// </summary>
         /// <returns>结果向量对应的数组</returns>
-        public Token[] getResultVector()
+        public Token[] GetResultVector()
         {
             return this.resultVector.ToArray();
         }
@@ -96,7 +96,7 @@ namespace LyyneheymCore.SlyviaPile
         /// 返回是否已经完成了一轮词法分析
         /// </summary>
         /// <returns>词法分析完成标志位</returns>
-        public bool isComplete()
+        public bool IsComplete()
         {
             return this.finFlag;
         }
@@ -105,7 +105,7 @@ namespace LyyneheymCore.SlyviaPile
         /// 将一段文本追加到待分析字符串末尾
         /// </summary>
         /// <param name="appender">待追加的字符串</param>
-        public void appendCode(string appender)
+        public void AppendCode(string appender)
         {
             this.sourceCode += appender;
         }
@@ -141,7 +141,7 @@ namespace LyyneheymCore.SlyviaPile
                 case CharacterType.LeftBracket:
                 case CharacterType.RightParentheses:
                 case CharacterType.RightBracket:
-                    successFlag = this.getSingleCharaCalculator(res);
+                    successFlag = this.GetSingleCharaCalculator(res);
                     break;
                 // 可能双字符token
                 case CharacterType.Equality:
@@ -149,37 +149,37 @@ namespace LyyneheymCore.SlyviaPile
                 case CharacterType.GreaterThan:
                 case CharacterType.And:
                 case CharacterType.Or:
-                    successFlag = this.getDoubleCharaCalculator(res);
+                    successFlag = this.GetDoubleCharaCalculator(res);
                     break;
                 // 关键字
                 case CharacterType.Letter:
-                    successFlag = this.getReservedCalculator(res);
+                    successFlag = this.GetReservedCalculator(res);
                     break;
                 // 标识符
                 case CharacterType.Dollar:
-                    successFlag = this.getIdentifierCalculator(res);
+                    successFlag = this.GetIdentifierCalculator(res);
                     break;
                 // 字符串
                 case CharacterType.Quotation:
                 case CharacterType.DoubleQuotation:
-                    successFlag = this.getCluster(res);
+                    successFlag = this.GetCluster(res);
                     break;
                 // 剧本对白
                 case CharacterType.LeftBrace:
                 case CharacterType.RightBrace:
-                    successFlag = this.getSceneCluster(res);
+                    successFlag = this.GetSceneCluster(res);
                     break;
                 // 常数
                 case CharacterType.Number:
-                    successFlag = this.getConstant(res);
+                    successFlag = this.GetConstant(res);
                     break;
                 // 空白
                 case CharacterType.Space:
-                    successFlag = this.getSpace(res);
+                    successFlag = this.GetSpace(res);
                     break;
                 // 谜
                 default:
-                    successFlag = this.getUnknown(res);
+                    successFlag = this.GetUnknown(res);
                     break;
             }
             // 如果成功获得了token，就返回给Lexer
@@ -199,7 +199,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="res">结果实例</param>
         /// <returns>是否命中</returns>
-        private bool getSingleCharaCalculator(Token res)
+        private bool GetSingleCharaCalculator(Token res)
         {
             int glen = this.sourceCode.Length;
             if (this.nextCharPointer + 1 <= glen)
@@ -245,7 +245,7 @@ namespace LyyneheymCore.SlyviaPile
                         break;
                 }
                 // 递增字符指针
-                this.jump(1);
+                this.Jump(1);
                 return true;
             }
             return false;
@@ -256,7 +256,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="res">结果实例</param>
         /// <returns>是否命中</returns>
-        private bool getDoubleCharaCalculator(Token res)
+        private bool GetDoubleCharaCalculator(Token res)
         {
             int glen = this.sourceCode.Length;
             // 双字符的情况
@@ -297,7 +297,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (okFlag)
                 {
                     res.detail = str;
-                    this.jump(2);
+                    this.Jump(2);
                     return true;
                 }
             }
@@ -327,7 +327,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (okFlag)
                 {
                     res.detail = str;
-                    this.jump(1);
+                    this.Jump(1);
                     return true;
                 }
             }
@@ -339,7 +339,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="res">结果实例</param>
         /// <returns>是否命中</returns>
-        private bool getReservedCalculator(Token res)
+        private bool GetReservedCalculator(Token res)
         {
             int glen = this.sourceCode.Length;
             // 13个字符的情况
@@ -360,7 +360,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (okFlag)
                 {
                     res.detail = str;
-                    this.jump(13);
+                    this.Jump(13);
                     return true;
                 }
             }
@@ -382,7 +382,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (okFlag)
                 {
                     res.detail = str;
-                    this.jump(12);
+                    this.Jump(12);
                     return true;
                 }
             }
@@ -404,7 +404,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (okFlag)
                 {
                     res.detail = str;
-                    this.jump(9);
+                    this.Jump(9);
                     return true;
                 }
             }
@@ -444,7 +444,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (okFlag)
                 {
                     res.detail = str;
-                    this.jump(8);
+                    this.Jump(8);
                     return true;
                 }
             }
@@ -475,7 +475,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (okFlag)
                 {
                     res.detail = str;
-                    this.jump(7);
+                    this.Jump(7);
                     return true;
                 }
             }
@@ -533,7 +533,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (okFlag)
                 {
                     res.detail = str;
-                    this.jump(6);
+                    this.Jump(6);
                     return true;
                 }
             }
@@ -609,7 +609,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (okFlag)
                 {
                     res.detail = str;
-                    this.jump(5);
+                    this.Jump(5);
                     return true;
                 }
             }
@@ -730,7 +730,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (okFlag)
                 {
                     res.detail = str;
-                    this.jump(4);
+                    this.Jump(4);
                     return true;
                 }
             }
@@ -779,7 +779,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (okFlag)
                 {
                     res.detail = str;
-                    this.jump(3);
+                    this.Jump(3);
                     return true;
                 }
             }
@@ -819,7 +819,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (okFlag)
                 {
                     res.detail = str;
-                    this.jump(2);
+                    this.Jump(2);
                     return true;
                 }
             }
@@ -868,7 +868,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (okFlag)
                 {
                     res.detail = str;
-                    this.jump(1);
+                    this.Jump(1);
                     return true;
                 }
             }
@@ -880,10 +880,10 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="res">结果实例</param>
         /// <returns>是否命中</returns>
-        private bool getIdentifierCalculator(Token res)
+        private bool GetIdentifierCalculator(Token res)
         {
             // 跳过朵拉符号$
-            this.jump(1);
+            this.Jump(1);
             // 构造标识符
             StringBuilder sb = new StringBuilder();
             while (this.nextCharPointer < this.sourceCode.Length)
@@ -892,7 +892,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (cara == CharacterType.Letter || cara == CharacterType.Number || cara == CharacterType.UnderLine)
                 {
                     sb.Append(this.sourceCode[this.nextCharPointer]);
-                    this.jump(1);
+                    this.Jump(1);
                 }
                 else
                 {
@@ -910,10 +910,10 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="res">结果实例</param>
         /// <returns>是否命中</returns>
-        private bool getSceneCluster(Token res)
+        private bool GetSceneCluster(Token res)
         {
             // 跳过左花括弧
-            this.jump(1);
+            this.Jump(1);
             // 构造字符串
             bool lattice = false;
             StringBuilder sb = new StringBuilder();
@@ -924,14 +924,14 @@ namespace LyyneheymCore.SlyviaPile
                 if (this.GetCharType(this.sourceCode[this.nextCharPointer]) == CharacterType.RightBrace)
                 {
                     // 跳游程并标志封闭性成立
-                    this.jump(1);
+                    this.Jump(1);
                     lattice = true;
                     break;
                 }
                 else
                 {
                     // 处理转义字符并压入字符串构造器，游程在escaping里跳动
-                    sb.Append(this.escaping(this.sourceCode[this.nextCharPointer]));
+                    sb.Append(this.Escaping(this.sourceCode[this.nextCharPointer]));
                 }
             }
             // 如果成功封闭
@@ -946,11 +946,11 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="res">结果实例</param>
         /// <returns>是否命中</returns>
-        private bool getCluster(Token res)
+        private bool GetCluster(Token res)
         {
             // 取得左引号的类型并跳过她
             CharacterType latticeType = this.GetCharType(this.sourceCode[this.nextCharPointer]);
-            this.jump(1);
+            this.Jump(1);
             // 构造字符串
             bool lattice = false;
             StringBuilder sb = new StringBuilder();
@@ -961,14 +961,14 @@ namespace LyyneheymCore.SlyviaPile
                 if (this.GetCharType(this.sourceCode[this.nextCharPointer]) == latticeType)
                 {
                     // 跳游程并标志封闭性成立
-                    this.jump(1);
+                    this.Jump(1);
                     lattice = true;
                     break;
                 }
                 else
                 {
                     // 处理转义字符并压入字符串构造器，游程在escaping里跳动
-                    sb.Append(this.escaping(this.sourceCode[this.nextCharPointer]));
+                    sb.Append(this.Escaping(this.sourceCode[this.nextCharPointer]));
                 }
             }
             // 如果成功封闭
@@ -983,7 +983,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="res">结果实例</param>
         /// <returns>是否命中</returns>
-        private bool getConstant(Token res)
+        private bool GetConstant(Token res)
         {
             StringBuilder sb = new StringBuilder();
             bool successFlag = false;
@@ -995,7 +995,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (this.GetCharType(c) == CharacterType.Number)
                 {
                     sb.Append(c);
-                    this.jump(1);
+                    this.Jump(1);
                     successFlag = true;
                 }
                 else
@@ -1019,7 +1019,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="res">结果实例</param>
         /// <returns>是否命中</returns>
-        private bool getSpace(Token res)
+        private bool GetSpace(Token res)
         {
             // 获取字符，看是否要换行
             char c = this.sourceCode[this.nextCharPointer];
@@ -1031,7 +1031,7 @@ namespace LyyneheymCore.SlyviaPile
             // 为空格跳游程
             if (c == ' ')
             {
-                this.jump(1);
+                this.Jump(1);
             }
             else
             {
@@ -1046,14 +1046,14 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="res">结果实例</param>
         /// <returns>是否命中</returns>
-        private bool getUnknown(Token res)
+        private bool GetUnknown(Token res)
         {
             // 生成错误的token
             res.aType = TokenType.unknown;
             res.detail = Convert.ToString(this.sourceCode[this.nextCharPointer]);
             res.aTag = "错误：不能匹配为token的字符：" + res.detail;
             // 跳游程
-            this.jump(1);
+            this.Jump(1);
             return true;
         }
 
@@ -1062,7 +1062,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="c">待判断的二义性字符</param>
         /// <returns>转义后字符</returns>
-        private char escaping(char c)
+        private char Escaping(char c)
         {
             // 只有命中了反斜杠才需要考虑转义
             if (this.GetCharType(c) == CharacterType.Slash
@@ -1075,12 +1075,12 @@ namespace LyyneheymCore.SlyviaPile
                     ct == CharacterType.Quotation)
                 {
                     // 跳游程
-                    this.jump(2);
+                    this.Jump(2);
                     return this.sourceCode[this.nextCharPointer + 1];
                 }
             }
             // 跳游程
-            this.jump(1);
+            this.Jump(1);
             return c;
         }
 
@@ -1088,7 +1088,7 @@ namespace LyyneheymCore.SlyviaPile
         /// 计算指针跳跃和列数的修正
         /// </summary>
         /// <param name="go"></param>
-        private void jump(int go)
+        private void Jump(int go)
         {
             this.currentColumn += go;
             this.nextCharPointer += go;
@@ -1243,161 +1243,4 @@ namespace LyyneheymCore.SlyviaPile
         // space Tab \r\n
         Space
     };
-
-    /// <summary>
-    /// 枚举：单词类型
-    /// </summary>
-    internal enum TokenType
-    {
-        // 未知
-        unknown,
-        // 标识符
-        identifier,
-        // 字符串
-        cluster,
-        // 剧本字符串
-        scenecluster,
-        // 整数数字
-        number,
-        // 起始终止标记
-        startend,
-        // 符号：#
-        Token_Sharp,
-        // 符号：左方括号[
-        Token_LeftBracket,
-        // 符号：右方括号]
-        Token_RightBracket,
-        // 符号：左花括号{
-        Token_LeftBrace,
-        // 符号：右花括号}
-        Token_RightBrace,
-        // 符号：单引号'
-        Token_Quotation,
-        // 符号：双引号"
-        Token_DoubleQuotation,
-        // 符号：等号=
-        Token_Equality,
-        // 符号：艾特符@
-        Token_At,
-        // 符号：朵拉符$
-        Token_Dollar,
-        // 符号：左括弧(
-        token_LeftParentheses,
-        // 符号：右括弧)
-        token_RightParentheses,
-        // 符号：加+
-        token_Plus,
-        // 符号：减-
-        token_Minus,
-        // 符号：乘*
-        token_Multiply,
-        // 符号：除/
-        token_Divide,
-        // 符号：不等号<>
-        token_LessThan_GreaterThan,
-        // 符号：等于号==
-        token_Equality_Equality,
-        // 符号：大于号>
-        token_GreaterThan,
-        // 符号：小于号<
-        token_LessThan,
-        // 符号：大于等于号>=
-        token_GreaterThan_Equality,
-        // 符号：小于等于号<=
-        token_LessThan_Equality,
-        // 符号：逻辑或||
-        token_Or_Or,
-        // 符号：逻辑与&&
-        token_And_And,
-        // 符号：逻辑否!
-        token_Not,
-        // 空操作
-        Token_NOP,
-        // 显示文本
-        Token_a,
-        // 显示图片
-        Token_picture,
-        // 移动图片
-        Token_move,
-        // 消去图片
-        Token_deletepicture,
-        // 显示立绘
-        Token_cstand,
-        // 消去立绘
-        Token_deletecstand,
-        // 播放声效
-        Token_se,
-        // 播放音乐
-        Token_bgm,
-        // 停止音乐
-        Token_stopbgm,
-        // 播放语音
-        Token_vocal,
-        // 停止语音
-        Token_stopvocal,
-        // 返回标题
-        Token_title,
-        // 调用菜单
-        Token_menu,
-        // 调用存档
-        Token_save,
-        // 调用读档
-        Token_load,
-        // 标签
-        Token_lable,
-        // 标签跳转
-        Token_jump,
-        // 循环（头）
-        Token_for,
-        // 循环（尾）
-        Token_endfor,
-        // 条件（头）
-        Token_if,
-        // 条件（分支）
-        Token_else,
-        // 条件（尾）
-        Token_endif,
-        // 剧本跳转
-        Token_scene,
-        // 开关操作
-        Token_switch,
-        // 变量操作
-        Token_var,
-        // 退出循环
-        Token_break,
-        // 退出程序
-        Token_shutdown,
-        // 等待
-        Token_wait,
-        // 参数：名称
-        Token_name,
-        // 参数：语音id
-        Token_vid,
-        // 参数：立绘表情
-        Token_face,
-        // 参数：序号
-        Token_id,
-        // 参数：x坐标
-        Token_x,
-        // 参数：y坐标
-        Token_y,
-        // 参数：z坐标
-        Token_z,
-        // 参数：透明度
-        Token_capacity,
-        // 参数：x轴缩放比
-        Token_xscale,
-        // 参数：y轴缩放比
-        Token_yscale,
-        // 参数：时间
-        Token_time,
-        // 参数：文件名
-        Token_filename,
-        // 参数：音轨号
-        Token_track,
-        // 参数：条件子句
-        Token_cond,
-        // 参数：表达式
-        Token_dash
-    }
 }
