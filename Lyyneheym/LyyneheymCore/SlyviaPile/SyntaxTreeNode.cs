@@ -10,6 +10,11 @@ namespace LyyneheymCore.SlyviaPile
     /// </summary>
     public sealed class SyntaxTreeNode
     {
+        // 构造函数
+        public SyntaxTreeNode(SyntaxType type = SyntaxType.Unknown)
+        {
+            this.nodeSyntaxType = type;
+        }
         // 绑定处理函数
         public CandidateFunction candidateFunction = null;
         // 子树向量

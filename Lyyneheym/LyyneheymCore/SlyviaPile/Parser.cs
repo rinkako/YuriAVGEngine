@@ -15,7 +15,9 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         public Parser()
         {
-
+            this.root = new SyntaxTreeNode();
+            this.root.nodeName = "root";
+            this.root.children = new List<SyntaxTreeNode>();
         }
 
         /// <summary>
@@ -84,9 +86,121 @@ namespace LyyneheymCore.SlyviaPile
         /// <summary>
         /// 预处理器：将所有非推导项构造到语法树上
         /// </summary>
-        /// <returns></returns>
+        /// <returns>预处理完毕的语法树根节点</returns>
         private SyntaxTreeNode Kaguya()
         {
+            // 扫描token流，命中的第一个关键字token决定了节点类型
+            if (this.istream[this.nextTokenPointer].aType == TokenType.Token_LeftBracket)
+            {
+                // 跳过左方括弧，读下一个token
+                this.nextTokenPointer++;
+                Token mainToken = this.istream[this.nextTokenPointer++];
+                // 从下一token的类型决定构造的语法树根节点类型
+                switch (mainToken.aType)
+                {
+                    case TokenType.Token_a:
+                        this.root.nodeSyntaxType = SyntaxType.synr_a;
+                        this.root.children.Add(new SyntaxTreeNode(SyntaxType.para_name));
+                        this.root.children.Add(new SyntaxTreeNode(SyntaxType.para_face));
+                        this.root.children.Add(new SyntaxTreeNode(SyntaxType.para_vid));
+
+                        break;
+                    case TokenType.Token_picture:
+                        this.root.nodeSyntaxType = SyntaxType.synr_picture;
+                        break;
+                    case TokenType.Token_move:
+                        this.root.nodeSyntaxType = SyntaxType.synr_move;
+                        break;
+                    case TokenType.Token_deletepicture:
+                        this.root.nodeSyntaxType = SyntaxType.synr_deletepicture;
+                        break;
+                    case TokenType.Token_cstand:
+                        this.root.nodeSyntaxType = SyntaxType.synr_cstand;
+                        break;
+                    case TokenType.Token_deletecstand:
+                        this.root.nodeSyntaxType = SyntaxType.synr_deletecstand;
+                        break;
+                    case TokenType.Token_se:
+                        this.root.nodeSyntaxType = SyntaxType.synr_se;
+                        break;
+                    case TokenType.Token_bgm:
+                        this.root.nodeSyntaxType = SyntaxType.synr_bgm;
+                        break;
+                    case TokenType.Token_stopbgm:
+                        this.root.nodeSyntaxType = SyntaxType.synr_stopbgm;
+                        break;
+                    case TokenType.Token_vocal:
+                        this.root.nodeSyntaxType = SyntaxType.synr_vocal;
+                        break;
+                    case TokenType.Token_stopvocal:
+                        this.root.nodeSyntaxType = SyntaxType.synr_stopvocal;
+                        break;
+                    case TokenType.Token_title:
+                        this.root.nodeSyntaxType = SyntaxType.synr_title;
+                        break;
+                    case TokenType.Token_menu:
+                        this.root.nodeSyntaxType = SyntaxType.synr_menu;
+                        break;
+                    case TokenType.Token_save:
+                        this.root.nodeSyntaxType = SyntaxType.synr_save;
+                        break;
+                    case TokenType.Token_load:
+                        this.root.nodeSyntaxType = SyntaxType.synr_load;
+                        break;
+                    case TokenType.Token_lable:
+                        this.root.nodeSyntaxType = SyntaxType.synr_lable;
+                        break;
+                    case TokenType.Token_jump:
+                        this.root.nodeSyntaxType = SyntaxType.synr_jump;
+                        break;
+                    case TokenType.Token_for:
+                        this.root.nodeSyntaxType = SyntaxType.synr_for;
+                        break;
+                    case TokenType.Token_endfor:
+                        this.root.nodeSyntaxType = SyntaxType.synr_endfor;
+                        break;
+                    case TokenType.Token_if:
+                        this.root.nodeSyntaxType = SyntaxType.synr_if;
+                        break;
+                    case TokenType.Token_else:
+                        this.root.nodeSyntaxType = SyntaxType.synr_else;
+                        break;
+                    case TokenType.Token_endif:
+                        this.root.nodeSyntaxType = SyntaxType.synr_endfor;
+                        break;
+                    case TokenType.Token_scene:
+                        this.root.nodeSyntaxType = SyntaxType.synr_scene;
+                        break;
+                    case TokenType.Token_switch:
+                        this.root.nodeSyntaxType = SyntaxType.synr_switch;
+                        break;
+                    case TokenType.Token_var:
+                        this.root.nodeSyntaxType = SyntaxType.synr_var;
+                        break;
+                    case TokenType.Token_break:
+                        this.root.nodeSyntaxType = SyntaxType.synr_break;
+                        break;
+                    case TokenType.Token_shutdown:
+                        this.root.nodeSyntaxType = SyntaxType.synr_shutdown;
+                        break;
+                    case TokenType.Token_wait:
+                        this.root.nodeSyntaxType = SyntaxType.synr_wait;
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            // 如果是剧情文本的情况下
+            else if (this.istream[this.nextTokenPointer].aType == TokenType.Token_LeftBrace)
+            {
+
+            }
+            // 除此以外
+            else
+            {
+
+            }
             return null;
         }
 
@@ -103,6 +217,8 @@ namespace LyyneheymCore.SlyviaPile
             return null;
         }
 
+        // 语法树根节点
+        public SyntaxTreeNode root = null;
         // 下一Token指针
         public int nextTokenPointer = 0;
         // 单词流
