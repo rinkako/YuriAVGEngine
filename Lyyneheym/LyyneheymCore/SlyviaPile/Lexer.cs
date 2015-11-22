@@ -224,25 +224,25 @@ namespace LyyneheymCore.SlyviaPile
                 switch (str)
                 {
                     case "+":
-                        res.aType = TokenType.token_Plus;
+                        res.aType = TokenType.Token_Plus;
                         break;
                     case "-":
-                        res.aType = TokenType.token_Minus;
+                        res.aType = TokenType.Token_Minus;
                         break;
                     case "*":
-                        res.aType = TokenType.token_Multiply;
+                        res.aType = TokenType.Token_Multiply;
                         break;
                     case "/":
-                        res.aType = TokenType.token_Divide;
+                        res.aType = TokenType.Token_Divide;
                         break;
                     case "!":
-                        res.aType = TokenType.token_Not;
+                        res.aType = TokenType.Token_Not;
                         break;
                     case "(":
-                        res.aType = TokenType.token_LeftParentheses;
+                        res.aType = TokenType.Token_LeftParentheses;
                         break;
                     case ")":
-                        res.aType = TokenType.token_RightParentheses;
+                        res.aType = TokenType.Token_RightParentheses;
                         break;
                     case "@":
                         res.aType = TokenType.Token_At;
@@ -282,27 +282,27 @@ namespace LyyneheymCore.SlyviaPile
                 switch (str)
                 {
                     case "==":
-                        res.aType = TokenType.token_Equality_Equality;
+                        res.aType = TokenType.Token_Equality_Equality;
                         okFlag = true;
                         break;
                     case ">=":
-                        res.aType = TokenType.token_GreaterThan_Equality;
+                        res.aType = TokenType.Token_GreaterThan_Equality;
                         okFlag = true;
                         break;
                     case "<=":
-                        res.aType = TokenType.token_LessThan_Equality;
+                        res.aType = TokenType.Token_LessThan_Equality;
                         okFlag = true;
                         break;
                     case "<>":
-                        res.aType = TokenType.token_LessThan_GreaterThan;
+                        res.aType = TokenType.Token_LessThan_GreaterThan;
                         okFlag = true;
                         break;
                     case "&&":
-                        res.aType = TokenType.token_And_And;
+                        res.aType = TokenType.Token_And_And;
                         okFlag = true;
                         break;
                     case "||":
-                        res.aType = TokenType.token_Or_Or;
+                        res.aType = TokenType.Token_Or_Or;
                         okFlag = true;
                         break;
                     default:
@@ -324,11 +324,11 @@ namespace LyyneheymCore.SlyviaPile
                 switch (str)
                 {
                     case ">":
-                        res.aType = TokenType.token_GreaterThan;
+                        res.aType = TokenType.Token_GreaterThan;
                         okFlag = true;
                         break;
                     case "<":
-                        res.aType = TokenType.token_LessThan;
+                        res.aType = TokenType.Token_LessThan;
                         okFlag = true;
                         break;
                     case "=":
@@ -620,6 +620,24 @@ namespace LyyneheymCore.SlyviaPile
                         okFlag = true;
                     }
                 }
+                else if (str == "state")
+                {
+                    res.aType = TokenType.Token_state;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "right")
+                {
+                    res.aType = TokenType.Token_right;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
                 // 如果命中了符号就返回
                 if (okFlag)
                 {
@@ -741,6 +759,33 @@ namespace LyyneheymCore.SlyviaPile
                         okFlag = true;
                     }
                 }
+                else if (str == "left")
+                {
+                    res.aType = TokenType.Token_left;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "xacc")
+                {
+                    res.aType = TokenType.Token_xacc;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "yacc")
+                {
+                    res.aType = TokenType.Token_yacc;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
                 // 如果命中了符号就返回
                 if (okFlag)
                 {
@@ -790,6 +835,33 @@ namespace LyyneheymCore.SlyviaPile
                         okFlag = true;
                     }
                 }
+                else if (str == "loc")
+                {
+                    res.aType = TokenType.Token_loc;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 3]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "mid")
+                {
+                    res.aType = TokenType.Token_mid;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 3]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "vol")
+                {
+                    res.aType = TokenType.Token_vol;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 3]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
                 // 如果命中了符号就返回
                 if (okFlag)
                 {
@@ -824,6 +896,15 @@ namespace LyyneheymCore.SlyviaPile
                 else if (str == "id")
                 {
                     res.aType = TokenType.Token_id;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 2]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "ro")
+                {
+                    res.aType = TokenType.Token_ro;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 2]) != CharacterType.Letter)
                     {
@@ -1006,7 +1087,9 @@ namespace LyyneheymCore.SlyviaPile
                 }
             }
             // 如果成功封闭
-            res.aType = TokenType.cluster;
+            //res.aType = TokenType.cluster;
+            res.aType = TokenType.identifier;
+            res.aTag = (string)sb.ToString();
             res.detail = sb.ToString();
             res.errorBit = lattice == false;
             return true;

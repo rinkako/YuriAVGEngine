@@ -68,35 +68,35 @@ namespace LyyneheymCore.SlyviaPile
         // 符号：朵拉符$
         Token_Dollar,
         // 符号：左括弧(
-        token_LeftParentheses,
+        Token_LeftParentheses,
         // 符号：右括弧)
-        token_RightParentheses,
+        Token_RightParentheses,
         // 符号：加+
-        token_Plus,
+        Token_Plus,
         // 符号：减-
-        token_Minus,
+        Token_Minus,
         // 符号：乘*
-        token_Multiply,
+        Token_Multiply,
         // 符号：除/
-        token_Divide,
+        Token_Divide,
         // 符号：不等号<>
-        token_LessThan_GreaterThan,
+        Token_LessThan_GreaterThan,
         // 符号：等于号==
-        token_Equality_Equality,
+        Token_Equality_Equality,
         // 符号：大于号>
-        token_GreaterThan,
+        Token_GreaterThan,
         // 符号：小于号<
-        token_LessThan,
+        Token_LessThan,
         // 符号：大于等于号>=
-        token_GreaterThan_Equality,
+        Token_GreaterThan_Equality,
         // 符号：小于等于号<=
-        token_LessThan_Equality,
+        Token_LessThan_Equality,
         // 符号：逻辑或||
-        token_Or_Or,
+        Token_Or_Or,
         // 符号：逻辑与&&
-        token_And_And,
+        Token_And_And,
         // 符号：逻辑否!
-        token_Not,
+        Token_Not,
         // 空操作
         Token_NOP,
         // 显示文本
@@ -169,6 +169,10 @@ namespace LyyneheymCore.SlyviaPile
         Token_y,
         // 参数：z坐标
         Token_z,
+        // 参数：x加速度
+        Token_xacc,
+        // 参数：y加速度
+        Token_yacc,
         // 参数：透明度
         Token_capacity,
         // 参数：x轴缩放比
@@ -184,6 +188,20 @@ namespace LyyneheymCore.SlyviaPile
         // 参数：条件子句
         Token_cond,
         // 参数：表达式
-        Token_dash
+        Token_dash,
+        // 参数：开关状态
+        Token_state,
+        // 参数：音量
+        Token_vol,
+        // 参数：位置
+        Token_loc,
+        // 参数：角度
+        Token_ro,
+        // 参数值：左
+        Token_left,
+        // 参数值：右
+        Token_right,
+        // 参数值：中
+        Token_mid
     }
 }

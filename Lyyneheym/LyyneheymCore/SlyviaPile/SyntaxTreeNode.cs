@@ -123,6 +123,10 @@ namespace LyyneheymCore.SlyviaPile
         para_y,
         // 参数：z坐标
         para_z,
+        // 参数：x加速度
+        para_xacc,
+        // 参数：y加速度
+        para_yacc,
         // 参数：透明度
         para_capacity,
         // 参数：x轴缩放比
@@ -139,6 +143,22 @@ namespace LyyneheymCore.SlyviaPile
         para_cond,
         // 参数：表达式
         para_dash,
+        // 参数：位置
+        para_loc,
+        // 参数：角度
+        para_ro,
+        // 参数：音量
+        para_vol,
+        // 参数：开光状态
+        para_state,
+        // 参数值：左边
+        para_left,
+        // 参数值：中间
+        para_mid,
+        // 参数值：右边
+        para_right,
+        // 根节点
+        case_kotori,
         // <disjunct> ::= <conjunct> <disjunct_pi>;
         case_disjunct,
         // <disjunct_pi> ::= "||" <conjunct> <disjunct_pi> | null;

@@ -96,41 +96,76 @@ namespace LyyneheymCore.SlyviaPile
                 this.nextTokenPointer++;
                 Token mainToken = this.istream[this.nextTokenPointer++];
                 // 从下一token的类型决定构造的语法树根节点类型
+                this.root.paramDict = new Dictionary<string, SyntaxTreeNode>();
                 switch (mainToken.aType)
                 {
                     case TokenType.Token_a:
                         this.root.nodeSyntaxType = SyntaxType.synr_a;
-                        this.root.children.Add(new SyntaxTreeNode(SyntaxType.para_name));
-                        this.root.children.Add(new SyntaxTreeNode(SyntaxType.para_face));
-                        this.root.children.Add(new SyntaxTreeNode(SyntaxType.para_vid));
-
+                        this.root.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name);
+                        this.root.paramDict["vid"] = new SyntaxTreeNode(SyntaxType.para_vid);
+                        this.root.paramDict["face"] = new SyntaxTreeNode(SyntaxType.para_face);
+                        this.root.paramDict["loc"] = new SyntaxTreeNode(SyntaxType.para_loc);
                         break;
                     case TokenType.Token_picture:
                         this.root.nodeSyntaxType = SyntaxType.synr_picture;
+                        this.root.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id);
+                        this.root.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename);
+                        this.root.paramDict["x"] = new SyntaxTreeNode(SyntaxType.para_x);
+                        this.root.paramDict["y"] = new SyntaxTreeNode(SyntaxType.para_y);
+                        this.root.paramDict["capacity"] = new SyntaxTreeNode(SyntaxType.para_capacity);
+                        this.root.paramDict["xscale"] = new SyntaxTreeNode(SyntaxType.para_xscale);
+                        this.root.paramDict["yscale"] = new SyntaxTreeNode(SyntaxType.para_yscale);
+                        this.root.paramDict["ro"] = new SyntaxTreeNode(SyntaxType.para_ro);
                         break;
                     case TokenType.Token_move:
                         this.root.nodeSyntaxType = SyntaxType.synr_move;
+                        this.root.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id);
+                        this.root.paramDict["time"] = new SyntaxTreeNode(SyntaxType.para_time);
+                        this.root.paramDict["x"] = new SyntaxTreeNode(SyntaxType.para_x);
+                        this.root.paramDict["y"] = new SyntaxTreeNode(SyntaxType.para_y);
+                        this.root.paramDict["xacc"] = new SyntaxTreeNode(SyntaxType.para_xacc);
+                        this.root.paramDict["yacc"] = new SyntaxTreeNode(SyntaxType.para_yacc);
+                        this.root.paramDict["capacity"] = new SyntaxTreeNode(SyntaxType.para_capacity);
+                        this.root.paramDict["xscale"] = new SyntaxTreeNode(SyntaxType.para_xscale);
+                        this.root.paramDict["yscale"] = new SyntaxTreeNode(SyntaxType.para_yscale);
+                        this.root.paramDict["ro"] = new SyntaxTreeNode(SyntaxType.para_ro);
                         break;
                     case TokenType.Token_deletepicture:
                         this.root.nodeSyntaxType = SyntaxType.synr_deletepicture;
+                        this.root.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id);
+                        this.root.paramDict["time"] = new SyntaxTreeNode(SyntaxType.para_time);
                         break;
                     case TokenType.Token_cstand:
                         this.root.nodeSyntaxType = SyntaxType.synr_cstand;
+                        this.root.paramDict["cstand"] = new SyntaxTreeNode(SyntaxType.synr_cstand);
+                        this.root.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id);
+                        this.root.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name);
+                        this.root.paramDict["face"] = new SyntaxTreeNode(SyntaxType.para_face);
+                        this.root.paramDict["x"] = new SyntaxTreeNode(SyntaxType.para_x);
+                        this.root.paramDict["y"] = new SyntaxTreeNode(SyntaxType.para_y);
                         break;
                     case TokenType.Token_deletecstand:
                         this.root.nodeSyntaxType = SyntaxType.synr_deletecstand;
+                        this.root.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id);
                         break;
                     case TokenType.Token_se:
                         this.root.nodeSyntaxType = SyntaxType.synr_se;
+                        this.root.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename);
+                        this.root.paramDict["vol"] = new SyntaxTreeNode(SyntaxType.para_vol);
                         break;
                     case TokenType.Token_bgm:
                         this.root.nodeSyntaxType = SyntaxType.synr_bgm;
+                        this.root.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename);
+                        this.root.paramDict["vol"] = new SyntaxTreeNode(SyntaxType.para_vol);
                         break;
                     case TokenType.Token_stopbgm:
                         this.root.nodeSyntaxType = SyntaxType.synr_stopbgm;
                         break;
                     case TokenType.Token_vocal:
                         this.root.nodeSyntaxType = SyntaxType.synr_vocal;
+                        this.root.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name);
+                        this.root.paramDict["vid"] = new SyntaxTreeNode(SyntaxType.para_vid);
+                        this.root.paramDict["vol"] = new SyntaxTreeNode(SyntaxType.para_vol);
                         break;
                     case TokenType.Token_stopvocal:
                         this.root.nodeSyntaxType = SyntaxType.synr_stopvocal;
@@ -149,18 +184,26 @@ namespace LyyneheymCore.SlyviaPile
                         break;
                     case TokenType.Token_lable:
                         this.root.nodeSyntaxType = SyntaxType.synr_lable;
+                        this.root.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name);
                         break;
                     case TokenType.Token_jump:
                         this.root.nodeSyntaxType = SyntaxType.synr_jump;
+                        this.root.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name);
+                        this.root.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond);
                         break;
                     case TokenType.Token_for:
                         this.root.nodeSyntaxType = SyntaxType.synr_for;
+                        this.root.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond);
+                        this.root.paramDict["kotori"] = new SyntaxTreeNode(SyntaxType.case_kotori);
                         break;
                     case TokenType.Token_endfor:
                         this.root.nodeSyntaxType = SyntaxType.synr_endfor;
                         break;
                     case TokenType.Token_if:
                         this.root.nodeSyntaxType = SyntaxType.synr_if;
+                        this.root.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond);
+                        this.root.paramDict["kotori"] = new SyntaxTreeNode(SyntaxType.case_kotori);
+                        this.root.paramDict["kotori"] = new SyntaxTreeNode(SyntaxType.case_kotori);
                         break;
                     case TokenType.Token_else:
                         this.root.nodeSyntaxType = SyntaxType.synr_else;
@@ -170,12 +213,17 @@ namespace LyyneheymCore.SlyviaPile
                         break;
                     case TokenType.Token_scene:
                         this.root.nodeSyntaxType = SyntaxType.synr_scene;
+                        this.root.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename);
+                        this.root.paramDict["lable"] = new SyntaxTreeNode(SyntaxType.synr_lable);
                         break;
                     case TokenType.Token_switch:
                         this.root.nodeSyntaxType = SyntaxType.synr_switch;
+                        this.root.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id);
+                        this.root.paramDict["state"] = new SyntaxTreeNode(SyntaxType.para_state);
                         break;
                     case TokenType.Token_var:
                         this.root.nodeSyntaxType = SyntaxType.synr_var;
+                        this.root.paramDict["dash"] = new SyntaxTreeNode(SyntaxType.para_dash);
                         break;
                     case TokenType.Token_break:
                         this.root.nodeSyntaxType = SyntaxType.synr_break;
@@ -185,6 +233,7 @@ namespace LyyneheymCore.SlyviaPile
                         break;
                     case TokenType.Token_wait:
                         this.root.nodeSyntaxType = SyntaxType.synr_wait;
+                        this.root.paramDict["time"] = new SyntaxTreeNode(SyntaxType.para_time);
                         break;
                     default:
                         break;
