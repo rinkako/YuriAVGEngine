@@ -37,6 +37,8 @@ namespace LyyneheymCore.SlyviaPile
         public bool isParaRoot = false;
         // 不推导节点参数孩子字典
         public Dictionary<string, SyntaxTreeNode> paramDict = null;
+        // 不推导节点参数Token子流
+        public List<Token> paramTokenStream = null;
 
         /// <summary>
         /// 树的递归遍历文本化
@@ -53,6 +55,8 @@ namespace LyyneheymCore.SlyviaPile
     /// </summary>
     public enum SyntaxType
     {
+        // 段落
+        synr_dialog,
         // 显示文本
         synr_a,
         // 显示图片
@@ -109,6 +113,10 @@ namespace LyyneheymCore.SlyviaPile
         synr_shutdown,
         // 等待
         synr_wait,
+        // 选择支
+        synr_branch,
+        // 参数：选择支链
+        para_link,
         // 参数：名称
         para_name,
         // 参数：语音id

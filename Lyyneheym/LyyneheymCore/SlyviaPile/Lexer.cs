@@ -364,7 +364,7 @@ namespace LyyneheymCore.SlyviaPile
                 string str = this.sourceCode.Substring(this.nextCharPointer, 13).ToLower();
                 if (str == "deletepicture")
                 {
-                    res.aType = TokenType.Token_deletepicture;
+                    res.aType = TokenType.Token_o_deletepicture;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 13]) != CharacterType.Letter)
                     {
@@ -386,7 +386,7 @@ namespace LyyneheymCore.SlyviaPile
                 string str = this.sourceCode.Substring(this.nextCharPointer, 12).ToLower();
                 if (str == "deletecstand")
                 {
-                    res.aType = TokenType.Token_deletecstand;
+                    res.aType = TokenType.Token_o_deletecstand;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 12]) != CharacterType.Letter)
                     {
@@ -408,7 +408,7 @@ namespace LyyneheymCore.SlyviaPile
                 string str = this.sourceCode.Substring(this.nextCharPointer, 9).ToLower();
                 if (str == "stopvocal")
                 {
-                    res.aType = TokenType.Token_stopvocal;
+                    res.aType = TokenType.Token_o_stopvocal;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 9]) != CharacterType.Letter)
                     {
@@ -430,7 +430,7 @@ namespace LyyneheymCore.SlyviaPile
                 string str = this.sourceCode.Substring(this.nextCharPointer, 8).ToLower();
                 if (str == "shutdown")
                 {
-                    res.aType = TokenType.Token_shutdown;
+                    res.aType = TokenType.Token_o_shutdown;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 8]) != CharacterType.Letter)
                     {
@@ -439,7 +439,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "capacity")
                 {
-                    res.aType = TokenType.Token_capacity;
+                    res.aType = TokenType.Token_p_capacity;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 8]) != CharacterType.Letter)
                     {
@@ -448,7 +448,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "filename")
                 {
-                    res.aType = TokenType.Token_filename;
+                    res.aType = TokenType.Token_p_filename;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 8]) != CharacterType.Letter)
                     {
@@ -470,7 +470,7 @@ namespace LyyneheymCore.SlyviaPile
                 string str = this.sourceCode.Substring(this.nextCharPointer, 7).ToLower();
                 if (str == "picture")
                 {
-                    res.aType = TokenType.Token_picture;
+                    res.aType = TokenType.Token_o_picture;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 7]) != CharacterType.Letter)
                     {
@@ -479,7 +479,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "stopbgm")
                 {
-                    res.aType = TokenType.Token_stopbgm;
+                    res.aType = TokenType.Token_o_stopbgm;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 7]) != CharacterType.Letter)
                     {
@@ -501,7 +501,7 @@ namespace LyyneheymCore.SlyviaPile
                 string str = this.sourceCode.Substring(this.nextCharPointer, 6).ToLower();
                 if (str == "cstand")
                 {
-                    res.aType = TokenType.Token_cstand;
+                    res.aType = TokenType.Token_o_cstand;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 6]) != CharacterType.Letter)
                     {
@@ -510,7 +510,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "endfor")
                 {
-                    res.aType = TokenType.Token_endfor;
+                    res.aType = TokenType.Token_o_endfor;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 6]) != CharacterType.Letter)
                     {
@@ -519,7 +519,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "switch")
                 {
-                    res.aType = TokenType.Token_switch;
+                    res.aType = TokenType.Token_o_switch;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 6]) != CharacterType.Letter)
                     {
@@ -528,7 +528,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "xscale")
                 {
-                    res.aType = TokenType.Token_xscale;
+                    res.aType = TokenType.Token_p_xscale;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 6]) != CharacterType.Letter)
                     {
@@ -537,7 +537,16 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "yscale")
                 {
-                    res.aType = TokenType.Token_yscale;
+                    res.aType = TokenType.Token_p_yscale;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 6]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "branch")
+                {
+                    res.aType = TokenType.Token_o_branch;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 6]) != CharacterType.Letter)
                     {
@@ -559,7 +568,7 @@ namespace LyyneheymCore.SlyviaPile
                 string str = this.sourceCode.Substring(this.nextCharPointer, 5).ToLower();
                 if (str == "vocal")
                 {
-                    res.aType = TokenType.Token_vocal;
+                    res.aType = TokenType.Token_o_vocal;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
                     {
@@ -568,7 +577,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "title")
                 {
-                    res.aType = TokenType.Token_title;
+                    res.aType = TokenType.Token_o_title;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
                     {
@@ -577,7 +586,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "lable")
                 {
-                    res.aType = TokenType.Token_lable;
+                    res.aType = TokenType.Token_o_lable;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
                     {
@@ -586,7 +595,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "endif")
                 {
-                    res.aType = TokenType.Token_endif;
+                    res.aType = TokenType.Token_o_endif;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
                     {
@@ -595,7 +604,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "scene")
                 {
-                    res.aType = TokenType.Token_scene;
+                    res.aType = TokenType.Token_o_scene;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
                     {
@@ -604,7 +613,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "break")
                 {
-                    res.aType = TokenType.Token_break;
+                    res.aType = TokenType.Token_o_break;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
                     {
@@ -613,7 +622,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "track")
                 {
-                    res.aType = TokenType.Token_track;
+                    res.aType = TokenType.Token_p_track;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
                     {
@@ -622,7 +631,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "state")
                 {
-                    res.aType = TokenType.Token_state;
+                    res.aType = TokenType.Token_p_state;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
                     {
@@ -631,7 +640,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "right")
                 {
-                    res.aType = TokenType.Token_right;
+                    res.aType = TokenType.Token_v_right;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
                     {
@@ -653,7 +662,7 @@ namespace LyyneheymCore.SlyviaPile
                 string str = this.sourceCode.Substring(this.nextCharPointer, 4).ToLower();
                 if (str == "move")
                 {
-                    res.aType = TokenType.Token_move;
+                    res.aType = TokenType.Token_o_move;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -662,7 +671,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "menu")
                 {
-                    res.aType = TokenType.Token_menu;
+                    res.aType = TokenType.Token_o_menu;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -671,7 +680,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "save")
                 {
-                    res.aType = TokenType.Token_save;
+                    res.aType = TokenType.Token_o_save;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -680,7 +689,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "load")
                 {
-                    res.aType = TokenType.Token_load;
+                    res.aType = TokenType.Token_o_load;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -689,7 +698,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "jump")
                 {
-                    res.aType = TokenType.Token_jump;
+                    res.aType = TokenType.Token_o_jump;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -698,7 +707,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "else")
                 {
-                    res.aType = TokenType.Token_else;
+                    res.aType = TokenType.Token_o_else;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -707,7 +716,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "name")
                 {
-                    res.aType = TokenType.Token_name;
+                    res.aType = TokenType.Token_p_name;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -716,7 +725,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "face")
                 {
-                    res.aType = TokenType.Token_face;
+                    res.aType = TokenType.Token_p_face;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -725,7 +734,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "time")
                 {
-                    res.aType = TokenType.Token_time;
+                    res.aType = TokenType.Token_p_time;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -734,7 +743,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "cond")
                 {
-                    res.aType = TokenType.Token_cond;
+                    res.aType = TokenType.Token_p_cond;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -743,7 +752,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "dash")
                 {
-                    res.aType = TokenType.Token_dash;
+                    res.aType = TokenType.Token_p_dash;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -752,7 +761,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "wait")
                 {
-                    res.aType = TokenType.Token_wait;
+                    res.aType = TokenType.Token_o_wait;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -761,7 +770,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "left")
                 {
-                    res.aType = TokenType.Token_left;
+                    res.aType = TokenType.Token_v_left;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -770,7 +779,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "xacc")
                 {
-                    res.aType = TokenType.Token_xacc;
+                    res.aType = TokenType.Token_p_xacc;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -779,7 +788,16 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "yacc")
                 {
-                    res.aType = TokenType.Token_yacc;
+                    res.aType = TokenType.Token_p_yacc;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "link")
+                {
+                    res.aType = TokenType.Token_p_link;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -801,7 +819,7 @@ namespace LyyneheymCore.SlyviaPile
                 string str = this.sourceCode.Substring(this.nextCharPointer, 3).ToLower();
                 if (str == "bgm")
                 {
-                    res.aType = TokenType.Token_bgm;
+                    res.aType = TokenType.Token_o_bgm;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 3]) != CharacterType.Letter)
                     {
@@ -810,7 +828,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "for")
                 {
-                    res.aType = TokenType.Token_for;
+                    res.aType = TokenType.Token_o_for;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 3]) != CharacterType.Letter)
                     {
@@ -819,7 +837,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "var")
                 {
-                    res.aType = TokenType.Token_var;
+                    res.aType = TokenType.Token_o_var;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 3]) != CharacterType.Letter)
                     {
@@ -828,7 +846,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "vid")
                 {
-                    res.aType = TokenType.Token_vid;
+                    res.aType = TokenType.Token_p_vid;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 3]) != CharacterType.Letter)
                     {
@@ -837,7 +855,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "loc")
                 {
-                    res.aType = TokenType.Token_loc;
+                    res.aType = TokenType.Token_p_loc;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 3]) != CharacterType.Letter)
                     {
@@ -846,7 +864,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "mid")
                 {
-                    res.aType = TokenType.Token_mid;
+                    res.aType = TokenType.Token_v_mid;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 3]) != CharacterType.Letter)
                     {
@@ -855,7 +873,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "vol")
                 {
-                    res.aType = TokenType.Token_vol;
+                    res.aType = TokenType.Token_p_vol;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 3]) != CharacterType.Letter)
                     {
@@ -877,7 +895,7 @@ namespace LyyneheymCore.SlyviaPile
                 string str = this.sourceCode.Substring(this.nextCharPointer, 2).ToLower();
                 if (str == "se")
                 {
-                    res.aType = TokenType.Token_stopvocal;
+                    res.aType = TokenType.Token_o_stopvocal;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 2]) != CharacterType.Letter)
                     {
@@ -886,7 +904,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "if")
                 {
-                    res.aType = TokenType.Token_if;
+                    res.aType = TokenType.Token_o_if;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 2]) != CharacterType.Letter)
                     {
@@ -895,7 +913,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "id")
                 {
-                    res.aType = TokenType.Token_id;
+                    res.aType = TokenType.Token_p_id;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 2]) != CharacterType.Letter)
                     {
@@ -904,7 +922,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "ro")
                 {
-                    res.aType = TokenType.Token_ro;
+                    res.aType = TokenType.Token_p_ro;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 2]) != CharacterType.Letter)
                     {
@@ -926,7 +944,7 @@ namespace LyyneheymCore.SlyviaPile
                 string str = this.sourceCode.Substring(this.nextCharPointer, 1).ToLower();
                 if (str == "a")
                 {
-                    res.aType = TokenType.Token_a;
+                    res.aType = TokenType.Token_o_a;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 1]) != CharacterType.Letter)
                     {
@@ -935,7 +953,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "x")
                 {
-                    res.aType = TokenType.Token_x;
+                    res.aType = TokenType.Token_p_x;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 1]) != CharacterType.Letter)
                     {
@@ -944,7 +962,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "y")
                 {
-                    res.aType = TokenType.Token_y;
+                    res.aType = TokenType.Token_p_y;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 1]) != CharacterType.Letter)
                     {
@@ -953,7 +971,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 else if (str == "z")
                 {
-                    res.aType = TokenType.Token_z;
+                    res.aType = TokenType.Token_p_z;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 1]) != CharacterType.Letter)
                     {
@@ -1037,7 +1055,7 @@ namespace LyyneheymCore.SlyviaPile
             }
             // 如果成功封闭
             res.aType = TokenType.scenecluster;
-            res.detail = sb.ToString();
+            res.aTag = res.detail = sb.ToString();
             return entityFlag;
         }
 

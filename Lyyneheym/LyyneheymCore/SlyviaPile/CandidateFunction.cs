@@ -135,6 +135,10 @@ namespace LyyneheymCore.SlyviaPile
         umi_iden,
         // LeavePoint null
         umi_epsilon,
+        // LeavePoint "("
+        umi_leftParentheses_,
+        // LeavePoint ")"
+        umi_rightParentheses_,
         // LeavePoint "="
         umi_equality_,
         // LeavePoint "+"
