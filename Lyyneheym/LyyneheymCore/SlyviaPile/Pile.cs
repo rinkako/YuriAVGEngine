@@ -29,8 +29,16 @@ namespace LyyneheymCore.SlyviaPile
 
         }
 
+        /// <summary>
+        /// 进行一趟用户脚本编译，并把所有语句规约到kotori节点上
+        /// </summary>
+        /// <param name="sourceCodeItem">以行分割的源代码字符串向量</param>
         public void StartDash(List<string> sourceCodeItem)
         {
+            // 变量初期化
+            this.parseTree = new SyntaxTreeNode(SyntaxType.case_kotori);
+            this.parseTree.children = new List<SyntaxTreeNode>();
+            this.parseTree.nodeName = "Kotori_Root";
             foreach (string s in sourceCodeItem)
             {
                 // 词法分析
@@ -44,10 +52,14 @@ namespace LyyneheymCore.SlyviaPile
                     // 语义分析
                     if (stn != null)
                     {
-                        Console.WriteLine(stn.ToString());
+                        // 规约
+                        stn.children[0].parent = this.parseTree;
+                        this.parseTree.children.Add(stn.children[0]);
+                        //Console.WriteLine(stn.ToString());
                     }
                 }
             }
+            Console.WriteLine(this.parseTree.ToString());
         }
 
         /// <summary>

@@ -809,9 +809,9 @@ namespace LyyneheymCore.SlyviaPile
             this.iParseStack.Pop();
             int prescanPointer = this.nextTokenPointer;
             // 扫描token流，命中的第一个关键字token决定了节点类型
-            if (this.istream[prescanPointer].aType == TokenType.Token_LeftBracket)
+            if (this.istream[prescanPointer].aType == TokenType.Token_At)
             {
-                // 跳过左方括弧，读下一个token
+                // 跳过At符号，读下一个token
                 prescanPointer++;
                 Token mainToken = this.istream[prescanPointer];
                 // 从下一token的类型决定构造的语法树根节点类型，构造参数字典
@@ -1009,7 +1009,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && this.istream[prescanPointer].aType.ToString().StartsWith("Token_p") == false
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_name.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1024,7 +1024,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_vid.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1039,7 +1039,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_face.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1054,7 +1054,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_id.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1069,7 +1069,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_x.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1084,7 +1084,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_y.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1099,7 +1099,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_z.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1114,7 +1114,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_xacc.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1129,7 +1129,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_yacc.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1144,7 +1144,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_capacity.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1159,7 +1159,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_xscale.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1174,7 +1174,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_yscale.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1189,7 +1189,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_time.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1204,7 +1204,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_filename.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1219,7 +1219,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_track.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1234,7 +1234,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_cond.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1249,7 +1249,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_dash.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1264,7 +1264,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_state.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1279,7 +1279,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_vol.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1294,7 +1294,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_loc.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1309,7 +1309,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_ro.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1324,7 +1324,7 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.Token_RightBracket)
+                                && this.istream[prescanPointer].aType != TokenType.startend)
                             {
                                 w_link.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
@@ -1336,8 +1336,8 @@ namespace LyyneheymCore.SlyviaPile
                             prescanPointer++;
                             break;
                     }
-                    // 如果遇到右方括弧，直接截断后面所有的token，无论什么情况，这里都移动指针
-                    if (this.istream[prescanPointer].aType == TokenType.Token_RightBracket)
+                    // 如果遇到startend就结束
+                    if (this.istream[prescanPointer].aType == TokenType.startend)
                     {
                         latticeFlag = true;
                         break;

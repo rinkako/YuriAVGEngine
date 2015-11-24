@@ -137,6 +137,10 @@ namespace LyyneheymCore.SlyviaPile
                 CharacterType cara = this.GetCharType(this.sourceCode[this.nextCharPointer]);
                 switch (cara)
                 {
+                    // 注释
+                    case CharacterType.Pound:
+                        this.GetNotation();
+                        break;
                     // 单字符token
                     case CharacterType.Plus:
                     case CharacterType.Minus:
@@ -145,9 +149,7 @@ namespace LyyneheymCore.SlyviaPile
                     case CharacterType.Not:
                     case CharacterType.At:
                     case CharacterType.LeftParentheses:
-                    case CharacterType.LeftBracket:
                     case CharacterType.RightParentheses:
-                    case CharacterType.RightBracket:
                         successFlag = this.GetSingleCharaCalculator(res);
                         break;
                     // 可能双字符token
@@ -172,11 +174,11 @@ namespace LyyneheymCore.SlyviaPile
                         successFlag = this.GetCluster(res);
                         break;
                     // 剧本对白
-                    case CharacterType.LeftBrace:
+                    case CharacterType.LeftBracket:
                         successFlag = this.GetSceneCluster(res);
                         break;
                     // 剧本对白结束：
-                    case CharacterType.RightBrace:
+                    case CharacterType.RightBracket:
                         successFlag = this.EndSceneCluster(res);
                         break;
                     // 常数
@@ -207,6 +209,16 @@ namespace LyyneheymCore.SlyviaPile
             // 否则返回空
             nextToken = null;
             return false;
+        }
+
+        /// <summary>
+        /// 注释的自动机路径
+        /// </summary>
+        private void GetNotation()
+        {
+            // 循环，直到行末
+            while (++this.nextCharPointer < this.sourceCode.Length
+                && this.sourceCode[this.nextCharPointer] != '\n');
         }
 
         /// <summary>
@@ -1027,8 +1039,8 @@ namespace LyyneheymCore.SlyviaPile
         /// <returns>是否命中</returns>
         private bool GetSceneCluster(Token res)
         {
-            // 跳过左花括弧
-            if (this.GetCharType(this.sourceCode[this.nextCharPointer]) == CharacterType.LeftBrace)
+            // 跳过左方括弧
+            if (this.GetCharType(this.sourceCode[this.nextCharPointer]) == CharacterType.LeftBracket)
             {
                 this.Jump(1);
                 this.finFlag = false;
@@ -1039,11 +1051,17 @@ namespace LyyneheymCore.SlyviaPile
             while (this.nextCharPointer < this.sourceCode.Length)
             {
                 CharacterType cara = this.GetCharType(this.sourceCode[this.nextCharPointer]);
-                // 在右花括弧之前的输入都接受，并且这个花括弧不能是转义的
-                if (this.GetCharType(this.sourceCode[this.nextCharPointer]) == CharacterType.RightBrace)
+                // 在右方括弧之前的输入都接受，并且这个符号不能是转义的
+                if (this.GetCharType(this.sourceCode[this.nextCharPointer]) == CharacterType.RightBracket)
                 {
                     // 不跳游程，等待DFA进入段落终止符路径，并标志封闭性成立
                     finFlag = true;
+                    break;
+                }
+                // 如果遇到注释就直接截断，进入注释自动机路径，但封闭性不改变
+                else if (this.GetCharType(this.sourceCode[this.nextCharPointer]) == CharacterType.Pound)
+                {
+                    this.GetNotation();
                     break;
                 }
                 else
@@ -1063,14 +1081,14 @@ namespace LyyneheymCore.SlyviaPile
         /// 剧本对白段落终止符的自动机路径
         /// </summary>
         /// <param name="res"></param>
-        /// <returns></returns>
+        /// <returns>是否命中</returns>
         private bool EndSceneCluster(Token res)
         {
             // 跳过游程
             this.Jump(1);
             // 修改token信息
             res.aType = TokenType.sceneterminator;
-            res.detail = "}";
+            res.detail = "]";
             return true;
         }
 
@@ -1205,7 +1223,10 @@ namespace LyyneheymCore.SlyviaPile
             {
                 CharacterType ct = this.GetCharType(this.sourceCode[this.nextCharPointer + 1]);
                 if (ct == CharacterType.Slash ||
+                    ct == CharacterType.RightBracket ||
                     ct == CharacterType.RightBrace ||
+                    ct == CharacterType.At ||
+                    ct == CharacterType.Pound ||
                     ct == CharacterType.DoubleQuotation ||
                     ct == CharacterType.Quotation)
                 {
