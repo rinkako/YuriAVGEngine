@@ -8,7 +8,7 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 单词类：负责装填词法分析阶段的结果的最小单元
     /// </summary>
-    public sealed class Token
+    internal sealed class Token
     {
         // 命中行
         public int aLine = -1;

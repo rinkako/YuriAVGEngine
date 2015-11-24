@@ -8,7 +8,7 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 词法分析器类：负责把用户脚本分割为单词流的类
     /// </summary>
-    public sealed class Lexer
+    internal sealed class Lexer
     {
         /// <summary>
         /// 构造函数

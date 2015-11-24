@@ -10,7 +10,7 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 候选式类：指导编译路径的最小单元
     /// </summary>
-    public sealed class CandidateFunction
+    internal sealed class CandidateFunction
     {
         /// <summary>
         /// 构造函数

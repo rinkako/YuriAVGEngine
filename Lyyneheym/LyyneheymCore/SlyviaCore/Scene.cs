@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using LyyneheymCore.SlyviaPile;
+
 namespace LyyneheymCore.SlyviaCore
 {
     /// <summary>

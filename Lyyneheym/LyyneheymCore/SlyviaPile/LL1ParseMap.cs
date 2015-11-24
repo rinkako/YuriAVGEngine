@@ -10,7 +10,7 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 匹配表类：候选式的二维字典容器
     /// </summary>
-    public sealed class LL1ParseMap
+    internal sealed class LL1ParseMap
     {
         /// <summary>
         /// 构造函数

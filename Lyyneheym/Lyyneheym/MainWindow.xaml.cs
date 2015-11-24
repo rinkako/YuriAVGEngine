@@ -14,8 +14,9 @@ using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using System.IO;
 
-using LyyneheymCore.SlyviaPile;
 using LyyneheymCore.Utils;
+using LyyneheymCore.SlyviaCore;
+using LyyneheymCore.SlyviaPile;
 
 namespace Lyyneheym
 {
@@ -66,14 +67,9 @@ namespace Lyyneheym
 
         private void testLexer()
         {
-            Lexer lex = new Lexer();
             List<string> sl = IOUtils.ReadScenarioFromFile(@"C:\Users\Kako\Desktop\test.txt");
-            foreach (string s in sl)
-            {
-                lex.Init(s);
-                lex.Analyse();
-                Console.WriteLine(lex.ToString());
-            }
+            Pile pile = new Pile();
+            pile.StartDash(sl);
         }
 
 

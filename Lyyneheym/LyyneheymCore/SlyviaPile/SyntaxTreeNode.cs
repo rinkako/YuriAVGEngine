@@ -8,12 +8,13 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 语法节点类：构成语法树的最小单元
     /// </summary>
-    public sealed class SyntaxTreeNode
+    internal sealed class SyntaxTreeNode
     {
         // 构造函数
-        public SyntaxTreeNode(SyntaxType type = SyntaxType.Unknown)
+        public SyntaxTreeNode(SyntaxType type = SyntaxType.Unknown, SyntaxTreeNode parent = null)
         {
             this.nodeSyntaxType = type;
+            this.parent = parent;
         }
         // 绑定处理函数
         public CandidateFunction candidateFunction = null;
@@ -46,7 +47,167 @@ namespace LyyneheymCore.SlyviaPile
         /// <returns>表示树的字符串</returns>
         public override string ToString()
         {
-            return base.ToString();
+            //string builder = "";
+            StringBuilder builder = new StringBuilder();
+            int identation = 0;
+            this.GetTree(builder, this, ref identation);
+            return builder.ToString();
+        }
+
+        /// <summary>
+        /// 递归遍历显示
+        /// </summary>
+        /// <param name="builder">字符串构造器</param>
+        /// <param name="myNode">当前节点</param>
+        /// <param name="identation">缩进量</param>
+        private void GetTree(StringBuilder builder, SyntaxTreeNode myNode, ref int identation)
+        {
+            // 如果空就没必要继续了
+            if (myNode == null)
+            {
+                return;
+            }
+            // 画树
+            builder.Append(DrawTree(myNode));
+            if (myNode.nodeSyntaxType.ToString().StartsWith("synr_"))
+            {
+                builder.Append("[d]");
+            }
+            builder.Append(myNode.nodeSyntaxType.ToString());
+            if (myNode.nodeSyntaxType >= SyntaxType.Unknown
+              && myNode.nodeSyntaxType != SyntaxType.epsilonLeave
+              && myNode.nodeSyntaxType != SyntaxType.tail_startEndLeave)
+            {
+                builder.Append(" (" + myNode.nodeValue + ")");
+            }
+            builder.Append(Environment.NewLine);
+            // 缩进并打印结果
+            identation++;
+            if (myNode.nodeSyntaxType.ToString().StartsWith("synr_") && myNode.paramDict != null)
+            {
+                foreach (KeyValuePair<string, SyntaxTreeNode> kvp in myNode.paramDict)
+                {
+                    GetTree(builder, kvp.Value, ref identation);
+                }
+            }
+            else if (myNode.children != null)
+            {
+                for (int i = 0; i < myNode.children.Count; i++)
+                {
+                    GetTree(builder, myNode.children[i], ref identation);
+                }
+            }
+            // 回归缩进
+            identation--;
+        }
+
+        /// <summary>
+        /// 获取缩进
+        /// </summary>
+        /// <param name="myNode">当前节点</param>
+        /// <returns>树的缩进字符串</returns>
+        private string DrawTree(SyntaxTreeNode myNode)
+        {
+            // 若空就不需要继续了
+            if (myNode == null)
+            {
+                return "";
+            }
+            // 取父母节点，若空就不需要画线了
+            SyntaxTreeNode parent = myNode.parent;
+            if (parent == null)
+            {
+                return "";
+            }
+            // 否则查询祖父母节点来看父母节点的排位
+            List<bool> lstline = new List<bool>();
+            while (parent != null)
+            {
+                SyntaxTreeNode pp = parent.parent;
+                int indexOfParent = 0;
+                if (pp != null)
+                {
+                    if (pp.nodeSyntaxType.ToString().StartsWith("synr_") && pp.paramDict != null)
+                    {
+                        foreach (KeyValuePair<string, SyntaxTreeNode> kvp in pp.paramDict)
+                        {
+                           if (kvp.Value == parent)
+                           {
+                               break;
+                           }
+                           else
+                           {
+                               indexOfParent++;
+                           }
+                        }
+                        lstline.Add(indexOfParent < pp.paramDict.Count - 1);
+                    }
+                    else if (pp.children != null)
+                    {
+                        for (; indexOfParent < pp.children.Count; indexOfParent++)
+                        {
+                            if (parent == pp.children[indexOfParent])
+                            {
+                                break;
+                            }
+                        }
+                        lstline.Add(indexOfParent < pp.children.Count - 1);
+                    }
+                }
+                parent = pp;
+            }
+            // 画纵向线
+            string builder = "";
+            for (int i = lstline.Count - 1; i >= 0; i--)
+            {
+                builder += lstline[i] ? "│  " : "    ";
+            }
+            // 获得自己在兄弟姐妹中的排行
+            parent = myNode.parent;
+            int indexOfParent2 = 0;
+            if (parent.nodeSyntaxType.ToString().StartsWith("synr_") && parent.paramDict != null)
+            {
+                foreach (KeyValuePair<string, SyntaxTreeNode> kvp in parent.paramDict)
+                {
+                    if (kvp.Value == parent)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        indexOfParent2++;
+                    }
+                }
+                // 如果是最后一个就不要出头了
+                if (indexOfParent2 < parent.paramDict.Count - 1)
+                {
+                    builder += "├─";
+                }
+                else
+                {
+                    builder += "└─";
+                }
+            }
+            else if (parent.children != null)
+            {
+                for (; indexOfParent2 < parent.children.Count; indexOfParent2++)
+                {
+                    if (myNode == parent.children[indexOfParent2])
+                    {
+                        break;
+                    }
+                }
+                // 如果是最后一个就不要出头了
+                if (indexOfParent2 < parent.children.Count - 1)
+                {
+                    builder += "├─";
+                }
+                else
+                {
+                    builder += "└─";
+                }
+            }
+            return builder;
         }
     }
 
@@ -57,6 +218,8 @@ namespace LyyneheymCore.SlyviaPile
     {
         // 段落
         synr_dialog,
+        // 段落结束符
+        synr_dialogTerminator,
         // 显示文本
         synr_a,
         // 显示图片
