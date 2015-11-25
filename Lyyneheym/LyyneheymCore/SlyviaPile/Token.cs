@@ -26,6 +26,12 @@ namespace LyyneheymCore.SlyviaPile
         public bool errorBit = false;
         // 词类型
         public TokenType aType = TokenType.Token_NOP;
+
+        public override string ToString()
+        {
+            return "Token: " + aType.ToString() + " (" + this.detail + ") -> " + 
+                (this.aTag == null ? "null" : this.aTag.ToString());
+        }
     }
 
     /// <summary>

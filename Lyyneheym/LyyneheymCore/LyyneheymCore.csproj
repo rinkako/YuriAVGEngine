@@ -52,6 +52,7 @@
     <Compile Include="SlyviaPile\CandidateFunction.cs" />
     <Compile Include="SlyviaPile\LL1ParseMap.cs" />
     <Compile Include="SlyviaPile\Pile.cs" />
+    <Compile Include="SlyviaPile\SymbolTable.cs" />
     <Compile Include="SlyviaPile\SyntaxTreeNode.cs" />
     <Compile Include="SlyviaPile\Token.cs" />
     <Compile Include="Utils\IOUtils.cs" />

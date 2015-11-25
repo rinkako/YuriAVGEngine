@@ -34,12 +34,12 @@ namespace LyyneheymCore.SlyviaPile
         public object aTag = null;
         // 错误位
         public bool errorBit = false;
-        // 是否为不推导节点
-        public bool isParaRoot = false;
         // 不推导节点参数孩子字典
         public Dictionary<string, SyntaxTreeNode> paramDict = null;
         // 不推导节点参数Token子流
         public List<Token> paramTokenStream = null;
+        // 绑定符号表
+        public Dictionary<string, object> symbols = null;
 
         /// <summary>
         /// 树的递归遍历文本化
@@ -49,6 +49,7 @@ namespace LyyneheymCore.SlyviaPile
         {
             //string builder = "";
             StringBuilder builder = new StringBuilder();
+            builder.AppendLine(this.nodeSyntaxType.ToString() + " (" + this.nodeType.ToString() + ")");
             int identation = 0;
             this.GetTree(builder, this, ref identation);
             return builder.ToString();
