@@ -13,6 +13,7 @@ namespace LyyneheymCore.SlyviaPile
         // 构造函数
         public SyntaxTreeNode(SyntaxType type = SyntaxType.Unknown, SyntaxTreeNode parent = null)
         {
+            this.nodeName = type.ToString();
             this.nodeSyntaxType = type;
             this.parent = parent;
         }
@@ -22,8 +23,6 @@ namespace LyyneheymCore.SlyviaPile
         public List<SyntaxTreeNode> children = null;
         // 父指针
         public SyntaxTreeNode parent = null;
-        // 命中语法结构类型
-        public SyntaxType nodeSyntaxType = SyntaxType.Unknown;
         // 命中token附加值
         public string nodeValue = null;
         // 命中产生式类型
@@ -40,6 +39,23 @@ namespace LyyneheymCore.SlyviaPile
         public List<Token> paramTokenStream = null;
         // 绑定符号表
         public Dictionary<string, object> symbols = null;
+        // 节点变量的引用
+        public object nodeVarRef = null;
+        // 命中语法结构类型
+        private SyntaxType nodeSyntaxTyper = SyntaxType.Unknown;
+        // 命中语法结构类型
+        public SyntaxType nodeSyntaxType
+        {
+            get
+            {
+                return nodeSyntaxTyper;
+            }
+            set
+            {
+                nodeSyntaxTyper = value;
+                this.nodeName = value.ToString();
+            }
+        }
 
         /// <summary>
         /// 树的递归遍历文本化
@@ -47,11 +63,11 @@ namespace LyyneheymCore.SlyviaPile
         /// <returns>表示树的字符串</returns>
         public override string ToString()
         {
-            //string builder = "";
             StringBuilder builder = new StringBuilder();
-            builder.AppendLine(this.nodeSyntaxType.ToString() + " (" + this.nodeType.ToString() + ")");
+            builder.Append("SyntaxTreeNode String Format: ");
+            builder.AppendLine(this.nodeName + ", Type:" + this.nodeSyntaxType.ToString() + ", Func:" + this.nodeType.ToString() + "");
             int identation = 0;
-            this.GetTree(builder, this, ref identation);
+            this.GetTree(builder, this, ref identation, false);
             return builder.ToString();
         }
 
@@ -61,7 +77,7 @@ namespace LyyneheymCore.SlyviaPile
         /// <param name="builder">字符串构造器</param>
         /// <param name="myNode">当前节点</param>
         /// <param name="identation">缩进量</param>
-        private void GetTree(StringBuilder builder, SyntaxTreeNode myNode, ref int identation)
+        private void GetTree(StringBuilder builder, SyntaxTreeNode myNode, ref int identation, bool dflag)
         {
             // 如果空就没必要继续了
             if (myNode == null)
@@ -70,16 +86,21 @@ namespace LyyneheymCore.SlyviaPile
             }
             // 画树
             builder.Append(DrawTree(myNode));
-            if (myNode.nodeSyntaxType.ToString().StartsWith("synr_"))
+            if (dflag)
             {
                 builder.Append("[d]");
             }
-            builder.Append(myNode.nodeSyntaxType.ToString());
+            builder.Append(myNode.nodeName.ToString());
             if (myNode.nodeSyntaxType >= SyntaxType.Unknown
               && myNode.nodeSyntaxType != SyntaxType.epsilonLeave
               && myNode.nodeSyntaxType != SyntaxType.tail_startEndLeave)
             {
                 builder.Append(" (" + myNode.nodeValue + ")");
+            }
+            else if (myNode.nodeSyntaxType == SyntaxType.synr_dialog)
+            {
+                string sub = myNode.nodeValue.Replace("\r", "").Replace("\n", "");
+                builder.Append(" (" + (sub.Length < 12 ? sub : sub.Substring(0, 11) + " ...") + ")");
             }
             builder.Append(Environment.NewLine);
             // 缩进并打印结果
@@ -88,14 +109,14 @@ namespace LyyneheymCore.SlyviaPile
             {
                 foreach (KeyValuePair<string, SyntaxTreeNode> kvp in myNode.paramDict)
                 {
-                    GetTree(builder, kvp.Value, ref identation);
+                    GetTree(builder, kvp.Value, ref identation, true);
                 }
             }
-            else if (myNode.children != null)
+            if (myNode.children != null)
             {
                 for (int i = 0; i < myNode.children.Count; i++)
                 {
-                    GetTree(builder, myNode.children[i], ref identation);
+                    GetTree(builder, myNode.children[i], ref identation, false);
                 }
             }
             // 回归缩进
@@ -141,7 +162,12 @@ namespace LyyneheymCore.SlyviaPile
                                indexOfParent++;
                            }
                         }
-                        lstline.Add(indexOfParent < pp.paramDict.Count - 1);
+                        int nocCount = 0;
+                        if (pp.children != null)
+                        {
+                            nocCount += pp.children.Count;
+                        }
+                        lstline.Add(indexOfParent < pp.paramDict.Count + nocCount - 1);
                     }
                     else if (pp.children != null)
                     {
@@ -168,26 +194,27 @@ namespace LyyneheymCore.SlyviaPile
             int indexOfParent2 = 0;
             if (parent.nodeSyntaxType.ToString().StartsWith("synr_") && parent.paramDict != null)
             {
-                foreach (KeyValuePair<string, SyntaxTreeNode> kvp in parent.paramDict)
-                {
-                    if (kvp.Value == parent)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        indexOfParent2++;
-                    }
-                }
-                // 如果是最后一个就不要出头了
-                if (indexOfParent2 < parent.paramDict.Count - 1)
-                {
-                    builder += "├─";
-                }
-                else
-                {
-                    builder += "└─";
-                }
+                //foreach (KeyValuePair<string, SyntaxTreeNode> kvp in parent.paramDict)
+                //{
+                //    if (kvp.Value == parent)
+                //    {
+                //        break;
+                //    }
+                //    else
+                //    {
+                //        indexOfParent2++;
+                //    }
+                //}
+                //// 如果是最后一个就不要出头了
+                //if (indexOfParent2 < parent.paramDict.Count - 1)
+                //{
+                //    builder += "├─";
+                //}
+                //else
+                //{
+                //    builder += "└─";
+                //}
+                builder += "└─";
             }
             else if (parent.children != null)
             {

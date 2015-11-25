@@ -24,6 +24,8 @@ namespace LyyneheymCore.SlyviaPile
         public string detail = "";
         // 错误位
         public bool errorBit = false;
+        // 变量位
+        public bool isVar = false;
         // 词类型
         public TokenType aType = TokenType.Token_NOP;
 

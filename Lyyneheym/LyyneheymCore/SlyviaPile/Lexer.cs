@@ -1027,6 +1027,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
             }
             // 修改token的标签
+            res.isVar = true;
             res.aType = TokenType.identifier;
             res.detail = sb.ToString();
             return true;
@@ -1063,6 +1064,12 @@ namespace LyyneheymCore.SlyviaPile
                 {
                     this.GetNotation();
                     break;
+                }
+                // 如果是换行符也要压入字符串，但它不可以构成一个实体
+                else if (this.sourceCode[this.nextCharPointer] == '\r' || this.sourceCode[this.nextCharPointer] == '\n')
+                {
+                    // 压入，跳游程，不改变实体性质
+                    sb.Append(this.sourceCode[this.nextCharPointer++]);
                 }
                 else
                 {

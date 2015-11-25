@@ -18,7 +18,7 @@ namespace Lyyneheym
 
 
 
-        bool testflag = false;
+        //bool testflag = false;
 
         public BitmapImage testBitmapImage(string filename)
         {

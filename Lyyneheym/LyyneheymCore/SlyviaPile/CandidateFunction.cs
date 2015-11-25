@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LyyneheymCore.SlyviaPile
 {
-    using iHandle = Func<SyntaxTreeNode, CFunctionType, SyntaxType, string, SyntaxTreeNode>;
+    using iHandle = Func<SyntaxTreeNode, CFunctionType, SyntaxType, Token, SyntaxTreeNode>;
     
     /// <summary>
     /// 候选式类：指导编译路径的最小单元
@@ -49,7 +49,7 @@ namespace LyyneheymCore.SlyviaPile
         /// <param name="syntaxer">语法类型</param>
         /// <param name="detail">节点信息</param>
         /// <returns>产生式的处理函数</returns>
-        public SyntaxTreeNode Call(SyntaxTreeNode subroot, SyntaxType syntaxer, string detail)
+        public SyntaxTreeNode Call(SyntaxTreeNode subroot, SyntaxType syntaxer, Token detail)
         {
             return this.candidateProcessor(subroot, this.candidateType, syntaxer, detail);
         }

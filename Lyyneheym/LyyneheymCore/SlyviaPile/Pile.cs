@@ -19,6 +19,7 @@ namespace LyyneheymCore.SlyviaPile
         {
             this.lex = new Lexer();
             this.parser = new Parser();
+            this.symboler = SymbolTable.getInstance();
         }
 
         /// <summary>
@@ -26,7 +27,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         public void Reset()
         {
-
+            this.parseTree = null;
         }
 
         /// <summary>
@@ -37,29 +38,31 @@ namespace LyyneheymCore.SlyviaPile
         {
             // 变量初期化
             this.parseTree = new SyntaxTreeNode(SyntaxType.case_kotori);
-            this.parseTree.children = new List<SyntaxTreeNode>();
-            this.parseTree.nodeName = "Kotori_Root";
+            this.parseTree.nodeName = "myKotori_Root";
+            this.symboler.AddTable(this.parseTree);
+            this.parser.iBlockStack.Push(this.parseTree);
             foreach (string s in sourceCodeItem)
             {
                 // 词法分析
-                lex.Init(s);
-                List<Token> tokenStream = lex.Analyse();
+                this.lex.Init(s);
+                List<Token> tokenStream = this.lex.Analyse();
                 // 语法分析
                 if (tokenStream.Count > 0)
                 {
-                    parser.SetTokenStream(tokenStream);
-                    SyntaxTreeNode stn = parser.Parse();
+                    this.parser.SetTokenStream(tokenStream);
+                    SyntaxTreeNode stn = this.parser.Parse();
                     // 语义分析
                     if (stn != null)
                     {
                         // 把语句节点规约到场景根节点
-                        stn.children[0].parent = this.parseTree;
-                        this.parseTree.children.Add(stn.children[0]);
+                        //stn.children[0].parent = this.parseTree;
+                        //this.parseTree.children.Add(stn.children[0]);
                         //Console.WriteLine(stn.ToString());
                     }
                 }
             }
-            Console.WriteLine(this.parseTree.ToString());
+            string ggs = this.parseTree.ToString();
+            Console.WriteLine(ggs);
         }
 
         /// <summary>
@@ -97,6 +100,7 @@ namespace LyyneheymCore.SlyviaPile
 
         private Lexer lex = null;
         private Parser parser = null;
+        private SymbolTable symboler = null;
         private SyntaxTreeNode parseTree = null;
     }
 }

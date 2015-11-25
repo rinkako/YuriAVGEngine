@@ -20,7 +20,7 @@ namespace LyyneheymCore.SlyviaCore
             
         }
 
-        private List<MediaPlayer> BGMTrackContainer = null;
-        private List<SoundPlayer> SETrackContainer = null;
+        //private List<MediaPlayer> BGMTrackContainer = null;
+        //private List<SoundPlayer> SETrackContainer = null;
     }
 }

@@ -33,7 +33,7 @@ namespace LyyneheymCore.Utils
             StreamReader sr = new StreamReader(fs);
             while (!sr.EndOfStream)
             {
-                resVec.Add(sr.ReadLine());
+                resVec.Add(sr.ReadLine() + Environment.NewLine);
             }
             sr.Close();
             fs.Close();

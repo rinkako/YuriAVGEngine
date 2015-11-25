@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LyyneheymCore.SlyviaPile
 {
-    using iHandle = Func<SyntaxTreeNode, CFunctionType, SyntaxType, string, SyntaxTreeNode>;
+    using iHandle = Func<SyntaxTreeNode, CFunctionType, SyntaxType, Token, SyntaxTreeNode>;
 
     /// <summary>
     /// 匹配表类：候选式的二维字典容器

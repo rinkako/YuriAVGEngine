@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LyyneheymCore.SlyviaPile
 {
-    using iHandle = Func<SyntaxTreeNode, CFunctionType, SyntaxType, string, SyntaxTreeNode>;
+    using iHandle = Func<SyntaxTreeNode, CFunctionType, SyntaxType, Token, SyntaxTreeNode>;
     /// <summary>
     /// 语法匹配器类：负责把单词流匹配成语法树的类
     /// </summary>
@@ -18,6 +18,7 @@ namespace LyyneheymCore.SlyviaPile
         {
             this.Reset();
             this.Init();
+            this.iBlockStack = new Stack<SyntaxTreeNode>();
         }
 
         /// <summary>
@@ -32,9 +33,9 @@ namespace LyyneheymCore.SlyviaPile
         /// <summary>
         /// 清空语法块嵌套匹配栈
         /// </summary>
-        public static void ClearBlockStack()
+        public void ClearBlockStack()
         {
-            iBlockStack.Clear();
+            this.iBlockStack.Clear();
         }
 
         /// <summary>
@@ -42,10 +43,6 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         public void Reset()
         {
-            this.root = new SyntaxTreeNode();
-            this.root.nodeName = "Kotori_Root";
-            this.root.children = new List<SyntaxTreeNode>();
-            this.root.nodeSyntaxType = SyntaxType.case_kotori;
             this.nextTokenPointer = 0;
             this.dashReset(SyntaxType.case_kotori);
         }
@@ -59,14 +56,25 @@ namespace LyyneheymCore.SlyviaPile
             // 初期化
             this.Reset();
             // 获得原始节点的引用
-            SyntaxTreeNode parsePtr = new SyntaxTreeNode(SyntaxType.case_kotori);
-            SyntaxTreeNode currentPtr = parsePtr;
-            currentPtr.children = new List<SyntaxTreeNode>();
-            // 处理这个节点的语句块从属关系
-            if (iBlockStack.Count != 0)
+            SyntaxTreeNode parsePtr;
+            SyntaxTreeNode currentPtr;
+            // 如果语句块嵌套栈中只有文法根节点就直接加到它上面去就好了
+            if (this.iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori)
             {
-                currentPtr.parent = iBlockStack.Peek();
-                iBlockStack.Peek().children.Add(currentPtr);
+                parsePtr = currentPtr = this.iBlockStack.Peek();
+            }
+            // 否则处理这个节点的语句块从属关系
+            else
+            {
+                parsePtr = new SyntaxTreeNode(SyntaxType.case_kotori);
+                currentPtr = parsePtr;
+                currentPtr.parent = this.iBlockStack.Peek();
+                currentPtr.children = new List<SyntaxTreeNode>();
+                if (this.iBlockStack.Peek().children == null)
+                {
+                    this.iBlockStack.Peek().children = new List<SyntaxTreeNode>();
+                }
+                this.iBlockStack.Peek().children.Add(currentPtr);
             }
             // 语法分析
             bool fromKaguya = false;
@@ -76,9 +84,33 @@ namespace LyyneheymCore.SlyviaPile
                 if (this.iParseStack.Count > 0 && this.iParseStack.Peek() == SyntaxType.case_kotori)
                 {
                     SyntaxTreeNode stn = this.Kaguya();
-                    stn.parent = currentPtr;
-                    currentPtr.children.Add(stn);
-                    currentPtr = stn;
+                    // 如果这个节点是else子句，那就直接用kotori节点换掉她
+                    if (stn.nodeSyntaxType == SyntaxType.synr_else)
+                    {
+                        currentPtr.children = new List<SyntaxTreeNode>();
+                        currentPtr.nodeName = currentPtr.nodeSyntaxType.ToString() + "_elseBranch";
+                        // 追加到语句块栈
+                        this.symboler.AddTable(currentPtr);
+                        iBlockStack.Push(currentPtr);
+                    }
+                    // 如果这个节点是endif子句，那就直接用她换掉kotori节点
+                    else if (stn.nodeSyntaxType == SyntaxType.synr_endif)
+                    {
+                        SyntaxTreeNode originTop = parsePtr.parent;
+                        originTop.children.Add(stn);
+                        stn.parent = originTop;
+                        currentPtr = parsePtr = stn;
+                    }
+                    else
+                    {
+                        stn.parent = currentPtr;
+                        if (currentPtr.children == null)
+                        {
+                            currentPtr.children = new List<SyntaxTreeNode>();
+                        }
+                        currentPtr.children.Add(stn);
+                        currentPtr = stn;
+                    }
                     fromKaguya = true;
                     continue;
                 }
@@ -112,11 +144,11 @@ namespace LyyneheymCore.SlyviaPile
                     {
                         if (currentPtr != null)
                         {
-                            currentPtr = currentPtr.candidateFunction.Call(currentPtr, nodeType, iToken.detail);
+                            currentPtr = currentPtr.candidateFunction.Call(currentPtr, nodeType, iToken);
                         }
                         else
                         {
-                            currentPtr = this.Homura(currentPtr, func.GetCFType(), nodeType, iToken.detail);
+                            currentPtr = this.Homura(currentPtr, func.GetCFType(), nodeType, iToken);
                         }
                     }
                     // 没有对应的候选式时
@@ -168,7 +200,7 @@ namespace LyyneheymCore.SlyviaPile
         private void Init()
         {
             // 初始化链接向量
-            for (int i = 0; i < 192; i++)
+            for (int i = 0; i < 64; i++)
             {
                 this.iDict.Add(new List<SyntaxType>());
             }
@@ -915,6 +947,7 @@ namespace LyyneheymCore.SlyviaPile
                         statementNode.nodeSyntaxType = SyntaxType.synr_for;
                         statementNode.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);
                         // 追加到语句块栈
+                        this.symboler.AddTable(statementNode);
                         iBlockStack.Push(statementNode);
                         break;
                     case TokenType.Token_o_endfor:
@@ -933,17 +966,17 @@ namespace LyyneheymCore.SlyviaPile
                         statementNode.nodeSyntaxType = SyntaxType.synr_if;
                         statementNode.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);
                         // 追加到语句块栈
+                        this.symboler.AddTable(statementNode);
                         iBlockStack.Push(statementNode);
                         break;
                     case TokenType.Token_o_else:
                         statementNode.nodeSyntaxType = SyntaxType.synr_else;
-                        // 追加到语句块栈
-                        iBlockStack.Push(statementNode);
+                        // 这里不追加语句块，因为它将在Parse中处理
                         break;
                     case TokenType.Token_o_endif:
                         statementNode.nodeSyntaxType = SyntaxType.synr_endif;
                         // 消除语句块栈
-                        if (iBlockStack.Peek().nodeSyntaxType == SyntaxType.synr_else)
+                        if (iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori && iBlockStack.Peek().nodeName.EndsWith("_elseBranch"))
                         {
                             iBlockStack.Pop();
                         }
@@ -1333,7 +1366,6 @@ namespace LyyneheymCore.SlyviaPile
                             this.iQueue.Enqueue(w_link);
                             break;
                         default:
-                            prescanPointer++;
                             break;
                     }
                     // 如果遇到startend就结束
@@ -1375,7 +1407,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 // 把这个唯一token加到语法树上
                 statementNode.nodeSyntaxType = SyntaxType.synr_dialog;
-                statementNode.aTag = sc.aTag;
+                statementNode.nodeValue = (string)sc.aTag;
                 statementNode.paramTokenStream = new List<Token>();
                 statementNode.paramTokenStream.Add(sc);
                 return statementNode;
@@ -1396,15 +1428,15 @@ namespace LyyneheymCore.SlyviaPile
         /// <param name="myNode">产生式节点</param>
         /// <param name="myType">候选式类型</param>
         /// <param name="mySyntax">节点语法类型</param>
-        /// <param name="myValue">命中单词文本</param>
+        /// <param name="myToken">命中单词</param>
         /// <returns>下一个展开节点的指针</returns>
-        private SyntaxTreeNode Homura(SyntaxTreeNode myNode, CFunctionType myType, SyntaxType mySyntax, string myValue)
+        private SyntaxTreeNode Homura(SyntaxTreeNode myNode, CFunctionType myType, SyntaxType mySyntax, Token myToken)
         {
             // 更新节点信息
             if (myNode != null)
             {
                 myNode.nodeType = myType;
-                myNode.nodeValue = myValue;
+                myNode.nodeValue = myToken.detail;
                 myNode.nodeSyntaxType = mySyntax;
                 myNode.nodeName = mySyntax.ToString();
             }
@@ -1441,6 +1473,11 @@ namespace LyyneheymCore.SlyviaPile
             // 如果她是一个终结符
             else
             {
+                // 如果这个节点含有变量引用，就向符号管理器注册这个变量
+                if (myNode != null && myNode.nodeSyntaxType == SyntaxType.tail_idenLeave && myToken.isVar == true)
+                {
+                    myNode.nodeVarRef = this.symboler.signal(myNode, myToken.detail);
+                }
                 // 递增token指针
                 if (myType != CFunctionType.umi_epsilon)
                 {
@@ -1451,22 +1488,20 @@ namespace LyyneheymCore.SlyviaPile
             }
         }
 
-        // 语法树根节点
-        public SyntaxTreeNode root = null;
+        // 语句块嵌套栈
+        internal Stack<SyntaxTreeNode> iBlockStack = null;
         // 下一Token指针
-        public int nextTokenPointer = 0;
+        private int nextTokenPointer = 0;
         // 单词流
         private List<Token> istream = new List<Token>();
-        // 句子容器
-        private string scentence = null;
+        // 符号管理器
+        private SymbolTable symboler = SymbolTable.getInstance();
         // 匹配栈
         private Stack<SyntaxType> iParseStack = new Stack<SyntaxType>();
         // 候选式类型的向量
         private List<List<SyntaxType>> iDict = new List<List<SyntaxType>>();
         // 不推导候选节点队列
         private Queue<SyntaxTreeNode> iQueue = new Queue<SyntaxTreeNode>();
-        // 语句块嵌套栈
-        private static Stack<SyntaxTreeNode> iBlockStack = new Stack<SyntaxTreeNode>();
         // 预测分析表
         private LL1ParseMap iMap = new LL1ParseMap(LL1PARSERMAPROW, LL1PARSERMAPCOL);
         // 分析表行数

@@ -30,7 +30,7 @@ namespace LyyneheymCore.SlyviaPile
         /// <param name="stn">语法块在树上的节点</param>
         /// <param name="name">变量名</param>
         /// <returns>该变量的真实引用</returns>
-        public object signal(SyntaxTreeNode stn, string name)
+        internal object signal(SyntaxTreeNode stn, string name)
         {
             Dictionary<string, object> table = this.FindSymbolTable(stn);
             // 如果查无此键就注册
@@ -48,7 +48,7 @@ namespace LyyneheymCore.SlyviaPile
         /// <param name="name">变量名</param>
         /// <param name="value">变量的值</param>
         /// <returns>操作成功与否</returns>
-        public bool sign(SyntaxTreeNode stn, string name, object value)
+        internal bool sign(SyntaxTreeNode stn, string name, object value)
         {
             Dictionary<string, object> table = this.FindSymbolTable(stn);
             // 如果被注册过了就返回失败
@@ -67,7 +67,7 @@ namespace LyyneheymCore.SlyviaPile
         /// <param name="stn">当前节点</param>
         /// <param name="name">变量名</param>
         /// <returns>操作成功与否</returns>
-        public bool unsign(SyntaxTreeNode stn, string name)
+        internal bool unsign(SyntaxTreeNode stn, string name)
         {
             Dictionary<string, object> table = this.FindSymbolTable(stn);
             // 如果没有这个变量就返回失败
@@ -85,7 +85,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="currentNode">当前节点</param>
         /// <returns>符号表</returns>
-        private Dictionary<string, object> FindSymbolTable(SyntaxTreeNode currentNode)
+        internal Dictionary<string, object> FindSymbolTable(SyntaxTreeNode currentNode)
         {
             SyntaxTreeNode iterNode = currentNode.parent;
             if (iterNode == null)
@@ -93,7 +93,7 @@ namespace LyyneheymCore.SlyviaPile
                 return null;
             }
             // 找不是自己但距离自己最近的符号表
-            while (iterNode.symbols == null)
+            while (iterNode != null && iterNode.symbols == null)
             {
                 iterNode = iterNode.parent;
             }
@@ -102,6 +102,17 @@ namespace LyyneheymCore.SlyviaPile
                 return iterNode.symbols;
             }
             return null;
+        }
+
+        /// <summary>
+        /// 追加一张绑定在指定节点作用域上的符号表，如果已经存在将直接返回
+        /// </summary>
+        /// <param name="node">节点引用</param>
+        /// <returns>符号表的引用</returns>
+        internal Dictionary<string, object> AddTable(SyntaxTreeNode node)
+        {
+            return this.userSymbolTableContainer.ContainsKey(node) ? this.userSymbolTableContainer[node]
+                : this.userSymbolTableContainer[node] = node.symbols = new Dictionary<string, object>();
         }
 
         /// <summary>
