@@ -58,12 +58,13 @@ namespace LyyneheymCore.SlyviaPile
             // 获得原始节点的引用
             SyntaxTreeNode parsePtr;
             SyntaxTreeNode currentPtr;
-            // 如果语句块嵌套栈中只有文法根节点就直接加到它上面去就好了
-            if (this.iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori)
+            // 如果语句块嵌套栈顶端是可以推出语句块的类型就直接把她作为双亲节点
+            if (this.iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori
+                || this.iBlockStack.Peek().nodeSyntaxType == SyntaxType.synr_for)
             {
                 parsePtr = currentPtr = this.iBlockStack.Peek();
             }
-            // 否则处理这个节点的语句块从属关系
+            // 否则处理这个节点的语句块的从属关系
             else
             {
                 parsePtr = new SyntaxTreeNode(SyntaxType.case_kotori);
@@ -76,7 +77,7 @@ namespace LyyneheymCore.SlyviaPile
                 }
                 this.iBlockStack.Peek().children.Add(currentPtr);
             }
-            // 语法分析
+            // 自顶向下，语法分析
             bool fromKaguya = false;
             while (this.iParseStack.Count != 0 || this.iQueue.Count != 0)
             {
@@ -84,14 +85,42 @@ namespace LyyneheymCore.SlyviaPile
                 if (this.iParseStack.Count > 0 && this.iParseStack.Peek() == SyntaxType.case_kotori)
                 {
                     SyntaxTreeNode stn = this.Kaguya();
-                    // 如果这个节点是else子句，那就直接用kotori节点换掉她
-                    if (stn.nodeSyntaxType == SyntaxType.synr_else)
+                    // 如果这个节点是if子句，那就要为她增加一个kotori节点
+                    if (stn.nodeSyntaxType == SyntaxType.synr_if)
                     {
+                        // 把if节点加到原来的匹配树上
+                        stn.parent = currentPtr;
+                        if (currentPtr.children == null)
+                        {
+                            currentPtr.children = new List<SyntaxTreeNode>();
+                        }
+                        currentPtr.children.Add(stn);
+                        currentPtr = stn;
+                        // 为if节点加上一个真分支
                         currentPtr.children = new List<SyntaxTreeNode>();
-                        currentPtr.nodeName = currentPtr.nodeSyntaxType.ToString() + "_elseBranch";
+                        SyntaxTreeNode trueBranch = new SyntaxTreeNode(SyntaxType.case_kotori);
+                        trueBranch.children = new List<SyntaxTreeNode>();
+                        trueBranch.nodeName = trueBranch.nodeSyntaxType.ToString() + "_trueBranch";
+                        trueBranch.parent = currentPtr;
+                        stn.children.Add(trueBranch);
                         // 追加到语句块栈
-                        this.symboler.AddTable(currentPtr);
-                        iBlockStack.Push(currentPtr);
+                        this.symboler.AddTable(trueBranch);
+                        iBlockStack.Push(trueBranch);
+                        currentPtr = trueBranch;
+                    }
+                    // 如果这个节点是else子句，那就直接用kotori节点换掉她
+                    else if (stn.nodeSyntaxType == SyntaxType.synr_else)
+                    {
+                        currentPtr = currentPtr.parent;
+                        SyntaxTreeNode falseBranch = new SyntaxTreeNode(SyntaxType.case_kotori);
+                        falseBranch.children = new List<SyntaxTreeNode>();
+                        falseBranch.nodeName = falseBranch.nodeSyntaxType.ToString() + "_falseBranch";
+                        falseBranch.parent = currentPtr;
+                        currentPtr.children.Add(falseBranch);
+                        // 追加到语句块栈
+                        this.symboler.AddTable(falseBranch);
+                        iBlockStack.Push(falseBranch);
+                        currentPtr = falseBranch;
                     }
                     // 如果这个节点是endif子句，那就直接用她换掉kotori节点
                     else if (stn.nodeSyntaxType == SyntaxType.synr_endif)
@@ -101,6 +130,7 @@ namespace LyyneheymCore.SlyviaPile
                         stn.parent = originTop;
                         currentPtr = parsePtr = stn;
                     }
+                    // 其余情况就把该节点作为当前展开节点的孩子节点
                     else
                     {
                         stn.parent = currentPtr;
@@ -965,9 +995,7 @@ namespace LyyneheymCore.SlyviaPile
                     case TokenType.Token_o_if:
                         statementNode.nodeSyntaxType = SyntaxType.synr_if;
                         statementNode.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);
-                        // 追加到语句块栈
-                        this.symboler.AddTable(statementNode);
-                        iBlockStack.Push(statementNode);
+                        // 这里不追加语句块，因为它将在Parse中处理
                         break;
                     case TokenType.Token_o_else:
                         statementNode.nodeSyntaxType = SyntaxType.synr_else;
@@ -976,11 +1004,11 @@ namespace LyyneheymCore.SlyviaPile
                     case TokenType.Token_o_endif:
                         statementNode.nodeSyntaxType = SyntaxType.synr_endif;
                         // 消除语句块栈
-                        if (iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori && iBlockStack.Peek().nodeName.EndsWith("_elseBranch"))
+                        if (iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori && iBlockStack.Peek().nodeName.EndsWith("_falseBranch"))
                         {
                             iBlockStack.Pop();
                         }
-                        if (iBlockStack.Peek().nodeSyntaxType == SyntaxType.synr_if)
+                        if (iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori && iBlockStack.Peek().nodeName.EndsWith("_trueBranch"))
                         {
                             iBlockStack.Pop();
                         }

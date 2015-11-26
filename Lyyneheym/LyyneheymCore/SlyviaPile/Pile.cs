@@ -54,9 +54,6 @@ namespace LyyneheymCore.SlyviaPile
                     // 语义分析
                     if (stn != null)
                     {
-                        // 把语句节点规约到场景根节点
-                        //stn.children[0].parent = this.parseTree;
-                        //this.parseTree.children.Add(stn.children[0]);
                         //Console.WriteLine(stn.ToString());
                     }
                 }
