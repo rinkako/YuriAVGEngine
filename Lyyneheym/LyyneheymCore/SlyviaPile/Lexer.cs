@@ -596,7 +596,7 @@ namespace LyyneheymCore.SlyviaPile
                         okFlag = true;
                     }
                 }
-                else if (str == "lable")
+                else if (str == "label")
                 {
                     res.aType = TokenType.Token_o_lable;
                     // 如果后面还有英文字符，那说明这里不可以截断

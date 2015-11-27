@@ -17,7 +17,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         public Pile()
         {
-            this.lex = new Lexer();
+            this.lexer = new Lexer();
             this.parser = new Parser();
             this.symboler = SymbolTable.getInstance();
         }
@@ -31,7 +31,8 @@ namespace LyyneheymCore.SlyviaPile
         }
 
         /// <summary>
-        /// 进行一趟用户脚本编译，并把所有语句规约到kotori节点上
+        /// 进行一趟用户脚本编译，并把所有语句子树规约到一个共同的根节点上，
+        /// 并返回语义分析、流程逻辑处理和代码优化后的动作序列向量
         /// </summary>
         /// <param name="sourceCodeItem">以行分割的源代码字符串向量</param>
         public void StartDash(List<string> sourceCodeItem)
@@ -44,18 +45,13 @@ namespace LyyneheymCore.SlyviaPile
             foreach (string s in sourceCodeItem)
             {
                 // 词法分析
-                this.lex.Init(s);
-                List<Token> tokenStream = this.lex.Analyse();
+                this.lexer.Init(s);
+                List<Token> tokenStream = this.lexer.Analyse();
                 // 语法分析
                 if (tokenStream.Count > 0)
                 {
                     this.parser.SetTokenStream(tokenStream);
-                    SyntaxTreeNode stn = this.parser.Parse();
-                    // 语义分析
-                    if (stn != null)
-                    {
-                        //Console.WriteLine(stn.ToString());
-                    }
+                    this.parser.Parse();
                 }
             }
             string ggs = this.parseTree.ToString();
@@ -66,9 +62,12 @@ namespace LyyneheymCore.SlyviaPile
         /// 启动语义分析器
         /// </summary>
         /// <param name="root">语法树根节点</param>
-        /// <returns>用于语法解释的代理容器</returns>
-        private Scene Semanticer(SyntaxTreeNode root)
+        /// <returns>动作序列向量</returns>
+        private List<SceneAction> Semanticer(SyntaxTreeNode root)
         {
+            List<SceneAction> resVector = new List<SceneAction>();
+            
+
             return null;
         }
 
@@ -89,13 +88,13 @@ namespace LyyneheymCore.SlyviaPile
         /// <param name="myproxy">代理器</param>
         /// <param name="mynode">递归节点</param>
         /// <returns></returns>
-        private bool AST(Scene myproxy, SyntaxTreeNode mynode)
+        public static bool AST(SceneAction myproxy, SyntaxTreeNode mynode)
         {
             return false;
         }
 
 
-        private Lexer lex = null;
+        private Lexer lexer = null;
         private Parser parser = null;
         private SymbolTable symboler = null;
         private SyntaxTreeNode parseTree = null;

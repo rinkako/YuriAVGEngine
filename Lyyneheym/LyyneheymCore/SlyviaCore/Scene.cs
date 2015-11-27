@@ -13,6 +13,6 @@ namespace LyyneheymCore.SlyviaCore
     /// </summary>
     public class Scene
     {
-
+        
     }
 }

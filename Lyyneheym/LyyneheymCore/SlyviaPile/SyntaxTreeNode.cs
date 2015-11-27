@@ -8,7 +8,7 @@ namespace LyyneheymCore.SlyviaPile
     /// <summary>
     /// 语法节点类：构成语法树的最小单元
     /// </summary>
-    internal sealed class SyntaxTreeNode
+    public sealed class SyntaxTreeNode
     {
         // 构造函数
         public SyntaxTreeNode(SyntaxType type = SyntaxType.Unknown, SyntaxTreeNode parent = null)
@@ -18,7 +18,7 @@ namespace LyyneheymCore.SlyviaPile
             this.parent = parent;
         }
         // 绑定处理函数
-        public CandidateFunction candidateFunction = null;
+        internal CandidateFunction candidateFunction = null;
         // 子树向量
         public List<SyntaxTreeNode> children = null;
         // 父指针
@@ -36,7 +36,7 @@ namespace LyyneheymCore.SlyviaPile
         // 不推导节点参数孩子字典
         public Dictionary<string, SyntaxTreeNode> paramDict = null;
         // 不推导节点参数Token子流
-        public List<Token> paramTokenStream = null;
+        internal List<Token> paramTokenStream = null;
         // 绑定符号表
         public Dictionary<string, object> symbols = null;
         // 节点变量的引用
@@ -64,7 +64,7 @@ namespace LyyneheymCore.SlyviaPile
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
-            builder.Append("SyntaxTreeNode String Format: ");
+            builder.Append("> SyntaxTreeNode String Format: ");
             builder.AppendLine(this.nodeName + ", Type:" + this.nodeSyntaxType.ToString() + ", Func:" + this.nodeType.ToString() + "");
             int identation = 0;
             this.GetTree(builder, this, ref identation, false);
