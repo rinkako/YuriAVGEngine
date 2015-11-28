@@ -14,11 +14,15 @@ namespace LyyneheymCore.SlyviaCore
         // 节点动作
         public SActionType aType = SActionType.NOP;
         // 参数字典
-        public Dictionary<string, object> argsDict = new Dictionary<string, object>();
+        public Dictionary<string, SyntaxTreeNode> argsDict = new Dictionary<string, SyntaxTreeNode>();
         // 条件从句
         public SyntaxTreeNode condPointer = null;
         // 下一节点
         public SceneAction next = null;
+        // 下一真节点向量
+        public List<SceneAction> trueRouting = null;
+        // 下一假节点向量
+        public List<SceneAction> falseRouting = null;
     }
 
     /// <summary>
