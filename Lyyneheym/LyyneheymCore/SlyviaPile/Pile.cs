@@ -54,6 +54,8 @@ namespace LyyneheymCore.SlyviaPile
                     this.parser.Parse();
                 }
             }
+            // 语义分析
+            this.rootSa = this.Semanticer(this.parseTree);
             string ggs = this.parseTree.ToString();
             Console.WriteLine(ggs);
         }
@@ -65,18 +67,18 @@ namespace LyyneheymCore.SlyviaPile
         /// <returns>动作序列的头部</returns>
         private SceneAction Semanticer(SyntaxTreeNode root)
         {
-            SceneAction resSa = new SceneAction();
-            this.Mise(this.parseTree, resSa, 0);
+            SceneAction resSa = null;
+            this.Mise(this.parseTree, ref resSa, 0);
             return resSa;
         }
 
         /// <summary>
-        /// 语法树遍历
+        /// 递归语法树遍历
         /// </summary>
         /// <param name="mynode">递归节点</param>
         /// <param name="curSa">当前动作序列</param>
         /// <param name="flag">触发器类型</param>
-        private void Mise(SyntaxTreeNode mynode, SceneAction curSa, int flag)
+        private void Mise(SyntaxTreeNode mynode, ref SceneAction curSa, int flag)
         {
             // 自顶向下递归遍历语法树
             switch (mynode.nodeSyntaxType)
@@ -106,14 +108,17 @@ namespace LyyneheymCore.SlyviaPile
                         if (child.nodeSyntaxType.ToString().StartsWith("synr_")
                             && child.paramDict != null)
                         {
-                            foreach (KeyValuePair<string, SyntaxTreeNode> kvp in mynode.paramDict)
+                            foreach (KeyValuePair<string, SyntaxTreeNode> kvp in child.paramDict)
                             {
-                                sa.argsDict.Add(kvp.Key, kvp.Value.children[0]);
+                                if (kvp.Value.children != null)
+                                {
+                                    sa.argsDict.Add(kvp.Key, kvp.Value.children[0]);
+                                }
                             }
                         }
                         // 接下来递归这些孩子，加到真分支去
                         kotoriTrueList.Add(sa);
-                        this.Mise(child, sa, flag);
+                        this.Mise(child, ref sa, flag);
                     }
                     // 处理序列关系
                     for (int i = 0; i < kotoriTrueList.Count - 1; i++)
@@ -131,7 +136,11 @@ namespace LyyneheymCore.SlyviaPile
                         break;
                     }
                     SceneAction saIfTrue = new SceneAction();
-                    this.Mise(mynode.children[0], saIfTrue, flag);
+                    this.Mise(mynode.children[0], ref saIfTrue, flag);
+                    for (int i = 0; i < saIfTrue.trueRouting.Count; i++)
+                    {
+                        curSa.trueRouting.Add(saIfTrue.trueRouting[i]);
+                    }
                     // 处理假分支
                     curSa.falseRouting = new List<SceneAction>();
                     if (mynode.children[1] == null)
@@ -139,7 +148,12 @@ namespace LyyneheymCore.SlyviaPile
                         break;
                     }
                     SceneAction saIfFalse = new SceneAction();
-                    this.Mise(mynode.children[1], saIfFalse, flag);
+                    this.Mise(mynode.children[1], ref saIfFalse, flag);
+                    for (int i = 0; i < saIfFalse.trueRouting.Count; i++)
+                    {
+                        // 这里之所以是trueRouting是因为kotori节点的缘故
+                        curSa.falseRouting.Add(saIfFalse.trueRouting[i]);
+                    }
                     break;
                 case SyntaxType.synr_for:
                     // 处理条件指针
@@ -154,7 +168,11 @@ namespace LyyneheymCore.SlyviaPile
                         break;
                     }
                     SceneAction saForTrue = new SceneAction();
-                    this.Mise(mynode.children[0], saForTrue, flag);
+                    this.Mise(mynode.children[0], ref saForTrue, flag);
+                    for (int i = 0; i < saForTrue.trueRouting.Count; i++)
+                    {
+                        curSa.trueRouting.Add(saForTrue.trueRouting[i]);
+                    }
                     break;
                 default:
                     break;
@@ -162,7 +180,7 @@ namespace LyyneheymCore.SlyviaPile
         }
 
         /// <summary>
-        /// 抽象语法树求表达式值
+        /// 抽象语法树递归求表达式值
         /// </summary>
         /// <param name="mynode">递归节点</param>
         /// <param name="myproxy">代理器</param>
@@ -442,6 +460,7 @@ namespace LyyneheymCore.SlyviaPile
                 default:
                     break;
             }
+            return true;
         }
 
 

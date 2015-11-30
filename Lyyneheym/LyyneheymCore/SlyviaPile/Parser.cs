@@ -59,8 +59,7 @@ namespace LyyneheymCore.SlyviaPile
             SyntaxTreeNode parsePtr;
             SyntaxTreeNode currentPtr;
             // 如果语句块嵌套栈顶端是可以推出语句块的类型就直接把她作为双亲节点
-            if (this.iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori
-                || this.iBlockStack.Peek().nodeSyntaxType == SyntaxType.synr_for)
+            if (this.iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori)
             {
                 parsePtr = currentPtr = this.iBlockStack.Peek();
             }
@@ -85,10 +84,11 @@ namespace LyyneheymCore.SlyviaPile
                 if (this.iParseStack.Count > 0 && this.iParseStack.Peek() == SyntaxType.case_kotori)
                 {
                     SyntaxTreeNode stn = this.Kaguya();
-                    // 如果这个节点是if子句，那就要为她增加一个kotori节点
-                    if (stn.nodeSyntaxType == SyntaxType.synr_if)
+                    // 如果这个节点是if或for子句，那就要为她增加一个kotori节点
+                    if (stn.nodeSyntaxType == SyntaxType.synr_if ||
+                        stn.nodeSyntaxType == SyntaxType.synr_for)
                     {
-                        // 把if节点加到原来的匹配树上
+                        // 把原来的子句节点加到原来的匹配树上
                         stn.parent = currentPtr;
                         if (currentPtr.children == null)
                         {
@@ -96,11 +96,12 @@ namespace LyyneheymCore.SlyviaPile
                         }
                         currentPtr.children.Add(stn);
                         currentPtr = stn;
-                        // 为if节点加上一个真分支
+                        // 为子句节点加上一个真分支
                         currentPtr.children = new List<SyntaxTreeNode>();
                         SyntaxTreeNode trueBranch = new SyntaxTreeNode(SyntaxType.case_kotori);
                         trueBranch.children = new List<SyntaxTreeNode>();
-                        trueBranch.nodeName = trueBranch.nodeSyntaxType.ToString() + "_trueBranch";
+                        trueBranch.nodeName = trueBranch.nodeSyntaxType.ToString() + 
+                            (stn.nodeSyntaxType == SyntaxType.synr_if ? "_trueBranch" : "_forBranch");
                         trueBranch.parent = currentPtr;
                         stn.children.Add(trueBranch);
                         // 追加到语句块栈
@@ -976,14 +977,12 @@ namespace LyyneheymCore.SlyviaPile
                     case TokenType.Token_o_for:
                         statementNode.nodeSyntaxType = SyntaxType.synr_for;
                         statementNode.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);
-                        // 追加到语句块栈
-                        this.symboler.AddTable(statementNode);
-                        iBlockStack.Push(statementNode);
+                        // 这里不追加语句块，因为它将在Parse中处理
                         break;
                     case TokenType.Token_o_endfor:
                         statementNode.nodeSyntaxType = SyntaxType.synr_endfor;
                         // 消除语句块栈
-                        if (iBlockStack.Peek().nodeSyntaxType == SyntaxType.synr_for)
+                        if (iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori && iBlockStack.Peek().nodeName.EndsWith("_forBranch"))
                         {
                             iBlockStack.Pop();
                         }
