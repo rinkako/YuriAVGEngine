@@ -59,14 +59,15 @@ namespace LyyneheymCore.SlyviaPile
         }
 
         /// <summary>
-        /// 启动语义分析器
+        /// 启动语义分析器，返回动作语法树对应的序列
         /// </summary>
         /// <param name="root">语法树根节点</param>
-        /// <returns>动作序列向量</returns>
-        private List<SceneAction> Semanticer(SyntaxTreeNode root)
+        /// <returns>动作序列的头部</returns>
+        private SceneAction Semanticer(SyntaxTreeNode root)
         {
-            List<SceneAction> resVector = new List<SceneAction>();
-            return null;
+            SceneAction resSa = new SceneAction();
+            this.Mise(this.parseTree, resSa, 0);
+            return resSa;
         }
 
         /// <summary>
@@ -142,7 +143,10 @@ namespace LyyneheymCore.SlyviaPile
                     break;
                 case SyntaxType.synr_for:
                     // 处理条件指针
-                    curSa.condPointer = mynode.paramDict["cond"];
+                    if (mynode.paramDict.ContainsKey("cond"))
+                    {
+                        curSa.condPointer = mynode.paramDict["cond"];
+                    }
                     // 处理真分支
                     curSa.trueRouting = new List<SceneAction>();
                     if (mynode.children[0] == null)
@@ -160,12 +164,284 @@ namespace LyyneheymCore.SlyviaPile
         /// <summary>
         /// 抽象语法树求表达式值
         /// </summary>
-        /// <param name="myproxy">代理器</param>
         /// <param name="mynode">递归节点</param>
+        /// <param name="myproxy">代理器</param>
         /// <returns></returns>
-        public static bool AST(SceneAction myproxy, SyntaxTreeNode mynode)
+        public static bool AST(SyntaxTreeNode mynode, SceneAction myproxy)
         {
-            return false;
+            switch (mynode.nodeSyntaxType)
+            {
+                case SyntaxType.case_wexpr:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wexpr__wmulti__wexpr_pi_45)
+                    {
+                        AST(mynode.children[0], myproxy); // 因式
+                        AST(mynode.children[1], myproxy); // 加项
+                        if (mynode.children[0].aTag.GetType() == typeof(double) &&
+                            mynode.children[1].aTag.GetType() == typeof(double))
+                        {
+                            mynode.aTag = (double)mynode.children[0].aTag + (double)mynode.children[1].aTag;
+                        }
+                        else
+                        {
+                            mynode.aTag = (string)mynode.children[0].aTag + (string)mynode.children[1].aTag;
+                        }
+                    }
+                    else
+                    {
+                        mynode.aTag = 0;
+                    }
+                    break;
+                case SyntaxType.case_wexpr_pi:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wexpr_pi__wplus__wexpr_pi_72)
+                    {
+                        AST(mynode.children[0], myproxy); // 加项
+                        AST(mynode.children[1], myproxy); // 加项闭包
+                        if (mynode.children[0].aTag.GetType() == typeof(double) &&
+                            mynode.children[1].aTag.GetType() == typeof(double))
+                        {
+                            mynode.aTag = (double)mynode.children[0].aTag + (double)mynode.children[1].aTag;
+                        }
+                        else
+                        {
+                            mynode.aTag = (string)mynode.children[0].aTag + (string)mynode.children[1].aTag;
+                        }
+                    }
+                    break;
+                case SyntaxType.case_wplus:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wplus__plus_wmulti_46)
+                    {
+                        AST(mynode.children[1], myproxy);
+                        mynode.aTag = mynode.children[1].aTag; // 加法
+                    }
+                    else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wplus__minus_wmulti_47)
+                    {
+                        AST(mynode.children[1], myproxy);
+                        // 减法
+                        if (mynode.children[1].aTag.GetType() == typeof(double))
+                        {
+                            mynode.aTag = (-1.0) * (double)mynode.children[1].aTag;
+                        }
+                        else
+                        {
+                            mynode.aTag = "-" + (string)mynode.children[1].aTag;
+                        }
+                    }
+                    else
+                    {
+                        mynode.aTag = 0;
+                    }
+                    break;
+                case SyntaxType.case_wmulti:
+                    AST(mynode.children[0], myproxy); // 乘项
+                    AST(mynode.children[1], myproxy); // 乘项闭包
+                    if (mynode.children[0].aTag.GetType() == typeof(double) &&
+                        mynode.children[1].aTag.GetType() == typeof(double))
+                    {
+                        mynode.aTag = (double)mynode.children[0].aTag * (double)mynode.children[1].aTag;
+                    }
+                    else
+                    {
+                        mynode.aTag = (string)mynode.children[0].aTag + "*" + (string)mynode.children[1].aTag;
+                    }
+                    break;
+                case SyntaxType.case_wmultiOpt:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wmultiOpt__multi_wunit__wmultiOpt_50)
+                    {
+                        AST(mynode.children[1], myproxy); // 乘项
+                        AST(mynode.children[2], myproxy); // 乘项闭包
+                        // 乘法
+                        if (mynode.children[1].aTag.GetType() == typeof(double) &&
+                        mynode.children[2].aTag.GetType() == typeof(double))
+                        {
+                            mynode.aTag = (double)mynode.children[1].aTag * (double)mynode.children[2].aTag;
+                        }
+                        else
+                        {
+                            mynode.aTag = (string)mynode.children[1].aTag + "*" + (string)mynode.children[2].aTag;
+                        }
+                    }
+                    else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wmultiOpt__div_wunit__wmultiOpt_51)
+                    {
+                        AST(mynode.children[1], myproxy); // 乘项
+                        AST(mynode.children[2], myproxy); // 乘项闭包
+
+                        if (mynode.children[1].aTag.GetType() == typeof(double) &&
+                        mynode.children[2].aTag.GetType() == typeof(double))
+                        {
+                            if ((double)mynode.children[1].aTag * (double)mynode.children[2].aTag == 0)
+                            {
+                                mynode.aTag = 0.0;
+                                // 除零错误
+                            }
+                            else
+                            {
+                                mynode.aTag = 1.0f / (double)mynode.children[1].aTag * (double)mynode.children[2].aTag;
+                            }
+
+                            mynode.aTag = (double)mynode.children[1].aTag * (double)mynode.children[2].aTag;
+                        }
+                        else
+                        {
+                            mynode.aTag = (string)mynode.children[1].aTag + "/" + (string)mynode.children[2].aTag;
+                        }
+                    }
+                    else
+                    {
+                        mynode.aTag = 1.0f;
+                    }
+                    break;
+                case SyntaxType.case_wunit:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__number_53)
+                    {
+                        mynode.aTag = Convert.ToDouble(mynode.children[0].nodeValue);
+                    }
+                    else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__minus_wunit_55)
+                    {
+                        AST(mynode.children[1], myproxy);
+                        if (mynode.children[1].aTag.GetType() == typeof(double))
+                        {
+                            mynode.aTag = (-1) * (double)mynode.children[1].aTag;
+                        }
+                        else
+                        {
+                            mynode.aTag = "-" + (string)mynode.children[1].aTag;
+                        }
+
+                    }
+                    else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__plus_wunit_56)
+                    {
+                        AST(mynode.children[1], myproxy);
+                        mynode.aTag = mynode.children[1].aTag;
+                    }
+                    else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__brucket_disjunct_57)
+                    {
+                        AST(mynode.children[1], myproxy);
+                        mynode.aTag = mynode.children[1].aTag;
+                    }
+                    else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__iden_54)
+                    {
+                        //mynode.aTag = myexec->Reference(mynode.children[0].nodeValue); // 查参数字典
+                        // 这里需要绑定运行时环境的变量
+                    }
+                    break;
+                case SyntaxType.case_disjunct:
+                    AST(mynode.children[0], myproxy); // 合取项
+                    AST(mynode.children[1], myproxy); // 析取闭包
+                    mynode.aTag = (bool)mynode.children[0].aTag || (bool)mynode.children[1].aTag;
+                    return (bool)mynode.aTag;
+                case SyntaxType.case_disjunct_pi:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___disjunct_pi__conjunct__disjunct_pi_36)
+                    {
+                        AST(mynode.children[1], myproxy); // 合取项
+                        AST(mynode.children[2], myproxy); // 析取闭包
+                        mynode.aTag = (bool)mynode.children[1].aTag || (bool)mynode.children[2].aTag;
+                    }
+                    else
+                    {
+                        mynode.aTag = false; // 析取false不影响结果
+                    }
+                    break;
+                case SyntaxType.case_conjunct:
+                    AST(mynode.children[0], myproxy); // 布尔项
+                    AST(mynode.children[1], myproxy); // 合取闭包
+                    mynode.aTag = (bool)mynode.children[0].aTag && (bool)mynode.children[1].aTag;
+                    break;
+                case SyntaxType.case_conjunct_pi:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___conjunct_pi__bool__conjunct_pi_39)
+                    {
+                        AST(mynode.children[1], myproxy); // 布尔项
+                        AST(mynode.children[2], myproxy); // 合取闭包
+                        mynode.aTag = (bool)mynode.children[1].aTag && (bool)mynode.children[2].aTag;
+                    }
+                    else
+                    {
+                        mynode.aTag = true; // 合取true不影响结果
+                    }
+                    break;
+                case SyntaxType.case_bool:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___bool__not_bool_42)
+                    {
+                        AST(mynode.children[1], myproxy); // 非项
+                        mynode.aTag = ((bool)mynode.children[1].aTag) == false;
+                    }
+                    else
+                    {
+                        AST(mynode.children[0], myproxy); // 表达式
+                        mynode.aTag = (bool)mynode.children[0].aTag;
+                    }
+                    break;
+                case SyntaxType.case_comp:
+                    if (mynode.children[1].candidateFunction.GetCFType() == CFunctionType.deri___rop__epsilon_80)
+                    {
+                        AST(mynode.children[0], myproxy); // 左边
+                        mynode.aTag = mynode.children[0].aTag;
+                    }
+                    else
+                    {
+                        string optype = mynode.children[1].nodeValue; // 运算符
+                        AST(mynode.children[0], myproxy); // 左边
+                        AST(mynode.children[2], myproxy); // 右边
+                        mynode.aTag = false;
+                        if (mynode.children[0].aTag.GetType() != typeof(double) && 
+                            mynode.children[2].aTag.GetType() != typeof(double))
+                        {
+                            if (optype == "<>")
+                            {
+                                mynode.aTag = string.Compare((string)mynode.children[0].aTag, (string)mynode.children[2].aTag) != 0;
+                            }
+                            else if (optype == "==")
+                            {
+                                mynode.aTag = string.Compare((string)mynode.children[0].aTag, (string)mynode.children[2].aTag) == 0;
+                            }
+                            else if (optype == ">")
+                            {
+                                mynode.aTag = string.Compare((string)mynode.children[0].aTag, (string)mynode.children[2].aTag) > 0;
+                            }
+                            else if (optype == "<")
+                            {
+                                mynode.aTag = string.Compare((string)mynode.children[0].aTag, (string)mynode.children[2].aTag) < 0;
+                            }
+                            else if (optype == ">=")
+                            {
+                                mynode.aTag = string.Compare((string)mynode.children[0].aTag, (string)mynode.children[2].aTag) >= 0;
+                            }
+                            else if (optype == "<=")
+                            {
+                                mynode.aTag = string.Compare((string)mynode.children[0].aTag, (string)mynode.children[2].aTag) <= 0;
+                            }
+                        }
+                        else
+                        {
+                            if (optype == "<>")
+                            {
+                                mynode.aTag = (double)mynode.children[0].aTag != (double)mynode.children[2].aTag;
+                            }
+                            else if (optype == "==")
+                            {
+                                mynode.aTag = (double)mynode.children[0].aTag == (double)mynode.children[2].aTag;
+                            }
+                            else if (optype == ">")
+                            {
+                                mynode.aTag = (double)mynode.children[0].aTag > (double)mynode.children[2].aTag;
+                            }
+                            else if (optype == "<")
+                            {
+                                mynode.aTag = (double)mynode.children[0].aTag < (double)mynode.children[2].aTag;
+                            }
+                            else if (optype == ">=")
+                            {
+                                mynode.aTag = (double)mynode.children[0].aTag >= (double)mynode.children[2].aTag;
+                            }
+                            else if (optype == "<=")
+                            {
+                                mynode.aTag = (double)mynode.children[0].aTag <= (double)mynode.children[2].aTag;
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 
 
