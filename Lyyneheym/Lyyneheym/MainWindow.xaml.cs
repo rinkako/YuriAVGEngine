@@ -69,7 +69,7 @@ namespace Lyyneheym
         {
             List<string> sl = IOUtils.ReadScenarioFromFile(@"C:\Users\Kako\Desktop\test.txt");
             Pile pile = new Pile();
-            pile.StartDash(sl);
+            pile.StartDash(sl, "test");
         }
 
 

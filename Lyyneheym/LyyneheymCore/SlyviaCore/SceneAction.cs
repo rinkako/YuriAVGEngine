@@ -23,7 +23,9 @@ namespace LyyneheymCore.SlyviaCore
         public List<SceneAction> trueRouting = null;
         // 下一假节点向量
         public List<SceneAction> falseRouting = null;
-
+        // 附加值
+        public string aTag = null;
+        // 字符串化方法
         public override string ToString()
         {
             return this.aType.ToString();
