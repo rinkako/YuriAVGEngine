@@ -23,6 +23,11 @@ namespace LyyneheymCore.SlyviaCore
         public List<SceneAction> trueRouting = null;
         // 下一假节点向量
         public List<SceneAction> falseRouting = null;
+
+        public override string ToString()
+        {
+            return this.aType.ToString();
+        }
     }
 
     /// <summary>

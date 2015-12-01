@@ -68,6 +68,7 @@ namespace LyyneheymCore.SlyviaPile
         private SceneAction Semanticer(SyntaxTreeNode root)
         {
             SceneAction resSa = null;
+            saStack = new Stack<SceneAction>();
             this.Mise(this.parseTree, ref resSa, 0);
             return resSa;
         }
@@ -125,6 +126,11 @@ namespace LyyneheymCore.SlyviaPile
                     {
                         kotoriTrueList[i].next = kotoriTrueList[i + 1];
                     }
+                    // 最后一个节点返回根节点
+                    if (this.saStack.Count > 0)
+                    {
+                        kotoriTrueList[kotoriTrueList.Count - 1].next = this.saStack.Peek();
+                    }
                     break;
                 case SyntaxType.synr_if:
                     // 处理条件指针
@@ -136,7 +142,9 @@ namespace LyyneheymCore.SlyviaPile
                         break;
                     }
                     SceneAction saIfTrue = new SceneAction();
+                    this.saStack.Push(curSa);
                     this.Mise(mynode.children[0], ref saIfTrue, flag);
+                    this.saStack.Pop();
                     for (int i = 0; i < saIfTrue.trueRouting.Count; i++)
                     {
                         curSa.trueRouting.Add(saIfTrue.trueRouting[i]);
@@ -148,7 +156,9 @@ namespace LyyneheymCore.SlyviaPile
                         break;
                     }
                     SceneAction saIfFalse = new SceneAction();
+                    this.saStack.Push(curSa);
                     this.Mise(mynode.children[1], ref saIfFalse, flag);
+                    this.saStack.Pop();
                     for (int i = 0; i < saIfFalse.trueRouting.Count; i++)
                     {
                         // 这里之所以是trueRouting是因为kotori节点的缘故
@@ -168,11 +178,13 @@ namespace LyyneheymCore.SlyviaPile
                         break;
                     }
                     SceneAction saForTrue = new SceneAction();
+                    this.saStack.Push(curSa);
                     this.Mise(mynode.children[0], ref saForTrue, flag);
                     for (int i = 0; i < saForTrue.trueRouting.Count; i++)
                     {
                         curSa.trueRouting.Add(saForTrue.trueRouting[i]);
                     }
+                    this.saStack.Pop();
                     break;
                 default:
                     break;
@@ -464,11 +476,18 @@ namespace LyyneheymCore.SlyviaPile
         }
 
 
+        // 词法分析器
         private Lexer lexer = null;
+        // 语法分析器
         private Parser parser = null;
+        // 符号管理器
         private SymbolTable symboler = null;
+        // 动作序列头部
         private SceneAction rootSa = null;
+        // 语法树根节点
         private SyntaxTreeNode parseTree = null;
-
+        // 动作序列嵌套栈
+        private Stack<SceneAction> saStack = null;
+        
     }
 }
