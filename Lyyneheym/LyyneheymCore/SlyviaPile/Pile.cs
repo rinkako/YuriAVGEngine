@@ -23,20 +23,13 @@ namespace LyyneheymCore.SlyviaPile
         }
 
         /// <summary>
-        /// 复位语义分析器
-        /// </summary>
-        public void Reset()
-        {
-            this.parseTree = null;
-        }
-
-        /// <summary>
         /// 进行一趟用户脚本编译，并把所有语句子树规约到一个共同的根节点上，
-        /// 并返回语义分析、流程逻辑处理和代码优化后的动作序列向量
+        /// 并返回语义分析、流程逻辑处理和代码优化后的动作序列
         /// </summary>
         /// <param name="sourceCodeItem">以行分割的源代码字符串向量</param>
         /// <param name="sceneName">场景文件的名称，不带路径和后缀名</param>
-        public void StartDash(List<string> sourceCodeItem, string sceneName)
+        /// <returns>动作序列的头部</returns>
+        public SceneAction StartDash(List<string> sourceCodeItem, string sceneName)
         {
             // 变量初期化
             this.scenario = sceneName;
@@ -59,233 +52,15 @@ namespace LyyneheymCore.SlyviaPile
             // 语义分析
             this.rootSa = this.Semanticer(this.parseTree);
             string ggs = this.parseTree.ToString();
-            Console.WriteLine(ggs);
+            return this.rootSa;
         }
 
         /// <summary>
-        /// 启动语义分析器，返回动作语法树对应的序列
-        /// </summary>
-        /// <param name="root">语法树根节点</param>
-        /// <param name="sceneName">场景名称</param>
-        /// <returns>动作序列的头部</returns>
-        private SceneAction Semanticer(SyntaxTreeNode root)
-        {
-            SceneAction resSa = null;
-            this.saStack = new Stack<SceneAction>();
-            this.blockDict = new Dictionary<string, SceneAction>();
-            this.Mise(this.parseTree, ref resSa);
-            this.LXHan(resSa, resSa);
-            return resSa;
-        }
-
-        /// <summary>
-        /// 递归遍历语法树，构造动作序列
-        /// </summary>
-        /// <param name="mynode">递归节点</param>
-        /// <param name="curSa">当前动作序列</param>
-        private void Mise(SyntaxTreeNode mynode, ref SceneAction curSa)
-        {
-            // 自顶向下递归遍历语法树
-            switch (mynode.nodeSyntaxType)
-            {
-                case SyntaxType.case_kotori:
-                    // 如果是总的根节点
-                    if (curSa == null)
-                    {
-                        curSa = new SceneAction();
-                    }
-                    if (mynode.children == null)
-                    {
-                        break;
-                    }
-                    List<SceneAction> kotoriTrueList = new List<SceneAction>();
-                    curSa.trueRouting = kotoriTrueList;
-                    // 递归遍历
-                    foreach (SyntaxTreeNode child in mynode.children)
-                    {
-                        SceneAction sa = new SceneAction();
-                        sa.aType = (SActionType)Enum.Parse(typeof(SActionType), "act_" + child.nodeSyntaxType.ToString().Replace("synr_", ""));
-                        // 跳过增广文法节点，拷贝参数字典
-                        if (child.nodeSyntaxType.ToString().StartsWith("synr_")
-                            && child.paramDict != null)
-                        {
-                            foreach (KeyValuePair<string, SyntaxTreeNode> kvp in child.paramDict)
-                            {
-                                if (kvp.Value.children != null)
-                                {
-                                    sa.argsDict.Add(kvp.Key, kvp.Value.children[0]);
-                                }
-                            }
-                        }
-                        // 接下来递归这些孩子，加到真分支去
-                        kotoriTrueList.Add(sa);
-                        this.Mise(child, ref sa);
-                    }
-                    // 处理序列关系
-                    for (int i = 0; i < kotoriTrueList.Count - 1; i++)
-                    {
-                        kotoriTrueList[i].next = kotoriTrueList[i + 1];
-                    }
-                    break;
-                case SyntaxType.synr_if:
-                    // 处理条件指针
-                    curSa.condPointer = mynode.paramDict["cond"];
-                    // 处理真分支
-                    curSa.trueRouting = new List<SceneAction>();
-                    if (mynode.children[0] == null)
-                    {
-                        break;
-                    }
-                    SceneAction saIfTrue = new SceneAction();
-                    this.Mise(mynode.children[0], ref saIfTrue);
-                    for (int i = 0; i < saIfTrue.trueRouting.Count; i++)
-                    {
-                        curSa.trueRouting.Add(saIfTrue.trueRouting[i]);
-                    }
-                    // 处理假分支
-                    curSa.falseRouting = new List<SceneAction>();
-                    if (mynode.children[1] == null)
-                    {
-                        break;
-                    }
-                    SceneAction saIfFalse = new SceneAction();
-                    this.Mise(mynode.children[1], ref saIfFalse);
-                    for (int i = 0; i < saIfFalse.trueRouting.Count; i++)
-                    {
-                        // 这里之所以是trueRouting是因为kotori节点的缘故
-                        curSa.falseRouting.Add(saIfFalse.trueRouting[i]);
-                    }
-                    break;
-                case SyntaxType.synr_for:
-                    // 处理条件指针
-                    if (mynode.paramDict.ContainsKey("cond"))
-                    {
-                        curSa.condPointer = mynode.paramDict["cond"];
-                    }
-                    // 处理真分支
-                    curSa.trueRouting = new List<SceneAction>();
-                    if (mynode.children[0] == null)
-                    {
-                        break;
-                    }
-                    SceneAction saForTrue = new SceneAction();
-                    this.Mise(mynode.children[0], ref saForTrue);
-                    for (int i = 0; i < saForTrue.trueRouting.Count; i++)
-                    {
-                        curSa.trueRouting.Add(saForTrue.trueRouting[i]);
-                    }
-                    break;
-                case SyntaxType.synr_lable:
-                    // 这里，断言了lable的name属性只能推导出string的iden叶节点
-                    string labelKey = mynode.paramDict["name"].children[0].children[0].children[0].children[0].nodeValue;
-                    curSa.aTag = labelKey;
-                    this.blockDict[labelKey] = curSa;
-                    break;
-                case SyntaxType.synr_jump:
-                    // 这里，断言了jump的name属性只能推导出string的iden叶节点
-                    string jumpKey = mynode.paramDict["name"].children[0].children[0].children[0].children[0].nodeValue;
-                    curSa.aTag = jumpKey;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// 递归遍历动作序列，处理控制流程
-        /// </summary>
-        /// <param name="saNode">动作序列头部</param>
-        private void LXHan(SceneAction saNode, SceneAction parent)
-        {
-            switch (saNode.aType)
-            {
-                case SActionType.NOP:
-                    if (saNode.trueRouting == null || saNode.trueRouting.Count == 0)
-                    {
-                        break;
-                    }
-                    // 递归访问子节点
-                    for (int i = 0; i < saNode.trueRouting.Count - 1; i++)
-                    {
-                        this.LXHan(saNode.trueRouting[i], saNode);
-                    }
-                    // 最后一个孩子的下一节点修改为它母节点的后继
-                    saNode.trueRouting[saNode.trueRouting.Count - 1].next = parent.next;
-                    break;
-                case SActionType.act_for:
-                    if (saNode.trueRouting == null || saNode.trueRouting.Count == 0)
-                    {
-                        break;
-                    }
-                    // 递归访问子节点
-                    for (int i = 0; i < saNode.trueRouting.Count - 1; i++)
-                    {
-                        this.LXHan(saNode.trueRouting[i], saNode);
-                    }
-                    // 最后一个孩子的下一节点修改为for子句本身
-                    saNode.trueRouting[saNode.trueRouting.Count - 1].next = saNode;
-                    break;
-                case SActionType.act_endfor:
-                    // break节点的下一节点是她的for母节点
-                    saNode.next = parent;
-                    break;
-                case SActionType.act_break:
-                    // break节点的下一节点是她的for母节点的后继
-                    saNode.next = parent.next;
-                    break;
-                case SActionType.act_if:
-                    // 处理真分支
-                    if (saNode.trueRouting == null || saNode.trueRouting.Count == 0)
-                    {
-                        break;
-                    }
-                    // 递归访问子节点
-                    for (int i = 0; i < saNode.trueRouting.Count - 1; i++)
-                    {
-                        this.LXHan(saNode.trueRouting[i], saNode);
-                    }
-                    // 最后一个孩子的下一节点修改为if子句节点的后继
-                    saNode.trueRouting[saNode.trueRouting.Count - 1].next = saNode.next;
-                    // 处理假分支
-                    if (saNode.falseRouting == null || saNode.falseRouting.Count == 0)
-                    {
-                        break;
-                    }
-                    // 递归访问子节点
-                    for (int i = 0; i < saNode.falseRouting.Count - 1; i++)
-                    {
-                        this.LXHan(saNode.falseRouting[i], saNode);
-                    }
-                    // 最后一个孩子的下一节点修改为if子句节点的后继
-                    saNode.falseRouting[saNode.falseRouting.Count - 1].next = saNode.next;
-                    break;
-                case SActionType.act_jump:
-                    // 跳转指令的下一节点通过lable字典指定
-                    string jumpToLable = saNode.aTag;
-                    if (this.blockDict.ContainsKey(jumpToLable))
-                    {
-                        saNode.next = this.blockDict[jumpToLable];
-                    }
-                    else
-                    {
-                        // 如果没有直接后继节点就返回母节点的后继
-                        if (saNode.next == null)
-                        {
-                            saNode.next = parent.next;
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// 抽象语法树递归求表达式值
+        /// 抽象语法树求表达式值
         /// </summary>
         /// <param name="mynode">递归节点</param>
         /// <param name="myproxy">代理器</param>
-        /// <returns></returns>
+        /// <returns>表达式的真值</returns>
         public static bool AST(SyntaxTreeNode mynode, SceneAction myproxy)
         {
             switch (mynode.nodeSyntaxType)
@@ -564,6 +339,224 @@ namespace LyyneheymCore.SlyviaPile
             return true;
         }
 
+        /// <summary>
+        /// 启动语义分析器，返回动作语法树对应的序列
+        /// </summary>
+        /// <param name="root">语法树根节点</param>
+        /// <returns>动作序列的头部</returns>
+        private SceneAction Semanticer(SyntaxTreeNode root)
+        {
+            SceneAction resSa = null;
+            this.saStack = new Stack<SceneAction>();
+            this.blockDict = new Dictionary<string, SceneAction>();
+            this.Mise(this.parseTree, ref resSa);
+            this.LXHan(resSa, resSa);
+            return resSa;
+        }
+
+        /// <summary>
+        /// 递归遍历语法树，构造动作序列
+        /// </summary>
+        /// <param name="mynode">递归节点</param>
+        /// <param name="curSa">当前动作序列头部</param>
+        private void Mise(SyntaxTreeNode mynode, ref SceneAction curSa)
+        {
+            // 自顶向下递归遍历语法树
+            switch (mynode.nodeSyntaxType)
+            {
+                case SyntaxType.case_kotori:
+                    // 如果是总的根节点
+                    if (curSa == null)
+                    {
+                        curSa = new SceneAction();
+                    }
+                    if (mynode.children == null)
+                    {
+                        break;
+                    }
+                    List<SceneAction> kotoriTrueList = new List<SceneAction>();
+                    curSa.trueRouting = kotoriTrueList;
+                    // 递归遍历
+                    foreach (SyntaxTreeNode child in mynode.children)
+                    {
+                        SceneAction sa = new SceneAction();
+                        sa.aType = (SActionType)Enum.Parse(typeof(SActionType), "act_" + child.nodeSyntaxType.ToString().Replace("synr_", ""));
+                        // 跳过增广文法节点，拷贝参数字典
+                        if (child.nodeSyntaxType.ToString().StartsWith("synr_")
+                            && child.paramDict != null)
+                        {
+                            foreach (KeyValuePair<string, SyntaxTreeNode> kvp in child.paramDict)
+                            {
+                                if (kvp.Value.children != null)
+                                {
+                                    sa.argsDict.Add(kvp.Key, kvp.Value.children[0]);
+                                }
+                            }
+                        }
+                        // 接下来递归这些孩子，加到真分支去
+                        kotoriTrueList.Add(sa);
+                        this.Mise(child, ref sa);
+                    }
+                    // 处理序列关系
+                    for (int i = 0; i < kotoriTrueList.Count - 1; i++)
+                    {
+                        kotoriTrueList[i].next = kotoriTrueList[i + 1];
+                    }
+                    break;
+                case SyntaxType.synr_if:
+                    // 处理条件指针
+                    curSa.condPointer = mynode.paramDict["cond"];
+                    // 处理真分支
+                    curSa.trueRouting = new List<SceneAction>();
+                    if (mynode.children[0] == null)
+                    {
+                        break;
+                    }
+                    SceneAction saIfTrue = new SceneAction();
+                    this.Mise(mynode.children[0], ref saIfTrue);
+                    for (int i = 0; i < saIfTrue.trueRouting.Count; i++)
+                    {
+                        curSa.trueRouting.Add(saIfTrue.trueRouting[i]);
+                    }
+                    // 处理假分支
+                    curSa.falseRouting = new List<SceneAction>();
+                    if (mynode.children[1] == null)
+                    {
+                        break;
+                    }
+                    SceneAction saIfFalse = new SceneAction();
+                    this.Mise(mynode.children[1], ref saIfFalse);
+                    for (int i = 0; i < saIfFalse.trueRouting.Count; i++)
+                    {
+                        // 这里之所以是trueRouting是因为kotori节点的缘故
+                        curSa.falseRouting.Add(saIfFalse.trueRouting[i]);
+                    }
+                    break;
+                case SyntaxType.synr_for:
+                    // 处理条件指针
+                    if (mynode.paramDict.ContainsKey("cond"))
+                    {
+                        curSa.condPointer = mynode.paramDict["cond"];
+                    }
+                    // 处理真分支
+                    curSa.trueRouting = new List<SceneAction>();
+                    if (mynode.children[0] == null)
+                    {
+                        break;
+                    }
+                    SceneAction saForTrue = new SceneAction();
+                    this.Mise(mynode.children[0], ref saForTrue);
+                    for (int i = 0; i < saForTrue.trueRouting.Count; i++)
+                    {
+                        curSa.trueRouting.Add(saForTrue.trueRouting[i]);
+                    }
+                    break;
+                case SyntaxType.synr_lable:
+                    // 这里，断言了lable的name属性只能推导出string的iden叶节点
+                    string labelKey = mynode.paramDict["name"].children[0].children[0].children[0].children[0].nodeValue;
+                    curSa.aTag = labelKey;
+                    this.blockDict[labelKey] = curSa;
+                    break;
+                case SyntaxType.synr_jump:
+                    // 这里，断言了jump的name属性只能推导出string的iden叶节点
+                    string jumpKey = mynode.paramDict["name"].children[0].children[0].children[0].children[0].nodeValue;
+                    curSa.aTag = jumpKey;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 递归遍历动作序列，处理控制流程
+        /// </summary>
+        /// <param name="saNode">要处理的动作序列头部</param>
+        /// <param name="parent">当前序列头部的双亲</param>
+        private void LXHan(SceneAction saNode, SceneAction parent)
+        {
+            switch (saNode.aType)
+            {
+                case SActionType.NOP:
+                    if (saNode.trueRouting == null || saNode.trueRouting.Count == 0)
+                    {
+                        break;
+                    }
+                    // 递归访问子节点
+                    for (int i = 0; i < saNode.trueRouting.Count - 1; i++)
+                    {
+                        this.LXHan(saNode.trueRouting[i], saNode);
+                    }
+                    // 最后一个孩子的下一节点修改为它母节点的后继
+                    saNode.trueRouting[saNode.trueRouting.Count - 1].next = parent.next;
+                    break;
+                case SActionType.act_for:
+                    if (saNode.trueRouting == null || saNode.trueRouting.Count == 0)
+                    {
+                        break;
+                    }
+                    // 递归访问子节点
+                    for (int i = 0; i < saNode.trueRouting.Count - 1; i++)
+                    {
+                        this.LXHan(saNode.trueRouting[i], saNode);
+                    }
+                    // 最后一个孩子的下一节点修改为for子句本身
+                    saNode.trueRouting[saNode.trueRouting.Count - 1].next = saNode;
+                    break;
+                case SActionType.act_endfor:
+                    // break节点的下一节点是她的for母节点
+                    saNode.next = parent;
+                    break;
+                case SActionType.act_break:
+                    // break节点的下一节点是她的for母节点的后继
+                    saNode.next = parent.next;
+                    break;
+                case SActionType.act_if:
+                    // 处理真分支
+                    if (saNode.trueRouting == null || saNode.trueRouting.Count == 0)
+                    {
+                        break;
+                    }
+                    // 递归访问子节点
+                    for (int i = 0; i < saNode.trueRouting.Count - 1; i++)
+                    {
+                        this.LXHan(saNode.trueRouting[i], saNode);
+                    }
+                    // 最后一个孩子的下一节点修改为if子句节点的后继
+                    saNode.trueRouting[saNode.trueRouting.Count - 1].next = saNode.next;
+                    // 处理假分支
+                    if (saNode.falseRouting == null || saNode.falseRouting.Count == 0)
+                    {
+                        break;
+                    }
+                    // 递归访问子节点
+                    for (int i = 0; i < saNode.falseRouting.Count - 1; i++)
+                    {
+                        this.LXHan(saNode.falseRouting[i], saNode);
+                    }
+                    // 最后一个孩子的下一节点修改为if子句节点的后继
+                    saNode.falseRouting[saNode.falseRouting.Count - 1].next = saNode.next;
+                    break;
+                case SActionType.act_jump:
+                    // 跳转指令的下一节点通过lable字典指定
+                    string jumpToLable = saNode.aTag;
+                    if (this.blockDict.ContainsKey(jumpToLable))
+                    {
+                        saNode.next = this.blockDict[jumpToLable];
+                    }
+                    else
+                    {
+                        // 如果没有直接后继节点就返回母节点的后继
+                        if (saNode.next == null)
+                        {
+                            saNode.next = parent.next;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
         // 场景名称
         private string scenario = null;
         // 词法分析器
@@ -580,6 +573,5 @@ namespace LyyneheymCore.SlyviaPile
         private Stack<SceneAction> saStack = null;
         // 标签跳转字典
         private Dictionary<string, SceneAction> blockDict = null;
-        
     }
 }

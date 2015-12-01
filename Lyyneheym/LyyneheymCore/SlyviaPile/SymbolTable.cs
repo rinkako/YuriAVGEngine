@@ -137,7 +137,7 @@ namespace LyyneheymCore.SlyviaPile
         private static SymbolTable synObject = null;
         // 用户符号字典
         private Dictionary<SyntaxTreeNode, Dictionary<string, object>> userSymbolTableContainer = null;
-        // 系统符号散列表
+        // 系统符号字典
         private Dictionary<string, object> systemSymbolTable = null;
     }
 }
