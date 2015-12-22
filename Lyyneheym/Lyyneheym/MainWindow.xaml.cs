@@ -191,15 +191,24 @@ namespace Lyyneheym
         bool playflag = false;
         private void Button_Click_8(object sender, RoutedEventArgs e)
         {
-            if (playflag == false)
+            if (playflag == false && mp != null)
             {
                 mp.Pause();
                 playflag = true;
             }
             else
             {
-                mp.Play();
-                playflag = false;
+                if (mp == null)
+                {
+                    mp = new MediaPlayer();
+                    mp.Open(new Uri(@"Sound\bgm\bgm01.mp3", UriKind.RelativeOrAbsolute));
+                    mp.Play();
+                }
+                else
+                {
+                    mp.Play();
+                    playflag = false;
+                }
             }
             
         }

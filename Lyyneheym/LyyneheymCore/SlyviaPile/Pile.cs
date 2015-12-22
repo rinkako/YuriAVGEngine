@@ -462,6 +462,9 @@ namespace LyyneheymCore.SlyviaPile
                     string jumpKey = mynode.paramDict["name"].children[0].children[0].children[0].children[0].nodeValue;
                     curSa.aTag = jumpKey;
                     break;
+                case SyntaxType.synr_dialog:
+                    curSa.aTag = mynode.nodeValue;
+                    break;
                 default:
                     break;
             }
