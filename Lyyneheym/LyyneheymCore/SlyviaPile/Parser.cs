@@ -105,7 +105,6 @@ namespace LyyneheymCore.SlyviaPile
                         trueBranch.parent = currentPtr;
                         stn.children.Add(trueBranch);
                         // 追加到语句块栈
-                        this.symboler.AddTable(trueBranch);
                         iBlockStack.Push(trueBranch);
                         currentPtr = trueBranch;
                     }
@@ -119,7 +118,6 @@ namespace LyyneheymCore.SlyviaPile
                         falseBranch.parent = currentPtr;
                         currentPtr.children.Add(falseBranch);
                         // 追加到语句块栈
-                        this.symboler.AddTable(falseBranch);
                         iBlockStack.Push(falseBranch);
                         currentPtr = falseBranch;
                     }
@@ -1028,6 +1026,7 @@ namespace LyyneheymCore.SlyviaPile
                         break;
                     case TokenType.Token_o_var:
                         statementNode.nodeSyntaxType = SyntaxType.synr_var;
+                        statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
                         statementNode.paramDict["dash"] = new SyntaxTreeNode(SyntaxType.para_dash, statementNode);
                         break;
                     case TokenType.Token_o_break:
@@ -1500,11 +1499,6 @@ namespace LyyneheymCore.SlyviaPile
             // 如果她是一个终结符
             else
             {
-                // 如果这个节点含有变量引用，就向符号管理器注册这个变量
-                if (myNode != null && myNode.nodeSyntaxType == SyntaxType.tail_idenLeave && myToken.isVar == true)
-                {
-                    myNode.nodeVarRef = this.symboler.signal(myNode, myToken.detail);
-                }
                 // 递增token指针
                 if (myType != CFunctionType.umi_epsilon)
                 {
@@ -1534,6 +1528,6 @@ namespace LyyneheymCore.SlyviaPile
         // 分析表行数
         private static readonly int LL1PARSERMAPROW = 33;
         // 分析表列数
-        private static readonly int LL1PARSERMAPCOL = 19;        
+        private static readonly int LL1PARSERMAPCOL = 19;
     }
 }

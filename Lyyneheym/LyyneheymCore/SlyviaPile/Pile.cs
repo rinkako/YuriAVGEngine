@@ -19,7 +19,6 @@ namespace LyyneheymCore.SlyviaPile
         {
             this.lexer = new Lexer();
             this.parser = new Parser();
-            this.symboler = SymbolTable.getInstance();
         }
 
         /// <summary>
@@ -35,7 +34,6 @@ namespace LyyneheymCore.SlyviaPile
             this.scenario = sceneName;
             this.parseTree = new SyntaxTreeNode(SyntaxType.case_kotori);
             this.parseTree.nodeName = "myKotori_Root";
-            this.symboler.AddTable(this.parseTree);
             this.parser.iBlockStack.Push(this.parseTree);
             foreach (string s in sourceCodeItem)
             {
@@ -351,6 +349,7 @@ namespace LyyneheymCore.SlyviaPile
             this.blockDict = new Dictionary<string, SceneAction>();
             this.Mise(this.parseTree, ref resSa);
             this.LXHan(resSa, resSa);
+            resSa.aTag = this.scenario;
             return resSa;
         }
 
@@ -566,8 +565,6 @@ namespace LyyneheymCore.SlyviaPile
         private Lexer lexer = null;
         // 语法分析器
         private Parser parser = null;
-        // 符号管理器
-        private SymbolTable symboler = null;
         // 动作序列头部
         private SceneAction rootSa = null;
         // 语法树根节点

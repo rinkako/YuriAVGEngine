@@ -37,8 +37,6 @@ namespace LyyneheymCore.SlyviaPile
         public Dictionary<string, SyntaxTreeNode> paramDict = null;
         // 不推导节点参数Token子流
         internal List<Token> paramTokenStream = null;
-        // 绑定符号表
-        public Dictionary<string, object> symbols = null;
         // 节点变量的引用
         public object nodeVarRef = null;
         // 命中语法结构类型
