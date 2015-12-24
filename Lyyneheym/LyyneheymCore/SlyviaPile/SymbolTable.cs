@@ -21,6 +21,7 @@ namespace LyyneheymCore.SlyviaPile
         {
             this.userSymbolTableContainer.Clear();
             this.systemSymbolTable.Clear();
+            this.InitSystemVars();
         }
 
         /// <summary>
@@ -108,12 +109,21 @@ namespace LyyneheymCore.SlyviaPile
         }
 
         /// <summary>
+        /// 初始化系统变量
+        /// </summary>
+        private void InitSystemVars()
+        {
+
+        }
+
+        /// <summary>
         /// 构造函数
         /// </summary>
         private SymbolTable()
         {
             this.systemSymbolTable = new Dictionary<string, object>();
             this.userSymbolTableContainer = new Dictionary<string, Dictionary<string, object>>();
+            this.InitSystemVars();
         }
 
         // 唯一实例
