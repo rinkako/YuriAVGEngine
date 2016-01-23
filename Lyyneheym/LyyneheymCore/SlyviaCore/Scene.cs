@@ -15,6 +15,12 @@ namespace LyyneheymCore.SlyviaCore
     [Serializable]
     public class Scene
     {
+        /// <summary>
+        /// 构造器
+        /// </summary>
+        /// <param name="scenario">场景名称</param>
+        /// <param name="mainSa">主动作序列</param>
+        /// <param name="funcVec">函数向量</param>
         public Scene(string scenario, SceneAction mainSa, List<SceneFunction> funcVec)
         {
             this.scenario = scenario;
@@ -22,6 +28,29 @@ namespace LyyneheymCore.SlyviaCore
             this.funcContainer = funcVec;
         }
 
+        /// <summary>
+        /// 初始化该场景
+        /// </summary>
+        public void Init()
+        {
+
+        }
+
+        /// <summary>
+        /// 为消息队列更新当前场景的数据
+        /// </summary>
+        public void UpdateContext()
+        {
+
+        }
+
+        /// <summary>
+        /// 渲染当前画面
+        /// </summary>
+        public void Render()
+        {
+
+        }
 
         // 场景进行指针
         public int SP = 0;

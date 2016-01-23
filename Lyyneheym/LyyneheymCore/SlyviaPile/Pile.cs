@@ -30,11 +30,8 @@ namespace LyyneheymCore.SlyviaPile
         /// <returns>该剧本的场景</returns>
         public Scene StartDash(List<string> sourceCodeItem, string sceneName)
         {
-            // 变量初期化
-            this.scenario = sceneName;
-            this.parseTree = new SyntaxTreeNode(SyntaxType.case_kotori);
-            this.parseTree.nodeName = "myKotori_Root";
-            this.parser.iBlockStack.Push(this.parseTree);
+            // 初期化
+            this.Reset(sceneName);
             foreach (string s in sourceCodeItem)
             {
                 // 词法分析
@@ -48,7 +45,6 @@ namespace LyyneheymCore.SlyviaPile
                 }
             }
             // 语义分析
-            string ggs = this.parseTree.ToString();
             this.rootScene = this.parseScene(this.Semanticer(this.parseTree));
             return this.rootScene;
         }
@@ -639,6 +635,18 @@ namespace LyyneheymCore.SlyviaPile
         private Scene parseScene(KeyValuePair<SceneAction, List<SceneFunction>> sceneItem)
         {
             return new Scene(this.scenario, sceneItem.Key, sceneItem.Value);
+        }
+
+        /// <summary>
+        /// 初始化语义分析器
+        /// </summary>
+        /// <param name="scenario">场景名称</param>
+        private void Reset(string scenario)
+        {
+            this.scenario = scenario;
+            this.parseTree = new SyntaxTreeNode(SyntaxType.case_kotori);
+            this.parseTree.nodeName = "myKotori_Root";
+            this.parser.iBlockStack.Push(this.parseTree);
         }
 
         /// <summary>
