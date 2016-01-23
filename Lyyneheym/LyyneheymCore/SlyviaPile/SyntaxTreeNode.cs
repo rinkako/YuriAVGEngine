@@ -280,6 +280,8 @@ namespace LyyneheymCore.SlyviaPile
         synr_lable,
         // 标签跳转
         synr_jump,
+        // 函数调用
+        synr_call,
         // 循环（头）
         synr_for,
         // 循环（尾）
@@ -290,6 +292,10 @@ namespace LyyneheymCore.SlyviaPile
         synr_else,
         // 条件（尾）
         synr_endif,
+        // 函数声明
+        synr_function,
+        // 函数结束
+        synr_endfunction,
         // 剧本跳转
         synr_scene,
         // 开关操作
@@ -304,6 +310,8 @@ namespace LyyneheymCore.SlyviaPile
         synr_wait,
         // 选择支
         synr_branch,
+        // 参数：函数签名
+        para_sign,
         // 参数：选择支链
         para_link,
         // 参数：名称

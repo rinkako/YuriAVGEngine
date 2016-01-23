@@ -26,6 +26,8 @@ namespace LyyneheymCore.SlyviaPile
         public bool errorBit = false;
         // 变量位
         public bool isVar = false;
+        // 作用域
+        public bool isGlobal = false;
         // 词类型
         public TokenType aType = TokenType.Token_NOP;
 
@@ -75,6 +77,8 @@ namespace LyyneheymCore.SlyviaPile
         Token_At,
         // 符号：朵拉符$
         Token_Dollar,
+        // 符号：地址符&
+        Token_Address,
         // 符号：左括弧(
         Token_LeftParentheses,
         // 符号：右括弧)
@@ -165,6 +169,14 @@ namespace LyyneheymCore.SlyviaPile
         Token_o_wait,
         // 选择支
         Token_o_branch,
+        // 函数定义头
+        Token_o_function,
+        // 函数定义尾
+        Token_o_endfunction,
+        // 函数调用
+        Token_o_call,
+        // 参数：函数签名
+        Token_p_sign,
         // 参数：名称
         Token_p_name,
         // 参数：语音id

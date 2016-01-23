@@ -84,9 +84,10 @@ namespace LyyneheymCore.SlyviaPile
                 if (this.iParseStack.Count > 0 && this.iParseStack.Peek() == SyntaxType.case_kotori)
                 {
                     SyntaxTreeNode stn = this.Kaguya();
-                    // 如果这个节点是if或for子句，那就要为她增加一个kotori节点
+                    // 如果这个节点是if、for、function子句，那就要为她增加一个kotori节点
                     if (stn.nodeSyntaxType == SyntaxType.synr_if ||
-                        stn.nodeSyntaxType == SyntaxType.synr_for)
+                        stn.nodeSyntaxType == SyntaxType.synr_for ||
+                        stn.nodeSyntaxType == SyntaxType.synr_function)
                     {
                         // 把原来的子句节点加到原来的匹配树上
                         stn.parent = currentPtr;
@@ -101,7 +102,8 @@ namespace LyyneheymCore.SlyviaPile
                         SyntaxTreeNode trueBranch = new SyntaxTreeNode(SyntaxType.case_kotori);
                         trueBranch.children = new List<SyntaxTreeNode>();
                         trueBranch.nodeName = trueBranch.nodeSyntaxType.ToString() + 
-                            (stn.nodeSyntaxType == SyntaxType.synr_if ? "_trueBranch" : "_forBranch");
+                            (stn.nodeSyntaxType == SyntaxType.synr_if ? "_trueBranch" :
+                            stn.nodeSyntaxType == SyntaxType.synr_for ? "_forBranch" : "_funDeclaration");
                         trueBranch.parent = currentPtr;
                         stn.children.Add(trueBranch);
                         // 追加到语句块栈
@@ -202,7 +204,8 @@ namespace LyyneheymCore.SlyviaPile
                     // 值表达式时
                     else
                     {
-                        this.iParseStack.Push(SyntaxType.case_wexpr);
+                        //this.iParseStack.Push(SyntaxType.case_wexpr);
+                        this.iParseStack.Push(reroot.nodeSyntaxType);
                     }
                     // 把token流改为私有的token流
                     this.istream = reroot.paramTokenStream;
@@ -972,6 +975,11 @@ namespace LyyneheymCore.SlyviaPile
                         statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
                         statementNode.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);
                         break;
+                    case TokenType.Token_o_call:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_call;
+                        statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
+                        statementNode.paramDict["sign"] = new SyntaxTreeNode(SyntaxType.para_sign, statementNode);
+                        break;
                     case TokenType.Token_o_for:
                         statementNode.nodeSyntaxType = SyntaxType.synr_for;
                         statementNode.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);
@@ -1012,6 +1020,23 @@ namespace LyyneheymCore.SlyviaPile
                         else
                         {
                             throw new Exception("语句块匹配不成立");
+                        }
+                        break;
+                    case TokenType.Token_o_function:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_function;
+                        statementNode.paramDict["sign"] = new SyntaxTreeNode(SyntaxType.para_sign, statementNode);
+                        // 这里不追加语句块，因为它将在Parse中处理
+                        break;
+                    case TokenType.Token_o_endfunction:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_endfunction;
+                        // 消除语句块栈
+                        if (iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori && iBlockStack.Peek().nodeName.EndsWith("_funDeclaration"))
+                        {
+                            iBlockStack.Pop();
+                        }
+                        else
+                        {
+                            throw new Exception("函数定义不成立");
                         }
                         break;
                     case TokenType.Token_o_scene:
@@ -1063,7 +1088,7 @@ namespace LyyneheymCore.SlyviaPile
                     {
                         case TokenType.Token_p_name:
                             statementNode.paramDict["name"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_name = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["name"]);
+                            SyntaxTreeNode w_name = new SyntaxTreeNode(SyntaxType.tail_idenLeave, statementNode.paramDict["name"]);
                             w_name.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1078,7 +1103,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_vid:
                             statementNode.paramDict["vid"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_vid = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["vid"]);
+                            SyntaxTreeNode w_vid = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["vid"]);
                             w_vid.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1093,7 +1118,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_face:
                             statementNode.paramDict["face"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_face = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["face"]);
+                            SyntaxTreeNode w_face = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["face"]);
                             w_face.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1108,7 +1133,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_id:
                             statementNode.paramDict["id"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_id = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["id"]);
+                            SyntaxTreeNode w_id = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["id"]);
                             w_id.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1123,7 +1148,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_x:
                             statementNode.paramDict["x"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_x = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["x"]);
+                            SyntaxTreeNode w_x = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["x"]);
                             w_x.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1138,7 +1163,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_y:
                             statementNode.paramDict["y"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_y = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["y"]);
+                            SyntaxTreeNode w_y = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["y"]);
                             w_y.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1153,7 +1178,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_z:
                             statementNode.paramDict["z"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_z = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["z"]);
+                            SyntaxTreeNode w_z = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["z"]);
                             w_z.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1168,7 +1193,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_xacc:
                             statementNode.paramDict["xacc"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_xacc = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["xacc"]);
+                            SyntaxTreeNode w_xacc = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["xacc"]);
                             w_xacc.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1183,7 +1208,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_yacc:
                             statementNode.paramDict["yacc"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_yacc = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["yacc"]);
+                            SyntaxTreeNode w_yacc = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["yacc"]);
                             w_yacc.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1198,7 +1223,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_capacity:
                             statementNode.paramDict["capacity"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_capacity = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["capacity"]);
+                            SyntaxTreeNode w_capacity = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["capacity"]);
                             w_capacity.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1213,7 +1238,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_xscale:
                             statementNode.paramDict["xscale"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_xscale = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["xscale"]);
+                            SyntaxTreeNode w_xscale = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["xscale"]);
                             w_xscale.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1228,7 +1253,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_yscale:
                             statementNode.paramDict["yscale"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_yscale = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["yscale"]);
+                            SyntaxTreeNode w_yscale = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["yscale"]);
                             w_yscale.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1243,7 +1268,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_time:
                             statementNode.paramDict["time"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_time = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["time"]);
+                            SyntaxTreeNode w_time = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["time"]);
                             w_time.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1258,7 +1283,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_filename:
                             statementNode.paramDict["filename"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_filename = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["filename"]);
+                            SyntaxTreeNode w_filename = new SyntaxTreeNode(SyntaxType.tail_idenLeave, statementNode.paramDict["filename"]);
                             w_filename.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1273,7 +1298,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_track:
                             statementNode.paramDict["track"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_track = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["track"]);
+                            SyntaxTreeNode w_track = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["track"]);
                             w_track.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1318,7 +1343,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_state:
                             statementNode.paramDict["state"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_state = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["state"]);
+                            SyntaxTreeNode w_state = new SyntaxTreeNode(SyntaxType.case_disjunct, statementNode.paramDict["state"]);
                             w_state.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1333,7 +1358,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_vol:
                             statementNode.paramDict["vol"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_vol = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["vol"]);
+                            SyntaxTreeNode w_vol = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["vol"]);
                             w_vol.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1348,7 +1373,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_loc:
                             statementNode.paramDict["loc"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_loc = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["loc"]);
+                            SyntaxTreeNode w_loc = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["loc"]);
                             w_loc.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1363,7 +1388,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_ro:
                             statementNode.paramDict["ro"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_ro = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["ro"]);
+                            SyntaxTreeNode w_ro = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["ro"]);
                             w_ro.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1378,7 +1403,7 @@ namespace LyyneheymCore.SlyviaPile
                             break;
                         case TokenType.Token_p_link:
                             statementNode.paramDict["link"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_link = new SyntaxTreeNode(SyntaxType.case_wexpr, statementNode.paramDict["link"]);
+                            SyntaxTreeNode w_link = new SyntaxTreeNode(SyntaxType.tail_idenLeave, statementNode.paramDict["link"]);
                             w_link.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
@@ -1390,6 +1415,21 @@ namespace LyyneheymCore.SlyviaPile
                             statementNode.paramDict["link"].children.Add(w_link);
                             // 加入不推导队列
                             this.iQueue.Enqueue(w_link);
+                            break;
+                        case TokenType.Token_p_sign:
+                            statementNode.paramDict["sign"].children = new List<SyntaxTreeNode>();
+                            SyntaxTreeNode w_sign = new SyntaxTreeNode(SyntaxType.tail_idenLeave, statementNode.paramDict["sign"]);
+                            w_sign.paramTokenStream = new List<Token>();
+                            prescanPointer += 2;
+                            while (prescanPointer < this.istream.Count
+                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
+                                && this.istream[prescanPointer].aType != TokenType.startend)
+                            {
+                                w_sign.paramTokenStream.Add(this.istream[prescanPointer++]);
+                            }
+                            statementNode.paramDict["sign"].children.Add(w_sign);
+                            // 加入不推导队列
+                            this.iQueue.Enqueue(w_sign);
                             break;
                         default:
                             break;

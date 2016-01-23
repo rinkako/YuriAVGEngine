@@ -25,14 +25,15 @@ namespace LyyneheymCore.SlyviaCore
         {
             get
             {
-                return String.Format("___SlyviaFunc_{0}?{1}", this.callname, this.parentSceneName);
+                return String.Format("__SlyviaFunc@{0}?{1}", this.callname, this.parentSceneName);
             }
-            private set;
         }
         // 绑定动作序列
         public SceneAction sa = null;
         // 函数名
         public string callname = null;
+        // 参数列表
+        public List<string> param = null;
         // 场景名称
         public string parentSceneName = null;
     }

@@ -328,6 +328,7 @@ namespace LyyneheymCore.SlyviaPile
                     return true;
                 }
             }
+            bool idFlag = false;
             // 双字符匹配失败，进入单字符自动机路径
             if (this.nextCharPointer + 1 <= glen)
             {
@@ -347,6 +348,10 @@ namespace LyyneheymCore.SlyviaPile
                         res.aType = TokenType.Token_Equality;
                         okFlag = true;
                         break;
+                    // 遇到&符号就跳转到变量处理路径上
+                    case "&":
+                        idFlag = this.GetIdentifierCalculator(res);
+                        break;
                     default:
                         break;
                 }
@@ -358,7 +363,7 @@ namespace LyyneheymCore.SlyviaPile
                     return true;
                 }
             }
-            return false;
+            return (idFlag || false);
         }
 
         /// <summary>
@@ -413,6 +418,28 @@ namespace LyyneheymCore.SlyviaPile
                     return true;
                 }
             }
+            // 状态转移，11个字符的情况
+            if (this.nextCharPointer + 11 <= glen)
+            {
+                bool okFlag = false;
+                string str = this.sourceCode.Substring(this.nextCharPointer, 11).ToLower();
+                if (str == "endfunction")
+                {
+                    res.aType = TokenType.Token_o_endfunction;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 11]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                // 如果命中了符号就返回
+                if (okFlag)
+                {
+                    res.detail = str;
+                    this.Jump(11);
+                    return true;
+                }
+            }
             // 状态转移，9个字符的情况
             if (this.nextCharPointer + 9 <= glen)
             {
@@ -443,6 +470,15 @@ namespace LyyneheymCore.SlyviaPile
                 if (str == "shutdown")
                 {
                     res.aType = TokenType.Token_o_shutdown;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 8]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "function")
+                {
+                    res.aType = TokenType.Token_o_function;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 8]) != CharacterType.Letter)
                     {
@@ -690,6 +726,15 @@ namespace LyyneheymCore.SlyviaPile
                         okFlag = true;
                     }
                 }
+                else if (str == "call")
+                {
+                    res.aType = TokenType.Token_o_call;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
                 else if (str == "save")
                 {
                     res.aType = TokenType.Token_o_save;
@@ -738,6 +783,15 @@ namespace LyyneheymCore.SlyviaPile
                 else if (str == "face")
                 {
                     res.aType = TokenType.Token_p_face;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "sign")
+                {
+                    res.aType = TokenType.Token_p_sign;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -1009,7 +1063,8 @@ namespace LyyneheymCore.SlyviaPile
         /// <returns>是否命中</returns>
         private bool GetIdentifierCalculator(Token res)
         {
-            // 跳过朵拉符号$
+            // 跳过变量引用符号$或&
+            res.isGlobal = this.GetCharType(this.sourceCode[this.nextCharPointer]) == CharacterType.And;
             this.Jump(1);
             // 构造标识符
             StringBuilder sb = new StringBuilder();

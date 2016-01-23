@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Text.RegularExpressions;
 using LyyneheymCore.SlyviaCore;
 
 namespace LyyneheymCore.SlyviaPile
@@ -22,13 +22,13 @@ namespace LyyneheymCore.SlyviaPile
         }
 
         /// <summary>
-        /// 进行一趟用户脚本编译，并把所有语句子树规约到一个共同的根节点上，
-        /// 并返回语义分析、流程逻辑处理和代码优化后的动作序列
+        /// <para>进行一趟用户脚本编译，并把所有语句子树规约到一个共同的根节点上</para>
+        /// <para>并返回语义分析、流程逻辑处理和代码优化后的场景实例</para>
         /// </summary>
         /// <param name="sourceCodeItem">以行分割的源代码字符串向量</param>
         /// <param name="sceneName">场景文件的名称，不带路径和后缀名</param>
-        /// <returns>动作序列的头部</returns>
-        public SceneAction StartDash(List<string> sourceCodeItem, string sceneName)
+        /// <returns>该剧本的场景</returns>
+        public Scene StartDash(List<string> sourceCodeItem, string sceneName)
         {
             // 变量初期化
             this.scenario = sceneName;
@@ -48,9 +48,9 @@ namespace LyyneheymCore.SlyviaPile
                 }
             }
             // 语义分析
-            this.rootSa = this.Semanticer(this.parseTree);
             string ggs = this.parseTree.ToString();
-            return this.rootSa;
+            this.rootScene = this.parseScene(this.Semanticer(this.parseTree));
+            return this.rootScene;
         }
 
         /// <summary>
@@ -341,24 +341,28 @@ namespace LyyneheymCore.SlyviaPile
         /// 启动语义分析器，返回动作语法树对应的序列
         /// </summary>
         /// <param name="root">语法树根节点</param>
-        /// <returns>动作序列的头部</returns>
-        private SceneAction Semanticer(SyntaxTreeNode root)
+        /// <returns>一个键值对，剧本的动作序列和函数向量</returns>
+        private KeyValuePair<SceneAction, List<SceneFunction>> Semanticer(SyntaxTreeNode root)
         {
             SceneAction resSa = null;
+            List<SceneAction> funcSaVec = new List<SceneAction>();
+            List<SceneFunction> funcVec = new List<SceneFunction>();
             this.saStack = new Stack<SceneAction>();
             this.blockDict = new Dictionary<string, SceneAction>();
-            this.Mise(this.parseTree, ref resSa);
-            this.LXHan(resSa, resSa);
+            this.Mise(this.parseTree, ref resSa, funcSaVec);
+            this.Tamao(resSa, resSa, false);
+            funcSaVec.ForEach((x) => funcVec.Add(this.Tamao(x, x, true)));
             resSa.aTag = this.scenario;
-            return resSa;
+            return new KeyValuePair<SceneAction, List<SceneFunction>>(resSa, funcVec);
         }
 
         /// <summary>
         /// 递归遍历语法树，构造动作序列
         /// </summary>
         /// <param name="mynode">递归节点</param>
-        /// <param name="curSa">当前动作序列头部</param>
-        private void Mise(SyntaxTreeNode mynode, ref SceneAction curSa)
+        /// <param name="curSa">当前场景的动作序列头部</param>
+        /// <param name="funcSaVec">依附在该场景下的函数的动作序列向量</param>
+        private void Mise(SyntaxTreeNode mynode, ref SceneAction curSa, List<SceneAction> funcSaVec)
         {
             // 自顶向下递归遍历语法树
             switch (mynode.nodeSyntaxType)
@@ -392,9 +396,12 @@ namespace LyyneheymCore.SlyviaPile
                                 }
                             }
                         }
-                        // 接下来递归这些孩子，加到真分支去
-                        kotoriTrueList.Add(sa);
-                        this.Mise(child, ref sa);
+                        // 如果不是函数定义的话递归就这个孩子，加到真分支去
+                        if (child.nodeSyntaxType != SyntaxType.synr_function)
+                        {
+                            kotoriTrueList.Add(sa);
+                        }
+                        this.Mise(child, ref sa, funcSaVec);
                     }
                     // 处理序列关系
                     for (int i = 0; i < kotoriTrueList.Count - 1; i++)
@@ -412,19 +419,19 @@ namespace LyyneheymCore.SlyviaPile
                         break;
                     }
                     SceneAction saIfTrue = new SceneAction();
-                    this.Mise(mynode.children[0], ref saIfTrue);
+                    this.Mise(mynode.children[0], ref saIfTrue, funcSaVec);
                     for (int i = 0; i < saIfTrue.trueRouting.Count; i++)
                     {
                         curSa.trueRouting.Add(saIfTrue.trueRouting[i]);
                     }
                     // 处理假分支
                     curSa.falseRouting = new List<SceneAction>();
-                    if (mynode.children[1] == null)
+                    if (mynode.children[1] == null || (mynode.children[1].nodeSyntaxType == SyntaxType.synr_endif))
                     {
                         break;
                     }
                     SceneAction saIfFalse = new SceneAction();
-                    this.Mise(mynode.children[1], ref saIfFalse);
+                    this.Mise(mynode.children[1], ref saIfFalse, funcSaVec);
                     for (int i = 0; i < saIfFalse.trueRouting.Count; i++)
                     {
                         // 这里之所以是trueRouting是因为kotori节点的缘故
@@ -444,21 +451,36 @@ namespace LyyneheymCore.SlyviaPile
                         break;
                     }
                     SceneAction saForTrue = new SceneAction();
-                    this.Mise(mynode.children[0], ref saForTrue);
+                    this.Mise(mynode.children[0], ref saForTrue, funcSaVec);
                     for (int i = 0; i < saForTrue.trueRouting.Count; i++)
                     {
                         curSa.trueRouting.Add(saForTrue.trueRouting[i]);
                     }
                     break;
+                case SyntaxType.synr_function:
+                    // 处理真分支
+                    if (mynode.children[0] == null)
+                    {
+                        break;
+                    }
+                    SceneAction saFuncTrue = new SceneAction();
+                    curSa.trueRouting = new List<SceneAction>();
+                    this.Mise(mynode.children[0], ref saFuncTrue, funcSaVec);
+                    for (int i = 0; i < saFuncTrue.trueRouting.Count; i++)
+                    {
+                        curSa.trueRouting.Add(saFuncTrue.trueRouting[i]);
+                    }
+                    curSa.isBelongFunc = true;
+                    // 加到函数向量里
+                    funcSaVec.Add(curSa);
+                    break;
                 case SyntaxType.synr_lable:
-                    // 这里，断言了lable的name属性只能推导出string的iden叶节点
-                    string labelKey = mynode.paramDict["name"].children[0].children[0].children[0].children[0].nodeValue;
+                    string labelKey = mynode.paramDict["name"].children[0].nodeValue;
                     curSa.aTag = labelKey;
                     this.blockDict[labelKey] = curSa;
                     break;
                 case SyntaxType.synr_jump:
-                    // 这里，断言了jump的name属性只能推导出string的iden叶节点
-                    string jumpKey = mynode.paramDict["name"].children[0].children[0].children[0].children[0].nodeValue;
+                    string jumpKey = mynode.paramDict["name"].children[0].nodeValue;
                     curSa.aTag = jumpKey;
                     break;
                 case SyntaxType.synr_dialog:
@@ -474,7 +496,9 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="saNode">要处理的动作序列头部</param>
         /// <param name="parent">当前序列头部的双亲</param>
-        private void LXHan(SceneAction saNode, SceneAction parent)
+        /// <param name="funcFlag">函数序列标记</param>
+        /// <returns>函数实例</returns>
+        private SceneFunction Tamao(SceneAction saNode, SceneAction parent, bool funcFlag)
         {
             switch (saNode.aType)
             {
@@ -486,7 +510,7 @@ namespace LyyneheymCore.SlyviaPile
                     // 递归访问子节点
                     for (int i = 0; i < saNode.trueRouting.Count - 1; i++)
                     {
-                        this.LXHan(saNode.trueRouting[i], saNode);
+                        this.Tamao(saNode.trueRouting[i], saNode, false);
                     }
                     // 最后一个孩子的下一节点修改为它母节点的后继
                     saNode.trueRouting[saNode.trueRouting.Count - 1].next = parent.next;
@@ -499,7 +523,7 @@ namespace LyyneheymCore.SlyviaPile
                     // 递归访问子节点
                     for (int i = 0; i < saNode.trueRouting.Count - 1; i++)
                     {
-                        this.LXHan(saNode.trueRouting[i], saNode);
+                        this.Tamao(saNode.trueRouting[i], saNode, false);
                     }
                     // 最后一个孩子的下一节点修改为for子句本身
                     saNode.trueRouting[saNode.trueRouting.Count - 1].next = saNode;
@@ -521,7 +545,7 @@ namespace LyyneheymCore.SlyviaPile
                     // 递归访问子节点
                     for (int i = 0; i < saNode.trueRouting.Count - 1; i++)
                     {
-                        this.LXHan(saNode.trueRouting[i], saNode);
+                        this.Tamao(saNode.trueRouting[i], saNode, false);
                     }
                     // 最后一个孩子的下一节点修改为if子句节点的后继
                     saNode.trueRouting[saNode.trueRouting.Count - 1].next = saNode.next;
@@ -533,7 +557,7 @@ namespace LyyneheymCore.SlyviaPile
                     // 递归访问子节点
                     for (int i = 0; i < saNode.falseRouting.Count - 1; i++)
                     {
-                        this.LXHan(saNode.falseRouting[i], saNode);
+                        this.Tamao(saNode.falseRouting[i], saNode, false);
                     }
                     // 最后一个孩子的下一节点修改为if子句节点的后继
                     saNode.falseRouting[saNode.falseRouting.Count - 1].next = saNode.next;
@@ -557,6 +581,86 @@ namespace LyyneheymCore.SlyviaPile
                 default:
                     break;
             }
+            // 如果是函数序列就返回一个函数实例
+            SceneFunction retSF = null;
+            if (funcFlag)
+            {
+                retSF = this.parseSaToSF(saNode);
+            }
+            // 最后让递归过程去修改子节点的属性
+            saNode.isBelongFunc = funcFlag;
+            return retSF;
+        }
+
+        /// <summary>
+        /// 将动作序列绑定到一个新的场景函数
+        /// </summary>
+        /// <param name="funcSa">动作序列</param>
+        /// <returns>场景函数</returns>
+        private SceneFunction parseSaToSF(SceneAction funcSa)
+        {
+            if (funcSa.isBelongFunc != true)
+            {
+                throw new Exception("语义错误：一个非函数节点被作为函数声明处理");
+            }
+            // 获得函数签名
+            string signature = funcSa.argsDict["sign"].nodeValue.ToString();
+            string[] signItem = signature.Split(new char[] {'(', ')'}, StringSplitOptions.RemoveEmptyEntries);
+            if (signItem.Length < 1 || !IsSymbol(signItem[0].Trim()))
+            {
+                throw new Exception("语义错误：函数签名不合法");
+            }
+            List<string> funcParas = new List<string>();
+            // 如果没有参数就跳过参数遍历
+            if (signItem.Length > 1)
+            {
+                string[] varItem = signItem[1].Split(',');
+                foreach (string ivar in varItem)
+                {
+                    string xvar = ivar.Trim();
+                    if (IsSymbol(xvar))
+                    {
+                        funcParas.Add(xvar);
+                    }
+                    else
+                    {
+                        throw new Exception("语义错误：函数签名的参数列表不合法");
+                    }
+                }
+            }
+            return new SceneFunction(signItem[0].Trim(), this.scenario, funcSa);
+        }
+
+        /// <summary>
+        /// 将场景的组件构造成场景实例
+        /// </summary>
+        /// <param name="sceneItem">一个键值对，主场景序列头部和函数向量</param>
+        /// <returns>场景实例</returns>
+        private Scene parseScene(KeyValuePair<SceneAction, List<SceneFunction>> sceneItem)
+        {
+            return new Scene(this.scenario, sceneItem.Key, sceneItem.Value);
+        }
+
+        /// <summary>
+        /// 测试一个字符串是否可以作为一个idnetity符号
+        /// </summary>
+        /// <param name="parStr">待匹配字符串</param>
+        /// <returns>是否可以作为C符号</returns>
+        private bool IsSymbol(string parStr)
+        {
+            return IsMatchRegEx(parStr, @"^[a-zA-Z_][a-zA-Z0-9_]*$");
+        }
+
+        /// <summary>
+        /// 测试一个字符串是否满足一个正则式
+        /// </summary>
+        /// <param name="parStr">待校验字符串</param>
+        /// <param name="regEx">正则表达式</param>
+        /// <returns>正则式真值</returns>
+        public static bool IsMatchRegEx(string parStr, string regEx)
+        {
+            Regex myRegex = new Regex(regEx);
+            return myRegex.IsMatch(parStr);
         }
 
         // 场景名称
@@ -565,8 +669,8 @@ namespace LyyneheymCore.SlyviaPile
         private Lexer lexer = null;
         // 语法分析器
         private Parser parser = null;
-        // 动作序列头部
-        private SceneAction rootSa = null;
+        // 剧本场景实例
+        private Scene rootScene = null;
         // 语法树根节点
         private SyntaxTreeNode parseTree = null;
         // 动作序列嵌套栈

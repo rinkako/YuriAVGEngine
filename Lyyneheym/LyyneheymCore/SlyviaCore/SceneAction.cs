@@ -23,6 +23,8 @@ namespace LyyneheymCore.SlyviaCore
         public List<SceneAction> trueRouting = null;
         // 下一假节点向量
         public List<SceneAction> falseRouting = null;
+        // 是否依存函数
+        public bool isBelongFunc = false;
         // 附加值
         public string aTag = null;
         // 字符串化方法
@@ -87,6 +89,10 @@ namespace LyyneheymCore.SlyviaCore
         act_else,
         // 条件（尾）
         act_endif,
+        // 函数声明（头）
+        act_function,
+        // 函数声明（尾）
+        act_endfunction,
         // 剧本跳转
         act_scene,
         // 开关操作
@@ -100,6 +106,8 @@ namespace LyyneheymCore.SlyviaCore
         // 等待
         act_wait,
         // 选择支
-        act_branch
+        act_branch,
+        // 函数调用
+        act_call
     }
 }
