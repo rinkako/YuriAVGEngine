@@ -31,6 +31,8 @@ namespace LyyneheymCore.SlyviaPile
         public string nodeName = "";
         // 附加值
         public object aTag = null;
+        // 逆波兰表达
+        public string polish = null;
         // 错误位
         public bool errorBit = false;
         // 不推导节点参数孩子字典

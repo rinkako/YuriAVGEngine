@@ -482,6 +482,260 @@ namespace LyyneheymCore.SlyviaPile
                 case SyntaxType.synr_dialog:
                     curSa.aTag = mynode.nodeValue;
                     break;
+                // 需要处理逆波兰式的节点
+                case SyntaxType.case_wexpr:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wexpr__wmulti__wexpr_pi_45)
+                    {
+                        this.Mise(mynode.children[0], ref curSa, funcSaVec); // 因式
+                        this.Mise(mynode.children[1], ref curSa, funcSaVec); // 加项
+                        mynode.polish += mynode.children[0].polish + mynode.children[1].polish + "+";
+                    }
+                    else
+                    {
+                        mynode.polish = "0";
+                    }
+                    break;
+                case SyntaxType.case_wexpr_pi:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wexpr_pi__wplus__wexpr_pi_72)
+                    {
+                        this.Mise(mynode.children[0], ref curSa, funcSaVec); // 加项
+                        this.Mise(mynode.children[1], ref curSa, funcSaVec); // 加项闭包
+                        mynode.polish += mynode.children[0].polish + mynode.children[1].polish + "+";
+                    }
+                    break;
+                case SyntaxType.case_wplus:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wplus__plus_wmulti_46)
+                    {
+                        this.Mise(mynode.children[1], ref curSa, funcSaVec);
+                        mynode.aTag = mynode.children[1].aTag; // 加法
+                    }
+                    else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wplus__minus_wmulti_47)
+                    {
+                        this.Mise(mynode.children[1], ref curSa, funcSaVec);
+                        // 减法
+                        if (mynode.children[1].aTag.GetType() == typeof(double))
+                        {
+                            mynode.aTag = (-1.0) * (double)mynode.children[1].aTag;
+                        }
+                        else
+                        {
+                            mynode.aTag = "-" + (string)mynode.children[1].aTag;
+                        }
+                    }
+                    else
+                    {
+                        mynode.aTag = 0;
+                    }
+                    break;
+                case SyntaxType.case_wmulti:
+                    this.Mise(mynode.children[0], ref curSa, funcSaVec); // 乘项
+                    this.Mise(mynode.children[1], ref curSa, funcSaVec); // 乘项闭包
+                    if (mynode.children[0].aTag.GetType() == typeof(double) &&
+                        mynode.children[1].aTag.GetType() == typeof(double))
+                    {
+                        mynode.aTag = (double)mynode.children[0].aTag * (double)mynode.children[1].aTag;
+                    }
+                    else
+                    {
+                        mynode.aTag = (string)mynode.children[0].aTag + "*" + (string)mynode.children[1].aTag;
+                    }
+                    break;
+                case SyntaxType.case_wmultiOpt:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wmultiOpt__multi_wunit__wmultiOpt_50)
+                    {
+                        this.Mise(mynode.children[1], ref curSa, funcSaVec); // 乘项
+                        this.Mise(mynode.children[2], ref curSa, funcSaVec); // 乘项闭包
+                        // 乘法
+                        if (mynode.children[1].aTag.GetType() == typeof(double) &&
+                        mynode.children[2].aTag.GetType() == typeof(double))
+                        {
+                            mynode.aTag = (double)mynode.children[1].aTag * (double)mynode.children[2].aTag;
+                        }
+                        else
+                        {
+                            mynode.aTag = (string)mynode.children[1].aTag + "*" + (string)mynode.children[2].aTag;
+                        }
+                    }
+                    else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wmultiOpt__div_wunit__wmultiOpt_51)
+                    {
+                        this.Mise(mynode.children[1], ref curSa, funcSaVec); // 乘项
+                        this.Mise(mynode.children[2], ref curSa, funcSaVec); // 乘项闭包
+
+                        if (mynode.children[1].aTag.GetType() == typeof(double) &&
+                        mynode.children[2].aTag.GetType() == typeof(double))
+                        {
+                            if ((double)mynode.children[1].aTag * (double)mynode.children[2].aTag == 0)
+                            {
+                                mynode.aTag = 0.0;
+                                // 除零错误
+                            }
+                            else
+                            {
+                                mynode.aTag = 1.0f / (double)mynode.children[1].aTag * (double)mynode.children[2].aTag;
+                            }
+
+                            mynode.aTag = (double)mynode.children[1].aTag * (double)mynode.children[2].aTag;
+                        }
+                        else
+                        {
+                            mynode.aTag = (string)mynode.children[1].aTag + "/" + (string)mynode.children[2].aTag;
+                        }
+                    }
+                    else
+                    {
+                        mynode.aTag = 1.0f;
+                    }
+                    break;
+                case SyntaxType.case_wunit:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__number_53)
+                    {
+                        mynode.aTag = Convert.ToDouble(mynode.children[0].nodeValue);
+                    }
+                    else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__minus_wunit_55)
+                    {
+                        this.Mise(mynode.children[1], ref curSa, funcSaVec);
+                        if (mynode.children[1].aTag.GetType() == typeof(double))
+                        {
+                            mynode.aTag = (-1) * (double)mynode.children[1].aTag;
+                        }
+                        else
+                        {
+                            mynode.aTag = "-" + (string)mynode.children[1].aTag;
+                        }
+
+                    }
+                    else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__plus_wunit_56)
+                    {
+                        this.Mise(mynode.children[1], ref curSa, funcSaVec);
+                        mynode.aTag = mynode.children[1].aTag;
+                    }
+                    else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__brucket_disjunct_57)
+                    {
+                        this.Mise(mynode.children[1], ref curSa, funcSaVec);
+                        mynode.aTag = mynode.children[1].aTag;
+                    }
+                    else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__iden_54)
+                    {
+                        //mynode.aTag = myexec->Reference(mynode.children[0].nodeValue); // 查参数字典
+                        // 这里需要绑定运行时环境的变量
+                    }
+                    break;
+                case SyntaxType.case_disjunct:
+                    this.Mise(mynode.children[0], ref curSa, funcSaVec); // 合取项
+                    this.Mise(mynode.children[1], ref curSa, funcSaVec); // 析取闭包
+                    mynode.aTag = (bool)mynode.children[0].aTag || (bool)mynode.children[1].aTag;
+                    return (bool)mynode.aTag;
+                case SyntaxType.case_disjunct_pi:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___disjunct_pi__conjunct__disjunct_pi_36)
+                    {
+                        this.Mise(mynode.children[1], ref curSa, funcSaVec); // 合取项
+                        this.Mise(mynode.children[2], ref curSa, funcSaVec); // 析取闭包
+                        mynode.aTag = (bool)mynode.children[1].aTag || (bool)mynode.children[2].aTag;
+                    }
+                    else
+                    {
+                        mynode.aTag = false; // 析取false不影响结果
+                    }
+                    break;
+                case SyntaxType.case_conjunct:
+                    this.Mise(mynode.children[0], ref curSa, funcSaVec); // 布尔项
+                    this.Mise(mynode.children[1], ref curSa, funcSaVec); // 合取闭包
+                    mynode.aTag = (bool)mynode.children[0].aTag && (bool)mynode.children[1].aTag;
+                    break;
+                case SyntaxType.case_conjunct_pi:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___conjunct_pi__bool__conjunct_pi_39)
+                    {
+                        this.Mise(mynode.children[1], ref curSa, funcSaVec); // 布尔项
+                        this.Mise(mynode.children[2], ref curSa, funcSaVec); // 合取闭包
+                        mynode.aTag = (bool)mynode.children[1].aTag && (bool)mynode.children[2].aTag;
+                    }
+                    else
+                    {
+                        mynode.aTag = true; // 合取true不影响结果
+                    }
+                    break;
+                case SyntaxType.case_bool:
+                    if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___bool__not_bool_42)
+                    {
+                        this.Mise(mynode.children[1], ref curSa, funcSaVec); // 非项
+                        mynode.aTag = ((bool)mynode.children[1].aTag) == false;
+                    }
+                    else
+                    {
+                        this.Mise(mynode.children[0], ref curSa, funcSaVec); // 表达式
+                        mynode.aTag = (bool)mynode.children[0].aTag;
+                    }
+                    break;
+                case SyntaxType.case_comp:
+                    if (mynode.children[1].candidateFunction.GetCFType() == CFunctionType.deri___rop__epsilon_80)
+                    {
+                        this.Mise(mynode.children[0], ref curSa, funcSaVec); // 左边
+                        mynode.aTag = mynode.children[0].aTag;
+                    }
+                    else
+                    {
+                        string optype = mynode.children[1].nodeValue; // 运算符
+                        this.Mise(mynode.children[0], ref curSa, funcSaVec); // 左边
+                        this.Mise(mynode.children[2], ref curSa, funcSaVec); // 右边
+                        mynode.aTag = false;
+                        if (mynode.children[0].aTag.GetType() != typeof(double) &&
+                            mynode.children[2].aTag.GetType() != typeof(double))
+                        {
+                            if (optype == "<>")
+                            {
+                                mynode.aTag = string.Compare((string)mynode.children[0].aTag, (string)mynode.children[2].aTag) != 0;
+                            }
+                            else if (optype == "==")
+                            {
+                                mynode.aTag = string.Compare((string)mynode.children[0].aTag, (string)mynode.children[2].aTag) == 0;
+                            }
+                            else if (optype == ">")
+                            {
+                                mynode.aTag = string.Compare((string)mynode.children[0].aTag, (string)mynode.children[2].aTag) > 0;
+                            }
+                            else if (optype == "<")
+                            {
+                                mynode.aTag = string.Compare((string)mynode.children[0].aTag, (string)mynode.children[2].aTag) < 0;
+                            }
+                            else if (optype == ">=")
+                            {
+                                mynode.aTag = string.Compare((string)mynode.children[0].aTag, (string)mynode.children[2].aTag) >= 0;
+                            }
+                            else if (optype == "<=")
+                            {
+                                mynode.aTag = string.Compare((string)mynode.children[0].aTag, (string)mynode.children[2].aTag) <= 0;
+                            }
+                        }
+                        else
+                        {
+                            if (optype == "<>")
+                            {
+                                mynode.aTag = (double)mynode.children[0].aTag != (double)mynode.children[2].aTag;
+                            }
+                            else if (optype == "==")
+                            {
+                                mynode.aTag = (double)mynode.children[0].aTag == (double)mynode.children[2].aTag;
+                            }
+                            else if (optype == ">")
+                            {
+                                mynode.aTag = (double)mynode.children[0].aTag > (double)mynode.children[2].aTag;
+                            }
+                            else if (optype == "<")
+                            {
+                                mynode.aTag = (double)mynode.children[0].aTag < (double)mynode.children[2].aTag;
+                            }
+                            else if (optype == ">=")
+                            {
+                                mynode.aTag = (double)mynode.children[0].aTag >= (double)mynode.children[2].aTag;
+                            }
+                            else if (optype == "<=")
+                            {
+                                mynode.aTag = (double)mynode.children[0].aTag <= (double)mynode.children[2].aTag;
+                            }
+                        }
+                    }
+                    break;
+
                 default:
                     break;
             }

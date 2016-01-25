@@ -11,12 +11,16 @@ namespace LyyneheymCore.SlyviaCore
     /// </summary>
     public class SceneAction
     {
+        // 节点名称
+        public string saNodeName = null;
         // 节点动作
         public SActionType aType = SActionType.NOP;
         // 参数字典
         public Dictionary<string, SyntaxTreeNode> argsDict = new Dictionary<string, SyntaxTreeNode>();
         // 条件从句
         public SyntaxTreeNode condPointer = null;
+        // 条件从句逆波兰表达
+        public string polish = null;
         // 下一节点
         public SceneAction next = null;
         // 下一真节点向量
@@ -25,6 +29,8 @@ namespace LyyneheymCore.SlyviaCore
         public List<SceneAction> falseRouting = null;
         // 是否依存函数
         public bool isBelongFunc = false;
+        // 依存函数名
+        public string funcName = null;
         // 附加值
         public string aTag = null;
         // 字符串化方法
