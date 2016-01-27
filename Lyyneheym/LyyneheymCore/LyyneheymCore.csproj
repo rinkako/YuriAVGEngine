@@ -49,7 +49,7 @@
     <Compile Include="SlyviaCore\ResourceManager.cs" />
     <Compile Include="SlyviaCore\RuntimeManager.cs" />
     <Compile Include="SlyviaCore\Scene.cs" />
-    <Compile Include="SlyviaCore\SceneAction.cs" />
+    <Compile Include="SlyviaPile\SceneAction.cs" />
     <Compile Include="SlyviaCore\SceneFunction.cs" />
     <Compile Include="SlyviaCore\SceneManager.cs" />
     <Compile Include="SlyviaCore\SpiritContainer.cs" />

@@ -50,8 +50,9 @@ namespace LyyneheymCore.SlyviaPile
         /// <summary>
         /// 启动语法分析器
         /// </summary>
+        /// <param name="line">处理的行号</param>
         /// <returns>匹配完毕的语法树</returns>
-        public SyntaxTreeNode Parse()
+        public SyntaxTreeNode Parse(int line)
         {
             // 初期化
             this.Reset();
@@ -84,6 +85,7 @@ namespace LyyneheymCore.SlyviaPile
                 if (this.iParseStack.Count > 0 && this.iParseStack.Peek() == SyntaxType.case_kotori)
                 {
                     SyntaxTreeNode stn = this.Kaguya();
+                    stn.line = line;
                     // 如果这个节点是if、for、function子句，那就要为她增加一个kotori节点
                     if (stn.nodeSyntaxType == SyntaxType.synr_if ||
                         stn.nodeSyntaxType == SyntaxType.synr_for ||
@@ -97,9 +99,11 @@ namespace LyyneheymCore.SlyviaPile
                         }
                         currentPtr.children.Add(stn);
                         currentPtr = stn;
+                        currentPtr.line = line;
                         // 为子句节点加上一个真分支
                         currentPtr.children = new List<SyntaxTreeNode>();
                         SyntaxTreeNode trueBranch = new SyntaxTreeNode(SyntaxType.case_kotori);
+                        trueBranch.line = line;
                         trueBranch.children = new List<SyntaxTreeNode>();
                         trueBranch.nodeName = trueBranch.nodeSyntaxType.ToString() + 
                             (stn.nodeSyntaxType == SyntaxType.synr_if ? "_trueBranch" :
@@ -115,6 +119,7 @@ namespace LyyneheymCore.SlyviaPile
                     {
                         currentPtr = currentPtr.parent;
                         SyntaxTreeNode falseBranch = new SyntaxTreeNode(SyntaxType.case_kotori);
+                        falseBranch.line = line;
                         falseBranch.children = new List<SyntaxTreeNode>();
                         falseBranch.nodeName = falseBranch.nodeSyntaxType.ToString() + "_falseBranch";
                         falseBranch.parent = currentPtr;
@@ -181,6 +186,10 @@ namespace LyyneheymCore.SlyviaPile
                         {
                             currentPtr = this.Homura(currentPtr, func.GetCFType(), nodeType, iToken);
                         }
+                        if (currentPtr != null)
+                        {
+                            currentPtr.line = line;
+                        }
                     }
                     // 没有对应的候选式时
                     else
@@ -204,7 +213,6 @@ namespace LyyneheymCore.SlyviaPile
                     // 值表达式时
                     else
                     {
-                        //this.iParseStack.Push(SyntaxType.case_wexpr);
                         this.iParseStack.Push(reroot.nodeSyntaxType);
                     }
                     // 把token流改为私有的token流
@@ -1505,6 +1513,10 @@ namespace LyyneheymCore.SlyviaPile
                 myNode.nodeValue = myToken.detail;
                 myNode.nodeSyntaxType = mySyntax;
                 myNode.nodeName = mySyntax.ToString();
+                if (myToken.isVar)
+                {
+                    myNode.nodeVarType = myToken.isGlobal ? VarScopeType.GLOBAL : VarScopeType.LOCAL;
+                }
             }
             // 取候选向量
             List<SyntaxType> iSvec = this.iDict[Convert.ToInt32(myType)];

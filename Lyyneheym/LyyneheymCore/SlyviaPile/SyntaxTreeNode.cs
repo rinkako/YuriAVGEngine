@@ -27,6 +27,8 @@ namespace LyyneheymCore.SlyviaPile
         public string nodeValue = null;
         // 命中产生式类型
         public CFunctionType nodeType = CFunctionType.None;
+        // 在源代码的行号
+        public int line = 0;
         // 节点名字
         public string nodeName = "";
         // 附加值
@@ -39,8 +41,8 @@ namespace LyyneheymCore.SlyviaPile
         public Dictionary<string, SyntaxTreeNode> paramDict = null;
         // 不推导节点参数Token子流
         internal List<Token> paramTokenStream = null;
-        // 节点变量的引用
-        public object nodeVarRef = null;
+        // 节点变量类型
+        public VarScopeType nodeVarType = VarScopeType.NOTVAR;
         // 命中语法结构类型
         private SyntaxType nodeSyntaxTyper = SyntaxType.Unknown;
         // 命中语法结构类型
@@ -440,5 +442,15 @@ namespace LyyneheymCore.SlyviaPile
         tail_lessThan_Equality_Leave,
         // #
         tail_startEndLeave
+    }
+
+    /// <summary>
+    /// 枚举：变量作用域
+    /// </summary>
+    public enum VarScopeType
+    {
+        NOTVAR,
+        LOCAL,
+        GLOBAL
     }
 }

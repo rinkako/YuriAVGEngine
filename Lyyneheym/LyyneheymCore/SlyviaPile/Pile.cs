@@ -32,20 +32,22 @@ namespace LyyneheymCore.SlyviaPile
         {
             // 初期化
             this.Reset(sceneName);
-            foreach (string s in sourceCodeItem)
+            for (int line = 0; line < sourceCodeItem.Count; line++)
             {
                 // 词法分析
-                this.lexer.Init(s);
+                this.lexer.Init(sourceCodeItem[line]);
                 List<Token> tokenStream = this.lexer.Analyse();
                 // 语法分析
                 if (tokenStream.Count > 0)
                 {
                     this.parser.SetTokenStream(tokenStream);
-                    this.parser.Parse();
+                    this.parser.Parse(line);
                 }
             }
             // 语义分析
-            this.rootScene = this.parseScene(this.Semanticer(this.parseTree));
+            KeyValuePair<SceneAction, List<SceneFunction>> r = this.Semanticer(this.parseTree);
+            this.rootScene = this.parseScene(r);
+            string il = this.parseToIL(this.rootScene);
             return this.rootScene;
         }
 
@@ -388,7 +390,11 @@ namespace LyyneheymCore.SlyviaPile
                             {
                                 if (kvp.Value.children != null)
                                 {
-                                    sa.argsDict.Add(kvp.Key, kvp.Value.children[0]);
+                                    sa.argsDict.Add(kvp.Key, this.ProcessArgPolish(kvp.Value.children[0]));
+                                }
+                                else
+                                {
+                                    sa.argsDict.Add(kvp.Key, "");
                                 }
                             }
                         }
@@ -407,7 +413,7 @@ namespace LyyneheymCore.SlyviaPile
                     break;
                 case SyntaxType.synr_if:
                     // 处理条件指针
-                    curSa.condPointer = mynode.paramDict["cond"];
+                    curSa.condPolish = this.ProcessArgPolish(mynode.paramDict["cond"]);
                     // 处理真分支
                     curSa.trueRouting = new List<SceneAction>();
                     if (mynode.children[0] == null)
@@ -438,7 +444,7 @@ namespace LyyneheymCore.SlyviaPile
                     // 处理条件指针
                     if (mynode.paramDict.ContainsKey("cond"))
                     {
-                        curSa.condPointer = mynode.paramDict["cond"];
+                        curSa.condPolish = this.ProcessArgPolish(mynode.paramDict["cond"]);
                     }
                     // 处理真分支
                     curSa.trueRouting = new List<SceneAction>();
@@ -485,6 +491,8 @@ namespace LyyneheymCore.SlyviaPile
                 default:
                     break;
             }
+            // 给节点命名
+            curSa.saNodeName = String.Format("{0}_{1}@{2}", this.scenario, mynode.line, curSa.aType.ToString());
         }
 
         /// <summary>
@@ -492,7 +500,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="mynode">递归语法树根节点</param>
         /// <returns>该节点的逆波兰式</returns>
-        private string ProcessArgDict(SyntaxTreeNode mynode)
+        private string ProcessArgPolish(SyntaxTreeNode mynode)
         {
             switch (mynode.nodeSyntaxType)
             {
@@ -500,8 +508,8 @@ namespace LyyneheymCore.SlyviaPile
                 case SyntaxType.case_wexpr:
                     if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wexpr__wmulti__wexpr_pi_45)
                     {
-                        this.ProcessArgDict(mynode.children[0]); // 因式
-                        this.ProcessArgDict(mynode.children[1]); // 加项
+                        this.ProcessArgPolish(mynode.children[0]); // 因式
+                        this.ProcessArgPolish(mynode.children[1]); // 加项
                         mynode.polish += mynode.children[0].polish + mynode.children[1].polish;
                     }
                     else
@@ -512,21 +520,21 @@ namespace LyyneheymCore.SlyviaPile
                 case SyntaxType.case_wexpr_pi:
                     if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wexpr_pi__wplus__wexpr_pi_72)
                     {
-                        this.ProcessArgDict(mynode.children[0]); // 加项
-                        this.ProcessArgDict(mynode.children[1]); // 加项闭包
+                        this.ProcessArgPolish(mynode.children[0]); // 加项
+                        this.ProcessArgPolish(mynode.children[1]); // 加项闭包
                         mynode.polish += mynode.children[0].polish + mynode.children[1].polish;
                     }
                     break;
                 case SyntaxType.case_wplus:
                     if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wplus__plus_wmulti_46)
                     {
-                        this.ProcessArgDict(mynode.children[1]);
+                        this.ProcessArgPolish(mynode.children[1]);
                         // 加法
                         mynode.polish = mynode.children[1].polish + " + ";
                     }
                     else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wplus__minus_wmulti_47)
                     {
-                        this.ProcessArgDict(mynode.children[1]);
+                        this.ProcessArgPolish(mynode.children[1]);
                         // 减法
                         mynode.polish = mynode.children[1].polish + " - ";
                     }
@@ -536,22 +544,22 @@ namespace LyyneheymCore.SlyviaPile
                     }
                     break;
                 case SyntaxType.case_wmulti:
-                    this.ProcessArgDict(mynode.children[0]); // 乘项
-                    this.ProcessArgDict(mynode.children[1]); // 乘项闭包
-                    mynode.polish = mynode.children[0].polish + mynode.children[1].polish;
+                    this.ProcessArgPolish(mynode.children[0]); // 乘项
+                    this.ProcessArgPolish(mynode.children[1]); // 乘项闭包
+                    mynode.polish = " " + mynode.children[0].polish + mynode.children[1].polish;
                     break;
                 case SyntaxType.case_wmultiOpt:
                     if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wmultiOpt__multi_wunit__wmultiOpt_50)
                     {
-                        this.ProcessArgDict(mynode.children[1]); // 乘项
-                        this.ProcessArgDict(mynode.children[2]); // 乘项闭包
+                        this.ProcessArgPolish(mynode.children[1]); // 乘项
+                        this.ProcessArgPolish(mynode.children[2]); // 乘项闭包
                         // 乘法
                         mynode.polish = " " + mynode.children[1].polish + " * " + mynode.children[2].polish;
                     }
                     else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wmultiOpt__div_wunit__wmultiOpt_51)
                     {
-                        this.ProcessArgDict(mynode.children[1]); // 乘项
-                        this.ProcessArgDict(mynode.children[2]); // 乘项闭包
+                        this.ProcessArgPolish(mynode.children[1]); // 乘项
+                        this.ProcessArgPolish(mynode.children[2]); // 乘项闭包
                         // 除法
                         mynode.polish = " " + mynode.children[1].polish + " / " + mynode.children[2].polish;
                     }
@@ -567,34 +575,45 @@ namespace LyyneheymCore.SlyviaPile
                     }
                     else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__minus_wunit_55)
                     {
-                        this.ProcessArgDict(mynode.children[1]);
+                        this.ProcessArgPolish(mynode.children[1]);
                         mynode.polish = "-" + mynode.children[1].polish;
                     }
                     else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__plus_wunit_56)
                     {
-                        this.ProcessArgDict(mynode.children[1]);
+                        this.ProcessArgPolish(mynode.children[1]);
                         mynode.polish = mynode.children[1].polish;
                     }
                     else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__brucket_disjunct_57)
                     {
-                        this.ProcessArgDict(mynode.children[1]);
+                        this.ProcessArgPolish(mynode.children[1]);
                         mynode.polish = mynode.children[1].polish;
                     }
                     else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__iden_54)
                     {
-                        mynode.polish = mynode.children[0].nodeValue;
+                        if (mynode.children[0].nodeVarType == VarScopeType.GLOBAL)
+                        {
+                            mynode.polish = "&" + mynode.children[0].nodeValue;
+                        }
+                        else if (mynode.children[0].nodeVarType == VarScopeType.LOCAL)
+                        {
+                            mynode.polish = "$" + mynode.children[0].nodeValue;
+                        }
+                        else
+                        {
+                            mynode.polish = mynode.children[0].nodeValue;
+                        }
                     }
                     break;
                 case SyntaxType.case_disjunct:
-                    this.ProcessArgDict(mynode.children[0]); // 合取项
-                    this.ProcessArgDict(mynode.children[1]); // 析取闭包
+                    this.ProcessArgPolish(mynode.children[0]); // 合取项
+                    this.ProcessArgPolish(mynode.children[1]); // 析取闭包
                     mynode.polish = mynode.children[0].polish + mynode.children[1].polish;
                     break;
                 case SyntaxType.case_disjunct_pi:
                     if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___disjunct_pi__conjunct__disjunct_pi_36)
                     {
-                        this.ProcessArgDict(mynode.children[1]); // 合取项
-                        this.ProcessArgDict(mynode.children[2]); // 析取闭包
+                        this.ProcessArgPolish(mynode.children[1]); // 合取项
+                        this.ProcessArgPolish(mynode.children[2]); // 析取闭包
                         mynode.polish = mynode.children[1].polish + mynode.children[2].polish;
                     }
                     else
@@ -603,15 +622,15 @@ namespace LyyneheymCore.SlyviaPile
                     }
                     break;
                 case SyntaxType.case_conjunct:
-                    this.ProcessArgDict(mynode.children[0]); // 布尔项
-                    this.ProcessArgDict(mynode.children[1]); // 合取闭包
+                    this.ProcessArgPolish(mynode.children[0]); // 布尔项
+                    this.ProcessArgPolish(mynode.children[1]); // 合取闭包
                     mynode.polish = mynode.children[0].polish + mynode.children[1].polish;
                     break;
                 case SyntaxType.case_conjunct_pi:
                     if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___conjunct_pi__bool__conjunct_pi_39)
                     {
-                        this.ProcessArgDict(mynode.children[1]); // 布尔项
-                        this.ProcessArgDict(mynode.children[2]); // 合取闭包
+                        this.ProcessArgPolish(mynode.children[1]); // 布尔项
+                        this.ProcessArgPolish(mynode.children[2]); // 合取闭包
                         mynode.polish = mynode.children[1].polish + mynode.children[2].polish;
                     }
                     else
@@ -622,26 +641,26 @@ namespace LyyneheymCore.SlyviaPile
                 case SyntaxType.case_bool:
                     if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___bool__not_bool_42)
                     {
-                        this.ProcessArgDict(mynode.children[1]); // 非项
+                        this.ProcessArgPolish(mynode.children[1]); // 非项
                         mynode.polish = mynode.children[1].polish + " ! ";
                     }
                     else
                     {
-                        this.ProcessArgDict(mynode.children[0]); // 表达式
+                        this.ProcessArgPolish(mynode.children[0]); // 表达式
                         mynode.polish = mynode.children[0].polish;
                     }
                     break;
                 case SyntaxType.case_comp:
                     if (mynode.children[1].candidateFunction.GetCFType() == CFunctionType.deri___rop__epsilon_80)
                     {
-                        this.ProcessArgDict(mynode.children[0]); // 左边
+                        this.ProcessArgPolish(mynode.children[0]); // 左边
                         mynode.polish = mynode.children[0].polish;
                     }
                     else
                     {
                         string optype = mynode.children[1].nodeValue; // 运算符
-                        this.ProcessArgDict(mynode.children[0]); // 左边
-                        this.ProcessArgDict(mynode.children[2]); // 右边
+                        this.ProcessArgPolish(mynode.children[0]); // 左边
+                        this.ProcessArgPolish(mynode.children[2]); // 右边
                         mynode.polish = "";
                         if (optype == "<>")
                         {
@@ -667,6 +686,20 @@ namespace LyyneheymCore.SlyviaPile
                         {
                             mynode.polish = mynode.children[0].polish + mynode.children[2].polish + " <= ";
                         }
+                    }
+                    break;
+                case SyntaxType.tail_idenLeave:
+                    if (mynode.nodeVarType == VarScopeType.GLOBAL)
+                    {
+                        mynode.polish = "&" + mynode.nodeValue;
+                    }
+                    else if (mynode.nodeVarType == VarScopeType.LOCAL)
+                    {
+                        mynode.polish = "$" + mynode.nodeValue;
+                    }
+                    else
+                    {
+                        mynode.polish = mynode.nodeValue;
                     }
                     break;
                 default:
@@ -788,7 +821,7 @@ namespace LyyneheymCore.SlyviaPile
                 throw new Exception("语义错误：一个非函数节点被作为函数声明处理");
             }
             // 获得函数签名
-            string signature = funcSa.argsDict["sign"].nodeValue.ToString();
+            string signature = funcSa.argsDict["sign"];
             string[] signItem = signature.Split(new char[] {'(', ')'}, StringSplitOptions.RemoveEmptyEntries);
             if (signItem.Length < 1 || !IsSymbol(signItem[0].Trim()))
             {
@@ -823,6 +856,59 @@ namespace LyyneheymCore.SlyviaPile
         private Scene parseScene(KeyValuePair<SceneAction, List<SceneFunction>> sceneItem)
         {
             return new Scene(this.scenario, sceneItem.Key, sceneItem.Value);
+        }
+
+        /// <summary>
+        /// 将动作序列和从属于它的动作序列全部IL化
+        /// </summary>
+        /// <param name="saRoot">递归开始节点</param>
+        /// <returns>IL字符串</returns>
+        private string parseToIL(SceneAction saRoot)
+        {
+            StringBuilder resSb = new StringBuilder("");
+            Stack<SceneAction> processStack = new Stack<SceneAction>();
+            processStack.Push(saRoot);
+            while (processStack.Count != 0)
+            {
+                SceneAction topSa = processStack.Pop();
+                // 栈，先处理falseRouting
+                if (topSa.falseRouting != null)
+                {
+                    for (int i = topSa.falseRouting.Count - 1; i >= 0; i--)
+                    {
+                        processStack.Push(topSa.falseRouting[i]);
+                    }
+                }
+                // 处理trueRouting
+                if (topSa.trueRouting != null)
+                {
+                    for (int i = topSa.trueRouting.Count - 1; i >= 0; i--)
+                    {
+                        processStack.Push(topSa.trueRouting[i]);
+                    }
+                }
+                resSb.AppendLine(topSa.ToIL());
+            }
+            return resSb.ToString();
+        }
+        
+        /// <summary>
+        /// 将场景做IL序列化
+        /// </summary>
+        /// <param name="scene">场景实例</param>
+        /// <returns>IL字符串</returns>
+        private string parseToIL(Scene scene)
+        {
+            List<SceneFunction> sf = scene.funcContainer;
+            SceneAction mainSa = scene.mainSa;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(scene.GetILSign());
+            sb.Append(this.parseToIL(mainSa));
+            foreach (SceneFunction scenefunc in sf)
+            {
+                sb.Append(this.parseToIL(scenefunc.sa));
+            }
+            return sb.ToString();
         }
 
         /// <summary>

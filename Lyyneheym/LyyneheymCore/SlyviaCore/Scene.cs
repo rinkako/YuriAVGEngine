@@ -52,6 +52,15 @@ namespace LyyneheymCore.SlyviaCore
 
         }
 
+        /// <summary>
+        /// 获取该场景的IL文件头
+        /// </summary>
+        /// <returns>IL文件头字符串</returns>
+        public string GetILSign()
+        {
+            return String.Format(">>>SlyviaIL?{0}", this.scenario);
+        }
+
         // 场景进行指针
         public int SP = 0;
         // 场景名称

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LyyneheymCore.SlyviaPile;
+using LyyneheymCore.SlyviaCore;
 
-namespace LyyneheymCore.SlyviaCore
+namespace LyyneheymCore.SlyviaPile
 {
     /// <summary>
     /// 场景动作类：语义分析器输出的中间代码类
     /// </summary>
+    [Serializable]
     public class SceneAction
     {
         // 节点名称
@@ -16,11 +17,9 @@ namespace LyyneheymCore.SlyviaCore
         // 节点动作
         public SActionType aType = SActionType.NOP;
         // 参数字典
-        public Dictionary<string, SyntaxTreeNode> argsDict = new Dictionary<string, SyntaxTreeNode>();
-        // 条件从句
-        public SyntaxTreeNode condPointer = null;
+        public Dictionary<string, string> argsDict = new Dictionary<string, string>();
         // 条件从句逆波兰表达
-        public string polish = null;
+        public string condPolish = null;
         // 下一节点
         public SceneAction next = null;
         // 下一真节点向量
@@ -33,10 +32,50 @@ namespace LyyneheymCore.SlyviaCore
         public string funcName = null;
         // 附加值
         public string aTag = null;
-        // 字符串化方法
+
+        /// <summary>
+        /// 将动作转化为可序列化字符串
+        /// </summary>
+        /// <returns>IL字符串</returns>
+        public string ToIL()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(this.saNodeName + ",");
+            string args = this.argsDict.Aggregate("", (x, y) => x + "#" + y.Value);
+            sb.Append(args.Length > 0 ? args.Substring(1) + "," : ",");
+            sb.Append(this.condPolish + ",");
+            sb.Append(this.next != null ? this.next.saNodeName + "," : ",");
+            if (this.trueRouting != null)
+            {
+                string trues = this.trueRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
+                sb.Append(trues.Substring(1) + ",");
+            }
+            else
+            {
+                sb.Append(",");
+            }
+            if (this.falseRouting != null)
+            {
+                string falses = this.trueRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
+                sb.Append(falses.Substring(1) + ",");
+            }
+            else
+            {
+                sb.Append(",");
+            }
+            sb.Append(this.isBelongFunc ? "1," : "0,");
+            sb.Append(this.funcName + ",");
+            sb.Append(this.aTag != null ? this.aTag.Replace(@",", @"\,").Replace(@"\", @"\\") .Replace("\r\n", @"\$") : "");
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 字符串化方法
+        /// </summary>
+        /// <returns>该动作的名字</returns>
         public override string ToString()
         {
-            return this.aType.ToString();
+            return this.saNodeName;
         }
     }
 
