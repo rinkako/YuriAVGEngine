@@ -46,8 +46,8 @@ namespace LyyneheymCore.SlyviaPile
             }
             // 语义分析
             KeyValuePair<SceneAction, List<SceneFunction>> r = this.Semanticer(this.parseTree);
-            this.rootScene = this.parseScene(r);
-            string il = this.parseToIL(this.rootScene);
+            this.rootScene = this.ParseScene(r);
+            string il = this.ParseToIL(this.rootScene);
             return this.rootScene;
         }
 
@@ -615,6 +615,10 @@ namespace LyyneheymCore.SlyviaPile
                         this.ProcessArgPolish(mynode.children[1]); // 合取项
                         this.ProcessArgPolish(mynode.children[2]); // 析取闭包
                         mynode.polish = mynode.children[1].polish + mynode.children[2].polish;
+                        if (mynode.children[2].polish != "")
+                        {
+                            mynode.polish += " || ";
+                        }
                     }
                     else
                     {
@@ -632,6 +636,10 @@ namespace LyyneheymCore.SlyviaPile
                         this.ProcessArgPolish(mynode.children[1]); // 布尔项
                         this.ProcessArgPolish(mynode.children[2]); // 合取闭包
                         mynode.polish = mynode.children[1].polish + mynode.children[2].polish;
+                        if (mynode.children[2].polish != "")
+                        {
+                            mynode.polish += " && ";
+                        }
                     }
                     else
                     {
@@ -802,7 +810,7 @@ namespace LyyneheymCore.SlyviaPile
             SceneFunction retSF = null;
             if (funcFlag)
             {
-                retSF = this.parseSaToSF(saNode);
+                retSF = this.ParseSaToSF(saNode);
             }
             // 最后让递归过程去修改子节点的属性
             saNode.isBelongFunc = funcFlag;
@@ -814,7 +822,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="funcSa">动作序列</param>
         /// <returns>场景函数</returns>
-        private SceneFunction parseSaToSF(SceneAction funcSa)
+        private SceneFunction ParseSaToSF(SceneAction funcSa)
         {
             if (funcSa.isBelongFunc != true)
             {
@@ -853,7 +861,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="sceneItem">一个键值对，主场景序列头部和函数向量</param>
         /// <returns>场景实例</returns>
-        private Scene parseScene(KeyValuePair<SceneAction, List<SceneFunction>> sceneItem)
+        private Scene ParseScene(KeyValuePair<SceneAction, List<SceneFunction>> sceneItem)
         {
             return new Scene(this.scenario, sceneItem.Key, sceneItem.Value);
         }
@@ -863,7 +871,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="saRoot">递归开始节点</param>
         /// <returns>IL字符串</returns>
-        private string parseToIL(SceneAction saRoot)
+        private string ParseToIL(SceneAction saRoot)
         {
             StringBuilder resSb = new StringBuilder("");
             Stack<SceneAction> processStack = new Stack<SceneAction>();
@@ -897,18 +905,147 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="scene">场景实例</param>
         /// <returns>IL字符串</returns>
-        private string parseToIL(Scene scene)
+        private string ParseToIL(Scene scene)
         {
             List<SceneFunction> sf = scene.funcContainer;
             SceneAction mainSa = scene.mainSa;
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(scene.GetILSign());
-            sb.Append(this.parseToIL(mainSa));
+            sb.Append(this.ParseToIL(mainSa));
             foreach (SceneFunction scenefunc in sf)
             {
-                sb.Append(this.parseToIL(scenefunc.sa));
+                sb.Append(this.ParseToIL(scenefunc.sa));
             }
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// 处理逆波兰式中的常数折叠
+        /// </summary>
+        /// <param name="polish">逆波兰式</param>
+        /// <returns>常数折叠后的逆波兰式</returns>
+        private string Folding(string polish)
+        {
+            Stack<string> polishStack = new Stack<string>();
+            string[] polishItem = polish.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string item in polishItem)
+            {
+                PolishItemType ptype = this.GetPolishItemType(item);
+                // 如果是操作数就入栈
+                if (ptype < PolishItemType.CAL_PLUS)
+                {
+                    polishStack.Push(item);
+                }
+                // 操作符就出栈计算再入栈结果
+                else
+                {
+                    // 只有!操作符是单目操作
+                    if (ptype == PolishItemType.CAL_NOT && polishStack.Count >= 1
+                        && this.GetPolishItemType(polishStack.Peek()) == PolishItemType.CONSTANT)
+                    {
+                        string booleanItem = polishStack.Pop();
+                        polishStack.Push(Math.Abs(Convert.ToDouble(booleanItem)) < 1e-15 ? "0" : "1");
+                    }
+                    else if (ptype >= PolishItemType.CAL_PLUS && polishStack.Count >= 2)
+                    {
+                        string operand2 = polishStack.Pop();
+                        string operand1 = polishStack.Pop();
+                        // 如果两个操作数有不是常数项的，那就不可以做常数折叠
+                        if (this.GetPolishItemType(operand1) != PolishItemType.CONSTANT
+                            || this.GetPolishItemType(operand2) != PolishItemType.CONSTANT)
+                        {
+                            polishStack.Push(operand1);
+                            polishStack.Push(operand2);
+                            continue;
+                        }
+                        // 计算
+                        double op1 = Convert.ToDouble(operand1);
+                        double op2 = Convert.ToDouble(operand2);
+                        double res = 0.0f;
+                        switch (ptype)
+                        {
+                            case PolishItemType.CAL_PLUS:
+                                res = op1 + op2;
+                                break;
+                            case PolishItemType.CAL_MINUS:
+                                res = op1 - op2;
+                                break;
+                            case PolishItemType.CAL_MULTI:
+                                res = op1 * op2;
+                                break;
+                            case PolishItemType.CAL_DIV:
+                                if (Math.Abs(op2) < 1e-15)
+                                {
+                                    throw new Exception("除零错误");
+                                }
+                                res = op1 / op2;
+                                break;
+                            case PolishItemType.CAL_ANDAND:
+                                res = (Math.Abs(op1) > 1e-15) && (Math.Abs(op2) > 1e-15) ? 1 : 0;
+                                break;
+                            case PolishItemType.CAL_OROR:
+                                res = (Math.Abs(op1) > 1e-15) || (Math.Abs(op2) > 1e-15) ? 1 : 0;
+                                break;
+                            case PolishItemType.CAL_EQUAL:
+                                res = op1 == op2 ? 1 : 0;
+                                break;
+                            case PolishItemType.CAL_NOTEQUAL:
+                                res = op1 != op2 ? 1 : 0;
+                                break;
+                            case PolishItemType.CAL_BIG:
+                                res = op1 > op2 ? 1 : 0;
+                                break;
+                            case PolishItemType.CAL_SMALL:
+                                res = op1 < op2 ? 1 : 0;
+                                break;
+                            case PolishItemType.CAL_BIGEQUAL:
+                                res = op1 >= op2 ? 1 : 0;
+                                break;
+                            case PolishItemType.CAL_SMALLEQUAL:
+                                res = op1 <= op2 ? 1 : 0;
+                                break;
+                            default:
+                                break;
+                        }
+                        // 把计算结果压栈
+                        polishStack.Push(Convert.ToString(res));
+                    }
+                    else
+                    {
+                        throw new Exception("polish栈运算错误");
+                    }
+                }
+            }
+            // 将栈转化为逆波兰式
+            string resStr = " ";
+            while (polishStack.Count != 0)
+            {
+                string pitem = polishStack.Pop();
+                resStr = " " + pitem + resStr;
+            }
+            return resStr;
+        }
+
+        /// <summary>
+        /// 得到逆波兰式项目的类型
+        /// </summary>
+        /// <param name="item">项目字符串</param>
+        /// <returns>逆波兰式中的类型</returns>
+        private PolishItemType GetPolishItemType(string item)
+        {
+            if (item == null || item.Length == 0)
+            {
+                return PolishItemType.NONE;
+            }
+            else if (item.StartsWith("$") || item.StartsWith("&"))
+            {
+                return PolishItemType.VAR;
+            }
+            else if (item[0] >= '0' && item[0] <= '9')
+            {
+                return PolishItemType.CONSTANT;
+            }
+            return PolishItemType.STRING;
         }
 
         /// <summary>
@@ -959,5 +1096,31 @@ namespace LyyneheymCore.SlyviaPile
         private Stack<SceneAction> saStack = null;
         // 标签跳转字典
         private Dictionary<string, SceneAction> blockDict = null;
+    }
+
+    /// <summary>
+    /// 枚举：逆波兰式项类型
+    /// </summary>
+    internal enum PolishItemType
+    {
+        NONE,
+        CONSTANT,
+        STRING,
+        VAR,
+        VAR_NUM,
+        VAR_STRING,
+        CAL_PLUS,
+        CAL_MINUS,
+        CAL_MULTI,
+        CAL_DIV,
+        CAL_ANDAND,
+        CAL_OROR,
+        CAL_NOT,
+        CAL_EQUAL,
+        CAL_NOTEQUAL,
+        CAL_BIG,
+        CAL_SMALL,
+        CAL_BIGEQUAL,
+        CAL_SMALLEQUAL
     }
 }
