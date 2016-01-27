@@ -482,12 +482,26 @@ namespace LyyneheymCore.SlyviaPile
                 case SyntaxType.synr_dialog:
                     curSa.aTag = mynode.nodeValue;
                     break;
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 递归遍历LL1文法，构造逆波兰式
+        /// </summary>
+        /// <param name="mynode">递归语法树根节点</param>
+        /// <returns>该节点的逆波兰式</returns>
+        private string ProcessArgDict(SyntaxTreeNode mynode)
+        {
+            switch (mynode.nodeSyntaxType)
+            {
                 // 需要处理逆波兰式的节点
                 case SyntaxType.case_wexpr:
                     if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wexpr__wmulti__wexpr_pi_45)
                     {
-                        this.Mise(mynode.children[0], ref curSa, funcSaVec); // 因式
-                        this.Mise(mynode.children[1], ref curSa, funcSaVec); // 加项
+                        this.ProcessArgDict(mynode.children[0]); // 因式
+                        this.ProcessArgDict(mynode.children[1]); // 加项
                         mynode.polish += mynode.children[0].polish + mynode.children[1].polish;
                     }
                     else
@@ -498,21 +512,21 @@ namespace LyyneheymCore.SlyviaPile
                 case SyntaxType.case_wexpr_pi:
                     if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wexpr_pi__wplus__wexpr_pi_72)
                     {
-                        this.Mise(mynode.children[0], ref curSa, funcSaVec); // 加项
-                        this.Mise(mynode.children[1], ref curSa, funcSaVec); // 加项闭包
+                        this.ProcessArgDict(mynode.children[0]); // 加项
+                        this.ProcessArgDict(mynode.children[1]); // 加项闭包
                         mynode.polish += mynode.children[0].polish + mynode.children[1].polish;
                     }
                     break;
                 case SyntaxType.case_wplus:
                     if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wplus__plus_wmulti_46)
                     {
-                        this.Mise(mynode.children[1], ref curSa, funcSaVec);
+                        this.ProcessArgDict(mynode.children[1]);
                         // 加法
                         mynode.polish = mynode.children[1].polish + " + ";
                     }
                     else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wplus__minus_wmulti_47)
                     {
-                        this.Mise(mynode.children[1], ref curSa, funcSaVec);
+                        this.ProcessArgDict(mynode.children[1]);
                         // 减法
                         mynode.polish = mynode.children[1].polish + " - ";
                     }
@@ -522,22 +536,22 @@ namespace LyyneheymCore.SlyviaPile
                     }
                     break;
                 case SyntaxType.case_wmulti:
-                    this.Mise(mynode.children[0], ref curSa, funcSaVec); // 乘项
-                    this.Mise(mynode.children[1], ref curSa, funcSaVec); // 乘项闭包
+                    this.ProcessArgDict(mynode.children[0]); // 乘项
+                    this.ProcessArgDict(mynode.children[1]); // 乘项闭包
                     mynode.polish = mynode.children[0].polish + mynode.children[1].polish;
                     break;
                 case SyntaxType.case_wmultiOpt:
                     if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wmultiOpt__multi_wunit__wmultiOpt_50)
                     {
-                        this.Mise(mynode.children[1], ref curSa, funcSaVec); // 乘项
-                        this.Mise(mynode.children[2], ref curSa, funcSaVec); // 乘项闭包
+                        this.ProcessArgDict(mynode.children[1]); // 乘项
+                        this.ProcessArgDict(mynode.children[2]); // 乘项闭包
                         // 乘法
-                        mynode.polish = " " + mynode.children[1].polish + " * " + mynode.children[2].polish;                        
+                        mynode.polish = " " + mynode.children[1].polish + " * " + mynode.children[2].polish;
                     }
                     else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wmultiOpt__div_wunit__wmultiOpt_51)
                     {
-                        this.Mise(mynode.children[1], ref curSa, funcSaVec); // 乘项
-                        this.Mise(mynode.children[2], ref curSa, funcSaVec); // 乘项闭包
+                        this.ProcessArgDict(mynode.children[1]); // 乘项
+                        this.ProcessArgDict(mynode.children[2]); // 乘项闭包
                         // 除法
                         mynode.polish = " " + mynode.children[1].polish + " / " + mynode.children[2].polish;
                     }
@@ -553,17 +567,17 @@ namespace LyyneheymCore.SlyviaPile
                     }
                     else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__minus_wunit_55)
                     {
-                        this.Mise(mynode.children[1], ref curSa, funcSaVec);
-                        mynode.polish = "-"+ mynode.children[1].polish;
+                        this.ProcessArgDict(mynode.children[1]);
+                        mynode.polish = "-" + mynode.children[1].polish;
                     }
                     else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__plus_wunit_56)
                     {
-                        this.Mise(mynode.children[1], ref curSa, funcSaVec);
+                        this.ProcessArgDict(mynode.children[1]);
                         mynode.polish = mynode.children[1].polish;
                     }
                     else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__brucket_disjunct_57)
                     {
-                        this.Mise(mynode.children[1], ref curSa, funcSaVec);
+                        this.ProcessArgDict(mynode.children[1]);
                         mynode.polish = mynode.children[1].polish;
                     }
                     else if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___wunit__iden_54)
@@ -572,16 +586,16 @@ namespace LyyneheymCore.SlyviaPile
                     }
                     break;
                 case SyntaxType.case_disjunct:
-                    this.Mise(mynode.children[0], ref curSa, funcSaVec); // 合取项
-                    this.Mise(mynode.children[1], ref curSa, funcSaVec); // 析取闭包
+                    this.ProcessArgDict(mynode.children[0]); // 合取项
+                    this.ProcessArgDict(mynode.children[1]); // 析取闭包
                     mynode.polish = mynode.children[0].polish + mynode.children[1].polish;
                     break;
                 case SyntaxType.case_disjunct_pi:
                     if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___disjunct_pi__conjunct__disjunct_pi_36)
                     {
-                        this.Mise(mynode.children[1], ref curSa, funcSaVec); // 合取项
-                        this.Mise(mynode.children[2], ref curSa, funcSaVec); // 析取闭包
-                        mynode.polish = mynode.children[1].polish + mynode.children[2].polish;                        
+                        this.ProcessArgDict(mynode.children[1]); // 合取项
+                        this.ProcessArgDict(mynode.children[2]); // 析取闭包
+                        mynode.polish = mynode.children[1].polish + mynode.children[2].polish;
                     }
                     else
                     {
@@ -589,15 +603,15 @@ namespace LyyneheymCore.SlyviaPile
                     }
                     break;
                 case SyntaxType.case_conjunct:
-                    this.Mise(mynode.children[0], ref curSa, funcSaVec); // 布尔项
-                    this.Mise(mynode.children[1], ref curSa, funcSaVec); // 合取闭包
+                    this.ProcessArgDict(mynode.children[0]); // 布尔项
+                    this.ProcessArgDict(mynode.children[1]); // 合取闭包
                     mynode.polish = mynode.children[0].polish + mynode.children[1].polish;
                     break;
                 case SyntaxType.case_conjunct_pi:
                     if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___conjunct_pi__bool__conjunct_pi_39)
                     {
-                        this.Mise(mynode.children[1], ref curSa, funcSaVec); // 布尔项
-                        this.Mise(mynode.children[2], ref curSa, funcSaVec); // 合取闭包
+                        this.ProcessArgDict(mynode.children[1]); // 布尔项
+                        this.ProcessArgDict(mynode.children[2]); // 合取闭包
                         mynode.polish = mynode.children[1].polish + mynode.children[2].polish;
                     }
                     else
@@ -608,26 +622,26 @@ namespace LyyneheymCore.SlyviaPile
                 case SyntaxType.case_bool:
                     if (mynode.candidateFunction.GetCFType() == CFunctionType.deri___bool__not_bool_42)
                     {
-                        this.Mise(mynode.children[1], ref curSa, funcSaVec); // 非项
+                        this.ProcessArgDict(mynode.children[1]); // 非项
                         mynode.polish = mynode.children[1].polish + " ! ";
                     }
                     else
                     {
-                        this.Mise(mynode.children[0], ref curSa, funcSaVec); // 表达式
+                        this.ProcessArgDict(mynode.children[0]); // 表达式
                         mynode.polish = mynode.children[0].polish;
                     }
                     break;
                 case SyntaxType.case_comp:
                     if (mynode.children[1].candidateFunction.GetCFType() == CFunctionType.deri___rop__epsilon_80)
                     {
-                        this.Mise(mynode.children[0], ref curSa, funcSaVec); // 左边
+                        this.ProcessArgDict(mynode.children[0]); // 左边
                         mynode.polish = mynode.children[0].polish;
                     }
                     else
                     {
                         string optype = mynode.children[1].nodeValue; // 运算符
-                        this.Mise(mynode.children[0], ref curSa, funcSaVec); // 左边
-                        this.Mise(mynode.children[2], ref curSa, funcSaVec); // 右边
+                        this.ProcessArgDict(mynode.children[0]); // 左边
+                        this.ProcessArgDict(mynode.children[2]); // 右边
                         mynode.polish = "";
                         if (optype == "<>")
                         {
@@ -658,6 +672,7 @@ namespace LyyneheymCore.SlyviaPile
                 default:
                     break;
             }
+            return mynode.polish;
         }
 
         /// <summary>
