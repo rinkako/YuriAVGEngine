@@ -39,12 +39,14 @@ namespace Lyyneheym.SlyviaInterpreter
         /// <summary>
         /// 初始化函数
         /// </summary>
-        /// <param name="scenario">待分析的剧本文本</param>
+        /// <param name="fileName">脚本文件名</param>
+        /// <param name="scenarioCode">待分析的剧本文本</param>
         /// <param name="resetFloatPointer">是否重置游标</param>
-        public void Init(string scenario, bool resetFloatPointer = false)
+        public void Init(string fileName, string scenarioCode, bool resetFloatPointer = false)
         {
+            this.dealingFile = fileName;
             this.blockFlag = false;
-            this.sourceCode = scenario;
+            this.sourceCode = scenarioCode;
             this.nextCharPointer = 0;
             this.resultVector = new List<Token>();
             if (resetFloatPointer)
@@ -93,19 +95,15 @@ namespace Lyyneheym.SlyviaInterpreter
                 this.resultVector = new List<Token>();
             }
             // 分析这个句子
-            //bool sentenceFlag = false;
             while (this.nextCharPointer < this.sourceCode.Length)
             {
                 Token nextToken;
-                //sentenceFlag = this.DFA(out nextToken);
                 this.DFA(out nextToken);
                 if (nextToken != null)
                 {
                     this.resultVector.Add(nextToken);
                 }
             }
-            // 如果句子标志位还没有成功这一轮分析就没有完成
-            //this.finFlag = sentenceFlag;
             // 把结果向量返回给上层
             return this.resultVector;
         }
@@ -196,7 +194,14 @@ namespace Lyyneheym.SlyviaInterpreter
                     // 谜
                     default:
                         successFlag = this.GetUnknown(res);
-                        break;
+                        throw new InterpreterException()
+                        {
+                            Message = "有未识别的字符输入：" + res.detail,
+                            HitLine = res.aLine,
+                            HitColumn = res.aColumn,
+                            HitPhase = InterpreterException.InterpreterPhase.Lexer,
+                            SceneFileName = this.dealingFile
+                        };
                 }
             }
             // 如果成功获得了token，就返回给Lexer
@@ -1361,6 +1366,8 @@ namespace Lyyneheym.SlyviaInterpreter
             return CharacterType.cUnknown;
         }
 
+        // 处理的文件
+        private string dealingFile = "";
         // 原剧本字串
         private string sourceCode = "";
         // 指针

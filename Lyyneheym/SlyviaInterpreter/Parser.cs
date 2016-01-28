@@ -16,7 +16,7 @@ namespace Lyyneheym.SlyviaInterpreter
         /// </summary>
         public Parser()
         {
-            this.Reset();
+            this.Reset(0);
             this.Init();
             this.iBlockStack = new Stack<SyntaxTreeNode>();
         }
@@ -24,9 +24,11 @@ namespace Lyyneheym.SlyviaInterpreter
         /// <summary>
         /// 为语法匹配器重新设置单词流
         /// </summary>
+        /// <param name="scenario">脚本文件名</param>
         /// <param name="myStream">单词流向量</param>
-        public void SetTokenStream(List<Token> myStream)
+        public void SetTokenStream(string scenario, List<Token> myStream)
         {
+            this.dealingFile = scenario;
             this.istream = myStream;
         }
 
@@ -41,9 +43,11 @@ namespace Lyyneheym.SlyviaInterpreter
         /// <summary>
         /// 复位匹配器
         /// </summary>
-        public void Reset()
+        /// <param name="line">处理的行号</param>
+        public void Reset(int line)
         {
             this.nextTokenPointer = 0;
+            this.dealingLine = line;
             this.dashReset(SyntaxType.case_kotori);
         }
 
@@ -55,7 +59,7 @@ namespace Lyyneheym.SlyviaInterpreter
         public SyntaxTreeNode Parse(int line)
         {
             // 初期化
-            this.Reset();
+            this.Reset(line);
             // 获得原始节点的引用
             SyntaxTreeNode parsePtr;
             SyntaxTreeNode currentPtr;
@@ -167,8 +171,14 @@ namespace Lyyneheym.SlyviaInterpreter
                     // 语法出错时
                     if (func.GetCFType() == CFunctionType.umi_errorEnd)
                     {
-                        Console.WriteLine("语法匹配出错");
-                        return null;
+                        throw new InterpreterException()
+                        {
+                            Message = "语法匹配错误",
+                            HitLine = iToken.aLine,
+                            HitColumn = iToken.aColumn,
+                            HitPhase = InterpreterException.InterpreterPhase.Parser,
+                            SceneFileName = this.dealingFile
+                        };
                     }
                     // 如果处于非终结符，就设置她的候选式
                     if (currentPtr != null)
@@ -1002,7 +1012,14 @@ namespace Lyyneheym.SlyviaInterpreter
                         }
                         else
                         {
-                            throw new Exception("语句块匹配不成立");
+                            throw new InterpreterException()
+                            {
+                                Message = "for语句块匹配不成立，是否多余/残缺了endfor？",
+                                HitLine = this.dealingLine,
+                                HitColumn = mainToken.aColumn,
+                                HitPhase = InterpreterException.InterpreterPhase.Parser,
+                                SceneFileName = this.dealingFile
+                            };
                         }
                         break;
                     case TokenType.Token_o_if:
@@ -1027,7 +1044,14 @@ namespace Lyyneheym.SlyviaInterpreter
                         }
                         else
                         {
-                            throw new Exception("语句块匹配不成立");
+                            throw new InterpreterException()
+                            {
+                                Message = "if语句块匹配不成立，是否多余/残缺了endif？",
+                                HitLine = this.dealingLine,
+                                HitColumn = mainToken.aColumn,
+                                HitPhase = InterpreterException.InterpreterPhase.Parser,
+                                SceneFileName = this.dealingFile
+                            };
                         }
                         break;
                     case TokenType.Token_o_function:
@@ -1044,7 +1068,14 @@ namespace Lyyneheym.SlyviaInterpreter
                         }
                         else
                         {
-                            throw new Exception("函数定义不成立");
+                            throw new InterpreterException()
+                            {
+                                Message = "函数定义匹配不成立，是否多余/残缺了endfunction？",
+                                HitLine = this.dealingLine,
+                                HitColumn = mainToken.aColumn,
+                                HitPhase = InterpreterException.InterpreterPhase.Parser,
+                                SceneFileName = this.dealingFile
+                            };
                         }
                         break;
                     case TokenType.Token_o_scene:
@@ -1513,6 +1544,8 @@ namespace Lyyneheym.SlyviaInterpreter
                 myNode.nodeValue = myToken.detail;
                 myNode.nodeSyntaxType = mySyntax;
                 myNode.nodeName = mySyntax.ToString();
+                myNode.line = myToken.aLine;
+                myNode.col = myToken.aColumn;
                 if (myToken.isVar)
                 {
                     myNode.nodeVarType = myToken.isGlobal ? VarScopeType.GLOBAL : VarScopeType.LOCAL;
@@ -1565,6 +1598,10 @@ namespace Lyyneheym.SlyviaInterpreter
         internal Stack<SyntaxTreeNode> iBlockStack = null;
         // 下一Token指针
         private int nextTokenPointer = 0;
+        // 处理的行号
+        private int dealingLine = 0;
+        // 处理的文件名
+        private string dealingFile = "";
         // 单词流
         private List<Token> istream = new List<Token>();
         // 匹配栈

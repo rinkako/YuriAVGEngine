@@ -30,24 +30,31 @@ namespace Lyyneheym.SlyviaInterpreter
         /// <returns>该剧本的场景</returns>
         public PackageScene StartDash(List<string> sourceCodeItem, string sceneName)
         {
-            // 初期化
-            this.Reset(sceneName);
-            for (int line = 0; line < sourceCodeItem.Count; line++)
+            try
             {
-                // 词法分析
-                this.lexer.Init(sourceCodeItem[line]);
-                List<Token> tokenStream = this.lexer.Analyse();
-                // 语法分析
-                if (tokenStream.Count > 0)
+                // 初期化
+                this.Reset(sceneName);
+                for (int line = 0; line < sourceCodeItem.Count; line++)
                 {
-                    this.parser.SetTokenStream(tokenStream);
-                    this.parser.Parse(line);
+                    // 词法分析
+                    this.lexer.Init(this.scenario, sourceCodeItem[line]);
+                    List<Token> tokenStream = this.lexer.Analyse();
+                    // 语法分析
+                    if (tokenStream.Count > 0)
+                    {
+                        this.parser.SetTokenStream(this.scenario, tokenStream);
+                        this.parser.Parse(line);
+                    }
                 }
+                // 语义分析
+                KeyValuePair<SceneAction, List<SceneFunction>> r = this.Semanticer(this.parseTree);
+                this.rootScene = this.ParseScene(r);
+                string il = this.ParseToIL(this.rootScene);
             }
-            // 语义分析
-            KeyValuePair<SceneAction, List<SceneFunction>> r = this.Semanticer(this.parseTree);
-            this.rootScene = this.ParseScene(r);
-            string il = this.ParseToIL(this.rootScene);
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
             return this.rootScene;
         }
 
@@ -362,6 +369,11 @@ namespace Lyyneheym.SlyviaInterpreter
         /// <param name="funcSaVec">依附在该场景下的函数的动作序列向量</param>
         private void Mise(SyntaxTreeNode mynode, ref SceneAction curSa, List<SceneAction> funcSaVec)
         {
+            // 设置SA的行列属性
+            if (curSa != null)
+            {
+                curSa.aTag = mynode.line.ToString() + "," + mynode.col.ToString();
+            }
             // 自顶向下递归遍历语法树
             switch (mynode.nodeSyntaxType)
             {
@@ -370,6 +382,7 @@ namespace Lyyneheym.SlyviaInterpreter
                     if (curSa == null)
                     {
                         curSa = new SceneAction();
+                        curSa.aTag = mynode.line.ToString() + "," + mynode.col.ToString();
                     }
                     if (mynode.children == null)
                     {
@@ -381,6 +394,7 @@ namespace Lyyneheym.SlyviaInterpreter
                     foreach (SyntaxTreeNode child in mynode.children)
                     {
                         SceneAction sa = new SceneAction();
+                        sa.aTag = mynode.line.ToString() + "," + mynode.col.ToString();
                         sa.aType = (SActionType)Enum.Parse(typeof(SActionType), "act_" + child.nodeSyntaxType.ToString().Replace("synr_", ""));
                         // 跳过增广文法节点，拷贝参数字典
                         if (child.nodeSyntaxType.ToString().StartsWith("synr_")
@@ -390,7 +404,7 @@ namespace Lyyneheym.SlyviaInterpreter
                             {
                                 if (kvp.Value.children != null)
                                 {
-                                    sa.argsDict.Add(kvp.Key, this.Folding(this.ProcessArgPolish(kvp.Value.children[0])));
+                                    sa.argsDict.Add(kvp.Key, this.Folding(this.ProcessArgPolish(kvp.Value.children[0]), mynode));
                                 }
                                 else
                                 {
@@ -413,7 +427,7 @@ namespace Lyyneheym.SlyviaInterpreter
                     break;
                 case SyntaxType.synr_if:
                     // 处理条件指针
-                    curSa.condPolish = this.Folding(this.ProcessArgPolish(mynode.paramDict["cond"]));
+                    curSa.condPolish = this.Folding(this.ProcessArgPolish(mynode.paramDict["cond"]), mynode);
                     // 处理真分支
                     curSa.trueRouting = new List<SceneAction>();
                     if (mynode.children[0] == null)
@@ -421,6 +435,7 @@ namespace Lyyneheym.SlyviaInterpreter
                         break;
                     }
                     SceneAction saIfTrue = new SceneAction();
+                    saIfTrue.aTag = mynode.line.ToString() + "," + mynode.col.ToString();
                     this.Mise(mynode.children[0], ref saIfTrue, funcSaVec);
                     for (int i = 0; i < saIfTrue.trueRouting.Count; i++)
                     {
@@ -433,6 +448,7 @@ namespace Lyyneheym.SlyviaInterpreter
                         break;
                     }
                     SceneAction saIfFalse = new SceneAction();
+                    saIfFalse.aTag = mynode.line.ToString() + "," + mynode.col.ToString();
                     this.Mise(mynode.children[1], ref saIfFalse, funcSaVec);
                     for (int i = 0; i < saIfFalse.trueRouting.Count; i++)
                     {
@@ -444,7 +460,7 @@ namespace Lyyneheym.SlyviaInterpreter
                     // 处理条件指针
                     if (mynode.paramDict.ContainsKey("cond"))
                     {
-                        curSa.condPolish = this.Folding(this.ProcessArgPolish(mynode.paramDict["cond"]));
+                        curSa.condPolish = this.Folding(this.ProcessArgPolish(mynode.paramDict["cond"]), mynode);
                     }
                     // 处理真分支
                     curSa.trueRouting = new List<SceneAction>();
@@ -453,6 +469,7 @@ namespace Lyyneheym.SlyviaInterpreter
                         break;
                     }
                     SceneAction saForTrue = new SceneAction();
+                    saForTrue.aTag = mynode.line.ToString() + "," + mynode.col.ToString();
                     this.Mise(mynode.children[0], ref saForTrue, funcSaVec);
                     for (int i = 0; i < saForTrue.trueRouting.Count; i++)
                     {
@@ -466,6 +483,7 @@ namespace Lyyneheym.SlyviaInterpreter
                         break;
                     }
                     SceneAction saFuncTrue = new SceneAction();
+                    saFuncTrue.aTag = mynode.line.ToString() + "," + mynode.col.ToString();
                     curSa.trueRouting = new List<SceneAction>();
                     this.Mise(mynode.children[0], ref saFuncTrue, funcSaVec);
                     for (int i = 0; i < saFuncTrue.trueRouting.Count; i++)
@@ -826,14 +844,28 @@ namespace Lyyneheym.SlyviaInterpreter
         {
             if (funcSa.isBelongFunc != true)
             {
-                throw new Exception("语义错误：一个非函数节点被作为函数声明处理");
+                throw new InterpreterException()
+                {
+                    Message = "一个非函数节点被作为函数声明处理",
+                    HitLine = Convert.ToInt32((funcSa.aTag.Split(','))[0]),
+                    HitColumn = Convert.ToInt32((funcSa.aTag.Split(','))[1]),
+                    HitPhase = InterpreterException.InterpreterPhase.Sematicer,
+                    SceneFileName = this.scenario
+                };
             }
             // 获得函数签名
             string signature = funcSa.argsDict["sign"];
             string[] signItem = signature.Split(new char[] {'(', ')'}, StringSplitOptions.RemoveEmptyEntries);
             if (signItem.Length < 1 || !IsSymbol(signItem[0].Trim()))
             {
-                throw new Exception("语义错误：函数签名不合法");
+                throw new InterpreterException()
+                {
+                    Message = "函数签名不合法",
+                    HitLine = Convert.ToInt32((funcSa.aTag.Split(','))[0]),
+                    HitColumn = Convert.ToInt32((funcSa.aTag.Split(','))[1]),
+                    HitPhase = InterpreterException.InterpreterPhase.Sematicer,
+                    SceneFileName = this.scenario
+                };
             }
             List<string> funcParas = new List<string>();
             // 如果没有参数就跳过参数遍历
@@ -848,7 +880,14 @@ namespace Lyyneheym.SlyviaInterpreter
                     }
                     else
                     {
-                        throw new Exception("语义错误：函数签名的参数列表不合法");
+                        throw new InterpreterException()
+                        {
+                            Message = "函数签名的参数列表不合法",
+                            HitLine = Convert.ToInt32((funcSa.aTag.Split(','))[0]),
+                            HitColumn = Convert.ToInt32((funcSa.aTag.Split(','))[1]),
+                            HitPhase = InterpreterException.InterpreterPhase.Sematicer,
+                            SceneFileName = this.scenario
+                        };
                     }
                 }
             }
@@ -922,8 +961,9 @@ namespace Lyyneheym.SlyviaInterpreter
         /// 处理逆波兰式中的常数折叠
         /// </summary>
         /// <param name="polish">逆波兰式</param>
+        /// <param name="mynode">该逆波兰式在语法树上的节点</param>
         /// <returns>常数折叠后的逆波兰式</returns>
-        private string Folding(string polish)
+        private string Folding(string polish, SyntaxTreeNode mynode)
         {
             if (polish == null)
             {
@@ -987,7 +1027,14 @@ namespace Lyyneheym.SlyviaInterpreter
                             case PolishItemType.CAL_DIV:
                                 if (Math.Abs(op2) < 1e-15)
                                 {
-                                    throw new Exception("除零错误");
+                                    throw new InterpreterException()
+                                    {
+                                        Message = String.Format("除零错误：（{0}/{1}）", op1.ToString(), op2.ToString()),
+                                        HitLine = mynode.line,
+                                        HitColumn = mynode.col,
+                                        HitPhase = InterpreterException.InterpreterPhase.Optimizer,
+                                        SceneFileName = this.scenario
+                                    };
                                 }
                                 res = op1 / op2;
                                 break;
@@ -1023,7 +1070,19 @@ namespace Lyyneheym.SlyviaInterpreter
                     }
                     else
                     {
-                        throw new Exception("polish栈运算错误");
+                        string polishStackTrace = "";
+                        while (polishStack.Count != 0)
+                        {
+                            polishStackTrace = polishStack.Pop() + " ";
+                        }
+                        throw new InterpreterException()
+                        {
+                            Message = "polish栈运算错误，栈（顶->底）：" + polishStackTrace,
+                            HitLine = -1,
+                            HitColumn = -1,
+                            HitPhase = InterpreterException.InterpreterPhase.Optimizer,
+                            SceneFileName = this.scenario
+                        };
                     }
                 }
             }
@@ -1127,7 +1186,7 @@ namespace Lyyneheym.SlyviaInterpreter
         /// 测试一个字符串是否可以作为一个idnetity符号
         /// </summary>
         /// <param name="parStr">待匹配字符串</param>
-        /// <returns>是否可以作为C符号</returns>
+        /// <returns>是否可以作为符号</returns>
         private bool IsSymbol(string parStr)
         {
             return IsMatchRegEx(parStr, @"^[a-zA-Z_][a-zA-Z0-9_]*$");

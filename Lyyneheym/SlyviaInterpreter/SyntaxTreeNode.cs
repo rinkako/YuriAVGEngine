@@ -27,8 +27,10 @@ namespace Lyyneheym.SlyviaInterpreter
         public string nodeValue = null;
         // 命中产生式类型
         public CFunctionType nodeType = CFunctionType.None;
-        // 在源代码的行号
+        // 命中的Token在源代码的行号
         public int line = 0;
+        // 命中的Token在源代码的列号
+        public int col = 0;
         // 节点名字
         public string nodeName = "";
         // 附加值
