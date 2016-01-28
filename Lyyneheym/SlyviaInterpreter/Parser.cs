@@ -1108,8 +1108,14 @@ namespace Lyyneheym.SlyviaInterpreter
                         statementNode.paramDict["link"] = new SyntaxTreeNode(SyntaxType.para_link, statementNode);
                         break;
                     case TokenType.scenecluster:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_dialog;
-                        break;
+                        throw new InterpreterException()
+                        {
+                            Message = "未识别的语句：" + mainToken.detail,
+                            HitLine = this.dealingLine,
+                            HitColumn = mainToken.aColumn,
+                            HitPhase = InterpreterException.InterpreterPhase.Parser,
+                            SceneFileName = this.dealingFile
+                        };
                     case TokenType.sceneterminator:
                         statementNode.nodeSyntaxType = SyntaxType.synr_dialogTerminator;
                         break;
@@ -1470,8 +1476,17 @@ namespace Lyyneheym.SlyviaInterpreter
                             // 加入不推导队列
                             this.iQueue.Enqueue(w_sign);
                             break;
-                        default:
+                        case TokenType.startend:
                             break;
+                        default:
+                            throw new InterpreterException()
+                            {
+                                Message = "未识别的语句参数：" + this.istream[prescanPointer].detail,
+                                HitLine = this.dealingLine,
+                                HitColumn = this.istream[prescanPointer].aColumn,
+                                HitPhase = InterpreterException.InterpreterPhase.Parser,
+                                SceneFileName = this.dealingFile
+                            };
                     }
                     // 如果遇到startend就结束
                     if (this.istream[prescanPointer].aType == TokenType.startend)

@@ -1383,9 +1383,9 @@ namespace Lyyneheym.SlyviaInterpreter
         // 剧本花括弧匹配标志位
         private bool blockFlag = false;
         // 列初始值
-        private static readonly int ColStartNum = 1;
+        private static readonly int ColStartNum = 0;
         // 行初始值
-        private static readonly int RowStartNum = 1;
+        private static readonly int RowStartNum = 0;
         // 换行符
         private static readonly char LineTerminator = '\n';
     }
