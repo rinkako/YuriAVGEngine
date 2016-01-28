@@ -390,7 +390,7 @@ namespace LyyneheymCore.SlyviaPile
                             {
                                 if (kvp.Value.children != null)
                                 {
-                                    sa.argsDict.Add(kvp.Key, this.ProcessArgPolish(kvp.Value.children[0]));
+                                    sa.argsDict.Add(kvp.Key, this.Folding(this.ProcessArgPolish(kvp.Value.children[0])));
                                 }
                                 else
                                 {
@@ -413,7 +413,7 @@ namespace LyyneheymCore.SlyviaPile
                     break;
                 case SyntaxType.synr_if:
                     // 处理条件指针
-                    curSa.condPolish = this.ProcessArgPolish(mynode.paramDict["cond"]);
+                    curSa.condPolish = this.Folding(this.ProcessArgPolish(mynode.paramDict["cond"]));
                     // 处理真分支
                     curSa.trueRouting = new List<SceneAction>();
                     if (mynode.children[0] == null)
@@ -444,7 +444,7 @@ namespace LyyneheymCore.SlyviaPile
                     // 处理条件指针
                     if (mynode.paramDict.ContainsKey("cond"))
                     {
-                        curSa.condPolish = this.ProcessArgPolish(mynode.paramDict["cond"]);
+                        curSa.condPolish = this.Folding(this.ProcessArgPolish(mynode.paramDict["cond"]));
                     }
                     // 处理真分支
                     curSa.trueRouting = new List<SceneAction>();
@@ -839,13 +839,12 @@ namespace LyyneheymCore.SlyviaPile
             // 如果没有参数就跳过参数遍历
             if (signItem.Length > 1)
             {
-                string[] varItem = signItem[1].Split(',');
+                string[] varItem = signItem[1].Split(new char[] {',', ' '}, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string ivar in varItem)
                 {
-                    string xvar = ivar.Trim();
-                    if (IsSymbol(xvar))
+                    if (IsSymbol(ivar))
                     {
-                        funcParas.Add(xvar);
+                        funcParas.Add(ivar);
                     }
                     else
                     {
@@ -926,6 +925,10 @@ namespace LyyneheymCore.SlyviaPile
         /// <returns>常数折叠后的逆波兰式</returns>
         private string Folding(string polish)
         {
+            if (polish == null)
+            {
+                return null;
+            }
             Stack<string> polishStack = new Stack<string>();
             string[] polishItem = polish.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
             foreach (string item in polishItem)
@@ -940,11 +943,18 @@ namespace LyyneheymCore.SlyviaPile
                 else
                 {
                     // 只有!操作符是单目操作
-                    if (ptype == PolishItemType.CAL_NOT && polishStack.Count >= 1
-                        && this.GetPolishItemType(polishStack.Peek()) == PolishItemType.CONSTANT)
+                    if (ptype == PolishItemType.CAL_NOT && polishStack.Count >= 1)
                     {
-                        string booleanItem = polishStack.Pop();
-                        polishStack.Push(Math.Abs(Convert.ToDouble(booleanItem)) < 1e-15 ? "0" : "1");
+                        if (this.GetPolishItemType(polishStack.Peek()) == PolishItemType.CONSTANT)
+                        {
+                            string booleanItem = polishStack.Pop();
+                            polishStack.Push(Math.Abs(Convert.ToDouble(booleanItem)) < 1e-15 ? "0" : "1");
+                        }
+                        // 非常数项就不能做常数折叠，把操作符入栈
+                        else
+                        {
+                            polishStack.Push(item);
+                        }
                     }
                     else if (ptype >= PolishItemType.CAL_PLUS && polishStack.Count >= 2)
                     {
@@ -956,6 +966,7 @@ namespace LyyneheymCore.SlyviaPile
                         {
                             polishStack.Push(operand1);
                             polishStack.Push(operand2);
+                            polishStack.Push(item);
                             continue;
                         }
                         // 计算
@@ -1023,7 +1034,7 @@ namespace LyyneheymCore.SlyviaPile
                 string pitem = polishStack.Pop();
                 resStr = " " + pitem + resStr;
             }
-            return resStr;
+            return resStr.TrimStart().TrimEnd();
         }
 
         /// <summary>
@@ -1044,6 +1055,58 @@ namespace LyyneheymCore.SlyviaPile
             else if (item[0] >= '0' && item[0] <= '9')
             {
                 return PolishItemType.CONSTANT;
+            }
+            else if (item == "+")
+            {
+                return PolishItemType.CAL_PLUS;
+            }
+            else if (item == "-")
+            {
+                return PolishItemType.CAL_MINUS;
+            }
+            else if (item == "*")
+            {
+                return PolishItemType.CAL_MULTI;
+            }
+            else if (item == "/")
+            {
+                return PolishItemType.CAL_DIV;
+            }
+            else if (item == "!")
+            {
+                return PolishItemType.CAL_NOT;
+            }
+            else if (item == "&&")
+            {
+                return PolishItemType.CAL_ANDAND;
+            }
+            else if (item == "||")
+            {
+                return PolishItemType.CAL_OROR;
+            }
+            else if (item == "<>")
+            {
+                return PolishItemType.CAL_NOTEQUAL;
+            }
+            else if (item == "==")
+            {
+                return PolishItemType.CAL_EQUAL;
+            }
+            else if (item == ">")
+            {
+                return PolishItemType.CAL_BIG;
+            }
+            else if (item == "<")
+            {
+                return PolishItemType.CAL_SMALL;
+            }
+            else if (item == ">=")
+            {
+                return PolishItemType.CAL_BIGEQUAL;
+            }
+            else if (item == "<=")
+            {
+                return PolishItemType.CAL_SMALLEQUAL;
             }
             return PolishItemType.STRING;
         }
