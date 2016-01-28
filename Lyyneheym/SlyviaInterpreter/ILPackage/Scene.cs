@@ -10,7 +10,7 @@ namespace Lyyneheym.SlyviaInterpreter.ILPackage
     /// <para>通常，一个场景拥有一个动作序列和生命在它上面的函数</para>
     /// </summary>
     [Serializable]
-    public class PackageScene
+    internal class PackageScene
     {
         /// <summary>
         /// 构造器

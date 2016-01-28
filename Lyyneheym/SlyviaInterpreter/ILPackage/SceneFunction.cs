@@ -8,7 +8,7 @@ namespace Lyyneheym.SlyviaInterpreter.ILPackage
     /// <summary>
     /// 函数调用类：处理场景里的函数
     /// </summary>
-    public class SceneFunction
+    internal class SceneFunction
     {
         /// <summary>
         /// 构造器

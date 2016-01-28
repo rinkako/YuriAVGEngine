@@ -67,9 +67,12 @@ namespace Lyyneheym
 
         private void testLexer()
         {
-            List<string> sl = IOUtils.ReadScenarioFromFile(@"C:\Users\Kako\Desktop\test.txt");
-            Pile pile = new Pile();
-            pile.StartDash(sl, "test");
+            //List<string> sl = IOUtils.ReadScenarioFromFile(@"C:\Users\Kako\Desktop\test.txt");
+            //Pile pile = new Pile();
+            //pile.StartDash(sl, "test", InterpreterType.RELEASE_WITH_IL);
+            Interpreter ip = new Interpreter("TestProj", @"C:\Users\Kako\Desktop\testDir");
+            ip.Dash(InterpreterType.RELEASE_WITH_IL, 8);
+            ip.GetILFile(@"C:\Users\Kako\Desktop\mylog.txt");
         }
 
 

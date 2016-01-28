@@ -234,7 +234,7 @@ namespace Lyyneheym.SlyviaInterpreter
                     ccToken.errorBit = false;
                     ccToken.aType = TokenType.startend;
                     ccToken.aLine = this.dealingLine;
-                    ccToken.aColumn = this.istream[this.nextTokenPointer].aColumn;
+                    ccToken.aColumn = this.istream.Count > 0 ? this.istream[Math.Min(this.nextTokenPointer, this.istream.Count - 1)].aColumn : -1;
                     this.istream.Add(ccToken);
                     // 复位游程
                     this.nextTokenPointer = 0;

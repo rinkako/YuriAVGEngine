@@ -10,7 +10,7 @@ namespace Lyyneheym.SlyviaInterpreter
     /// <summary>
     /// 语义分析器：将语法树翻译为运行时环境能够解析的中间代码
     /// </summary>
-    public sealed class Pile
+    internal sealed class Pile
     {
         /// <summary>
         /// 构造函数
@@ -27,8 +27,9 @@ namespace Lyyneheym.SlyviaInterpreter
         /// </summary>
         /// <param name="sourceCodeItem">以行分割的源代码字符串向量</param>
         /// <param name="sceneName">场景文件的名称，不带路径和后缀名</param>
-        /// <returns>该剧本的场景</returns>
-        public PackageScene StartDash(List<string> sourceCodeItem, string sceneName)
+        /// <param name="itype">编译类型，决定返回的实例</param>
+        /// <returns>Debug模式返回Scene实例，Release时返回该剧本的IL</returns>
+        public object StartDash(List<string> sourceCodeItem, string sceneName, InterpreterType itype)
         {
             try
             {
@@ -50,12 +51,20 @@ namespace Lyyneheym.SlyviaInterpreter
                 KeyValuePair<SceneAction, List<SceneFunction>> r = this.Semanticer(this.parseTree);
                 this.rootScene = this.ParseScene(r);
                 string il = this.ParseToIL(this.rootScene);
+                if (itype == InterpreterType.DEBUG)
+                {
+                    return this.rootScene;
+                }
+                else
+                {
+                    return il;
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return null;
             }
-            return this.rootScene;
         }
 
         /// <summary>
@@ -372,7 +381,7 @@ namespace Lyyneheym.SlyviaInterpreter
             // 设置SA的行列属性
             if (curSa != null)
             {
-                curSa.aTag = mynode.line.ToString() + "," + mynode.col.ToString();
+                curSa.aTag = mynode.line.ToString() + "-" + mynode.col.ToString();
             }
             // 自顶向下递归遍历语法树
             switch (mynode.nodeSyntaxType)
@@ -382,7 +391,7 @@ namespace Lyyneheym.SlyviaInterpreter
                     if (curSa == null)
                     {
                         curSa = new SceneAction();
-                        curSa.aTag = mynode.line.ToString() + "," + mynode.col.ToString();
+                        curSa.aTag = mynode.line.ToString() + "-" + mynode.col.ToString();
                     }
                     if (mynode.children == null)
                     {
@@ -394,7 +403,7 @@ namespace Lyyneheym.SlyviaInterpreter
                     foreach (SyntaxTreeNode child in mynode.children)
                     {
                         SceneAction sa = new SceneAction();
-                        sa.aTag = mynode.line.ToString() + "," + mynode.col.ToString();
+                        sa.aTag = mynode.line.ToString() + "-" + mynode.col.ToString();
                         sa.aType = (SActionType)Enum.Parse(typeof(SActionType), "act_" + child.nodeSyntaxType.ToString().Replace("synr_", ""));
                         // 跳过增广文法节点，拷贝参数字典
                         if (child.nodeSyntaxType.ToString().StartsWith("synr_")
@@ -435,7 +444,7 @@ namespace Lyyneheym.SlyviaInterpreter
                         break;
                     }
                     SceneAction saIfTrue = new SceneAction();
-                    saIfTrue.aTag = mynode.line.ToString() + "," + mynode.col.ToString();
+                    saIfTrue.aTag = mynode.line.ToString() + "-" + mynode.col.ToString();
                     this.Mise(mynode.children[0], ref saIfTrue, funcSaVec);
                     for (int i = 0; i < saIfTrue.trueRouting.Count; i++)
                     {
@@ -448,7 +457,7 @@ namespace Lyyneheym.SlyviaInterpreter
                         break;
                     }
                     SceneAction saIfFalse = new SceneAction();
-                    saIfFalse.aTag = mynode.line.ToString() + "," + mynode.col.ToString();
+                    saIfFalse.aTag = mynode.line.ToString() + "-" + mynode.col.ToString();
                     this.Mise(mynode.children[1], ref saIfFalse, funcSaVec);
                     for (int i = 0; i < saIfFalse.trueRouting.Count; i++)
                     {
@@ -469,7 +478,7 @@ namespace Lyyneheym.SlyviaInterpreter
                         break;
                     }
                     SceneAction saForTrue = new SceneAction();
-                    saForTrue.aTag = mynode.line.ToString() + "," + mynode.col.ToString();
+                    saForTrue.aTag = mynode.line.ToString() + "-" + mynode.col.ToString();
                     this.Mise(mynode.children[0], ref saForTrue, funcSaVec);
                     for (int i = 0; i < saForTrue.trueRouting.Count; i++)
                     {
@@ -483,7 +492,7 @@ namespace Lyyneheym.SlyviaInterpreter
                         break;
                     }
                     SceneAction saFuncTrue = new SceneAction();
-                    saFuncTrue.aTag = mynode.line.ToString() + "," + mynode.col.ToString();
+                    saFuncTrue.aTag = mynode.line.ToString() + "-" + mynode.col.ToString();
                     curSa.trueRouting = new List<SceneAction>();
                     this.Mise(mynode.children[0], ref saFuncTrue, funcSaVec);
                     for (int i = 0; i < saFuncTrue.trueRouting.Count; i++)
@@ -847,8 +856,8 @@ namespace Lyyneheym.SlyviaInterpreter
                 throw new InterpreterException()
                 {
                     Message = "一个非函数节点被作为函数声明处理",
-                    HitLine = Convert.ToInt32((funcSa.aTag.Split(','))[0]),
-                    HitColumn = Convert.ToInt32((funcSa.aTag.Split(','))[1]),
+                    HitLine = Convert.ToInt32((funcSa.aTag.Split('-'))[0]),
+                    HitColumn = Convert.ToInt32((funcSa.aTag.Split('-'))[1]),
                     HitPhase = InterpreterException.InterpreterPhase.Sematicer,
                     SceneFileName = this.scenario
                 };
@@ -861,8 +870,8 @@ namespace Lyyneheym.SlyviaInterpreter
                 throw new InterpreterException()
                 {
                     Message = "函数签名不合法",
-                    HitLine = Convert.ToInt32((funcSa.aTag.Split(','))[0]),
-                    HitColumn = Convert.ToInt32((funcSa.aTag.Split(','))[1]),
+                    HitLine = Convert.ToInt32((funcSa.aTag.Split('-'))[0]),
+                    HitColumn = Convert.ToInt32((funcSa.aTag.Split('-'))[1]),
                     HitPhase = InterpreterException.InterpreterPhase.Sematicer,
                     SceneFileName = this.scenario
                 };
@@ -883,8 +892,8 @@ namespace Lyyneheym.SlyviaInterpreter
                         throw new InterpreterException()
                         {
                             Message = "函数签名的参数列表不合法",
-                            HitLine = Convert.ToInt32((funcSa.aTag.Split(','))[0]),
-                            HitColumn = Convert.ToInt32((funcSa.aTag.Split(','))[1]),
+                            HitLine = Convert.ToInt32((funcSa.aTag.Split('-'))[0]),
+                            HitColumn = Convert.ToInt32((funcSa.aTag.Split('-'))[1]),
                             HitPhase = InterpreterException.InterpreterPhase.Sematicer,
                             SceneFileName = this.scenario
                         };

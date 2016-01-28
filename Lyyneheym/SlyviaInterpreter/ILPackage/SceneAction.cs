@@ -9,7 +9,7 @@ namespace Lyyneheym.SlyviaInterpreter.ILPackage
     /// 场景动作类：语义分析器输出的中间代码类
     /// </summary>
     [Serializable]
-    public class SceneAction
+    internal class SceneAction
     {
         // 节点名称
         public string saNodeName = null;
@@ -64,7 +64,7 @@ namespace Lyyneheym.SlyviaInterpreter.ILPackage
             }
             sb.Append(this.isBelongFunc ? "1," : "0,");
             sb.Append(this.funcName + ",");
-            sb.Append(this.aTag != null ? this.aTag.Replace(@",", @"\,").Replace(@"\", @"\\") .Replace("\r\n", @"\$") : "");
+            sb.Append(this.aTag != null ? this.aTag.Replace(@"\", @"\\").Replace(@",", @"\,") .Replace("\r\n", @"\$") : "");
             return sb.ToString();
         }
 
