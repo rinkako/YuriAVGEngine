@@ -233,6 +233,8 @@ namespace Lyyneheym.SlyviaInterpreter
                     ccToken.detail = "#";
                     ccToken.errorBit = false;
                     ccToken.aType = TokenType.startend;
+                    ccToken.aLine = this.dealingLine;
+                    ccToken.aColumn = this.istream[this.nextTokenPointer].aColumn;
                     this.istream.Add(ccToken);
                     // 复位游程
                     this.nextTokenPointer = 0;
@@ -836,6 +838,8 @@ namespace Lyyneheym.SlyviaInterpreter
             ccToken.detail = "#";
             ccToken.errorBit = false;
             ccToken.aType = TokenType.startend;
+            ccToken.aLine = this.dealingLine;
+            ccToken.aColumn = this.istream.Count > 0 ? this.istream.Last().aColumn + 1 : -1;
             this.istream.Add(ccToken);
         }
 
