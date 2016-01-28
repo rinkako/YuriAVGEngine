@@ -81,10 +81,6 @@
       <Project>{8332154c-d355-4333-918d-ec915bf69846}</Project>
       <Name>LyyneheymCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SlyviaUtils\SlyviaUtils.csproj">
-      <Project>{a3048027-d202-411c-b4a1-65ba4572c1dc}</Project>
-      <Name>SlyviaUtils</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

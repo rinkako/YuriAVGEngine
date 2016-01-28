@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimSlyvia", "SlimSlyvia\Sl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlyviaInterpreter", "SlyviaInterpreter\SlyviaInterpreter.csproj", "{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlyviaUtils", "SlyviaUtils\SlyviaUtils.csproj", "{A3048027-D202-411C-B4A1-65BA4572C1DC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,16 +78,6 @@ Global
 		{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}.Release|x86.ActiveCfg = Release|Any CPU
-		{A3048027-D202-411C-B4A1-65BA4572C1DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A3048027-D202-411C-B4A1-65BA4572C1DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A3048027-D202-411C-B4A1-65BA4572C1DC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A3048027-D202-411C-B4A1-65BA4572C1DC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A3048027-D202-411C-B4A1-65BA4572C1DC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A3048027-D202-411C-B4A1-65BA4572C1DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A3048027-D202-411C-B4A1-65BA4572C1DC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A3048027-D202-411C-B4A1-65BA4572C1DC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A3048027-D202-411C-B4A1-65BA4572C1DC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{A3048027-D202-411C-B4A1-65BA4572C1DC}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

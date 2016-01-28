@@ -55,12 +55,8 @@
     <Compile Include="SlyviaCore\SpiritContainer.cs" />
     <Compile Include="SlyviaCore\Consta.cs" />
     <Compile Include="SlyviaCore\SymbolTable.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SlyviaUtils\SlyviaUtils.csproj">
-      <Project>{a3048027-d202-411c-b4a1-65ba4572c1dc}</Project>
-      <Name>SlyviaUtils</Name>
-    </ProjectReference>
+    <Compile Include="Utils\IOUtils.cs" />
+    <Compile Include="Utils\PackageUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

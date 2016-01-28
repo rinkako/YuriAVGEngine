@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace Lyyneheym.SlyviaUtils
+namespace Lyyneheym.LyyneheymCore.Utils
 {
     /// <summary>
     /// 输入输出类：管理整个游戏环境的IO动作
