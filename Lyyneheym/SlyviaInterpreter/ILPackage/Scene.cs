@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using LyyneheymCore.SlyviaPile;
-
-namespace LyyneheymCore.SlyviaCore
+namespace Lyyneheym.SlyviaInterpreter.ILPackage
 {
     /// <summary>
-    /// <para>场景类：控制一个剧本章节的演出</para>
+    /// <para>IL场景类：控制一个剧本章节的演出的IL包装类</para>
     /// <para>通常，一个场景拥有一个动作序列和生命在它上面的函数</para>
-    /// <para>演绎剧本的过程就是遍历这个序列的过程</para>
     /// </summary>
     [Serializable]
-    public class Scene
+    public class PackageScene
     {
         /// <summary>
         /// 构造器
@@ -21,35 +18,11 @@ namespace LyyneheymCore.SlyviaCore
         /// <param name="scenario">场景名称</param>
         /// <param name="mainSa">主动作序列</param>
         /// <param name="funcVec">函数向量</param>
-        public Scene(string scenario, SceneAction mainSa, List<SceneFunction> funcVec)
+        public PackageScene(string scenario, SceneAction mainSa, List<SceneFunction> funcVec)
         {
             this.scenario = scenario;
             this.mainSa = mainSa;
             this.funcContainer = funcVec;
-        }
-
-        /// <summary>
-        /// 初始化该场景
-        /// </summary>
-        public void Init()
-        {
-
-        }
-
-        /// <summary>
-        /// 为消息队列更新当前场景的数据
-        /// </summary>
-        public void UpdateContext()
-        {
-
-        }
-
-        /// <summary>
-        /// 渲染当前画面
-        /// </summary>
-        public void Render()
-        {
-
         }
 
         /// <summary>
@@ -61,8 +34,6 @@ namespace LyyneheymCore.SlyviaCore
             return String.Format(">>>SlyviaIL?{0}", this.scenario);
         }
 
-        // 场景进行指针
-        public int SP = 0;
         // 场景名称
         public string scenario;
         // 场景的主动作序列

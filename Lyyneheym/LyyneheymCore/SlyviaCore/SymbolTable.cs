@@ -3,12 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LyyneheymCore.SlyviaCore;
 
-namespace LyyneheymCore.SlyviaPile
+namespace Lyyneheym.SlyviaCore
 {
     /// <summary>
-    /// <para>符号表类：维护编译过程和运行时环境的用户符号</para>
+    /// <para>符号表类：维护运行时环境的用户符号</para>
     /// <para>她是一个单例类，只有唯一实例</para>
     /// </summary>
     public sealed class SymbolTable

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LyyneheymCore.SlyviaPile
+namespace Lyyneheym.SlyviaInterpreter
 {
     /// <summary>
     /// 单词类：负责装填词法分析阶段的结果的最小单元

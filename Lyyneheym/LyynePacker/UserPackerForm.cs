@@ -6,9 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using LyyneheymCore.Utils;
+using Lyyneheym.
 
-namespace LyynePacker
+namespace Lyyneheym.LyynePacker
 {
     public partial class UserPackerForm : Form
     {

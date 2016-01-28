@@ -14,9 +14,9 @@ using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using System.IO;
 
-using LyyneheymCore.Utils;
-using LyyneheymCore.SlyviaCore;
-using LyyneheymCore.SlyviaPile;
+using Lyyneheym.SlyviaUtils;
+using Lyyneheym.LyyneheymCore;
+using Lyyneheym.SlyviaInterpreter;
 
 namespace Lyyneheym
 {

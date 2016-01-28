@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using LyyneheymCore.SlyviaCore;
+using Lyyneheym.SlyviaInterpreter.ILPackage;
 
-namespace LyyneheymCore.SlyviaPile
+namespace Lyyneheym.SlyviaInterpreter
 {
     /// <summary>
     /// 语义分析器：将语法树翻译为运行时环境能够解析的中间代码
@@ -28,7 +28,7 @@ namespace LyyneheymCore.SlyviaPile
         /// <param name="sourceCodeItem">以行分割的源代码字符串向量</param>
         /// <param name="sceneName">场景文件的名称，不带路径和后缀名</param>
         /// <returns>该剧本的场景</returns>
-        public Scene StartDash(List<string> sourceCodeItem, string sceneName)
+        public PackageScene StartDash(List<string> sourceCodeItem, string sceneName)
         {
             // 初期化
             this.Reset(sceneName);
@@ -860,9 +860,9 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="sceneItem">一个键值对，主场景序列头部和函数向量</param>
         /// <returns>场景实例</returns>
-        private Scene ParseScene(KeyValuePair<SceneAction, List<SceneFunction>> sceneItem)
+        private PackageScene ParseScene(KeyValuePair<SceneAction, List<SceneFunction>> sceneItem)
         {
-            return new Scene(this.scenario, sceneItem.Key, sceneItem.Value);
+            return new PackageScene(this.scenario, sceneItem.Key, sceneItem.Value);
         }
 
         /// <summary>
@@ -904,7 +904,7 @@ namespace LyyneheymCore.SlyviaPile
         /// </summary>
         /// <param name="scene">场景实例</param>
         /// <returns>IL字符串</returns>
-        private string ParseToIL(Scene scene)
+        private string ParseToIL(PackageScene scene)
         {
             List<SceneFunction> sf = scene.funcContainer;
             SceneAction mainSa = scene.mainSa;
@@ -1152,7 +1152,7 @@ namespace LyyneheymCore.SlyviaPile
         // 语法分析器
         private Parser parser = null;
         // 剧本场景实例
-        private Scene rootScene = null;
+        private PackageScene rootScene = null;
         // 语法树根节点
         private SyntaxTreeNode parseTree = null;
         // 动作序列嵌套栈

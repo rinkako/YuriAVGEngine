@@ -6,9 +6,9 @@ using System.Windows.Media.Imaging;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using LyyneheymCore.Utils;
+using Lyyneheym.SlyviaUtils;
 
-namespace LyyneheymCore.SlyviaCore
+namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
     /// <summary>
     /// <para>资源管理器类：负责维护游戏的资源</para>

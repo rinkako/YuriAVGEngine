@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 
 
-namespace LyyneheymCore.Utils
+namespace Lyyneheym.SlyviaUtils
 {
     /// <summary>
     /// <para>包管理类：负责资源包的封装、解封、寻址和维护的类</para>

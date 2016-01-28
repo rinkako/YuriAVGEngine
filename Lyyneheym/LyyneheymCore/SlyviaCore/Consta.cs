@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media.Imaging;
 
-namespace LyyneheymCore.SlyviaCore
+namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
     /// <summary>
     /// <para>常量类：维护整个游戏环境的常量</para>

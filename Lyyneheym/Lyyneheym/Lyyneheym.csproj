@@ -98,6 +98,14 @@
       <Project>{8332154c-d355-4333-918d-ec915bf69846}</Project>
       <Name>LyyneheymCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SlyviaInterpreter\SlyviaInterpreter.csproj">
+      <Project>{6194a2aa-1c9d-40cd-8c8f-ea66f679cc0f}</Project>
+      <Name>SlyviaInterpreter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SlyviaUtils\SlyviaUtils.csproj">
+      <Project>{a3048027-d202-411c-b4a1-65ba4572c1dc}</Project>
+      <Name>SlyviaUtils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ImageAssets\MessageTria.png" />

@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Media;
 using System.Media;
 
-namespace LyyneheymCore.SlyviaCore
+namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
     /// <summary>
     /// 音乐容器：负责游戏所有声效的维护和处理

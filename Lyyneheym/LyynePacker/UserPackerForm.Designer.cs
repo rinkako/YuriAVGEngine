@@ -1,4 +1,4 @@
-﻿namespace LyynePacker
+﻿namespace Lyyneheym.LyynePacker
 {
     partial class UserPackerForm
     {

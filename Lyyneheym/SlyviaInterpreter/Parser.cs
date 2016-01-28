@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LyyneheymCore.SlyviaPile
+namespace Lyyneheym.SlyviaInterpreter
 {
     using iHandle = Func<SyntaxTreeNode, CFunctionType, SyntaxType, Token, SyntaxTreeNode>;
     /// <summary>
@@ -1567,8 +1567,6 @@ namespace LyyneheymCore.SlyviaPile
         private int nextTokenPointer = 0;
         // 单词流
         private List<Token> istream = new List<Token>();
-        // 符号管理器
-        private SymbolTable symboler = SymbolTable.getInstance();
         // 匹配栈
         private Stack<SyntaxType> iParseStack = new Stack<SyntaxType>();
         // 候选式类型的向量

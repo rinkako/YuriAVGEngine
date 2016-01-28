@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LyyneheymCore.SlyviaPile;
 
-namespace LyyneheymCore.SlyviaCore
+namespace Lyyneheym.LyyneheymCore.ILPackage
 {
     /// <summary>
     /// 函数调用类：处理场景里的函数

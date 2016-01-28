@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LyyneheymCore.SlyviaCore;
 
-namespace LyyneheymCore.SlyviaPile
+namespace Lyyneheym.SlyviaInterpreter.ILPackage
 {
     /// <summary>
     /// 场景动作类：语义分析器输出的中间代码类

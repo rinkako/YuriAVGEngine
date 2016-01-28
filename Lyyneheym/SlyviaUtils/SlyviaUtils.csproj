@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8332154C-D355-4333-918D-EC915BF69846}</ProjectGuid>
+    <ProjectGuid>{A3048027-D202-411C-B4A1-65BA4572C1DC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Lyyneheym.LyyneheymCore</RootNamespace>
-    <AssemblyName>Lyyneheym.LyyneheymCore</AssemblyName>
+    <RootNamespace>Lyyneheym.SlyviaUtils</RootNamespace>
+    <AssemblyName>Lyyneheym.SlyviaUtils</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,8 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,34 +30,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ILPackage\SceneAction.cs" />
+    <Compile Include="IOUtils.cs" />
+    <Compile Include="PackageUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SlyviaCore\MusicianContainer.cs" />
-    <Compile Include="SlyviaCore\ResourceManager.cs" />
-    <Compile Include="SlyviaCore\RuntimeManager.cs" />
-    <Compile Include="ILPackage\Scene.cs" />
-    <Compile Include="ILPackage\SceneFunction.cs" />
-    <Compile Include="SlyviaCore\SceneManager.cs" />
-    <Compile Include="SlyviaCore\SpiritContainer.cs" />
-    <Compile Include="SlyviaCore\Consta.cs" />
-    <Compile Include="SlyviaCore\SymbolTable.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SlyviaUtils\SlyviaUtils.csproj">
-      <Project>{a3048027-d202-411c-b4a1-65ba4572c1dc}</Project>
-      <Name>SlyviaUtils</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

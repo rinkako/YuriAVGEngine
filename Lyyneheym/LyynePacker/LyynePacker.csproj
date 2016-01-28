@@ -7,8 +7,8 @@
     <ProjectGuid>{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LyynePacker</RootNamespace>
-    <AssemblyName>LyynePacker</AssemblyName>
+    <RootNamespace>Lyyneheym.LyynePacker</RootNamespace>
+    <AssemblyName>Lyyneheym.LyynePacker</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

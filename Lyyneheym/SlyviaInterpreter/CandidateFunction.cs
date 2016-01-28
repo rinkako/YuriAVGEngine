@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LyyneheymCore.SlyviaPile
+namespace Lyyneheym.SlyviaInterpreter
 {
     using iHandle = Func<SyntaxTreeNode, CFunctionType, SyntaxType, Token, SyntaxTreeNode>;
     
