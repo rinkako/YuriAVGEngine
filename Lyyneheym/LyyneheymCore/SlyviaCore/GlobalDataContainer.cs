@@ -7,10 +7,10 @@ using System.Windows.Media.Imaging;
 namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
     /// <summary>
-    /// <para>常量类：维护整个游戏环境的常量</para>
+    /// <para>常量类：维护整个游戏环境中的系统级变量</para>
     /// <para>她是一个静态类</para>
     /// </summary>
-    public static class Consta
+    public static class GlobalDataContainer
     {
         #region 目录和字典常量
         // 图像资源目录名

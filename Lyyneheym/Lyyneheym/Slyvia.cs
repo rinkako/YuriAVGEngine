@@ -52,7 +52,7 @@ namespace Lyyneheym
             // ================== DEBUG ==================
             Dictionary<string, KeyValuePair<long, long>> dtt = new Dictionary<string, KeyValuePair<long, long>>();
             dtt.Add("bg2.png", new KeyValuePair<long, long>(754513, 1149339));
-            resourceMana.resourceTable.Add(Consta.DevURI_PA_BACKGROUND, dtt);
+            resourceMana.resourceTable.Add(GlobalDataContainer.DevURI_PA_BACKGROUND, dtt);
             // ================== DEBUG ==================
         }
 

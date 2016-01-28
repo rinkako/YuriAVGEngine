@@ -27,7 +27,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public BitmapImage getBackgroundImage(string sourceName)
         {
             // 总是先查看是否有为封包的数据
-            string furi = Consta.DevURI_RT_PICTUREASSETS + "\\" + Consta.DevURI_PA_BACKGROUND + "\\" + sourceName;
+            string furi = GlobalDataContainer.DevURI_RT_PICTUREASSETS + "\\" + GlobalDataContainer.DevURI_PA_BACKGROUND + "\\" + sourceName;
             if (File.Exists(IOUtils.ParseURItoURL("\\" + furi)))
             {
                 Uri bg = new Uri(furi, UriKind.RelativeOrAbsolute);
@@ -37,11 +37,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 bpi.EndInit();
                 return bpi;
             }
-            else if (this.resourceTable.ContainsKey(Consta.DevURI_PA_BACKGROUND) &&
-                this.resourceTable[Consta.DevURI_PA_BACKGROUND].ContainsKey(sourceName))
+            else if (this.resourceTable.ContainsKey(GlobalDataContainer.DevURI_PA_BACKGROUND) &&
+                this.resourceTable[GlobalDataContainer.DevURI_PA_BACKGROUND].ContainsKey(sourceName))
             {
-                KeyValuePair<long, long> sourceLocation = this.resourceTable[Consta.DevURI_PA_BACKGROUND][sourceName];
-                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL("\\" + Consta.PackURI_PA_BACKGROUND + Consta.PackPostfix),
+                KeyValuePair<long, long> sourceLocation = this.resourceTable[GlobalDataContainer.DevURI_PA_BACKGROUND][sourceName];
+                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL("\\" + GlobalDataContainer.PackURI_PA_BACKGROUND + GlobalDataContainer.PackPostfix),
                     sourceName, sourceLocation.Key, sourceLocation.Value);
                 MemoryStream ms = new MemoryStream(ob);
                 BitmapImage bpi = new BitmapImage();
@@ -64,7 +64,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public BitmapImage getCharacterStandImage(string sourceName)
         {
             // 总是先查看是否有为封包的数据
-            string furi = Consta.DevURI_RT_PICTUREASSETS + "\\" + Consta.DevURI_PA_CHARASTAND + "\\" + sourceName;
+            string furi = GlobalDataContainer.DevURI_RT_PICTUREASSETS + "\\" + GlobalDataContainer.DevURI_PA_CHARASTAND + "\\" + sourceName;
             if (File.Exists(IOUtils.ParseURItoURL("\\" + furi)))
             {
                 Uri bg = new Uri(furi, UriKind.RelativeOrAbsolute);
@@ -74,11 +74,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 bpi.EndInit();
                 return bpi;
             }
-            else if (this.resourceTable.ContainsKey(Consta.DevURI_PA_CHARASTAND) &&
-                this.resourceTable[Consta.DevURI_PA_CHARASTAND].ContainsKey(sourceName))
+            else if (this.resourceTable.ContainsKey(GlobalDataContainer.DevURI_PA_CHARASTAND) &&
+                this.resourceTable[GlobalDataContainer.DevURI_PA_CHARASTAND].ContainsKey(sourceName))
             {
-                KeyValuePair<long, long> sourceLocation = this.resourceTable[Consta.DevURI_PA_CHARASTAND][sourceName];
-                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL("\\" + Consta.PackURI_PA_CHARASTAND + Consta.PackPostfix),
+                KeyValuePair<long, long> sourceLocation = this.resourceTable[GlobalDataContainer.DevURI_PA_CHARASTAND][sourceName];
+                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL("\\" + GlobalDataContainer.PackURI_PA_CHARASTAND + GlobalDataContainer.PackPostfix),
                     sourceName, sourceLocation.Key, sourceLocation.Value);
                 MemoryStream ms = new MemoryStream(ob);
                 BitmapImage bpi = new BitmapImage();

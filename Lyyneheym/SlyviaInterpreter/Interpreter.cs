@@ -117,12 +117,19 @@ namespace Lyyneheym.SlyviaInterpreter
         private void SplitHandler(object threadID)
         {
             int tid = (int)threadID;
-            while (this.splitQueue.Count != 0)
+            while (true)
             {
                 FileInfo fi = null;
                 lock (this.splitQueue)
                 {
-                    fi = this.splitQueue.Dequeue();
+                    if (this.splitQueue.Count != 0)
+                    {
+                        fi = this.splitQueue.Dequeue();
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
                 if (fi == null)
                 {
@@ -143,6 +150,10 @@ namespace Lyyneheym.SlyviaInterpreter
                     }
                     sr.Close();
                     fs.Close();
+                    lock (this.consoleMutex)
+                    {
+                        Console.WriteLine(String.Format("Compiling \"{0}\" At thread {1}", fi.Name, tid));
+                    }
                     if (this.iType == InterpreterType.DEBUG)
                     {
                         lock (this.SceneVector)

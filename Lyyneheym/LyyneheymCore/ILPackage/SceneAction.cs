@@ -33,40 +33,37 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
         public string aTag = null;
 
         /// <summary>
-        /// 将动作转化为可序列化字符串
+        /// 字符串化方法
         /// </summary>
-        /// <returns>IL字符串</returns>
-        public string ToIL()
+        /// <returns>该动作的名字</returns>
+        public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(this.saNodeName + ",");
-            string args = this.argsDict.Aggregate("", (x, y) => x + "#" + y.Value);
-            sb.Append(args.Length > 0 ? args.Substring(1) + "," : ",");
-            sb.Append(this.condPolish + ",");
-            sb.Append(this.next != null ? this.next.saNodeName + "," : ",");
-            if (this.trueRouting != null)
-            {
-                string trues = this.trueRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
-                sb.Append(trues.Substring(1) + ",");
-            }
-            else
-            {
-                sb.Append(",");
-            }
-            if (this.falseRouting != null)
-            {
-                string falses = this.trueRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
-                sb.Append(falses.Substring(1) + ",");
-            }
-            else
-            {
-                sb.Append(",");
-            }
-            sb.Append(this.isBelongFunc ? "1," : "0,");
-            sb.Append(this.funcName + ",");
-            sb.Append(this.aTag != null ? this.aTag.Replace(@",", @"\,").Replace(@"\", @"\\") .Replace("\r\n", @"\$") : "");
-            return sb.ToString();
+            return this.saNodeName;
         }
+    }
+
+    public class SceneActionPackage
+    {
+        // 节点名称
+        public string saNodeName = null;
+        // 节点动作
+        public SActionType aType = SActionType.NOP;
+        // 参数字典
+        public Dictionary<string, string> argsDict = new Dictionary<string, string>();
+        // 条件从句逆波兰表达
+        public string condPolish = null;
+        // 下一节点
+        public string next = null;
+        // 下一真节点向量
+        public List<string> trueRouting = null;
+        // 下一假节点向量
+        public List<string> falseRouting = null;
+        // 是否依存函数
+        public bool isBelongFunc = false;
+        // 依存函数名
+        public string funcName = null;
+        // 附加值
+        public string aTag = null;
 
         /// <summary>
         /// 字符串化方法
