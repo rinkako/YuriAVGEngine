@@ -69,9 +69,6 @@ namespace Lyyneheym
 
         private void testLexer()
         {
-            //List<string> sl = IOUtils.ReadScenarioFromFile(@"C:\Users\Kako\Desktop\test.txt");
-            //Pile pile = new Pile();
-            //pile.StartDash(sl, "test", InterpreterType.RELEASE_WITH_IL);
             Interpreter ip = new Interpreter("TestProj", @"C:\Users\Kako\Desktop\testDir");
             ip.Dash(InterpreterType.RELEASE_WITH_IL, 8);
             ip.GetILFile(@"C:\Users\Kako\Desktop\Res\mylog.sil");
@@ -79,6 +76,12 @@ namespace Lyyneheym
             ILConvertor ilc = ILConvertor.GetInstance();
             ilc.Dash(@"C:\Users\Kako\Desktop\Res", 8);
 
+            //string lk;
+            //lk = Environment.NewLine;
+            //byte[] rv = null;
+            //rv = System.Text.Encoding.UTF8.GetBytes(lk);
+            //string myStr = System.Text.Encoding.UTF8.GetString(rv);
+            //MessageBox.Show(myStr);
         }
 
 

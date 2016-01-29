@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Lyyneheym.LyyneheymCore.ILPackage
 {
@@ -31,6 +30,21 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
         public string funcName = null;
         // 附加值
         public string aTag = null;
+
+        /// <summary>
+        /// 带SAP项的构造函数
+        /// </summary>
+        /// <param name="sap">SceneActionPackage项目</param>
+        public SceneAction(SceneActionPackage sap)
+        {
+            this.saNodeName = sap.saNodeName;
+            this.aType = SActionType.NOP;
+            this.argsDict = new Dictionary<string, string>(sap.argsDict);
+            this.condPolish = sap.condPolish;
+            this.isBelongFunc = sap.isBelongFunc;
+            this.funcName = sap.funcName;
+            this.aTag = sap.aTag;
+        }
 
         /// <summary>
         /// 字符串化方法
@@ -64,6 +78,8 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
         public string funcName = null;
         // 附加值
         public string aTag = null;
+        // 脏位
+        public bool dirtyBit = false;
 
         /// <summary>
         /// 字符串化方法

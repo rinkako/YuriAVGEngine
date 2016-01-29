@@ -36,35 +36,104 @@ namespace Lyyneheym.SlyviaInterpreter.ILPackage
         /// 将动作转化为可序列化字符串
         /// </summary>
         /// <returns>IL字符串</returns>
-        public string ToIL()
+        public string ToIL(bool isClearText = false)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(this.saNodeName + ",");
-            string args = this.argsDict.Aggregate("", (x, y) => x + ":#:" + y.Key + ":@:" + y.Value);
-            sb.Append(args.Length > 0 ? args.Substring(1) + "," : ",");
-            sb.Append(this.condPolish + ",");
-            sb.Append(this.next != null ? this.next.saNodeName + "," : ",");
-            if (this.trueRouting != null)
+            if (!isClearText)
             {
-                string trues = this.trueRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
-                sb.Append(trues.Substring(1) + ",");
+                return this.ToEncodeIL();
             }
             else
             {
-                sb.Append(",");
+                StringBuilder sb = new StringBuilder();
+                sb.Append(this.saNodeName + "^");
+                string args = this.argsDict.Aggregate("", (x, y) => x + ":#:" + y.Key + ":@:" + y.Value);
+                sb.Append(args.Length > 0 ? args.Substring(3) + "^" : "^");
+                sb.Append(this.condPolish + "^");
+                sb.Append(this.next != null ? this.next.saNodeName + "^" : "^");
+                if (this.trueRouting != null)
+                {
+                    string trues = this.trueRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
+                    sb.Append(trues.Substring(1) + "^");
+                }
+                else
+                {
+                    sb.Append("^");
+                }
+                if (this.falseRouting != null)
+                {
+                    string falses = this.trueRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
+                    sb.Append(falses.Substring(1) + "^");
+                }
+                else
+                {
+                    sb.Append("^");
+                }
+                sb.Append(this.isBelongFunc ? "1^" : "0^");
+                sb.Append(this.funcName + "^");
+                sb.Append(this.aTag != null ? this.aTag.Replace(@"\", @"\\").Replace(@",", @"\,").Replace(@"^", @"\^").Replace("\r\n", @"\$") : "");
+                return sb.ToString();
+            }
+        }
+
+        /// <summary>
+        /// 将动作转化为可序列化的已编码字符串
+        /// </summary>
+        /// <returns>编码完毕的IL字符串</returns>
+        private string ToEncodeIL()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(this.saNodeName + "^");
+            string args = this.argsDict.Aggregate("", (x, y) => x + "#" + y.Key + "@" + this.EncodeString(y.Value));
+            sb.Append(args.Length > 0 ? args.Substring(1) + "^" : "^");
+            sb.Append(this.EncodeString(this.condPolish) + "^");
+            sb.Append(this.next != null ? this.next.saNodeName + "^" : "^");
+            if (this.trueRouting != null)
+            {
+                string trues = this.trueRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
+                sb.Append(trues.Substring(1) + "^");
+            }
+            else
+            {
+                sb.Append("^");
             }
             if (this.falseRouting != null)
             {
                 string falses = this.trueRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
-                sb.Append(falses.Substring(1) + ",");
+                sb.Append(falses.Substring(1) + "^");
             }
             else
             {
-                sb.Append(",");
+                sb.Append("^");
             }
-            sb.Append(this.isBelongFunc ? "1," : "0,");
-            sb.Append(this.funcName + ",");
-            sb.Append(this.aTag != null ? this.aTag.Replace(@"\", @"\\").Replace(@",", @"\,") .Replace("\r\n", @"\$") : "");
+            sb.Append(this.isBelongFunc ? "1^" : "0^");
+            sb.Append(this.funcName + "^");
+            sb.Append(this.EncodeString((string)this.aTag));
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 把一个字符串做编码
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="isUTF8">标志位，true编码UTF-8，false编码Unicode</param>
+        /// <returns>编码完毕的字符串</returns>
+        private string EncodeString(string str, bool isUTF8 = true)
+        {
+            if (str == null) { return null; }
+            byte[] br = null;
+            if (isUTF8)
+            {
+                br = Encoding.UTF8.GetBytes(str);
+            }
+            else
+            {
+                br = Encoding.Unicode.GetBytes(str);
+            }
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in br)
+            {
+                sb.Append(String.Format("{0:D3}", b));
+            }
             return sb.ToString();
         }
 
