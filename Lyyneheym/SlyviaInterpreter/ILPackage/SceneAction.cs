@@ -90,7 +90,7 @@ namespace Lyyneheym.SlyviaInterpreter.ILPackage
             if (this.trueRouting != null)
             {
                 string trues = this.trueRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
-                sb.Append(trues.Substring(1) + "^");
+                sb.Append(trues.Length > 0 ? trues.Substring(1) + "^" : "^");
             }
             else
             {
@@ -98,8 +98,8 @@ namespace Lyyneheym.SlyviaInterpreter.ILPackage
             }
             if (this.falseRouting != null)
             {
-                string falses = this.trueRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
-                sb.Append(falses.Substring(1) + "^");
+                string falses = this.falseRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
+                sb.Append(falses.Length > 0 ? falses.Substring(1) + "^" : "^");
             }
             else
             {

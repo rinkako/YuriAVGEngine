@@ -74,14 +74,7 @@ namespace Lyyneheym
             ip.GetILFile(@"C:\Users\Kako\Desktop\Res\mylog.sil");
 
             ILConvertor ilc = ILConvertor.GetInstance();
-            ilc.Dash(@"C:\Users\Kako\Desktop\Res", 8);
-
-            //string lk;
-            //lk = Environment.NewLine;
-            //byte[] rv = null;
-            //rv = System.Text.Encoding.UTF8.GetBytes(lk);
-            //string myStr = System.Text.Encoding.UTF8.GetString(rv);
-            //MessageBox.Show(myStr);
+            ilc.Dash(@"C:\Users\Kako\Desktop\Res");
         }
 
 

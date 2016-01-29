@@ -20,6 +20,25 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
             this.sa = sa;
         }
 
+        /// <summary>
+        /// 字符串化方法
+        /// </summary>
+        /// <returns>该函数的C风格签名</returns>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            string paraStr = "";
+            foreach (string arg in this.param)
+            {
+                sb.Append(arg + ", ");
+            }
+            if (sb.Length > 0)
+            {
+                paraStr = sb.ToString().Substring(0, sb.Length - 2);
+            }
+            return String.Format("SlyviaFunction: {0}({1})", this.callname, paraStr);
+        }
+
         // 在变量字典中的名字
         public string varDictName
         {

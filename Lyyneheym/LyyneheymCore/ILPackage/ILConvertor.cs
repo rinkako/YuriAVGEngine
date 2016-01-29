@@ -14,13 +14,11 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
     /// </summary>
     public class ILConvertor
     {
-
         /// <summary>
         /// 进行编译
         /// </summary>
         /// <param name="dir">剧本目录（以后要去掉）</param>
-        /// <param name="threadNum">进程数</param>
-        public void Dash(string dir, int threadNum = 1)
+        public void Dash(string dir)
         {
             this.sceneDirectory = dir;
             this.LoadAndSplit();
@@ -65,23 +63,23 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
                             if (currentSAP.trueRouting.Count > 0)
                             {
                                 this.iResContainer[sceneName][currentSAP.saNodeName].trueRouting = new List<SceneAction>();
-                            }
-                            foreach (string trueSaName in currentSAP.trueRouting)
-                            {
-                                this.iResContainer[sceneName][currentSAP.saNodeName].trueRouting.Add(
-                                    this.iResContainer[sceneName][trueSaName]);
-                                openSet.Enqueue(trueSaName);
+                                foreach (string trueSaName in currentSAP.trueRouting)
+                                {
+                                    this.iResContainer[sceneName][currentSAP.saNodeName].trueRouting.Add(
+                                        this.iResContainer[sceneName][trueSaName]);
+                                    openSet.Enqueue(trueSaName);
+                                }
                             }
                             // 处理falseRouting
                             if (currentSAP.falseRouting.Count > 0)
                             {
                                 this.iResContainer[sceneName][currentSAP.saNodeName].falseRouting = new List<SceneAction>();
-                            }
-                            foreach (string falseSaName in currentSAP.falseRouting)
-                            {
-                                this.iResContainer[sceneName][currentSAP.saNodeName].falseRouting.Add(
-                                    this.iResContainer[sceneName][falseSaName]);
-                                openSet.Enqueue(falseSaName);
+                                foreach (string falseSaName in currentSAP.falseRouting)
+                                {
+                                    this.iResContainer[sceneName][currentSAP.saNodeName].falseRouting.Add(
+                                        this.iResContainer[sceneName][falseSaName]);
+                                    openSet.Enqueue(falseSaName);
+                                }
                             }
                         }
                     }
@@ -124,7 +122,9 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
                     funcParas.Add(ivar);
                 }
             }
-            return new SceneFunction(signItem[0].Trim(), sceneName, funcSa);
+            SceneFunction nsf = new SceneFunction(signItem[0].Trim(), sceneName, funcSa);
+            nsf.param = funcParas;
+            return nsf;
         }
 
         /// <summary>
@@ -134,6 +134,7 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
         {
             this.ilPackageContainer = new Dictionary<string, Dictionary<string, SceneActionPackage>>();
             this.iResContainer = new Dictionary<string, Dictionary<string, SceneAction>>();
+            string currentSceneKey = "";
             foreach (string lineitem in this.splitContianer)
             {
                 // 处理头部
@@ -149,9 +150,9 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
                     if (mycommand.StartsWith("SlyviaIL?"))
                     {
                         string[] commandItem = mycommand.Split('?');
-                        this.currentSceneKey = commandItem[1];
-                        this.ilPackageContainer.Add(this.currentSceneKey, new Dictionary<string,SceneActionPackage>());
-                        this.iResContainer.Add(this.currentSceneKey, new Dictionary<string,SceneAction>());
+                        currentSceneKey = commandItem[1];
+                        this.ilPackageContainer.Add(currentSceneKey, new Dictionary<string,SceneActionPackage>());
+                        this.iResContainer.Add(currentSceneKey, new Dictionary<string,SceneAction>());
                     }
                     else if (mycommand.StartsWith("SlyviaAEIL"))
                     {
@@ -164,10 +165,10 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
                 {
                     // sap
                     SceneActionPackage sap = this.ParseSceneActionPackage(lineitem);
-                    this.ilPackageContainer[this.currentSceneKey].Add(sap.saNodeName, sap);
+                    this.ilPackageContainer[currentSceneKey].Add(sap.saNodeName, sap);
                     // sa
                     SceneAction sa = new SceneAction(sap);
-                    this.iResContainer[this.currentSceneKey].Add(sa.saNodeName, sa);
+                    this.iResContainer[currentSceneKey].Add(sa.saNodeName, sa);
                 }
             }
         }
@@ -297,7 +298,6 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
             return resList;
         }
 
-
         /// <summary>
         /// 工厂方法：获得类的唯一实例
         /// </summary>
@@ -320,9 +320,15 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
         /// </summary>
         private static ILConvertor instance = null;
 
+        /// <summary>
+        /// SAP容器
+        /// </summary>
         private Dictionary<string, Dictionary<string, SceneActionPackage>> ilPackageContainer;
+
+        /// <summary>
+        /// SA动作序列容器
+        /// </summary>
         private Dictionary<string, Dictionary<string, SceneAction>> iResContainer;
-        private string currentSceneKey = "";
 
         /// <summary>
         /// 剧本文件的目录
