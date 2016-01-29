@@ -18,6 +18,8 @@ using Lyyneheym.LyyneheymCore.Utils;
 using Lyyneheym.LyyneheymCore;
 using Lyyneheym.SlyviaInterpreter;
 
+using Lyyneheym.LyyneheymCore.ILPackage;
+
 namespace Lyyneheym
 {
     /// <summary>
@@ -72,7 +74,11 @@ namespace Lyyneheym
             //pile.StartDash(sl, "test", InterpreterType.RELEASE_WITH_IL);
             Interpreter ip = new Interpreter("TestProj", @"C:\Users\Kako\Desktop\testDir");
             ip.Dash(InterpreterType.RELEASE_WITH_IL, 8);
-            ip.GetILFile(@"C:\Users\Kako\Desktop\mylog.txt");
+            ip.GetILFile(@"C:\Users\Kako\Desktop\Res\mylog.sil");
+
+            ILConvertor ilc = ILConvertor.GetInstance();
+            ilc.Dash(@"C:\Users\Kako\Desktop\Res", 8);
+
         }
 
 

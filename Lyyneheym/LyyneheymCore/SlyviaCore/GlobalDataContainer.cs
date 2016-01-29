@@ -12,6 +12,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     /// </summary>
     public static class GlobalDataContainer
     {
+        #region 游戏工程数据
+        // 游戏工程名称
+        public static string GAME_PROJECT_NAME = "SlyviaProject";
+        // 游戏名称
+        public static string GAME_TITLE_NAME = "SlyviaGame";
+        #endregion
+
         #region 目录和字典常量
         // 图像资源目录名
         public static readonly string DevURI_RT_PICTUREASSETS = "PictureAssets";
@@ -57,6 +64,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public static readonly string CVarName_SETrack = "CVar_SETrackNum";
         // 语音音轨字典键名
         public static readonly string CVarName_VocalTrack = "CVar_VocalTrackNum";
+        #endregion
+
+        #region 文件后缀名和格式
+
         #endregion
 
         #region 枚举类型

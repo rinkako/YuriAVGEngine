@@ -40,7 +40,7 @@ namespace Lyyneheym.SlyviaInterpreter.ILPackage
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(this.saNodeName + ",");
-            string args = this.argsDict.Aggregate("", (x, y) => x + "#" + y.Value);
+            string args = this.argsDict.Aggregate("", (x, y) => x + ":#:" + y.Key + ":@:" + y.Value);
             sb.Append(args.Length > 0 ? args.Substring(1) + "," : ",");
             sb.Append(this.condPolish + ",");
             sb.Append(this.next != null ? this.next.saNodeName + "," : ",");
