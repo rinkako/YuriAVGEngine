@@ -445,6 +445,28 @@ namespace Lyyneheym.SlyviaInterpreter
                     return true;
                 }
             }
+            // 状态转移，10个字符的情况
+            if (this.nextCharPointer + 10 <= glen)
+            {
+                bool okFlag = false;
+                string str = this.sourceCode.Substring(this.nextCharPointer, 10).ToLower();
+                if (str == "titlepoint")
+                {
+                    res.aType = TokenType.Token_o_titlepoint;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 10]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                // 如果命中了符号就返回
+                if (okFlag)
+                {
+                    res.detail = str;
+                    this.Jump(10);
+                    return true;
+                }
+            }
             // 状态转移，9个字符的情况
             if (this.nextCharPointer + 9 <= glen)
             {

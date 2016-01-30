@@ -221,6 +221,8 @@ namespace Lyyneheym.SlyviaInterpreter.ILPackage
         // 选择支
         act_branch,
         // 函数调用
-        act_call
+        act_call,
+        // 回归点
+        act_titlepoint
     }
 }

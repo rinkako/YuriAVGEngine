@@ -967,6 +967,9 @@ namespace Lyyneheym.SlyviaInterpreter
                     case TokenType.Token_o_stopbgm:
                         statementNode.nodeSyntaxType = SyntaxType.synr_stopbgm;
                         break;
+                    case TokenType.Token_o_titlepoint:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_titlepoint;
+                        break;
                     case TokenType.Token_o_vocal:
                         statementNode.nodeSyntaxType = SyntaxType.synr_vocal;
                         statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
@@ -994,6 +997,7 @@ namespace Lyyneheym.SlyviaInterpreter
                         break;
                     case TokenType.Token_o_jump:
                         statementNode.nodeSyntaxType = SyntaxType.synr_jump;
+                        statementNode.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename, statementNode);
                         statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
                         statementNode.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);
                         break;

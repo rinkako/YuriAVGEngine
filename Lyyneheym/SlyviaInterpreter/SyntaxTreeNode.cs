@@ -316,6 +316,8 @@ namespace Lyyneheym.SlyviaInterpreter
         synr_wait,
         // 选择支
         synr_branch,
+        // 标志回归点
+        synr_titlepoint,
         // 参数：函数签名
         para_sign,
         // 参数：选择支链

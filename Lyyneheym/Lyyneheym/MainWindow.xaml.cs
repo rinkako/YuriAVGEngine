@@ -33,6 +33,18 @@ namespace Lyyneheym
         {
             InitializeComponent();
             this.testFontEffect(this.BO_MainText);
+
+
+            BitmapImage myBitmapImage = new BitmapImage();
+            myBitmapImage.BeginInit();
+            myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA01.png", UriKind.RelativeOrAbsolute);
+            myBitmapImage.EndInit();
+            mytestbutton.Width = myBitmapImage.Width;
+            mytestbutton.Height = myBitmapImage.Height;
+            mytestbutton.Source = myBitmapImage;
+            mytestbutton.Margin = new Thickness(0, 0, 0, 0);
+            mytestbutton.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            mytestbutton.VerticalAlignment = System.Windows.VerticalAlignment.Top;
         }
 
         private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -160,6 +172,7 @@ namespace Lyyneheym
             
         }
 
+
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
             foreach (UIElement c in this.BO_MainGrid.Children)
@@ -180,7 +193,7 @@ namespace Lyyneheym
         }
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-            TypewriteTextblock("测试文本测试文本测试文本测试文本测试文本", this.BO_MainText, TimeSpan.FromMilliseconds(800));
+            TypewriteTextblock("测试文本测试文本测试文本测试文本", this.BO_MainText, 30);
         }
 
 
@@ -218,14 +231,14 @@ namespace Lyyneheym
             
         }
 
-        private void TypewriteTextblock(string textToAnimate, TextBlock txt, TimeSpan timeSpan)
+        private void TypewriteTextblock(string textToAnimate, TextBlock txt, int timeSpan)
         {
             this.BO_MsgTria.Visibility = System.Windows.Visibility.Hidden;
             Storyboard story = new Storyboard();
             story.FillBehavior = FillBehavior.HoldEnd;
             DiscreteStringKeyFrame discreteStringKeyFrame;
             StringAnimationUsingKeyFrames stringAnimationUsingKeyFrames = new StringAnimationUsingKeyFrames();
-            stringAnimationUsingKeyFrames.Duration = new Duration(timeSpan);
+            stringAnimationUsingKeyFrames.Duration = new Duration(TimeSpan.FromMilliseconds(timeSpan * textToAnimate.Length));
             string tmp = string.Empty;
             foreach (char c in textToAnimate)
             {
@@ -267,6 +280,44 @@ namespace Lyyneheym
             //mp.Stop();
             System.Media.SoundPlayer sp = new System.Media.SoundPlayer(@"Sound\se\se01.wav");
             sp.Play();
+        }
+
+        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            Point p = e.MouseDevice.GetPosition((Image)sender);
+
+   
+
+            BitmapImage myBitmapImage = new BitmapImage();
+            myBitmapImage.BeginInit();
+            myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA01.png", UriKind.RelativeOrAbsolute);
+            myBitmapImage.EndInit();
+
+            Color hitC = this.GetPixelColor(myBitmapImage, (int)p.X, (int)p.Y);
+
+            if (hitC.A != 0)
+            {
+                MessageBox.Show(p.ToString());
+            }
+            
+        }
+
+        public Color GetPixelColor(BitmapSource source, int x, int y)
+        {
+            Color c = Colors.White;
+            if (source != null)
+            {
+                try
+                {
+                    CroppedBitmap cb = new CroppedBitmap(source, new Int32Rect(x, y, 1, 1));
+                    var pixels = new byte[4];
+                    cb.CopyPixels(pixels, 4, 0);
+                    c = Color.FromArgb(pixels[3] ,pixels[2], pixels[1], pixels[0]);
+                }
+                catch (Exception) { }
+            }
+            return c;
         }
     }
 }

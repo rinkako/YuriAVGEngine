@@ -175,6 +175,8 @@ namespace Lyyneheym.SlyviaInterpreter
         Token_o_endfunction,
         // 函数调用
         Token_o_call,
+        // 标志回归点
+        Token_o_titlepoint,
         // 参数：函数签名
         Token_p_sign,
         // 参数：名称

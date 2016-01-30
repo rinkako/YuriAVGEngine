@@ -178,5 +178,31 @@ namespace SlimSlyvia
             this.activeMutex = false;
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Paint(object sender, PaintEventArgs e)
+        {
+
+            System.Drawing.Drawing2D.GraphicsPath myg = new System.Drawing.Drawing2D.GraphicsPath();
+
+            //myg.AddEllipse(new Rectangle(0, 0, 100, 80)); //加椭圆
+            //button1.BackColor = Color.Purple;
+            //button1.Size = new System.Drawing.Size(256, 256);
+            //button1.Region = new Region(myg);
+
+            FontFamily ff = new FontFamily("Arial");
+            string str = "Click Me!";
+            int fs = (int)FontStyle.Bold;
+            int emsize = 35;
+            PointF origin = new PointF(0, 0);
+            StringFormat sf = new StringFormat(StringFormat.GenericDefault);
+            myg.AddString(str, ff, fs, emsize, origin, sf);
+            
+            button4.Region = new Region(myg); 
+        }
+
     }
 }

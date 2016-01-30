@@ -5,7 +5,7 @@
     <Canvas Name="BO_MainGrid">
         <Image Name="BO_MessageBoxLayer" Opacity="0.75" Panel.ZIndex="91" Height="170" VerticalAlignment="Bottom" Width="1018" Stretch="UniformToFill" Source="ImageAssets/originMessageBox2.png" Canvas.Top="377"/>
         <TextBlock x:Name="BO_MainName" HorizontalAlignment="Left" Panel.ZIndex="92" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="22" Width="300" FontFamily="FZXiaoBiaoSong-B05" LineHeight="36" LineStackingStrategy="BlockLineHeight" Height="30" Canvas.Left="35" Canvas.Top="411"><Run Language="zh-cn" Text="春日野穹"/></TextBlock>
-        <TextBlock x:Name="BO_MainText" HorizontalAlignment="Left" Panel.ZIndex="93" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="935" Height="91" LineHeight="22" FontSize="16" TextDecorations="{x:Null}" FontFamily="FZXiaoBiaoSong-B05" LineStackingStrategy="BlockLineHeight" Canvas.Left="60" Canvas.Top="446"><Run Language="zh-cn" Text="这是一个测试语句块，她很可爱"/><LineBreak/><Run Language="zh-cn" Text="哎呀呀，喜欢的果然是依媛奈绪姐姐呢"/><LineBreak/><Run Language="zh-cn" Text="穹妹穹妹"/><LineBreak/><Run Language="zh-cn" Text="Sora Cyan"/></TextBlock>
+        <TextBlock x:Name="BO_MainText" HorizontalAlignment="Left" Panel.ZIndex="93" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="935" Height="91" LineHeight="22" FontSize="16" TextDecorations="{x:Null}" FontFamily="FZXiaoBiaoSong-B05" LineStackingStrategy="BlockLineHeight" Canvas.Left="60" Canvas.Top="446"><Run Language="zh-cn" Text="这是一个测试语句块，她很可爱"/><LineBreak/><Run Language="zh-cn" Text="哎呀呀，yumeato果然还是最爱fenya呢"/><LineBreak/><Run Language="zh-cn" Text="穹妹穹妹"/><LineBreak/><Run Language="zh-cn" Text="Sora Cyan"/></TextBlock>
         <Image Name="BO_MsgTria" Panel.ZIndex="999" Visibility="Hidden" Opacity="0.55" Height="20" Width="20" Canvas.Left="950" Canvas.Top="496" Source="ImageAssets/MessageTria.png"/>
 
         <Image Name="BO_LeftChara" HorizontalAlignment="Left" Height="515" VerticalAlignment="Bottom" Width="500" Stretch="None" Canvas.Left="10" Canvas.Top="32"/>
@@ -22,7 +22,8 @@
         <Button Content="Button" HorizontalAlignment="Left" Margin="594,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="674,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_8"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="754,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_9"/>
-        
+        <Image Name="mytestbutton" Height="227" Canvas.Left="414" Canvas.Top="10" Width="229" Source="ImageAssets/MessageTria.png" MouseDown="Image_MouseDown"/>
+
 
 
     </Canvas>
