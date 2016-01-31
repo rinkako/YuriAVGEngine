@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Lyyneheym.LyyneheymCore.ILPackage;
 
-namespace Lyyneheym.LyyneheymCore.ILPackage
+namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
     /// <summary>
     /// <para>场景类：控制一个剧本章节的演出</para>

@@ -10,12 +10,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     /// <para>符号表类：维护运行时环境的用户符号</para>
     /// <para>她是一个单例类，只有唯一实例</para>
     /// </summary>
+    [Serializable]
     public sealed class SymbolTable
     {
         /// <summary>
         /// 重置符号表
         /// </summary>
-        /// <param name="clearSystemVar">是否清楚系统变量</param>
+        /// <param name="clearSystemVar">是否清空系统变量</param>
         public void Reset(bool clearSystemVar = false)
         {
             this.userSymbolTableContainer.Clear();
@@ -27,75 +28,83 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <para>使用一个变量</para>
         /// <para>如果这个变量从未使用过，将被注册；否则，返回她在运行时环境的引用</para>
         /// </summary>
-        /// <param name="SALName">动作序列名称</param>
-        /// <param name="name">变量名</param>
+        /// <param name="sceneName">场景名称</param>
+        /// <param name="varName">变量名</param>
         /// <returns>该变量的真实引用</returns>
-        internal object signal(string SALName, string name)
+        internal object signal(string sceneName, string varName, bool isLvalue)
         {
-            Dictionary<string, object> table = this.FindSymbolTable(SALName);
-            // 如果查无此键就注册
-            if (!table.ContainsKey(name))
+            Dictionary<string, object> table = this.FindSymbolTable(sceneName);
+            // 如果查无此键
+            if (table.ContainsKey(varName) == false)
             {
-                table.Add(name, null);
+                // 不是作为左值就报错就注册
+                if (isLvalue == false)
+                {
+                    throw new Exception("变量 " + varName + " 在作为左值之前被引用");
+                }
+                // 否则注册这个变量
+                else
+                {
+                    table.Add(varName, null);
+                }
             }
-            return table[name];
+            return table[varName];
         }
 
         /// <summary>
         /// 向符号表注册一个用户变量
         /// </summary>
-        /// <param name="SALName">当前动作序列名字</param>
-        /// <param name="name">变量名</param>
+        /// <param name="sceneName">场景名称</param>
+        /// <param name="varName">变量名</param>
         /// <param name="value">变量的值</param>
         /// <returns>操作成功与否</returns>
-        internal bool sign(string SALName, string name, object value)
+        internal bool sign(string sceneName, string varName, object value)
         {
-            Dictionary<string, object> table = this.FindSymbolTable(SALName);
+            Dictionary<string, object> table = this.FindSymbolTable(sceneName);
             // 如果被注册过了就返回失败
-            if (table.ContainsKey(name))
+            if (table.ContainsKey(varName))
             {
                 return false;
             }
             // 否则注册这个变量
-            table.Add(name, value);
+            table.Add(varName, value);
             return true;
         }
         
         /// <summary>
         /// 向符号表撤销一个用户变量
         /// </summary>
-        /// <param name="SALName">当前动作序列名字</param>
-        /// <param name="name">变量名</param>
+        /// <param name="sceneName">场景名称</param>
+        /// <param name="varName">变量名</param>
         /// <returns>操作成功与否</returns>
-        internal bool unsign(string SALName, string name)
+        internal bool unsign(string sceneName, string varName)
         {
-            Dictionary<string, object> table = this.FindSymbolTable(SALName);
+            Dictionary<string, object> table = this.FindSymbolTable(sceneName);
             // 如果没有这个变量就返回失败
-            if (!table.ContainsKey(name))
+            if (!table.ContainsKey(varName))
             {
                 return false;
             }
             // 否则消除她
-            table.Remove(name);
+            table.Remove(varName);
             return true;
         }
 
         /// <summary>
-        /// 寻找当前动作序列作用域绑定的符号表
+        /// 寻找当前场景作用域绑定的符号表
         /// </summary>
-        /// <param name="currentSAL">当前动作序列的名称</param>
+        /// <param name="sceneName">场景名称</param>
         /// <returns>符号表</returns>
-        internal Dictionary<string, object> FindSymbolTable(string SALName)
+        internal Dictionary<string, object> FindSymbolTable(string sceneName)
         {
-            if (this.userSymbolTableContainer.ContainsKey(SALName) == false)
+            if (this.userSymbolTableContainer.ContainsKey(sceneName) == false)
             {
                 return null;
             }
             else
             {
-                return this.userSymbolTableContainer[SALName];
+                return this.userSymbolTableContainer[sceneName];
             }
-
         }
 
         /// <summary>
@@ -127,7 +136,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         // 唯一实例
         private static SymbolTable synObject = null;
-        // 用户符号字典（K：动作序列名 - V：符号表对象）
+        // 用户符号字典（K：场景或函数名称 - V：符号表对象）
         private Dictionary<string, Dictionary<string, object>> userSymbolTableContainer = null;
         // 系统符号字典
         private Dictionary<string, object> systemSymbolTable = null;

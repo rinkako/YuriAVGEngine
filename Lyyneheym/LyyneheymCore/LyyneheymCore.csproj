@@ -50,11 +50,13 @@
     <Compile Include="SlyviaCore\MusicianContainer.cs" />
     <Compile Include="SlyviaCore\ResourceManager.cs" />
     <Compile Include="SlyviaCore\RuntimeManager.cs" />
-    <Compile Include="ILPackage\Scene.cs" />
-    <Compile Include="ILPackage\SceneFunction.cs" />
+    <Compile Include="SlyviaCore\Scene.cs" />
+    <Compile Include="SlyviaCore\SceneFunction.cs" />
     <Compile Include="SlyviaCore\SceneManager.cs" />
     <Compile Include="SlyviaCore\SpiritContainer.cs" />
     <Compile Include="SlyviaCore\GlobalDataContainer.cs" />
+    <Compile Include="SlyviaCore\StackMachine.cs" />
+    <Compile Include="SlyviaCore\StackMachineFrame.cs" />
     <Compile Include="SlyviaCore\SymbolTable.cs" />
     <Compile Include="Utils\IOUtils.cs" />
     <Compile Include="Utils\PackageUtils.cs" />

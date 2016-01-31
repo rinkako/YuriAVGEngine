@@ -22,7 +22,8 @@
         <Button Content="Button" HorizontalAlignment="Left" Margin="594,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="674,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_8"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="754,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_9"/>
-        <Image Name="mytestbutton" Height="227" Canvas.Left="414" Canvas.Top="10" Width="229" Source="ImageAssets/MessageTria.png" MouseDown="Image_MouseDown"/>
+        <Image Name="mytestbutton" Height="227" Canvas.Left="459" Canvas.Top="96" Width="229" Source="ImageAssets/MessageTria.png" MouseDown="Image_MouseDown"/>
+        <Button Content="Button" Canvas.Left="933" Canvas.Top="32" Width="75" Click="Button_Click_10"/>
 
 
 

@@ -37,7 +37,7 @@ namespace Lyyneheym
 
             BitmapImage myBitmapImage = new BitmapImage();
             myBitmapImage.BeginInit();
-            myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA01.png", UriKind.RelativeOrAbsolute);
+            myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\exitmenu3.png", UriKind.RelativeOrAbsolute);
             myBitmapImage.EndInit();
             mytestbutton.Width = myBitmapImage.Width;
             mytestbutton.Height = myBitmapImage.Height;
@@ -161,8 +161,8 @@ namespace Lyyneheym
             myBitmapImage.BeginInit();
             myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\uuz.jpg", UriKind.RelativeOrAbsolute);
             myBitmapImage.EndInit();
-            img.Width = myBitmapImage.Width * 2;
-            img.Height = myBitmapImage.Height * 2;
+            img.Width = myBitmapImage.Width;
+            img.Height = myBitmapImage.Height;
             img.Source = myBitmapImage;
             img.Margin = new Thickness(0, 0, 0, 0);
             img.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
@@ -259,12 +259,18 @@ namespace Lyyneheym
         {
             this.BO_MsgTria.Visibility = Visibility.Visible;
             this.BO_MsgTria.RenderTransform = new TranslateTransform();
+            this.ApplyUpDownAnimation(this.BO_MsgTria.Name);
+            
+        }
+
+        private void ApplyUpDownAnimation(string dependence)
+        {
             Storyboard sb = new Storyboard();
             DoubleAnimation da = new DoubleAnimation(0, 10, new Duration(TimeSpan.FromMilliseconds(500)));
             da.RepeatBehavior = RepeatBehavior.Forever;
             da.AutoReverse = true;
             da.AccelerationRatio = 0.8;
-            Storyboard.SetTargetName(da, this.BO_MsgTria.Name);
+            Storyboard.SetTargetName(da, dependence);
             DependencyProperty[] propertyChain = new DependencyProperty[]
             {
                 Image.RenderTransformProperty,
@@ -274,6 +280,7 @@ namespace Lyyneheym
             sb.Children.Add(da);
             sb.Begin(this);
         }
+
 
         private void Button_Click_9(object sender, RoutedEventArgs e)
         {
@@ -291,14 +298,14 @@ namespace Lyyneheym
 
             BitmapImage myBitmapImage = new BitmapImage();
             myBitmapImage.BeginInit();
-            myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA01.png", UriKind.RelativeOrAbsolute);
+            myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\exitmenu3.png", UriKind.RelativeOrAbsolute);
             myBitmapImage.EndInit();
 
             Color hitC = this.GetPixelColor(myBitmapImage, (int)p.X, (int)p.Y);
 
-            if (hitC.A != 0)
+            if (hitC.A > 10)
             {
-                MessageBox.Show(p.ToString());
+                MessageBox.Show(p.ToString() + " == " + hitC.ToString());
             }
             
         }
@@ -318,6 +325,12 @@ namespace Lyyneheym
                 catch (Exception) { }
             }
             return c;
+        }
+
+        private void Button_Click_10(object sender, RoutedEventArgs e)
+        {
+            this.mytestbutton.RenderTransform = new TranslateTransform();
+            this.ApplyUpDownAnimation(this.mytestbutton.Name);
         }
     }
 }
