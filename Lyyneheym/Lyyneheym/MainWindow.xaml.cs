@@ -15,6 +15,7 @@ using System.Windows.Media.Animation;
 using System.IO;
 
 using Lyyneheym.LyyneheymCore.Utils;
+using Lyyneheym.LyyneheymCore.SlyviaCore;
 using Lyyneheym.LyyneheymCore;
 using Lyyneheym.SlyviaInterpreter;
 
@@ -27,17 +28,21 @@ namespace Lyyneheym
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Slyvia core = Slyvia.getInstance();
+        private Slyvia core = Slyvia.getInstance(); //测试用，要删掉
 
+        private RuntimeManager runCore = RuntimeManager.getInstance();
+        private BitmapImage myBitmapImage;
         public MainWindow()
         {
             InitializeComponent();
             this.testFontEffect(this.BO_MainText);
 
+            runCore.SetMWReference(this);
 
-            BitmapImage myBitmapImage = new BitmapImage();
+            myBitmapImage = new BitmapImage();
             myBitmapImage.BeginInit();
-            myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\exitmenu3.png", UriKind.RelativeOrAbsolute);
+            myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\MenuItems2.png", UriKind.RelativeOrAbsolute);
+            myBitmapImage.SourceRect = new Int32Rect(187, 2, 226, 226);
             myBitmapImage.EndInit();
             mytestbutton.Width = myBitmapImage.Width;
             mytestbutton.Height = myBitmapImage.Height;
@@ -45,21 +50,6 @@ namespace Lyyneheym
             mytestbutton.Margin = new Thickness(0, 0, 0, 0);
             mytestbutton.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             mytestbutton.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-        }
-
-        private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (this.BO_MessageBoxLayer.Visibility == System.Windows.Visibility.Hidden)
-            {
-                this.BO_MainName.Visibility = this.BO_MainText.Visibility = this.BO_MsgTria.Visibility =
-                    this.BO_MessageBoxLayer.Visibility = System.Windows.Visibility.Visible;
-                
-            }
-            else
-            {
-                this.BO_MainName.Visibility = this.BO_MainText.Visibility = this.BO_MsgTria.Visibility =
-                    this.BO_MessageBoxLayer.Visibility = System.Windows.Visibility.Hidden;
-            }
         }
 
         bool flag = false;
@@ -75,7 +65,7 @@ namespace Lyyneheym
                 this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage("bg2.png"));
                 flag = false;
             }
-            
+            MessageBox.Show(RuntimeManager.KS_MOUSE_RIGHT.ToString());
         }
 
 
@@ -294,8 +284,6 @@ namespace Lyyneheym
 
             Point p = e.MouseDevice.GetPosition((Image)sender);
 
-   
-
             BitmapImage myBitmapImage = new BitmapImage();
             myBitmapImage.BeginInit();
             myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\exitmenu3.png", UriKind.RelativeOrAbsolute);
@@ -331,6 +319,16 @@ namespace Lyyneheym
         {
             this.mytestbutton.RenderTransform = new TranslateTransform();
             this.ApplyUpDownAnimation(this.mytestbutton.Name);
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            runCore.WMouseDownEventHandler(e);
+        }
+
+        private void Window_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            runCore.WMouseUpEventHandler(e);
         }
     }
 }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+
 using Lyyneheym.LyyneheymCore.Utils;
 using Lyyneheym.LyyneheymCore.ILPackage;
 
@@ -20,10 +23,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
 
         }
-
-        public void SetPlatformReference()
+        
+        /// <summary>
+        /// 设置主窗体引用
+        /// </summary>
+        /// <param name="mw">主窗体引用</param>
+        public void SetPlatformReference(MainWindow mw)
         {
-
+            this.mw = mw;
         }
 
         /// <summary>
@@ -35,6 +42,81 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         }
 
+        /// <summary>
+        /// 处理游戏窗体的鼠标按下信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void WMouseDownEventHandler(MouseButtonEventArgs e)
+        {
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                if (this.mw.BO_MessageBoxLayer.Visibility == System.Windows.Visibility.Hidden)
+                {
+                    this.mw.BO_MainName.Visibility = this.mw.BO_MainText.Visibility = this.mw.BO_MsgTria.Visibility =
+                        this.mw.BO_MessageBoxLayer.Visibility = System.Windows.Visibility.Visible;
+
+                }
+                else
+                {
+                    this.mw.BO_MainName.Visibility = this.mw.BO_MainText.Visibility = this.mw.BO_MsgTria.Visibility =
+                        this.mw.BO_MessageBoxLayer.Visibility = System.Windows.Visibility.Hidden;
+                }
+            }
+            
+        }
+
+        public void WMouseUpEventHandler(MouseButtonEventArgs e)
+        {
+
+        }
+
+        #region 文字层相关
+        /// <summary>
+        /// 隐藏小三角
+        /// </summary>
+        public void HideMessageTria()
+        {
+            this.mw.BO_MsgTria.Visibility = Visibility.Hidden;
+        }
+
+        /// <summary>
+        /// 显示小三角
+        /// </summary>
+        /// <param name="opacity">透明度</param>
+        public void ShowMessageTria(double opacity = 1.0f)
+        {
+            this.mw.BO_MsgTria.Opacity = opacity;
+            this.mw.BO_MsgTria.Visibility = Visibility.Visible;
+        }
+
+        public void BeginMessageTriaUpDownAnimation()
+        {
+
+        }
+
+        public void EndMessageTriaUpDownAnimation()
+        {
+
+        }
+
+        /// <summary>
+        /// 设置小三角位置
+        /// </summary>
+        /// <param name="pos"></param>
+        public void SetMessageTriaPosition(Point pos)
+        {
+            Canvas.SetLeft(this.mw.BO_MsgTria, pos.X);
+            Canvas.SetTop(this.mw.BO_MsgTria, pos.Y);
+        }
+        #endregion
+
+        /// <summary>
+        /// 主窗体引用
+        /// </summary>
+        private MainWindow mw = null;
+
+        #region 演绎函数
         private void Dialog()
         {
 
@@ -189,6 +271,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
 
         }
-    
+        #endregion
     }
 }

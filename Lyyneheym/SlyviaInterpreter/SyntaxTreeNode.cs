@@ -318,6 +318,12 @@ namespace Lyyneheym.SlyviaInterpreter
         synr_branch,
         // 标志回归点
         synr_titlepoint,
+        // 准备渐变
+        synr_freeze,
+        // 执行渐变
+        synr_trans,
+        // 等待用户操作
+        synr_waituser,
         // 参数：函数签名
         para_sign,
         // 参数：选择支链

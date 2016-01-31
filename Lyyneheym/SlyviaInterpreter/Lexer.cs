@@ -530,6 +530,15 @@ namespace Lyyneheym.SlyviaInterpreter
                         okFlag = true;
                     }
                 }
+                else if (str == "waituser")
+                {
+                    res.aType = TokenType.Token_o_waituser;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 8]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
                 // 如果命中了符号就返回
                 if (okFlag)
                 {
@@ -586,6 +595,15 @@ namespace Lyyneheym.SlyviaInterpreter
                 else if (str == "endfor")
                 {
                     res.aType = TokenType.Token_o_endfor;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 6]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "freeze")
+                {
+                    res.aType = TokenType.Token_o_freeze;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 6]) != CharacterType.Letter)
                     {
@@ -653,6 +671,15 @@ namespace Lyyneheym.SlyviaInterpreter
                 else if (str == "title")
                 {
                     res.aType = TokenType.Token_o_title;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "trans")
+                {
+                    res.aType = TokenType.Token_o_trans;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
                     {

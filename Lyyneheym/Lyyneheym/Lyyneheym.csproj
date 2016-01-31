@@ -55,6 +55,7 @@
     <Compile Include="LyyneheymCore\ILPackage\SceneAction.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\GlobalDataContainer.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\MusicianContainer.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\MySprite.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\ResourceManager.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\RuntimeManager.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\Scene.cs" />

@@ -177,6 +177,20 @@ namespace Lyyneheym.SlyviaInterpreter
         Token_o_call,
         // 标志回归点
         Token_o_titlepoint,
+        // 准备渐变
+        Token_o_freeze,
+        // 执行渐变
+        Token_o_trans,
+        // 按钮
+
+        // 切换活动层
+
+        // 修改层属性
+
+        // 等待用户操作
+        Token_o_waituser,
+        // 对话样式
+
         // 参数：函数签名
         Token_p_sign,
         // 参数：名称

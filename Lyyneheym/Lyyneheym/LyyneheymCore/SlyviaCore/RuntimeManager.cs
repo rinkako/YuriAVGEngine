@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
@@ -15,18 +17,45 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     public class RuntimeManager
     {
 
+        
+        
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void WMouseDownEventHandler(MouseButtonEventArgs e)
+        {
+            // 修改全局状态
+            RuntimeManager.KS_MOUSE_LEFT = e.LeftButton == MouseButtonState.Pressed;
+            RuntimeManager.KS_MOUSE_RIGHT = e.RightButton == MouseButtonState.Pressed;
+            RuntimeManager.KS_MOUSE_MID = e.MiddleButton == MouseButtonState.Pressed;
+            // 传递给演绎器
+            this.updateRender.WMouseDownEventHandler(e);
+        }
 
+        public void WMouseUpEventHandler(MouseButtonEventArgs e)
+        {
+            // 修改全局状态
+            RuntimeManager.KS_MOUSE_LEFT = e.LeftButton == MouseButtonState.Pressed;
+            RuntimeManager.KS_MOUSE_RIGHT = e.RightButton == MouseButtonState.Pressed;
+            RuntimeManager.KS_MOUSE_MID = e.MiddleButton == MouseButtonState.Pressed;
+            // 传递给演绎器
+            this.updateRender.WMouseUpEventHandler(e);
 
+        }
 
+        public void SetMWReference(MainWindow mw)
+        {
+            this.updateRender.SetPlatformReference(mw);
+        }
 
-
-
-
-
-        #region 全局状态控制
-
-
-
+        /// <summary>
+        /// 游戏刷新器
+        /// </summary>
+        private UpdateRender updateRender;
+        
         /// <summary>
         /// 游戏调用堆栈
         /// </summary>
@@ -57,6 +86,27 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             // 当前状态不明确
             Unknown
         }
+
+        #region 键位按钮状态
+        public static bool KS_MOUSE_LEFT = false;
+        public static bool KS_MOUSE_RIGHT = false;
+        public static bool KS_MOUSE_MID = false;
+        public static bool KS_KEY_ESC = false;
+        public static bool KS_KEY_SHIFT = false;
+        public static bool KS_KEY_CTRL = false;
+        public static bool KS_KEY_TAB = false;
+        public static bool KS_KEY_SPACE = false;
+        public static bool KS_KEY_Z = false;
+        public static bool KS_KEY_X = false;
+        public static bool KS_KEY_W = false;
+        public static bool KS_KEY_S = false;
+        public static bool KS_KEY_A = false;
+        public static bool KS_KEY_D = false;
+        public static bool KS_KEY_ENTER = false;
+        public static bool KS_KEY_UP = false;
+        public static bool KS_KEY_DOWN = false;
+        public static bool KS_KEY_LEFT = false;
+        public static bool KS_KEY_RIGHT = false;
         #endregion
 
         #region 自身相关方法
@@ -66,6 +116,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public void Reset()
         {
             this.stackMachine = new StackMachine();
+            this.updateRender = new UpdateRender();
         }
 
         /// <summary>

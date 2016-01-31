@@ -223,6 +223,12 @@ namespace Lyyneheym.SlyviaInterpreter.ILPackage
         // 函数调用
         act_call,
         // 回归点
-        act_titlepoint
+        act_titlepoint,
+        // 准备渐变
+        act_freeze,
+        // 执行渐变
+        act_trans,
+        // 等待用户操作
+        act_waituser
     }
 }

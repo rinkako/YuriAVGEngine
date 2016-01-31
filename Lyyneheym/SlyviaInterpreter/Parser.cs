@@ -1104,6 +1104,15 @@ namespace Lyyneheym.SlyviaInterpreter
                     case TokenType.Token_o_break:
                         statementNode.nodeSyntaxType = SyntaxType.synr_break;
                         break;
+                    case TokenType.Token_o_trans:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_trans;
+                        break;
+                    case TokenType.Token_o_waituser:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_waituser;
+                        break;
+                    case TokenType.Token_o_freeze:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_freeze;
+                        break;
                     case TokenType.Token_o_shutdown:
                         statementNode.nodeSyntaxType = SyntaxType.synr_shutdown;
                         break;
