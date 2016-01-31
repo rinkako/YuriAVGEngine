@@ -51,6 +51,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="LyyneheymCore\ILPackage\ILConvertor.cs" />
+    <Compile Include="LyyneheymCore\ILPackage\SceneAction.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\GlobalDataContainer.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\MusicianContainer.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\ResourceManager.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\RuntimeManager.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\Scene.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\SceneFunction.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\SceneManager.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\SpiritContainer.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\StackMachine.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\StackMachineFrame.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\SymbolTable.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\UpdateRender.cs" />
+    <Compile Include="LyyneheymCore\Utils\IOUtils.cs" />
+    <Compile Include="LyyneheymCore\Utils\PackageUtils.cs" />
     <Compile Include="Slyvia.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -94,10 +110,6 @@
     <Resource Include="ImageAssets\originMessageBox2.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LyyneheymCore\LyyneheymCore.csproj">
-      <Project>{8332154c-d355-4333-918d-ec915bf69846}</Project>
-      <Name>LyyneheymCore</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SlyviaInterpreter\SlyviaInterpreter.csproj">
       <Project>{6194a2aa-1c9d-40cd-8c8f-ea66f679cc0f}</Project>
       <Name>SlyviaInterpreter</Name>

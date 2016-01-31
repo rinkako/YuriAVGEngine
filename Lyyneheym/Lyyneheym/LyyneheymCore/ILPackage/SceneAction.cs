@@ -150,9 +150,9 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
         act_function,
         // 函数声明（尾）
         act_endfunction,
-        // 剧本跳转
+        // 剧本跳转（已废弃）
         act_scene,
-        // 开关操作
+        // 开关操作（已废弃）
         act_switch,
         // 变量操作
         act_var,

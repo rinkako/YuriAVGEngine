@@ -23,10 +23,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
 
 
-
         #region 全局状态控制
 
 
+
+        /// <summary>
+        /// 游戏调用堆栈
+        /// </summary>
+        private StackMachine stackMachine;
 
         /// <summary>
         /// 游戏的总体状态
@@ -55,7 +59,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
         #endregion
 
-        #region 单例相关方法
+        #region 自身相关方法
+        /// <summary>
+        /// 将运行时环境恢复最初状态
+        /// </summary>
+        public void Reset()
+        {
+            this.stackMachine = new StackMachine();
+        }
+
         /// <summary>
         /// 工厂方法：获得类的唯一实例
         /// </summary>
@@ -70,7 +82,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         private RuntimeManager()
         {
-
+            this.Reset();
         }
 
         /// <summary>

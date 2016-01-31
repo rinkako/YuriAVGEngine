@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyyneheym", "Lyyneheym\Lyyn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LyynePacker", "LyynePacker\LyynePacker.csproj", "{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LyyneheymCore", "LyyneheymCore\LyyneheymCore.csproj", "{8332154C-D355-4333-918D-EC915BF69846}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimSlyvia", "SlimSlyvia\SlimSlyvia.csproj", "{48AE4058-1FA1-46D9-96E7-B7679F639984}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlyviaInterpreter", "SlyviaInterpreter\SlyviaInterpreter.csproj", "{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}"
@@ -45,17 +43,6 @@ Global
 		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Release|x86.ActiveCfg = Release|Any CPU
-		{8332154C-D355-4333-918D-EC915BF69846}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8332154C-D355-4333-918D-EC915BF69846}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8332154C-D355-4333-918D-EC915BF69846}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{8332154C-D355-4333-918D-EC915BF69846}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{8332154C-D355-4333-918D-EC915BF69846}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8332154C-D355-4333-918D-EC915BF69846}.Debug|x86.Build.0 = Debug|Any CPU
-		{8332154C-D355-4333-918D-EC915BF69846}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8332154C-D355-4333-918D-EC915BF69846}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8332154C-D355-4333-918D-EC915BF69846}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{8332154C-D355-4333-918D-EC915BF69846}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{8332154C-D355-4333-918D-EC915BF69846}.Release|x86.ActiveCfg = Release|Any CPU
 		{48AE4058-1FA1-46D9-96E7-B7679F639984}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{48AE4058-1FA1-46D9-96E7-B7679F639984}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48AE4058-1FA1-46D9-96E7-B7679F639984}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
