@@ -95,7 +95,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         // 等待指令
         Await,
         // 函数调用
-        Calling,
+        FunctionCalling,
         // 系统中断
         Interrupt
     }
