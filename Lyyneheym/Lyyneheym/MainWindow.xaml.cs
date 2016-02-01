@@ -39,13 +39,14 @@ namespace Lyyneheym
 
             runCore.SetMWReference(this);
 
+
             myBitmapImage = new BitmapImage();
             myBitmapImage.BeginInit();
             myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\MenuItems2.png", UriKind.RelativeOrAbsolute);
             myBitmapImage.SourceRect = new Int32Rect(187, 2, 226, 226);
             myBitmapImage.EndInit();
-            mytestbutton.Width = myBitmapImage.Width;
-            mytestbutton.Height = myBitmapImage.Height;
+            mytestbutton.Width = myBitmapImage.PixelWidth;
+            mytestbutton.Height = myBitmapImage.PixelHeight;
             mytestbutton.Source = myBitmapImage;
             mytestbutton.Margin = new Thickness(0, 0, 0, 0);
             mytestbutton.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;

@@ -28,7 +28,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             // 总是先查看是否有为封包的数据
             string furi = GlobalDataContainer.DevURI_RT_PICTUREASSETS + "\\" + GlobalDataContainer.DevURI_PA_BACKGROUND + "\\" + sourceName;
-            if (File.Exists(IOUtils.ParseURItoURL("\\" + furi)))
+            if (File.Exists(IOUtils.ParseURItoURL(furi)))
             {
                 Uri bg = new Uri(furi, UriKind.RelativeOrAbsolute);
                 BitmapImage bpi = new BitmapImage();
@@ -41,7 +41,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 this.resourceTable[GlobalDataContainer.DevURI_PA_BACKGROUND].ContainsKey(sourceName))
             {
                 KeyValuePair<long, long> sourceLocation = this.resourceTable[GlobalDataContainer.DevURI_PA_BACKGROUND][sourceName];
-                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL("\\" + GlobalDataContainer.PackURI_PA_BACKGROUND + GlobalDataContainer.PackPostfix),
+                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL(GlobalDataContainer.PackURI_PA_BACKGROUND + GlobalDataContainer.PackPostfix),
                     sourceName, sourceLocation.Key, sourceLocation.Value);
                 MemoryStream ms = new MemoryStream(ob);
                 BitmapImage bpi = new BitmapImage();
@@ -65,7 +65,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             // 总是先查看是否有为封包的数据
             string furi = GlobalDataContainer.DevURI_RT_PICTUREASSETS + "\\" + GlobalDataContainer.DevURI_PA_CHARASTAND + "\\" + sourceName;
-            if (File.Exists(IOUtils.ParseURItoURL("\\" + furi)))
+            if (File.Exists(IOUtils.ParseURItoURL(furi)))
             {
                 Uri bg = new Uri(furi, UriKind.RelativeOrAbsolute);
                 BitmapImage bpi = new BitmapImage();
@@ -78,7 +78,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 this.resourceTable[GlobalDataContainer.DevURI_PA_CHARASTAND].ContainsKey(sourceName))
             {
                 KeyValuePair<long, long> sourceLocation = this.resourceTable[GlobalDataContainer.DevURI_PA_CHARASTAND][sourceName];
-                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL("\\" + GlobalDataContainer.PackURI_PA_CHARASTAND + GlobalDataContainer.PackPostfix),
+                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL(GlobalDataContainer.PackURI_PA_CHARASTAND + GlobalDataContainer.PackPostfix),
                     sourceName, sourceLocation.Key, sourceLocation.Value);
                 MemoryStream ms = new MemoryStream(ob);
                 BitmapImage bpi = new BitmapImage();

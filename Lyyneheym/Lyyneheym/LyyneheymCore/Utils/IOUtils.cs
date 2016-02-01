@@ -18,7 +18,7 @@ namespace Lyyneheym.LyyneheymCore.Utils
         /// <returns>绝对路径</returns>
         public static string ParseURItoURL(string uri)
         {
-            return Environment.CurrentDirectory + uri;
+            return String.Format("{0}\\{1}", Environment.CurrentDirectory, uri);
         }
         
         /// <summary>
