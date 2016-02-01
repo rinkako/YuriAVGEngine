@@ -437,6 +437,15 @@ namespace Lyyneheym.SlyviaInterpreter
                         okFlag = true;
                     }
                 }
+                else if (str == "msglayeropt")
+                {
+                    res.aType = TokenType.Token_o_msglayeropt;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 11]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
                 // 如果命中了符号就返回
                 if (okFlag)
                 {
@@ -512,15 +521,6 @@ namespace Lyyneheym.SlyviaInterpreter
                         okFlag = true;
                     }
                 }
-                else if (str == "capacity")
-                {
-                    res.aType = TokenType.Token_p_capacity;
-                    // 如果后面还有英文字符，那说明这里不可以截断
-                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 8]) != CharacterType.Letter)
-                    {
-                        okFlag = true;
-                    }
-                }
                 else if (str == "filename")
                 {
                     res.aType = TokenType.Token_p_filename;
@@ -533,6 +533,15 @@ namespace Lyyneheym.SlyviaInterpreter
                 else if (str == "waituser")
                 {
                     res.aType = TokenType.Token_o_waituser;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 8]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "msglayer")
+                {
+                    res.aType = TokenType.Token_o_msglayer;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 8]) != CharacterType.Letter)
                     {
@@ -564,6 +573,15 @@ namespace Lyyneheym.SlyviaInterpreter
                 else if (str == "stopbgm")
                 {
                     res.aType = TokenType.Token_o_stopbgm;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 7]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "opacity")
+                {
+                    res.aType = TokenType.Token_p_opacity;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 7]) != CharacterType.Letter)
                     {
@@ -646,6 +664,24 @@ namespace Lyyneheym.SlyviaInterpreter
                         okFlag = true;
                     }
                 }
+                else if (str == "height")
+                {
+                    res.aType = TokenType.Token_p_height;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 6]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "button")
+                {
+                    res.aType = TokenType.Token_o_button;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 6]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
                 // 如果命中了符号就返回
                 if (okFlag)
                 {
@@ -707,6 +743,24 @@ namespace Lyyneheym.SlyviaInterpreter
                 else if (str == "scene")
                 {
                     res.aType = TokenType.Token_o_scene;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "width")
+                {
+                    res.aType = TokenType.Token_p_width;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "color")
+                {
+                    res.aType = TokenType.Token_p_color;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
                     {
@@ -918,6 +972,24 @@ namespace Lyyneheym.SlyviaInterpreter
                 else if (str == "link")
                 {
                     res.aType = TokenType.Token_p_link;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "font")
+                {
+                    res.aType = TokenType.Token_p_font;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "size")
+                {
+                    res.aType = TokenType.Token_p_size;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {

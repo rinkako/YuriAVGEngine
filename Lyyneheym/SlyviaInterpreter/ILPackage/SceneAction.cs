@@ -228,6 +228,14 @@ namespace Lyyneheym.SlyviaInterpreter.ILPackage
         act_freeze,
         // 执行渐变
         act_trans,
+        // 按钮
+        act_button,
+        // 对话样式
+        act_style,
+        // 切换文字层
+        act_msglayer,
+        // 修改层属性
+        act_msglayeropt,
         // 等待用户操作
         act_waituser
     }

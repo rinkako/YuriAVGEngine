@@ -322,6 +322,14 @@ namespace Lyyneheym.SlyviaInterpreter
         synr_freeze,
         // 执行渐变
         synr_trans,
+        // 按钮
+        synr_button,
+        // 对话样式
+        synr_style,
+        // 切换文字层
+        synr_msglayer,
+        // 修改层属性
+        synr_msglayeropt,
         // 等待用户操作
         synr_waituser,
         // 参数：函数签名

@@ -1283,8 +1283,8 @@ namespace Lyyneheym.SlyviaInterpreter
                             // 加入不推导队列
                             this.iQueue.Enqueue(w_yacc);
                             break;
-                        case TokenType.Token_p_capacity:
-                            statementNode.paramDict["capacity"].children = new List<SyntaxTreeNode>();
+                        case TokenType.Token_p_opacity:
+                            statementNode.paramDict["opacity"].children = new List<SyntaxTreeNode>();
                             SyntaxTreeNode w_capacity = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["capacity"]);
                             w_capacity.paramTokenStream = new List<Token>();
                             prescanPointer += 2;

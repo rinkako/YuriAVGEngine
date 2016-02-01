@@ -182,15 +182,15 @@ namespace Lyyneheym.SlyviaInterpreter
         // 执行渐变
         Token_o_trans,
         // 按钮
-
-        // 切换活动层
-
+        Token_o_button,
+        // 对话样式
+        Token_o_style,
+        // 切换文字层
+        Token_o_msglayer,
         // 修改层属性
-
+        Token_o_msglayeropt,
         // 等待用户操作
         Token_o_waituser,
-        // 对话样式
-
         // 参数：函数签名
         Token_p_sign,
         // 参数：名称
@@ -212,7 +212,7 @@ namespace Lyyneheym.SlyviaInterpreter
         // 参数：y加速度
         Token_p_yacc,
         // 参数：透明度
-        Token_p_capacity,
+        Token_p_opacity,
         // 参数：x轴缩放比
         Token_p_xscale,
         // 参数：y轴缩放比
@@ -237,6 +237,16 @@ namespace Lyyneheym.SlyviaInterpreter
         Token_p_ro,
         // 参数：选择支链
         Token_p_link,
+        // 参数：宽度
+        Token_p_width,
+        // 参数：高度
+        Token_p_height,
+        // 参数：字体
+        Token_p_font,
+        // 参数：尺寸
+        Token_p_size,
+        // 参数：颜色
+        Token_p_color,
         // 参数值：左
         Token_v_left,
         // 参数值：右
