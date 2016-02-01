@@ -30,6 +30,52 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 获取或设置文字层字号
+        /// </summary>
+        public double FontSize
+        {
+            get
+            {
+                this.textBlock.FontStyle = new FontStyle();
+                return this.textBlock.FontSize;
+            }
+            set
+            {
+                this.textBlock.FontSize = value;
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置文字层的纯色颜色
+        /// </summary>
+        public Color FontColor
+        {
+            get
+            {
+                return ((SolidColorBrush)this.textBlock.Foreground).Color;
+            }
+            set
+            {
+                this.textBlock.Foreground = new SolidColorBrush(value);
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置行距
+        /// </summary>
+        public double LineHeight
+        {
+            get
+            {
+                return this.textBlock.LineHeight;
+            }
+            set
+            {
+                this.textBlock.LineHeight = value;
+            }
+        }
+
+        /// <summary>
         /// 获取或设置文字层透明度
         /// </summary>
         public double Opacity

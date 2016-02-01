@@ -38,7 +38,9 @@ namespace Lyyneheym
             this.testFontEffect(this.BO_MainText);
 
             runCore.SetMWReference(this);
+            SolidColorBrush scb = new SolidColorBrush(Colors.Red);
 
+            this.BO_MainText.Foreground = scb;
 
             myBitmapImage = new BitmapImage();
             myBitmapImage.BeginInit();
