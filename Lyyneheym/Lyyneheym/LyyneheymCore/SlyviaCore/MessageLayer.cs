@@ -17,6 +17,59 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     /// </summary>
     public class MessageLayer
     {
+        /// <summary>
+        /// 将文字层恢复初始状态
+        /// </summary>
+        public void Reset()
+        {
+            this.Text = "";
+            this.X = this.Y = 0;
+            this.Opacity = 1.0f;
+            this.Visible = true;
+            this.Margin = new Thickness(GlobalDataContainer.GAME_MESSAGELAYER_MARGIN_LEFT, GlobalDataContainer.GAME_MESSAGELAYER_MARGIN_TOP, GlobalDataContainer.GAME_MESSAGELAYER_MARGIN_RIGHT, GlobalDataContainer.GAME_MESSAGELAYER_MARGIN_BOTTOM);
+            this.StyleReset();
+        }
+
+        /// <summary>
+        /// 恢复默认文字层的样式
+        /// </summary>
+        public void StyleReset()
+        {
+            this.FontColor = GlobalDataContainer.GAME_FONT_COLOR;
+            this.FontSize = GlobalDataContainer.GAME_FONT_FONTSIZE;
+            this.FontName = GlobalDataContainer.GAME_FONT_NAME;
+            this.LineHeight = GlobalDataContainer.GAME_FONT_LINEHEIGHT;
+        }
+
+        /// <summary>
+        /// 获取或设置文字层的文本
+        /// </summary>
+        public string Text
+        {
+            get
+            {
+                return this.textBlock.Text;
+            }
+            set
+            {
+                this.textBlock.Text = value;
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置文字层是否可见
+        /// </summary>
+        public bool Visible
+        {
+            get
+            {
+                return this.textBlock.Visibility == Visibility.Visible;
+            }
+            set
+            {
+                this.textBlock.Visibility = value ? Visibility.Visible : Visibility.Hidden;
+            }
+        }
 
         /// <summary>
         /// 设置文字层字体
@@ -132,6 +185,81 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             set
             {
                 Panel.SetZIndex(this.textBlock, value);
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置文字层宽度
+        /// </summary>
+        public double Height
+        {
+            get
+            {
+                return this.textBlock.Height;
+            }
+            set
+            {
+                this.textBlock.Height = value;
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置文字层高度
+        /// </summary>
+        public double Width
+        {
+            get
+            {
+                return this.textBlock.Width;
+            }
+            set
+            {
+                this.textBlock.Width = value;
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置文字层边距
+        /// </summary>
+        public Thickness Margin
+        {
+            get
+            {
+                return this.textBlock.Margin;
+            }
+            set
+            {
+                this.textBlock.Margin = value;
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置文字层水平对齐属性
+        /// </summary>
+        public string HorizontalAlignment
+        {
+            get
+            {
+                return this.textBlock.HorizontalAlignment.ToString();
+            }
+            set
+            {
+                this.textBlock.HorizontalAlignment = (HorizontalAlignment)Enum.Parse(typeof(HorizontalAlignment), value, false);
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置文字层竖直对齐属性
+        /// </summary>
+        public string VerticalAlignment
+        {
+            get
+            {
+                return this.textBlock.VerticalAlignment.ToString();
+            }
+            set
+            {
+                this.textBlock.VerticalAlignment = (VerticalAlignment)Enum.Parse(typeof(VerticalAlignment), value);
             }
         }
 

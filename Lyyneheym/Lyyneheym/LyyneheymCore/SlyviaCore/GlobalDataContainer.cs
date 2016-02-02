@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Lyyneheym.LyyneheymCore.SlyviaCore
@@ -32,13 +33,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         // 文本层：文本层默认位置
         public static Point GAME_MESSAGELAYER_POSITION = new Point(0, 0);
         // 文本层：文本层默认上边距
-        public static int GAME_MESSAGELAYER_MARGIN_TOP = 0;
+        public static int GAME_MESSAGELAYER_MARGIN_TOP = 5;
         // 文本层：文本层默认下边距
-        public static int GAME_MESSAGELAYER_MARGIN_DOWN = 0;
+        public static int GAME_MESSAGELAYER_MARGIN_BOTTOM = 5;
         // 文本层：文本层默认左边距
-        public static int GAME_MESSAGELAYER_MARGIN_LEFT = 0;
+        public static int GAME_MESSAGELAYER_MARGIN_LEFT = 5;
         // 文本层：文本层默认右边距
-        public static int GAME_MESSAGELAYER_MARGIN_RIGHT = 0;
+        public static int GAME_MESSAGELAYER_MARGIN_RIGHT = 5;
         // 文本展示：是否打字模式
         public static bool GAME_MSG_ISTYPING = true;
         // 文本展示：打字模式延迟
@@ -68,7 +69,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         // 字体：字体名称
         public static string GAME_FONT_NAME = "宋体";
         // 字体：颜色
-        public static Color GAME_FONT_COLOR = Color.Black;
+        public static System.Windows.Media.Color GAME_FONT_COLOR = Colors.Black;
+        // 字体：行距
+        public static int GAME_FONT_LINEHEIGHT = 36;
         // 字体：字号
         public static int GAME_FONT_FONTSIZE = 12;
         // 开发：控制台输出
