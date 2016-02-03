@@ -13,83 +13,47 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 获取或设置栈帧状态
         /// </summary>
-        public GameStackMachineState state
-        {
-            get;
-            set;
-        }
+        public GameStackMachineState state = GameStackMachineState.NOP;
 
         /// <summary>
         /// 获取或设置指令计数器
         /// </summary>
-        public int PC
-        {
-            get { return this.PC; }
-            set { this.PC = value >= 0 ? value : 0; }
-        }
+        public int PC = 0;
 
         /// <summary>
         /// 获取或设置下一指令指针
         /// </summary>
-        public SceneAction IP
-        {
-            get;
-            set;
-        }
+        public SceneAction IP = null;
         
         /// <summary>
         /// 获取或设置正在执行的脚本名（场景名、函数名）
         /// </summary>
-        public string scriptName
-        {
-            get;
-            set;
-        }
+        public string scriptName = null;
 
         /// <summary>
         /// 获取或设置绑定的场景名称
         /// </summary>
-        public string bindingSceneName
-        {
-            get;
-            set;
-        }
+        public string bindingSceneName = null;
 
         /// <summary>
         /// 获取或设置绑定的函数调用名称
         /// </summary>
-        public string bindingFunctionName
-        {
-            get;
-            set;
-        }
+        public string bindingFunctionName = null;
 
         /// <summary>
         /// 获取或设置实参数列表
         /// </summary>
-        public List<object> argv
-        {
-            get;
-            set;
-        }
+        public List<object> argv = null;
 
         /// <summary>
         /// 获取或设置执行栈帧前的延迟
         /// </summary>
-        public TimeSpan delay
-        {
-            get;
-            set;
-        }
+        public TimeSpan delay = TimeSpan.Zero;
 
         /// <summary>
         /// 获取或设置该栈帧的备注信息
         /// </summary>
-        public string aTag
-        {
-            get;
-            set;
-        }
+        public string aTag = null;
     }
 
     /// <summary>

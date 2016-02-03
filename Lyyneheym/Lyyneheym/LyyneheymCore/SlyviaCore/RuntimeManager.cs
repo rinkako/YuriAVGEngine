@@ -18,6 +18,22 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     public class RuntimeManager
     {
         /// <summary>
+        /// 获取当前调用堆栈顶部状态
+        /// </summary>
+        /// <returns></returns>
+        public GameStackMachineState GameState()
+        {
+            if (this.CallStack.ESP == null)
+            {
+                return GameStackMachineState.NOP;
+            }
+            else
+            {
+                return this.CallStack.ESP.state;
+            }
+        }
+
+        /// <summary>
         /// 取下一动作指令
         /// </summary>
         /// <returns>动作实例</returns>
@@ -152,6 +168,64 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 等待用户操作
+        /// </summary>
+        /// <param name="causedBy">触发的原因</param>
+        public void UserWait(string causedBy)
+        {
+            this.CallStack.Submit(causedBy);
+        }
+
+        /// <summary>
+        /// 延时
+        /// </summary>
+        /// <param name="causedBy">触发的原因</param>
+        /// <param name="timespan">等待时间间隔</param>
+        public void Delay(string causedBy, TimeSpan timespan)
+        {
+            this.CallStack.Submit(causedBy, timespan);
+        }
+
+        /// <summary>
+        /// 场景调用
+        /// </summary>
+        /// <param name="scene">场景实例</param>
+        public void CallScene(Scene scene)
+        {
+            this.CallStack.Submit(scene);
+        }
+
+        /// <summary>
+        /// 函数调用
+        /// </summary>
+        /// <param name="function">函数实例</param>
+        /// <param name="args">参数列表</param>
+        public void CallFunction(SceneFunction function, List<object> args)
+        {
+            this.CallStack.Submit(function, args);
+        }
+
+        /// <summary>
+        /// 左值运算一个变量
+        /// </summary>
+        /// <param name="varname">变量名</param>
+        /// <param name="value">右值逆波兰式</param>
+        public void Assignment(string varname, string valuePolish)
+        {
+            this.Symbols.assign(this.CallStack.ESP.scriptName, varname, this.CalculatePolish(valuePolish));
+        }
+
+        /// <summary>
+        /// 取一个变量作右值
+        /// </summary>
+        /// <param name="varname">变量名</param>
+        /// <returns>变量的引用</returns>
+        public object Fetch(string varname)
+        {
+            return this.Symbols.signal(this.CallStack.ESP.scriptName, varname);
+        }
+
+        /// <summary>
         /// 计算表达式的真值
         /// </summary>
         /// <param name="polish">表达式的逆波兰式</param>
@@ -165,7 +239,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 计算表达式
         /// </summary>
         /// <param name="polish">表达式的逆波兰式</param>
-        /// <returns>计算结果的值（Double/字符串）引用</returns>
+        /// <returns>计算结果的值（Double/字符串）</returns>
         public object CalculatePolish(string polish)
         {
             List<PolishItem> calcList = this.GetPolishItemList(polish);
@@ -508,7 +582,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 else if ((item.StartsWith("&") || item.StartsWith("$")) && item.Length > 1)
                 {
                     string varPureName = item.Substring(1);
-                    object varRef = this.Symbols.signal(this.CallStack.ESP.scriptName, varPureName, false);
+                    object varRef = this.Symbols.signal(this.CallStack.ESP.scriptName, varPureName);
                     if (varRef is double)
                     {
                         poi = new PolishItem()
@@ -669,24 +743,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 获取游戏调用堆栈
-        /// </summary>
-        public StackMachine CallStack
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取游戏符号表
-        /// </summary>
-        public SymbolTable Symbols
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// 将运行时环境恢复最初状态
         /// </summary>
         public void Reset()
@@ -722,6 +778,24 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 获取游戏调用堆栈
+        /// </summary>
+        public StackMachine CallStack
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取游戏符号表
+        /// </summary>
+        public SymbolTable Symbols
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// 唯一实例
         /// </summary>
         private static RuntimeManager synObject = null;
@@ -752,7 +826,4 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         // 当前状态不明确
         Unknown
     }
-
-
-
 }

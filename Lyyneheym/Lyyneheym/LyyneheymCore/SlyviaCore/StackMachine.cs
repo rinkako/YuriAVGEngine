@@ -37,6 +37,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 state = GameStackMachineState.Interpreting,
                 scriptName = sc.scenario,
                 PC = offset,
+                IP = sc.mainSa,
                 argv = null,
                 bindingSceneName = sc.scenario,
                 bindingFunctionName = null,
@@ -59,6 +60,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 state = GameStackMachineState.FunctionCalling,
                 scriptName = sf.callname,
                 PC = offset,
+                IP = sf.sa,
                 argv = args,
                 bindingFunctionName = sf.globalName,
                 bindingSceneName = null,
@@ -80,6 +82,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 state = GameStackMachineState.Await,
                 scriptName = null,
                 PC = 0,
+                IP = null,
                 argv = null,
                 bindingFunctionName = null,
                 bindingSceneName = null,
@@ -101,6 +104,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 state = GameStackMachineState.WaitUser,
                 scriptName = null,
                 PC = 0,
+                IP = null,
                 argv = null,
                 bindingFunctionName = null,
                 bindingSceneName = null,
@@ -144,7 +148,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             get
             {
-                return this.coreStack.Peek();
+                if (this.coreStack.Count > 0)
+                {
+                    return this.coreStack.Peek();
+                }
+                return null;
             }
         }
 

@@ -25,31 +25,38 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// <para>使用一个变量</para>
-        /// <para>如果这个变量从未使用过，将被注册；否则，返回她在运行时环境的引用</para>
+        /// <para>使用一个变量作为右值</para>
+        /// <para>如果这个变量从未使用过，将抛出错误</para>
         /// </summary>
         /// <param name="sceneName">场景名称</param>
         /// <param name="varName">变量名</param>
-        /// <param name="isLvalue">是否作为左值来使用</param>
-        /// <returns>该变量的真实引用</returns>
-        internal object signal(string sceneName, string varName, bool isLvalue)
+        internal object signal(string sceneName, string varName)
         {
             Dictionary<string, object> table = this.FindSymbolTable(sceneName);
             // 如果查无此键
             if (table.ContainsKey(varName) == false)
             {
-                // 不是作为左值就报错就注册
-                if (isLvalue == false)
-                {
-                    throw new Exception("变量 " + varName + " 在作为左值之前被引用");
-                }
-                // 否则注册这个变量
-                else
-                {
-                    table.Add(varName, null);
-                }
+                throw new Exception("变量 " + varName + " 在作为左值之前被引用");
             }
             return table[varName];
+        }
+
+        /// <summary>
+        /// 将一个变量赋值，如果变量不存在，将被注册后再赋值
+        /// </summary>
+        /// <param name="sceneName">场景名称</param>
+        /// <param name="varName">变量名称</param>
+        /// <param name="value">变量的值</param>
+        internal void assign(string sceneName, string varName, object value)
+        {
+            Dictionary<string, object> table = this.FindSymbolTable(sceneName);
+            // 如果查无此键就注册
+            if (table.ContainsKey(varName) == false)
+            {
+                table.Add(varName, null);
+            }
+            // 为变量赋值
+            table[varName] = value;
         }
 
         /// <summary>
@@ -108,6 +115,21 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             }
         }
 
+        /// <summary>
+        /// 为场景添加符号表
+        /// </summary>
+        /// <param name="sceneName">场景名称</param>
+        /// <returns>操作成功与否</returns>
+        internal bool AddSymbolTable(string sceneName)
+        {
+            if (this.userSymbolTableContainer.ContainsKey(sceneName))
+            {
+                return false;
+            }
+            this.userSymbolTableContainer.Add(sceneName, new Dictionary<string, object>());
+            return true;
+        }    
+        
         /// <summary>
         /// 工厂方法：获得类的唯一实例
         /// </summary>

@@ -25,7 +25,16 @@ namespace Lyyneheym
 
 
 
-
+        public void testRef()
+        {
+            this.RunMana.Symbols.AddSymbolTable("testScript");
+            StackMachineFrame smf = new StackMachineFrame()
+            {
+                scriptName = "testScript"
+            };
+            this.RunMana.CallStack.Submit(smf);
+            this.RunMana.Assignment("myvar", "123");
+        }
 
 
 
