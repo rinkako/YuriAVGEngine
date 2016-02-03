@@ -56,6 +56,7 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
         }
     }
 
+    [Serializable]
     public class SceneActionPackage
     {
         // 节点名称

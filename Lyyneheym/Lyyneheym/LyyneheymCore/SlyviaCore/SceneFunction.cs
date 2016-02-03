@@ -9,6 +9,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     /// <summary>
     /// 函数调用类：处理场景里的函数
     /// </summary>
+    [Serializable]
     public class SceneFunction
     {
         /// <summary>
@@ -40,8 +41,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             return String.Format("SlyviaFunction: {0}({1})", this.callname, paraStr);
         }
 
-        // 在变量字典中的名字
-        public string varDictName
+        /// <summary>
+        /// 获取或设置函数的全局名称
+        /// </summary>
+        public string globalName
         {
             get
             {

@@ -48,7 +48,15 @@ namespace Lyyneheym.SlyviaInterpreter.ILPackage
                 sb.Append(this.saNodeName + "^");
                 string args = this.argsDict.Aggregate("", (x, y) => x + ":#:" + y.Key + ":@:" + y.Value);
                 sb.Append(args.Length > 0 ? args.Substring(3) + "^" : "^");
-                sb.Append(this.condPolish + "^");
+                if (this.aType != SActionType.act_else && this.aType != SActionType.act_endif && this.aType != SActionType.act_endfor
+                    && this.aType != SActionType.act_function && this.aType != SActionType.act_endfunction && this.aType != SActionType.act_lable)
+                {
+                    sb.Append(this.condPolish + "^");
+                }
+                else
+                {
+                    sb.Append("^");
+                }
                 sb.Append(this.next != null ? this.next.saNodeName + "^" : "^");
                 if (this.trueRouting != null)
                 {

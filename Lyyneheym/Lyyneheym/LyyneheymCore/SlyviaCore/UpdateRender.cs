@@ -272,5 +272,27 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         }
         #endregion
+
+        #region 键位按钮状态
+        public static bool KS_MOUSE_LEFT = false;
+        public static bool KS_MOUSE_RIGHT = false;
+        public static bool KS_MOUSE_MID = false;
+        public static bool KS_KEY_ESC = false;
+        public static bool KS_KEY_SHIFT = false;
+        public static bool KS_KEY_CTRL = false;
+        public static bool KS_KEY_TAB = false;
+        public static bool KS_KEY_SPACE = false;
+        public static bool KS_KEY_Z = false;
+        public static bool KS_KEY_X = false;
+        public static bool KS_KEY_W = false;
+        public static bool KS_KEY_S = false;
+        public static bool KS_KEY_A = false;
+        public static bool KS_KEY_D = false;
+        public static bool KS_KEY_ENTER = false;
+        public static bool KS_KEY_UP = false;
+        public static bool KS_KEY_DOWN = false;
+        public static bool KS_KEY_LEFT = false;
+        public static bool KS_KEY_RIGHT = false;
+        #endregion
     }
 }

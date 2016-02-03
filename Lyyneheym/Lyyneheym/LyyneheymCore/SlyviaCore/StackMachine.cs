@@ -6,6 +6,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     /// <summary>
     /// 栈机类：负责游戏流程的调度
     /// </summary>
+    [Serializable]
     public class StackMachine
     {
         /// <summary>
@@ -37,8 +38,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 scriptName = sc.scenario,
                 PC = offset,
                 argv = null,
-                bindingScene = sc,
-                bindingFunction = null,
+                bindingSceneName = sc.scenario,
+                bindingFunctionName = null,
                 delay = TimeSpan.FromMilliseconds(0),
                 aTag = ""
             };
@@ -59,8 +60,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 scriptName = sf.callname,
                 PC = offset,
                 argv = args,
-                bindingFunction = sf,
-                bindingScene = null,
+                bindingFunctionName = sf.globalName,
+                bindingSceneName = null,
                 delay = TimeSpan.FromMilliseconds(0),
                 aTag = ""
             };
@@ -80,8 +81,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 scriptName = null,
                 PC = 0,
                 argv = null,
-                bindingFunction = null,
-                bindingScene = null,
+                bindingFunctionName = null,
+                bindingSceneName = null,
                 delay = sleepTimeSpan,
                 aTag = String.Format("ThreadSleepCausedBy:{0}({1} ms)", causeBy, sleepTimeSpan.Milliseconds)
             };
@@ -101,8 +102,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 scriptName = null,
                 PC = 0,
                 argv = null,
-                bindingFunction = null,
-                bindingScene = null,
+                bindingFunctionName = null,
+                bindingSceneName = null,
                 delay = TimeSpan.FromMilliseconds(0),
                 aTag = String.Format("WaitingFor:{0}#Detail:{1}", causeBy, detail)
             };

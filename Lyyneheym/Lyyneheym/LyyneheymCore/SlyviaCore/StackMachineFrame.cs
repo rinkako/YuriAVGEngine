@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using Lyyneheym.LyyneheymCore.ILPackage;
 
 namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
     /// <summary>
     /// 游戏栈机中的栈帧
     /// </summary>
+    [Serializable]
     public class StackMachineFrame
     {
         /// <summary>
-        /// 当前状态
+        /// 获取或设置栈帧状态
         /// </summary>
         public GameStackMachineState state
         {
@@ -18,7 +20,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 指令计数器
+        /// 获取或设置指令计数器
         /// </summary>
         public int PC
         {
@@ -27,7 +29,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 正在执行的脚本名（场景名、函数名）
+        /// 获取或设置下一指令指针
+        /// </summary>
+        public SceneAction IP
+        {
+            get;
+            set;
+        }
+        
+        /// <summary>
+        /// 获取或设置正在执行的脚本名（场景名、函数名）
         /// </summary>
         public string scriptName
         {
@@ -36,25 +47,25 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 绑定的场景
+        /// 获取或设置绑定的场景名称
         /// </summary>
-        public Scene bindingScene
+        public string bindingSceneName
         {
             get;
             set;
         }
 
         /// <summary>
-        /// 绑定的函数调用
+        /// 获取或设置绑定的函数调用名称
         /// </summary>
-        public SceneFunction bindingFunction
+        public string bindingFunctionName
         {
             get;
             set;
         }
 
         /// <summary>
-        /// 实参数列表
+        /// 获取或设置实参数列表
         /// </summary>
         public List<object> argv
         {
@@ -63,7 +74,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 执行栈帧前的延迟
+        /// 获取或设置执行栈帧前的延迟
         /// </summary>
         public TimeSpan delay
         {
@@ -72,7 +83,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 该栈帧的备注信息
+        /// 获取或设置该栈帧的备注信息
         /// </summary>
         public string aTag
         {
@@ -82,7 +93,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     }
 
     /// <summary>
-    /// 游戏栈机的状态
+    /// 枚举：游戏栈机的状态
     /// </summary>
     public enum GameStackMachineState
     {

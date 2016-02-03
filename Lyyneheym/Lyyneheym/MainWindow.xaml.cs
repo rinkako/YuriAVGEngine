@@ -37,7 +37,7 @@ namespace Lyyneheym
             InitializeComponent();
             this.testFontEffect(this.BO_MainText);
 
-            runCore.SetMWReference(this);
+            //runCore.SetMWReference(this);
             SolidColorBrush scb = new SolidColorBrush(Colors.Red);
 
             this.BO_MainText.Foreground = scb;
@@ -58,17 +58,17 @@ namespace Lyyneheym
         bool flag = false;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (flag == false)
-            {
-                this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage("bg1.png"));
-                flag = true;
-            }
-            else
-            {
-                this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage("bg2.png"));
-                flag = false;
-            }
-            MessageBox.Show(RuntimeManager.KS_MOUSE_RIGHT.ToString());
+        //    if (flag == false)
+        //    {
+        //        this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage("bg1.png"));
+        //        flag = true;
+        //    }
+        //    else
+        //    {
+        //        this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage("bg2.png"));
+        //        flag = false;
+        //    }
+        //    MessageBox.Show(RuntimeManager.KS_MOUSE_RIGHT.ToString());
         }
 
 
@@ -182,8 +182,8 @@ namespace Lyyneheym
                     }
                 }
             }
-
         }
+
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
             TypewriteTextblock("测试文本测试文本测试文本测试文本", this.BO_MainText, 30);
@@ -326,12 +326,12 @@ namespace Lyyneheym
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            runCore.WMouseDownEventHandler(e);
+            //runCore.WMouseDownEventHandler(e);
         }
 
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            runCore.WMouseUpEventHandler(e);
+            //runCore.WMouseUpEventHandler(e);
         }
     }
 }

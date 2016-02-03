@@ -740,6 +740,13 @@ namespace Lyyneheym.SlyviaInterpreter
                 default:
                     break;
             }
+            if (mynode.nodeSyntaxType.ToString().StartsWith("para_"))
+            {
+                if (mynode.children != null && mynode.children.Count > 0)
+                {
+                    mynode.polish = mynode.children[0].polish;
+                }
+            }
             return mynode.polish;
         }
 

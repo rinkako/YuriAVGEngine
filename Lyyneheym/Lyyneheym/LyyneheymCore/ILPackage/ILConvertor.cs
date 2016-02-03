@@ -15,15 +15,16 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
     public class ILConvertor
     {
         /// <summary>
-        /// 进行编译
+        /// 进行编译，返回IL对应的场景实例向量
         /// </summary>
         /// <param name="dir">剧本目录（以后要去掉）</param>
-        public void Dash(string dir)
+        /// <returns>场景实例向量</returns>
+        public List<Scene> Dash(string dir)
         {
             this.sceneDirectory = dir;
             this.LoadAndSplit();
             this.ProcessIL();
-            List<Scene> rrr = this.ProcessSARelation();
+            return this.ProcessSARelation();
         }
 
         /// <summary>

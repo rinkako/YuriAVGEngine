@@ -28,30 +28,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 初始化该场景
-        /// </summary>
-        public void Init()
-        {
-
-        }
-
-        /// <summary>
-        /// 为消息队列更新当前场景的数据
-        /// </summary>
-        public void UpdateContext()
-        {
-
-        }
-
-        /// <summary>
-        /// 渲染当前画面
-        /// </summary>
-        public void Render()
-        {
-
-        }
-
-        /// <summary>
         /// 获取该场景的IL文件头
         /// </summary>
         /// <returns>IL文件头字符串</returns>
@@ -60,8 +36,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             return String.Format(">>>SlyviaIL?{0}", this.scenario);
         }
 
-        // 场景进行指针
-        public int SP = 0;
+        /// <summary>
+        /// 获取指定场景的IL文件头
+        /// </summary>
+        /// <param name="scene">场景实例</param>
+        /// <returns>IL文件头字符串</returns>
+        public static string GetILSign(Scene scene)
+        {
+            return String.Format(">>>SlyviaIL?{0}", scene.scenario);
+        }
+
         // 场景名称
         public string scenario;
         // 场景的主动作序列

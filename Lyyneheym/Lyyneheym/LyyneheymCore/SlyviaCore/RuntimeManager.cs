@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using Lyyneheym.LyyneheymCore.ILPackage;
 
 namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
@@ -16,107 +17,166 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     [Serializable]
     public class RuntimeManager
     {
-
-        
-        
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void WMouseDownEventHandler(MouseButtonEventArgs e)
+        public SceneAction MoveNext()
         {
-            // 修改全局状态
-            RuntimeManager.KS_MOUSE_LEFT = e.LeftButton == MouseButtonState.Pressed;
-            RuntimeManager.KS_MOUSE_RIGHT = e.RightButton == MouseButtonState.Pressed;
-            RuntimeManager.KS_MOUSE_MID = e.MiddleButton == MouseButtonState.Pressed;
-            // 传递给演绎器
-            this.updateRender.WMouseDownEventHandler(e);
+            // 调用栈已经为空时预备退出
+            if (this.CallStack.Count() == 0)
+            {
+                return null;
+            }
+            // 取出当前要执行的指令
+            SceneAction ret = this.CallStack.ESP.IP;
+            // 如果没有下一指令就弹栈
+            if (ret == null)
+            {
+                this.CallStack.Consume();
+                // 递归寻指
+                return this.MoveNext();
+            }
+            // 如果没有条件子句
+            if (ret.condPolish == "")
+            {
+                // 处理控制流程
+                switch (ret.aType)
+                {
+                    case SActionType.NOP:
+                        // 优先进入trueRouting
+                        if (ret.trueRouting != null && ret.trueRouting.Count > 0)
+                        {
+                            this.CallStack.ESP.PC++;
+                            ret = this.CallStack.ESP.IP = ret.trueRouting[0];
+                            break;
+                        }
+                        // falseRouting
+                        else if (ret.falseRouting != null && ret.falseRouting.Count > 0)
+                        {
+                            this.CallStack.ESP.PC++;
+                            ret = this.CallStack.ESP.IP = ret.falseRouting[0];
+                            break;
+                        }
+                        // next
+                        else
+                        {
+                            this.CallStack.ESP.PC++;
+                            ret = this.CallStack.ESP.IP = ret.next;
+                            break;
+                        }
+                    case SActionType.act_endfor:
+                        // endfor直接跳过
+                        this.CallStack.ESP.PC++;
+                        ret = this.CallStack.ESP.IP = ret.next;
+                        break;
+                }
+                // 移动下一指令指针，为下次处理做准备
+                this.CallStack.ESP.PC++;
+                this.CallStack.ESP.IP = ret.next;
+                // 返回当前要执行的指令实例
+                return ret;
+            }
+            // 条件子句不为空时
+            else
+            {
+                // 计算条件真值
+                bool condBoolean = this.CalculateBooleanPolish(ret.condPolish);
+                // 处理控制流程
+                switch (ret.aType)
+                {
+                    // IF语句
+                    case SActionType.act_if:
+                        // 条件为真且有真分支
+                        if (condBoolean == true && ret.trueRouting != null && ret.trueRouting.Count > 0)
+                        {
+                            // 移动下一指令指针，进入trueRouting
+                            this.CallStack.ESP.PC++;
+                            ret = this.CallStack.ESP.IP = ret.trueRouting[0];
+                        }
+                        // 条件为假且有假分支
+                        else if (condBoolean == false && ret.falseRouting != null && ret.falseRouting.Count > 0)
+                        {
+                            // 移动下一指令指针，进入falseRouting
+                            this.CallStack.ESP.PC++;
+                            ret = this.CallStack.ESP.IP = ret.falseRouting[0];
+                        }
+                        // 没有执行的语句时，移动指令指针到next节点
+                        else
+                        {
+                            // 跳过if语句
+                            this.CallStack.ESP.PC++;
+                            ret = this.CallStack.ESP.IP = ret.next;
+                        }
+                        // 再移动一次指针，为下次处理做准备
+                        this.CallStack.ESP.PC++;
+                        this.CallStack.ESP.IP = ret.next;
+                        // 返回当前要执行的指令实例
+                        return ret;
+                    // FOR语句
+                    case SActionType.act_for:
+                        // 如果条件为真就进入真分支
+                        if (condBoolean == true && ret.trueRouting != null && ret.trueRouting.Count > 0)
+                        {
+                            // 移动下一指令指针，进入trueRouting
+                            this.CallStack.ESP.PC++;
+                            ret = this.CallStack.ESP.IP = ret.trueRouting[0];
+                        }
+                        // 如果条件为假直接跳过for语句
+                        else
+                        {
+                            // 跳过if语句
+                            this.CallStack.ESP.PC++;
+                            ret = this.CallStack.ESP.IP = ret.next;
+                        }
+                        // 再移动一次指针，为下次处理做准备
+                        this.CallStack.ESP.PC++;
+                        this.CallStack.ESP.IP = ret.next;
+                        // 返回当前要执行的指令实例
+                        return ret;
+                    // 除此以外，带了cond的语句，为真才执行
+                    default:
+                        if (condBoolean == false)
+                        {
+                            // 跳过当前语句
+                            this.CallStack.ESP.PC++;
+                            ret = this.CallStack.ESP.IP = ret.next;
+                        }
+                        // 移动下一指令指针，为下次处理做准备
+                        this.CallStack.ESP.PC++;
+                        this.CallStack.ESP.IP = ret.next;
+                        // 返回当前要执行的指令实例
+                        return ret;
+                }
+            }
         }
 
-        public void WMouseUpEventHandler(MouseButtonEventArgs e)
+        public bool CalculateBooleanPolish(string polish)
         {
-            // 修改全局状态
-            RuntimeManager.KS_MOUSE_LEFT = e.LeftButton == MouseButtonState.Pressed;
-            RuntimeManager.KS_MOUSE_RIGHT = e.RightButton == MouseButtonState.Pressed;
-            RuntimeManager.KS_MOUSE_MID = e.MiddleButton == MouseButtonState.Pressed;
-            // 传递给演绎器
-            this.updateRender.WMouseUpEventHandler(e);
-
-        }
-
-        public void SetMWReference(MainWindow mw)
-        {
-            this.updateRender.SetPlatformReference(mw);
+            return true;
         }
 
         /// <summary>
-        /// 游戏刷新器
+        /// 获取游戏调用堆栈
         /// </summary>
-        private UpdateRender updateRender;
-        
-        /// <summary>
-        /// 游戏调用堆栈
-        /// </summary>
-        private StackMachine stackMachine;
-
-        /// <summary>
-        /// 游戏的总体状态
-        /// </summary>
-        public enum GameState
+        public StackMachine CallStack
         {
-            // 游戏剧情进行时
-            Performing,
-            // 用户操作界面
-            UserPanel,
-            // 系统执行中
-            Loading
+            get;
+            private set;
         }
 
         /// <summary>
-        /// 游戏的稳态
+        /// 获取游戏符号表
         /// </summary>
-        public enum GameStableState
+        public SymbolTable Symbols
         {
-            // 等待用户操作的稳态
-            Stable,
-            // 用户等待系统的不稳态
-            Unstable,
-            // 当前状态不明确
-            Unknown
+            get;
+            private set;
         }
 
-        #region 键位按钮状态
-        public static bool KS_MOUSE_LEFT = false;
-        public static bool KS_MOUSE_RIGHT = false;
-        public static bool KS_MOUSE_MID = false;
-        public static bool KS_KEY_ESC = false;
-        public static bool KS_KEY_SHIFT = false;
-        public static bool KS_KEY_CTRL = false;
-        public static bool KS_KEY_TAB = false;
-        public static bool KS_KEY_SPACE = false;
-        public static bool KS_KEY_Z = false;
-        public static bool KS_KEY_X = false;
-        public static bool KS_KEY_W = false;
-        public static bool KS_KEY_S = false;
-        public static bool KS_KEY_A = false;
-        public static bool KS_KEY_D = false;
-        public static bool KS_KEY_ENTER = false;
-        public static bool KS_KEY_UP = false;
-        public static bool KS_KEY_DOWN = false;
-        public static bool KS_KEY_LEFT = false;
-        public static bool KS_KEY_RIGHT = false;
-        #endregion
-
-        #region 自身相关方法
         /// <summary>
         /// 将运行时环境恢复最初状态
         /// </summary>
         public void Reset()
         {
-            this.stackMachine = new StackMachine();
-            this.updateRender = new UpdateRender();
+            this.CallStack = new StackMachine();
+            this.Symbols = SymbolTable.getInstance();
         }
 
         /// <summary>
@@ -140,6 +200,32 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 唯一实例
         /// </summary>
         private static RuntimeManager synObject = null;
-        #endregion
     }
+
+    /// <summary>
+    /// 游戏的总体状态
+    /// </summary>
+    public enum GameState
+    {
+        // 游戏剧情进行时
+        Performing,
+        // 用户操作界面
+        UserPanel,
+        // 系统执行中
+        Loading
+    }
+
+    /// <summary>
+    /// 游戏的稳态
+    /// </summary>
+    public enum GameStableState
+    {
+        // 等待用户操作的稳态
+        Stable,
+        // 用户等待系统的不稳态
+        Unstable,
+        // 当前状态不明确
+        Unknown
+    }
+
 }
