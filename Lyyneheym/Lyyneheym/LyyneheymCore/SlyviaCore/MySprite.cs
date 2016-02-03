@@ -21,6 +21,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="cutrect">材质切割矩形</param>
         public void Init(MemoryStream ms, Int32Rect? cutrect = null)
         {
+            this.myImage = new BitmapImage();
             this.myImage.BeginInit();
             this.myImage.StreamSource = ms;
             if (cutrect != null)
@@ -38,6 +39,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="cutrect">材质切割矩形</param>
         public void Init(Uri uri, Int32Rect? cutrect = null)
         {
+            this.myImage = new BitmapImage();
             this.myImage.BeginInit();
             this.myImage.UriSource = uri;
             if (cutrect != null)

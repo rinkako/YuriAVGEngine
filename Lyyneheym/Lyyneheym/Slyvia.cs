@@ -18,7 +18,7 @@ namespace Lyyneheym
 
         private ResourceManager ResMana;
 
-        private UpdateRender GameUpdater;
+        public UpdateRender GameUpdater;
         
 
 
@@ -52,19 +52,19 @@ namespace Lyyneheym
 
         //bool testflag = false;
 
-        public BitmapImage testBitmapImage(string filename)
+        public MySprite testBitmapImage(string filename)
         {
-            return this.ResMana.getBackgroundImage(filename);
+            return this.ResMana.GetBackgroundImage(filename);
         }
 
-        public BitmapImage testCharaStand(string filename)
+        public MySprite testCharaStand(string filename)
         {
-            return this.ResMana.getCharacterStandImage(filename);
+            return this.ResMana.GetCharacterStandImage(filename);
         }
 
-        public BitmapImage testBGM(string filename)
+        public MySprite testBGM(string filename)
         {
-            return this.ResMana.getCharacterStandImage(filename);
+            return this.ResMana.GetCharacterStandImage(filename);
         }
 
 

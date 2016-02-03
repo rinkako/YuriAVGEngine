@@ -30,7 +30,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="mw">主窗体引用</param>
         public void SetPlatformReference(MainWindow mw)
         {
-            this.mw = mw;
+            this.view = mw;
         }
 
         /// <summary>
@@ -45,22 +45,21 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 处理游戏窗体的鼠标按下信息
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
         public void WMouseDownEventHandler(MouseButtonEventArgs e)
         {
             if (e.RightButton == MouseButtonState.Pressed)
             {
-                if (this.mw.BO_MessageBoxLayer.Visibility == System.Windows.Visibility.Hidden)
+                if (this.view.BO_MessageBoxLayer.Visibility == System.Windows.Visibility.Hidden)
                 {
-                    this.mw.BO_MainName.Visibility = this.mw.BO_MainText.Visibility = this.mw.BO_MsgTria.Visibility =
-                        this.mw.BO_MessageBoxLayer.Visibility = System.Windows.Visibility.Visible;
+                    this.view.BO_MainName.Visibility = this.view.BO_MainText.Visibility = this.view.BO_MsgTria.Visibility =
+                        this.view.BO_MessageBoxLayer.Visibility = System.Windows.Visibility.Visible;
 
                 }
                 else
                 {
-                    this.mw.BO_MainName.Visibility = this.mw.BO_MainText.Visibility = this.mw.BO_MsgTria.Visibility =
-                        this.mw.BO_MessageBoxLayer.Visibility = System.Windows.Visibility.Hidden;
+                    this.view.BO_MainName.Visibility = this.view.BO_MainText.Visibility = this.view.BO_MsgTria.Visibility =
+                        this.view.BO_MessageBoxLayer.Visibility = System.Windows.Visibility.Hidden;
                 }
             }
             
@@ -77,7 +76,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         public void HideMessageTria()
         {
-            this.mw.BO_MsgTria.Visibility = Visibility.Hidden;
+            this.view.BO_MsgTria.Visibility = Visibility.Hidden;
         }
 
         /// <summary>
@@ -86,8 +85,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="opacity">透明度</param>
         public void ShowMessageTria(double opacity = 1.0f)
         {
-            this.mw.BO_MsgTria.Opacity = opacity;
-            this.mw.BO_MsgTria.Visibility = Visibility.Visible;
+            this.view.BO_MsgTria.Opacity = opacity;
+            this.view.BO_MsgTria.Visibility = Visibility.Visible;
         }
 
         public void BeginMessageTriaUpDownAnimation()
@@ -106,15 +105,24 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="pos"></param>
         public void SetMessageTriaPosition(Point pos)
         {
-            Canvas.SetLeft(this.mw.BO_MsgTria, pos.X);
-            Canvas.SetTop(this.mw.BO_MsgTria, pos.Y);
+            Canvas.SetLeft(this.view.BO_MsgTria, pos.X);
+            Canvas.SetTop(this.view.BO_MsgTria, pos.Y);
         }
         #endregion
 
         /// <summary>
+        /// 为更新器设置作用窗体
+        /// </summary>
+        /// <param name="mw">窗体引用</param>
+        public void SetMainWindow(MainWindow mw)
+        {
+            this.view = mw;
+        }
+
+        /// <summary>
         /// 主窗体引用
         /// </summary>
-        private MainWindow mw = null;
+        private MainWindow view = null;
 
         #region 演绎函数
         private void Dialog()

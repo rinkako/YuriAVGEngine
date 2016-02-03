@@ -29,15 +29,13 @@ namespace Lyyneheym
     public partial class MainWindow : Window
     {
         private Slyvia core = Slyvia.getInstance(); //测试用，要删掉
-
-        private RuntimeManager runCore = RuntimeManager.getInstance();
+        
         private BitmapImage myBitmapImage;
         public MainWindow()
         {
             InitializeComponent();
             this.testFontEffect(this.BO_MainText);
-
-            //runCore.SetMWReference(this);
+            core.GameUpdater.SetMainWindow(this);
             SolidColorBrush scb = new SolidColorBrush(Colors.Red);
 
             this.BO_MainText.Foreground = scb;
@@ -58,16 +56,17 @@ namespace Lyyneheym
         bool flag = false;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-        //    if (flag == false)
-        //    {
-        //        this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage("bg1.png"));
-        //        flag = true;
-        //    }
-        //    else
-        //    {
-        //        this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage("bg2.png"));
-        //        flag = false;
-        //    }
+            if (flag == false)
+            {
+
+                this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage("bg1.png").myImage);
+                flag = true;
+            }
+            else
+            {
+                this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage("bg2.png").myImage);
+                flag = false;
+            }
         //    MessageBox.Show(RuntimeManager.KS_MOUSE_RIGHT.ToString());
         }
 
@@ -115,7 +114,9 @@ namespace Lyyneheym
             //myBitmapImage.BeginInit();
             //myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA01.png", UriKind.RelativeOrAbsolute);
             //myBitmapImage.EndInit();
-            BitmapImage myBitmapImage = core.testCharaStand("CA01.png");
+            MySprite mysprite = core.testCharaStand("CA01.png");
+            BitmapImage myBitmapImage = mysprite.myImage;
+            mysprite.displayBinding = this.BO_LeftChara;
             this.BO_LeftChara.Width = myBitmapImage.PixelWidth;
             this.BO_LeftChara.Height = myBitmapImage.PixelHeight;
             this.BO_LeftChara.Source = myBitmapImage;
@@ -127,7 +128,9 @@ namespace Lyyneheym
             //myBitmapImage.BeginInit();
             //myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA02.png", UriKind.RelativeOrAbsolute);
             //myBitmapImage.EndInit();
-            BitmapImage myBitmapImage = core.testCharaStand("CA02.png");
+            MySprite mysprite = core.testCharaStand("CA02.png");
+            BitmapImage myBitmapImage = mysprite.myImage;
+            mysprite.displayBinding = this.BO_RightChara;
             this.BO_RightChara.Width = myBitmapImage.PixelWidth;
             this.BO_RightChara.Height = myBitmapImage.PixelHeight;
             this.BO_RightChara.Source = myBitmapImage;
@@ -258,23 +261,7 @@ namespace Lyyneheym
             
         }
 
-        private void ApplyUpDownAnimation(string dependence)
-        {
-            Storyboard sb = new Storyboard();
-            DoubleAnimation da = new DoubleAnimation(0, 10, new Duration(TimeSpan.FromMilliseconds(500)));
-            da.RepeatBehavior = RepeatBehavior.Forever;
-            da.AutoReverse = true;
-            da.AccelerationRatio = 0.8;
-            Storyboard.SetTargetName(da, dependence);
-            DependencyProperty[] propertyChain = new DependencyProperty[]
-            {
-                Image.RenderTransformProperty,
-                TranslateTransform.YProperty,
-            };
-            Storyboard.SetTargetProperty(da, new PropertyPath("(0).(1)", propertyChain));
-            sb.Children.Add(da);
-            sb.Begin(this);
-        }
+
 
 
         private void Button_Click_9(object sender, RoutedEventArgs e)
@@ -288,10 +275,10 @@ namespace Lyyneheym
         {
 
             Point p = e.MouseDevice.GetPosition((Image)sender);
-
             BitmapImage myBitmapImage = new BitmapImage();
             myBitmapImage.BeginInit();
-            myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\exitmenu3.png", UriKind.RelativeOrAbsolute);
+            myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\MenuItems2.png", UriKind.RelativeOrAbsolute);
+            myBitmapImage.SourceRect = new Int32Rect(187, 2, 226, 226);
             myBitmapImage.EndInit();
 
             Color hitC = this.GetPixelColor(myBitmapImage, (int)p.X, (int)p.Y);
@@ -315,25 +302,89 @@ namespace Lyyneheym
                     cb.CopyPixels(pixels, 4, 0);
                     c = Color.FromArgb(pixels[3] ,pixels[2], pixels[1], pixels[0]);
                 }
-                catch (Exception) { }
+                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
             }
             return c;
         }
 
         private void Button_Click_10(object sender, RoutedEventArgs e)
         {
-            this.mytestbutton.RenderTransform = new TranslateTransform();
+            //this.mytestbutton.RenderTransform = new TranslateTransform();
+            
+            TransformGroup transformGroup = new TransformGroup();
+            TranslateTransform tt = new TranslateTransform();
+            //tt.Y = 50;
+            transformGroup.Children.Add(tt);
+
+            ScaleTransform sc = new ScaleTransform();
+            //sc.ScaleX = 1.5;
+            //sc.ScaleY = 1.5;
+            transformGroup.Children.Add(sc);
+
+
+
+            //transformGroup.Children.Add(new TranslateTransform());
+            //transformGroup.Children.Add(new RotateTransform());
+
+            this.mytestbutton.RenderTransform = transformGroup;
+
             this.ApplyUpDownAnimation(this.mytestbutton.Name);
+
+            this.testAni(this.mytestbutton);
+        }
+
+        private void testAni(DependencyObject icCurrent)
+        {
+
+            Storyboard keyFrameboard = new Storyboard();
+
+            DoubleAnimationUsingKeyFrames dakeyframe = new DoubleAnimationUsingKeyFrames();
+
+            Storyboard.SetTarget(dakeyframe, icCurrent);
+            Storyboard.SetTargetProperty(dakeyframe, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[0].(TranslateTransform.Y)"));
+            dakeyframe.BeginTime = new TimeSpan(0, 0, 0);
+
+            DoubleKeyFrame edKeyFrame = new LinearDoubleKeyFrame();
+            edKeyFrame.KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(1));
+            edKeyFrame.Value = 30;
+            dakeyframe.KeyFrames.Add(edKeyFrame);
+
+
+            keyFrameboard.Children.Add(dakeyframe);
+            keyFrameboard.RepeatBehavior = RepeatBehavior.Forever;
+            keyFrameboard.AutoReverse = true;
+            
+            keyFrameboard.Begin();
+        }
+
+        private void ApplyUpDownAnimation(string dependence)
+        {
+            Storyboard sb = new Storyboard();
+            DoubleAnimation da = new DoubleAnimation(0, 10, new Duration(TimeSpan.FromMilliseconds(500)));
+            da.RepeatBehavior = RepeatBehavior.Forever;
+            da.AutoReverse = true;
+            da.AccelerationRatio = 0.8;
+            Storyboard.SetTargetName(da, dependence);
+            DependencyProperty[] propertyChain = new DependencyProperty[]
+            {
+                Image.RenderTransformProperty,
+                TranslateTransform.YProperty,
+            };
+            Storyboard.SetTargetProperty(da, new PropertyPath("(0).(1)", propertyChain));
+            sb.Children.Add(da);
+
+            
+            sb.Begin(this);
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //runCore.WMouseDownEventHandler(e);
+            core.GameUpdater.WMouseDownEventHandler(e);
         }
 
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            //runCore.WMouseUpEventHandler(e);
+            core.GameUpdater.WMouseUpEventHandler(e);
         }
     }
 }

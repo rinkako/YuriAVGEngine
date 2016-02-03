@@ -18,7 +18,23 @@ namespace Lyyneheym.LyyneheymCore.Utils
         /// <returns>绝对路径</returns>
         public static string ParseURItoURL(string uri)
         {
-            return String.Format("{0}\\{1}", Environment.CurrentDirectory, uri);
+            return IOUtils.JoinPath(Environment.CurrentDirectory, uri);
+        }
+
+        /// <summary>
+        /// 把字符串用反斜杠组合成Windows风格的路径字符串
+        /// </summary>
+        /// <param name="uriObj">路径项目</param>
+        /// <returns>组合完毕的路径字符串</returns>
+        public static string JoinPath(params string[] uriObj)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < uriObj.Length - 1; i++)
+            {
+                sb.Append(uriObj[i] + "\\");
+            }
+            sb.Append(uriObj.Last());
+            return sb.ToString();
         }
         
         /// <summary>
