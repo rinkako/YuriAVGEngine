@@ -1004,7 +1004,7 @@ namespace Lyyneheym.SlyviaInterpreter
                         if (this.GetPolishItemType(polishStack.Peek()) == PolishItemType.CONSTANT)
                         {
                             string booleanItem = polishStack.Pop();
-                            polishStack.Push(Math.Abs(Convert.ToDouble(booleanItem)) < 1e-15 ? "0" : "1");
+                            polishStack.Push(Math.Abs(Convert.ToDouble(booleanItem)) < 1e-15 ? "1" : "0");
                         }
                         // 非常数项就不能做常数折叠，把操作符入栈
                         else

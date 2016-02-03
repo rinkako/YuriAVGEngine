@@ -30,6 +30,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="sceneName">场景名称</param>
         /// <param name="varName">变量名</param>
+        /// <param name="isLvalue">是否作为左值来使用</param>
         /// <returns>该变量的真实引用</returns>
         internal object signal(string sceneName, string varName, bool isLvalue)
         {
