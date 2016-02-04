@@ -1,13 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 
 namespace Lyyneheym.LyyneheymCore.SlyviaCore
@@ -204,7 +198,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="toValue">目标值</param>
         /// <param name="acc">加速度</param>
         /// <param name="propath">依赖链</param>
-        public static void ApplyAnimation(MySprite sprite, Duration duration, double fromValue, double toValue, double acc, PropertyPath propath)
+        public static void PropertyAnimation(MySprite sprite, Duration duration, double fromValue, double toValue, double acc, PropertyPath propath)
         {
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAni = new DoubleAnimation(fromValue, toValue, duration);

@@ -1,14 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Media.Animation;
 
 namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
@@ -264,12 +259,33 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 文字层的主文本块
+        /// 获取或设置文字层的主文本块
         /// </summary>
         public TextBlock textBlock
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// 获取或设置文字层的背景精灵
+        /// </summary>
+        public MySprite backgroundSprite
+        {
+            get
+            {
+                return this.bgSprite;
+            }
+            set
+            {
+                this.bgSprite = value;
+                this.bgSprite.anchor = SpriteAnchorType.LeftTop;
+            }
+        }
+
+        /// <summary>
+        /// 文字层背景精灵
+        /// </summary>
+        private MySprite bgSprite = null;
     }
 }

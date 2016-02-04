@@ -55,7 +55,7 @@
     <Compile Include="LyyneheymCore\ILPackage\SceneAction.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\GlobalDataContainer.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\MessageLayer.cs" />
-    <Compile Include="LyyneheymCore\SlyviaCore\MusicianContainer.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\Musician.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\MySprite.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\PolishItem.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\ResourceManager.cs" />

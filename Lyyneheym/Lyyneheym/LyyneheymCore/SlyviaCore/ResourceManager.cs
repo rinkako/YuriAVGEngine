@@ -17,7 +17,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     public class ResourceManager
     {
 
-
         /// <summary>
         /// 获得一张指定背景图的精灵
         /// </summary>
@@ -122,7 +121,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             }
             return sprite;
         }
-
 
 
 

@@ -219,8 +219,10 @@ namespace Lyyneheym
                 if (mp == null)
                 {
                     mp = new MediaPlayer();
-                    mp.Open(new Uri(@"Sound\bgm\bgm01.mp3", UriKind.RelativeOrAbsolute));
+                    mp.Open(new Uri(@"Sound\bgm\Boss01.wav", UriKind.RelativeOrAbsolute));
                     mp.Play();
+                    mp.Volume = 100;
+                    
                 }
                 else
                 {
@@ -230,6 +232,7 @@ namespace Lyyneheym
             }
             
         }
+
 
         private void TypewriteTextblock(string textToAnimate, TextBlock txt, int timeSpan)
         {
@@ -427,14 +430,13 @@ namespace Lyyneheym
 
         private void Button_Click_11(object sender, RoutedEventArgs e)
         {
-            SpriteAnimation.XYMoveAnimation(this.rightChara, TimeSpan.FromSeconds(3), this.rightChara.displayX, this.rightChara.displayX - 70, this.rightChara.displayY, this.rightChara.displayY);
-            SpriteAnimation.OpacityAnimation(this.rightChara, TimeSpan.FromSeconds(10), 1, 0.3);
+            SpriteAnimation.XYMoveAnimation(this.rightChara, TimeSpan.FromSeconds(3), -370, 0, 0.8);
+            SpriteAnimation.OpacityAnimation(this.rightChara, TimeSpan.FromSeconds(10), -0.7);
         }
 
         private void Button_Click_12(object sender, RoutedEventArgs e)
         {
-            SpriteAnimation.XYMoveAnimation(this.leftChara, TimeSpan.FromSeconds(0.5), this.leftChara.displayX, this.leftChara.displayX + 30, this.leftChara.displayY, this.leftChara.displayY);
-
+            SpriteAnimation.XYMoveAnimation(this.leftChara, TimeSpan.FromSeconds(0.5), 30, 0);
         }
     }
 }

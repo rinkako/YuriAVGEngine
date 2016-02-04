@@ -74,6 +74,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public static int GAME_FONT_LINEHEIGHT = 36;
         // 字体：字号
         public static int GAME_FONT_FONTSIZE = 12;
+        // 音乐：BGS轨道数
+        public static int GAME_MUSIC_BGSTRACKNUM = 5;
         // 开发：控制台输出
         public static bool GAME_DEBUG_CONSOLE = true;
         // 开发：日志输出

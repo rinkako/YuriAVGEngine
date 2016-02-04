@@ -54,25 +54,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 初始化精灵的动画依赖
-        /// </summary>
-        private void InitAnimationRenderTransform()
-        {
-            TransformGroup aniGroup = new TransformGroup();
-            TranslateTransform XYTransformer = new TranslateTransform();
-            ScaleTransform ScaleTransformer = new ScaleTransform();
-            ScaleTransformer.CenterX = this.anchorX;
-            ScaleTransformer.CenterY = this.anchorY;
-            RotateTransform RotateTransformer = new RotateTransform();
-            RotateTransformer.CenterX = this.anchorX;
-            RotateTransformer.CenterY = this.anchorY;
-            aniGroup.Children.Add(XYTransformer);
-            aniGroup.Children.Add(ScaleTransformer);
-            aniGroup.Children.Add(RotateTransformer);
-            this.displayBinding.RenderTransform = aniGroup;
-        }
-
-        /// <summary>
         /// 获取一个相对于左上角的像素点的颜色
         /// </summary>
         /// <param name="pos">像素点坐标</param>
@@ -104,7 +85,26 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             return this.GetPixelColor(pos).A <= threshold;
         }
-        
+
+        /// <summary>
+        /// 初始化精灵的动画依赖
+        /// </summary>
+        private void InitAnimationRenderTransform()
+        {
+            TransformGroup aniGroup = new TransformGroup();
+            TranslateTransform XYTransformer = new TranslateTransform();
+            ScaleTransform ScaleTransformer = new ScaleTransform();
+            ScaleTransformer.CenterX = this.anchorX;
+            ScaleTransformer.CenterY = this.anchorY;
+            RotateTransform RotateTransformer = new RotateTransform();
+            RotateTransformer.CenterX = this.anchorX;
+            RotateTransformer.CenterY = this.anchorY;
+            aniGroup.Children.Add(XYTransformer);
+            aniGroup.Children.Add(ScaleTransformer);
+            aniGroup.Children.Add(RotateTransformer);
+            this.displayBinding.RenderTransform = aniGroup;
+        }
+
         /// <summary>
         /// 获取或设置精灵动画锚点
         /// </summary>
