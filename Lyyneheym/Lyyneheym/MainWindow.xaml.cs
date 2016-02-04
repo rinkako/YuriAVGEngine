@@ -321,40 +321,57 @@ namespace Lyyneheym
             //sc.ScaleY = 1.5;
             transformGroup.Children.Add(sc);
 
-
+            RotateTransform rore = new RotateTransform();
+            rore.CenterX = this.mytestbutton.Width / 2;
+            rore.CenterY = this.mytestbutton.Height / 2;
+            transformGroup.Children.Add(rore);
+            
 
             //transformGroup.Children.Add(new TranslateTransform());
             //transformGroup.Children.Add(new RotateTransform());
 
+            //this.mytestbutton.RenderTransform = transformGroup;
             this.mytestbutton.RenderTransform = transformGroup;
+            //this.ApplyUpDownAnimation(this.mytestbutton.Name);
 
-            this.ApplyUpDownAnimation(this.mytestbutton.Name);
-
-            this.testAni(this.mytestbutton);
+            this.testAni(this.mytestbutton, Canvas.GetTop(this.mytestbutton), Canvas.GetTop(this.mytestbutton) + 50);
         }
 
-        private void testAni(DependencyObject icCurrent)
+        private void testAni(DependencyObject icCurrent, double from, double to)
         {
 
-            Storyboard keyFrameboard = new Storyboard();
+            Storyboard story = new Storyboard();
 
-            DoubleAnimationUsingKeyFrames dakeyframe = new DoubleAnimationUsingKeyFrames();
+            DoubleAnimation da = new DoubleAnimation(from, to, TimeSpan.FromSeconds(1));
+            da.AccelerationRatio = 0.8;
 
-            Storyboard.SetTarget(dakeyframe, icCurrent);
-            Storyboard.SetTargetProperty(dakeyframe, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[0].(TranslateTransform.Y)"));
-            dakeyframe.BeginTime = new TimeSpan(0, 0, 0);
+            DoubleAnimation rora = new DoubleAnimation(1, 1.5, TimeSpan.FromSeconds(1));
+            DoubleAnimation rora2 = new DoubleAnimation(1, 1.5, TimeSpan.FromSeconds(1));
+            DoubleAnimation rore = new DoubleAnimation(1, 180, TimeSpan.FromSeconds(1));
 
-            DoubleKeyFrame edKeyFrame = new LinearDoubleKeyFrame();
-            edKeyFrame.KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(1));
-            edKeyFrame.Value = 30;
-            dakeyframe.KeyFrames.Add(edKeyFrame);
+            Storyboard.SetTarget(da, icCurrent);
+            Storyboard.SetTarget(rora, icCurrent);
+            Storyboard.SetTarget(rora2, icCurrent);
+            Storyboard.SetTarget(rore, icCurrent);
+            Storyboard.SetTargetProperty(da, new PropertyPath(Canvas.TopProperty));
+            Storyboard.SetTargetProperty(rora, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
+            Storyboard.SetTargetProperty(rora2, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
+            Storyboard.SetTargetProperty(rore, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)"));
+            //DependencyProperty[] propertyChain = new DependencyProperty[]
+            //{
+            //    Button.RenderTransformProperty,
+            //    TranslateTransform.XProperty
+            //};
+
+            //Storyboard.SetTargetProperty(da, new PropertyPath("(0).(1)", propertyChain));
 
 
-            keyFrameboard.Children.Add(dakeyframe);
-            keyFrameboard.RepeatBehavior = RepeatBehavior.Forever;
-            keyFrameboard.AutoReverse = true;
-            
-            keyFrameboard.Begin();
+            story.Children.Add(da);
+            story.Children.Add(rora);
+            story.Children.Add(rora2);
+            story.Children.Add(rore);
+
+            story.Begin(this);
         }
 
         private void ApplyUpDownAnimation(string dependence)
