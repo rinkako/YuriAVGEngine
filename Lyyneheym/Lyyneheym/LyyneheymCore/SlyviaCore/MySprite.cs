@@ -12,6 +12,9 @@ using System.Windows.Media.Animation;
 
 namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
+    /// <summary>
+    /// 精灵类：为图形资源提供展示、用户互动和动画效果的类
+    /// </summary>
     public class MySprite
     {
         /// <summary>
@@ -51,6 +54,25 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 初始化精灵的动画依赖
+        /// </summary>
+        private void InitAnimationRenderTransform()
+        {
+            TransformGroup aniGroup = new TransformGroup();
+            TranslateTransform XYTransformer = new TranslateTransform();
+            ScaleTransform ScaleTransformer = new ScaleTransform();
+            ScaleTransformer.CenterX = this.anchorX;
+            ScaleTransformer.CenterY = this.anchorY;
+            RotateTransform RotateTransformer = new RotateTransform();
+            RotateTransformer.CenterX = this.anchorX;
+            RotateTransformer.CenterY = this.anchorY;
+            aniGroup.Children.Add(XYTransformer);
+            aniGroup.Children.Add(ScaleTransformer);
+            aniGroup.Children.Add(RotateTransformer);
+            this.displayBinding.RenderTransform = aniGroup;
+        }
+
+        /// <summary>
         /// 获取一个相对于左上角的像素点的颜色
         /// </summary>
         /// <param name="pos">像素点坐标</param>
@@ -82,6 +104,46 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             return this.GetPixelColor(pos).A <= threshold;
         }
+        
+        /// <summary>
+        /// 获取或设置精灵动画锚点
+        /// </summary>
+        public SpriteAnchorType anchor
+        {
+            get
+            {
+                return this.anchorType;
+            }
+            set
+            {
+                this.anchorType = value;
+                this.InitAnimationRenderTransform();
+            }
+        }
+
+        /// <summary>
+        /// 获取精灵锚点的X坐标
+        /// </summary>
+        public double anchorX
+        {
+            get
+            {
+                return this.anchor == SpriteAnchorType.Center ?
+                    this.displayX + this.displayBinding.Width / 2 : this.displayX;
+            }
+        }
+
+        /// <summary>
+        /// 获取精灵锚点的Y坐标
+        /// </summary>
+        public double anchorY
+        {
+            get
+            {
+                return this.anchor == SpriteAnchorType.Center ?
+                    this.displayY + this.displayBinding.Height / 2 : this.displayY;
+            }
+        }
 
         /// <summary>
         /// 获取或设置纹理切割矩形
@@ -96,7 +158,78 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 获取或设置前端显示控件
         /// </summary>
-        public Image displayBinding { get; set; }
+        public Image displayBinding
+        {
+            get
+            {
+                return this.viewBinding;
+            }
+            set
+            {
+                this.viewBinding = value;
+                this.InitAnimationRenderTransform();
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置前端显示控件的X值
+        /// </summary>
+        public double displayX
+        {
+            get
+            {
+                return Canvas.GetLeft(this.displayBinding);
+            }
+            set
+            {
+                Canvas.SetLeft(this.displayBinding, value);
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置前端显示控件的Y值
+        /// </summary>
+        public double displayY
+        {
+            get
+            {
+                return Canvas.GetTop(this.displayBinding);
+            }
+            set
+            {
+                Canvas.SetTop(this.displayBinding, value);
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置前端显示控件的Z值
+        /// </summary>
+        public int displayZ
+        {
+            get
+            {
+                return Canvas.GetZIndex(this.displayBinding);
+            }
+            set
+            {
+                Canvas.SetZIndex(this.displayBinding, value);
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置前端显示控件的透明度
+        /// </summary>
+        public double displayOpacity
+        {
+            get
+            {
+                return this.displayBinding.Opacity;
+            }
+            set
+            {
+                this.displayBinding.Opacity = value;
+            }
+        }
 
         /// <summary>
         /// 获取或设置前端显示控件的宽度
@@ -160,5 +293,24 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 return this.displayBinding != null;
             }
         }
+
+        /// <summary>
+        /// 精灵动画锚点类型
+        /// </summary>
+        private SpriteAnchorType anchorType = SpriteAnchorType.LeftTop;
+
+        /// <summary>
+        /// 前端控件绑定
+        /// </summary>
+        private Image viewBinding = null;
+    }
+
+    /// <summary>
+    /// 枚举：精灵的动画锚点
+    /// </summary>
+    public enum SpriteAnchorType
+    {
+        LeftTop,
+        Center
     }
 }

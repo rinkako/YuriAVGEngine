@@ -64,6 +64,7 @@
     <Compile Include="LyyneheymCore\SlyviaCore\SceneFunction.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SceneManager.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SpiritContainer.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\SpriteAnimation.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\StackMachine.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\StackMachineFrame.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SymbolTable.cs" />

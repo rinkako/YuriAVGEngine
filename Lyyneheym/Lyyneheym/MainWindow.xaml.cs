@@ -108,29 +108,31 @@ namespace Lyyneheym
             label.Effect = ds;
         }
 
+        MySprite leftChara;
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             //BitmapImage myBitmapImage = new BitmapImage();
             //myBitmapImage.BeginInit();
             //myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA01.png", UriKind.RelativeOrAbsolute);
             //myBitmapImage.EndInit();
-            MySprite mysprite = core.testCharaStand("CA01.png");
-            BitmapImage myBitmapImage = mysprite.myImage;
-            mysprite.displayBinding = this.BO_LeftChara;
+            leftChara = core.testCharaStand("CA01.png");
+            BitmapImage myBitmapImage = leftChara.myImage;
+            leftChara.displayBinding = this.BO_LeftChara;
             this.BO_LeftChara.Width = myBitmapImage.PixelWidth;
             this.BO_LeftChara.Height = myBitmapImage.PixelHeight;
             this.BO_LeftChara.Source = myBitmapImage;
         }
 
+        MySprite rightChara;
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             //BitmapImage myBitmapImage = new BitmapImage();
             //myBitmapImage.BeginInit();
             //myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA02.png", UriKind.RelativeOrAbsolute);
             //myBitmapImage.EndInit();
-            MySprite mysprite = core.testCharaStand("CA02.png");
-            BitmapImage myBitmapImage = mysprite.myImage;
-            mysprite.displayBinding = this.BO_RightChara;
+            rightChara = core.testCharaStand("CA02.png");
+            BitmapImage myBitmapImage = rightChara.myImage;
+            rightChara.displayBinding = this.BO_RightChara;
             this.BO_RightChara.Width = myBitmapImage.PixelWidth;
             this.BO_RightChara.Height = myBitmapImage.PixelHeight;
             this.BO_RightChara.Source = myBitmapImage;
@@ -307,37 +309,49 @@ namespace Lyyneheym
             return c;
         }
 
+        bool aniInit = false;
         private void Button_Click_10(object sender, RoutedEventArgs e)
         {
             //this.mytestbutton.RenderTransform = new TranslateTransform();
+            if (aniInit == false)
+            {
+                TransformGroup transformGroup = new TransformGroup();
+                TranslateTransform tt = new TranslateTransform();
+                //tt.Y = 50;
+                transformGroup.Children.Add(tt);
+
+                ScaleTransform sc = new ScaleTransform();
+                //sc.ScaleX = 1.5;
+                //sc.ScaleY = 1.5;
+                transformGroup.Children.Add(sc);
+
+                RotateTransform rore = new RotateTransform();
+                rore.CenterX = this.mytestbutton.Width / 2;
+                rore.CenterY = this.mytestbutton.Height / 2;
+                transformGroup.Children.Add(rore);
+
+
+                //transformGroup.Children.Add(new TranslateTransform());
+                //transformGroup.Children.Add(new RotateTransform());
+
+                //this.mytestbutton.RenderTransform = transformGroup;
+                this.mytestbutton.RenderTransform = transformGroup;
+                //this.ApplyUpDownAnimation(this.mytestbutton.Name);
+
+                aniInit = true;
+            }
+
+
+            RotateTransform rtt = ((TransformGroup)(this.mytestbutton.RenderTransform)).Children[2] as RotateTransform;
+
+            double ang = rtt.Angle;
             
-            TransformGroup transformGroup = new TransformGroup();
-            TranslateTransform tt = new TranslateTransform();
-            //tt.Y = 50;
-            transformGroup.Children.Add(tt);
 
-            ScaleTransform sc = new ScaleTransform();
-            //sc.ScaleX = 1.5;
-            //sc.ScaleY = 1.5;
-            transformGroup.Children.Add(sc);
-
-            RotateTransform rore = new RotateTransform();
-            rore.CenterX = this.mytestbutton.Width / 2;
-            rore.CenterY = this.mytestbutton.Height / 2;
-            transformGroup.Children.Add(rore);
+            this.testAni(this.mytestbutton, Canvas.GetTop(this.mytestbutton), Canvas.GetTop(this.mytestbutton) + 50, ang, ang + 90);
             
-
-            //transformGroup.Children.Add(new TranslateTransform());
-            //transformGroup.Children.Add(new RotateTransform());
-
-            //this.mytestbutton.RenderTransform = transformGroup;
-            this.mytestbutton.RenderTransform = transformGroup;
-            //this.ApplyUpDownAnimation(this.mytestbutton.Name);
-
-            this.testAni(this.mytestbutton, Canvas.GetTop(this.mytestbutton), Canvas.GetTop(this.mytestbutton) + 50);
         }
 
-        private void testAni(DependencyObject icCurrent, double from, double to)
+        private void testAni(DependencyObject icCurrent, double from, double to, double st, double et)
         {
 
             Storyboard story = new Storyboard();
@@ -345,18 +359,24 @@ namespace Lyyneheym
             DoubleAnimation da = new DoubleAnimation(from, to, TimeSpan.FromSeconds(1));
             da.AccelerationRatio = 0.8;
 
-            DoubleAnimation rora = new DoubleAnimation(1, 1.5, TimeSpan.FromSeconds(1));
-            DoubleAnimation rora2 = new DoubleAnimation(1, 1.5, TimeSpan.FromSeconds(1));
-            DoubleAnimation rore = new DoubleAnimation(1, 180, TimeSpan.FromSeconds(1));
+            DoubleAnimation rora = new DoubleAnimation(1, 1, TimeSpan.FromSeconds(1));
+            DoubleAnimation rora2 = new DoubleAnimation(1, 1, TimeSpan.FromSeconds(1));
+            DoubleAnimation rore = new DoubleAnimation(st, et, TimeSpan.FromSeconds(1));
+            DoubleAnimation ap = new DoubleAnimation(1, 0.5, TimeSpan.FromSeconds(1));
+
 
             Storyboard.SetTarget(da, icCurrent);
             Storyboard.SetTarget(rora, icCurrent);
             Storyboard.SetTarget(rora2, icCurrent);
             Storyboard.SetTarget(rore, icCurrent);
+            Storyboard.SetTarget(ap, icCurrent);
+            
             Storyboard.SetTargetProperty(da, new PropertyPath(Canvas.TopProperty));
             Storyboard.SetTargetProperty(rora, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
             Storyboard.SetTargetProperty(rora2, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
             Storyboard.SetTargetProperty(rore, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)"));
+            Storyboard.SetTargetProperty(ap, new PropertyPath(Image.OpacityProperty));
+
             //DependencyProperty[] propertyChain = new DependencyProperty[]
             //{
             //    Button.RenderTransformProperty,
@@ -370,6 +390,7 @@ namespace Lyyneheym
             story.Children.Add(rora);
             story.Children.Add(rora2);
             story.Children.Add(rore);
+            story.Children.Add(ap);
 
             story.Begin(this);
         }
@@ -402,6 +423,18 @@ namespace Lyyneheym
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
             core.GameUpdater.WMouseUpEventHandler(e);
+        }
+
+        private void Button_Click_11(object sender, RoutedEventArgs e)
+        {
+            SpriteAnimation.XYMoveAnimation(this.rightChara, TimeSpan.FromSeconds(3), this.rightChara.displayX, this.rightChara.displayX - 70, this.rightChara.displayY, this.rightChara.displayY);
+            SpriteAnimation.OpacityAnimation(this.rightChara, TimeSpan.FromSeconds(10), 1, 0.3);
+        }
+
+        private void Button_Click_12(object sender, RoutedEventArgs e)
+        {
+            SpriteAnimation.XYMoveAnimation(this.leftChara, TimeSpan.FromSeconds(0.5), this.leftChara.displayX, this.leftChara.displayX + 30, this.leftChara.displayY, this.leftChara.displayY);
+
         }
     }
 }
