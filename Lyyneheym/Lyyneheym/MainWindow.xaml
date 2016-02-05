@@ -27,6 +27,7 @@
         <Button Content="Button" Canvas.Left="933" Canvas.Top="61" Width="75" Click="Button_Click_11"/>
         <Button Content="Button" Canvas.Left="933" Canvas.Top="88" Width="75" Click="Button_Click_12"/>
         <Button Content="Button" Canvas.Left="674" Canvas.Top="32" Width="75" Click="Button_Click_13"/>
+        <Button Content="Button" Canvas.Left="674" Canvas.Top="59" Width="75" Click="Button_Click_14"/>
 
 
 

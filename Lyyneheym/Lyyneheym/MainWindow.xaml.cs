@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Windows.Media.Animation;
 using System.IO;
 
@@ -28,7 +29,11 @@ namespace Lyyneheym
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Slyvia core = Slyvia.getInstance(); //测试用，要删掉
+        private Slyvia core = Slyvia.getInstance();
+
+        private DispatcherTimer timer = new DispatcherTimer();
+
+
         
         private BitmapImage myBitmapImage;
         public MainWindow()
@@ -37,6 +42,10 @@ namespace Lyyneheym
             this.testFontEffect(this.BO_MainText);
             core.GameUpdater.SetMainWindow(this);
             SolidColorBrush scb = new SolidColorBrush(Colors.Red);
+
+            timer.Interval = TimeSpan.FromMilliseconds(1000);
+            timer.Tick += timer_Tick;
+            
 
             this.BO_MainText.Foreground = scb;
 
@@ -51,6 +60,11 @@ namespace Lyyneheym
             mytestbutton.Margin = new Thickness(0, 0, 0, 0);
             mytestbutton.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             mytestbutton.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+        }
+
+        void timer_Tick(object sender, EventArgs e)
+        {
+            Musician.getInstance().Update();
         }
 
         bool flag = false;
@@ -211,7 +225,7 @@ namespace Lyyneheym
         {
 
             Musician m = Musician.getInstance();
-            m.PlayBGM(@"Sound\bgm\Boss01.wav");
+            m.PlayBGM(@"Boss01.wav", @"Sound\bgm\Boss01.wav");
 
             //if (playflag == false && mp != null)
             //{
@@ -239,7 +253,10 @@ namespace Lyyneheym
 
         private void Button_Click_13(object sender, RoutedEventArgs e)
         {
-            core.testBGM("车椅子の未来宇宙.mp3");
+            //core.testBGM("车椅子の未来宇宙.mp3");
+            core.testBGM("Boss01.wav");
+            
+            timer.Start();
         }
 
 
@@ -283,7 +300,13 @@ namespace Lyyneheym
             //mp.Stop();
             //System.Media.SoundPlayer sp = new System.Media.SoundPlayer(@"Sound\se\se01.wav");
             //sp.Play();
-            core.testVocal("Alice001.mp3");
+            core.testVocal("Alice002.mp3");
+        }
+
+        private void Button_Click_14(object sender, RoutedEventArgs e)
+        {
+
+            //timer.Stop();
         }
 
         private void Image_MouseDown(object sender, MouseButtonEventArgs e)
@@ -453,6 +476,8 @@ namespace Lyyneheym
         {
             core.DisposeResource();
         }
+
+
 
 
     }

@@ -66,7 +66,7 @@ namespace Lyyneheym
         public void testBGM(string sourceName)
         {
             Musician m = Musician.getInstance();
-            m.PlayBGM(this.ResMana.GetBGMMemoryStream(sourceName));
+            m.PlayBGM(sourceName, this.ResMana.GetBGMMemoryStream(sourceName));
 
         }
 

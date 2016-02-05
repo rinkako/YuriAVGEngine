@@ -16,63 +16,239 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     /// <para>音乐管理器类：负责游戏所有声效的维护和处理</para>
     /// <para>她是一个单例类，只有唯一实例</para>
     /// </summary>
-    public class Musician
+    internal class Musician
     {
-        public void PlayBGM(string filename)
+        /// <summary>
+        /// <para>播放背景音乐：从文件读入资源</para>
+        /// <para>背景音乐在同一时刻只能播放一个资源</para>
+        /// </summary>
+        /// <param name="resourceName">资源名</param>
+        /// <param name="filename">文件路径</param>
+        public void PlayBGM(string resourceName, string filename)
         {
-            BassPlayer bassPlayer = BassPlayer.GetInstance();
-            bassPlayer.OpenFile(filename);
-            bassPlayer.Volume = 1000;
-            bassPlayer.Play();
+            // 如果有BGM在播放就截断
+            if (this.isBGMPlaying || this.isBGMPaused)
+            {
+                this.StopAndReleaseBGM();
+            }
+            int handle = this.BassEngine.LoadFromFile(filename);
+            BgmHandleContainer = new KeyValuePair<string, int>(resourceName, handle);
+            this.BassEngine.Play(handle);
+            this.isBGMPlaying = this.isBGMLoaded = true;
+            this.isBGMPaused = false;
+        }
+
+        /// <summary>
+        /// <para>播放背景音乐：从内存读入资源</para>
+        /// <para>背景音乐在同一时刻只能播放一个资源</para>
+        /// </summary>
+        /// <param name="resourceName">资源名</param>
+        /// <param name="memory">资源内存数组</param>
+        public void PlayBGM(string resourceName, byte[] memory)
+        {
+            // 如果有BGM在播放就截断
+            if (this.isBGMPlaying || this.isBGMPaused)
+            {
+                this.StopAndReleaseBGM();
+            }
+            int handle = this.BassEngine.LoadFromMemory(memory);
+            this.BassEngine.SetVolume(handle, 1000);
+            BgmHandleContainer = new KeyValuePair<string, int>(resourceName, handle);
+            this.BassEngine.Play(handle);
+            this.isBGMPlaying = this.isBGMLoaded = true;
+            this.isBGMPaused = false;
             
         }
 
-        public void PlayBGM(byte[] memory)
+        /// <summary>
+        /// 暂停背景音乐
+        /// </summary>
+        public void PauseBGM()
         {
-            BassPlayer bassPlayer = BassPlayer.GetInstance();
-            bassPlayer.OpenMemory(memory);
-            bassPlayer.Volume = 1000;
-            bassPlayer.Play();
+            if (this.isBGMLoaded)
+            {
+                this.BassEngine.Pause(this.BgmHandleContainer.Value);
+                this.isBGMPlaying = false;
+                this.isBGMPaused = true;
+            }
         }
 
+        /// <summary>
+        /// 继续播放背景音乐
+        /// </summary>
+        public void ResumeBGM()
+        {
+            if (this.isBGMLoaded)
+            {
+                this.BassEngine.Play(this.BgmHandleContainer.Value);
+                this.isBGMPlaying = true;
+                this.isBGMPaused = false;
+            }
+        }
+
+        /// <summary>
+        /// 停止BGM并释放资源
+        /// </summary>
+        public void StopAndReleaseBGM()
+        {
+            if (this.isBGMLoaded)
+            {
+                this.BassEngine.Stop(this.BgmHandleContainer.Value);
+                this.isBGMLoaded = this.isBGMPlaying = false;
+            }
+        }
+
+        /// <summary>
+        /// BGM句柄容器
+        /// </summary>
+        private KeyValuePair<string, int> BgmHandleContainer;
+
+        /// <summary>
+        /// 获取BGM是否正在播放
+        /// </summary>
+        public bool isBGMPlaying = false;
+        
+        /// <summary>
+        /// 获取BGM是否已经加载
+        /// </summary>
+        public bool isBGMLoaded = false;
+
+        /// <summary>
+        /// 获取BGM是否已经暂停
+        /// </summary>
+        public bool isBGMPaused = false;
+        
+        /// <summary>
+        /// 音频引擎实例
+        /// </summary>
+        private BassPlayer BassEngine;
+
+        /// <summary>
+        /// <para>播放背景音效：从文件读入资源</para>
+        /// <para>背景声效可以多个声音资源同时播放，并且可以与BGM同存</para>
+        /// </summary>
+        /// <param name="filename">文件路径</param>
+        /// <param name="track">播放的轨道</param>
         public void PlayBGS(string filename, int track = 0)
         {
-
+            if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM)
+            {
+                this.BgsHandleContainer[track] = this.BassEngine.LoadFromFile(filename);
+                this.BassEngine.Play(this.BgsHandleContainer[track]);
+            }
         }
 
+        /// <summary>
+        /// <para>播放背景音效：从内存读入资源</para>
+        /// <para>背景声效可以多个声音资源同时播放，并且可以与BGM同存</para>
+        /// </summary>
+        /// <param name="memory">资源内存数组</param>
+        /// <param name="track">播放的轨道</param>
+        public void PlayBGS(byte[] memory, int track = 0)
+        {
+            if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM)
+            {
+                this.BgsHandleContainer[track] = this.BassEngine.LoadFromMemory(memory);
+                this.BassEngine.Play(this.BgsHandleContainer[track]);
+            }
+        }
+
+        /// <summary>
+        /// 停止BGS并释放资源
+        /// </summary>
+        /// <param name="track">要停止的BGS轨道，缺省值-1表示全部停止</param>
+        public void StopBGS(int track = -1)
+        {
+            if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM && this.BgsHandleContainer[track] != 0)
+            {
+                this.BassEngine.Stop(this.BgsHandleContainer[track]);
+            }
+            else
+            {
+                this.BgsHandleContainer.ForEach((x) => { if (x != 0) this.BassEngine.Stop(x); });
+            }
+        }
+
+        /// <summary>
+        /// 背景声效容器
+        /// </summary>
+        private List<int> BgsHandleContainer;
+
+        /// <summary>
+        /// <para>播放声效：从文件读入资源</para>
+        /// <para>声效可以多个声音资源同时播放</para>
+        /// </summary>
+        /// <param name="filename">文件路径</param>
         public void PlaySE(string filename)
         {
-
+            int handle = this.BassEngine.LoadFromFile(filename);
+            this.BassEngine.Play(handle);
         }
 
-        public void PlayME(string filename)
+        /// <summary>
+        /// <para>播放声效：从内存读入资源</para>
+        /// <para>声效可以多个声音资源同时播放</para>
+        /// </summary>
+        /// <param name="memory">资源内存数组</param>
+        public void PlaySE(byte[] memory)
         {
-
+            int handle = this.BassEngine.LoadFromMemory(memory);
+            this.BassEngine.Play(handle);
         }
 
+        /// <summary>
+        /// <para>播放语音：从文件读入资源</para>
+        /// <para>语音在同一时刻只能播放一个资源，但可以与BGM和BGS共存</para>
+        /// </summary>
+        /// <param name="filename">文件路径</param>
         public void PlayVocal(string filename)
         {
-            
+            this.StopAndReleaseVocal();
+            this.vocalHandle = this.BassEngine.LoadFromFile(filename);
+            this.BassEngine.Play(this.vocalHandle);
         }
 
+        /// <summary>
+        /// <para>播放语音：从内存读入资源</para>
+        /// <para>语音在同一时刻只能播放一个资源，但可以与BGM和BGS共存</para>
+        /// </summary>
+        /// <param name="memory">资源内存数组</param>
         public void PlayVocal(byte[] memory)
         {
-            BassPlayer bassPlayer = BassPlayer.GetInstance();
-            int handle = bassPlayer.OpenMemoryHandle(memory);
-            bassPlayer.Play(handle);
+            this.StopAndReleaseVocal();
+            this.vocalHandle = this.BassEngine.LoadFromMemory(memory);
+            this.BassEngine.Play(this.vocalHandle);
         }
 
+        /// <summary>
+        /// 停止语音并释放资源
+        /// </summary>
+        public void StopAndReleaseVocal()
+        {
+            if (this.vocalHandle != 0)
+            {
+                this.BassEngine.Stop(this.vocalHandle);
+            }
+        }
 
+        /// <summary>
+        /// 当前语音句柄
+        /// </summary>
+        private int vocalHandle = 0;
 
-        private Queue<string> BGMQueue = null;
-
-        private MediaPlayer PlayerBGM = null;
-
-        private MediaPlayer PlayerME = null;
-
-        private MediaPlayer PlayerVocal = null;
-
-        private List<MediaPlayer> PlayerBGS = null;
+        /// <summary>
+        /// 更新函数：消息循环定期调用的更新方法
+        /// </summary>
+        public void Update()
+        {
+            if (this.BgmHandleContainer.Value != 0)
+            {
+                if (this.BassEngine.IsPlaying(this.BgmHandleContainer.Value) == false)
+                {
+                    this.BassEngine.Play(this.BgmHandleContainer.Value);
+                }
+            }
+        }
 
         /// <summary>
         /// 工厂方法：获得音乐管理器类的唯一实例
@@ -93,7 +269,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         private Musician()
         {
-            
+            this.BassEngine = BassPlayer.GetInstance();
+            this.BgmHandleContainer = new KeyValuePair<string, int>(null, 0);
+            this.BgsHandleContainer = new List<int>();
+            for (int i = 0; i < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM; i++)
+            {
+                this.BgsHandleContainer.Add(0);
+            }
         }
     }
 
@@ -141,16 +323,17 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         private BassPlayer(AudioDeviceInfo? deviceInfo = null)
         {
             this.Initialize(deviceInfo);
-            this.endTrackSyncProc = new SYNCPROC(this.EndTrack);
+            this.endSyncProc = new SYNCPROC(this.EndCallback);
+            this.playingStatusDict = new Dictionary<int, bool>();
         }
 
         /// <summary>
         /// 音频设备
         /// </summary>
-        public AudioDeviceInfo? Device
+        private AudioDeviceInfo? Device
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>
@@ -278,7 +461,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             try
             {
-                this.IsPlaying = false;
                 IntPtr win = IntPtr.Zero;
                 int i = BassPlayer.FindDevice(device, true);
                 if (!Bass.BASS_Init(i, this.sampleFrequency, BASSInit.BASS_DEVICE_DEFAULT, win))
@@ -344,474 +526,161 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
         #endregion
 
-        #region 播放动作
         /// <summary>
-        /// 打开文件
+        /// 将文件加载为可播放的句柄
         /// </summary>
-        /// <param name="filename">文件名</param>
-        public void OpenFile(string filename)
+        /// <param name="filename">文件路径</param>
+        /// <returns>句柄</returns>
+        public int LoadFromFile(string filename)
         {
-            this.openningFile = filename;
-            this.Stop();
-            this.pendingOperation = BassPlayer.BassAudioCurrentState.None;
-            int num = Bass.BASS_StreamCreateFile(filename, 0L, 0L, BASSFlag.BASS_DEFAULT);
-            this.tagInfo = BassTags.BASS_TAG_GetFromFile(filename);
-            if (num != 0)
-            {
-                this.ActiveStreamHandle = num;
-                this.ChannelLength = TimeSpan.FromSeconds(Bass.BASS_ChannelBytes2Seconds(this.ActiveStreamHandle, Bass.BASS_ChannelGetLength(this.ActiveStreamHandle, BASSMode.BASS_POS_BYTES)));
-                BASS_CHANNELINFO bASS_CHANNELINFO = new BASS_CHANNELINFO();
-                Bass.BASS_ChannelGetInfo(this.ActiveStreamHandle, bASS_CHANNELINFO);
-                this.sampleFrequency = bASS_CHANNELINFO.freq;
-                int num2 = Bass.BASS_ChannelSetSync(this.ActiveStreamHandle, BASSSync.BASS_SYNC_END, 0L, this.endTrackSyncProc, IntPtr.Zero);
-                if (num2 == 0)
-                {
-                    throw new ArgumentException("Error establishing End Sync on file stream.", "path");
-                }
-                this.CanPlay = true;
-            }
-            else
+            int fileHandle = Bass.BASS_StreamCreateFile(filename, 0L, 0L, BASSFlag.BASS_DEFAULT);
+            int callbackHandle = Bass.BASS_ChannelSetSync(fileHandle, BASSSync.BASS_SYNC_END, 0L, this.endSyncProc, IntPtr.Zero);
+            if (fileHandle == 0)
             {
                 throw new Exception("cannot open audio file");
             }
+            return fileHandle;
         }
 
         /// <summary>
-        /// 打开内存流
+        /// 将一块内存区域加载为可播放的句柄
         /// </summary>
-        public unsafe void OpenMemory(byte[] memoryBuffer)
+        /// <param name="memoryBuffer">内存数组</param>
+        /// <returns>句柄</returns>
+        public unsafe int LoadFromMemory(byte[] memoryBuffer)
         {
             IntPtr pArray;
             fixed (byte* pointer = memoryBuffer)
             {
                 pArray = new IntPtr(pointer);
-
-                this.openningFile = "MEMORYBUFFER";
-                this.Stop();
-                this.pendingOperation = BassPlayer.BassAudioCurrentState.None;
-                int num = Bass.BASS_StreamCreateFile(pArray, 0L, memoryBuffer.Length, BASSFlag.BASS_DEFAULT);
-                this.tagInfo = null;
-                if (num != 0)
-                {
-                    this.ActiveStreamHandle = num;
-                    this.ChannelLength = TimeSpan.FromSeconds(Bass.BASS_ChannelBytes2Seconds(this.ActiveStreamHandle, Bass.BASS_ChannelGetLength(this.ActiveStreamHandle, BASSMode.BASS_POS_BYTES)));
-                    BASS_CHANNELINFO bASS_CHANNELINFO = new BASS_CHANNELINFO();
-                    Bass.BASS_ChannelGetInfo(this.ActiveStreamHandle, bASS_CHANNELINFO);
-                    this.sampleFrequency = bASS_CHANNELINFO.freq;
-                    int num2 = Bass.BASS_ChannelSetSync(this.ActiveStreamHandle, BASSSync.BASS_SYNC_END, 0L, this.endTrackSyncProc, IntPtr.Zero);
-                    if (num2 == 0)
-                    {
-                        throw new ArgumentException("Error establishing End Sync on file stream.", "path");
-                    }
-                    this.CanPlay = true;
-                }
-                else
+                int bufferHandle = Bass.BASS_StreamCreateFile(pArray, 0L, memoryBuffer.Length, BASSFlag.BASS_DEFAULT);
+                int callbackHandle = Bass.BASS_ChannelSetSync(bufferHandle, BASSSync.BASS_SYNC_END, 0L, this.endSyncProc, IntPtr.Zero);
+                if (bufferHandle == 0)
                 {
                     throw new Exception("cannot open audio file");
                 }
+                return bufferHandle;
             }
         }
 
         /// <summary>
-        /// 打开内存流
+        /// 播放一个句柄
         /// </summary>
-        public unsafe int OpenMemoryHandle(byte[] memoryBuffer)
-        {
-            IntPtr pArray;
-            fixed (byte* pointer = memoryBuffer)
-            {
-                pArray = new IntPtr(pointer);
-                int num = Bass.BASS_StreamCreateFile(pArray, 0L, memoryBuffer.Length, BASSFlag.BASS_DEFAULT);
-                if (num == 0)
-                {
-                    throw new Exception("cannot open audio file");
-                }
-                return num;
-            }
-        }
-
-        /// <summary>
-        /// 播放当前音频
-        /// </summary>
-        public void Play()
-        {
-            if (this.CanPlay)
-            {
-                this.PlayCurrentStream();
-                this.IsPlaying = true;
-                this.CanPause = true;
-                this.CanPlay = false;
-                this.CanStop = true;
-                this.pendingOperation = BassPlayer.BassAudioCurrentState.None;
-            }
-            else
-            {
-                this.pendingOperation = BassPlayer.BassAudioCurrentState.Play;
-            }
-        }
-
+        /// <param name="handle">句柄</param>
         public void Play(int handle)
         {
             if (handle != 0)
             {
-                Bass.BASS_ChannelPlay(handle, true);
+                Bass.BASS_ChannelPlay(handle, false);
+                if (this.playingStatusDict.ContainsKey(handle))
+                {
+                    this.playingStatusDict.Remove(handle);
+                }
+                this.playingStatusDict.Add(handle, true);
             }
         }
 
+        /// <summary>
+        /// 停止一个句柄并释放资源
+        /// </summary>
+        /// <param name="handle">句柄</param>
         public void Stop(int handle)
         {
             if (handle != 0)
             {
                 Bass.BASS_ChannelStop(handle);
-            }
-        }
-
-        /// <summary>
-        /// 播放当前流
-        /// </summary>
-        private void PlayCurrentStream()
-        {
-            if (this.ActiveStreamHandle != 0 && Bass.BASS_ChannelPlay(this.ActiveStreamHandle, true))
-            {
-                BASS_CHANNELINFO info = new BASS_CHANNELINFO();
-                Bass.BASS_ChannelGetInfo(this.ActiveStreamHandle, info);
-            }
-            else
-            {
-                Console.WriteLine("BASS_StreamPlay失败：" + Bass.BASS_ErrorGetCode());
-            }
-        }
-
-        /// <summary>
-        /// 播放指定的流
-        /// </summary>
-        private void PlayHandleStream(int handle)
-        {
-            if (this.ActiveStreamHandle != 0 && Bass.BASS_ChannelPlay(handle, true))
-            {
-                BASS_CHANNELINFO info = new BASS_CHANNELINFO();
-                Bass.BASS_ChannelGetInfo(handle, info);
-            }
-            else
-            {
-                Console.WriteLine("BASS_StreamPlay失败：" + Bass.BASS_ErrorGetCode());
-            }
-        }
-
-
-        /// <summary>
-        /// 停止当前音频，并释放资源
-        /// </summary>
-        public void Stop()
-        {
-            if (this.canStop)
-            {
-                this.ChannelPosition = TimeSpan.Zero;
-                if (this.ActiveStreamHandle != 0)
+                Bass.BASS_StreamFree(handle);
+                if (this.playingStatusDict.ContainsKey(handle))
                 {
-                    Bass.BASS_ChannelStop(this.ActiveStreamHandle);
-                    Bass.BASS_ChannelSetPosition(this.ActiveStreamHandle, this.ChannelPosition.TotalSeconds);
+                    this.playingStatusDict[handle] = false;
                 }
-                this.IsPlaying = false;
-                this.CanStop = false;
-                this.CanPlay = false;
-                this.CanPause = false;
             }
-            this.FreeCurrentStream();
-            this.pendingOperation = BassPlayer.BassAudioCurrentState.None;
         }
 
         /// <summary>
-        /// 暂停当前音频
+        /// 暂停一个句柄
         /// </summary>
-        public void Pause()
+        /// <param name="handle">句柄</param>
+        public void Pause(int handle)
         {
-            if (this.IsPlaying && this.CanPause)
+            if (handle != 0)
             {
-                Bass.BASS_ChannelPause(this.ActiveStreamHandle);
-                this.IsPlaying = false;
-                this.CanPlay = true;
-                this.CanPause = false;
-                this.pendingOperation = BassPlayer.BassAudioCurrentState.None;
+                Bass.BASS_ChannelPause(handle);
+                this.playingStatusDict[handle] = false;
             }
-            else
+        }
+
+        /// <summary>
+        /// 获得一个句柄是否正在播放
+        /// </summary>
+        /// <param name="handle">句柄</param>
+        /// <returns>是否正在播放中</returns>
+        public bool IsPlaying(int handle)
+        {
+            if (this.playingStatusDict.ContainsKey(handle))
             {
-                this.pendingOperation = BassPlayer.BassAudioCurrentState.Pause;
+                return this.playingStatusDict[handle];
             }
+            return false;
         }
 
         /// <summary>
-        /// 设置声道
+        /// 为一个句柄设置音量
         /// </summary>
-        /// <param name="value">声道值</param>
-        public void ChannelStereo(int value = 16)
+        /// <param name="handle">句柄</param>
+        /// <param name="volume">音量值（1-1000）</param>
+        public void SetVolume(int handle, float volume = 1000)
         {
-            Bass.BASS_ChannelGetLevel(value);
-        }
-        
-        /// <summary>
-        /// 释放当前流
-        /// </summary>
-        private void FreeCurrentStream()
-        {
-            if (this.ActiveStreamHandle != 0)
+            if (handle != 0)
             {
-                if (!Bass.BASS_StreamFree(this.ActiveStreamHandle))
-                {
-                    Console.WriteLine("BASS_StreamFree失败：" + Bass.BASS_ErrorGetCode());
-                }
-                this.ActiveStreamHandle = 0;
+                float value = this.IsMuted ? 0f : (float)(volume / 1000.0 * this.volumeScale);
+                Bass.BASS_ChannelSetAttribute(handle, BASSAttribute.BASS_ATTRIB_VOL, value);
             }
         }
 
         /// <summary>
-        /// 设置音量
+        /// 回调函数：句柄播放完的回调
         /// </summary>
-        private void SetVolume()
+        private void EndCallback(int handle, int channel, int data, IntPtr user)
         {
-            if (this.ActiveStreamHandle != 0)
-            {
-                float value = this.IsMuted ? 0f : ((float)this.Volume);
-                Bass.BASS_ChannelSetAttribute(this.ActiveStreamHandle, BASSAttribute.BASS_ATTRIB_VOL, value);
-            }
+            this.Stop(channel);
         }
 
         /// <summary>
-        /// 播放完毕回调
+        /// 音量比例（0-1）
         /// </summary>
-        private void EndTrack(int handle, int channel, int data, IntPtr user)
-        {
-            this.Stop();
-        }
-        #endregion
+        private float volumeScale = 1.0f;
 
-        #region 状态控制
-        /// <summary>
-        /// 当前流的句柄
-        /// </summary>
-        private int activeStreamHandle;
-        /// <summary>
-        /// 可以使用播放命令
-        /// </summary>
-        private bool canPlay;
-        /// <summary>
-        /// 可以使用暂停命令
-        /// </summary>
-        private bool canPause;
-        /// <summary>
-        /// 是否正在播放
-        /// </summary>
-        private bool isPlaying;
-        /// <summary>
-        /// 可以使用停止命令
-        /// </summary>
-        private bool canStop;
-        /// <summary>
-        /// 音频长度
-        /// </summary>
-        private TimeSpan channelLength = TimeSpan.Zero;
-        /// <summary>
-        /// 当前播放进度
-        /// </summary>
-        private TimeSpan currentChannelPosition = TimeSpan.Zero;
-        /// <summary>
-        /// 待执行的命令
-        /// </summary>
-        private BassPlayer.BassAudioCurrentState pendingOperation = BassPlayer.BassAudioCurrentState.None;
-        /// <summary>
-        /// 音量
-        /// </summary>
-        private double volume;
         /// <summary>
         /// 是否静音
         /// </summary>
         private bool isMuted;
+
         /// <summary>
-        /// 文件信息
+        /// 当播放SE结束时调用
         /// </summary>
-        private TAG_INFO tagInfo;
-        /// <summary>
-        /// 正在打开的文件的地址
-        /// </summary>
-        private string openningFile = null;
-        /// <summary>
-        /// 当播放结束时调用
-        /// </summary>
-        private readonly SYNCPROC endTrackSyncProc;
+        private readonly SYNCPROC endSyncProc;
+
         /// <summary>
         /// 播放码率
         /// </summary>
         private int sampleFrequency = 44100;
+
         /// <summary>
-        /// 获取或设置正在打开的文件
+        /// 设置或获取全局音量比例
         /// </summary>
-        public string OpenningFile
-        {
-            get { return openningFile; }
-            set { openningFile = value; }
-        }
-        /// <summary>
-        /// 获取或设置歌曲Tag标签
-        /// </summary>
-        public TAG_INFO TagInfo
-        {
-            get { return tagInfo; }
-            set { tagInfo = value; }
-        }
-        /// <summary>
-        /// 长度
-        /// </summary>
-        public TimeSpan ChannelLength
+        public float VolumeScale
         {
             get
             {
-                return this.channelLength;
-            }
-            protected set
-            {
-                TimeSpan t = this.channelLength;
-                this.channelLength = value;
-            }
-        }
-        /// <summary>
-        /// 是否正在设置音轨
-        /// </summary>
-        private bool inChannelSet;
-        /// <summary>
-        /// 是否正在更新时计
-        /// </summary>
-        private bool inChannelTimerUpdate;
-        /// <summary>
-        /// 播放器指针位置
-        /// </summary>
-        public TimeSpan ChannelPosition
-        {
-            get
-            {
-                positionTimer_Tick();
-                return this.currentChannelPosition;
+                return this.volumeScale;
             }
             set
             {
-                if (!this.inChannelSet)
-                {
-                    this.inChannelSet = true;
-                    TimeSpan t = this.currentChannelPosition;
-                    TimeSpan t2 = value;
-                    if (t2 > this.ChannelLength)
-                    {
-                        t2 = this.ChannelLength;
-                    }
-                    if (t2 < TimeSpan.Zero)
-                    {
-                        t2 = TimeSpan.Zero;
-                    }
-                    if (!this.inChannelTimerUpdate)
-                    {
-                        Bass.BASS_ChannelSetPosition(this.ActiveStreamHandle, Bass.BASS_ChannelSeconds2Bytes(this.ActiveStreamHandle, t2.TotalSeconds));
-                    }
-                    this.currentChannelPosition = t2;
-                    this.inChannelSet = false;
-                }
+                this.volumeScale = value;
             }
         }
-        /// <summary>
-        /// 当前流的句柄
-        /// </summary>
-        public int ActiveStreamHandle
-        {
-            get
-            {
-                return this.activeStreamHandle;
-            }
-            protected set
-            {
-                int num = this.activeStreamHandle;
-                this.activeStreamHandle = value;
-                if (num != this.activeStreamHandle)
-                {
-                    if (this.activeStreamHandle != 0)
-                    {
-                        this.SetVolume();
-                    }
-                }
-            }
-        }
-        /// <summary>
-        /// 可以使用播放命令
-        /// </summary>
-        public bool CanPlay
-        {
-            get
-            {
-                return this.canPlay;
-            }
-            protected set
-            {
-                bool flag = this.canPlay;
-                this.canPlay = value;
-            }
-        }
-        /// <summary>
-        /// 可以使用暂停命令
-        /// </summary>
-        public bool CanPause
-        {
-            get
-            {
-                return this.canPause;
-            }
-            protected set
-            {
-                bool flag = this.canPause;
-                this.canPause = value;
-            }
-        }
-        /// <summary>
-        /// 可以使用停止命令
-        /// </summary>
-        public bool CanStop
-        {
-            get
-            {
-                return this.canStop;
-            }
-            protected set
-            {
-                bool flag = this.canStop;
-                this.canStop = value;
-            }
-        }
-        /// <summary>
-        /// 是否正在播放
-        /// </summary>
-        public bool IsPlaying
-        {
-            get
-            {
-                return this.isPlaying;
-            }
-            protected set
-            {
-                bool flag = this.isPlaying;
-                this.isPlaying = value;
-            }
-        }
-        /// <summary>
-        /// 设置或获取音量值
-        /// </summary>
-        public double Volume
-        {
-            get
-            {
-                return this.volume;
-            }
-            set
-            {
-                this.volume = value / 1000;
-                this.SetVolume();
-            }
-        }
+
         /// <summary>
         /// 是否静音
         /// </summary>
@@ -826,46 +695,25 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 if (this.isMuted != value)
                 {
                     this.isMuted = value;
-                    this.SetVolume();
                 }
             }
         }
+
         /// <summary>
-        /// 更新播放进度
+        /// 句柄播放状态字典
         /// </summary>
-        private void positionTimer_Tick()
-        {
-            if (this.ActiveStreamHandle == 0)
-            {
-                this.ChannelPosition = TimeSpan.Zero;
-            }
-            else
-            {
-                this.inChannelTimerUpdate = true;
-                this.ChannelPosition = TimeSpan.FromSeconds(Bass.BASS_ChannelBytes2Seconds(this.ActiveStreamHandle, Bass.BASS_ChannelGetPosition(this.ActiveStreamHandle, BASSMode.BASS_POS_BYTES)));
-                this.inChannelTimerUpdate = false;
-            }
-        }
-        /// <summary>
-        /// 当前的播放状态
-        /// </summary>
-        private enum BassAudioCurrentState
-        {
-            None,
-            Play,
-            Pause
-        }
+        private Dictionary<int, bool> playingStatusDict;
+
         /// <summary>
         /// 音频设备信息类
         /// </summary>
         [Serializable]
-        public struct AudioDeviceInfo
+        private struct AudioDeviceInfo
         {
             public string Driver { get; set; }
             public string ID { get; set; }
             public string Name { get; set; }
         }
-        #endregion
     }
 
 
