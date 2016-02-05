@@ -122,9 +122,67 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             return sprite;
         }
 
+        /// <summary>
+        /// 获得一个指定BGM音频资源的内存数组
+        /// </summary>
+        /// <param name="sourceName">资源名称</param>
+        /// <returns>该音频的内存数组</returns>
+        public byte[] GetBGMMemoryStream(string sourceName)
+        {
+            // 总是先查看是否有为封包的数据
+            if (this.resourceTable.ContainsKey(GlobalDataContainer.DevURI_SO_BGM) &&
+                this.resourceTable[GlobalDataContainer.DevURI_SO_BGM].ContainsKey(sourceName))
+            {
+                KeyValuePair<long, long> sourceLocation = this.resourceTable[GlobalDataContainer.DevURI_SO_BGM][sourceName];
+                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL(GlobalDataContainer.PackURI_SO_BGM + GlobalDataContainer.PackPostfix),
+                    sourceName, sourceLocation.Key, sourceLocation.Value);
+                return ob;
+            }
+            // 没有封包数据再搜索开发目录
+            else
+            {
+                string furi = IOUtils.JoinPath(GlobalDataContainer.DevURI_RT_SOUND, GlobalDataContainer.DevURI_SO_BGM, sourceName);
+                if (File.Exists(IOUtils.ParseURItoURL(furi)))
+                {
+                    return File.ReadAllBytes(IOUtils.ParseURItoURL(furi));
+                }
+                else
+                {
+                    throw new Exception("文件不存在：" + sourceName);
+                }
+            }
+        }
 
-
-
+        /// <summary>
+        /// 获得一个指定Vocal音频资源的内存数组
+        /// </summary>
+        /// <param name="sourceName">资源名称</param>
+        /// <returns>该音频的内存数组</returns>
+        public byte[] GetVocalMemoryStream(string sourceName)
+        {
+            // 总是先查看是否有为封包的数据
+            if (this.resourceTable.ContainsKey(GlobalDataContainer.DevURI_SO_VOCAL) &&
+                this.resourceTable[GlobalDataContainer.DevURI_SO_VOCAL].ContainsKey(sourceName))
+            {
+                KeyValuePair<long, long> sourceLocation = this.resourceTable[GlobalDataContainer.DevURI_SO_VOCAL][sourceName];
+                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL(GlobalDataContainer.PackURI_SO_VOCAL + GlobalDataContainer.PackPostfix),
+                    sourceName, sourceLocation.Key, sourceLocation.Value);
+                return ob;
+            }
+            // 没有封包数据再搜索开发目录
+            else
+            {
+                string furi = IOUtils.JoinPath(GlobalDataContainer.DevURI_RT_SOUND, GlobalDataContainer.DevURI_SO_VOCAL, sourceName);
+                if (File.Exists(IOUtils.ParseURItoURL(furi)))
+                {
+                    return File.ReadAllBytes(IOUtils.ParseURItoURL(furi));
+                }
+                else
+                {
+                    throw new Exception("文件不存在：" + sourceName);
+                }
+            }
+        }
 
 
 

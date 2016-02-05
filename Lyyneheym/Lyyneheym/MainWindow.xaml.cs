@@ -209,28 +209,37 @@ namespace Lyyneheym
         bool playflag = false;
         private void Button_Click_8(object sender, RoutedEventArgs e)
         {
-            if (playflag == false && mp != null)
-            {
-                mp.Pause();
-                playflag = true;
-            }
-            else
-            {
-                if (mp == null)
-                {
-                    mp = new MediaPlayer();
-                    mp.Open(new Uri(@"Sound\bgm\Boss01.wav", UriKind.RelativeOrAbsolute));
-                    mp.Play();
-                    mp.Volume = 100;
+
+            Musician m = Musician.getInstance();
+            m.PlayBGM(@"Sound\bgm\Boss01.wav");
+
+            //if (playflag == false && mp != null)
+            //{
+            //    mp.Pause();
+            //    playflag = true;
+            //}
+            //else
+            //{
+            //    if (mp == null)
+            //    {
+            //        mp = new MediaPlayer();
+            //        mp.Open(new Uri(@"Sound\bgm\Boss01.wav", UriKind.RelativeOrAbsolute));
+            //        mp.Play();
+            //        mp.Volume = 100;
                     
-                }
-                else
-                {
-                    mp.Play();
-                    playflag = false;
-                }
-            }
+            //    }
+            //    else
+            //    {
+            //        mp.Play();
+            //        playflag = false;
+            //    }
+            //}
             
+        }
+
+        private void Button_Click_13(object sender, RoutedEventArgs e)
+        {
+            core.testBGM("车椅子の未来宇宙.mp3");
         }
 
 
@@ -272,8 +281,9 @@ namespace Lyyneheym
         private void Button_Click_9(object sender, RoutedEventArgs e)
         {
             //mp.Stop();
-            System.Media.SoundPlayer sp = new System.Media.SoundPlayer(@"Sound\se\se01.wav");
-            sp.Play();
+            //System.Media.SoundPlayer sp = new System.Media.SoundPlayer(@"Sound\se\se01.wav");
+            //sp.Play();
+            core.testVocal("Alice001.mp3");
         }
 
         private void Image_MouseDown(object sender, MouseButtonEventArgs e)
@@ -438,5 +448,12 @@ namespace Lyyneheym
         {
             SpriteAnimation.XYMoveAnimation(this.leftChara, TimeSpan.FromSeconds(0.5), 30, 0);
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            core.DisposeResource();
+        }
+
+
     }
 }

@@ -152,6 +152,8 @@ namespace Lyyneheym.LyyneheymCore.Utils
             {
                 buffer[i] = pakBr.ReadByte();
             }
+            pakBr.Close();
+            pakFs.Close();
             return buffer;
         }
 
