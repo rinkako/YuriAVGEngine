@@ -581,7 +581,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 停止一个句柄并释放资源
+        /// 停止一个句柄
         /// </summary>
         /// <param name="handle">句柄</param>
         public void Stop(int handle)
@@ -589,7 +589,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             if (handle != 0)
             {
                 Bass.BASS_ChannelStop(handle);
-                Bass.BASS_StreamFree(handle);
+                Bass.BASS_ChannelSetPosition(handle, 0);
+                //Bass.BASS_StreamFree(handle);
                 if (this.playingStatusDict.ContainsKey(handle))
                 {
                     this.playingStatusDict[handle] = false;
