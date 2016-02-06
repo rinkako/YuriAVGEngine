@@ -18,8 +18,10 @@ namespace Lyyneheym.LyynePacker
         /// </summary>
         /// <param name="fileList">一个装有待打包数据路径的向量</param>
         /// <param name="saveFile">打包文件的保存路径</param>
+        /// <param name="pak">指示封装的内容在运行时环境的字典键</param>
+        /// <param name="sign">包的签名</param>
         /// <returns>操作成功与否</returns>
-        public static bool pack(List<string> fileList, string saveFile)
+        public static bool pack(List<string> fileList, string saveFile, string pak, string sign)
         {
             try
             {
@@ -33,7 +35,7 @@ namespace Lyyneheym.LyynePacker
                 BinaryWriter pakBw = new BinaryWriter(pakFs);
                 // 获取文件长度
                 int fileEncounter = fileList.Count;
-                synWriter.WriteLine(String.Format("___SlyviaLyyneheym@{0}", fileEncounter));
+                synWriter.WriteLine(String.Format("___SlyviaLyyneheym@{0}@{1}@{2}", fileEncounter, pak, sign));
                 // 打包文件
                 FileStream fs;
                 BinaryReader fbr;
@@ -192,8 +194,5 @@ namespace Lyyneheym.LyynePacker
                 throw e;
             }
         }
-
-
-
     }
 }

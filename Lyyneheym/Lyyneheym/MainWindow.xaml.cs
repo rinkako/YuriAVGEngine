@@ -237,7 +237,7 @@ namespace Lyyneheym
         {
 
             Musician m = Musician.getInstance();
-            m.PlayBGM(@"Boss01.wav", @"Sound\bgm\Boss01.wav");
+            m.PlayBGM(@"Boss01.wav", @"Sound\bgm\Boss01.wav", 1000);
             //timer.Start();
             
         }
@@ -466,6 +466,22 @@ namespace Lyyneheym
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             core.DisposeResource();
+        }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (Musician.getInstance().isBGMPlaying)
+            {
+                Musician.getInstance().SetBGMVolume((float)e.NewValue);
+            }
+        }
+
+        private void Slider_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (Musician.getInstance().isBGMPlaying)
+            {
+                Musician.getInstance().SetBGMStereo((float)e.NewValue);
+            }
         }
 
 

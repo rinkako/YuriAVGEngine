@@ -67,7 +67,7 @@ namespace Lyyneheym
         {
             Musician m = Musician.getInstance();
             var r = this.ResMana.GetBGM(sourceName);
-            m.PlayBGM(sourceName, r.Key, r.Value);
+            m.PlayBGM(sourceName, r.Key, r.Value, 1000);
 
         }
 
@@ -75,7 +75,7 @@ namespace Lyyneheym
         {
             Musician m = Musician.getInstance();
             var r = this.ResMana.GetVocal(vocalName);
-            m.PlayVocal(r.Key, r.Value);
+            m.PlayVocal(r.Key, r.Value, 1000);
         }
 
         public void DisposeResource()

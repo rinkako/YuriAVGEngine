@@ -174,18 +174,18 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     throw new Exception("调用了音乐获取方法，但却不是获取音乐资源");
             }
             // 总是先查看是否有为封包的数据
-            if (this.resourceTable.ContainsKey(GlobalDataContainer.DevURI_SO_VOCAL) &&
-                this.resourceTable[GlobalDataContainer.DevURI_SO_VOCAL].ContainsKey(sourceName))
+            if (this.resourceTable.ContainsKey(DevURI) &&
+                this.resourceTable[DevURI].ContainsKey(sourceName))
             {
-                KeyValuePair<long, long> sourceLocation = this.resourceTable[GlobalDataContainer.DevURI_SO_VOCAL][sourceName];
-                GCHandle ptr = PackageUtils.getObjectIntPtr(IOUtils.ParseURItoURL(GlobalDataContainer.PackURI_SO_VOCAL + GlobalDataContainer.PackPostfix),
+                KeyValuePair<long, long> sourceLocation = this.resourceTable[DevURI][sourceName];
+                GCHandle ptr = PackageUtils.getObjectIntPtr(IOUtils.ParseURItoURL(PackURI + GlobalDataContainer.PackPostfix),
                     sourceName, sourceLocation.Key, sourceLocation.Value);
                 return new KeyValuePair<GCHandle, long>(ptr, sourceLocation.Value);
             }
             // 没有封包数据再搜索开发目录
             else
             {
-                string furi = IOUtils.JoinPath(GlobalDataContainer.DevURI_RT_SOUND, GlobalDataContainer.DevURI_SO_VOCAL, sourceName);
+                string furi = IOUtils.JoinPath(GlobalDataContainer.DevURI_RT_SOUND, DevURI, sourceName);
                 if (File.Exists(IOUtils.ParseURItoURL(furi)))
                 {
                     byte[] bytes = File.ReadAllBytes(IOUtils.ParseURItoURL(furi));

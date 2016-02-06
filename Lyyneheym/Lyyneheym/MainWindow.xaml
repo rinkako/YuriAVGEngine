@@ -28,6 +28,8 @@
         <Button Content="Button" Canvas.Left="933" Canvas.Top="88" Width="75" Click="Button_Click_12"/>
         <Button Content="Button" Canvas.Left="674" Canvas.Top="32" Width="75" Click="Button_Click_13"/>
         <Button Content="Button" Canvas.Left="674" Canvas.Top="59" Width="75" Click="Button_Click_14"/>
+        <Slider Canvas.Left="10" Canvas.Top="33" Width="235" Maximum="1000" Value="999" ValueChanged="Slider_ValueChanged"/>
+        <Slider Canvas.Top="59" Width="235" Canvas.Left="10" Maximum="1" Minimum="-1" ValueChanged="Slider_ValueChanged_1"/>
 
 
 

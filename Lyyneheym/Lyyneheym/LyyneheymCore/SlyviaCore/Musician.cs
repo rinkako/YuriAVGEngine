@@ -26,7 +26,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="resourceName">资源名</param>
         /// <param name="filename">文件路径</param>
-        public void PlayBGM(string resourceName, string filename)
+        /// <param name="vol">音量（1-1000）</param>
+        public void PlayBGM(string resourceName, string filename, float vol)
         {
             // 如果有BGM在播放就截断
             if (this.isBGMPlaying || this.isBGMPaused)
@@ -36,7 +37,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             int handle = this.BassEngine.LoadFromFile(filename);
             BgmHandleContainer = new KeyValuePair<string, int>(resourceName, handle);
             this.BassEngine.SetVolume(handle, this.bgmVolume);
-            this.BassEngine.Play(handle);
+            this.BassEngine.Play(handle, vol);
+            this.bgmVolume = vol;
             this.isBGMPlaying = this.isBGMLoaded = true;
             this.isBGMPaused = false;
             this.musicianTimer.Start();
@@ -49,7 +51,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="resourceName">资源名</param>
         /// <param name="gch">托管的内存句柄</param>
         /// <param name="len">句柄指向内存长度</param>
-        public void PlayBGM(string resourceName, GCHandle? gch, long len)
+        /// <param name="vol">音量（1-1000）</param>
+        public void PlayBGM(string resourceName, GCHandle? gch, long len, float vol)
         {
             // 如果有BGM在播放就截断
             if (this.isBGMPlaying || this.isBGMPaused)
@@ -63,7 +66,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             int handle = this.BassEngine.LoadFromMemory((GCHandle)gch, len);
             BgmHandleContainer = new KeyValuePair<string, int>(resourceName, handle);
             this.BassEngine.SetVolume(handle, this.bgmVolume);
-            this.BassEngine.Play(handle);
+            this.BassEngine.Play(handle, vol);
+            this.bgmVolume = vol;
             this.isBGMPlaying = this.isBGMLoaded = true;
             this.isBGMPaused = false;
             this.musicianTimer.Start();
@@ -89,7 +93,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             if (this.isBGMLoaded && this.isBGMPaused)
             {
-                this.BassEngine.Play(this.BgmHandleContainer.Value);
+                this.BassEngine.Play(this.BgmHandleContainer.Value, this.bgmVolume);
                 this.isBGMPlaying = true;
                 this.isBGMPaused = false;
             }
@@ -113,14 +117,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <para>背景声效可以多个声音资源同时播放，并且可以与BGM同存</para>
         /// </summary>
         /// <param name="filename">文件路径</param>
+        /// <param name="vol">音量（1-1000）</param>
         /// <param name="track">播放的轨道</param>
-        public void PlayBGS(string filename, int track = 0)
+        public void PlayBGS(string filename, float vol, int track = 0)
         {
             if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM)
             {
-                this.BgsHandleContainer[track] = this.BassEngine.LoadFromFile(filename);
-                this.BassEngine.SetVolume(this.BgsHandleContainer[track], this.bgsVolume);
-                this.BassEngine.Play(this.BgsHandleContainer[track]);
+                this.BgsHandleContainer[track] = new KeyValuePair<int, float>(this.BassEngine.LoadFromFile(filename), vol);
+                this.BassEngine.SetVolume(this.BgsHandleContainer[track].Key, this.bgsVolume);
+                this.BassEngine.Play(this.BgsHandleContainer[track].Key, vol);
             }
             this.musicianTimer.Start();
         }
@@ -131,14 +136,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="gch">托管的内存句柄</param>
         /// <param name="len">句柄指向内存长度</param>
+        /// <param name="vol">音量（1-1000）</param>
         /// <param name="track">播放的轨道</param>
-        public void PlayBGS(GCHandle? gch, long len, int track = 0)
+        public void PlayBGS(GCHandle? gch, long len, float vol, int track = 0)
         {
             if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM && gch != null)
             {
-                this.BgsHandleContainer[track] = this.BassEngine.LoadFromMemory((GCHandle)gch, len);
-                this.BassEngine.SetVolume(this.BgsHandleContainer[track], this.bgsVolume);
-                this.BassEngine.Play(this.BgsHandleContainer[track]);
+                this.BgsHandleContainer[track] = new KeyValuePair<int, float>(this.BassEngine.LoadFromMemory((GCHandle)gch, len), vol);
+                this.BassEngine.SetVolume(this.BgsHandleContainer[track].Key, this.bgsVolume);
+                this.BassEngine.Play(this.BgsHandleContainer[track].Key, vol);
             }
             this.musicianTimer.Start();
         }
@@ -149,23 +155,67 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="track">要停止的BGS轨道，缺省值-1表示全部停止</param>
         public void StopBGS(int track = -1)
         {
-            if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM && this.BgsHandleContainer[track] != 0)
+            if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM && this.BgsHandleContainer[track].Key != 0)
             {
-                this.BassEngine.Stop(this.BgsHandleContainer[track]);
+                this.BassEngine.Stop(this.BgsHandleContainer[track].Key);
             }
             else
             {
                 for (int i = 0; i < this.BgsHandleContainer.Count; i++)
                 {
-                    if (this.BgsHandleContainer[i] != 0)
+                    if (this.BgsHandleContainer[i].Key != 0)
                     {
-                        int handle = this.BgsHandleContainer[i];
+                        int handle = this.BgsHandleContainer[i].Key;
                         this.BassEngine.Stop(handle);
                         this.BassEngine.DisposeHandle(handle);
-                        this.BgsHandleContainer[i] = 0;
+                        this.BgsHandleContainer[i] = new KeyValuePair<int, float>(0, this.BGSDefaultVolume);
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 变更BGM的音量
+        /// </summary>
+        /// <param name="vol"></param>
+        public void SetBGMVolume(float vol)
+        {
+            if (this.isBGMLoaded)
+            {
+                this.BGMVolume = vol;
+            }
+        }
+
+        /// <summary>
+        /// 变更指定轨道的BGS音量
+        /// </summary>
+        /// <param name="vol">音量</param>
+        /// <param name="track">轨道（-1为全部变更）</param>
+        public void SetBGSVolume(int vol, int track = 0)
+        {
+            if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM)
+            {
+                this.BassEngine.SetVolume(this.BgsHandleContainer[0].Key, vol);
+            }
+            else
+            {
+                foreach (var t in this.BgsHandleContainer)
+                {
+                    if (t.Key != 0)
+                    {
+                        this.BassEngine.SetVolume(t.Key, vol);
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// 设置BGM声道
+        /// </summary>
+        /// <param name="offset">声道偏移（-1到1，从左向右偏移，0为立体声）</param>
+        public void SetBGMStereo(float offset)
+        {
+            this.BassEngine.Stereo(this.BgmHandleContainer.Value, offset);
         }
 
         /// <summary>
@@ -173,11 +223,12 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <para>声效可以多个声音资源同时播放</para>
         /// </summary>
         /// <param name="filename">文件路径</param>
-        public void PlaySE(string filename)
+        /// <param name="vol">音量（1-1000）</param>
+        public void PlaySE(string filename, float vol)
         {
             int handle = this.BassEngine.LoadFromFileWithAutoRelease(filename);
             this.BassEngine.SetVolume(handle, this.seVolume);
-            this.BassEngine.Play(handle);
+            this.BassEngine.Play(handle, vol);
         }
 
         /// <summary>
@@ -186,7 +237,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="gch">托管的内存句柄</param>
         /// <param name="len">句柄指向内存长度</param>
-        public void PlaySE(GCHandle? gch, long len)
+        /// <param name="vol">音量（1-1000）</param>
+        public void PlaySE(GCHandle? gch, long len, float vol)
         {
             if (gch == null)
             {
@@ -194,7 +246,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             }
             int handle = this.BassEngine.LoadFromMemoryWithAutoRelease((GCHandle)gch, len);
             this.BassEngine.SetVolume(handle, this.seVolume);
-            this.BassEngine.Play(handle);
+            this.BassEngine.Play(handle, vol);
         }
 
         /// <summary>
@@ -202,12 +254,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <para>语音在同一时刻只能播放一个资源，但可以与BGM和BGS共存</para>
         /// </summary>
         /// <param name="filename">文件路径</param>
-        public void PlayVocal(string filename)
+        /// <param name="vol">音量（1-1000）</param>
+        public void PlayVocal(string filename, float vol)
         {
             this.StopAndReleaseVocal();
             this.vocalHandle = this.BassEngine.LoadFromFileWithAutoRelease(filename);
             this.BassEngine.SetVolume(this.vocalHandle, this.vocalVolume);
-            this.BassEngine.Play(this.vocalHandle);
+            this.BassEngine.Play(this.vocalHandle, vol);
         }
 
         /// <summary>
@@ -216,7 +269,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="gch">托管的内存句柄</param>
         /// <param name="len">句柄指向内存长度</param>
-        public void PlayVocal(GCHandle? gch, long len)
+        /// <param name="vol">音量（1-1000）</param>
+        public void PlayVocal(GCHandle? gch, long len, float vol)
         {
             if (gch == null)
             {
@@ -225,7 +279,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.StopAndReleaseVocal();
             this.vocalHandle = this.BassEngine.LoadFromMemoryWithAutoRelease((GCHandle)gch, len);
             this.BassEngine.SetVolume(this.vocalHandle, this.vocalVolume);
-            this.BassEngine.Play(this.vocalHandle);
+            this.BassEngine.Play(this.vocalHandle, vol);
         }
 
         /// <summary>
@@ -251,7 +305,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.BgmHandleContainer = new KeyValuePair<string, int>(null, 0);
             if (this.BgsHandleContainer == null)
             {
-                this.BgsHandleContainer = new List<int>();
+                this.BgsHandleContainer = new List<KeyValuePair<int, float>>();
             }
             else
             {
@@ -259,7 +313,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             }
             for (int i = 0; i < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM; i++)
             {
-                this.BgsHandleContainer.Add(0);
+                this.BgsHandleContainer.Add(new KeyValuePair<int, float>(0, this.BGSDefaultVolume));
             }
             this.isBGMLoaded = this.isBGMPaused = this.isBGMPlaying = this.isMute = false;
         }
@@ -274,15 +328,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             {
                 if (this.BassEngine.IsPlaying(this.BgmHandleContainer.Value) == false)
                 {
-                    this.BassEngine.Play(this.BgmHandleContainer.Value);
+                    this.BassEngine.Play(this.BgmHandleContainer.Value, this.bgmVolume);
                 }
             }
             // 循环BGS
             foreach (var bgs in this.BgsHandleContainer)
             {
-                if (bgs != 0 && this.BassEngine.IsPlaying(bgs) == false)
+                if (bgs.Key != 0 && this.BassEngine.IsPlaying(bgs.Key) == false)
                 {
-                    this.BassEngine.Play(bgs);
+                    this.BassEngine.Play(bgs.Key, bgs.Value);
                 }
             }
             // 没有BGM也没有BGS时停下自己
@@ -306,32 +360,39 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         public float BGMVolume
         {
-            get { return this.bgmVolume; }
-            set { this.bgmVolume = Math.Max(0, Math.Min(value, 1000)); }
+            get
+            { 
+                return this.bgmVolume; 
+            }
+            set
+            {
+                this.bgmVolume = Math.Max(0, Math.Min(value, 1000));
+                this.BassEngine.SetVolume(this.BgmHandleContainer.Value, this.bgmVolume);
+            }
         }
 
         /// <summary>
-        /// 获取或设置BGS音量
+        /// 获取或设置BGS默认音量
         /// </summary>
-        public float BGSVolume
+        public float BGSDefaultVolume
         {
             get { return this.bgsVolume; }
             set { this.bgsVolume = Math.Max(0, Math.Min(value, 1000)); }
         }
         
         /// <summary>
-        /// 获取或设置SE音量
+        /// 获取或设置SE默认音量
         /// </summary>
-        public float SEVolume
+        public float SEDefaultVolume
         {
             get { return this.seVolume; }
             set { this.seVolume = Math.Max(0, Math.Min(value, 1000)); }
         }
 
         /// <summary>
-        /// 获取或设置Vocal音量
+        /// 获取或设置Vocal默认音量
         /// </summary>
-        public float VocalVolume
+        public float VocalDefaultVolume
         {
             get { return this.vocalVolume; }
             set { this.vocalVolume = Math.Max(0, Math.Min(value, 1000)); }
@@ -371,7 +432,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             get
             {
-                return this.BgsHandleContainer.TrueForAll((x) => x == 0) == false;
+                return this.BgsHandleContainer.TrueForAll((x) => x.Key == 0) == false;
             }
         }
 
@@ -431,7 +492,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 背景声效容器
         /// </summary>
-        private List<int> BgsHandleContainer;
+        private List<KeyValuePair<int, float>> BgsHandleContainer;
 
         /// <summary>
         /// 音频引擎实例
@@ -773,11 +834,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 播放一个句柄
         /// </summary>
         /// <param name="handle">句柄</param>
-        public void Play(int handle)
+        /// <param name="vol">音量</param>
+        public void Play(int handle, float vol)
         {
             if (handle != 0)
             {
                 Bass.BASS_ChannelPlay(handle, false);
+                this.SetVolume(handle, vol);
                 if (this.playingStatusDict.ContainsKey(handle))
                 {
                     this.playingStatusDict.Remove(handle);
@@ -839,6 +902,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 Bass.BASS_ChannelPause(handle);
                 this.playingStatusDict[handle] = false;
             }
+        }
+
+        /// <summary>
+        /// 为句柄设置声道
+        /// </summary>
+        /// <param name="handle">句柄</param>
+        /// <param name="offset">偏移量（-1到1，从左向右）</param>
+        public void Stereo(int handle, float offset)
+        {
+            Bass.BASS_ChannelSetAttribute(handle, BASSAttribute.BASS_ATTRIB_PAN, Math.Max(-1, Math.Min(offset, 1)));
         }
 
         /// <summary>
@@ -965,6 +1038,4 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             public string Name { get; set; }
         }
     }
-
-
 }
