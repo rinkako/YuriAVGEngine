@@ -17,10 +17,10 @@ using System.IO;
 
 using Lyyneheym.LyyneheymCore.Utils;
 using Lyyneheym.LyyneheymCore.SlyviaCore;
+using Lyyneheym.LyyneheymCore.ILPackage;
 using Lyyneheym.LyyneheymCore;
 using Lyyneheym.SlyviaInterpreter;
 
-using Lyyneheym.LyyneheymCore.ILPackage;
 
 namespace Lyyneheym
 {
@@ -31,7 +31,7 @@ namespace Lyyneheym
     {
         private Slyvia core = Slyvia.getInstance();
 
-        private DispatcherTimer timer = new DispatcherTimer();
+        //private DispatcherTimer timer = new DispatcherTimer();
 
 
         
@@ -43,8 +43,8 @@ namespace Lyyneheym
             core.GameUpdater.SetMainWindow(this);
             SolidColorBrush scb = new SolidColorBrush(Colors.Red);
 
-            timer.Interval = TimeSpan.FromMilliseconds(1000);
-            timer.Tick += timer_Tick;
+            //timer.Interval = TimeSpan.FromMilliseconds(1000);
+            //timer.Tick += timer_Tick;
             
 
             this.BO_MainText.Foreground = scb;
@@ -62,10 +62,10 @@ namespace Lyyneheym
             mytestbutton.VerticalAlignment = System.Windows.VerticalAlignment.Top;
         }
 
-        void timer_Tick(object sender, EventArgs e)
-        {
-            Musician.getInstance().Update();
-        }
+        //void timer_Tick(object sender, EventArgs e)
+        //{
+        //    Musician.getInstance().Update();
+        //}
 
         bool flag = false;
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -168,41 +168,55 @@ namespace Lyyneheym
             
         }
 
+        bool pauseFlag = false;
+
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            Image img = new Image();
-            BitmapImage myBitmapImage = new BitmapImage();
-            myBitmapImage.BeginInit();
-            myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\uuz.jpg", UriKind.RelativeOrAbsolute);
-            myBitmapImage.EndInit();
-            img.Width = myBitmapImage.Width;
-            img.Height = myBitmapImage.Height;
-            img.Source = myBitmapImage;
-            img.Margin = new Thickness(0, 0, 0, 0);
-            img.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            img.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            img.Name = "UBO_PIC_01";
-            this.BO_MainGrid.Children.Add(img);
-            
+            //Image img = new Image();
+            //BitmapImage myBitmapImage = new BitmapImage();
+            //myBitmapImage.BeginInit();
+            //myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\uuz.jpg", UriKind.RelativeOrAbsolute);
+            //myBitmapImage.EndInit();
+            //img.Width = myBitmapImage.Width;
+            //img.Height = myBitmapImage.Height;
+            //img.Source = myBitmapImage;
+            //img.Margin = new Thickness(0, 0, 0, 0);
+            //img.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            //img.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            //img.Name = "UBO_PIC_01";
+            //this.BO_MainGrid.Children.Add(img);
+
+            if (!pauseFlag)
+            {
+                Musician.getInstance().PauseBGM();
+            }
+            else
+            {
+                Musician.getInstance().ResumeBGM();
+            }
+            pauseFlag = !pauseFlag;
         }
 
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            foreach (UIElement c in this.BO_MainGrid.Children)
-            {
-                if (c is Image)
-                {
-                    Image obc = (Image)c;
-                    if (obc.Name == "UBO_PIC_01")
-                    {
-                        obc.Visibility = obc.Visibility == System.Windows.Visibility.Collapsed ?
-                            System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
-                        this.BO_MainGrid.Children.Remove(c);
-                        break;
-                    }
-                }
-            }
+            //foreach (UIElement c in this.BO_MainGrid.Children)
+            //{
+            //    if (c is Image)
+            //    {
+            //        Image obc = (Image)c;
+            //        if (obc.Name == "UBO_PIC_01")
+            //        {
+            //            obc.Visibility = obc.Visibility == System.Windows.Visibility.Collapsed ?
+            //                System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            //            this.BO_MainGrid.Children.Remove(c);
+            //            break;
+            //        }
+            //    }
+            //}
+
+
+
         }
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
@@ -211,7 +225,6 @@ namespace Lyyneheym
         }
 
 
-        MediaPlayer mp = null;
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
             //mp = new MediaPlayer();
@@ -220,43 +233,21 @@ namespace Lyyneheym
             this.testLexer();
         }
 
-        bool playflag = false;
         private void Button_Click_8(object sender, RoutedEventArgs e)
         {
 
             Musician m = Musician.getInstance();
             m.PlayBGM(@"Boss01.wav", @"Sound\bgm\Boss01.wav");
-            timer.Start();
-            //if (playflag == false && mp != null)
-            //{
-            //    mp.Pause();
-            //    playflag = true;
-            //}
-            //else
-            //{
-            //    if (mp == null)
-            //    {
-            //        mp = new MediaPlayer();
-            //        mp.Open(new Uri(@"Sound\bgm\Boss01.wav", UriKind.RelativeOrAbsolute));
-            //        mp.Play();
-            //        mp.Volume = 100;
-                    
-            //    }
-            //    else
-            //    {
-            //        mp.Play();
-            //        playflag = false;
-            //    }
-            //}
+            //timer.Start();
             
         }
 
         private void Button_Click_13(object sender, RoutedEventArgs e)
         {
-            //core.testBGM("车椅子の未来宇宙.mp3");
-            core.testBGM("Boss01.wav");
+            core.testBGM("车椅子の未来宇宙.mp3");
+            //core.testBGM("Boss01.wav");
             
-            timer.Start();
+            //timer.Start();
         }
 
 

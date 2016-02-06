@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using System.Media;
+using System.Timers;
 using System.Runtime.InteropServices;
 
 using Un4seen.Bass;
@@ -34,9 +35,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             }
             int handle = this.BassEngine.LoadFromFile(filename);
             BgmHandleContainer = new KeyValuePair<string, int>(resourceName, handle);
+            this.BassEngine.SetVolume(handle, this.bgmVolume);
             this.BassEngine.Play(handle);
             this.isBGMPlaying = this.isBGMLoaded = true;
             this.isBGMPaused = false;
+            this.musicianTimer.Start();
         }
 
         /// <summary>
@@ -44,21 +47,26 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <para>背景音乐在同一时刻只能播放一个资源</para>
         /// </summary>
         /// <param name="resourceName">资源名</param>
-        /// <param name="memory">资源内存数组</param>
-        public void PlayBGM(string resourceName, GCHandle? memory, long len)
+        /// <param name="gch">托管的内存句柄</param>
+        /// <param name="len">句柄指向内存长度</param>
+        public void PlayBGM(string resourceName, GCHandle? gch, long len)
         {
             // 如果有BGM在播放就截断
             if (this.isBGMPlaying || this.isBGMPaused)
             {
                 this.StopAndReleaseBGM();
             }
-            int handle = this.BassEngine.LoadFromMemory((GCHandle)memory, len);
-            this.BassEngine.SetVolume(handle, 1000);
+            if (gch == null)
+            {
+                return;
+            }
+            int handle = this.BassEngine.LoadFromMemory((GCHandle)gch, len);
             BgmHandleContainer = new KeyValuePair<string, int>(resourceName, handle);
+            this.BassEngine.SetVolume(handle, this.bgmVolume);
             this.BassEngine.Play(handle);
             this.isBGMPlaying = this.isBGMLoaded = true;
             this.isBGMPaused = false;
-            
+            this.musicianTimer.Start();
         }
 
         /// <summary>
@@ -66,7 +74,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         public void PauseBGM()
         {
-            if (this.isBGMLoaded)
+            if (this.isBGMLoaded && this.isBGMPlaying)
             {
                 this.BassEngine.Pause(this.BgmHandleContainer.Value);
                 this.isBGMPlaying = false;
@@ -79,7 +87,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         public void ResumeBGM()
         {
-            if (this.isBGMLoaded)
+            if (this.isBGMLoaded && this.isBGMPaused)
             {
                 this.BassEngine.Play(this.BgmHandleContainer.Value);
                 this.isBGMPlaying = true;
@@ -101,31 +109,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// BGM句柄容器
-        /// </summary>
-        private KeyValuePair<string, int> BgmHandleContainer;
-
-        /// <summary>
-        /// 获取BGM是否正在播放
-        /// </summary>
-        public bool isBGMPlaying = false;
-        
-        /// <summary>
-        /// 获取BGM是否已经加载
-        /// </summary>
-        public bool isBGMLoaded = false;
-
-        /// <summary>
-        /// 获取BGM是否已经暂停
-        /// </summary>
-        public bool isBGMPaused = false;
-        
-        /// <summary>
-        /// 音频引擎实例
-        /// </summary>
-        private BassPlayer BassEngine;
-
-        /// <summary>
         /// <para>播放背景音效：从文件读入资源</para>
         /// <para>背景声效可以多个声音资源同时播放，并且可以与BGM同存</para>
         /// </summary>
@@ -136,23 +119,28 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM)
             {
                 this.BgsHandleContainer[track] = this.BassEngine.LoadFromFile(filename);
+                this.BassEngine.SetVolume(this.BgsHandleContainer[track], this.bgsVolume);
                 this.BassEngine.Play(this.BgsHandleContainer[track]);
             }
+            this.musicianTimer.Start();
         }
 
         /// <summary>
         /// <para>播放背景音效：从内存读入资源</para>
         /// <para>背景声效可以多个声音资源同时播放，并且可以与BGM同存</para>
         /// </summary>
-        /// <param name="memory">资源内存数组</param>
+        /// <param name="gch">托管的内存句柄</param>
+        /// <param name="len">句柄指向内存长度</param>
         /// <param name="track">播放的轨道</param>
-        public void PlayBGS(byte[] memory, int track = 0)
+        public void PlayBGS(GCHandle? gch, long len, int track = 0)
         {
-            if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM)
+            if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM && gch != null)
             {
-                //this.BgsHandleContainer[track] = this.BassEngine.LoadFromMemory(memory);
+                this.BgsHandleContainer[track] = this.BassEngine.LoadFromMemory((GCHandle)gch, len);
+                this.BassEngine.SetVolume(this.BgsHandleContainer[track], this.bgsVolume);
                 this.BassEngine.Play(this.BgsHandleContainer[track]);
             }
+            this.musicianTimer.Start();
         }
 
         /// <summary>
@@ -181,11 +169,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 背景声效容器
-        /// </summary>
-        private List<int> BgsHandleContainer;
-
-        /// <summary>
         /// <para>播放声效：从文件读入资源</para>
         /// <para>声效可以多个声音资源同时播放</para>
         /// </summary>
@@ -193,6 +176,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public void PlaySE(string filename)
         {
             int handle = this.BassEngine.LoadFromFileWithAutoRelease(filename);
+            this.BassEngine.SetVolume(handle, this.seVolume);
             this.BassEngine.Play(handle);
         }
 
@@ -200,11 +184,17 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <para>播放声效：从内存读入资源</para>
         /// <para>声效可以多个声音资源同时播放</para>
         /// </summary>
-        /// <param name="memory">资源内存数组</param>
-        public void PlaySE(byte[] memory)
+        /// <param name="gch">托管的内存句柄</param>
+        /// <param name="len">句柄指向内存长度</param>
+        public void PlaySE(GCHandle? gch, long len)
         {
-            //int handle = this.BassEngine.LoadFromMemoryWithAutoRelease(memory);
-            //this.BassEngine.Play(handle);
+            if (gch == null)
+            {
+                return;
+            }
+            int handle = this.BassEngine.LoadFromMemoryWithAutoRelease((GCHandle)gch, len);
+            this.BassEngine.SetVolume(handle, this.seVolume);
+            this.BassEngine.Play(handle);
         }
 
         /// <summary>
@@ -216,6 +206,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             this.StopAndReleaseVocal();
             this.vocalHandle = this.BassEngine.LoadFromFileWithAutoRelease(filename);
+            this.BassEngine.SetVolume(this.vocalHandle, this.vocalVolume);
             this.BassEngine.Play(this.vocalHandle);
         }
 
@@ -223,11 +214,17 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <para>播放语音：从内存读入资源</para>
         /// <para>语音在同一时刻只能播放一个资源，但可以与BGM和BGS共存</para>
         /// </summary>
-        /// <param name="memory">资源内存数组</param>
-        public void PlayVocal(GCHandle? memory, long len)
+        /// <param name="gch">托管的内存句柄</param>
+        /// <param name="len">句柄指向内存长度</param>
+        public void PlayVocal(GCHandle? gch, long len)
         {
+            if (gch == null)
+            {
+                return;
+            }
             this.StopAndReleaseVocal();
-            this.vocalHandle = this.BassEngine.LoadFromMemoryWithAutoRelease((GCHandle)memory, len);
+            this.vocalHandle = this.BassEngine.LoadFromMemoryWithAutoRelease((GCHandle)gch, len);
+            this.BassEngine.SetVolume(this.vocalHandle, this.vocalVolume);
             this.BassEngine.Play(this.vocalHandle);
         }
 
@@ -236,30 +233,62 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         public void StopAndReleaseVocal()
         {
-            if (this.vocalHandle != 0)
+            if (this.vocalHandle != 0 && this.BassEngine.IsPlaying(this.vocalHandle))
             {
                 this.BassEngine.Stop(this.vocalHandle);
                 this.BassEngine.DisposeHandle(this.vocalHandle);
-                this.vocalHandle = 0;
             }
+            this.vocalHandle = 0;
         }
 
         /// <summary>
-        /// 当前语音句柄
+        /// 复位音乐管理器
         /// </summary>
-        private int vocalHandle = 0;
+        public void Reset()
+        {
+            this.StopAndReleaseBGM();
+            this.StopAndReleaseVocal();
+            this.BgmHandleContainer = new KeyValuePair<string, int>(null, 0);
+            if (this.BgsHandleContainer == null)
+            {
+                this.BgsHandleContainer = new List<int>();
+            }
+            else
+            {
+                this.BgsHandleContainer.Clear();
+            }
+            for (int i = 0; i < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM; i++)
+            {
+                this.BgsHandleContainer.Add(0);
+            }
+            this.isBGMLoaded = this.isBGMPaused = this.isBGMPlaying = false;
+        }
 
         /// <summary>
         /// 更新函数：消息循环定期调用的更新方法
         /// </summary>
-        public void Update()
+        private void musicianTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if (this.BgmHandleContainer.Value != 0)
+            // 循环BGM
+            if (this.BgmHandleContainer.Value != 0 && this.isBGMPaused != true)
             {
                 if (this.BassEngine.IsPlaying(this.BgmHandleContainer.Value) == false)
                 {
                     this.BassEngine.Play(this.BgmHandleContainer.Value);
                 }
+            }
+            // 循环BGS
+            foreach (var bgs in this.BgsHandleContainer)
+            {
+                if (bgs != 0 && this.BassEngine.IsPlaying(bgs) == false)
+                {
+                    this.BassEngine.Play(bgs);
+                }
+            }
+            // 没有BGM也没有BGS时停下自己
+            if (this.isBGMLoaded == false && this.isAnyBGS == false)
+            {
+                this.musicianTimer.Stop();
             }
         }
 
@@ -273,9 +302,129 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 获取或设置BGM音量
+        /// </summary>
+        public float BGMVolume
+        {
+            get { return this.bgmVolume; }
+            set { this.bgmVolume = Math.Max(0, Math.Min(value, 1000)); }
+        }
+
+        /// <summary>
+        /// 获取或设置BGS音量
+        /// </summary>
+        public float BGSVolume
+        {
+            get { return this.bgsVolume; }
+            set { this.bgsVolume = Math.Max(0, Math.Min(value, 1000)); }
+        }
+        
+        /// <summary>
+        /// 获取或设置SE音量
+        /// </summary>
+        public float SEVolume
+        {
+            get { return this.seVolume; }
+            set { this.seVolume = Math.Max(0, Math.Min(value, 1000)); }
+        }
+
+        /// <summary>
+        /// 获取或设置Vocal音量
+        /// </summary>
+        public float VocalVolume
+        {
+            get { return this.vocalVolume; }
+            set { this.vocalVolume = Math.Max(0, Math.Min(value, 1000)); }
+        }
+
+        /// <summary>
+        /// 获取BGM是否正在播放
+        /// </summary>
+        public bool isBGMPlaying
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取BGM是否已经加载
+        /// </summary>
+        public bool isBGMLoaded
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取BGM是否已经暂停
+        /// </summary>
+        public bool isBGMPaused
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取是否有BGS在播放
+        /// </summary>
+        public bool isAnyBGS
+        {
+            get
+            {
+                return this.BgsHandleContainer.TrueForAll((x) => x == 0) == false;
+            }
+        }
+
+        /// <summary>
+        /// 当前语音句柄
+        /// </summary>
+        private int vocalHandle
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// BGM音量值
+        /// </summary>
+        private float bgmVolume = 1000f;
+
+        /// <summary>
+        /// BGS音量值
+        /// </summary>
+        private float bgsVolume = 800f;
+
+        /// <summary>
+        /// SE音量值
+        /// </summary>
+        private float seVolume = 800f;
+
+        /// <summary>
+        /// Vocal音量值
+        /// </summary>
+        private float vocalVolume = 1000f;
+
+        private Timer musicianTimer;
+
+        /// <summary>
         /// 唯一实例
         /// </summary>
         private static Musician synObject = null;
+
+        /// <summary>
+        /// BGM句柄容器
+        /// </summary>
+        private KeyValuePair<string, int> BgmHandleContainer;
+
+        /// <summary>
+        /// 背景声效容器
+        /// </summary>
+        private List<int> BgsHandleContainer;
+
+        /// <summary>
+        /// 音频引擎实例
+        /// </summary>
+        private BassPlayer BassEngine;
 
         /// <summary>
         /// 私有的构造器
@@ -283,13 +432,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         private Musician()
         {
             this.BassEngine = BassPlayer.GetInstance();
-            this.BgmHandleContainer = new KeyValuePair<string, int>(null, 0);
-            this.BgsHandleContainer = new List<int>();
-            for (int i = 0; i < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM; i++)
-            {
-                this.BgsHandleContainer.Add(0);
-            }
+            this.musicianTimer = new Timer(1000);
+            this.musicianTimer.Elapsed += musicianTimer_Elapsed;
+            this.Reset();
         }
+
     }
 
     /// <summary>
@@ -366,6 +513,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="disposing">哑元</param>
         protected virtual void Dispose(bool disposing)
         {
+            foreach (var h in this.referenceDict)
+            {
+                h.Value.Free();
+            }
             if (!this.isDisposed)
             {
                 Bass.BASS_Free();
@@ -552,30 +703,24 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 将一块内存区域加载为可播放的句柄
         /// </summary>
-        /// <param name="memoryBuffer">内存数组</param>
+        /// <param name="gch">托管的内存句柄</param>
         /// <returns>句柄</returns>
-        public int LoadFromMemory(GCHandle memoryBuffer, long len)
+        public int LoadFromMemory(GCHandle gch, long len)
         {
-            //fixed (byte* pointer = memoryBuffer)
-            //{
-            //    IntPtr pArray = new IntPtr(pointer);
-            int bufferHandle = Bass.BASS_StreamCreateFile(memoryBuffer.AddrOfPinnedObject(), 0L, len, BASSFlag.BASS_DEFAULT);
-                int callbackHandle = Bass.BASS_ChannelSetSync(bufferHandle, BASSSync.BASS_SYNC_END, 0L, this.endSyncProc, IntPtr.Zero);
-                if (bufferHandle == 0)
-                {
-                    throw new Exception("cannot open audio file");
-                }
-                if (this.referenceDict.ContainsKey(bufferHandle))
-                {
-                    this.referenceDict.Remove(bufferHandle);
-                }
-                this.referenceDict.Add(bufferHandle, memoryBuffer);
-                return bufferHandle;
-            //}
+            int bufferHandle = Bass.BASS_StreamCreateFile(gch.AddrOfPinnedObject(), 0L, len, BASSFlag.BASS_DEFAULT);
+            int callbackHandle = Bass.BASS_ChannelSetSync(bufferHandle, BASSSync.BASS_SYNC_END, 0L, this.endSyncProc, IntPtr.Zero);
+            if (bufferHandle == 0)
+            {
+                throw new Exception("cannot open audio file");
+            }
+            if (this.referenceDict.ContainsKey(bufferHandle))
+            {
+                this.referenceDict.Remove(bufferHandle);
+            }
+            this.referenceDict.Add(bufferHandle, gch);
+            return bufferHandle;
         }
 
-        private Dictionary<int, GCHandle> referenceDict;
-        
         /// <summary>
         /// 将文件加载为可播放的句柄，并在播放结束后销毁自己
         /// </summary>
@@ -595,27 +740,22 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 将一块内存区域加载为可播放的句柄，并在播放结束后销毁自己
         /// </summary>
-        /// <param name="memoryBuffer">内存数组</param>
+        /// <param name="gch">托管的内存句柄</param>
         /// <returns>句柄</returns>
-        public unsafe int LoadFromMemoryWithAutoRelease(GCHandle memoryBuffer, long len)
+        public int LoadFromMemoryWithAutoRelease(GCHandle gch, long len)
         {
-            //IntPtr pArray;
-            //fixed (byte* pointer = memoryBuffer)
-            //{
-            //    pArray = new IntPtr(pointer);
-            int bufferHandle = Bass.BASS_StreamCreateFile(memoryBuffer.AddrOfPinnedObject(), 0L, len, BASSFlag.BASS_DEFAULT);
-                int callbackHandle = Bass.BASS_ChannelSetSync(bufferHandle, BASSSync.BASS_SYNC_END, 0L, this.autoReleaseProc, IntPtr.Zero);
-                if (bufferHandle == 0)
-                {
-                    throw new Exception("cannot open audio file");
-                }
-                if (this.referenceDict.ContainsKey(bufferHandle))
-                {
-                    this.referenceDict.Remove(bufferHandle);
-                }
-                this.referenceDict.Add(bufferHandle, memoryBuffer);
-                return bufferHandle;
-            //}
+            int bufferHandle = Bass.BASS_StreamCreateFile(gch.AddrOfPinnedObject(), 0L, len, BASSFlag.BASS_DEFAULT);
+            int callbackHandle = Bass.BASS_ChannelSetSync(bufferHandle, BASSSync.BASS_SYNC_END, 0L, this.autoReleaseProc, IntPtr.Zero);
+            if (bufferHandle == 0)
+            {
+                throw new Exception("cannot open audio file");
+            }
+            if (this.referenceDict.ContainsKey(bufferHandle))
+            {
+                this.referenceDict.Remove(bufferHandle);
+            }
+            this.referenceDict.Add(bufferHandle, gch);
+            return bufferHandle;
         }
 
         /// <summary>
@@ -797,6 +937,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 句柄播放状态字典
         /// </summary>
         private Dictionary<int, bool> playingStatusDict;
+
+        /// <summary>
+        /// 托管句柄字典
+        /// </summary>
+        private Dictionary<int, GCHandle> referenceDict;
 
         /// <summary>
         /// 音频设备信息类

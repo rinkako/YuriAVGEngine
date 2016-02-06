@@ -169,7 +169,7 @@ namespace Lyyneheym.LyyneheymCore.Utils
         /// <param name="offset">资源在包中的偏移量</param>
         /// <param name="length">资源字节数</param>
         /// <returns>资源的字节序列</returns>
-        public static unsafe byte[] getObjectBytes(string packFile, string resourceName, long offset, long length)
+        public static byte[] getObjectBytes(string packFile, string resourceName, long offset, long length)
         {
             FileStream pakFs = new FileStream(packFile, FileMode.Open);
             BinaryReader pakBr = new BinaryReader(pakFs);
@@ -181,7 +181,6 @@ namespace Lyyneheym.LyyneheymCore.Utils
             }
             pakBr.Close();
             pakFs.Close();
-
             return buffer;
         }
 
