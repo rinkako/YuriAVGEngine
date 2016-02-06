@@ -226,7 +226,7 @@ namespace Lyyneheym
 
             Musician m = Musician.getInstance();
             m.PlayBGM(@"Boss01.wav", @"Sound\bgm\Boss01.wav");
-
+            timer.Start();
             //if (playflag == false && mp != null)
             //{
             //    mp.Pause();

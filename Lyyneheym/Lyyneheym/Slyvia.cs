@@ -66,20 +66,21 @@ namespace Lyyneheym
         public void testBGM(string sourceName)
         {
             Musician m = Musician.getInstance();
-            m.PlayBGM(sourceName, this.ResMana.GetBGMMemoryStream(sourceName));
+            var r = this.ResMana.GetBGMMemoryStream(sourceName);
+            m.PlayBGM(sourceName, r.Key, r.Value);
 
         }
 
         public void testVocal(string vocalName)
         {
             Musician m = Musician.getInstance();
-            m.PlayVocal(this.ResMana.GetVocalMemoryStream(vocalName));
+            var r = this.ResMana.GetVocalMemoryStream(vocalName);
+            m.PlayVocal(r.Key, r.Value);
         }
 
         public void DisposeResource()
         {
-            BassPlayer b = BassPlayer.GetInstance();
-            b.Dispose();
+            BassPlayer.GetInstance().Dispose();
         }
 
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
+using System.Runtime.InteropServices;
+
 
 namespace Lyyneheym.LyyneheymCore.Utils
 {
@@ -142,7 +144,7 @@ namespace Lyyneheym.LyyneheymCore.Utils
         /// <param name="offset">资源在包中的偏移量</param>
         /// <param name="length">资源字节数</param>
         /// <returns>资源的字节序列</returns>
-        public static byte[] getObjectBytes(string packFile, string resourceName, long offset, long length)
+        public static GCHandle getObjectIntPtr(string packFile, string resourceName, long offset, long length)
         {
             FileStream pakFs = new FileStream(packFile, FileMode.Open);
             BinaryReader pakBr = new BinaryReader(pakFs);
@@ -154,6 +156,32 @@ namespace Lyyneheym.LyyneheymCore.Utils
             }
             pakBr.Close();
             pakFs.Close();
+            GCHandle hObject = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            //IntPtr resPtr = hObject.AddrOfPinnedObject();
+            return hObject;
+        }
+
+        /// <summary>
+        /// 获得一个封包对象的字节序列
+        /// </summary>
+        /// <param name="packFile">包路径</param>
+        /// <param name="resourceName">资源名称</param>
+        /// <param name="offset">资源在包中的偏移量</param>
+        /// <param name="length">资源字节数</param>
+        /// <returns>资源的字节序列</returns>
+        public static unsafe byte[] getObjectBytes(string packFile, string resourceName, long offset, long length)
+        {
+            FileStream pakFs = new FileStream(packFile, FileMode.Open);
+            BinaryReader pakBr = new BinaryReader(pakFs);
+            pakFs.Seek(offset, SeekOrigin.Begin);
+            byte[] buffer = new byte[length];
+            for (int i = 0; i < length; i++)
+            {
+                buffer[i] = pakBr.ReadByte();
+            }
+            pakBr.Close();
+            pakFs.Close();
+
             return buffer;
         }
 
