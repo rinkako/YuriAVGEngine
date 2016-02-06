@@ -207,6 +207,40 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             return true;
         }
 
+        private void InitDictionaryByPST(List<string> pstList)
+        {
+            foreach (string pstPath in pstList)
+            {
+                FileStream fs = new FileStream(pstPath, FileMode.Open);
+                StreamReader sr = new StreamReader(fs);
+                // 读取头部信息
+                string header = sr.ReadLine();
+                
+
+
+                sr.Close();
+                fs.Close();
+            }
+        }
+
+        /// <summary>
+        /// 在根目录下搜索资源信息文件
+        /// </summary>
+        /// <returns>资源信息文件的路径向量</returns>
+        private List<string> SearchPST()
+        {
+            List<string> resContainer = new List<string>();
+            DirectoryInfo rootDirInfo = new DirectoryInfo(Environment.CurrentDirectory);
+            foreach (FileInfo file in rootDirInfo.GetFiles())
+            {
+                if (file.Extension == ".pst")
+                {
+                    resContainer.Add(file.FullName);
+                }
+            }
+            return resContainer;
+        }
+
         /// <summary>
         /// 工厂方法：获得类的唯一实例
         /// </summary>
@@ -226,6 +260,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         // 唯一实例量
         private static ResourceManager synObject = null;
+
         // 资源字典（之后要变成私有）
         public Dictionary<string, Dictionary<string, KeyValuePair<long, long>>> resourceTable = null;
     }

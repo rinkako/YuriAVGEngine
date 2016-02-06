@@ -149,6 +149,14 @@ namespace Lyyneheym.LyynePacker
         }
 
         /// <summary>
+        /// 清空按钮
+        /// </summary>
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.listBox1.Items.Clear();
+        }
+
+        /// <summary>
         /// 拉入文件到封包界面
         /// </summary>
         private void listBox1_DragEnter(object sender, DragEventArgs e)
