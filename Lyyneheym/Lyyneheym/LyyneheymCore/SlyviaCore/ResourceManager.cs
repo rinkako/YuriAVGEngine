@@ -17,40 +17,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     /// </summary>
     public class ResourceManager
     {
-
         /// <summary>
         /// 获得一张指定背景图的精灵
         /// </summary>
         /// <param name="sourceName">资源名称</param>
         /// <returns>该资源的精灵</returns>
-        public MySprite GetBackgroundImage(string sourceName)
+        public MySprite GetBackground(string sourceName)
         {
-            MySprite sprite = new MySprite();
-            // 总是先查看是否有为封包的数据
-            if (this.resourceTable.ContainsKey(GlobalDataContainer.DevURI_PA_BACKGROUND) &&
-                this.resourceTable[GlobalDataContainer.DevURI_PA_BACKGROUND].ContainsKey(sourceName))
-            {
-                KeyValuePair<long, long> sourceLocation = this.resourceTable[GlobalDataContainer.DevURI_PA_BACKGROUND][sourceName];
-                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL(GlobalDataContainer.PackURI_PA_BACKGROUND + GlobalDataContainer.PackPostfix),
-                    sourceName, sourceLocation.Key, sourceLocation.Value);
-                MemoryStream ms = new MemoryStream(ob);
-                sprite.Init(ms);
-            }
-            // 没有封包数据再搜索开发目录
-            else
-            {
-                string furi = IOUtils.JoinPath(GlobalDataContainer.DevURI_RT_PICTUREASSETS, GlobalDataContainer.DevURI_PA_BACKGROUND, sourceName);
-                if (File.Exists(IOUtils.ParseURItoURL(furi)))
-                {
-                    Uri bg = new Uri(furi, UriKind.RelativeOrAbsolute);
-                    sprite.Init(bg);
-                }
-                else
-                {
-                    throw new Exception("文件不存在：" + sourceName);
-                }
-            }
-            return sprite;
+            return this.GetGraphicSprite(sourceName, ResourceType.Background);
         }
 
         /// <summary>
@@ -58,34 +32,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="sourceName">资源名称</param>
         /// <returns>该资源的精灵</returns>
-        public MySprite GetCharacterStandImage(string sourceName)
+        public MySprite GetCharacterStand(string sourceName)
         {
-            MySprite sprite = new MySprite();
-            // 总是先查看是否有为封包的数据
-            if (this.resourceTable.ContainsKey(GlobalDataContainer.DevURI_PA_CHARASTAND) &&
-                this.resourceTable[GlobalDataContainer.DevURI_PA_CHARASTAND].ContainsKey(sourceName))
-            {
-                KeyValuePair<long, long> sourceLocation = this.resourceTable[GlobalDataContainer.DevURI_PA_CHARASTAND][sourceName];
-                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL(GlobalDataContainer.PackURI_PA_CHARASTAND + GlobalDataContainer.PackPostfix),
-                    sourceName, sourceLocation.Key, sourceLocation.Value);
-                MemoryStream ms = new MemoryStream(ob);
-                sprite.Init(ms);
-            }
-            // 没有封包数据再搜索开发目录
-            else
-            {
-                string furi = IOUtils.JoinPath(GlobalDataContainer.DevURI_RT_PICTUREASSETS, GlobalDataContainer.DevURI_PA_CHARASTAND, sourceName);
-                if (File.Exists(IOUtils.ParseURItoURL(furi)))
-                {
-                    Uri bg = new Uri(furi, UriKind.RelativeOrAbsolute);
-                    sprite.Init(bg);
-                }
-                else
-                {
-                    throw new Exception("文件不存在：" + sourceName);
-                }
-            }
-            return sprite;
+            return this.GetGraphicSprite(sourceName, ResourceType.Stand);
         }
 
         /// <summary>
@@ -93,15 +42,85 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="sourceName">资源名称</param>
         /// <returns>该资源的精灵</returns>
-        public MySprite GetPictureSprite(string sourceName)
+        public MySprite GetPicture(string sourceName)
+        {
+            return this.GetGraphicSprite(sourceName, ResourceType.Pictures);
+        }
+
+        /// <summary>
+        /// 获得一个指定BGM音频资源的内存数组
+        /// </summary>
+        /// <param name="sourceName">资源名称</param>
+        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
+        public KeyValuePair<GCHandle, long> GetBGM(string sourceName)
+        {
+            return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.BGM);
+        }
+
+        /// <summary>
+        /// 获得一个指定BGS音频资源的内存数组
+        /// </summary>
+        /// <param name="sourceName">资源名称</param>
+        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
+        public KeyValuePair<GCHandle, long> GetBGS(string sourceName)
+        {
+            return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.BGS);
+        }
+
+        /// <summary>
+        /// 获得一个指定SE音频资源的内存数组
+        /// </summary>
+        /// <param name="sourceName">资源名称</param>
+        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
+        public KeyValuePair<GCHandle, long> GetSE(string sourceName)
+        {
+            return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.SE);
+        }
+
+        /// <summary>
+        /// 获得一个指定Vocal音频资源的内存数组
+        /// </summary>
+        /// <param name="sourceName">资源名称</param>
+        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
+        public KeyValuePair<GCHandle, long> GetVocal(string sourceName)
+        {
+            return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.VOCAL);
+        }
+
+        /// <summary>
+        /// 从资源文件中获取图片资源并返回精灵对象
+        /// </summary>
+        /// <param name="sourceName">资源名称</param>
+        /// <param name="rtype">资源类型</param>
+        /// <returns>该资源的精灵</returns>
+        private MySprite GetGraphicSprite(string sourceName, ResourceType rtype)
         {
             MySprite sprite = new MySprite();
-            // 总是先查看是否有为封包的数据
-            if (this.resourceTable.ContainsKey(GlobalDataContainer.DevURI_PA_PICTURES) &&
-                this.resourceTable[GlobalDataContainer.DevURI_PA_PICTURES].ContainsKey(sourceName))
+            string DevURI = null, PackURI = null;
+            // 处理路径
+            switch (rtype)
             {
-                KeyValuePair<long, long> sourceLocation = this.resourceTable[GlobalDataContainer.DevURI_PA_PICTURES][sourceName];
-                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL(GlobalDataContainer.PackURI_PA_PICTURES + GlobalDataContainer.PackPostfix),
+                case ResourceType.Background:
+                    DevURI = GlobalDataContainer.DevURI_PA_BACKGROUND;
+                    PackURI = GlobalDataContainer.PackURI_PA_BACKGROUND;
+                    break;
+                case ResourceType.Stand:
+                    DevURI = GlobalDataContainer.DevURI_PA_CHARASTAND;
+                    PackURI = GlobalDataContainer.PackURI_PA_CHARASTAND;
+                    break;
+                case ResourceType.Pictures:
+                    DevURI = GlobalDataContainer.DevURI_PA_PICTURES;
+                    PackURI = GlobalDataContainer.PackURI_PA_PICTURES;
+                    break;
+                default:
+                    return null;
+            }
+            // 总是先查看是否有为封包的数据
+            if (this.resourceTable.ContainsKey(DevURI) &&
+                this.resourceTable[DevURI].ContainsKey(sourceName))
+            {
+                KeyValuePair<long, long> sourceLocation = this.resourceTable[DevURI][sourceName];
+                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL(PackURI + GlobalDataContainer.PackPostfix),
                     sourceName, sourceLocation.Key, sourceLocation.Value);
                 MemoryStream ms = new MemoryStream(ob);
                 sprite.Init(ms);
@@ -109,7 +128,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             // 没有封包数据再搜索开发目录
             else
             {
-                string furi = IOUtils.JoinPath(GlobalDataContainer.DevURI_RT_PICTUREASSETS, GlobalDataContainer.DevURI_PA_PICTURES, sourceName);
+                string furi = IOUtils.JoinPath(GlobalDataContainer.DevURI_RT_PICTUREASSETS, DevURI, sourceName);
                 if (File.Exists(IOUtils.ParseURItoURL(furi)))
                 {
                     Uri bg = new Uri(furi, UriKind.RelativeOrAbsolute);
@@ -124,44 +143,36 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 获得一个指定BGM音频资源的内存数组
+        /// 从资源文件中获取声音资源并返回句柄
         /// </summary>
         /// <param name="sourceName">资源名称</param>
+        /// <param name="rtype">资源类型</param>
         /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
-        public KeyValuePair<GCHandle, long> GetBGMMemoryStream(string sourceName)
+        private KeyValuePair<GCHandle, long> GetMusicGCHandleLengthKVP(string sourceName, ResourceType rtype)
         {
-            // 总是先查看是否有为封包的数据
-            if (this.resourceTable.ContainsKey(GlobalDataContainer.DevURI_SO_BGM) &&
-                this.resourceTable[GlobalDataContainer.DevURI_SO_BGM].ContainsKey(sourceName))
+            string DevURI = null, PackURI = null;
+            // 处理路径
+            switch (rtype)
             {
-                KeyValuePair<long, long> sourceLocation = this.resourceTable[GlobalDataContainer.DevURI_SO_BGM][sourceName];
-                GCHandle ptr = PackageUtils.getObjectIntPtr(IOUtils.ParseURItoURL(GlobalDataContainer.PackURI_SO_BGM + GlobalDataContainer.PackPostfix),
-                    sourceName, sourceLocation.Key, sourceLocation.Value);
-                return new KeyValuePair<GCHandle, long>(ptr, sourceLocation.Value);
+                case ResourceType.BGM:
+                    DevURI = GlobalDataContainer.DevURI_SO_BGM;
+                    PackURI = GlobalDataContainer.PackURI_SO_BGM;
+                    break;
+                case ResourceType.BGS:
+                    DevURI = GlobalDataContainer.DevURI_SO_BGS;
+                    PackURI = GlobalDataContainer.PackURI_SO_BGS;
+                    break;
+                case ResourceType.SE:
+                    DevURI = GlobalDataContainer.DevURI_SO_SE;
+                    PackURI = GlobalDataContainer.PackURI_SO_SE;
+                    break;
+                case ResourceType.VOCAL:
+                    DevURI = GlobalDataContainer.DevURI_SO_VOCAL;
+                    PackURI = GlobalDataContainer.PackURI_SO_VOCAL;
+                    break;
+                default:
+                    throw new Exception("调用了音乐获取方法，但却不是获取音乐资源");
             }
-            // 没有封包数据再搜索开发目录
-            else
-            {
-                string furi = IOUtils.JoinPath(GlobalDataContainer.DevURI_RT_SOUND, GlobalDataContainer.DevURI_SO_BGM, sourceName);
-                if (File.Exists(IOUtils.ParseURItoURL(furi)))
-                {
-                    byte[] bytes = File.ReadAllBytes(IOUtils.ParseURItoURL(furi));
-                    return new KeyValuePair<GCHandle,long>(GCHandle.Alloc(bytes, GCHandleType.Pinned), bytes.Length);
-                }
-                else
-                {
-                    throw new Exception("文件不存在：" + sourceName);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 获得一个指定Vocal音频资源的内存数组
-        /// </summary>
-        /// <param name="sourceName">资源名称</param>
-        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
-        public KeyValuePair<GCHandle, long> GetVocalMemoryStream(string sourceName)
-        {
             // 总是先查看是否有为封包的数据
             if (this.resourceTable.ContainsKey(GlobalDataContainer.DevURI_SO_VOCAL) &&
                 this.resourceTable[GlobalDataContainer.DevURI_SO_VOCAL].ContainsKey(sourceName))
@@ -186,16 +197,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 }
             }
         }
-
-
-
-
-
-
-
-        
-
-        
 
         /// <summary>
         /// 初始化资源字典
@@ -225,7 +226,22 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         // 唯一实例量
         private static ResourceManager synObject = null;
-        // 资源字典
+        // 资源字典（之后要变成私有）
         public Dictionary<string, Dictionary<string, KeyValuePair<long, long>>> resourceTable = null;
+    }
+
+    /// <summary>
+    /// 枚举：资源类型
+    /// </summary>
+    internal enum ResourceType
+    {
+        Unknown,
+        Pictures,
+        Stand,
+        Background,
+        BGM,
+        BGS,
+        SE,
+        VOCAL
     }
 }

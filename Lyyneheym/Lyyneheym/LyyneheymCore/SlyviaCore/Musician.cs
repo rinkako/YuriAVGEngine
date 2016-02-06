@@ -261,7 +261,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             {
                 this.BgsHandleContainer.Add(0);
             }
-            this.isBGMLoaded = this.isBGMPaused = this.isBGMPlaying = false;
+            this.isBGMLoaded = this.isBGMPaused = this.isBGMPlaying = this.isMute = false;
         }
 
         /// <summary>
@@ -376,6 +376,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 获取或设置是否静音
+        /// </summary>
+        public bool isMute
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// 当前语音句柄
         /// </summary>
         private int vocalHandle
@@ -404,8 +413,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         private float vocalVolume = 1000f;
 
-        private Timer musicianTimer;
-
         /// <summary>
         /// 唯一实例
         /// </summary>
@@ -415,6 +422,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// BGM句柄容器
         /// </summary>
         private KeyValuePair<string, int> BgmHandleContainer;
+
+        /// <summary>
+        /// 音乐管理器定时器
+        /// </summary>
+        private Timer musicianTimer;
 
         /// <summary>
         /// 背景声效容器
@@ -436,7 +448,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.musicianTimer.Elapsed += musicianTimer_Elapsed;
             this.Reset();
         }
-
     }
 
     /// <summary>

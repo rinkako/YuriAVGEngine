@@ -41,25 +41,25 @@ namespace Lyyneheym
             InitializeComponent();
             this.testFontEffect(this.BO_MainText);
             core.GameUpdater.SetMainWindow(this);
-            SolidColorBrush scb = new SolidColorBrush(Colors.Red);
-
+            //SolidColorBrush scb = new SolidColorBrush(Colors.Red);
+            //this.BO_MainText.Foreground = scb;
             //timer.Interval = TimeSpan.FromMilliseconds(1000);
             //timer.Tick += timer_Tick;
             
 
-            this.BO_MainText.Foreground = scb;
+            
 
-            myBitmapImage = new BitmapImage();
-            myBitmapImage.BeginInit();
-            myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\MenuItems2.png", UriKind.RelativeOrAbsolute);
-            myBitmapImage.SourceRect = new Int32Rect(187, 2, 226, 226);
-            myBitmapImage.EndInit();
-            mytestbutton.Width = myBitmapImage.PixelWidth;
-            mytestbutton.Height = myBitmapImage.PixelHeight;
-            mytestbutton.Source = myBitmapImage;
-            mytestbutton.Margin = new Thickness(0, 0, 0, 0);
-            mytestbutton.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            mytestbutton.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            //myBitmapImage = new BitmapImage();
+            //myBitmapImage.BeginInit();
+            //myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\MenuItems2.png", UriKind.RelativeOrAbsolute);
+            //myBitmapImage.SourceRect = new Int32Rect(187, 2, 226, 226);
+            //myBitmapImage.EndInit();
+            //mytestbutton.Width = myBitmapImage.PixelWidth;
+            //mytestbutton.Height = myBitmapImage.PixelHeight;
+            //mytestbutton.Source = myBitmapImage;
+            //mytestbutton.Margin = new Thickness(0, 0, 0, 0);
+            //mytestbutton.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            //mytestbutton.VerticalAlignment = System.Windows.VerticalAlignment.Top;
         }
 
         //void timer_Tick(object sender, EventArgs e)

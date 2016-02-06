@@ -54,19 +54,19 @@ namespace Lyyneheym
 
         public MySprite testBitmapImage(string filename)
         {
-            return this.ResMana.GetBackgroundImage(filename);
+            return this.ResMana.GetBackground(filename);
         }
 
         public MySprite testCharaStand(string filename)
         {
-            return this.ResMana.GetCharacterStandImage(filename);
+            return this.ResMana.GetCharacterStand(filename);
         }
 
 
         public void testBGM(string sourceName)
         {
             Musician m = Musician.getInstance();
-            var r = this.ResMana.GetBGMMemoryStream(sourceName);
+            var r = this.ResMana.GetBGM(sourceName);
             m.PlayBGM(sourceName, r.Key, r.Value);
 
         }
@@ -74,7 +74,7 @@ namespace Lyyneheym
         public void testVocal(string vocalName)
         {
             Musician m = Musician.getInstance();
-            var r = this.ResMana.GetVocalMemoryStream(vocalName);
+            var r = this.ResMana.GetVocal(vocalName);
             m.PlayVocal(r.Key, r.Value);
         }
 

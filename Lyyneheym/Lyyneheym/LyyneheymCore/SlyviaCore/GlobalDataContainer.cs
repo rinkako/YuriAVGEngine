@@ -98,6 +98,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         // 声效->音乐资源目录名
         public static readonly string DevURI_SO_BGM = "bgm";
         // 声效->音效资源目录名
+        public static readonly string DevURI_SO_BGS = "bgs";
+        // 声效->声效资源目录名
         public static readonly string DevURI_SO_SE = "se";
         // 声效->语音资源目录名
         public static readonly string DevURI_SO_VOCAL = "vocal";
@@ -114,7 +116,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public static readonly string PackURI_PA_PICTURES = "SLPPC";
         // 声效->音乐资源目录名
         public static readonly string PackURI_SO_BGM = "SLBGM";
-        // 声效->音效资源目录名
+        // 声效->声效资源目录名
+        public static readonly string PackURI_SO_BGS = "SLBGS";
+        // 声效->声效资源目录名
         public static readonly string PackURI_SO_SE = "SLSOUND";
         // 声效->语音资源目录名
         public static readonly string PackURI_SO_VOCAL = "SLVOCAL";
