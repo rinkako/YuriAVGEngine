@@ -70,7 +70,6 @@
     <Compile Include="LyyneheymCore\SlyviaCore\RuntimeManager.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\Scene.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SceneFunction.cs" />
-    <Compile Include="LyyneheymCore\SlyviaCore\SceneManager.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SpiritContainer.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SpriteAnimation.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\StackMachine.cs" />
