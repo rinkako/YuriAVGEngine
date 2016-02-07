@@ -242,6 +242,9 @@ namespace Lyyneheym.SlyviaInterpreter
         private int threadNum = 1;
     }
 
+    /// <summary>
+    /// 枚举：编译结果的类型
+    /// </summary>
     public enum InterpreterType
     {
         DEBUG,

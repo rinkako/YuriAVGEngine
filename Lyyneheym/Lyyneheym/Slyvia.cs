@@ -96,25 +96,7 @@ namespace Lyyneheym
             this.RunMana = RuntimeManager.getInstance();
             this.GameUpdater = new UpdateRender();
 
-            this.ResMana.initDictionary();
 
-            // ================== DEBUG ==================
-            //Dictionary<string, KeyValuePair<long, long>> dtt = new Dictionary<string, KeyValuePair<long, long>>();
-            //dtt.Add("bg2.png", new KeyValuePair<long, long>(754513, 1149339));
-            //ResMana.resourceTable.Add(GlobalDataContainer.DevURI_PA_BACKGROUND, dtt);
-
-            //Dictionary<string, KeyValuePair<long, long>> bgm = new Dictionary<string, KeyValuePair<long, long>>();
-            //bgm.Add("车椅子の未来宇宙.mp3", new KeyValuePair<long, long>(0, 8705857));
-            //bgm.Add("Boss01.wav", new KeyValuePair<long, long>(8705857, 13446376));
-            //ResMana.resourceTable.Add(GlobalDataContainer.DevURI_SO_BGM, bgm);
-
-            //Dictionary<string, KeyValuePair<long, long>> vcc = new Dictionary<string, KeyValuePair<long, long>>();
-            //vcc.Add("Alice001.mp3", new KeyValuePair<long, long>(0, 87757));
-            //vcc.Add("Alice002.mp3", new KeyValuePair<long, long>(87757, 57052));
-            //vcc.Add("Alice003.mp3", new KeyValuePair<long, long>(144809, 381862));
-            //ResMana.resourceTable.Add(GlobalDataContainer.DevURI_SO_VOCAL, vcc);
-
-            // ================== DEBUG ==================
         }
 
 

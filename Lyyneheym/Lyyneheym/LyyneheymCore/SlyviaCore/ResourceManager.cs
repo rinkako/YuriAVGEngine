@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Media.Imaging;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
+using System.Threading;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Lyyneheym.LyyneheymCore.Utils;
 
@@ -199,22 +195,32 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 初始化资源字典
-        /// </summary>
-        /// <returns>操作成功与否</returns>
-        public void initDictionary()
-        {
-            this.InitDictionaryByPST(this.SearchPST());
-        }
-
-        /// <summary>
         /// 根据PST向量载入资源到字典
         /// </summary>
-        /// <param name="pstList"></param>
-        private void InitDictionaryByPST(List<string> pstList)
+        /// <param name="threadID">线程ID</param>
+        private void InitDictionaryByPST(object threadID)
         {
-            foreach (string pstPath in pstList)
+            int tid = (int)threadID;
+            while (true)
             {
+                string pstPath = "";
+                lock (this.pendingPst)
+                {
+                    if (this.pendingPst.Count != 0)
+                    {
+                        pstPath = this.pendingPst.Dequeue();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if (pstPath == "")
+                {
+                    continue;
+                }
+                DebugUtils.AsyncConsoleLine(String.Format("Loading PST Resource From \"{0}\" At thread {1}", pstPath, tid), "ResourceManager", this.consoleMutex, OutputStyle.Normal);
+                // 开始处理文件
                 FileStream fs = new FileStream(pstPath, FileMode.Open);
                 StreamReader sr = new StreamReader(fs);
                 // 读取头部信息
@@ -222,7 +228,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 string[] headerItem = header.Split('@');
                 if (headerItem.Length != GlobalDataContainer.PackHeaderItemNum && headerItem[0] != GlobalDataContainer.PackHeader)
                 {
-                    Console.WriteLine("Ignore pack: " + pstPath);
+                    DebugUtils.AsyncConsoleLine(String.Format("Ignored Pack (Bad Header): {0}", pstPath), "ResourceManager", this.consoleMutex, OutputStyle.Warning);
                     continue;
                 }
                 int fileCount = 0;
@@ -242,12 +248,12 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     version = keyItem[1];
                     if (key != GlobalDataContainer.GAME_KEY)
                     {
-                        Console.WriteLine("Ignore pack(key failure): " + pstPath);
+                        DebugUtils.AsyncConsoleLine(String.Format("Ignored Pack (Key Failed): {0}", pstPath), "ResourceManager", this.consoleMutex, OutputStyle.Warning);
                         continue;
                     }
                     else if (Convert.ToDouble(version) < Convert.ToDouble(GlobalDataContainer.GAME_VERSION))
                     {
-                        Console.WriteLine("Ignore pack(version is elder): " + pstPath);
+                        DebugUtils.AsyncConsoleLine(String.Format("Ignored Pack (Version Is Elder): {0}", pstPath), "ResourceManager", this.consoleMutex, OutputStyle.Warning);
                         continue;
                     }
                     // 通过检验的包才载入资源字典
@@ -259,12 +265,12 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         string[] lineitem = sr.ReadLine().Split(':');
                         if (lineitem[0] == GlobalDataContainer.PackEOF)
                         {
-                            Console.WriteLine("Occured EOF: " + pstPath);
+                            DebugUtils.AsyncConsoleLine(String.Format("Occured EOF: {0}", pstPath), "ResourceManager", this.consoleMutex, OutputStyle.Warning);
                             break;
                         }
                         if (lineitem.Length != 3)
                         {
-                            Console.WriteLine("Igonre line: " + lineEncounter + ", At file:" + pstPath);
+                            DebugUtils.AsyncConsoleLine(String.Format("Igonred line(Bad lineitem): {0}, In file: {1}", lineEncounter, pstPath), "ResourceManager", this.consoleMutex, OutputStyle.Warning);
                             continue;
                         }
                         string srcName = lineitem[0];
@@ -272,30 +278,33 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         long srcLength = Convert.ToInt64(lineitem[2]);
                         this.AddResource(resourceType, srcName, srcOffset, srcLength);
                     }
-                    Console.WriteLine("Finish init: " + pstPath);
+                    DebugUtils.AsyncConsoleLine(String.Format("Finish Dictionary Init From \"{0}\" At thread {1}", pstPath, tid), "ResourceManager", this.consoleMutex, OutputStyle.Normal);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
+                    DebugUtils.AsyncConsoleLine(ex.ToString(), "ResourceManager / CLR", this.consoleMutex, OutputStyle.Error);                    
                 }
                 sr.Close();
                 fs.Close();
             }
+            // 递增回到等待
+            this.threadFinishCounter++;
+            DebugUtils.AsyncConsoleLine(String.Format("At ResMana thread {0}, Waiting for callback", tid), "ResourceManager", this.consoleMutex, OutputStyle.Important);
         }
 
         /// <summary>
         /// 在根目录下搜索资源信息文件
         /// </summary>
-        /// <returns>资源信息文件的路径向量</returns>
-        private List<string> SearchPST()
+        /// <returns>资源信息文件的路径队列</returns>
+        private Queue<string> SearchPST()
         {
-            List<string> resContainer = new List<string>();
+            Queue<string> resContainer = new Queue<string>();
             DirectoryInfo rootDirInfo = new DirectoryInfo(Environment.CurrentDirectory);
             foreach (FileInfo file in rootDirInfo.GetFiles())
             {
                 if (file.Extension == ".pst")
                 {
-                    resContainer.Add(file.FullName);
+                    resContainer.Enqueue(file.FullName);
                 }
             }
             return resContainer;
@@ -308,7 +317,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="resourceKey">资源名称</param>
         /// <param name="offset">资源在包中的偏移</param>
         /// <param name="length">资源在包中的长度</param>
-        /// <returns></returns>
+        /// <returns>操作成功与否</returns>
         private bool AddResource(string typeKey, string resourceKey, long offset, long length)
         {
             if (this.resourceTable.ContainsKey(typeKey))
@@ -320,7 +329,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 }
                 else
                 {
-                    Console.WriteLine("资源已存在：" + typeKey + " - " + resourceKey);
+                    DebugUtils.ConsoleLine(String.Format("Resource already exist, type: {0}, name: {1}", typeKey, resourceKey), "ResourceManager", OutputStyle.Warning);
                 }
             }
             return false;
@@ -342,6 +351,31 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 开启多线程将PST文件加载到资源字典中
+        /// </summary>
+        /// <param name="threadNum">线程数量</param>
+        private void InitDictionary(int threadNum = 4)
+        {
+            // 控制线程数量
+            if (threadNum < 1 || threadNum > 8)
+            {
+                threadNum = 4;
+            }
+            this.pendingPst = this.SearchPST();
+            // 开始线程处理
+            List<Thread> threadPool = new List<Thread>();
+            this.threadFinishCounter = 0;
+            for (int t = 0; t < threadNum; t++)
+            {
+                threadPool.Add(new Thread(new ParameterizedThreadStart(this.InitDictionaryByPST)));
+                threadPool[t].IsBackground = true;
+                threadPool[t].Start(t);
+            }
+            // 等待线程回调
+            while (this.threadFinishCounter < threadNum);
+        }
+
+        /// <summary>
         /// 工厂方法：获得类的唯一实例
         /// </summary>
         /// <returns>资源管理器的唯一实例</returns>
@@ -356,13 +390,33 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         private ResourceManager()
         {
             resourceTable = new Dictionary<string, Dictionary<string, KeyValuePair<long, long>>>();
+            this.InitDictionary();
         }
 
-        // 唯一实例量
+        /// <summary>
+        /// 唯一实例量
+        /// </summary>
         private static ResourceManager synObject = null;
 
-        // 资源字典（之后要变成私有）
+        /// <summary>
+        /// 封包资源字典
+        /// </summary>
         private Dictionary<string, Dictionary<string, KeyValuePair<long, long>>> resourceTable = null;
+
+        /// <summary>
+        /// 等待处理的pst队列
+        /// </summary>
+        private Queue<string> pendingPst;
+
+        /// <summary>
+        /// 进程等待回调计数
+        /// </summary>
+        private int threadFinishCounter;
+
+        /// <summary>
+        /// 控制台互斥量
+        /// </summary>
+        private Mutex consoleMutex = new Mutex();
     }
 
     /// <summary>

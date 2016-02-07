@@ -44,14 +44,15 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -76,6 +77,7 @@
     <Compile Include="LyyneheymCore\SlyviaCore\StackMachineFrame.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SymbolTable.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\UpdateRender.cs" />
+    <Compile Include="LyyneheymCore\Utils\DebugUtils.cs" />
     <Compile Include="LyyneheymCore\Utils\IOUtils.cs" />
     <Compile Include="LyyneheymCore\Utils\PackageUtils.cs" />
     <Compile Include="Slyvia.cs" />

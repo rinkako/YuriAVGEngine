@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -31,11 +32,6 @@ namespace Lyyneheym
     {
         private Slyvia core = Slyvia.getInstance();
 
-        //private DispatcherTimer timer = new DispatcherTimer();
-
-
-        
-        private BitmapImage myBitmapImage;
         public MainWindow()
         {
             InitializeComponent();
@@ -45,9 +41,7 @@ namespace Lyyneheym
             //this.BO_MainText.Foreground = scb;
             //timer.Interval = TimeSpan.FromMilliseconds(1000);
             //timer.Tick += timer_Tick;
-            
 
-            
 
             //myBitmapImage = new BitmapImage();
             //myBitmapImage.BeginInit();
