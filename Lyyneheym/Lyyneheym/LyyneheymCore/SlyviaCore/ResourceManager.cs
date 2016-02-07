@@ -215,12 +215,38 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 StreamReader sr = new StreamReader(fs);
                 // 读取头部信息
                 string header = sr.ReadLine();
-                
+                string[] headerItem = header.Split('@');
+                if (headerItem.Length != GlobalDataContainer.PackHeaderItemNum && headerItem[0] != GlobalDataContainer.PackHeader)
+                {
+                    Console.WriteLine("Ignore pack: " + pstPath);
+                    continue;
+                }
+                int fileCount = 0;
+                string resourceType = "";
+                string key = "";
+                string version = "";
+                try
+                {
+                    fileCount = Convert.ToInt32(headerItem[1]);
+                    resourceType = headerItem[2];
+                    string[] keyItem = headerItem[3].Split('?');
+                    if (keyItem.Length != 2)
+                    {
+                        version = "0";
+                    }
+                    key = keyItem[0];
+                    version = keyItem[1];
+                    if (key != GlobalDataContainer.GAME_KEY)
+                    {
+                        Console.WriteLine("Ignore pack(key failure): " + pstPath);
+                        continue;
+                    }
+                }
 
-
-                sr.Close();
-                fs.Close();
             }
+
+            sr.Close();
+            fs.Close();
         }
 
         /// <summary>

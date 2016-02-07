@@ -21,6 +21,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public static string GAME_TITLE_NAME = "SlyviaGame";
         // 游戏密钥
         public static string GAME_KEY = "testkey";
+        // 游戏版本
+        public static string GAME_VERSION = "1";
         #endregion
 
         #region 个性化设置信息
@@ -110,6 +112,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         #region 封装包名字常量
         // 包后缀
         public static readonly string PackPostfix = ".dat";
+        // 包标记
+        public static readonly string PackHeader = "___SlyviaLyyneheym";
+        // 包头部项目数
+        public static readonly int PackHeaderItemNum = 4;
         // 图像->背景资源目录名
         public static readonly string PackURI_PA_BACKGROUND = "SLPBG";
         // 图像->立绘资源目录名
