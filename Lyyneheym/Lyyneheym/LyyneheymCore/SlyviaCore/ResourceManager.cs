@@ -202,11 +202,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 初始化资源字典
         /// </summary>
         /// <returns>操作成功与否</returns>
-        public bool initDictionary()
+        public void initDictionary()
         {
-            return true;
+            this.InitDictionaryByPST(this.SearchPST());
         }
 
+        /// <summary>
+        /// 根据PST向量载入资源到字典
+        /// </summary>
+        /// <param name="pstList"></param>
         private void InitDictionaryByPST(List<string> pstList)
         {
             foreach (string pstPath in pstList)
@@ -241,12 +245,42 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         Console.WriteLine("Ignore pack(key failure): " + pstPath);
                         continue;
                     }
+                    else if (Convert.ToDouble(version) < Convert.ToDouble(GlobalDataContainer.GAME_VERSION))
+                    {
+                        Console.WriteLine("Ignore pack(version is elder): " + pstPath);
+                        continue;
+                    }
+                    // 通过检验的包才载入资源字典
+                    this.AddResouceTable(resourceType);
+                    int lineEncounter = 0;
+                    while (lineEncounter < fileCount)
+                    {
+                        lineEncounter++;
+                        string[] lineitem = sr.ReadLine().Split(':');
+                        if (lineitem[0] == GlobalDataContainer.PackEOF)
+                        {
+                            Console.WriteLine("Occured EOF: " + pstPath);
+                            break;
+                        }
+                        if (lineitem.Length != 3)
+                        {
+                            Console.WriteLine("Igonre line: " + lineEncounter + ", At file:" + pstPath);
+                            continue;
+                        }
+                        string srcName = lineitem[0];
+                        long srcOffset = Convert.ToInt64(lineitem[1]);
+                        long srcLength = Convert.ToInt64(lineitem[2]);
+                        this.AddResource(resourceType, srcName, srcOffset, srcLength);
+                    }
+                    Console.WriteLine("Finish init: " + pstPath);
                 }
-
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+                sr.Close();
+                fs.Close();
             }
-
-            sr.Close();
-            fs.Close();
         }
 
         /// <summary>
@@ -265,6 +299,46 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 }
             }
             return resContainer;
+        }
+
+        /// <summary>
+        /// 为资源表增加一个资源
+        /// </summary>
+        /// <param name="typeKey">资源在表中的类型</param>
+        /// <param name="resourceKey">资源名称</param>
+        /// <param name="offset">资源在包中的偏移</param>
+        /// <param name="length">资源在包中的长度</param>
+        /// <returns></returns>
+        private bool AddResource(string typeKey, string resourceKey, long offset, long length)
+        {
+            if (this.resourceTable.ContainsKey(typeKey))
+            {
+                if (!this.resourceTable[typeKey].ContainsKey(resourceKey))
+                {
+                    this.resourceTable[typeKey][resourceKey] = new KeyValuePair<long, long>(offset, length);
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("资源已存在：" + typeKey + " - " + resourceKey);
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 为资源字典添加一个资源表
+        /// </summary>
+        /// <param name="resTableName">资源表名称</param>
+        /// <returns>操作成功与否</returns>
+        private bool AddResouceTable(string resTableName)
+        {
+            if (!this.resourceTable.ContainsKey(resTableName))
+            {
+                this.resourceTable.Add(resTableName, new Dictionary<string, KeyValuePair<long, long>>());
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -288,7 +362,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         private static ResourceManager synObject = null;
 
         // 资源字典（之后要变成私有）
-        public Dictionary<string, Dictionary<string, KeyValuePair<long, long>>> resourceTable = null;
+        private Dictionary<string, Dictionary<string, KeyValuePair<long, long>>> resourceTable = null;
     }
 
     /// <summary>

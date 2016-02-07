@@ -81,7 +81,7 @@ namespace Lyyneheym.LyynePacker
                     flist = flist,
                     savefile = fwindow.FileName,
                     pak = this.comboBox1.SelectedItem.ToString(),
-                    sign = "testkey"
+                    sign = "testkey?0"
                 };
                 this.progressBar1.Style = ProgressBarStyle.Marquee;
                 this.tabControl1.Enabled = false;
@@ -129,7 +129,7 @@ namespace Lyyneheym.LyynePacker
                 flist = flist,
                 savefile = savePath,
                 pakFile = this.exPakName,
-                sign = "testkey"
+                sign = "testkey?0"
             };
             this.progressBar1.Style = ProgressBarStyle.Marquee;
             this.tabControl1.Enabled = false;
