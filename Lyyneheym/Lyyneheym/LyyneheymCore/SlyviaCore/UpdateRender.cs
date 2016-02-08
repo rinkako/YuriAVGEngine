@@ -21,7 +21,12 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         public UpdateRender()
         {
-
+            // 初始化鼠标键位
+            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Left, MouseButtonState.Released);
+            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Middle, MouseButtonState.Released);
+            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Right, MouseButtonState.Released);
+            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.XButton1, MouseButtonState.Released);
+            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.XButton2, MouseButtonState.Released);
         }
         
         /// <summary>
@@ -42,7 +47,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         }
 
-        public KeyStates GetKeyboardStatus(Key key)
+        public KeyStates GetKeyboardState(Key key)
         {
             if (UpdateRender.KS_KEY_Dict.ContainsKey(key) == false)
             {
@@ -52,9 +57,29 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             return UpdateRender.KS_KEY_Dict[key];
         }
 
-        public void SetKeyboardStatus(Key key, KeyStates state)
+        public void SetKeyboardState(Key key, KeyStates state)
         {
             UpdateRender.KS_KEY_Dict[key] = state;
+        }
+
+        public MouseButtonState GetMouseButtonState(MouseButton key)
+        {
+            return UpdateRender.KS_MOUSE_Dict[key];
+        }
+
+        public void SetMouseButtonState(MouseButton key, MouseButtonState state)
+        {
+            UpdateRender.KS_MOUSE_Dict[key] = state;
+        }
+
+        public int GetMouseWheelDelta()
+        {
+            return UpdateRender.KS_MOUSE_WHEEL_DELTA;
+        }
+
+        public void SetMouseWheelDelta(int delta)
+        {
+            UpdateRender.KS_MOUSE_WHEEL_DELTA = delta;
         }
 
         /// <summary>
@@ -139,6 +164,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         private MainWindow view = null;
 
+        /// <summary>
+        /// 音乐引擎
+        /// </summary>
+        private Musician musician = Musician.getInstance();
+
+        /// <summary>
+        /// 资源管理器
+        /// </summary>
+        private ResourceManager resMana = ResourceManager.getInstance();
+
         #region 演绎函数
         private void Dialog()
         {
@@ -184,15 +219,32 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
 
         }
- 
-        private void Bgm()
-        {
 
+        /// <summary>
+        /// 演绎函数：播放BGM，如果是同一个文件将不会重新播放
+        /// </summary>
+        /// <param name="bgmFileName">要播放的BGM名字</param>
+        /// <param name="volume">音量</param>
+        private void Bgm(string bgmResourceName, float volume)
+        {
+            // 如果当前BGM就是此BGM就只调整音量
+            if (this.musician.currentBGM != bgmResourceName)
+            {
+                var bgmKVP = this.resMana.GetBGM(bgmResourceName);
+                this.musician.PlayBGM(bgmResourceName, bgmKVP.Key, bgmKVP.Value, volume);
+            }
+            else
+            {
+                this.musician.SetBGMVolume(volume);
+            }
         }
 
+        /// <summary>
+        /// 演绎函数：停止BGM
+        /// </summary>
         private void Stopbgm()
         {
-
+            this.musician.StopAndReleaseBGM();
         }
 
         private void Vocal()
@@ -297,10 +349,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         #endregion
 
         #region 键位按钮状态
-        public static bool KS_MOUSE_LEFT = false;
-        public static bool KS_MOUSE_RIGHT = false;
-        public static bool KS_MOUSE_MID = false;
         public static int KS_MOUSE_WHEEL_DELTA = 0;
+        private static Dictionary<MouseButton, MouseButtonState> KS_MOUSE_Dict = new Dictionary<MouseButton, MouseButtonState>();
         private static Dictionary<Key, KeyStates> KS_KEY_Dict = new Dictionary<Key, KeyStates>();
         #endregion
     }

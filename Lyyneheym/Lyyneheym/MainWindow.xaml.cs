@@ -479,17 +479,17 @@ namespace Lyyneheym
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            core.updateRender.WMouseDownEventHandler(e);
+            this.core.UpdateMouse(e);
         }
 
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            core.updateRender.WMouseUpEventHandler(e);
+            this.core.UpdateMouse(e);
         }
 
         private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-
+            this.core.UpdateMouseWheel(e.Delta);
         }
 
 

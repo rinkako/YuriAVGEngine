@@ -109,6 +109,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 this.BassEngine.Stop(this.BgmHandleContainer.Value);
                 this.BassEngine.DisposeHandle(this.BgmHandleContainer.Value);
                 this.isBGMLoaded = this.isBGMPlaying = false;
+                this.BgmHandleContainer = new KeyValuePair<string, int>(null, 0);
             }
         }
 
@@ -423,6 +424,17 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 获取当前BGM名字
+        /// </summary>
+        public string currentBGM
+        {
+            get
+            {
+                return this.BgmHandleContainer.Key;
+            }
         }
 
         /// <summary>
