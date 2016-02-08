@@ -36,7 +36,7 @@ namespace Lyyneheym
         {
             InitializeComponent();
             this.testFontEffect(this.BO_MainText);
-            core.GameUpdater.SetMainWindow(this);
+            core.updateRender.SetMainWindow(this);
             //SolidColorBrush scb = new SolidColorBrush(Colors.Red);
             //this.BO_MainText.Foreground = scb;
             //timer.Interval = TimeSpan.FromMilliseconds(1000);
@@ -81,7 +81,6 @@ namespace Lyyneheym
 
         private void testLexer()
         {
-            core.testRef();
 
             Interpreter ip = new Interpreter("TestProj", @"C:\Users\Kako\Desktop\testDir");
             ip.Dash(InterpreterType.RELEASE_WITH_IL, 8);
@@ -436,16 +435,6 @@ namespace Lyyneheym
             sb.Begin(this);
         }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            core.GameUpdater.WMouseDownEventHandler(e);
-        }
-
-        private void Window_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            core.GameUpdater.WMouseUpEventHandler(e);
-        }
-
         private void Button_Click_11(object sender, RoutedEventArgs e)
         {
             SpriteAnimation.XYMoveAnimation(this.rightChara, TimeSpan.FromSeconds(3), -370, 0, 0.8);
@@ -476,6 +465,31 @@ namespace Lyyneheym
             {
                 Musician.getInstance().SetBGMStereo((float)e.NewValue);
             }
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            this.core.UpdateKeyboard(e);
+        }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            this.core.UpdateKeyboard(e);
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            core.updateRender.WMouseDownEventHandler(e);
+        }
+
+        private void Window_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            core.updateRender.WMouseUpEventHandler(e);
+        }
+
+        private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+
         }
 
 

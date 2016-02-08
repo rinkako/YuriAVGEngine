@@ -84,6 +84,20 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 获得指定名称的场景
+        /// </summary>
+        /// <param name="sceneName">场景名称</param>
+        /// <returns>场景实例</returns>
+        public Scene GetScene(string sceneName)
+        {
+            if (this.sceneTable.ContainsKey(sceneName))
+            {
+                return this.sceneTable[sceneName];
+            }
+            return null;
+        }
+
+        /// <summary>
         /// 从资源文件中获取图片资源并返回精灵对象
         /// </summary>
         /// <param name="sourceName">资源名称</param>

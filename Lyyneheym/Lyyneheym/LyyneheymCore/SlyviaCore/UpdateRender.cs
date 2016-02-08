@@ -42,6 +42,21 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         }
 
+        public KeyStates GetKeyboardStatus(Key key)
+        {
+            if (UpdateRender.KS_KEY_Dict.ContainsKey(key) == false)
+            {
+                UpdateRender.KS_KEY_Dict.Add(key, KeyStates.None);
+                return KeyStates.None;
+            }
+            return UpdateRender.KS_KEY_Dict[key];
+        }
+
+        public void SetKeyboardStatus(Key key, KeyStates state)
+        {
+            UpdateRender.KS_KEY_Dict[key] = state;
+        }
+
         /// <summary>
         /// 处理游戏窗体的鼠标按下信息
         /// </summary>
@@ -285,22 +300,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public static bool KS_MOUSE_LEFT = false;
         public static bool KS_MOUSE_RIGHT = false;
         public static bool KS_MOUSE_MID = false;
-        public static bool KS_KEY_ESC = false;
-        public static bool KS_KEY_SHIFT = false;
-        public static bool KS_KEY_CTRL = false;
-        public static bool KS_KEY_TAB = false;
-        public static bool KS_KEY_SPACE = false;
-        public static bool KS_KEY_Z = false;
-        public static bool KS_KEY_X = false;
-        public static bool KS_KEY_W = false;
-        public static bool KS_KEY_S = false;
-        public static bool KS_KEY_A = false;
-        public static bool KS_KEY_D = false;
-        public static bool KS_KEY_ENTER = false;
-        public static bool KS_KEY_UP = false;
-        public static bool KS_KEY_DOWN = false;
-        public static bool KS_KEY_LEFT = false;
-        public static bool KS_KEY_RIGHT = false;
+        public static int KS_MOUSE_WHEEL_DELTA = 0;
+        private static Dictionary<Key, KeyStates> KS_KEY_Dict = new Dictionary<Key, KeyStates>();
         #endregion
     }
 }

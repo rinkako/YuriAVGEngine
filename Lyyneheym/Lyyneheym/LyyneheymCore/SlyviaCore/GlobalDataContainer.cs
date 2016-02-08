@@ -134,13 +134,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public static readonly string PackURI_SO_VOCAL = "SLVOCAL";
         #endregion
 
-        #region 系统变量名称
-        // 背景音轨字典键名
-        public static readonly string CVarName_BGMTrack = "CVar_BGMTrackNum";
-        // 音效音轨字典键名
-        public static readonly string CVarName_SETrack = "CVar_SETrackNum";
-        // 语音音轨字典键名
-        public static readonly string CVarName_VocalTrack = "CVar_VocalTrackNum";
+        #region 系统信息
+        // 脚本入口
+        public static readonly string Script_Main = "main";
+        // 刷新频率
+        public static readonly int DirectorTimerInterval = 17;
         #endregion
 
         #region 枚举类型
