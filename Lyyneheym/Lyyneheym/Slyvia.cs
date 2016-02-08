@@ -93,7 +93,7 @@ namespace Lyyneheym
         private Slyvia()
         {
             this.ResMana = ResourceManager.getInstance();
-            this.RunMana = RuntimeManager.getInstance();
+            this.RunMana = new RuntimeManager();
             this.GameUpdater = new UpdateRender();
 
 

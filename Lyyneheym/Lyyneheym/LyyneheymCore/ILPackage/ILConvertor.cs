@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Collections.Generic;
-
+using Lyyneheym.LyyneheymCore.Utils;
 using Lyyneheym.LyyneheymCore.SlyviaCore;
 
 namespace Lyyneheym.LyyneheymCore.ILPackage
@@ -85,6 +85,7 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
                         }
                     }
                 }
+                DebugUtils.ConsoleLine(String.Format("Finished SAP Relation Recovery: {0}", sceneName), "Lyyneherm Interpreter", OutputStyle.Normal);
                 Scene parseScene = null;
                 if (saHeaderList.Count > 0)
                 {
@@ -98,6 +99,7 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
                     parseScene = new Scene(sceneName, mainSa, funcVec);
                 }
                 resList.Add(parseScene);
+                DebugUtils.ConsoleLine(String.Format("Finished SAP Function Recovery: {0}", sceneName), "Lyyneherm Interpreter", OutputStyle.Normal);
             }
             return resList;
         }
@@ -172,6 +174,7 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
                     this.iResContainer[currentSceneKey].Add(sa.saNodeName, sa);
                 }
             }
+            DebugUtils.ConsoleLine(String.Format("Finished Convert IL to SAP"), "Lyyneherm Interpreter", OutputStyle.Normal);
         }
         
         /// <summary>
@@ -185,10 +188,11 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
             {
                 if (finfo.Extension != ".sil")
                 {
-                    Console.WriteLine("Ignored: " + finfo.Name);
+                    DebugUtils.ConsoleLine(String.Format("Ignored file: {0}", finfo.FullName), "Lyyneherm Interpreter", OutputStyle.Warning);
                     continue;
                 }
                 // 分割文件为行
+                DebugUtils.ConsoleLine(String.Format("Spliting file: {0}", finfo.FullName), "Lyyneherm Interpreter", OutputStyle.Normal);
                 FileStream fs = new FileStream(finfo.FullName, FileMode.Open);
                 StreamReader sr = new StreamReader(fs);
                 while (!sr.EndOfStream)

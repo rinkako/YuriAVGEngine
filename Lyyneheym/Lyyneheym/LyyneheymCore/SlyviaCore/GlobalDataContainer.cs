@@ -18,7 +18,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         // 工程名称
         public static string GAME_PROJECT_NAME = "SlyviaProject";
         // 游戏名称
-        public static string GAME_TITLE_NAME = "SlyviaGame";
+        public static string GAME_TITLE_NAME = "TestProj";
         // 游戏密钥
         public static string GAME_KEY = "testkey";
         // 游戏版本

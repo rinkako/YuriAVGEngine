@@ -342,10 +342,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <returns>操作成功与否</returns>
         private bool AddResouceTable(string resTableName)
         {
-            if (!this.resourceTable.ContainsKey(resTableName))
+            lock (this.resourceTable)
             {
-                this.resourceTable.Add(resTableName, new Dictionary<string, KeyValuePair<long, long>>());
-                return true;
+                if (!this.resourceTable.ContainsKey(resTableName))
+                {
+                    this.resourceTable.Add(resTableName, new Dictionary<string, KeyValuePair<long, long>>());
+                    return true;
+                }
             }
             return false;
         }
@@ -376,6 +379,24 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 把场景文件恢复为实例
+        /// </summary>
+        private void InitScenario()
+        {
+            List<Scene> sceneList = Lyyneheym.LyyneheymCore.ILPackage.ILConvertor.GetInstance().Dash(GlobalDataContainer.DevURI_RT_SCENARIO);
+            foreach (Scene sc in sceneList)
+            {
+                if (this.sceneTable.ContainsKey(sc.scenario))
+                {
+                    DebugUtils.ConsoleLine(String.Format("Scene already exist: {0}, new one will replace the elder one", sc.scenario),
+                        "ResourceManager", OutputStyle.Warning);
+                }
+                this.sceneTable[sc.scenario] = sc;
+            }
+            DebugUtils.ConsoleLine(String.Format("Finish Load Scenario, Total: {0}", sceneList.Count), "ResourceManager", OutputStyle.Normal);
+        }
+
+        /// <summary>
         /// 工厂方法：获得类的唯一实例
         /// </summary>
         /// <returns>资源管理器的唯一实例</returns>
@@ -389,8 +410,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         private ResourceManager()
         {
-            resourceTable = new Dictionary<string, Dictionary<string, KeyValuePair<long, long>>>();
+            this.resourceTable = new Dictionary<string, Dictionary<string, KeyValuePair<long, long>>>();
+            this.sceneTable = new Dictionary<string, Scene>();
             this.InitDictionary();
+            this.InitScenario();
         }
 
         /// <summary>
@@ -402,6 +425,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 封包资源字典
         /// </summary>
         private Dictionary<string, Dictionary<string, KeyValuePair<long, long>>> resourceTable = null;
+
+        /// <summary>
+        /// 场景字典
+        /// </summary>
+        private Dictionary<string, Scene> sceneTable = null;
 
         /// <summary>
         /// 等待处理的pst队列

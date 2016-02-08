@@ -11,7 +11,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
     /// <summary>
     /// <para>运行时管理器：维护运行时的所有信息</para>
-    /// <para>她是一个单例类，只有唯一实例，并且可以序列化</para>
     /// <para>游戏保存的本质就是保存本实例</para>
     /// </summary>
     [Serializable]
@@ -752,33 +751,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 工厂方法：获得类的唯一实例
+        /// 构造器
         /// </summary>
-        /// <returns>运行时管理器</returns>
-        public static RuntimeManager getInstance()
-        {
-            return null == synObject ? synObject = new RuntimeManager() : synObject;
-        }
-
-        /// <summary>
-        /// 替换唯一实例，用于载入保存数据
-        /// </summary>
-        /// <param name="instance">载入的实例</param>
-        public void LoadSingleton(RuntimeManager instance)
-        {
-            synObject = instance;
-        }
-
-        /// <summary>
-        /// 私有的构造器
-        /// </summary>
-        private RuntimeManager()
+        public RuntimeManager()
         {
             this.Reset();
         }
 
         /// <summary>
-        /// 获取游戏调用堆栈
+        /// 获取调用堆栈
         /// </summary>
         public StackMachine CallStack
         {
@@ -787,18 +768,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 获取游戏符号表
+        /// 获取符号表
         /// </summary>
         public SymbolTable Symbols
         {
             get;
             private set;
         }
-
-        /// <summary>
-        /// 唯一实例
-        /// </summary>
-        private static RuntimeManager synObject = null;
     }
 
     /// <summary>
