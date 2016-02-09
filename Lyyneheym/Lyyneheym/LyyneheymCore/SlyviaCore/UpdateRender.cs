@@ -209,6 +209,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         #region 演绎函数
         public void Shutdown()
         {
+            DebugUtils.ConsoleLine("Shutdown is called", "UpdateRender", OutputStyle.Important);
             this.view.Close();
         }
 

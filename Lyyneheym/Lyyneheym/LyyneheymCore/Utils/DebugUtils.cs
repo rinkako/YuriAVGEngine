@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Diagnostics;
 using System.Collections.Generic;
 
 namespace Lyyneheym.LyyneheymCore.Utils
@@ -23,6 +24,7 @@ namespace Lyyneheym.LyyneheymCore.Utils
                     Console.WriteLine("[Information]");
                     Console.WriteLine(String.Format("触发器：{0}", causer));
                     Console.WriteLine(String.Format("时间戳：{0}", DateTime.Now.ToString()));
+                    Console.WriteLine(String.Format("工作集：{0:F3} MB", Environment.WorkingSet / 1048576.0));
                     Console.WriteLine(String.Format("信  息：{0}", information));
                     break;
                 case OutputStyle.Important:
@@ -30,6 +32,7 @@ namespace Lyyneheym.LyyneheymCore.Utils
                     Console.WriteLine("[Important]");
                     Console.WriteLine(String.Format("触发器：{0}", causer));
                     Console.WriteLine(String.Format("时间戳：{0}", DateTime.Now.ToString()));
+                    Console.WriteLine(String.Format("工作集：{0:F3} MB", Environment.WorkingSet / 1048576.0));
                     Console.WriteLine(String.Format("信  息：{0}", information));
                     break;
                 case OutputStyle.Warning:
@@ -37,6 +40,7 @@ namespace Lyyneheym.LyyneheymCore.Utils
                     Console.WriteLine("[Warning]");
                     Console.WriteLine(String.Format("触发器：{0}", causer));
                     Console.WriteLine(String.Format("时间戳：{0}", DateTime.Now.ToString()));
+                    Console.WriteLine(String.Format("工作集：{0:F3} MB", Environment.WorkingSet / 1048576.0));
                     Console.WriteLine(String.Format("信  息：{0}", information));
                     break;
                 case OutputStyle.Error:
@@ -44,6 +48,7 @@ namespace Lyyneheym.LyyneheymCore.Utils
                     Console.WriteLine("[Error]");
                     Console.WriteLine(String.Format("触发器：{0}", causer));
                     Console.WriteLine(String.Format("时间戳：{0}", DateTime.Now.ToString()));
+                    Console.WriteLine(String.Format("工作集：{0:F3} MB", Environment.WorkingSet / 1048576.0));
                     Console.WriteLine(String.Format("信  息：{0}", information));
                     break;
                 case OutputStyle.Simple:

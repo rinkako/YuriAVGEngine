@@ -65,7 +65,14 @@ namespace Lyyneheym
         /// </summary>
         private void InitRuntime()
         {
-            this.RunMana.CallScene(this.ResMana.GetScene(GlobalDataContainer.Script_Main));
+            var mainScene = this.ResMana.GetScene(GlobalDataContainer.Script_Main);
+            if (mainScene == null)
+            {
+                DebugUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalDataContainer.Script_Main),
+                    "Director", OutputStyle.Error);
+                Environment.Exit(0);
+            }
+            this.RunMana.CallScene(mainScene);
         }
         #endregion
 
@@ -267,6 +274,8 @@ namespace Lyyneheym
             this.timer.Interval = TimeSpan.FromMilliseconds(GlobalDataContainer.DirectorTimerInterval);
             this.timer.Tick += UpdateContext;
             this.timer.Start();
+
+            this.InitRuntime();
         }
 
         /// <summary>
