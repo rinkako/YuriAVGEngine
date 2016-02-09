@@ -186,12 +186,21 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 立即结束本次调用
+        /// </summary>
+        public void ExitCall()
+        {
+            this.CallStack.Consume();
+        }
+
+        /// <summary>
         /// 场景调用
         /// </summary>
         /// <param name="scene">场景实例</param>
-        public void CallScene(Scene scene)
+        /// <param name="target">目标标签</param>
+        public void CallScene(Scene scene, SceneAction target = null)
         {
-            this.CallStack.Submit(scene);
+            this.CallStack.Submit(scene, target);
         }
 
         /// <summary>
@@ -787,7 +796,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         // 用户操作界面
         UserPanel,
         // 系统执行中
-        Loading
+        Waiting,
+        // 准备退出程序
+        Exit
     }
 
     /// <summary>

@@ -113,7 +113,6 @@ namespace Lyyneheym
             {
                 case GameStackMachineState.Interpreting:
                 case GameStackMachineState.FunctionCalling:
-                case GameStackMachineState.Await:
                     this.curState = GameState.Performing;
                     this.curStableState = GameStableState.Unstable;
                     break;
@@ -121,17 +120,97 @@ namespace Lyyneheym
                     this.curState = GameState.UserPanel;
                     this.curStableState = GameStableState.Stable;
                     break;
-                case GameStackMachineState.NOP:
+                case GameStackMachineState.Await:
                 case GameStackMachineState.Interrupt:
-                    this.curState = GameState.Loading;
+                    this.curState = GameState.Waiting;
+                    this.curStableState = GameStableState.Unknown;
+                    break;
+                case GameStackMachineState.NOP:
+                    this.curState = GameState.Exit;
                     this.curStableState = GameStableState.Unknown;
                     break;
             }
-            // 取得当前IO操作
+            // 根据状态更新信息
+            switch (this.curState)
+            {
+                // 等待状态
+                case GameState.Waiting:
+                    // 计算已经等待的时间（这里，不考虑并行处理）
+                    if (this.waitingVector.Count > 0)
+                    {
+                        var waitKVP = this.waitingVector[0];
+                        var beginTimestamp = waitKVP.Key;
+                        var waitSpan = waitKVP.Value;
+                        // 如果已经等待结束，就弹调用栈
+                        if ((DateTime.Now - waitKVP.Key).TotalMilliseconds >= waitSpan)
+                        {
+                            this.RunMana.ExitCall();
+                        }
+                    }
+                    break;
+                // 等待用户操作
+                case GameState.UserPanel:
+                    break;
+                // 演绎脚本
+                case GameState.Performing:
+                    // 取下一动作
+                    var nextInstruct = this.RunMana.MoveNext();
+                    // 处理影响调用堆栈的动作
+                    if (nextInstruct.aType == SActionType.act_wait)
+                    {
+                        double waitMs = nextInstruct.argsDict.ContainsKey("time") ?
+                                (double)this.RunMana.CalculatePolish(nextInstruct.argsDict["time"]) : 0;
+                        this.RunMana.Delay(nextInstruct.saNodeName, TimeSpan.FromMilliseconds(waitMs));
+                    }
+                    else if (nextInstruct.aType == SActionType.act_jump)
+                    {
+                        var jumpToScene = nextInstruct.argsDict["filename"];
+                        var jumpToTarget = nextInstruct.argsDict["name"];
+                        // 场景内跳转
+                        if (jumpToScene == "")
+                        {
+                            var currentScene = this.ResMana.GetScene(this.RunMana.CallStack.ESP.bindingSceneName);
+                            if (!currentScene.labelDictionary.ContainsKey(jumpToTarget))
+                            {
+                                DebugUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
+                                    "Director", OutputStyle.Error);
+                                break;
+                            }
+                            this.RunMana.CallStack.ESP.IP = currentScene.labelDictionary[jumpToTarget];
+                        }
+                        // 跨场景跳转
+                        else
+                        {
+                            var jumpScene = this.ResMana.GetScene(jumpToScene);
+                            if (jumpScene == null)
+                            {
+                                DebugUtils.ConsoleLine(String.Format("Ignored Jump Instruction (scene not exist): {0}", jumpToScene),
+                                    "Director", OutputStyle.Error);
+                                break;
+                            }
+                            if (!jumpScene.labelDictionary.ContainsKey(jumpToTarget))
+                            {
+                                DebugUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0} -> {1}", jumpToScene, jumpToTarget),
+                                    "Director", OutputStyle.Error);
+                                break;
+                            }
+                            this.RunMana.ExitCall();
+                            this.RunMana.CallScene(jumpScene, jumpScene.labelDictionary[jumpToTarget]);
+                        }
+                    }
+                    else if (nextInstruct.aType == SActionType.act_call)
+                    {
 
-            // 根据状态和操作刷新后台数据
+                    }
+                    // 处理常规动作
+                    this.updateRender.Accept(nextInstruct);
+                    break;
+                // 退出
+                case GameState.Exit:
+                    this.updateRender.Shutdown();
+                    break;
+            }
 
-            // 更新到前端
 
 
             if (this.updateRender.GetKeyboardState(Key.Z) == KeyStates.Down ||
@@ -149,7 +228,8 @@ namespace Lyyneheym
         private GameState curState;
 
         private GameStableState curStableState;
-        
+
+        private List<KeyValuePair<DateTime, double>> waitingVector;
 
 
 
@@ -181,6 +261,8 @@ namespace Lyyneheym
             this.ResMana = ResourceManager.getInstance();
             this.RunMana = new RuntimeManager();
             this.updateRender = new UpdateRender();
+            this.waitingVector = new List<KeyValuePair<DateTime, double>>();
+            this.updateRender.SetRuntimeManagerReference(this.RunMana);
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromMilliseconds(GlobalDataContainer.DirectorTimerInterval);
             this.timer.Tick += UpdateContext;

@@ -20,11 +20,12 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="scenario">场景名称</param>
         /// <param name="mainSa">主动作序列</param>
         /// <param name="funcVec">函数向量</param>
-        public Scene(string scenario, SceneAction mainSa, List<SceneFunction> funcVec)
+        public Scene(string scenario, SceneAction mainSa, List<SceneFunction> funcVec, Dictionary<string, SceneAction> labelDict)
         {
             this.scenario = scenario;
             this.mainSa = mainSa;
             this.funcContainer = funcVec;
+            this.labelDictionary = labelDict;
         }
 
         /// <summary>
@@ -52,5 +53,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public SceneAction mainSa;
         // 场景的函数向量
         public List<SceneFunction> funcContainer;
+        // 场景标签字典
+        public Dictionary<string, SceneAction> labelDictionary;
     }
 }

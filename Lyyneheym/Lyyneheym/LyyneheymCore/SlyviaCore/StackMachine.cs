@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Lyyneheym.LyyneheymCore.ILPackage;
 
 namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
@@ -29,15 +30,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 向栈机提交一个场景调用
         /// </summary>
         /// <param name="sc">被调用的场景Scene实例</param>
-        /// <param name="offset">PC偏移量</param>
-        public void Submit(Scene sc, int offset = 0)
+        /// <param name="offset">IP偏移</param>
+        public void Submit(Scene sc, SceneAction offset = null)
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
                 state = GameStackMachineState.Interpreting,
                 scriptName = sc.scenario,
-                PC = offset,
-                IP = sc.mainSa,
+                PC = 0,
+                IP = offset == null ? sc.mainSa : offset,
                 argv = null,
                 bindingSceneName = sc.scenario,
                 bindingFunctionName = null,

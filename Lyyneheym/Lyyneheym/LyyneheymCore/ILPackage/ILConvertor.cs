@@ -38,6 +38,7 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
                 string sceneName = sapKvp.Key;
                 Dictionary<string, SceneActionPackage> sapPool = sapKvp.Value;
                 List<SceneAction> saHeaderList = new List<SceneAction>();
+                Dictionary<string, SceneAction> labelDict = new Dictionary<string, SceneAction>();
                 foreach (KeyValuePair<string, SceneActionPackage> SAPPair in sapPool)
                 {
                     string nodename = SAPPair.Key;
@@ -54,6 +55,11 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
                             // 标记脏位
                             SceneActionPackage currentSAP = this.ilPackageContainer[sceneName][openSet.Dequeue()];
                             currentSAP.dirtyBit = true;
+                            // 处理label字典
+                            if (currentSAP.aType == SActionType.act_lable)
+                            {
+                                labelDict.Add(currentSAP.aTag, this.iResContainer[sceneName][currentSAP.saNodeName]);
+                            }
                             // 处理next
                             if (currentSAP.next != "" && currentSAP.next != null)
                             {
@@ -96,7 +102,7 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
                         SceneAction fsa = saHeaderList[fc];
                         funcVec.Add(this.ParseSaToSF(fsa, sceneName));
                     }
-                    parseScene = new Scene(sceneName, mainSa, funcVec);
+                    parseScene = new Scene(sceneName, mainSa, funcVec, labelDict);
                 }
                 resList.Add(parseScene);
                 DebugUtils.ConsoleLine(String.Format("Finished SAP Function Recovery: {0}", sceneName), "Lyyneherm Interpreter", OutputStyle.Normal);

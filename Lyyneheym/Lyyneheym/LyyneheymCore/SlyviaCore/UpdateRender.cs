@@ -39,12 +39,39 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 设置运行时环境引用
+        /// </summary>
+        /// <param name="rm">运行时环境</param>
+        public void SetRuntimeManagerReference(RuntimeManager rm)
+        {
+            this.runMana = rm;
+        }
+
+        /// <summary>
+        /// 调用运行时环境计算表达式
+        /// </summary>
+        /// <param name="polish">逆波兰式</param>
+        /// <returns>表达式的值</returns>
+        public object CalculatePolish(string polish)
+        {
+            return this.runMana.CalculatePolish(polish);
+        }
+
+        /// <summary>
         /// 接受一个场景动作并演绎她
         /// </summary>
         /// <param name="action">场景动作实例</param>
         public void Accept(SceneAction action)
         {
-
+            switch (action.aType)
+            {
+                case SActionType.act_bgm:
+                    this.Bgm(action.argsDict["filename"], (float)this.CalculatePolish(action.argsDict["vol"]));
+                    break;
+                case SActionType.act_stopbgm:
+                    this.Stopbgm();
+                    break;
+            }
         }
 
         public KeyStates GetKeyboardState(Key key)
@@ -165,6 +192,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         private MainWindow view = null;
 
         /// <summary>
+        /// 运行时环境引用
+        /// </summary>
+        private RuntimeManager runMana = null;
+
+        /// <summary>
         /// 音乐引擎
         /// </summary>
         private Musician musician = Musician.getInstance();
@@ -175,6 +207,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         private ResourceManager resMana = ResourceManager.getInstance();
 
         #region 演绎函数
+        public void Shutdown()
+        {
+            this.view.Close();
+        }
+
         private void Dialog()
         {
 
@@ -318,11 +355,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         private void Break()
-        {
-
-        }
-
-        private void Shutdown()
         {
 
         }
