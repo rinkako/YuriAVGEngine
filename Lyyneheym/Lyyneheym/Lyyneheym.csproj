@@ -71,13 +71,16 @@
     <Compile Include="LyyneheymCore\SlyviaCore\RuntimeManager.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\Scene.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SceneFunction.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\ScreenManager.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SpiritContainer.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SpriteAnimation.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SpriteButton.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\SpriteDescription.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\StackMachine.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\StackMachineFrame.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SymbolTable.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\UpdateRender.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\ViewManager.cs" />
     <Compile Include="LyyneheymCore\Utils\DebugUtils.cs" />
     <Compile Include="LyyneheymCore\Utils\IOUtils.cs" />
     <Compile Include="LyyneheymCore\Utils\PackageUtils.cs" />

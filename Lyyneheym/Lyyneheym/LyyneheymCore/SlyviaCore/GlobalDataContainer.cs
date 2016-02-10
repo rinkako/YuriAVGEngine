@@ -54,6 +54,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public static bool GAME_MSG_SKIP = false;
         // 图像层：图像层数量
         public static int GAME_IMAGELAYER_COUNT = 50;
+        // 图像层：最大立绘数
+        public static int GAME_CHARACTERSTAND_COUNT = 5;
+        // 图像层：背景层数量
+        public static int GAME_BACKGROUND_COUNT = 2;
         // 图像层：默认位置
         public static Point GAME_IMAGELAYER_POSITION = new Point(0, 0);
         // 图像层：图像层默认上边距
@@ -64,6 +68,18 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public static int GAME_IMAGELAYER_MARGIN_LEFT = 0;
         // 图像层：图像层默认右边距
         public static int GAME_IMAGELAYER_MARGIN_RIGHT = 0;
+        // 图像层：左立绘X
+        public static double GAME_CHARACTERSTAND_LEFT_X = 10;
+        // 图像层：左立绘Y
+        public static double GAME_CHARACTERSTAND_LEFT_Y = 30;
+        // 图像层：中立绘X
+        public static double GAME_CHARACTERSTAND_MID_X = 255;
+        // 图像层：中立绘Y
+        public static double GAME_CHARACTERSTAND_MID_Y = 30;
+        // 图像层：右立绘X
+        public static double GAME_CHARACTERSTAND_RIGHT_X = 500;
+        // 图像层：右立绘Y
+        public static double GAME_CHARACTERSTAND_RIGHT_Y = 30;
         // 存档：截图存档
         public static bool GAME_SAVE_SCRPRINT = true;
         // 存档：最大存档数

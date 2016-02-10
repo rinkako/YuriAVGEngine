@@ -297,7 +297,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 精灵动画锚点类型
         /// </summary>
-        private SpriteAnchorType anchorType = SpriteAnchorType.LeftTop;
+        private SpriteAnchorType anchorType = SpriteAnchorType.Center;
 
         /// <summary>
         /// 前端控件绑定
