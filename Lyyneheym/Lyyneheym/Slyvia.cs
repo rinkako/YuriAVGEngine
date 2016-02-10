@@ -65,14 +65,14 @@ namespace Lyyneheym
         /// </summary>
         private void InitRuntime()
         {
-            var mainScene = this.ResMana.GetScene(GlobalDataContainer.Script_Main);
-            if (mainScene == null)
-            {
-                DebugUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalDataContainer.Script_Main),
-                    "Director", OutputStyle.Error);
-                Environment.Exit(0);
-            }
-            this.RunMana.CallScene(mainScene);
+            //var mainScene = this.ResMana.GetScene(GlobalDataContainer.Script_Main);
+            //if (mainScene == null)
+            //{
+            //    DebugUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalDataContainer.Script_Main),
+            //        "Director", OutputStyle.Error);
+            //    Environment.Exit(0);
+            //}
+            //this.RunMana.CallScene(mainScene);
         }
         #endregion
 
@@ -168,6 +168,7 @@ namespace Lyyneheym
                         double waitMs = nextInstruct.argsDict.ContainsKey("time") ?
                                 (double)this.RunMana.CalculatePolish(nextInstruct.argsDict["time"]) : 0;
                         this.RunMana.Delay(nextInstruct.saNodeName, TimeSpan.FromMilliseconds(waitMs));
+                        break;
                     }
                     else if (nextInstruct.aType == SActionType.act_jump)
                     {
@@ -204,10 +205,56 @@ namespace Lyyneheym
                             this.RunMana.ExitCall();
                             this.RunMana.CallScene(jumpScene, jumpScene.labelDictionary[jumpToTarget]);
                         }
+                        break;
                     }
                     else if (nextInstruct.aType == SActionType.act_call)
                     {
-
+                        var callFunc = nextInstruct.argsDict["name"];
+                        var signFunc = nextInstruct.argsDict["sign"];
+                        if (!signFunc.StartsWith("(") && !signFunc.EndsWith(")"))
+                        {
+                            DebugUtils.ConsoleLine(String.Format("Ignored Function calling (sign not valid): {0} -> {1}", callFunc, signFunc),
+                                "Director", OutputStyle.Error);
+                            break;
+                        }
+                        var sceneFuncContainer = this.ResMana.GetScene(this.RunMana.CallStack.ESP.bindingSceneName).funcContainer;
+                        var sceneFuncList = from f in sceneFuncContainer where f.callname == callFunc select f;
+                        if (sceneFuncList.Count() == 0)
+                        {
+                            DebugUtils.ConsoleLine(String.Format("Ignored Function calling (function not exist): {0}", callFunc),
+                                "Director", OutputStyle.Error);
+                            break;
+                        }
+                        var sceneFunc = sceneFuncList.First();
+                        var signItem = signFunc.Split(',');
+                        if (sceneFunc.param.Count != signItem.Length)
+                        {
+                            DebugUtils.ConsoleLine(String.Format("Ignored Function calling (in {0}, require args num: {1}, but actual:{2})", callFunc, sceneFunc.param.Count, signItem.Length),
+                                "Director", OutputStyle.Error);
+                            break;
+                        }
+                        // 处理参数列表
+                        List<object> argsVec = new List<object>();
+                        foreach (var s in signItem)
+                        {
+                            string trimedPara = s.Trim();
+                            object varref = null;
+                            if (trimedPara.StartsWith("$") || trimedPara.StartsWith("&"))
+                            {
+                                varref = this.RunMana.Fetch(trimedPara.Substring(1));
+                            }
+                            else if (trimedPara.StartsWith("\"") && trimedPara.EndsWith("\""))
+                            {
+                                varref = (string)trimedPara;
+                            }
+                            else
+                            {
+                                varref = Convert.ToDouble(trimedPara);
+                            }
+                            argsVec.Add(varref);
+                        }
+                        this.RunMana.CallFunction(sceneFunc, argsVec);
+                        break;
                     }
                     // 处理常规动作
                     this.updateRender.Accept(nextInstruct);
@@ -273,7 +320,7 @@ namespace Lyyneheym
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromMilliseconds(GlobalDataContainer.DirectorTimerInterval);
             this.timer.Tick += UpdateContext;
-            this.timer.Start();
+            //this.timer.Start();
 
             this.InitRuntime();
         }

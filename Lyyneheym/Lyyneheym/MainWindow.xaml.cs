@@ -207,10 +207,8 @@ namespace Lyyneheym
             //        }
             //    }
             //}
-
-
-
         }
+
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {

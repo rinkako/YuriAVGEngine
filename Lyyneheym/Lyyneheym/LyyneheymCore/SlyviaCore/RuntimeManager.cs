@@ -211,6 +211,12 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public void CallFunction(SceneFunction function, List<object> args)
         {
             this.CallStack.Submit(function, args);
+            // 处理参数传递
+            var funcSymbols = this.Symbols.CallFunctionSymbolTable(function);
+            for (int i = 0; i < args.Count; i++)
+            {
+                funcSymbols.Add(function.param[i], args[i]);
+            }
         }
 
         /// <summary>
@@ -230,7 +236,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <returns>变量的引用</returns>
         public object Fetch(string varname)
         {
-            return this.Symbols.signal(this.CallStack.ESP.scriptName, varname);
+            return this.Symbols.signal(ResourceManager.getInstance().GetScene(this.CallStack.ESP.scriptName), varname);
         }
 
         /// <summary>
@@ -590,7 +596,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 else if ((item.StartsWith("&") || item.StartsWith("$")) && item.Length > 1)
                 {
                     string varPureName = item.Substring(1);
-                    object varRef = this.Symbols.signal(this.CallStack.ESP.scriptName, varPureName);
+                    object varRef = this.Fetch(varPureName);
                     if (varRef is double)
                     {
                         poi = new PolishItem()

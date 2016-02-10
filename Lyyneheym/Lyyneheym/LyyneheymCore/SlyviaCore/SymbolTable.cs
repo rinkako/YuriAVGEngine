@@ -28,11 +28,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <para>使用一个变量作为右值</para>
         /// <para>如果这个变量从未使用过，将抛出错误</para>
         /// </summary>
-        /// <param name="sceneName">场景名称</param>
+        /// <param name="sceneObject">场景实例/param>
         /// <param name="varName">变量名</param>
-        internal object signal(string sceneName, string varName)
+        internal object signal(object sceneObject, string varName)
         {
-            Dictionary<string, object> table = this.FindSymbolTable(sceneName);
+            Dictionary<string, object> table = this.FindSymbolTable(sceneObject);
             // 如果查无此键
             if (table.ContainsKey(varName) == false)
             {
@@ -101,18 +101,45 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 寻找当前场景作用域绑定的符号表
         /// </summary>
-        /// <param name="sceneName">场景名称</param>
+        /// <param name="sceneObject">场景实例</param>
         /// <returns>符号表</returns>
-        internal Dictionary<string, object> FindSymbolTable(string sceneName)
+        internal Dictionary<string, object> FindSymbolTable(object sceneObject)
         {
-            if (this.userSymbolTableContainer.ContainsKey(sceneName) == false)
+            if (this.userSymbolTableContainer.ContainsKey(sceneObject) == false)
             {
                 return null;
             }
             else
             {
-                return this.userSymbolTableContainer[sceneName];
+                return this.userSymbolTableContainer[sceneObject];
             }
+        }
+
+        /// <summary>
+        /// 为函数调用新建符号表
+        /// </summary>
+        /// <param name="sf">函数实例</param>
+        /// <returns>符号表实例</returns>
+        internal Dictionary<string, object> CallFunctionSymbolTable(SceneFunction sf)
+        {
+            this.userSymbolTableContainer.Add(sf, new Dictionary<string, object>());
+            sf.symbolsRef = this.userSymbolTableContainer[sf];
+            return sf.symbolsRef;
+        }
+
+        /// <summary>
+        /// 移除函数调用的符号表引用
+        /// </summary>
+        /// <param name="sf">函数实例</param>
+        /// <returns>操作成功与否</returns>
+        internal bool RemoveCallFunctionSymbolTable(SceneFunction sf)
+        {
+            if (this.userSymbolTableContainer.ContainsKey(sf))
+            {
+                sf.symbolsRef = null;
+                return this.userSymbolTableContainer.Remove(sf);
+            }
+            return false;
         }
 
         /// <summary>
@@ -153,14 +180,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         private SymbolTable()
         {
             this.systemSymbolTable = new Dictionary<string, object>();
-            this.userSymbolTableContainer = new Dictionary<string, Dictionary<string, object>>();
+            this.userSymbolTableContainer = new Dictionary<object, Dictionary<string, object>>();
             this.InitSystemVars();
         }
 
         // 唯一实例
         private static SymbolTable synObject = null;
-        // 用户符号字典（K：场景或函数名称 - V：符号表对象）
-        private Dictionary<string, Dictionary<string, object>> userSymbolTableContainer = null;
+        // 用户符号字典（K：场景或函数实例 - V：符号表对象）
+        private Dictionary<object, Dictionary<string, object>> userSymbolTableContainer = null;
         // 系统符号字典
         private Dictionary<string, object> systemSymbolTable = null;
     }

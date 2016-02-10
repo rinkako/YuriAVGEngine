@@ -64,7 +64,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 IP = sf.sa,
                 argv = args,
                 bindingFunctionName = sf.globalName,
-                bindingSceneName = null,
+                bindingSceneName = sf.globalName,
                 delay = TimeSpan.FromMilliseconds(0),
                 aTag = ""
             };

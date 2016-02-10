@@ -59,5 +59,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public List<string> param = null;
         // 场景名称
         public string parentSceneName = null;
+        // 绑定符号表
+        public Dictionary<string, object> symbolsRef = null;
     }
 }

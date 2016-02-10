@@ -621,7 +621,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="device">要查找的设备</param>
         /// <param name="returnDefault">当找不到设备时，是否返回默认设备的序号</param>
-        /// <returns></returns>
         private static int FindDevice(AudioDeviceInfo? device, bool returnDefault = false)
         {
             int result;
@@ -682,7 +681,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 返回默认设备的序号
         /// </summary>
-        /// <returns></returns>
         private static int FindDefaultDevice()
         {
             BASS_DEVICEINFO[] array = Bass.BASS_GetDeviceInfos();
