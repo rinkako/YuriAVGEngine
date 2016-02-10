@@ -46,6 +46,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 aTag = ""
             };
             this.coreStack.Push(smf);
+            this.EBP = this.coreStack.Peek();
         }
 
         /// <summary>
@@ -67,6 +68,27 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 bindingSceneName = sf.globalName,
                 delay = TimeSpan.FromMilliseconds(0),
                 aTag = ""
+            };
+            this.coreStack.Push(smf);
+        }
+
+        /// <summary>
+        /// 向栈机提交一个中断调用
+        /// </summary>
+        /// <param name="ntr">中断</param>
+        public void Submit(Interrupt ntr)
+        {
+            StackMachineFrame smf = new StackMachineFrame()
+            {
+                state = GameStackMachineState.Interrupt,
+                scriptName = null,
+                PC = 0,
+                IP = ntr.interruptSA,
+                argv = null,
+                bindingFunctionName = null,
+                bindingSceneName = null,
+                delay = TimeSpan.FromMilliseconds(0),
+                aTag = ntr.returnTarget
             };
             this.coreStack.Push(smf);
         }
@@ -158,6 +180,25 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 中断前指针
+        /// </summary>
+        public StackMachineFrame EBP
+        {
+            get
+            {
+                if (this.coreStack.Contains(this.ebp))
+                {
+                    return this.ebp;
+                }
+                return this.ESP;
+            }
+            private set
+            {
+                this.ebp = value;
+            }
+        }
+
+        /// <summary>
         /// 当前jump指令是否有效
         /// </summary>
         public bool isAbleJMP
@@ -169,8 +210,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 调用栈
+        /// 调用前指针
         /// </summary>
-        private Stack<StackMachineFrame> coreStack;
+        private StackMachineFrame ebp = null;
+
+        /// <summary>
+        /// 调用堆栈
+        /// </summary>
+        private Stack<StackMachineFrame> coreStack = null;
     }
 }

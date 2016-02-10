@@ -138,7 +138,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         // 脚本入口
         public static readonly string Script_Main = "main";
         // 刷新频率
-        public static readonly int DirectorTimerInterval = 17;
+        public static readonly double DirectorTimerInterval = 1000.0 / 60.0;
         #endregion
 
         #region 枚举类型

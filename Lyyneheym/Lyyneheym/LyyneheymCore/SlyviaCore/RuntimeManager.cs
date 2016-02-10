@@ -801,6 +801,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         Performing,
         // 用户操作界面
         UserPanel,
+        // 中断
+        Interrupt,
         // 系统执行中
         Waiting,
         // 准备退出程序

@@ -107,7 +107,24 @@ namespace Lyyneheym
         }
         #endregion
 
+        /// <summary>
+        /// 向运行时环境发出中断
+        /// </summary>
+        /// <param name="ntr">中断</param>
+        public void SubmitInterrupt(Interrupt ntr)
+        {
+            this.RunMana.CallStack.Submit(ntr);
+        }
 
+        /// <summary>
+        /// 向运行时环境发出等待要求
+        /// </summary>
+        /// <param name="waitSpan">等待的时间间隔</param>
+        public void SubmitWait(TimeSpan waitSpan)
+        {
+            this.RunMana.Delay("Director", waitSpan);
+            this.waitingVector.Add(new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, waitSpan));
+        }
 
         /// <summary>
         /// 处理消息循环
@@ -121,20 +138,18 @@ namespace Lyyneheym
                 case GameStackMachineState.Interpreting:
                 case GameStackMachineState.FunctionCalling:
                     this.curState = GameState.Performing;
-                    this.curStableState = GameStableState.Unstable;
                     break;
                 case GameStackMachineState.WaitUser:
                     this.curState = GameState.UserPanel;
-                    this.curStableState = GameStableState.Stable;
                     break;
                 case GameStackMachineState.Await:
-                case GameStackMachineState.Interrupt:
                     this.curState = GameState.Waiting;
-                    this.curStableState = GameStableState.Unknown;
+                    break;
+                case GameStackMachineState.Interrupt:
+                    this.curState = GameState.Interrupt;
                     break;
                 case GameStackMachineState.NOP:
                     this.curState = GameState.Exit;
-                    this.curStableState = GameStableState.Unknown;
                     break;
             }
             // 根据状态更新信息
@@ -149,7 +164,7 @@ namespace Lyyneheym
                         var beginTimestamp = waitKVP.Key;
                         var waitSpan = waitKVP.Value;
                         // 如果已经等待结束，就弹调用栈
-                        if ((DateTime.Now - waitKVP.Key).TotalMilliseconds >= waitSpan)
+                        if ((DateTime.Now - waitKVP.Key) >= waitSpan)
                         {
                             this.RunMana.ExitCall();
                         }
@@ -157,6 +172,29 @@ namespace Lyyneheym
                     break;
                 // 等待用户操作
                 case GameState.UserPanel:
+                    break;
+                // 中断
+                case GameState.Interrupt:
+                    var interruptSa = this.RunMana.CallStack.ESP.IP;
+                    var interruptExitPoint = this.RunMana.CallStack.ESP.aTag;
+                    // 处理可选表达式计算
+                    if (interruptSa != null)
+                    {
+                        this.updateRender.Accept(interruptSa);
+                    }
+                    // 处理跳转
+                    this.RunMana.ExitCall();
+                    if (interruptExitPoint != null)
+                    {
+                        var curScene = this.ResMana.GetScene(this.RunMana.CallStack.ESP.bindingSceneName);
+                        if (!curScene.labelDictionary.ContainsKey(interruptExitPoint))
+                        {
+                            DebugUtils.ConsoleLine(String.Format("Ignored Button jump Instruction (target not exist): {0}", interruptExitPoint),
+                                        "Director", OutputStyle.Error);
+                            break;
+                        }
+                        this.RunMana.CallStack.ESP.IP = curScene.labelDictionary[interruptExitPoint];
+                    }
                     break;
                 // 演绎脚本
                 case GameState.Performing:
@@ -264,26 +302,12 @@ namespace Lyyneheym
                     this.updateRender.Shutdown();
                     break;
             }
-
-
-
-            if (this.updateRender.GetKeyboardState(Key.Z) == KeyStates.Down ||
-                this.updateRender.GetKeyboardState(Key.Z) == (KeyStates.Down | KeyStates.Toggled))
-            {
-                Musician.getInstance().PauseBGM();
-            }
-            if (this.updateRender.GetKeyboardState(Key.X) == KeyStates.Down ||
-                this.updateRender.GetKeyboardState(Key.X) == (KeyStates.Down | KeyStates.Toggled))
-            {
-                Musician.getInstance().ResumeBGM();
-            }
         }
 
         private GameState curState;
 
-        private GameStableState curStableState;
 
-        private List<KeyValuePair<DateTime, double>> waitingVector;
+        private List<KeyValuePair<DateTime, TimeSpan>> waitingVector;
 
 
 
@@ -315,7 +339,7 @@ namespace Lyyneheym
             this.ResMana = ResourceManager.getInstance();
             this.RunMana = new RuntimeManager();
             this.updateRender = new UpdateRender();
-            this.waitingVector = new List<KeyValuePair<DateTime, double>>();
+            this.waitingVector = new List<KeyValuePair<DateTime, TimeSpan>>();
             this.updateRender.SetRuntimeManagerReference(this.RunMana);
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromMilliseconds(GlobalDataContainer.DirectorTimerInterval);

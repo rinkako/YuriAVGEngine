@@ -207,6 +207,11 @@ namespace Lyyneheym
             //        }
             //    }
             //}
+            rightChara = core.testCharaStand("CA02.png");
+            BitmapImage myBitmapImage = rightChara.myImage;
+            this.BO_LeftChara.Width = myBitmapImage.PixelWidth;
+            this.BO_LeftChara.Height = myBitmapImage.PixelHeight;
+            this.BO_LeftChara.Source = myBitmapImage;
         }
 
 
@@ -488,6 +493,26 @@ namespace Lyyneheym
         private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             this.core.UpdateMouseWheel(e.Delta);
+        }
+
+        private void BO_LeftChara_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void BO_LeftChara_MouseLeave(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+        private void BO_LeftChara_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
+
+        private void BO_LeftChara_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+
         }
 
 
