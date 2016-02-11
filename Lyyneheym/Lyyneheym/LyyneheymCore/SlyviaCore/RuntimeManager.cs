@@ -238,7 +238,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <returns>变量的引用</returns>
         public object Fetch(string varname)
         {
-            return this.Symbols.signal(ResourceManager.GetInstance().GetScene(this.CallStack.ESP.scriptName), varname);
+            return this.Symbols.signal(ResourceManager.GetInstance().GetScene(this.CallStack.ESP.scriptName), varname.Replace("$", "").Replace("&", ""));
         }
 
         /// <summary>
@@ -597,8 +597,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 // 变量时
                 else if ((item.StartsWith("&") || item.StartsWith("$")) && item.Length > 1)
                 {
-                    string varPureName = item.Substring(1);
-                    object varRef = this.Fetch(varPureName);
+                    object varRef = this.Fetch(item);
                     if (varRef is double)
                     {
                         poi = new PolishItem()
