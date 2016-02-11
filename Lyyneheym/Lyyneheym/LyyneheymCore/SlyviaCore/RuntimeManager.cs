@@ -236,7 +236,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <returns>变量的引用</returns>
         public object Fetch(string varname)
         {
-            return this.Symbols.signal(ResourceManager.getInstance().GetScene(this.CallStack.ESP.scriptName), varname);
+            return this.Symbols.signal(ResourceManager.GetInstance().GetScene(this.CallStack.ESP.scriptName), varname);
         }
 
         /// <summary>

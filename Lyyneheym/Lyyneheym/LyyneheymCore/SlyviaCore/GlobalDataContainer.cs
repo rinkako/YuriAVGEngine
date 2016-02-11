@@ -72,10 +72,18 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public static double GAME_CHARACTERSTAND_LEFT_X = 10;
         // 图像层：左立绘Y
         public static double GAME_CHARACTERSTAND_LEFT_Y = 30;
+        // 图像层：左中立绘X
+        public static double GAME_CHARACTERSTAND_MIDLEFT_X = 125;
+        // 图像层：左中立绘Y
+        public static double GAME_CHARACTERSTAND_MIDLEFT_Y = 30;
         // 图像层：中立绘X
         public static double GAME_CHARACTERSTAND_MID_X = 255;
         // 图像层：中立绘Y
         public static double GAME_CHARACTERSTAND_MID_Y = 30;
+        // 图像层：右中立绘X
+        public static double GAME_CHARACTERSTAND_MIDRIGHT_X = 375;
+        // 图像层：右中立绘Y
+        public static double GAME_CHARACTERSTAND_MIDRIGHT_Y = 30;
         // 图像层：右立绘X
         public static double GAME_CHARACTERSTAND_RIGHT_X = 500;
         // 图像层：右立绘Y

@@ -133,7 +133,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL(PackURI + GlobalDataContainer.PackPostfix),
                     sourceName, sourceLocation.Key, sourceLocation.Value);
                 MemoryStream ms = new MemoryStream(ob);
-                sprite.Init(ms);
+                sprite.Init(sourceName, rtype, ms);
             }
             // 没有封包数据再搜索开发目录
             else
@@ -142,7 +142,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 if (File.Exists(IOUtils.ParseURItoURL(furi)))
                 {
                     Uri bg = new Uri(furi, UriKind.RelativeOrAbsolute);
-                    sprite.Init(bg);
+                    sprite.Init(sourceName, rtype, bg);
                 }
                 else
                 {
@@ -414,7 +414,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 工厂方法：获得类的唯一实例
         /// </summary>
         /// <returns>资源管理器的唯一实例</returns>
-        public static ResourceManager getInstance()
+        public static ResourceManager GetInstance()
         {
             return null == synObject ? synObject = new ResourceManager() : synObject;
         }
@@ -464,7 +464,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     /// <summary>
     /// 枚举：资源类型
     /// </summary>
-    internal enum ResourceType
+    public enum ResourceType
     {
         Unknown,
         Pictures,

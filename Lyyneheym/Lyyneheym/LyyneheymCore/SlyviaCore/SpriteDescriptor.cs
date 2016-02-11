@@ -7,16 +7,17 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     /// <summary>
     /// 精灵描述类：用于画面管理和保存
     /// </summary>
-    public class SpriteDescription
+    [Serializable]
+    public class SpriteDescriptor
     {
         /// <summary>
         /// 默认构造函数
         /// </summary>
-        public SpriteDescription()
+        public SpriteDescriptor()
         {
-            this.id = 0;
-            this.X = this.Y = this.Z = this.Angle = 0;
-            this.Opacity = 1;
+            this.id = this.Z = 0;
+            this.X = this.Y = this.Angle = 0;
+            this.Opacity = this.ScaleX = this.ScaleY = 1;
             this.anchorType = SpriteAnchorType.Center;
             this.cutRect = new Int32Rect(0, 0, 0, 0);
             this.resourceName = null;
@@ -41,7 +42,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 精灵Z坐标
         /// </summary>
-        public double Z { get; set; }
+        public int Z { get; set; }
 
         /// <summary>
         /// 精灵角度
@@ -52,6 +53,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 精灵不透明度
         /// </summary>
         public double Opacity { get; set; }
+
+        /// <summary>
+        /// 精灵X缩放
+        /// </summary>
+        public double ScaleX { get; set; }
+
+        /// <summary>
+        /// 精灵Y缩放
+        /// </summary>
+        public double ScaleY { get; set; }
 
         /// <summary>
         /// 精灵锚点方式

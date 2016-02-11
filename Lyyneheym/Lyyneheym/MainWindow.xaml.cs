@@ -181,11 +181,11 @@ namespace Lyyneheym
 
             if (!pauseFlag)
             {
-                Musician.getInstance().PauseBGM();
+                Musician.GetInstance().PauseBGM();
             }
             else
             {
-                Musician.getInstance().ResumeBGM();
+                Musician.GetInstance().ResumeBGM();
             }
             pauseFlag = !pauseFlag;
         }
@@ -207,11 +207,12 @@ namespace Lyyneheym
             //        }
             //    }
             //}
-            rightChara = core.testCharaStand("CA02.png");
-            BitmapImage myBitmapImage = rightChara.myImage;
-            this.BO_LeftChara.Width = myBitmapImage.PixelWidth;
-            this.BO_LeftChara.Height = myBitmapImage.PixelHeight;
-            this.BO_LeftChara.Source = myBitmapImage;
+            //rightChara = core.testCharaStand("CA02.png");
+            //BitmapImage myBitmapImage = rightChara.myImage;
+            //this.BO_LeftChara.Width = myBitmapImage.PixelWidth;
+            //this.BO_LeftChara.Height = myBitmapImage.PixelHeight;
+            //this.BO_LeftChara.Source = myBitmapImage;
+            SpriteAnimation.SkipAnimation(this.rightChara);
         }
 
 
@@ -232,7 +233,7 @@ namespace Lyyneheym
         private void Button_Click_8(object sender, RoutedEventArgs e)
         {
 
-            Musician m = Musician.getInstance();
+            Musician m = Musician.GetInstance();
             m.PlayBGM(@"Boss01.wav", @"Sound\bgm\Boss01.wav", 1000);
             //timer.Start();
             
@@ -456,17 +457,17 @@ namespace Lyyneheym
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (Musician.getInstance().isBGMPlaying)
+            if (Musician.GetInstance().isBGMPlaying)
             {
-                Musician.getInstance().SetBGMVolume((float)e.NewValue);
+                Musician.GetInstance().SetBGMVolume((float)e.NewValue);
             }
         }
 
         private void Slider_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (Musician.getInstance().isBGMPlaying)
+            if (Musician.GetInstance().isBGMPlaying)
             {
-                Musician.getInstance().SetBGMStereo((float)e.NewValue);
+                Musician.GetInstance().SetBGMStereo((float)e.NewValue);
             }
         }
 

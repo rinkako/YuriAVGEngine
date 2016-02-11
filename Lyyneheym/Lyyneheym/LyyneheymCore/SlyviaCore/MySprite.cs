@@ -22,8 +22,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="ms">材质的内存流</param>
         /// <param name="cutrect">材质切割矩形</param>
-        public void Init(MemoryStream ms, Int32Rect? cutrect = null)
+        public void Init(string resName, ResourceType resType, MemoryStream ms, Int32Rect? cutrect = null)
         {
+            this.resourceName = resName;
+            this.resourceType = resType;
             this.myImage = new BitmapImage();
             this.myImage.BeginInit();
             this.myImage.StreamSource = ms;
@@ -40,8 +42,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="uri">材质的路径</param>
         /// <param name="cutrect">材质切割矩形</param>
-        public void Init(Uri uri, Int32Rect? cutrect = null)
+        public void Init(string resName, ResourceType resType, Uri uri, Int32Rect? cutrect = null)
         {
+            this.resourceName = resName;
+            this.resourceType = resType;
             this.myImage = new BitmapImage();
             this.myImage.BeginInit();
             this.myImage.UriSource = uri;
@@ -293,6 +297,44 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 return this.displayBinding != null;
             }
         }
+
+        /// <summary>
+        /// 获取精灵的资源类型
+        /// </summary>
+        public ResourceType resourceType
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取精灵的资源名
+        /// </summary>
+        public string resourceName
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取或设置正在进行的动画数量
+        /// </summary>
+        public int AnimateCount
+        {
+            get
+            {
+                return this.AnimateCounter;
+            }
+            set
+            {
+                this.AnimateCounter = Math.Max(0, value);
+            }
+        }
+
+        /// <summary>
+        /// 精灵动画状态
+        /// </summary>
+        private int AnimateCounter = 0;
 
         /// <summary>
         /// 精灵动画锚点类型

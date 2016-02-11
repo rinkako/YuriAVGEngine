@@ -75,7 +75,7 @@
     <Compile Include="LyyneheymCore\SlyviaCore\SpiritContainer.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SpriteAnimation.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SpriteButton.cs" />
-    <Compile Include="LyyneheymCore\SlyviaCore\SpriteDescription.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\SpriteDescriptor.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\StackMachine.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\StackMachineFrame.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\SymbolTable.cs" />

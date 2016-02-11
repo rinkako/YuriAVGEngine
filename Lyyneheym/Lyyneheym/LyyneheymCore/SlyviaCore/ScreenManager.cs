@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using Lyyneheym.LyyneheymCore.Utils;
 
 namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
@@ -11,10 +12,21 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     [Serializable]
     public class ScreenManager
     {
-
-        public void AddBackground(int id, string source, double X, double Y, double Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
+        /// <summary>
+        /// 为屏幕增加一个背景精灵描述子
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="source"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="Z"></param>
+        /// <param name="Angle"></param>
+        /// <param name="Opacity"></param>
+        /// <param name="anchor"></param>
+        /// <param name="cut"></param>
+        public void AddBackground(int id, string source, double X, double Y, int Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
         {
-            SpriteDescription sd = new SpriteDescription()
+            SpriteDescriptor sd = new SpriteDescriptor()
             {
                 id = id,
                 resType = ResourceType.Background,
@@ -30,9 +42,21 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.BackgroundDescVec[0] = sd;
         }
 
-        public void AddCharacterStand(int id, string source, double X, double Y, double Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
+        /// <summary>
+        /// 为屏幕增加一个立绘精灵描述子
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="source"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="Z"></param>
+        /// <param name="Angle"></param>
+        /// <param name="Opacity"></param>
+        /// <param name="anchor"></param>
+        /// <param name="cut"></param>
+        public void AddCharacterStand(int id, string source, double X, double Y, int Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
         {
-            SpriteDescription sd = new SpriteDescription()
+            SpriteDescriptor sd = new SpriteDescriptor()
             {
                 id = id,
                 resType = ResourceType.Stand,
@@ -48,13 +72,24 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.CharacterDescVec[id] = sd;
         }
 
-        public void AddCharacterStand(int id, string source, CharacterStandType cst, double Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
+        /// <summary>
+        /// 为屏幕增加一个立绘精灵描述子
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="source"></param>
+        /// <param name="cst"></param>
+        /// <param name="Z"></param>
+        /// <param name="Angle"></param>
+        /// <param name="Opacity"></param>
+        /// <param name="anchor"></param>
+        /// <param name="cut"></param>
+        public void AddCharacterStand(int id, string source, CharacterStandType cst, int Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
         {
-            SpriteDescription sd = null;
+            SpriteDescriptor sd = null;
             switch (cst)
             {
                 case CharacterStandType.Left:
-                    sd = new SpriteDescription()
+                    sd = new SpriteDescriptor()
                     {
                         id = id,
                         resType = ResourceType.Stand,
@@ -68,8 +103,23 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         cutRect = cut
                     };
                     break;
+                case CharacterStandType.MidLeft:
+                    sd = new SpriteDescriptor()
+                    {
+                        id = id,
+                        resType = ResourceType.Stand,
+                        resourceName = source,
+                        X = GlobalDataContainer.GAME_CHARACTERSTAND_MIDLEFT_X,
+                        Y = GlobalDataContainer.GAME_CHARACTERSTAND_MIDLEFT_Y,
+                        Z = Z,
+                        Angle = Angle,
+                        Opacity = Opacity,
+                        anchorType = anchor,
+                        cutRect = cut
+                    };
+                    break;
                 case CharacterStandType.Mid:
-                    sd = new SpriteDescription()
+                    sd = new SpriteDescriptor()
                     {
                         id = id,
                         resType = ResourceType.Stand,
@@ -83,8 +133,23 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         cutRect = cut
                     };
                     break;
+                case CharacterStandType.MidRight:
+                    sd = new SpriteDescriptor()
+                    {
+                        id = id,
+                        resType = ResourceType.Stand,
+                        resourceName = source,
+                        X = GlobalDataContainer.GAME_CHARACTERSTAND_MIDRIGHT_X,
+                        Y = GlobalDataContainer.GAME_CHARACTERSTAND_MIDRIGHT_Y,
+                        Z = Z,
+                        Angle = Angle,
+                        Opacity = Opacity,
+                        anchorType = anchor,
+                        cutRect = cut
+                    };
+                    break;
                 case CharacterStandType.Right:
-                    sd = new SpriteDescription()
+                    sd = new SpriteDescriptor()
                     {
                         id = id,
                         resType = ResourceType.Stand,
@@ -102,9 +167,21 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.CharacterDescVec[id] = sd;
         }
 
-        public void AddPicture(int id, string source, double X, double Y, double Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
+        /// <summary>
+        /// 为屏幕增加一个图片精灵描述子
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="source"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="Z"></param>
+        /// <param name="Angle"></param>
+        /// <param name="Opacity"></param>
+        /// <param name="anchor"></param>
+        /// <param name="cut"></param>
+        public void AddPicture(int id, string source, double X, double Y, int Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
         {
-            SpriteDescription sd = new SpriteDescription()
+            SpriteDescriptor sd = new SpriteDescriptor()
             {
                 id = id,
                 resType = ResourceType.Pictures,
@@ -121,28 +198,78 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 从屏幕上移除一个精灵描述子
+        /// </summary>
+        /// <param name="spriteId">精灵ID</param>
+        /// <param name="rType">资源类型</param>
+        public void RemoveSprite(int spriteId, ResourceType rType)
+        {
+            switch (rType)
+            {
+                case ResourceType.Background:
+                    this.BackgroundDescVec[spriteId] = null;
+                    break;
+                case ResourceType.Stand:
+                    this.CharacterDescVec[spriteId] = null;
+                    break;
+                case ResourceType.Pictures:
+                    this.PictureDescVec[spriteId] = null;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 获取一个精灵的描述子
+        /// </summary>
+        /// <param name="spriteId">精灵ID</param>
+        /// <param name="rType">资源类型</param>
+        /// <returns>描述子实例</returns>
+        public SpriteDescriptor GetDescriptor(int spriteId, ResourceType rType)
+        {
+            try
+            {
+                switch (rType)
+                {
+                    case ResourceType.Background:
+                        return this.BackgroundDescVec[spriteId];
+                    case ResourceType.Stand:
+                        return this.CharacterDescVec[spriteId];
+                    case ResourceType.Pictures:
+                        return this.PictureDescVec[spriteId];
+                    default:
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                DebugUtils.ConsoleLine(ex.ToString(), "ScreenManager / CLR", OutputStyle.Error);
+                return null;
+            }
+        }
+
+        /// <summary>
         /// 背景描述向量
         /// </summary>
-        private List<SpriteDescription> BackgroundDescVec;
+        private List<SpriteDescriptor> BackgroundDescVec;
 
         /// <summary>
         /// 立绘描述向量
         /// </summary>
-        private List<SpriteDescription> CharacterDescVec;
+        private List<SpriteDescriptor> CharacterDescVec;
 
         /// <summary>
         /// 图片描述向量
         /// </summary>
-        private List<SpriteDescription> PictureDescVec;
+        private List<SpriteDescriptor> PictureDescVec;
         
         /// <summary>
         /// 私有的构造器
         /// </summary>
         private ScreenManager()
         {
-            this.BackgroundDescVec = new List<SpriteDescription>();
-            this.CharacterDescVec = new List<SpriteDescription>();
-            this.PictureDescVec = new List<SpriteDescription>();
+            this.BackgroundDescVec = new List<SpriteDescriptor>();
+            this.CharacterDescVec = new List<SpriteDescriptor>();
+            this.PictureDescVec = new List<SpriteDescriptor>();
             for (int i = 0; i < GlobalDataContainer.GAME_BACKGROUND_COUNT; i++)
             {
                 this.BackgroundDescVec.Add(null);
@@ -178,7 +305,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     public enum CharacterStandType
     {
         Left,
+        MidLeft,
+        Mid,
+        MidRight,
         Right,
-        Mid
     }
 }

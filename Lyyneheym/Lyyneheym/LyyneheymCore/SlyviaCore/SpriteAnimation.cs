@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
@@ -35,6 +36,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             Storyboard.SetTargetProperty(doubleAniTop, new PropertyPath(Canvas.TopProperty));
             story.Children.Add(doubleAniLeft);
             story.Children.Add(doubleAniTop);
+            story.Duration = duration;
+            story.Completed += story_Completed;
+            sprite.AnimateCount++;
+            int tt = story.GetHashCode();
+            SpriteAnimation.aniDict[story] = sprite;
             story.Begin();
         }
 
@@ -54,6 +60,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             Storyboard.SetTarget(doubleAniZ, sprite.displayBinding);
             Storyboard.SetTargetProperty(doubleAniZ, new PropertyPath(Canvas.ZIndexProperty));
             story.Children.Add(doubleAniZ);
+            story.Duration = duration;
+            story.Completed += story_Completed;
+            sprite.AnimateCount++;
+            SpriteAnimation.aniDict[story] = sprite;
             story.Begin();
         }
 
@@ -81,6 +91,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             Storyboard.SetTargetProperty(doubleAniScaleY, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
             story.Children.Add(doubleAniScaleX);
             story.Children.Add(doubleAniScaleY);
+            story.Duration = duration;
+            story.Completed += story_Completed;
+            sprite.AnimateCount++;
+            SpriteAnimation.aniDict[story] = sprite;
             story.Begin();
         }
 
@@ -99,6 +113,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             Storyboard.SetTarget(doubleAniOpacity, sprite.displayBinding);
             Storyboard.SetTargetProperty(doubleAniOpacity, new PropertyPath(Image.OpacityProperty));
             story.Children.Add(doubleAniOpacity);
+            story.Duration = duration;
+            story.Completed += story_Completed;
+            sprite.AnimateCount++;
+            SpriteAnimation.aniDict[story] = sprite;
             story.Begin();
         }
 
@@ -117,6 +135,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             Storyboard.SetTarget(doubleAniRotate, sprite.displayBinding);
             Storyboard.SetTargetProperty(doubleAniRotate, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)"));
             story.Children.Add(doubleAniRotate);
+            story.Duration = duration;
+            story.Completed += story_Completed;
+            sprite.AnimateCount++;
+            SpriteAnimation.aniDict[story] = sprite;
             story.Begin();
         }
 
@@ -208,5 +230,59 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             story.Children.Add(doubleAni);
             story.Begin();
         }
+
+        /// <summary>
+        /// 精灵动画完成回调
+        /// </summary>
+        private static void story_Completed(object sender, EventArgs e)
+        {
+            Queue<Storyboard> removeQueue = new Queue<Storyboard>();
+            foreach (var ani in SpriteAnimation.aniDict)
+            {
+                if (ani.Key.GetCurrentTime() == ani.Key.Duration)
+                {
+                    ani.Value.AnimateCount--;
+                    removeQueue.Enqueue(ani.Key);
+                }
+            }
+            while (removeQueue.Count != 0)
+            {
+                SpriteAnimation.aniDict.Remove(removeQueue.Dequeue());
+            }
+        }
+
+        /// <summary>
+        /// 跳过所有动画
+        /// </summary>
+        public static void SkipAllAnimation()
+        {
+            foreach (var ani in SpriteAnimation.aniDict)
+            {
+                ani.Key.SkipToFill();
+            }
+        }
+
+        /// <summary>
+        /// 跳过指定精灵上的动画
+        /// </summary>
+        /// <param name="sprite">精灵实例</param>
+        public static void SkipAnimation(MySprite sprite)
+        {
+            if (sprite != null)
+            {
+                foreach (var ani in SpriteAnimation.aniDict)
+                {
+                    if (ani.Value == sprite)
+                    {
+                        ani.Key.SkipToFill();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 正在进行的动画字典
+        /// </summary>
+        private static Dictionary<Storyboard, MySprite> aniDict = new Dictionary<Storyboard, MySprite>();
     }
 }

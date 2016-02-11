@@ -199,18 +199,32 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 音乐引擎
         /// </summary>
-        private Musician musician = Musician.getInstance();
+        private Musician musician = Musician.GetInstance();
 
         /// <summary>
         /// 资源管理器
         /// </summary>
-        private ResourceManager resMana = ResourceManager.getInstance();
+        private ResourceManager resMana = ResourceManager.GetInstance();
+
+        private ScreenManager scrMana = ScreenManager.GetInstance();
+        private ViewManager viewMana = ViewManager.GetInstance();
 
         #region 演绎函数
+        /// <summary>
+        /// 结束程序
+        /// </summary>
         public void Shutdown()
         {
             DebugUtils.ConsoleLine("Shutdown is called", "UpdateRender", OutputStyle.Important);
             this.view.Close();
+        }
+
+        /// <summary>
+        /// 跳过所有动画
+        /// </summary>
+        public void SkipAllAnimation()
+        {
+            SpriteAnimation.SkipAllAnimation();
         }
 
         private void Dialog()
@@ -228,48 +242,177 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         }
 
-        private void Picture()
+        /// <summary>
+        /// 显示背景
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="filename"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="opacity"></param>
+        /// <param name="xscale"></param>
+        /// <param name="yscale"></param>
+        /// <param name="ro"></param>
+        /// <param name="anchor"></param>
+        /// <param name="cut"></param>
+        private void Background(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
-
+            this.scrMana.AddBackground(id, filename, x, y, id, ro, opacity, anchor, cut);
+            this.viewMana.Draw(id, ResourceType.Background);
         }
 
-        private void Move()
+        /// <summary>
+        /// 显示图片
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="filename"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="opacity"></param>
+        /// <param name="xscale"></param>
+        /// <param name="yscale"></param>
+        /// <param name="ro"></param>
+        private void Picture(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
-
+            this.scrMana.AddPicture(id, filename, x, y, id, ro, opacity, anchor, cut);
+            this.viewMana.Draw(id, ResourceType.Pictures);
         }
 
-        private void Deletepicture()
+        /// <summary>
+        /// 移动图片
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="rType"></param>
+        /// <param name="property"></param>
+        /// <param name="fromValue"></param>
+        /// <param name="toValue"></param>
+        /// <param name="acc"></param>
+        /// <param name="duration"></param>
+        private void Move(int id, ResourceType rType, string property, double fromValue, double toValue, double acc, Duration duration)
         {
-
+            MySprite actionSprite = this.viewMana.GetSprite(id, rType);
+            SpriteDescriptor descriptor = this.scrMana.GetDescriptor(id, rType);
+            if (actionSprite == null)
+            {
+                DebugUtils.ConsoleLine(String.Format("Ignored move (sprite is null): {0}, {1}", rType.ToString(), id),
+                    "UpdateRender", OutputStyle.Warning);
+                return;
+            }
+            switch (property)
+            {
+                case "x":
+                    SpriteAnimation.XYMoveAnimation(actionSprite, duration, fromValue, toValue, actionSprite.displayY, actionSprite.displayY, acc, 0);
+                    break;
+                case "y":
+                    SpriteAnimation.XYMoveAnimation(actionSprite, duration, actionSprite.displayX, actionSprite.displayX, fromValue, toValue, 0, acc);
+                    break;
+                case "o":
+                case "opacity":
+                    SpriteAnimation.OpacityAnimation(actionSprite, duration, fromValue, toValue, acc);
+                    break;
+                case "a":
+                case "angle":
+                    SpriteAnimation.RotateAnimation(actionSprite, duration, fromValue, toValue, acc);
+                    break;
+                case "s":
+                case "scale":
+                    SpriteAnimation.ScaleAnimation(actionSprite, duration, fromValue, toValue, fromValue, toValue, acc, acc);
+                    break;
+                case "sx":
+                case "scalex":
+                    SpriteAnimation.ScaleAnimation(actionSprite, duration, fromValue, toValue, descriptor.ScaleY, descriptor.ScaleY, acc, 0);
+                    break;
+                case "sy":
+                case "scaley":
+                    SpriteAnimation.ScaleAnimation(actionSprite, duration, descriptor.ScaleX, descriptor.ScaleX, fromValue, toValue, 0, acc);
+                    break;
+                default:
+                    DebugUtils.ConsoleLine(String.Format("Move instruction without valid parameters: {0}", property),
+                        "UpdateRender", OutputStyle.Warning);
+                    break;
+            }
         }
 
-        private void Cstand()
+        /// <summary>
+        /// 移除图片
+        /// </summary>
+        private void Deletepicture(int id, ResourceType rType)
         {
-
+            this.viewMana.RemoveSprite(id, rType);
         }
 
-        private void Deletecstand()
+        /// <summary>
+        /// 显示立绘
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="filename"></param>
+        /// <param name="locationStr"></param>
+        /// <param name="opacity"></param>
+        /// <param name="xscale"></param>
+        /// <param name="yscale"></param>
+        /// <param name="ro"></param>
+        /// <param name="anchor"></param>
+        /// <param name="cut"></param>
+        private void Cstand(int id, string filename, string locationStr, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
-
+            CharacterStandType cst;
+            switch (locationStr)
+            {
+                case "l":
+                case "left":
+                    cst = CharacterStandType.Left;
+                    break;
+                case "r":
+                case "right":
+                    cst = CharacterStandType.Right;
+                    break;
+                case "ml":
+                case "midleft":
+                    cst = CharacterStandType.MidLeft;
+                    break;
+                case "mr":
+                case "midright":
+                    cst = CharacterStandType.MidRight;
+                    break;
+                default:
+                    cst = CharacterStandType.Mid;
+                    break;
+            }
+            this.scrMana.AddCharacterStand(id, filename, cst, id, ro, opacity, anchor, cut);
+            this.viewMana.Draw(id, ResourceType.Stand);
         }
 
-        private void Se()
+        /// <summary>
+        /// 移除立绘
+        /// </summary>
+        private void Deletecstand(CharacterStandType cst)
         {
+            this.viewMana.RemoveSprite(Convert.ToInt32(cst), ResourceType.Stand);
+        }
 
+        /// <summary>
+        /// 播放音效
+        /// </summary>
+        /// <param name="resourceName"></param>
+        /// <param name="volume"></param>
+        private void Se(string resourceName, float volume)
+        {
+            var seKVP = this.resMana.GetSE(resourceName);
+            this.musician.PlaySE(seKVP.Key, seKVP.Value, volume);
         }
 
         /// <summary>
         /// 演绎函数：播放BGM，如果是同一个文件将不会重新播放
         /// </summary>
-        /// <param name="bgmFileName">要播放的BGM名字</param>
+        /// <param name="resourceName">要播放的BGM名字</param>
         /// <param name="volume">音量</param>
-        private void Bgm(string bgmResourceName, float volume)
+        private void Bgm(string resourceName, float volume)
         {
             // 如果当前BGM就是此BGM就只调整音量
-            if (this.musician.currentBGM != bgmResourceName)
+            if (this.musician.currentBGM != resourceName)
             {
-                var bgmKVP = this.resMana.GetBGM(bgmResourceName);
-                this.musician.PlayBGM(bgmResourceName, bgmKVP.Key, bgmKVP.Value, volume);
+                var bgmKVP = this.resMana.GetBGM(resourceName);
+                this.musician.PlayBGM(resourceName, bgmKVP.Key, bgmKVP.Value, volume);
             }
             else
             {
@@ -376,6 +519,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         private void Titlepoint()
+        {
+
+        }
+
+        private void MsgLayer()
+        {
+
+        }
+
+        private void MsgLayerOpt()
         {
 
         }

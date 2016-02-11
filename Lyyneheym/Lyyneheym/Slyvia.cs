@@ -32,7 +32,7 @@ namespace Lyyneheym
 
         public void testBGM(string sourceName)
         {
-            Musician m = Musician.getInstance();
+            Musician m = Musician.GetInstance();
             var r = this.ResMana.GetBGM(sourceName);
             m.PlayBGM(sourceName, r.Key, r.Value, 1000);
 
@@ -40,7 +40,7 @@ namespace Lyyneheym
 
         public void testVocal(string vocalName)
         {
-            Musician m = Musician.getInstance();
+            Musician m = Musician.GetInstance();
             var r = this.ResMana.GetVocal(vocalName);
             m.PlayVocal(r.Key, r.Value, 1000);
         }
@@ -336,7 +336,7 @@ namespace Lyyneheym
         /// </summary>
         private Slyvia()
         {
-            this.ResMana = ResourceManager.getInstance();
+            this.ResMana = ResourceManager.GetInstance();
             this.RunMana = new RuntimeManager();
             this.updateRender = new UpdateRender();
             this.waitingVector = new List<KeyValuePair<DateTime, TimeSpan>>();

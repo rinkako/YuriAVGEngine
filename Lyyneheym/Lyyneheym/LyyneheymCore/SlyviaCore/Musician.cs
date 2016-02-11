@@ -351,7 +351,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 工厂方法：获得音乐管理器类的唯一实例
         /// </summary>
         /// <returns>音乐管理器</returns>
-        public static Musician getInstance()
+        public static Musician GetInstance()
         {
             return synObject == null ? synObject = new Musician() : synObject;
         }
@@ -922,6 +922,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public void Stereo(int handle, float offset)
         {
             Bass.BASS_ChannelSetAttribute(handle, BASSAttribute.BASS_ATTRIB_PAN, Math.Max(-1, Math.Min(offset, 1)));
+        }
+
+        public void Frequency(int handle, float freq)
+        {
+
         }
 
         /// <summary>
