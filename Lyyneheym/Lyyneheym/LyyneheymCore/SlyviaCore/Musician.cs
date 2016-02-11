@@ -924,11 +924,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             Bass.BASS_ChannelSetAttribute(handle, BASSAttribute.BASS_ATTRIB_PAN, Math.Max(-1, Math.Min(offset, 1)));
         }
 
-        public void Frequency(int handle, float freq)
-        {
-
-        }
-
         /// <summary>
         /// 获得一个句柄是否正在播放
         /// </summary>

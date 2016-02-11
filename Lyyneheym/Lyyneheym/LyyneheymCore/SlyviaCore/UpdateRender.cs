@@ -66,7 +66,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             switch (action.aType)
             {
                 case SActionType.act_bgm:
-                    this.Bgm(action.argsDict["filename"], (float)this.CalculatePolish(action.argsDict["vol"]));
+                    this.Bgm(action.argsDict["filename"], Convert.ToDouble(this.CalculatePolish(action.argsDict["vol"])));
                     break;
                 case SActionType.act_stopbgm:
                     this.Stopbgm();
@@ -406,17 +406,17 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="resourceName">要播放的BGM名字</param>
         /// <param name="volume">音量</param>
-        private void Bgm(string resourceName, float volume)
+        private void Bgm(string resourceName, double volume)
         {
             // 如果当前BGM就是此BGM就只调整音量
             if (this.musician.currentBGM != resourceName)
             {
                 var bgmKVP = this.resMana.GetBGM(resourceName);
-                this.musician.PlayBGM(resourceName, bgmKVP.Key, bgmKVP.Value, volume);
+                this.musician.PlayBGM(resourceName, bgmKVP.Key, bgmKVP.Value, (float)volume);
             }
             else
             {
-                this.musician.SetBGMVolume(volume);
+                this.musician.SetBGMVolume((float)volume);
             }
         }
 
@@ -427,15 +427,23 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             this.musician.StopAndReleaseBGM();
         }
-
-        private void Vocal()
+        /// <summary>
+        /// 演绎函数：播放Vocal，这个动作会截断正在播放的Vocal
+        /// </summary>
+        /// <param name="resourceName">要播放的Vocal名字</param>
+        /// <param name="volume">音量</param>
+        private void Vocal(string resourceName, float volume)
         {
-
+            var vocalKVP = this.resMana.GetVocal(resourceName);
+            this.musician.PlayVocal(vocalKVP.Key, vocalKVP.Value, volume);
         }
 
+        /// <summary>
+        /// 演绎函数：停止语音
+        /// </summary>
         private void Stopvocal()
         {
-
+            this.musician.StopAndReleaseVocal();
         }
 
         private void Title()
@@ -458,62 +466,12 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         }
 
-        private void Lable()
-        {
-
-        }
-
-        private void Jump()
-        {
-
-        }
-
-        private void For()
-        {
-
-        }
-
-        private void Endfor()
-        {
-
-        }
-
-        private void If()
-        {
-
-        }
-
-        private void Function()
-        {
-
-        }
-
-        private void Endfunction()
-        {
-
-        }
-
         private void Var()
         {
 
         }
 
-        private void Break()
-        {
-
-        }
-
-        private void Wait()
-        {
-
-        }
-
         private void Branch()
-        {
-
-        }
-
-        private void Call()
         {
 
         }

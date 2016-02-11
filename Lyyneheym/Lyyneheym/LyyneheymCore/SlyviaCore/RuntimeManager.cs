@@ -19,7 +19,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 获取当前调用堆栈顶部状态
         /// </summary>
-        /// <returns></returns>
+        /// <returns>栈顶状态</returns>
         public GameStackMachineState GameState()
         {
             if (this.CallStack.ESP == null)
@@ -85,6 +85,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         this.CallStack.ESP.PC++;
                         ret = this.CallStack.ESP.IP = ret.next;
                         break;
+                        
                 }
                 // 移动下一指令指针，为下次处理做准备
                 this.CallStack.ESP.PC++;
@@ -169,10 +170,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 等待用户操作
         /// </summary>
-        /// <param name="causedBy">触发的原因</param>
-        public void UserWait(string causedBy)
+        /// <param name="causedBy">触发者</param>
+        /// <param name="detail">触发的原因</param>
+        public void UserWait(string causedBy, string detail = null)
         {
-            this.CallStack.Submit(causedBy);
+            this.CallStack.Submit(causedBy, detail);
         }
 
         /// <summary>

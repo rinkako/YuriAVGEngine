@@ -84,10 +84,10 @@ namespace Lyyneheym
 
             Interpreter ip = new Interpreter("TestProj", @"C:\Users\Kako\Desktop\testDir");
             ip.Dash(InterpreterType.RELEASE_WITH_IL, 8);
-            ip.GetILFile(@"C:\Users\Kako\Desktop\Res\mylog.sil");
+            ip.GetILFile(@"Scenario\main.sil");
 
             ILConvertor ilc = ILConvertor.GetInstance();
-            ilc.Dash(@"C:\Users\Kako\Desktop\Res");
+            List<Scene> rS = ilc.Dash(@"Scenario");
         }
 
 

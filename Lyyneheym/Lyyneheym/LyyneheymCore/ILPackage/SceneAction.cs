@@ -38,7 +38,7 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
         public SceneAction(SceneActionPackage sap)
         {
             this.saNodeName = sap.saNodeName;
-            this.aType = SActionType.NOP;
+            this.aType = (SActionType)Enum.Parse(typeof(SActionType), sap.saNodeName.Split('@')[1]);
             this.argsDict = new Dictionary<string, string>(sap.argsDict);
             this.condPolish = sap.condPolish;
             this.isBelongFunc = sap.isBelongFunc;
@@ -151,9 +151,9 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
         act_function,
         // 函数声明（尾）
         act_endfunction,
-        // 剧本跳转（已废弃）
+        // 剧本跳转
         act_scene,
-        // 开关操作（已废弃）
+        // 开关操作
         act_switch,
         // 变量操作
         act_var,
@@ -168,6 +168,20 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
         // 函数调用
         act_call,
         // 回归点
-        act_titlepoint
+        act_titlepoint,
+        // 准备渐变
+        act_freeze,
+        // 执行渐变
+        act_trans,
+        // 按钮
+        act_button,
+        // 对话样式
+        act_style,
+        // 切换文字层
+        act_msglayer,
+        // 修改层属性
+        act_msglayeropt,
+        // 等待用户操作
+        act_waituser
     }
 }

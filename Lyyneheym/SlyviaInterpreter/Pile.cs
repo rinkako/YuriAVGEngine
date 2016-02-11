@@ -365,7 +365,13 @@ namespace Lyyneheym.SlyviaInterpreter
             this.blockDict = new Dictionary<string, SceneAction>();
             this.Mise(this.parseTree, ref resSa, funcSaVec);
             this.Tamao(resSa, resSa, false);
-            funcSaVec.ForEach((x) => funcVec.Add(this.Tamao(x, x, true)));
+            //funcSaVec.ForEach((x) => funcVec.Add(this.Tamao(x, x, true)));
+
+            for (int i = 0; i < funcSaVec.Count; i++)
+            {
+                funcVec.Add(this.Tamao(funcSaVec[i], funcSaVec[i], true));
+            }
+
             resSa.aTag = this.scenario;
             return new KeyValuePair<SceneAction, List<SceneFunction>>(resSa, funcVec);
         }
@@ -760,8 +766,9 @@ namespace Lyyneheym.SlyviaInterpreter
         private SceneFunction Tamao(SceneAction saNode, SceneAction parent, bool funcFlag)
         {
             switch (saNode.aType)
-            {
+            {    
                 case SActionType.NOP:
+                case SActionType.act_function:
                     if (saNode.trueRouting == null || saNode.trueRouting.Count == 0)
                     {
                         break;
@@ -788,7 +795,7 @@ namespace Lyyneheym.SlyviaInterpreter
                     saNode.trueRouting[saNode.trueRouting.Count - 1].next = saNode;
                     break;
                 case SActionType.act_endfor:
-                    // break节点的下一节点是她的for母节点
+                    // endfor节点的下一节点是她的for母节点
                     saNode.next = parent;
                     break;
                 case SActionType.act_break:
