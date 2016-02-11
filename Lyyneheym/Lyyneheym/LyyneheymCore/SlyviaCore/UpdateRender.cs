@@ -25,8 +25,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Left, MouseButtonState.Released);
             UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Middle, MouseButtonState.Released);
             UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Right, MouseButtonState.Released);
-            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.XButton1, MouseButtonState.Released);
-            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.XButton2, MouseButtonState.Released);
         }
         
         /// <summary>
@@ -52,9 +50,27 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="polish">逆波兰式</param>
         /// <returns>表达式的值</returns>
-        public object CalculatePolish(string polish)
+        private object CalculatePolish(string polish)
         {
             return this.runMana.CalculatePolish(polish);
+        }
+
+        private double ParseDouble(string polish, double nullValue)
+        {
+            if (polish == "")
+            {
+                return nullValue;
+            }
+            return Convert.ToDouble(this.CalculatePolish(polish));
+        }
+
+        private int ParseInt(string polish, int nullValue)
+        {
+            if (polish == "")
+            {
+                return nullValue;
+            }
+            return (int)(Convert.ToDouble(this.CalculatePolish(polish)));
         }
 
         /// <summary>
@@ -74,6 +90,27 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 case SActionType.act_var:
                     this.Var(action.argsDict["name"], action.argsDict["dash"]);
                     break;
+                case SActionType.act_cstand:
+                    this.Cstand(
+                        this.ParseInt(action.argsDict["id"], 0),
+                        String.Format("{0}_{1}.png", action.argsDict["name"], action.argsDict["face"]),
+                        this.ParseDouble(action.argsDict["x"], 0),
+                        this.ParseDouble(action.argsDict["y"], 0),
+                        this.ParseDouble(action.argsDict["opacity"], 1),
+                        this.ParseDouble(action.argsDict["xscale"], 1),
+                        this.ParseDouble(action.argsDict["yscale"], 1),
+                        this.ParseDouble(action.argsDict["ro"], 0),
+                        action.argsDict["anchor"] == "" ? (action.argsDict["anchor"] == "center" ? SpriteAnchorType.Center : SpriteAnchorType.LeftTop) : SpriteAnchorType.Center,
+                        new Int32Rect(0, 0, 0, 0));
+                    break;
+                    
+
+
+
+
+
+
+
             }
         }
 
@@ -209,7 +246,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         private ResourceManager resMana = ResourceManager.GetInstance();
 
+        /// <summary>
+        /// 屏幕管理器
+        /// </summary>
         private ScreenManager scrMana = ScreenManager.GetInstance();
+
+        /// <summary>
+        /// 视窗管理器
+        /// </summary>
         private ViewManager viewMana = ViewManager.GetInstance();
 
         #region 演绎函数
@@ -240,24 +284,32 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         }
 
-        private void A()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="vid"></param>
+        /// <param name="face"></param>
+        /// <param name="locStr"></param>
+        private void A(string name, string vid, string face, string locStr)
         {
-
+            this.Cstand(-1, String.Format("{0}_{1}.png", name, face), locStr, 1, 1, 1, 0, SpriteAnchorType.Center, new Int32Rect(0, 0, 0, 0));
+            this.Vocal(vid, this.musician.VocalDefaultVolume);
         }
 
         /// <summary>
         /// 显示背景
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="filename"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="opacity"></param>
-        /// <param name="xscale"></param>
-        /// <param name="yscale"></param>
-        /// <param name="ro"></param>
-        /// <param name="anchor"></param>
-        /// <param name="cut"></param>
+        /// <param name="id">图片ID</param>
+        /// <param name="filename">资源名称</param>
+        /// <param name="x">图片X坐标</param>
+        /// <param name="y">图片Y坐标</param>
+        /// <param name="opacity">不透明度</param>
+        /// <param name="xscale">X缩放比</param>
+        /// <param name="yscale">Y缩放比</param>
+        /// <param name="ro">图片角度</param>
+        /// <param name="anchor">锚点</param>
+        /// <param name="cut">纹理切割矩</param>
         private void Background(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
             this.scrMana.AddBackground(id, filename, x, y, id, ro, opacity, anchor, cut);
@@ -267,14 +319,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 显示图片
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="filename"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="opacity"></param>
-        /// <param name="xscale"></param>
-        /// <param name="yscale"></param>
-        /// <param name="ro"></param>
+        /// <param name="id">图片ID</param>
+        /// <param name="filename">资源名称</param>
+        /// <param name="x">图片X坐标</param>
+        /// <param name="y">图片Y坐标</param>
+        /// <param name="opacity">不透明度</param>
+        /// <param name="xscale">X缩放比</param>
+        /// <param name="yscale">Y缩放比</param>
+        /// <param name="ro">角度</param>
+        /// <param name="anchor">锚点</param>
+        /// <param name="cut">纹理切割矩</param>
         private void Picture(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
             this.scrMana.AddPicture(id, filename, x, y, id, ro, opacity, anchor, cut);
@@ -284,13 +338,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 移动图片
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="rType"></param>
-        /// <param name="property"></param>
-        /// <param name="fromValue"></param>
-        /// <param name="toValue"></param>
-        /// <param name="acc"></param>
-        /// <param name="duration"></param>
+        /// <param name="id">图片ID</param>
+        /// <param name="rType">资源类型</param>
+        /// <param name="property">改变的属性</param>
+        /// <param name="fromValue">起始值</param>
+        /// <param name="toValue">目标值</param>
+        /// <param name="acc">加速度</param>
+        /// <param name="duration">完成所需时间</param>
         private void Move(int id, ResourceType rType, string property, double fromValue, double toValue, double acc, Duration duration)
         {
             MySprite actionSprite = this.viewMana.GetSprite(id, rType);
@@ -347,15 +401,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 显示立绘
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="filename"></param>
-        /// <param name="locationStr"></param>
-        /// <param name="opacity"></param>
-        /// <param name="xscale"></param>
-        /// <param name="yscale"></param>
-        /// <param name="ro"></param>
-        /// <param name="anchor"></param>
-        /// <param name="cut"></param>
+        /// <param name="id">图片ID</param>
+        /// <param name="filename">资源名称</param>
+        /// <param name="locationStr">立绘位置字符串</param>
+        /// <param name="opacity">不透明度</param>
+        /// <param name="xscale">X缩放比</param>
+        /// <param name="yscale">Y缩放比</param>
+        /// <param name="ro">角度</param>
+        /// <param name="anchor">锚点</param>
+        /// <param name="cut">纹理切割矩</param>
         private void Cstand(int id, string filename, string locationStr, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
             CharacterStandType cst;
@@ -364,24 +418,48 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 case "l":
                 case "left":
                     cst = CharacterStandType.Left;
-                    break;
-                case "r":
-                case "right":
-                    cst = CharacterStandType.Right;
+                    if (id == -1) { id = 0; }
                     break;
                 case "ml":
                 case "midleft":
                     cst = CharacterStandType.MidLeft;
+                    if (id == -1) { id = 1; }
                     break;
                 case "mr":
                 case "midright":
                     cst = CharacterStandType.MidRight;
+                    if (id == -1) { id = 3; }
+                    break;
+                case "r":
+                case "right":
+                    cst = CharacterStandType.Right;
+                    if (id == -1) { id = 4; }
                     break;
                 default:
                     cst = CharacterStandType.Mid;
+                    if (id == -1) { id = 2; }
                     break;
             }
             this.scrMana.AddCharacterStand(id, filename, cst, id, ro, opacity, anchor, cut);
+            this.viewMana.Draw(id, ResourceType.Stand);
+        }
+
+        /// <summary>
+        /// 显示立绘
+        /// </summary>
+        /// <param name="id">图片ID</param>
+        /// <param name="filename">资源名称</param>
+        /// <param name="x">X坐标</param>
+        /// <param name="y">Y坐标</param>
+        /// <param name="opacity">不透明度</param>
+        /// <param name="xscale">X缩放比</param>
+        /// <param name="yscale">Y缩放比</param>
+        /// <param name="ro">角度</param>
+        /// <param name="anchor">锚点</param>
+        /// <param name="cut">纹理切割矩</param>
+        private void Cstand(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
+        {
+            this.scrMana.AddCharacterStand(id, filename, x, y, id, ro, opacity, anchor, cut);
             this.viewMana.Draw(id, ResourceType.Stand);
         }
 
@@ -396,8 +474,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 播放音效
         /// </summary>
-        /// <param name="resourceName"></param>
-        /// <param name="volume"></param>
+        /// <param name="resourceName">资源名称</param>
+        /// <param name="volume">音量</param>
         private void Se(string resourceName, float volume)
         {
             var seKVP = this.resMana.GetSE(resourceName);
@@ -407,7 +485,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 演绎函数：播放BGM，如果是同一个文件将不会重新播放
         /// </summary>
-        /// <param name="resourceName">要播放的BGM名字</param>
+        /// <param name="resourceName">资源名称</param>
         /// <param name="volume">音量</param>
         private void Bgm(string resourceName, double volume)
         {
@@ -433,7 +511,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 演绎函数：播放Vocal，这个动作会截断正在播放的Vocal
         /// </summary>
-        /// <param name="resourceName">要播放的Vocal名字</param>
+        /// <param name="resourceName">资源名称</param>
         /// <param name="volume">音量</param>
         private void Vocal(string resourceName, float volume)
         {

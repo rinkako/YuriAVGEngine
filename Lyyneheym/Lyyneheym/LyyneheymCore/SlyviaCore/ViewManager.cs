@@ -70,19 +70,19 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             MySprite sprite = vector[spriteId];
             // 强制重新载入或资源名称不同时重新加载资源文件
             if (sprite == null ||
-                (forceReload && sprite.resourceName == descriptor.resourceName) ||
-                sprite.resourceName != descriptor.resourceName)
+                sprite.resourceName != descriptor.resourceName ||
+                forceReload)
             {
                 switch (rType)
                 {
                     case ResourceType.Background:
-                        vector[spriteId] = ResourceManager.GetInstance().GetBackground(descriptor.resourceName);
+                        vector[spriteId] = sprite = ResourceManager.GetInstance().GetBackground(descriptor.resourceName);
                         break;
                     case ResourceType.Stand:
-                        vector[spriteId] = ResourceManager.GetInstance().GetCharacterStand(descriptor.resourceName);
+                        vector[spriteId] = sprite = ResourceManager.GetInstance().GetCharacterStand(descriptor.resourceName);
                         break;
                     case ResourceType.Pictures:
-                        vector[spriteId] = ResourceManager.GetInstance().GetPicture(descriptor.resourceName);
+                        vector[spriteId] = sprite = ResourceManager.GetInstance().GetPicture(descriptor.resourceName);
                         break;
                 }
             }
