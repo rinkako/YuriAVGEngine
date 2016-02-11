@@ -98,6 +98,20 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 获得所有场景实例
+        /// </summary>
+        /// <returns>场景实例向量</returns>
+        public List<Scene> GetAllScene()
+        {
+            List<Scene> resVec = new List<Scene>();
+            foreach (var sc in this.sceneTable)
+            {
+                resVec.Add(sc.Value);
+            }
+            return resVec;
+        }
+
+        /// <summary>
         /// 从资源文件中获取图片资源并返回精灵对象
         /// </summary>
         /// <param name="sourceName">资源名称</param>

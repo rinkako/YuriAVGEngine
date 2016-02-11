@@ -49,7 +49,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="value">变量的值</param>
         internal void assign(string sceneName, string varName, object value)
         {
-            Dictionary<string, object> table = this.FindSymbolTable(sceneName);
+            Scene sc = ResourceManager.GetInstance().GetScene(sceneName);
+            Dictionary<string, object> table = this.FindSymbolTable(sc);
             // 如果查无此键就注册
             if (table.ContainsKey(varName) == false)
             {
@@ -145,15 +146,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 为场景添加符号表
         /// </summary>
-        /// <param name="sceneName">场景名称</param>
+        /// <param name="scene">场景实例</param>
         /// <returns>操作成功与否</returns>
-        internal bool AddSymbolTable(string sceneName)
+        internal bool AddSymbolTable(Scene scene)
         {
-            if (this.userSymbolTableContainer.ContainsKey(sceneName))
+            if (this.userSymbolTableContainer.ContainsKey(scene))
             {
                 return false;
             }
-            this.userSymbolTableContainer.Add(sceneName, new Dictionary<string, object>());
+            this.userSymbolTableContainer.Add(scene, new Dictionary<string, object>());
             return true;
         }    
         

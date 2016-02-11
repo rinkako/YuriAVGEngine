@@ -71,6 +71,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 case SActionType.act_stopbgm:
                     this.Stopbgm();
                     break;
+                case SActionType.act_var:
+                    this.Var(action.argsDict["name"], action.argsDict["dash"]);
+                    break;
             }
         }
 
@@ -466,9 +469,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         }
 
-        private void Var()
+        /// <summary>
+        /// 变量操作
+        /// </summary>
+        /// <param name="varname">变量名</param>
+        /// <param name="dashPolish">表达式的等价逆波兰式</param>
+        private void Var(string varname, string dashPolish)
         {
-
+            this.runMana.Assignment(varname, dashPolish);
         }
 
         private void Branch()

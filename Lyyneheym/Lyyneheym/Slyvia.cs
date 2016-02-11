@@ -72,6 +72,10 @@ namespace Lyyneheym
                     "Director", OutputStyle.Error);
                 Environment.Exit(0);
             }
+            foreach (var sc in this.ResMana.GetAllScene())
+            {
+                this.RunMana.Symbols.AddSymbolTable(sc);
+            }
             this.RunMana.CallScene(mainScene);
         }
         #endregion
