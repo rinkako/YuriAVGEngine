@@ -234,6 +234,31 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 在笛卡尔平面上让精灵上下循环跳动
+        /// </summary>
+        /// <param name="sprite">精灵实例</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="jumpDelta">下跳幅度</param>
+        /// <param name="acc">加速度</param>
+        public static void UpDownRepeatAnimation(MySprite sprite, Duration duration, double jumpDelta, double acc)
+        {
+            Storyboard sb = new Storyboard();
+            DoubleAnimation da = new DoubleAnimation(0, jumpDelta, duration);
+            da.RepeatBehavior = RepeatBehavior.Forever;
+            da.AutoReverse = true;
+            da.AccelerationRatio = acc;
+            Storyboard.SetTarget(da, sprite.displayBinding);
+            DependencyProperty[] propertyChain = new DependencyProperty[]
+            {
+                Image.RenderTransformProperty,
+                TranslateTransform.YProperty,
+            };
+            Storyboard.SetTargetProperty(da, new PropertyPath("(0).(1)", propertyChain));
+            sb.Children.Add(da);
+            sb.Begin();
+        }
+
+        /// <summary>
         /// 精灵动画完成回调
         /// </summary>
         private static void story_Completed(object sender, EventArgs e)

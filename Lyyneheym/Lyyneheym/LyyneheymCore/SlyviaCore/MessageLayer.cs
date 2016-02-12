@@ -18,7 +18,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.Text = "";
             this.X = this.Y = 0;
             this.Opacity = 1.0f;
-            this.Visible = true;
+            this.Visibility = System.Windows.Visibility.Visible;
             this.Margin = new Thickness(GlobalDataContainer.GAME_MESSAGELAYER_MARGIN_LEFT, GlobalDataContainer.GAME_MESSAGELAYER_MARGIN_TOP, GlobalDataContainer.GAME_MESSAGELAYER_MARGIN_RIGHT, GlobalDataContainer.GAME_MESSAGELAYER_MARGIN_BOTTOM);
             this.StyleReset();
         }

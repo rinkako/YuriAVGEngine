@@ -150,7 +150,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 this.viewBinding.Width = myBitmapImage.PixelWidth;
                 this.viewBinding.Height = myBitmapImage.PixelHeight;
                 this.viewBinding.Source = myBitmapImage;
-                Slyvia.getInstance().SubmitInterrupt(this.ntr);
+                Slyvia.GetInstance().SubmitInterrupt(this.ntr);
             }
         }
 

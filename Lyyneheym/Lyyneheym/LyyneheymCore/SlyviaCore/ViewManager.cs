@@ -113,7 +113,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 msglay.backgroundSprite.resourceName != descriptor.BackgroundResourceName ||
                 forceReload)
             {
-                MySprite bgSprite = ResourceManager.GetInstance().GetBackground(descriptor.BackgroundResourceName);
+                MySprite bgSprite = ResourceManager.GetInstance().GetPicture(descriptor.BackgroundResourceName);
                 MessageLayer newLayer = new MessageLayer();
                 newLayer.backgroundSprite = bgSprite;
                 this.MessageLayerVec[msglayId] = msglay = newLayer;
@@ -288,13 +288,24 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.view = mw;
         }
 
-
+        /// <summary>
+        /// 背景精灵向量
+        /// </summary>
         private List<MySprite> BackgroundSpriteVec;
         
+        /// <summary>
+        /// 立绘精灵向量
+        /// </summary>
         private List<MySprite> CharacterStandSpriteVec;
         
+        /// <summary>
+        /// 图片精灵向量
+        /// </summary>
         private List<MySprite> PictureSpriteVec;
 
+        /// <summary>
+        /// 文字层向量
+        /// </summary>
         private List<MessageLayer> MessageLayerVec;
 
         /// <summary>

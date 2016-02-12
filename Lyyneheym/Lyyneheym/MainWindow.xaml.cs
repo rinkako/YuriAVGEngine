@@ -30,7 +30,7 @@ namespace Lyyneheym
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Slyvia core = Slyvia.getInstance();
+        private Slyvia core = Slyvia.GetInstance();
 
         public MainWindow()
         {
@@ -250,9 +250,43 @@ namespace Lyyneheym
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-            TypewriteTextblock("测试文本测试文本测试文本测试文本" + Environment.NewLine + "233333333", this.BO_MainText, 30);
+            string pstr = "测试文本测试文本测试文本测试文本" + Environment.NewLine + "233333 here is new line without pause" + Environment.NewLine
+                + "\\|" + "Here third line, with pause";
+            string[] strRun = pstr.Split(new string[] {"\\|"}, StringSplitOptions.None);
+            string preStr = String.Empty, desStr = strRun[0];
+            for (int i = 0; i < strRun.Length; i++)
+            {
+                //int oldRunCount = runcount;
+                TypewriteTextblock(preStr, desStr, this.BO_MainText, 60);
+                if (i == strRun.Length - 1) { break; }
+                preStr = desStr;
+                desStr = strRun[i + 1];
+                DateTime beginTime = DateTime.Now;
+                TimeSpan ts = TimeSpan.FromMilliseconds(1000.0 / 60.0);
+
+                while (Rc == 0)//(runcount == oldRunCount)
+                {
+                    if (DateTime.Now - beginTime > ts)
+                    {
+                        this.DoEvent();
+                        beginTime = DateTime.Now;
+                    }
+                }
+
+                Rc = 0;
+
+                
+            }
+
         }
 
+        private int Rc = 0;
+
+        private void Button_Click_15(object sender, RoutedEventArgs e)
+        {
+            //TypewriteTextblock("测试文本测试文本测试文本测试文本", Environment.NewLine + "2333333", this.BO_MainText, 30);
+            Rc++;
+        }
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
@@ -261,6 +295,12 @@ namespace Lyyneheym
             //mp.Play();
             this.testLexer();
         }
+
+        public void DoEvent()
+        {
+            Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.Background);
+        }
+
 
         private void Button_Click_8(object sender, RoutedEventArgs e)
         {
@@ -280,16 +320,16 @@ namespace Lyyneheym
         }
 
 
-        private void TypewriteTextblock(string textToAnimate, TextBlock txt, int timeSpan)
+        private void TypewriteTextblock(string orgString, string appendString, TextBlock txt, int timeSpan)
         {
             this.BO_MsgTria.Visibility = System.Windows.Visibility.Hidden;
             Storyboard story = new Storyboard();
             story.FillBehavior = FillBehavior.HoldEnd;
             DiscreteStringKeyFrame discreteStringKeyFrame;
             StringAnimationUsingKeyFrames stringAnimationUsingKeyFrames = new StringAnimationUsingKeyFrames();
-            //stringAnimationUsingKeyFrames.Duration = new Duration(TimeSpan.FromMilliseconds(timeSpan * textToAnimate.Length));
-            string tmp = string.Empty;
-            foreach (char c in textToAnimate)
+            stringAnimationUsingKeyFrames.Duration = new Duration(TimeSpan.FromMilliseconds(timeSpan * appendString.Length));
+            string tmp = orgString;
+            foreach (char c in appendString)
             {
                 discreteStringKeyFrame = new DiscreteStringKeyFrame();
                 discreteStringKeyFrame.KeyTime = KeyTime.Paced;
@@ -297,11 +337,12 @@ namespace Lyyneheym
                 discreteStringKeyFrame.Value = tmp;
                 stringAnimationUsingKeyFrames.KeyFrames.Add(discreteStringKeyFrame);
             }
-            Storyboard.SetTargetName(stringAnimationUsingKeyFrames, txt.Name);
+            Storyboard.SetTarget(stringAnimationUsingKeyFrames, txt);
             Storyboard.SetTargetProperty(stringAnimationUsingKeyFrames, new PropertyPath(TextBlock.TextProperty));
             story.Children.Add(stringAnimationUsingKeyFrames);
             story.Completed += new EventHandler(callback_typing);
             story.Begin(txt);
+
         }
 
         private void callback_typing(object sender, EventArgs e)
@@ -309,9 +350,8 @@ namespace Lyyneheym
             this.BO_MsgTria.Visibility = Visibility.Visible;
             this.BO_MsgTria.RenderTransform = new TranslateTransform();
             this.ApplyUpDownAnimation(this.BO_MsgTria.Name);
-            
         }
-
+        
 
 
 
@@ -547,6 +587,8 @@ namespace Lyyneheym
         {
 
         }
+
+        
 
 
 

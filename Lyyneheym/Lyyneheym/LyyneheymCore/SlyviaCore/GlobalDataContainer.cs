@@ -44,12 +44,18 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public static int GAME_MESSAGELAYER_MARGIN_LEFT = 5;
         // 文本层：文本层默认右边距
         public static int GAME_MESSAGELAYER_MARGIN_RIGHT = 5;
+        // 文本层：对话小三角文件名
+        public static string GAME_MESSAGELAYER_TRIA_FILENAME = "MessageTria.png";
+        // 文字层：对话小三角X坐标
+        public static double GAME_MESSAGELAYER_TRIA_X = 950;
+        // 文字层：对话小三角Y坐标
+        public static double GAME_MESSAGELAYER_TRIA_Y = 500;
         // 文本展示：是否打字模式
         public static bool GAME_MSG_ISTYPING = true;
         // 文本展示：打字模式延迟
-        public static int GAME_MSG_TYPING_DELAY = 10;
+        public static int GAME_MSG_TYPING_DELAY = 60;
         // 文本展示：打字模式过段延迟
-        public static int GAME_MSG_PASSAGE_DELAY = 10;
+        public static int GAME_MSG_PASSAGE_DELAY = 120;
         // 文本展示：是否已读快进
         public static bool GAME_MSG_SKIP = false;
         // 图像层：图像层数量
@@ -88,6 +94,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public static double GAME_CHARACTERSTAND_RIGHT_X = 500;
         // 图像层：右立绘Y
         public static double GAME_CHARACTERSTAND_RIGHT_Y = 60;
+        // 全局：背景Z坐标
+        public static int GAME_Z_BACKGROUND = 0;
+        // 全局：立绘Z坐标最小值
+        public static int GAME_Z_CHARACTERSTAND = 11;
+        // 全局：文字层Z坐标最小值
+        public static int GAME_Z_MESSAGELAYER = 51;
+        // 全局：图片Z坐标最小值
+        public static int GAME_Z_PICTURES = 101;
         // 音频：语音文件后缀
         public static string GAME_VOCAL_POSTFIX = ".mp3";
         // 存档：截图存档

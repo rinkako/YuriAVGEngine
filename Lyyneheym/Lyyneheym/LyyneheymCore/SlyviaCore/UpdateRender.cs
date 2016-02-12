@@ -5,6 +5,9 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Media.Animation;
 
 using Lyyneheym.LyyneheymCore.Utils;
 using Lyyneheym.LyyneheymCore.ILPackage;
@@ -12,12 +15,12 @@ using Lyyneheym.LyyneheymCore.ILPackage;
 namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
     /// <summary>
-    /// 负责将场景动作转化为前端事物的类
+    /// 渲染类：负责将场景动作转化为前端事物的类
     /// </summary>
     public class UpdateRender
     {
         /// <summary>
-        /// 构造器
+        /// 渲染类构造器
         /// </summary>
         public UpdateRender()
         {
@@ -27,6 +30,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Right, MouseButtonState.Released);
         }
         
+
+
         /// <summary>
         /// 设置运行时环境引用
         /// </summary>
@@ -46,6 +51,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             return this.runMana.CalculatePolish(polish);
         }
 
+        /// <summary>
+        /// <para>将逆波兰式计算为等价的Double类型实例</para>
+        /// <para>如果逆波兰式为空，则返回参数nullValue的值</para>
+        /// </summary>
+        /// <param name="polish">逆波兰式</param>
+        /// <param name="nullValue">默认值</param>
+        /// <returns>Double实例</returns>
         private double ParseDouble(string polish, double nullValue)
         {
             if (polish == "")
@@ -55,6 +67,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             return Convert.ToDouble(this.CalculatePolish(polish));
         }
 
+        /// <summary>
+        /// <para>将逆波兰式计算为等价的Int32类型实例</para>
+        /// <para>如果逆波兰式为空，则返回参数nullValue的值</para>
+        /// </summary>
+        /// <param name="polish">逆波兰式</param>
+        /// <param name="nullValue">默认值</param>
+        /// <returns>Int32实例</returns>
         private int ParseInt(string polish, int nullValue)
         {
             if (polish == "")
@@ -175,9 +194,72 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         }
 
+
+
+
+
         #region 文字层相关
         /// <summary>
-        /// 隐藏小三角
+        /// 初始化文字小三角
+        /// </summary>
+        private void InitMsgLayerTria()
+        {
+            this.MainMsgTriangleSprite = ResourceManager.GetInstance().GetPicture(GlobalDataContainer.GAME_MESSAGELAYER_TRIA_FILENAME);
+            Image TriaView = new Image();
+            BitmapImage bmp = MainMsgTriangleSprite.myImage;
+            this.MainMsgTriangleSprite.displayBinding = TriaView;
+            TriaView.Width = bmp.PixelWidth;
+            TriaView.Height = bmp.PixelHeight;
+            TriaView.Source = bmp;
+            TriaView.RenderTransform = new TranslateTransform();
+            Canvas.SetLeft(TriaView, GlobalDataContainer.GAME_MESSAGELAYER_TRIA_X);
+            Canvas.SetTop(TriaView, GlobalDataContainer.GAME_MESSAGELAYER_TRIA_Y);
+            Canvas.SetZIndex(TriaView, GlobalDataContainer.GAME_Z_PICTURES - 1);
+            this.view.BO_MainGrid.Children.Add(this.MainMsgTriangleSprite.displayBinding);
+        }
+
+        /// <summary>
+        /// 在指定的文字层绑定控件上进行打字动画
+        /// </summary>
+        /// <param name="orgString">原字符串</param>
+        /// <param name="appendString">要追加的字符串</param>
+        /// <param name="msglayBinding">文字层的控件</param>
+        /// <param name="wordTimeSpan">字符之间的打字时间间隔</param>
+        private void TypeWriter(string orgString, string appendString, TextBlock msglayBinding, int wordTimeSpan)
+        {
+            this.HideMessageTria();
+            Storyboard story = new Storyboard();
+            story.FillBehavior = FillBehavior.HoldEnd;
+            DiscreteStringKeyFrame discreteStringKeyFrame;
+            StringAnimationUsingKeyFrames stringAnimationUsingKeyFrames = new StringAnimationUsingKeyFrames();
+            stringAnimationUsingKeyFrames.Duration = new Duration(TimeSpan.FromMilliseconds(wordTimeSpan * appendString.Length));
+            string tmp = orgString;
+            foreach (char c in appendString)
+            {
+                discreteStringKeyFrame = new DiscreteStringKeyFrame();
+                discreteStringKeyFrame.KeyTime = KeyTime.Paced;
+                tmp += c;
+                discreteStringKeyFrame.Value = tmp;
+                stringAnimationUsingKeyFrames.KeyFrames.Add(discreteStringKeyFrame);
+            }
+            Storyboard.SetTarget(stringAnimationUsingKeyFrames, msglayBinding);
+            Storyboard.SetTargetProperty(stringAnimationUsingKeyFrames, new PropertyPath(TextBlock.TextProperty));
+            story.Children.Add(stringAnimationUsingKeyFrames);
+            story.Completed += new EventHandler(this.TypeWriterAnimationCompletedCallback);
+            story.Begin(msglayBinding);
+        }
+
+        /// <summary>
+        /// 打字动画完成回调
+        /// </summary>
+        private void TypeWriterAnimationCompletedCallback(object sender, EventArgs e)
+        {
+            this.ShowMessageTria();
+            this.BeginMessageTriaUpDownAnimation();
+        }
+
+        /// <summary>
+        /// 隐藏对话小三角
         /// </summary>
         public void HideMessageTria()
         {
@@ -185,7 +267,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 显示小三角
+        /// 显示对话小三角
         /// </summary>
         /// <param name="opacity">透明度</param>
         public void ShowMessageTria(double opacity = 1.0f)
@@ -194,25 +276,28 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.view.BO_MsgTria.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// 为对话小三角施加跳动动画
+        /// </summary>
         public void BeginMessageTriaUpDownAnimation()
         {
-
-        }
-
-        public void EndMessageTriaUpDownAnimation()
-        {
-
+            SpriteAnimation.UpDownRepeatAnimation(this.MainMsgTriangleSprite, TimeSpan.FromMilliseconds(500), 10, 0.8);
         }
 
         /// <summary>
         /// 设置小三角位置
         /// </summary>
-        /// <param name="pos"></param>
-        public void SetMessageTriaPosition(Point pos)
+        /// <param name="X">目标X坐标</param>
+        /// <param name="Y">目标Y坐标</param>
+        public void SetMessageTriaPosition(double X, double Y)
         {
-            Canvas.SetLeft(this.view.BO_MsgTria, pos.X);
-            Canvas.SetTop(this.view.BO_MsgTria, pos.Y);
+            Canvas.SetLeft(this.view.BO_MsgTria, X);
+            Canvas.SetTop(this.view.BO_MsgTria, Y);
         }
+
+        private int currentMsgLayer = 0;
+
+        private bool MsgClickFlag = false;
         #endregion
 
         /// <summary>
@@ -222,7 +307,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public void SetMainWindow(MainWindow mw)
         {
             this.view = mw;
+            // 为视窗管理设置引用
             this.viewMana.SetMainWndReference(this.view);
+            // 初始化小三角
+            this.InitMsgLayerTria();
         }
 
         /// <summary>
@@ -273,23 +361,52 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             SpriteAnimation.SkipAllAnimation();
         }
 
-        private void Dialog()
+        /// <summary>
+        /// 演绎函数：显示文本
+        /// </summary>
+        /// <param name="dialogStr">要显示的文本</param>
+        private void Dialog(string dialogStr)
         {
-
-        }
-
-        private void DialogTerminator()
-        {
-
+            string[] strRun = dialogStr.Split(new string[] { "\\|" }, StringSplitOptions.None);
+            string preStr = String.Empty, desStr = strRun[0];
+            TextBlock textView = this.viewMana.GetMessageLayer(this.currentMsgLayer).displayBinding;
+            if (textView == null) { return; }
+            for (int i = 0; i < strRun.Length; i++)
+            {
+                this.TypeWriter(preStr, desStr, textView, 60);
+                if (i == strRun.Length - 1) { break; }
+                preStr = desStr;
+                desStr = strRun[i + 1];
+                DateTime beginTime = DateTime.Now;
+                TimeSpan ts = TimeSpan.FromMilliseconds(GlobalDataContainer.DirectorTimerInterval);
+                while (this.MsgClickFlag == false)
+                {
+                    // 一段时间就要刷新UI
+                    if (DateTime.Now - beginTime > ts)
+                    {
+                        this.view.DoEvent();
+                        beginTime = DateTime.Now;
+                    }
+                }
+                this.MsgClickFlag = false;
+            }
         }
 
         /// <summary>
-        /// 
+        /// 演绎函数：结束本节对话并清空文字层
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="vid"></param>
-        /// <param name="face"></param>
-        /// <param name="locStr"></param>
+        private void DialogTerminator()
+        {
+            this.viewMana.GetMessageLayer(this.currentMsgLayer).displayBinding.Text = "";
+        }
+
+        /// <summary>
+        /// 演绎函数：角色状态设置
+        /// </summary>
+        /// <param name="name">角色名字</param>
+        /// <param name="vid">语音序号</param>
+        /// <param name="face">立绘表情</param>
+        /// <param name="locStr">立绘位置</param>
         private void A(string name, int vid, string face, string locStr)
         {
             if (face != "")
@@ -597,6 +714,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         }
         #endregion
+
+
+
+        private MySprite MainMsgTriangleSprite;
+
 
         #region 键位按钮状态
         public static int KS_MOUSE_WHEEL_DELTA = 0;

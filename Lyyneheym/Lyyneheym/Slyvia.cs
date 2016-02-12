@@ -346,9 +346,9 @@ namespace Lyyneheym
         /// 工厂方法：获得唯一实例
         /// </summary>
         /// <returns>导演类唯一实例</returns>
-        public static Slyvia getInstance()
+        public static Slyvia GetInstance()
         {
-            return null == synObject ? synObject = new Slyvia() : synObject;
+            return null == Slyvia.synObject ? Slyvia.synObject = new Slyvia() : Slyvia.synObject;
         }
 
         /// <summary>
@@ -360,7 +360,6 @@ namespace Lyyneheym
             this.RunMana = new RuntimeManager();
             this.updateRender = new UpdateRender();
             this.updateRender.SetRuntimeManagerReference(this.RunMana);
-            this.updateRender.SetMainWindow(this.mwReference);
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromMilliseconds(GlobalDataContainer.DirectorTimerInterval);
             this.timer.Tick += UpdateContext;
