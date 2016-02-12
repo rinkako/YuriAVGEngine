@@ -126,8 +126,7 @@ namespace Lyyneheym
         /// <param name="waitSpan">等待的时间间隔</param>
         public void SubmitWait(TimeSpan waitSpan)
         {
-            this.RunMana.Delay("Director", waitSpan);
-            this.waitingVector.Add(new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, waitSpan));
+            this.RunMana.Delay("Director", DateTime.Now, waitSpan);
         }
 
         /// <summary>
@@ -146,6 +145,9 @@ namespace Lyyneheym
                 case GameStackMachineState.WaitUser:
                     this.curState = GameState.UserPanel;
                     break;
+                case GameStackMachineState.WaitAnimation:
+                    this.curState = GameState.WaitAni;
+                    break;
                 case GameStackMachineState.Await:
                     this.curState = GameState.Waiting;
                     break;
@@ -162,16 +164,16 @@ namespace Lyyneheym
                 // 等待状态
                 case GameState.Waiting:
                     // 计算已经等待的时间（这里，不考虑并行处理）
-                    if (this.waitingVector.Count > 0)
+                    if (DateTime.Now - this.RunMana.CallStack.ESP.timeStamp > this.RunMana.CallStack.ESP.delay)
                     {
-                        var waitKVP = this.waitingVector[0];
-                        var beginTimestamp = waitKVP.Key;
-                        var waitSpan = waitKVP.Value;
-                        // 如果已经等待结束，就弹调用栈
-                        if ((DateTime.Now - waitKVP.Key) >= waitSpan)
-                        {
-                            this.RunMana.ExitCall();
-                        }
+                        this.RunMana.ExitCall();
+                    }
+                    break;
+                // 等待动画
+                case GameState.WaitAni:
+                    if (SpriteAnimation.isAnyAnimation() == false)
+                    {
+                        this.RunMana.ExitCall();
                     }
                     break;
                 // 等待用户操作
@@ -209,7 +211,7 @@ namespace Lyyneheym
                     {
                         double waitMs = nextInstruct.argsDict.ContainsKey("time") ?
                                 (double)this.RunMana.CalculatePolish(nextInstruct.argsDict["time"]) : 0;
-                        this.RunMana.Delay(nextInstruct.saNodeName, TimeSpan.FromMilliseconds(waitMs));
+                        this.RunMana.Delay(nextInstruct.saNodeName, DateTime.Now, TimeSpan.FromMilliseconds(waitMs));
                         break;
                     }
                     else if (nextInstruct.aType == SActionType.act_waituser)
@@ -316,7 +318,6 @@ namespace Lyyneheym
         private GameState curState;
 
 
-        private List<KeyValuePair<DateTime, TimeSpan>> waitingVector;
 
 
 
@@ -358,7 +359,6 @@ namespace Lyyneheym
             this.ResMana = ResourceManager.GetInstance();
             this.RunMana = new RuntimeManager();
             this.updateRender = new UpdateRender();
-            this.waitingVector = new List<KeyValuePair<DateTime, TimeSpan>>();
             this.updateRender.SetRuntimeManagerReference(this.RunMana);
             this.updateRender.SetMainWindow(this.mwReference);
             this.timer = new DispatcherTimer();

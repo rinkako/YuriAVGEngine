@@ -182,6 +182,8 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
         // 修改层属性
         act_msglayeropt,
         // 等待用户操作
-        act_waituser
+        act_waituser,
+        // 等待动画结束
+        act_waitani
     }
 }

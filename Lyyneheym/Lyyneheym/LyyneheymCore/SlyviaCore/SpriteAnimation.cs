@@ -110,6 +110,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniOpacity = new DoubleAnimation(fromOpacity, toOpacity, duration);
+            doubleAniOpacity.AccelerationRatio = acc;
             Storyboard.SetTarget(doubleAniOpacity, sprite.displayBinding);
             Storyboard.SetTargetProperty(doubleAniOpacity, new PropertyPath(Image.OpacityProperty));
             story.Children.Add(doubleAniOpacity);
@@ -132,6 +133,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniRotate = new DoubleAnimation(fromTheta, toTheta, duration);
+            doubleAniRotate.AccelerationRatio = acc;
             Storyboard.SetTarget(doubleAniRotate, sprite.displayBinding);
             Storyboard.SetTargetProperty(doubleAniRotate, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)"));
             story.Children.Add(doubleAniRotate);
@@ -278,6 +280,32 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 返回当前是否有精灵动画正在进行
+        /// </summary>
+        /// <returns>是否正在播放动画</returns>
+        public static bool isAnyAnimation()
+        {
+            return SpriteAnimation.aniDict.Count > 0;
+        }
+
+        /// <summary>
+        /// 获取当前动画队列里最大的时间间隔值
+        /// </summary>
+        /// <returns>时间间隔</returns>
+        public static TimeSpan findMaxTimeSpan()
+        {
+            TimeSpan maxt = TimeSpan.FromMilliseconds(0);
+            foreach (var st in SpriteAnimation.aniDict)
+            {
+                if (st.Key.Duration > maxt)
+                {
+                    maxt = st.Key.Duration.TimeSpan;
+                }
+            }
+            return maxt;
         }
 
         /// <summary>

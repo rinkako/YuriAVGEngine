@@ -97,8 +97,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 向栈机提交一个延时调用
         /// </summary>
         /// <param name="causeBy">发起延时的SA名</param>
+        /// <param name="begin">开始计时的时刻</param>
         /// <param name="sleepTimeSpan">延时时间间隔</param>
-        public void Submit(string causeBy, TimeSpan sleepTimeSpan)
+        public void Submit(string causeBy, DateTime begin, TimeSpan sleepTimeSpan)
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
@@ -109,6 +110,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 argv = null,
                 bindingFunctionName = null,
                 bindingSceneName = null,
+                timeStamp = begin,
                 delay = sleepTimeSpan,
                 aTag = String.Format("ThreadSleepCausedBy:{0}({1} ms)", causeBy, sleepTimeSpan.Milliseconds)
             };
@@ -120,7 +122,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="causeBy">发起等待的SA名</param>
         /// <param name="detail">备注</param>
-        public void Submit(string causeBy, string detail = "None")
+        public void Submit(string causeBy, string detail)
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
@@ -133,6 +135,27 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 bindingSceneName = null,
                 delay = TimeSpan.FromMilliseconds(0),
                 aTag = String.Format("WaitingFor:{0}#Detail:{1}", causeBy, detail)
+            };
+            this.coreStack.Push(smf);
+        }
+
+        /// <summary>
+        /// 向栈机提交一个等待动画完成的调用
+        /// </summary>
+        /// <param name="causeBy">原因</param>
+        public void Submit(string causeBy)
+        {
+            StackMachineFrame smf = new StackMachineFrame()
+            {
+                state = GameStackMachineState.WaitAnimation,
+                scriptName = null,
+                PC = 0,
+                IP = null,
+                argv = null,
+                bindingFunctionName = null,
+                bindingSceneName = null,
+                delay = TimeSpan.FromMilliseconds(0),
+                aTag = String.Format("WaitingAnimationFor:{0}", causeBy)
             };
             this.coreStack.Push(smf);
         }

@@ -353,7 +353,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         private void Move(int id, ResourceType rType, string property, double fromValue, double toValue, double acc, Duration duration)
         {
             MySprite actionSprite = this.viewMana.GetSprite(id, rType);
-            SpriteDescriptor descriptor = this.scrMana.GetDescriptor(id, rType);
+            SpriteDescriptor descriptor = this.scrMana.GetSpriteDescriptor(id, rType);
             if (actionSprite == null)
             {
                 DebugUtils.ConsoleLine(String.Format("Ignored move (sprite is null): {0}, {1}", rType.ToString(), id),

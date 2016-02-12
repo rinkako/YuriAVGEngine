@@ -64,6 +64,7 @@
     <Compile Include="LyyneheymCore\SlyviaCore\GlobalDataContainer.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\Interrupt.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\MessageLayer.cs" />
+    <Compile Include="LyyneheymCore\SlyviaCore\MessageLayerDescriptor.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\Musician.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\MySprite.cs" />
     <Compile Include="LyyneheymCore\SlyviaCore\PolishItem.cs" />

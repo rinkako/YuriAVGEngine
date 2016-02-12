@@ -487,6 +487,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         BGM,
         BGS,
         SE,
-        VOCAL
+        VOCAL,
+        MessageLayerBackground
     }
 }

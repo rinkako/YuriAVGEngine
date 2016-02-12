@@ -22,37 +22,46 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         public void ReDraw()
         {
+            // 重绘精灵
             for (int i = 0; i < this.BackgroundSpriteVec.Count; i++)
             {
-                this.ReDrawSprite(i, this.BackgroundSpriteVec, ResourceType.Background, this.scrMana.GetDescriptor(i, ResourceType.Background), false);
+                this.ReDrawSprite(i, this.BackgroundSpriteVec, ResourceType.Background, this.scrMana.GetSpriteDescriptor(i, ResourceType.Background), false);
             }
             for (int i = 0; i < this.CharacterStandSpriteVec.Count; i++)
             {
-                this.ReDrawSprite(i, this.CharacterStandSpriteVec, ResourceType.Stand, this.scrMana.GetDescriptor(i, ResourceType.Stand), false);
+                this.ReDrawSprite(i, this.CharacterStandSpriteVec, ResourceType.Stand, this.scrMana.GetSpriteDescriptor(i, ResourceType.Stand), false);
             }
             for (int i = 0; i < this.PictureSpriteVec.Count; i++)
             {
-                this.ReDrawSprite(i, this.PictureSpriteVec, ResourceType.Pictures, this.scrMana.GetDescriptor(i, ResourceType.Pictures), false);
+                this.ReDrawSprite(i, this.PictureSpriteVec, ResourceType.Pictures, this.scrMana.GetSpriteDescriptor(i, ResourceType.Pictures), false);
+            }
+            // 重绘文字层
+            for (int i = 0; i < this.MessageLayerVec.Count; i++)
+            {
+                this.ReDrawMessageLayer(i, this.scrMana.GetMsgLayerDescriptor(i), false);
             }
         }
 
         /// <summary>
         /// 将精灵描述子转化为精灵并显示到前端
         /// </summary>
-        /// <param name="spriteId">精灵ID</param>
+        /// <param name="id">控件id</param>
         /// <param name="rType">资源类型</param>
-        public void Draw(int spriteId, ResourceType rType)
+        public void Draw(int id, ResourceType rType)
         {
             switch (rType)
             {
                 case ResourceType.Background:
-                    this.ReDrawSprite(spriteId, this.BackgroundSpriteVec, ResourceType.Background, this.scrMana.GetDescriptor(spriteId, ResourceType.Background), true);
+                    this.ReDrawSprite(id, this.BackgroundSpriteVec, ResourceType.Background, this.scrMana.GetSpriteDescriptor(id, ResourceType.Background), true);
                     break;
                 case ResourceType.Stand:
-                    this.ReDrawSprite(spriteId, this.CharacterStandSpriteVec, ResourceType.Stand, this.scrMana.GetDescriptor(spriteId, ResourceType.Stand), true);
+                    this.ReDrawSprite(id, this.CharacterStandSpriteVec, ResourceType.Stand, this.scrMana.GetSpriteDescriptor(id, ResourceType.Stand), true);
                     break;
                 case ResourceType.Pictures:
-                    this.ReDrawSprite(spriteId, this.PictureSpriteVec, ResourceType.Pictures, this.scrMana.GetDescriptor(spriteId, ResourceType.Pictures), true);
+                    this.ReDrawSprite(id, this.PictureSpriteVec, ResourceType.Pictures, this.scrMana.GetSpriteDescriptor(id, ResourceType.Pictures), true);
+                    break;
+                case ResourceType.MessageLayerBackground:
+                    this.ReDrawMessageLayer(id, this.scrMana.GetMsgLayerDescriptor(id), true);
                     break;
             }
         }
@@ -92,6 +101,29 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 重绘文字层
+        /// </summary>
+        /// <param name="msglayId">文字层ID</param>
+        /// <param name="descriptor">文字层描述子</param>
+        /// <param name="forceReload">是否强制重新载入背景图资源文件</param>
+        private void ReDrawMessageLayer(int msglayId, MessageLayerDescriptor descriptor, bool forceReload)
+        {
+            MessageLayer msglay = this.MessageLayerVec[msglayId];
+            if (msglay == null ||
+                msglay.backgroundSprite.resourceName != descriptor.BackgroundResourceName ||
+                forceReload)
+            {
+                MySprite bgSprite = ResourceManager.GetInstance().GetBackground(descriptor.BackgroundResourceName);
+                MessageLayer newLayer = new MessageLayer();
+                newLayer.backgroundSprite = bgSprite;
+                this.MessageLayerVec[msglayId] = msglay = newLayer;
+            }
+            // 重绘精灵
+            this.RemoveMessageLayer(msglay);
+            this.DrawMessageLayer(msglay, descriptor);
+        }
+
+        /// <summary>
         /// 为主窗体描绘一个精灵
         /// </summary>
         /// <param name="sprite">精灵</param>
@@ -116,7 +148,37 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 将指定精灵从画面溢出并释放
+        /// 为主窗体描绘一个文字层
+        /// </summary>
+        /// <param name="msglay">文字层</param>
+        /// <param name="descriptor">文字层描述子</param>
+        private void DrawMessageLayer(MessageLayer msglay, MessageLayerDescriptor descriptor)
+        {
+            TextBlock msgBlock = new TextBlock();
+            msglay.displayBinding = msgBlock;
+            if (msglay.backgroundSprite != null && msglay.backgroundSprite.myImage != null)
+            {
+                msgBlock.Background = new ImageBrush(msglay.backgroundSprite.myImage);
+            }
+            msglay.Width = descriptor.Width;
+            msglay.Height = descriptor.Height;
+            msglay.Opacity = descriptor.Opacity;
+            msglay.Margin = descriptor.Margin;
+            msglay.LineHeight = descriptor.LineHeight;
+            msglay.HorizontalAlignment = descriptor.HorizonAlign;
+            msglay.VerticalAlignment = descriptor.VertiAlign;
+            msglay.FontColor = descriptor.FontColor;
+            msglay.FontSize = descriptor.FontSize;
+            msglay.FontName = descriptor.FontName;
+            Canvas.SetLeft(msgBlock, descriptor.X);
+            Canvas.SetTop(msgBlock, descriptor.Y);
+            Canvas.SetZIndex(msgBlock, descriptor.Z);
+            msglay.Visibility = descriptor.Visible ? Visibility.Visible : Visibility.Hidden;
+            this.view.BO_MainGrid.Children.Add(msgBlock);
+        }
+
+        /// <summary>
+        /// 将指定精灵从画面移除并释放
         /// </summary>
         /// <param name="spriteId">精灵ID</param>
         /// <param name="rType">类型</param>
@@ -143,6 +205,18 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 将指定文字层从画面移除并释放
+        /// </summary>
+        /// <param name="msglayId">文字层ID</param>
+        public void RemoveMessageLayer(int msglayId)
+        {
+            this.scrMana.RemoveMsgLayer(msglayId);
+            MessageLayer removeOne = this.MessageLayerVec[msglayId];
+            this.MessageLayerVec[msglayId] = null;
+            this.RemoveMessageLayer(removeOne);
+        }
+
+        /// <summary>
         /// 将精灵从画面移除
         /// </summary>
         /// <param name="sprite">精灵实例</param>
@@ -156,6 +230,23 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     this.view.BO_MainGrid.Children.Remove(spriteView);
                 }
                 sprite.displayBinding = null;
+            }
+        }
+
+        /// <summary>
+        /// 将文字层从画面移除
+        /// </summary>
+        /// <param name="msglay">文字层实例</param>
+        private void RemoveMessageLayer(MessageLayer msglay)
+        {
+            if (msglay != null)
+            {
+                TextBlock msglayView = msglay.displayBinding;
+                if (msglayView != null && this.view.BO_MainGrid.Children.Contains(msglayView))
+                {
+                    this.view.BO_MainGrid.Children.Remove(msglayView);
+                }
+                msglay.displayBinding = null;
             }
         }
 
@@ -179,6 +270,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 获取画面上的文字层实例
+        /// </summary>
+        /// <param name="id">文字层ID</param>
+        /// <returns>文字层实例</returns>
+        public MessageLayer GetMessageLayer(int id)
+        {
+            return this.MessageLayerVec[id];
+        }
+
+        /// <summary>
         /// 为视窗管理器设置主窗体的引用
         /// </summary>
         /// <param name="mw">主窗体</param>
@@ -194,6 +295,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         
         private List<MySprite> PictureSpriteVec;
 
+        private List<MessageLayer> MessageLayerVec;
+
         /// <summary>
         /// 私有的构造器
         /// </summary>
@@ -202,6 +305,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.BackgroundSpriteVec = new List<MySprite>();
             this.CharacterStandSpriteVec = new List<MySprite>();
             this.PictureSpriteVec = new List<MySprite>();
+            this.MessageLayerVec = new List<MessageLayer>();
             for (int i = 0; i < GlobalDataContainer.GAME_BACKGROUND_COUNT; i++)
             {
                 this.BackgroundSpriteVec.Add(null);
@@ -213,6 +317,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             for (int i = 0; i < GlobalDataContainer.GAME_IMAGELAYER_COUNT; i++)
             {
                 this.PictureSpriteVec.Add(null);
+            }
+            for (int i = 0; i < GlobalDataContainer.GAME_MESSAGELAYER_COUNT; i++)
+            {
+                this.MessageLayerVec.Add(null);
             }
         }
 

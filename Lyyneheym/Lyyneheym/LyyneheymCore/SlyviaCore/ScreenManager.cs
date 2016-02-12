@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Media;
 using Lyyneheym.LyyneheymCore.Utils;
 
 namespace Lyyneheym.LyyneheymCore.SlyviaCore
@@ -198,6 +199,49 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 为屏幕增加一个文字层描述子
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="source"></param>
+        /// <param name="Visible"></param>
+        /// <param name="W"></param>
+        /// <param name="H"></param>
+        /// <param name="Margin"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="Z"></param>
+        /// <param name="Opacity"></param>
+        /// <param name="FontName"></param>
+        /// <param name="FontColor"></param>
+        /// <param name="FontSize"></param>
+        /// <param name="Ha"></param>
+        /// <param name="Va"></param>
+        /// <param name="LineHeight"></param>
+        public void AddMsgLayer(int id, string source, bool Visible, double W, double H, Thickness Margin, double X, double Y, int Z, double Opacity, string FontName, Color FontColor, double FontSize, HorizontalAlignment Ha, VerticalAlignment Va, double LineHeight)
+        {
+            MessageLayerDescriptor mld = new MessageLayerDescriptor()
+            {
+                BackgroundResourceName = source,
+                Visible = Visible,
+                X = X,
+                Y = Y,
+                Z = Z,
+                Opacity = Opacity,
+                Margin = Margin,
+                Width = W,
+                Height = H,
+                FontName = FontName,
+                FontColor = FontColor,
+                FontSize = FontSize,
+                HorizonAlign = Ha,
+                VertiAlign = Va,
+                LineHeight = LineHeight,
+                text = ""
+            };
+            this.MsgLayerDescVec[id] = mld;
+        }
+
+        /// <summary>
         /// 从屏幕上移除一个精灵描述子
         /// </summary>
         /// <param name="spriteId">精灵ID</param>
@@ -219,12 +263,21 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 从屏幕上移除一个文字层
+        /// </summary>
+        /// <param name="layerId">文字层ID</param>
+        public void RemoveMsgLayer(int layerId)
+        {
+            this.MsgLayerDescVec[layerId] = null;
+        }
+
+        /// <summary>
         /// 获取一个精灵的描述子
         /// </summary>
         /// <param name="spriteId">精灵ID</param>
         /// <param name="rType">资源类型</param>
         /// <returns>描述子实例</returns>
-        public SpriteDescriptor GetDescriptor(int spriteId, ResourceType rType)
+        public SpriteDescriptor GetSpriteDescriptor(int spriteId, ResourceType rType)
         {
             try
             {
@@ -248,6 +301,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 获取一个文字层描述子
+        /// </summary>
+        /// <param name="layerId">文字层ID</param>
+        /// <returns>描述子实例</returns>
+        public MessageLayerDescriptor GetMsgLayerDescriptor(int layerId)
+        {
+            return this.MsgLayerDescVec[layerId];
+        }
+
+        /// <summary>
         /// 背景描述向量
         /// </summary>
         private List<SpriteDescriptor> BackgroundDescVec;
@@ -261,7 +324,12 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 图片描述向量
         /// </summary>
         private List<SpriteDescriptor> PictureDescVec;
-        
+
+        /// <summary>
+        /// 文字层描述向量
+        /// </summary>
+        private List<MessageLayerDescriptor> MsgLayerDescVec;
+
         /// <summary>
         /// 私有的构造器
         /// </summary>
@@ -270,6 +338,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.BackgroundDescVec = new List<SpriteDescriptor>();
             this.CharacterDescVec = new List<SpriteDescriptor>();
             this.PictureDescVec = new List<SpriteDescriptor>();
+            this.MsgLayerDescVec = new List<MessageLayerDescriptor>();
             for (int i = 0; i < GlobalDataContainer.GAME_BACKGROUND_COUNT; i++)
             {
                 this.BackgroundDescVec.Add(null);
@@ -281,6 +350,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             for (int i = 0; i < GlobalDataContainer.GAME_IMAGELAYER_COUNT; i++)
             {
                 this.PictureDescVec.Add(null);
+            }
+            for (int i = 0; i < GlobalDataContainer.GAME_MESSAGELAYER_COUNT; i++)
+            {
+                this.MsgLayerDescVec.Add(null);
             }
         }
 

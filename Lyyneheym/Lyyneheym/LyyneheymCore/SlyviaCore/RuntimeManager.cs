@@ -181,10 +181,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 延时
         /// </summary>
         /// <param name="causedBy">触发的原因</param>
+        /// <param name="begin">开始计时的时刻</param>
         /// <param name="timespan">等待时间间隔</param>
-        public void Delay(string causedBy, TimeSpan timespan)
+        public void Delay(string causedBy, DateTime begin, TimeSpan timespan)
         {
-            this.CallStack.Submit(causedBy, timespan);
+            this.CallStack.Submit(causedBy, begin, timespan);
         }
 
         /// <summary>
@@ -806,6 +807,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         Interrupt,
         // 系统执行中
         Waiting,
+        // 等待动画中
+        WaitAni,
         // 准备退出程序
         Exit
     }

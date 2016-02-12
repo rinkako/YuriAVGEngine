@@ -51,6 +51,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public TimeSpan delay = TimeSpan.Zero;
 
         /// <summary>
+        /// 获取或设置时间戳
+        /// </summary>
+        public DateTime timeStamp = DateTime.Now;
+
+        /// <summary>
         /// 获取或设置该栈帧的备注信息
         /// </summary>
         public string aTag = null;
@@ -69,6 +74,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         WaitUser,
         // 等待指令
         Await,
+        // 等待动画指令
+        WaitAnimation,
         // 函数调用
         FunctionCalling,
         // 系统中断

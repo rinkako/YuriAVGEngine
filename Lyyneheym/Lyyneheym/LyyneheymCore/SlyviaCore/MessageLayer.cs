@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -43,26 +41,26 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             get
             {
-                return this.textBlock.Text;
+                return this.displayBinding.Text;
             }
             set
             {
-                this.textBlock.Text = value;
+                this.displayBinding.Text = value;
             }
         }
 
         /// <summary>
         /// 获取或设置文字层是否可见
         /// </summary>
-        public bool Visible
+        public Visibility Visibility
         {
             get
             {
-                return this.textBlock.Visibility == Visibility.Visible;
+                return this.displayBinding.Visibility;
             }
             set
             {
-                this.textBlock.Visibility = value ? Visibility.Visible : Visibility.Hidden;
+                this.displayBinding.Visibility = value;
             }
         }
 
@@ -73,7 +71,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             set
             {
-                this.textBlock.FontFamily = new FontFamily(value);
+                this.displayBinding.FontFamily = new FontFamily(value);
             }
         }
 
@@ -84,12 +82,12 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             get
             {
-                this.textBlock.FontStyle = new FontStyle();
-                return this.textBlock.FontSize;
+                this.displayBinding.FontStyle = new FontStyle();
+                return this.displayBinding.FontSize;
             }
             set
             {
-                this.textBlock.FontSize = value;
+                this.displayBinding.FontSize = value;
             }
         }
 
@@ -100,11 +98,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             get
             {
-                return ((SolidColorBrush)this.textBlock.Foreground).Color;
+                return ((SolidColorBrush)this.displayBinding.Foreground).Color;
             }
             set
             {
-                this.textBlock.Foreground = new SolidColorBrush(value);
+                this.displayBinding.Foreground = new SolidColorBrush(value);
             }
         }
 
@@ -115,11 +113,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             get
             {
-                return this.textBlock.LineHeight;
+                return this.displayBinding.LineHeight;
             }
             set
             {
-                this.textBlock.LineHeight = value;
+                this.displayBinding.LineHeight = value;
             }
         }
 
@@ -130,11 +128,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             get
             {
-                return this.textBlock.Opacity;
+                return this.displayBinding.Opacity;
             }
             set
             {
-                this.textBlock.Opacity = value;
+                this.displayBinding.Opacity = value;
             }
         }
 
@@ -145,11 +143,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             get
             {
-                return Canvas.GetLeft(this.textBlock);
+                return Canvas.GetLeft(this.displayBinding);
             }
             set
             {
-                Canvas.SetLeft(this.textBlock, value);
+                Canvas.SetLeft(this.displayBinding, value);
             }
         }
 
@@ -160,11 +158,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             get
             {
-                return Canvas.GetTop(this.textBlock);
+                return Canvas.GetTop(this.displayBinding);
             }
             set
             {
-                Canvas.SetTop(this.textBlock, value);
+                Canvas.SetTop(this.displayBinding, value);
             }
         }
 
@@ -175,41 +173,41 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             get
             {
-                return Panel.GetZIndex(this.textBlock);
+                return Panel.GetZIndex(this.displayBinding);
             }
             set
             {
-                Panel.SetZIndex(this.textBlock, value);
-            }
-        }
-
-        /// <summary>
-        /// 获取或设置文字层宽度
-        /// </summary>
-        public double Height
-        {
-            get
-            {
-                return this.textBlock.Height;
-            }
-            set
-            {
-                this.textBlock.Height = value;
+                Panel.SetZIndex(this.displayBinding, value);
             }
         }
 
         /// <summary>
         /// 获取或设置文字层高度
         /// </summary>
+        public double Height
+        {
+            get
+            {
+                return this.displayBinding.Height;
+            }
+            set
+            {
+                this.displayBinding.Height = value;
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置文字层宽度
+        /// </summary>
         public double Width
         {
             get
             {
-                return this.textBlock.Width;
+                return this.displayBinding.Width;
             }
             set
             {
-                this.textBlock.Width = value;
+                this.displayBinding.Width = value;
             }
         }
 
@@ -220,48 +218,48 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             get
             {
-                return this.textBlock.Margin;
+                return this.displayBinding.Margin;
             }
             set
             {
-                this.textBlock.Margin = value;
+                this.displayBinding.Margin = value;
             }
         }
 
         /// <summary>
         /// 获取或设置文字层水平对齐属性
         /// </summary>
-        public string HorizontalAlignment
+        public HorizontalAlignment HorizontalAlignment
         {
             get
             {
-                return this.textBlock.HorizontalAlignment.ToString();
+                return this.displayBinding.HorizontalAlignment;
             }
             set
             {
-                this.textBlock.HorizontalAlignment = (HorizontalAlignment)Enum.Parse(typeof(HorizontalAlignment), value, false);
+                this.displayBinding.HorizontalAlignment = value;
             }
         }
 
         /// <summary>
         /// 获取或设置文字层竖直对齐属性
         /// </summary>
-        public string VerticalAlignment
+        public VerticalAlignment VerticalAlignment
         {
             get
             {
-                return this.textBlock.VerticalAlignment.ToString();
+                return this.displayBinding.VerticalAlignment;
             }
             set
             {
-                this.textBlock.VerticalAlignment = (VerticalAlignment)Enum.Parse(typeof(VerticalAlignment), value);
+                this.displayBinding.VerticalAlignment = value;
             }
         }
 
         /// <summary>
         /// 获取或设置文字层的主文本块
         /// </summary>
-        public TextBlock textBlock
+        public TextBlock displayBinding
         {
             get;
             set;
@@ -279,7 +277,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             set
             {
                 this.bgSprite = value;
-                this.bgSprite.anchor = SpriteAnchorType.LeftTop;
             }
         }
 

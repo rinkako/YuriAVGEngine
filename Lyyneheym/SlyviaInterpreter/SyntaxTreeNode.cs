@@ -332,6 +332,8 @@ namespace Lyyneheym.SlyviaInterpreter
         synr_msglayeropt,
         // 等待用户操作
         synr_waituser,
+        // 等待动画完成
+        synr_waitani,
         // 参数：函数签名
         para_sign,
         // 参数：选择支链

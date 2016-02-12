@@ -985,6 +985,9 @@ namespace Lyyneheym.SlyviaInterpreter
                     case TokenType.Token_o_menu:
                         statementNode.nodeSyntaxType = SyntaxType.synr_menu;
                         break;
+                    case TokenType.Token_o_waitani:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_waitani;
+                        break;
                     case TokenType.Token_o_save:
                         statementNode.nodeSyntaxType = SyntaxType.synr_save;
                         break;
