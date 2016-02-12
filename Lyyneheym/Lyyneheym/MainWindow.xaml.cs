@@ -204,6 +204,10 @@ namespace Lyyneheym
             //SpriteAnimation.RotateAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.Angle, 0);
             spriteImage.Visibility = Visibility.Visible;
             this.BO_MainGrid.Children.Add(spriteImage);
+            sprite.InitAnimationRenderTransform();
+            sprite.anchor = SpriteAnchorType.Center;
+            SpriteAnimation.RotateAnimation(sprite, TimeSpan.FromSeconds(1), 180, 0);
+
 
             //if (!pauseFlag)
             //{

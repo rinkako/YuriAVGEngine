@@ -98,11 +98,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             TransformGroup aniGroup = new TransformGroup();
             TranslateTransform XYTransformer = new TranslateTransform();
             ScaleTransform ScaleTransformer = new ScaleTransform();
-            ScaleTransformer.CenterX = Double.IsNaN(this.anchorX) ? 0 : this.anchorX;
-            ScaleTransformer.CenterY = Double.IsNaN(this.anchorY) ? 0 : this.anchorY;
+            ScaleTransformer.CenterX = this.anchorX;
+            ScaleTransformer.CenterY = this.anchorY;
             RotateTransform RotateTransformer = new RotateTransform();
-            RotateTransformer.CenterX = Double.IsNaN(this.anchorX) ? 0 : this.anchorX;
-            RotateTransformer.CenterY = Double.IsNaN(this.anchorY) ? 0 : this.anchorY;
+            RotateTransformer.CenterX = this.anchorX;
+            RotateTransformer.CenterY = this.anchorY;
             aniGroup.Children.Add(XYTransformer);
             aniGroup.Children.Add(ScaleTransformer);
             aniGroup.Children.Add(RotateTransformer);
@@ -126,26 +126,32 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 获取精灵锚点的X坐标
+        /// 获取精灵锚点相对精灵左上角的X坐标
         /// </summary>
         public double anchorX
         {
             get
             {
-                return this.anchor == SpriteAnchorType.Center ?
-                    this.displayX + this.displayBinding.Width / 2 : this.displayX;
+                if (this.displayBinding == null)
+                {
+                    return 0;
+                }
+                return this.anchor == SpriteAnchorType.Center ? this.displayBinding.Width / 2 : 0;
             }
         }
 
         /// <summary>
-        /// 获取精灵锚点的Y坐标
+        /// 获取精灵锚点相对精灵左上角的Y坐标
         /// </summary>
         public double anchorY
         {
             get
             {
-                return this.anchor == SpriteAnchorType.Center ?
-                    this.displayY + this.displayBinding.Height / 2 : this.displayY;
+                if (this.displayBinding == null)
+                {
+                    return 0;
+                }
+                return this.anchor == SpriteAnchorType.Center ? this.displayBinding.Height / 2 : 0;
             }
         }
 
