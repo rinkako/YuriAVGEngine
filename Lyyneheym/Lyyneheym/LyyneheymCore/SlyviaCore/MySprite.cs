@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
+using Lyyneheym.LyyneheymCore.Utils;
 
 namespace Lyyneheym.LyyneheymCore.SlyviaCore
 {
@@ -24,17 +25,25 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="cutrect">材质切割矩形</param>
         public void Init(string resName, ResourceType resType, MemoryStream ms, Int32Rect? cutrect = null)
         {
-            this.resourceName = resName;
-            this.resourceType = resType;
-            this.myImage = new BitmapImage();
-            this.myImage.BeginInit();
-            this.myImage.StreamSource = ms;
-            if (cutrect != null)
+            if (!this.IsInit)
             {
-                this.cutRect = (Int32Rect)cutrect;
-                this.myImage.SourceRect = this.cutRect;
+                this.resourceName = resName;
+                this.resourceType = resType;
+                this.myImage = new BitmapImage();
+                this.myImage.BeginInit();
+                this.myImage.StreamSource = ms;
+                if (cutrect != null)
+                {
+                    this.cutRect = (Int32Rect)cutrect;
+                    this.myImage.SourceRect = this.cutRect;
+                }
+                this.myImage.EndInit();
+                this.IsInit = true;
             }
-            this.myImage.EndInit();
+            else
+            {
+                DebugUtils.ConsoleLine(String.Format("Sprite Init again: {0}", resName), "MySprite", OutputStyle.Error);
+            }
         }
 
         /// <summary>
@@ -44,17 +53,25 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="cutrect">材质切割矩形</param>
         public void Init(string resName, ResourceType resType, Uri uri, Int32Rect? cutrect = null)
         {
-            this.resourceName = resName;
-            this.resourceType = resType;
-            this.myImage = new BitmapImage();
-            this.myImage.BeginInit();
-            this.myImage.UriSource = uri;
-            if (cutrect != null)
+            if (!this.IsInit)
             {
-                this.cutRect = (Int32Rect)cutrect;
-                this.myImage.SourceRect = this.cutRect;
+                this.resourceName = resName;
+                this.resourceType = resType;
+                this.myImage = new BitmapImage();
+                this.myImage.BeginInit();
+                this.myImage.UriSource = uri;
+                if (cutrect != null)
+                {
+                    this.cutRect = (Int32Rect)cutrect;
+                    this.myImage.SourceRect = this.cutRect;
+                }
+                this.myImage.EndInit();
+                this.IsInit = true;
             }
-            this.myImage.EndInit();
+            else
+            {
+                DebugUtils.ConsoleLine(String.Format("Sprite Init again: {0}", resName), "MySprite", OutputStyle.Error);
+            }
         }
 
         /// <summary>
@@ -337,6 +354,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             {
                 this.AnimateCounter = Math.Max(0, value);
             }
+        }
+
+        /// <summary>
+        /// 获取精灵是否已经初始化
+        /// </summary>
+        public bool IsInit
+        {
+            get;
+            private set;
         }
 
         /// <summary>

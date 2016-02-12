@@ -19,28 +19,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     /// </summary>
     public class UpdateRender
     {
-        /// <summary>
-        /// 渲染类构造器
-        /// </summary>
-        public UpdateRender()
-        {
-            // 初始化鼠标键位
-            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Left, MouseButtonState.Released);
-            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Middle, MouseButtonState.Released);
-            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Right, MouseButtonState.Released);
-        }
-        
-
-
-        /// <summary>
-        /// 设置运行时环境引用
-        /// </summary>
-        /// <param name="rm">运行时环境</param>
-        public void SetRuntimeManagerReference(RuntimeManager rm)
-        {
-            this.runMana = rm;
-        }
-
+        #region 辅助函数
         /// <summary>
         /// 调用运行时环境计算表达式
         /// </summary>
@@ -82,55 +61,12 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             }
             return (int)(Convert.ToDouble(this.CalculatePolish(polish)));
         }
+        #endregion
 
+        #region 键位按钮状态
         /// <summary>
-        /// 接受一个场景动作并演绎她
+        /// 获取键盘上某个按键当前状态
         /// </summary>
-        /// <param name="action">场景动作实例</param>
-        public void Accept(SceneAction action)
-        {
-            switch (action.aType)
-            {
-                case SActionType.act_bgm:
-                    this.Bgm(action.argsDict["filename"], Convert.ToDouble(this.CalculatePolish(action.argsDict["vol"])));
-                    break;
-                case SActionType.act_stopbgm:
-                    this.Stopbgm();
-                    break;
-                case SActionType.act_var:
-                    this.Var(action.argsDict["name"], action.argsDict["dash"]);
-                    break;
-                case SActionType.act_cstand:
-                    this.Cstand(
-                        this.ParseInt(action.argsDict["id"], 0),
-                        String.Format("{0}_{1}.png", action.argsDict["name"], action.argsDict["face"]),
-                        this.ParseDouble(action.argsDict["x"], 0),
-                        this.ParseDouble(action.argsDict["y"], 0),
-                        this.ParseDouble(action.argsDict["opacity"], 1),
-                        this.ParseDouble(action.argsDict["xscale"], 1),
-                        this.ParseDouble(action.argsDict["yscale"], 1),
-                        this.ParseDouble(action.argsDict["ro"], 0),
-                        action.argsDict["anchor"] == "" ? (action.argsDict["anchor"] == "center" ? SpriteAnchorType.Center : SpriteAnchorType.LeftTop) : SpriteAnchorType.Center,
-                        new Int32Rect(0, 0, 0, 0));
-                    break;
-                case SActionType.act_a:
-                    this.A(action.argsDict["name"],
-                        this.ParseInt(action.argsDict["vid"], -1),
-                        action.argsDict["face"],
-                        action.argsDict["loc"]
-                        );
-                    break;
-                    
-
-
-
-
-
-
-
-            }
-        }
-
         public KeyStates GetKeyboardState(Key key)
         {
             if (UpdateRender.KS_KEY_Dict.ContainsKey(key) == false)
@@ -141,30 +77,61 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             return UpdateRender.KS_KEY_Dict[key];
         }
 
+        /// <summary>
+        /// 设置键盘上某个按键当前状态
+        /// </summary>
         public void SetKeyboardState(Key key, KeyStates state)
         {
             UpdateRender.KS_KEY_Dict[key] = state;
         }
 
+        /// <summary>
+        /// 获取鼠标某个按钮的当前状态
+        /// </summary>
         public MouseButtonState GetMouseButtonState(MouseButton key)
         {
             return UpdateRender.KS_MOUSE_Dict[key];
         }
 
+        /// <summary>
+        /// 设置鼠标某个按钮的当前状态
+        /// </summary>
         public void SetMouseButtonState(MouseButton key, MouseButtonState state)
         {
             UpdateRender.KS_MOUSE_Dict[key] = state;
         }
 
+        /// <summary>
+        /// 获取鼠标滚轮滚过的距离
+        /// </summary>
         public int GetMouseWheelDelta()
         {
             return UpdateRender.KS_MOUSE_WHEEL_DELTA;
         }
 
+        /// <summary>
+        /// 设置鼠标滚轮滚过的距离
+        /// </summary>
         public void SetMouseWheelDelta(int delta)
         {
             UpdateRender.KS_MOUSE_WHEEL_DELTA = delta;
         }
+
+        /// <summary>
+        /// 鼠标滚轮差值
+        /// </summary>
+        public static int KS_MOUSE_WHEEL_DELTA = 0;
+
+        /// <summary>
+        /// 鼠标按钮状态字典
+        /// </summary>
+        private static Dictionary<MouseButton, MouseButtonState> KS_MOUSE_Dict = new Dictionary<MouseButton, MouseButtonState>();
+
+        /// <summary>
+        /// 键盘按钮状态字典
+        /// </summary>
+        private static Dictionary<Key, KeyStates> KS_KEY_Dict = new Dictionary<Key, KeyStates>();
+        #endregion
 
         /// <summary>
         /// 处理游戏窗体的鼠标按下信息
@@ -193,9 +160,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
 
         }
-
-
-
 
 
         #region 文字层相关
@@ -295,11 +259,23 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             Canvas.SetTop(this.view.BO_MsgTria, Y);
         }
 
+        /// <summary>
+        /// 当前正在操作的文字层
+        /// </summary>
         private int currentMsgLayer = 0;
 
+        /// <summary>
+        /// 等待点击信号量
+        /// </summary>
         private bool MsgClickFlag = false;
+
+        /// <summary>
+        /// 主文字层背景精灵
+        /// </summary>
+        private MySprite MainMsgTriangleSprite;
         #endregion
 
+        #region 渲染器类自身相关方法和引用
         /// <summary>
         /// 为更新器设置作用窗体
         /// </summary>
@@ -311,6 +287,26 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.viewMana.SetMainWndReference(this.view);
             // 初始化小三角
             this.InitMsgLayerTria();
+        }
+
+        /// <summary>
+        /// 设置运行时环境引用
+        /// </summary>
+        /// <param name="rm">运行时环境</param>
+        public void SetRuntimeManagerReference(RuntimeManager rm)
+        {
+            this.runMana = rm;
+        }
+
+        /// <summary>
+        /// 渲染类构造器
+        /// </summary>
+        public UpdateRender()
+        {
+            // 初始化鼠标键位
+            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Left, MouseButtonState.Released);
+            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Middle, MouseButtonState.Released);
+            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Right, MouseButtonState.Released);
         }
 
         /// <summary>
@@ -342,8 +338,51 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 视窗管理器
         /// </summary>
         private ViewManager viewMana = ViewManager.GetInstance();
+        #endregion
 
         #region 演绎函数
+        /// <summary>
+        /// 接受一个场景动作并演绎她
+        /// </summary>
+        /// <param name="action">场景动作实例</param>
+        public void Accept(SceneAction action)
+        {
+            switch (action.aType)
+            {
+                case SActionType.act_bgm:
+                    this.Bgm(action.argsDict["filename"], Convert.ToDouble(this.CalculatePolish(action.argsDict["vol"])));
+                    break;
+                case SActionType.act_stopbgm:
+                    this.Stopbgm();
+                    break;
+                case SActionType.act_var:
+                    this.Var(action.argsDict["name"], action.argsDict["dash"]);
+                    break;
+                case SActionType.act_cstand:
+                    this.Cstand(
+                        this.ParseInt(action.argsDict["id"], 0),
+                        String.Format("{0}_{1}.png", action.argsDict["name"], action.argsDict["face"]),
+                        this.ParseDouble(action.argsDict["x"], 0),
+                        this.ParseDouble(action.argsDict["y"], 0),
+                        this.ParseDouble(action.argsDict["opacity"], 1),
+                        this.ParseDouble(action.argsDict["xscale"], 1),
+                        this.ParseDouble(action.argsDict["yscale"], 1),
+                        this.ParseDouble(action.argsDict["ro"], 0),
+                        action.argsDict["anchor"] == "" ? (action.argsDict["anchor"] == "center" ? SpriteAnchorType.Center : SpriteAnchorType.LeftTop) : SpriteAnchorType.Center,
+                        new Int32Rect(0, 0, 0, 0));
+                    break;
+                case SActionType.act_a:
+                    this.A(action.argsDict["name"],
+                        this.ParseInt(action.argsDict["vid"], -1),
+                        action.argsDict["face"],
+                        action.argsDict["loc"]
+                        );
+                    break;
+
+            }
+        }
+
+
         /// <summary>
         /// 结束程序
         /// </summary>
@@ -715,15 +754,5 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
         #endregion
 
-
-
-        private MySprite MainMsgTriangleSprite;
-
-
-        #region 键位按钮状态
-        public static int KS_MOUSE_WHEEL_DELTA = 0;
-        private static Dictionary<MouseButton, MouseButtonState> KS_MOUSE_Dict = new Dictionary<MouseButton, MouseButtonState>();
-        private static Dictionary<Key, KeyStates> KS_KEY_Dict = new Dictionary<Key, KeyStates>();
-        #endregion
     }
 }
