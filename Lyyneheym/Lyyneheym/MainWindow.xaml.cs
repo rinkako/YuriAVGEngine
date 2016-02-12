@@ -36,7 +36,10 @@ namespace Lyyneheym
         {
             InitializeComponent();
             this.testFontEffect(this.BO_MainText);
-            core.updateRender.SetMainWindow(this);
+            core.SetMainWindow(this);
+            //this.window.BO_MainGrid.Width = this.window.Width = 1900;
+            //this.window.BO_MainGrid.Height = this.window.Height = 1000;
+
             //SolidColorBrush scb = new SolidColorBrush(Colors.Red);
             //this.BO_MainText.Foreground = scb;
             //timer.Interval = TimeSpan.FromMilliseconds(1000);
@@ -166,28 +169,51 @@ namespace Lyyneheym
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             //Image img = new Image();
-            //BitmapImage myBitmapImage = new BitmapImage();
-            //myBitmapImage.BeginInit();
-            //myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\uuz.jpg", UriKind.RelativeOrAbsolute);
-            //myBitmapImage.EndInit();
-            //img.Width = myBitmapImage.Width;
-            //img.Height = myBitmapImage.Height;
+            ////BitmapImage myBitmapImage = new BitmapImage();
+            ////myBitmapImage.BeginInit();
+            ////myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\uuz.jpg", UriKind.RelativeOrAbsolute);
+            ////myBitmapImage.EndInit();
+
+            //MySprite msp = ResourceManager.GetInstance().GetPicture("uuz.jpg");
+            //BitmapImage myBitmapImage = msp.myImage;
+            //msp.displayBinding = img;
+            //img.Width = myBitmapImage.PixelWidth;
+            //img.Height = myBitmapImage.PixelHeight;
             //img.Source = myBitmapImage;
-            //img.Margin = new Thickness(0, 0, 0, 0);
-            //img.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            //img.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            //img.Name = "UBO_PIC_01";
+            ////img.Margin = new Thickness(0, 0, 0, 0);
+            ////img.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            ////img.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            ////img.Name = "UBO_PIC_01";
             //this.BO_MainGrid.Children.Add(img);
 
-            if (!pauseFlag)
-            {
-                Musician.GetInstance().PauseBGM();
-            }
-            else
-            {
-                Musician.GetInstance().ResumeBGM();
-            }
-            pauseFlag = !pauseFlag;
+            MySprite sprite = ResourceManager.GetInstance().GetCharacterStand("穹_校服普通.png");
+
+            Image spriteImage = new Image();
+            BitmapImage bmp = sprite.myImage;
+
+            spriteImage.Width = bmp.PixelWidth;
+            spriteImage.Height = bmp.PixelHeight;
+            spriteImage.Source = bmp;
+
+            //spriteImage.Opacity = descriptor.Opacity;
+            sprite.displayBinding = spriteImage;
+            //sprite.anchor = descriptor.anchorType;
+            //Canvas.SetLeft(spriteImage, 10);
+            //Canvas.SetTop(spriteImage, 30);
+            //Canvas.SetZIndex(spriteImage, 999);
+            //SpriteAnimation.RotateAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.Angle, 0);
+            spriteImage.Visibility = Visibility.Visible;
+            this.BO_MainGrid.Children.Add(spriteImage);
+
+            //if (!pauseFlag)
+            //{
+            //    Musician.GetInstance().PauseBGM();
+            //}
+            //else
+            //{
+            //    Musician.GetInstance().ResumeBGM();
+            //}
+            //pauseFlag = !pauseFlag;
         }
 
 
@@ -218,7 +244,7 @@ namespace Lyyneheym
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-            TypewriteTextblock("测试文本测试文本测试文本测试文本", this.BO_MainText, 30);
+            TypewriteTextblock("测试文本测试文本测试文本测试文本" + Environment.NewLine + "233333333", this.BO_MainText, 30);
         }
 
 
@@ -255,7 +281,7 @@ namespace Lyyneheym
             story.FillBehavior = FillBehavior.HoldEnd;
             DiscreteStringKeyFrame discreteStringKeyFrame;
             StringAnimationUsingKeyFrames stringAnimationUsingKeyFrames = new StringAnimationUsingKeyFrames();
-            stringAnimationUsingKeyFrames.Duration = new Duration(TimeSpan.FromMilliseconds(timeSpan * textToAnimate.Length));
+            //stringAnimationUsingKeyFrames.Duration = new Duration(TimeSpan.FromMilliseconds(timeSpan * textToAnimate.Length));
             string tmp = string.Empty;
             foreach (char c in textToAnimate)
             {

@@ -93,16 +93,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 初始化精灵的动画依赖
         /// </summary>
-        private void InitAnimationRenderTransform()
+        public void InitAnimationRenderTransform()
         {
             TransformGroup aniGroup = new TransformGroup();
             TranslateTransform XYTransformer = new TranslateTransform();
             ScaleTransform ScaleTransformer = new ScaleTransform();
-            ScaleTransformer.CenterX = this.anchorX;
-            ScaleTransformer.CenterY = this.anchorY;
+            ScaleTransformer.CenterX = Double.IsNaN(this.anchorX) ? 0 : this.anchorX;
+            ScaleTransformer.CenterY = Double.IsNaN(this.anchorY) ? 0 : this.anchorY;
             RotateTransform RotateTransformer = new RotateTransform();
-            RotateTransformer.CenterX = this.anchorX;
-            RotateTransformer.CenterY = this.anchorY;
+            RotateTransformer.CenterX = Double.IsNaN(this.anchorX) ? 0 : this.anchorX;
+            RotateTransformer.CenterY = Double.IsNaN(this.anchorY) ? 0 : this.anchorY;
             aniGroup.Children.Add(XYTransformer);
             aniGroup.Children.Add(ScaleTransformer);
             aniGroup.Children.Add(RotateTransformer);
@@ -171,7 +171,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             set
             {
                 this.viewBinding = value;
-                this.InitAnimationRenderTransform();
             }
         }
 
@@ -186,7 +185,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             }
             set
             {
-                Canvas.SetLeft(this.displayBinding, value);
+                if (this.displayBinding != null)
+                {
+                    Canvas.SetLeft(this.displayBinding, value);
+                }
             }
         }
 

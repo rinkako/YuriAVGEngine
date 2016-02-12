@@ -28,15 +28,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
         
         /// <summary>
-        /// 设置主窗体引用
-        /// </summary>
-        /// <param name="mw">主窗体引用</param>
-        public void SetPlatformReference(MainWindow mw)
-        {
-            this.view = mw;
-        }
-
-        /// <summary>
         /// 设置运行时环境引用
         /// </summary>
         /// <param name="rm">运行时环境</param>
@@ -102,6 +93,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         this.ParseDouble(action.argsDict["ro"], 0),
                         action.argsDict["anchor"] == "" ? (action.argsDict["anchor"] == "center" ? SpriteAnchorType.Center : SpriteAnchorType.LeftTop) : SpriteAnchorType.Center,
                         new Int32Rect(0, 0, 0, 0));
+                    break;
+                case SActionType.act_a:
+                    this.A(action.argsDict["name"],
+                        this.ParseInt(action.argsDict["vid"], -1),
+                        action.argsDict["face"],
+                        action.argsDict["loc"]
+                        );
                     break;
                     
 
@@ -224,6 +222,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public void SetMainWindow(MainWindow mw)
         {
             this.view = mw;
+            this.viewMana.SetMainWndReference(this.view);
         }
 
         /// <summary>
@@ -291,10 +290,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="vid"></param>
         /// <param name="face"></param>
         /// <param name="locStr"></param>
-        private void A(string name, string vid, string face, string locStr)
+        private void A(string name, int vid, string face, string locStr)
         {
-            this.Cstand(-1, String.Format("{0}_{1}.png", name, face), locStr, 1, 1, 1, 0, SpriteAnchorType.Center, new Int32Rect(0, 0, 0, 0));
-            this.Vocal(vid, this.musician.VocalDefaultVolume);
+            if (face != "")
+            {
+                this.Cstand(-1, String.Format("{0}_{1}.png", name, face), locStr, 1, 1, 1, 0, SpriteAnchorType.Center, new Int32Rect(0, 0, 0, 0));
+            }
+            if (vid != -1)
+            {
+                this.Vocal(name, vid, this.musician.VocalDefaultVolume);
+            }
         }
 
         /// <summary>
@@ -508,6 +513,18 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             this.musician.StopAndReleaseBGM();
         }
+
+        /// <summary>
+        /// 演绎函数：播放Vocal，这个动作会截断正在播放的Vocal
+        /// </summary>
+        /// <param name="name">角色名称</param>
+        /// <param name="vid">语音编号</param>
+        /// <param name="volume">音量</param>
+        private void Vocal(string name, int vid, float volume)
+        {
+            this.Vocal(String.Format("{0}_{1}{2}", name, vid, GlobalDataContainer.GAME_VOCAL_POSTFIX), volume);
+        }
+
         /// <summary>
         /// 演绎函数：播放Vocal，这个动作会截断正在播放的Vocal
         /// </summary>
@@ -515,8 +532,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="volume">音量</param>
         private void Vocal(string resourceName, float volume)
         {
-            var vocalKVP = this.resMana.GetVocal(resourceName);
-            this.musician.PlayVocal(vocalKVP.Key, vocalKVP.Value, volume);
+            if (resourceName != "")
+            {
+                var vocalKVP = this.resMana.GetVocal(resourceName);
+                this.musician.PlayVocal(vocalKVP.Key, vocalKVP.Value, volume);
+            }
         }
 
         /// <summary>

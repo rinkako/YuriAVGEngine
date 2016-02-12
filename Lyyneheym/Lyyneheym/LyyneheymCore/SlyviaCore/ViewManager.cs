@@ -100,8 +100,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             Image spriteImage = new Image();
             BitmapImage bmp = sprite.myImage;
-            spriteImage.Width = bmp.Width;
-            spriteImage.Height = bmp.Height;
+            spriteImage.Width = bmp.PixelWidth;
+            spriteImage.Height = bmp.PixelHeight;
             spriteImage.Source = bmp;
             spriteImage.Opacity = descriptor.Opacity;
             sprite.displayBinding = spriteImage;
@@ -110,7 +110,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             Canvas.SetTop(spriteImage, descriptor.Y);
             Canvas.SetZIndex(spriteImage, descriptor.Z);
             SpriteAnimation.RotateAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.Angle, 0);
+            spriteImage.Visibility = Visibility.Visible;
             this.view.BO_MainGrid.Children.Add(spriteImage);
+            sprite.InitAnimationRenderTransform();
         }
 
         /// <summary>
@@ -149,7 +151,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             if (sprite != null)
             {
                 Image spriteView = sprite.displayBinding;
-                if (this.view.BO_MainGrid.Children.Contains(spriteView))
+                if (spriteView != null && this.view.BO_MainGrid.Children.Contains(spriteView))
                 {
                     this.view.BO_MainGrid.Children.Remove(spriteView);
                 }
@@ -233,6 +235,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         private MainWindow view = null;
 
+        /// <summary>
+        /// 唯一实例
+        /// </summary>
         private static ViewManager synObject = null;
 
     }

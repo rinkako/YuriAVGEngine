@@ -322,6 +322,16 @@ namespace Lyyneheym
 
         #region 导演类自身资源相关
         /// <summary>
+        /// 设置主窗体引用
+        /// </summary>
+        /// <param name="mw">主窗体</param>
+        public void SetMainWindow(MainWindow mw)
+        {
+            this.mwReference = mw;
+            this.updateRender.SetMainWindow(this.mwReference);
+        }
+
+        /// <summary>
         /// 在游戏结束时释放所有资源
         /// </summary>
         public void DisposeResource()
@@ -350,6 +360,7 @@ namespace Lyyneheym
             this.updateRender = new UpdateRender();
             this.waitingVector = new List<KeyValuePair<DateTime, TimeSpan>>();
             this.updateRender.SetRuntimeManagerReference(this.RunMana);
+            this.updateRender.SetMainWindow(this.mwReference);
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromMilliseconds(GlobalDataContainer.DirectorTimerInterval);
             this.timer.Tick += UpdateContext;
@@ -375,7 +386,12 @@ namespace Lyyneheym
         /// <summary>
         /// 画面刷新器
         /// </summary>
-        public UpdateRender updateRender;
+        private UpdateRender updateRender;
+
+        /// <summary>
+        /// 主窗体引用
+        /// </summary>
+        private MainWindow mwReference;
 
         /// <summary>
         /// 唯一实例

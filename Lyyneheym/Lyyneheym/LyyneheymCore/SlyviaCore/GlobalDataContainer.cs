@@ -71,23 +71,25 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         // 图像层：左立绘X
         public static double GAME_CHARACTERSTAND_LEFT_X = 10;
         // 图像层：左立绘Y
-        public static double GAME_CHARACTERSTAND_LEFT_Y = 30;
+        public static double GAME_CHARACTERSTAND_LEFT_Y = 60;
         // 图像层：左中立绘X
         public static double GAME_CHARACTERSTAND_MIDLEFT_X = 125;
         // 图像层：左中立绘Y
-        public static double GAME_CHARACTERSTAND_MIDLEFT_Y = 30;
+        public static double GAME_CHARACTERSTAND_MIDLEFT_Y = 60;
         // 图像层：中立绘X
         public static double GAME_CHARACTERSTAND_MID_X = 255;
         // 图像层：中立绘Y
-        public static double GAME_CHARACTERSTAND_MID_Y = 30;
+        public static double GAME_CHARACTERSTAND_MID_Y = 60;
         // 图像层：右中立绘X
         public static double GAME_CHARACTERSTAND_MIDRIGHT_X = 375;
         // 图像层：右中立绘Y
-        public static double GAME_CHARACTERSTAND_MIDRIGHT_Y = 30;
+        public static double GAME_CHARACTERSTAND_MIDRIGHT_Y = 60;
         // 图像层：右立绘X
         public static double GAME_CHARACTERSTAND_RIGHT_X = 500;
         // 图像层：右立绘Y
-        public static double GAME_CHARACTERSTAND_RIGHT_Y = 30;
+        public static double GAME_CHARACTERSTAND_RIGHT_Y = 60;
+        // 音频：语音文件后缀
+        public static string GAME_VOCAL_POSTFIX = ".mp3";
         // 存档：截图存档
         public static bool GAME_SAVE_SCRPRINT = true;
         // 存档：最大存档数

@@ -1180,7 +1180,7 @@ namespace Lyyneheym.SlyviaInterpreter
                             break;
                         case TokenType.Token_p_face:
                             statementNode.paramDict["face"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_face = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["face"]);
+                            SyntaxTreeNode w_face = new SyntaxTreeNode(SyntaxType.tail_idenLeave, statementNode.paramDict["face"]);
                             w_face.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
