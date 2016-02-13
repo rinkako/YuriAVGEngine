@@ -257,6 +257,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 获取或设置文字层的阴影状态
+        /// </summary>
+        public bool FontShadow
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// 获取或设置文字层的主文本块
         /// </summary>
         public TextBlock displayBinding

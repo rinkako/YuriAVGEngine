@@ -64,6 +64,11 @@ namespace Lyyneheym
         //    Musician.getInstance().Update();
         //}
 
+        public void DoEvent()
+        {
+            Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.Background);
+        }
+
         bool flag = false;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -296,10 +301,7 @@ namespace Lyyneheym
             this.testLexer();
         }
 
-        public void DoEvent()
-        {
-            Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.Background);
-        }
+
 
 
         private void Button_Click_8(object sender, RoutedEventArgs e)

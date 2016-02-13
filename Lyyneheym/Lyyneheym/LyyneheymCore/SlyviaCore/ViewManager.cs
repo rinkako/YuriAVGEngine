@@ -158,7 +158,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             msglay.displayBinding = msgBlock;
             if (msglay.backgroundSprite != null && msglay.backgroundSprite.myImage != null)
             {
-                msgBlock.Background = new ImageBrush(msglay.backgroundSprite.myImage);
+                ImageBrush ib = new ImageBrush(msglay.backgroundSprite.myImage);
+                ib.Stretch = Stretch.Fill;
+                msgBlock.Background = ib;
             }
             msglay.Width = descriptor.Width;
             msglay.Height = descriptor.Height;
@@ -170,6 +172,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             msglay.FontColor = descriptor.FontColor;
             msglay.FontSize = descriptor.FontSize;
             msglay.FontName = descriptor.FontName;
+            msglay.FontShadow = descriptor.FontShadow;
             Canvas.SetLeft(msgBlock, descriptor.X);
             Canvas.SetTop(msgBlock, descriptor.Y);
             Canvas.SetZIndex(msgBlock, descriptor.Z);

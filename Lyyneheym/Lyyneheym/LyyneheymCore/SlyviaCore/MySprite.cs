@@ -77,16 +77,17 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 获取一个相对于左上角的像素点的颜色
         /// </summary>
-        /// <param name="pos">像素点坐标</param>
+        /// <param name="X">检测点X坐标</param>
+        /// <param name="Y">检测点Y坐标</param>
         /// <returns>一个ARGB描述的Color实例</returns>
-        public Color GetPixelColor(Point pos)
+        public Color GetPixelColor(double X, double Y)
         {
             Color c = Color.FromArgb(Byte.MaxValue, 0, 0, 0);
             if (this.myImage != null)
             {
                 try
                 {
-                    CroppedBitmap cb = new CroppedBitmap(this.myImage, new Int32Rect((int)pos.X, (int)pos.Y, 1, 1));
+                    CroppedBitmap cb = new CroppedBitmap(this.myImage, new Int32Rect((int)X, (int)Y, 1, 1));
                     byte[] pixels = new byte[4];
                     cb.CopyPixels(pixels, 4, 0);
                     c = Color.FromArgb(pixels[3], pixels[2], pixels[1], pixels[0]);
@@ -99,12 +100,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 判断一个相对于左上角的像素点是否全透明
         /// </summary>
-        /// <param name="pos">像素点坐标</param>
+        /// <param name="X">检测点X坐标</param>
+        /// <param name="Y">检测点Y坐标</param>
         /// <param name="threshold">透明度阈值</param>
         /// <returns>该点是否不超过透明阈值</returns>
-        public bool IsEmptyRegion(Point pos, int threshold = 0)
+        public bool IsEmptyRegion(double X, double Y, int threshold = 0)
         {
-            return this.GetPixelColor(pos).A <= threshold;
+            return this.GetPixelColor(X, Y).A <= threshold;
         }
 
         /// <summary>

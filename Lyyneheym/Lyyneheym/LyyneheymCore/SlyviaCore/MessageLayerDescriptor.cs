@@ -23,6 +23,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         public Color FontColor { get; set; }
 
+        public bool FontShadow { get; set; }
+
         public double LineHeight { get; set; }
 
         public double Opacity { get; set; }

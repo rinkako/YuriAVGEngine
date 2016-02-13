@@ -164,22 +164,55 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         #region 文字层相关
         /// <summary>
-        /// 初始化文字小三角
+        /// 把文字描绘到指定的文字层上
         /// </summary>
-        private void InitMsgLayerTria()
+        /// <param name="msglayId">文字层ID</param>
+        /// <param name="str">要描绘的字符串</param>
+        public void DrawStringToMsgLayer(int msglayId, string str)
         {
-            this.MainMsgTriangleSprite = ResourceManager.GetInstance().GetPicture(GlobalDataContainer.GAME_MESSAGELAYER_TRIA_FILENAME);
-            Image TriaView = new Image();
-            BitmapImage bmp = MainMsgTriangleSprite.myImage;
-            this.MainMsgTriangleSprite.displayBinding = TriaView;
-            TriaView.Width = bmp.PixelWidth;
-            TriaView.Height = bmp.PixelHeight;
-            TriaView.Source = bmp;
-            TriaView.RenderTransform = new TranslateTransform();
-            Canvas.SetLeft(TriaView, GlobalDataContainer.GAME_MESSAGELAYER_TRIA_X);
-            Canvas.SetTop(TriaView, GlobalDataContainer.GAME_MESSAGELAYER_TRIA_Y);
-            Canvas.SetZIndex(TriaView, GlobalDataContainer.GAME_Z_PICTURES - 1);
-            this.view.BO_MainGrid.Children.Add(this.MainMsgTriangleSprite.displayBinding);
+            // 打字模式
+            if (GlobalDataContainer.GAME_MSG_ISTYPING)
+            {
+                string[] strRuns = this.DialogToRuns(str);
+                string preStr = String.Empty, desStr = strRuns[0];
+                for (int i = 0; i < strRuns.Length; i++)
+                {
+                    this.TypeWriter(preStr, desStr, this.viewMana.GetMessageLayer(msglayId).displayBinding, GlobalDataContainer.GAME_MSG_TYPING_DELAY);
+                    if (i == strRuns.Length - 1) { break; }
+                    preStr = desStr;
+                    desStr = strRuns[i + 1];
+                    DateTime beginTime = DateTime.Now;
+                    TimeSpan ts = TimeSpan.FromMilliseconds(1000.0 / 60.0);
+                    // 等待鼠标点击
+                    while (this.MsgClickFlag == false)
+                    {
+                        // 一定时间就强制刷新画面防止崩溃
+                        if (DateTime.Now - beginTime > ts)
+                        {
+                            this.view.DoEvent();
+                            beginTime = DateTime.Now;
+                        }
+                    }
+                    this.MsgClickFlag = false;
+                }
+            }
+            // 直接显示
+            else
+            {
+                string[] strRuns = this.DialogToRuns(str);
+                string pendDrawStr = String.Concat(strRuns);
+                this.TypeWriter(String.Empty, pendDrawStr, this.viewMana.GetMessageLayer(msglayId).displayBinding, 0);
+            }
+        }
+
+        /// <summary>
+        /// 将文本处理转义并分割为趟
+        /// </summary>
+        /// <param name="dialogStr">要显示的文本</param>
+        /// <returns>趟数组</returns>
+        private string[] DialogToRuns(string dialogStr)
+        {
+            return dialogStr.Split(new string[] { "\\|" }, StringSplitOptions.None);
         }
 
         /// <summary>
@@ -218,8 +251,31 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         private void TypeWriterAnimationCompletedCallback(object sender, EventArgs e)
         {
-            this.ShowMessageTria();
-            this.BeginMessageTriaUpDownAnimation();
+            // 只有主文字层需要作用小三角
+            if (this.currentMsgLayer == 0)
+            {
+                this.ShowMessageTria();
+                this.BeginMessageTriaUpDownAnimation();
+            }
+        }
+
+        /// <summary>
+        /// 初始化文字小三角
+        /// </summary>
+        private void InitMsgLayerTria()
+        {
+            this.MainMsgTriangleSprite = ResourceManager.GetInstance().GetPicture(GlobalDataContainer.GAME_MESSAGELAYER_TRIA_FILENAME);
+            Image TriaView = new Image();
+            BitmapImage bmp = MainMsgTriangleSprite.myImage;
+            this.MainMsgTriangleSprite.displayBinding = TriaView;
+            TriaView.Width = bmp.PixelWidth;
+            TriaView.Height = bmp.PixelHeight;
+            TriaView.Source = bmp;
+            TriaView.RenderTransform = new TranslateTransform();
+            Canvas.SetLeft(TriaView, GlobalDataContainer.GAME_MESSAGELAYER_TRIA_X);
+            Canvas.SetTop(TriaView, GlobalDataContainer.GAME_MESSAGELAYER_TRIA_Y);
+            Canvas.SetZIndex(TriaView, GlobalDataContainer.GAME_Z_PICTURES - 1);
+            this.view.BO_MainGrid.Children.Add(this.MainMsgTriangleSprite.displayBinding);
         }
 
         /// <summary>
@@ -227,7 +283,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         public void HideMessageTria()
         {
-            this.view.BO_MsgTria.Visibility = Visibility.Hidden;
+            // 只有主文字层需要作用小三角
+            if (this.currentMsgLayer == 0)
+            {
+                this.MainMsgTriangleSprite.displayBinding.Visibility = Visibility.Hidden;
+            }
         }
 
         /// <summary>
@@ -236,8 +296,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="opacity">透明度</param>
         public void ShowMessageTria(double opacity = 1.0f)
         {
-            this.view.BO_MsgTria.Opacity = opacity;
-            this.view.BO_MsgTria.Visibility = Visibility.Visible;
+            this.MainMsgTriangleSprite.displayOpacity = opacity;
+            this.MainMsgTriangleSprite.displayBinding.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -382,7 +442,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             }
         }
 
-
         /// <summary>
         /// 结束程序
         /// </summary>
@@ -406,29 +465,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="dialogStr">要显示的文本</param>
         private void Dialog(string dialogStr)
         {
-            string[] strRun = dialogStr.Split(new string[] { "\\|" }, StringSplitOptions.None);
-            string preStr = String.Empty, desStr = strRun[0];
-            TextBlock textView = this.viewMana.GetMessageLayer(this.currentMsgLayer).displayBinding;
-            if (textView == null) { return; }
-            for (int i = 0; i < strRun.Length; i++)
-            {
-                this.TypeWriter(preStr, desStr, textView, 60);
-                if (i == strRun.Length - 1) { break; }
-                preStr = desStr;
-                desStr = strRun[i + 1];
-                DateTime beginTime = DateTime.Now;
-                TimeSpan ts = TimeSpan.FromMilliseconds(GlobalDataContainer.DirectorTimerInterval);
-                while (this.MsgClickFlag == false)
-                {
-                    // 一段时间就要刷新UI
-                    if (DateTime.Now - beginTime > ts)
-                    {
-                        this.view.DoEvent();
-                        beginTime = DateTime.Now;
-                    }
-                }
-                this.MsgClickFlag = false;
-            }
+            this.DrawStringToMsgLayer(this.currentMsgLayer, dialogStr);
         }
 
         /// <summary>
@@ -743,9 +780,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         }
 
-        private void MsgLayer()
+        /// <summary>
+        /// 演绎函数：选定要操作的文字层
+        /// </summary>
+        /// <param name="id">文字层ID</param>
+        private void MsgLayer(int id)
         {
-
+            this.currentMsgLayer = id;
         }
 
         private void MsgLayerOpt()

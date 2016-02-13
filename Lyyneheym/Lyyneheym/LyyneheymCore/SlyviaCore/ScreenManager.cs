@@ -217,7 +217,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="Ha"></param>
         /// <param name="Va"></param>
         /// <param name="LineHeight"></param>
-        public void AddMsgLayer(int id, string source, bool Visible, double W, double H, Thickness Margin, double X, double Y, int Z, double Opacity, string FontName, Color FontColor, double FontSize, HorizontalAlignment Ha, VerticalAlignment Va, double LineHeight)
+        public void AddMsgLayer(int id, string source, bool Visible, double W, double H, Thickness Margin, double X, double Y, int Z, double Opacity, string FontName, Color FontColor, double FontSize, HorizontalAlignment Ha, VerticalAlignment Va, double LineHeight, bool shadow)
         {
             MessageLayerDescriptor mld = new MessageLayerDescriptor()
             {
@@ -236,6 +236,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 HorizonAlign = Ha,
                 VertiAlign = Va,
                 LineHeight = LineHeight,
+                FontShadow = shadow,
                 text = ""
             };
             this.MsgLayerDescVec[id] = mld;
