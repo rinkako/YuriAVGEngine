@@ -292,6 +292,17 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 初始化文字层实例
+        /// </summary>
+        private void InitMessageLayer()
+        {
+            for (int i = 0; i < GlobalDataContainer.GAME_MESSAGELAYER_COUNT; i++)
+            {
+                this.ReDrawMessageLayer(i, this.scrMana.GetMsgLayerDescriptor(i), true);
+            }
+        }
+
+        /// <summary>
         /// 背景精灵向量
         /// </summary>
         private List<MySprite> BackgroundSpriteVec;
@@ -332,10 +343,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             {
                 this.PictureSpriteVec.Add(null);
             }
-            for (int i = 0; i < GlobalDataContainer.GAME_MESSAGELAYER_COUNT; i++)
-            {
-                this.MessageLayerVec.Add(null);
-            }
+            this.InitMessageLayer();
         }
 
         /// <summary>

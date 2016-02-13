@@ -119,6 +119,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <returns>该资源的精灵</returns>
         private MySprite GetGraphicSprite(string sourceName, ResourceType rtype)
         {
+            if (sourceName == "") { return null; }
             MySprite sprite = new MySprite();
             string DevURI = null, PackURI = null;
             // 处理路径
@@ -174,6 +175,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
         private KeyValuePair<GCHandle, long> GetMusicGCHandleLengthKVP(string sourceName, ResourceType rtype)
         {
+            if (sourceName == "") { return null; }
             string DevURI = null, PackURI = null;
             // 处理路径
             switch (rtype)

@@ -133,6 +133,44 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         private static Dictionary<Key, KeyStates> KS_KEY_Dict = new Dictionary<Key, KeyStates>();
         #endregion
 
+        #region 周期性调用
+        /// <summary>
+        /// 导演类周期性调用的更新函数：根据鼠标状态更新游戏，它的优先级低于精灵按钮
+        /// </summary>
+        public void UpdateForMouseState()
+        {
+            if (UpdateRender.KS_MOUSE_Dict[MouseButton.Left] == MouseButtonState.Pressed)
+            {
+
+            }
+            if (UpdateRender.KS_MOUSE_Dict[MouseButton.Right] == MouseButtonState.Pressed)
+            {
+                if (this.IsShowingDialog)
+                {
+                    if (this.viewMana.GetMessageLayer(0).displayBinding.Visibility == Visibility.Hidden)
+                    {
+                        
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 导演类周期性调用的更新函数：根据键盘状态更新游戏，它的优先级低于精灵按钮
+        /// </summary>
+        public void UpdateForKeyboardState()
+        {
+            
+        }
+
+
+
+        #endregion
+
         /// <summary>
         /// 处理游戏窗体的鼠标按下信息
         /// </summary>
@@ -154,11 +192,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 }
             }
             
-        }
-
-        public void WMouseUpEventHandler(MouseButtonEventArgs e)
-        {
-
         }
 
 
@@ -202,7 +235,31 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 string[] strRuns = this.DialogToRuns(str);
                 string pendDrawStr = String.Concat(strRuns);
                 this.TypeWriter(String.Empty, pendDrawStr, this.viewMana.GetMessageLayer(msglayId).displayBinding, 0);
+                DateTime beginTime = DateTime.Now;
+                TimeSpan ts = TimeSpan.FromMilliseconds(1000.0 / 60.0);
+                // 等待鼠标点击
+                while (this.MsgClickFlag == false)
+                {
+                    // 一定时间就强制刷新画面防止崩溃
+                    if (DateTime.Now - beginTime > ts)
+                    {
+                        this.view.DoEvent();
+                        beginTime = DateTime.Now;
+                    }
+                }
+                this.MsgClickFlag = false;
             }
+        }
+
+        /// <summary>
+        /// 将文字直接描绘到文字层上而不等待
+        /// </summary>
+        /// <param name="id">文字层id</param>
+        /// <param name="text">要描绘的字符串</param>
+        public void DrawTextDirectly(int id, string text)
+        {
+            TextBlock t = this.viewMana.GetMessageLayer(id).displayBinding;
+            t.Text = text;
         }
 
         /// <summary>
@@ -251,11 +308,23 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         private void TypeWriterAnimationCompletedCallback(object sender, EventArgs e)
         {
-            // 只有主文字层需要作用小三角
-            if (this.currentMsgLayer == 0)
+            List<int> removeList = new List<int>();
+            foreach (var ani in this.MsgStoryboardDict)
             {
-                this.ShowMessageTria();
-                this.BeginMessageTriaUpDownAnimation();
+                if (ani.Value.GetCurrentTime() == ani.Value.Duration)
+                {
+                    removeList.Add(ani.Key);
+                }
+            }
+            foreach (var ri in removeList)
+            {
+                this.MsgStoryboardDict.Remove(ri);
+                // 只有主文字层需要作用小三角
+                if (ri == 0)
+                {
+                    this.ShowMessageTria();
+                    this.BeginMessageTriaUpDownAnimation();
+                }
             }
         }
 
@@ -325,6 +394,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         private int currentMsgLayer = 0;
 
         /// <summary>
+        /// 是否正在显示对话
+        /// </summary>
+        private bool IsShowingDialog = false;
+
+        /// <summary>
         /// 等待点击信号量
         /// </summary>
         private bool MsgClickFlag = false;
@@ -333,6 +407,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 主文字层背景精灵
         /// </summary>
         private MySprite MainMsgTriangleSprite;
+
+        private Dictionary<int, Storyboard> MsgStoryboardDict = new Dictionary<int, Storyboard>();
         #endregion
 
         #region 渲染器类自身相关方法和引用
@@ -465,7 +541,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="dialogStr">要显示的文本</param>
         private void Dialog(string dialogStr)
         {
-            this.DrawStringToMsgLayer(this.currentMsgLayer, dialogStr);
+            this.pendingDialog += dialogStr;
         }
 
         /// <summary>
@@ -473,8 +549,30 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         private void DialogTerminator()
         {
-            this.viewMana.GetMessageLayer(this.currentMsgLayer).displayBinding.Text = "";
+            this.DrawStringToMsgLayer(this.currentMsgLayer, this.pendingDialog);
+            this.pendingDialog = string.Empty;
         }
+
+        /// <summary>
+        /// 演绎函数：直接描绘文字
+        /// </summary>
+        private void Drawtext(int id, string text)
+        {
+            if (id != 0)
+            {
+                this.DrawTextDirectly(id, text);
+            }
+            else
+            {
+                DebugUtils.ConsoleLine(String.Format("Drawtext cannot apply on MessageLayer0 (Main MsgLayer): {0}", text), 
+                    "UpdateRender", OutputStyle.Error);
+            }
+        }
+
+        /// <summary>
+        /// 待显示的字符串
+        /// </summary>
+        private string pendingDialog = String.Empty;
 
         /// <summary>
         /// 演绎函数：角色状态设置

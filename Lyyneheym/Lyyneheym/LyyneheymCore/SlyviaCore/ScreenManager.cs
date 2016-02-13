@@ -217,7 +217,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="Ha"></param>
         /// <param name="Va"></param>
         /// <param name="LineHeight"></param>
-        public void AddMsgLayer(int id, string source, bool Visible, double W, double H, Thickness Margin, double X, double Y, int Z, double Opacity, string FontName, Color FontColor, double FontSize, HorizontalAlignment Ha, VerticalAlignment Va, double LineHeight, bool shadow)
+        public void EditMsgLayer(int id, string source, bool Visible, double W, double H, Thickness Margin, double X, double Y, int Z, double Opacity, string FontName, Color FontColor, double FontSize, HorizontalAlignment Ha, VerticalAlignment Va, double LineHeight, bool shadow)
         {
             MessageLayerDescriptor mld = new MessageLayerDescriptor()
             {
@@ -332,6 +332,60 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         private List<MessageLayerDescriptor> MsgLayerDescVec;
 
         /// <summary>
+        /// 初始化文字层描述子
+        /// </summary>
+        private void InitMessageLayerDescriptors()
+        {
+            // 初始化主文本层
+            MessageLayerDescriptor mainMsgLayer = new MessageLayerDescriptor()
+            {
+                BackgroundResourceName = GlobalDataContainer.GAME_MESSAGELAYER_BACKGROUNDFILENAME,
+                FontColor = GlobalDataContainer.GAME_FONT_COLOR,
+                FontName = GlobalDataContainer.GAME_FONT_NAME,
+                FontSize = GlobalDataContainer.GAME_FONT_FONTSIZE,
+                FontShadow = GlobalDataContainer.GAME_MESSAGELAYER_SHADOW,
+                LineHeight = GlobalDataContainer.GAME_FONT_LINEHEIGHT,
+                HorizonAlign = HorizontalAlignment.Left,
+                VertiAlign = VerticalAlignment.Top,
+                X = GlobalDataContainer.GAME_MESSAGELAYER_X,
+                Y = GlobalDataContainer.GAME_MESSAGELAYER_Y,
+                Z = GlobalDataContainer.GAME_Z_MESSAGELAYER,
+                Height = GlobalDataContainer.GAME_MESSAGELAYER_H,
+                Width = GlobalDataContainer.GAME_MESSAGELAYER_W,
+                Margin = GlobalDataContainer.GAME_MESSAGELAYER_MARGIN,
+                Opacity = 1.0,
+                Visible = true,
+                text = ""
+            };
+            this.MsgLayerDescVec.Add(mainMsgLayer);
+            // 初始化附加文本层
+            for (int i = 1; i < GlobalDataContainer.GAME_MESSAGELAYER_COUNT; i++)
+            {
+                MessageLayerDescriptor mld = new MessageLayerDescriptor()
+                {
+                    BackgroundResourceName = "",
+                    FontColor = GlobalDataContainer.GAME_FONT_COLOR,
+                    FontName = GlobalDataContainer.GAME_FONT_NAME,
+                    FontSize = GlobalDataContainer.GAME_FONT_FONTSIZE,
+                    FontShadow = GlobalDataContainer.GAME_MESSAGELAYER_SHADOW,
+                    LineHeight = GlobalDataContainer.GAME_FONT_LINEHEIGHT,
+                    HorizonAlign = HorizontalAlignment.Left,
+                    VertiAlign = VerticalAlignment.Top,
+                    X = GlobalDataContainer.GAME_MESSAGELAYER_X,
+                    Y = GlobalDataContainer.GAME_MESSAGELAYER_Y,
+                    Z = GlobalDataContainer.GAME_Z_MESSAGELAYER + i,
+                    Height = GlobalDataContainer.GAME_MESSAGELAYER_H,
+                    Width = GlobalDataContainer.GAME_MESSAGELAYER_W,
+                    Margin = GlobalDataContainer.GAME_MESSAGELAYER_MARGIN,
+                    Opacity = 1.0,
+                    Visible = false,
+                    text = ""
+                };
+                this.MsgLayerDescVec.Add(mld);
+            }
+        }
+
+        /// <summary>
         /// 私有的构造器
         /// </summary>
         private ScreenManager()
@@ -352,10 +406,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             {
                 this.PictureDescVec.Add(null);
             }
-            for (int i = 0; i < GlobalDataContainer.GAME_MESSAGELAYER_COUNT; i++)
-            {
-                this.MsgLayerDescVec.Add(null);
-            }
+            this.InitMessageLayerDescriptors();
         }
 
         /// <summary>

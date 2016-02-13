@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -25,25 +25,29 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         #region 个性化设置信息
         // 窗体分辨率：宽度
-        public static int GAME_WINDOW_WIDTH = 640;
+        public static int GAME_WINDOW_WIDTH = 1024;
         // 窗体分辨率：高度
-        public static int GAME_WINDOW_HEIGHT = 480;
+        public static int GAME_WINDOW_HEIGHT = 608;
         // 文本展示：模式
         public static MessageLayerType GAME_MESSAGE_MODE = MessageLayerType.Dialog;
         // 文本层：文本层数量
         public static int GAME_MESSAGELAYER_COUNT = 1;
-        // 文本层：文本层默认位置
-        public static Point GAME_MESSAGELAYER_POSITION = new Point(0, 0);
-        // 文本层：文本层默认上边距
-        public static int GAME_MESSAGELAYER_MARGIN_TOP = 5;
-        // 文本层：文本层默认下边距
-        public static int GAME_MESSAGELAYER_MARGIN_BOTTOM = 5;
-        // 文本层：文本层默认左边距
-        public static int GAME_MESSAGELAYER_MARGIN_LEFT = 5;
-        // 文本层：文本层默认右边距
-        public static int GAME_MESSAGELAYER_MARGIN_RIGHT = 5;
+        // 文本层：文本层默认位置X
+        public static double GAME_MESSAGELAYER_X = 0;
+        // 文本层：文本层默认位置Y
+        public static double GAME_MESSAGELAYER_Y = 410;
+        // 文本层：文本层默认宽度
+        public static double GAME_MESSAGELAYER_W = 1024;
+        // 文本层：文本层默认高度
+        public static double GAME_MESSAGELAYER_H = 170;
+        // 文本层：文本层默认边距
+        public static Thickness GAME_MESSAGELAYER_MARGIN = new Thickness(30, 25, 30, 25);
         // 文本层：对话小三角文件名
         public static string GAME_MESSAGELAYER_TRIA_FILENAME = "MessageTria.png";
+        // 文本层：对话背景文件名
+        public static string GAME_MESSAGELAYER_BACKGROUNDFILENAME = "originMessageBox2.png";
+        // 文本层：对话文字投影
+        public static bool GAME_MESSAGELAYER_SHADOW = false;
         // 文字层：对话小三角X坐标
         public static double GAME_MESSAGELAYER_TRIA_X = 950;
         // 文字层：对话小三角Y坐标
