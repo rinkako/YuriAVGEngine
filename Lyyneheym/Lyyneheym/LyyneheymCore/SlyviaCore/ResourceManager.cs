@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows;
 using System.Threading;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -17,30 +18,45 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 获得一张指定背景图的精灵
         /// </summary>
         /// <param name="sourceName">资源名称</param>
+        /// <param name="cutRect">纹理切割矩（X值-1代表取全图）</param>
         /// <returns>该资源的精灵</returns>
-        public MySprite GetBackground(string sourceName)
+        public MySprite GetBackground(string sourceName, Int32Rect cutRect)
         {
-            return this.GetGraphicSprite(sourceName, ResourceType.Background);
+            if (cutRect.X == -1)
+            {
+                return this.GetGraphicSprite(sourceName, ResourceType.Background, null);
+            }
+            return this.GetGraphicSprite(sourceName, ResourceType.Background, cutRect);
         }
 
         /// <summary>
         /// 获得一张指定立绘图的精灵
         /// </summary>
         /// <param name="sourceName">资源名称</param>
+        /// <param name="cutRect">纹理切割矩（X值-1代表取全图）</param>
         /// <returns>该资源的精灵</returns>
-        public MySprite GetCharacterStand(string sourceName)
+        public MySprite GetCharacterStand(string sourceName, Int32Rect cutRect)
         {
-            return this.GetGraphicSprite(sourceName, ResourceType.Stand);
+            if (cutRect.X == -1)
+            {
+                return this.GetGraphicSprite(sourceName, ResourceType.Stand, null);
+            }
+            return this.GetGraphicSprite(sourceName, ResourceType.Stand, cutRect);
         }
 
         /// <summary>
         /// 获得一张指定图片的精灵
         /// </summary>
         /// <param name="sourceName">资源名称</param>
+        /// <param name="cutRect">纹理切割矩（X值-1代表取全图）</param>
         /// <returns>该资源的精灵</returns>
-        public MySprite GetPicture(string sourceName)
+        public MySprite GetPicture(string sourceName, Int32Rect cutRect)
         {
-            return this.GetGraphicSprite(sourceName, ResourceType.Pictures);
+            if (cutRect.X == -1)
+            {
+                return this.GetGraphicSprite(sourceName, ResourceType.Pictures, null);
+            }
+            return this.GetGraphicSprite(sourceName, ResourceType.Pictures, cutRect);
         }
 
         /// <summary>
@@ -116,8 +132,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="sourceName">资源名称</param>
         /// <param name="rtype">资源类型</param>
+        /// <param name="cutRect">纹理切割矩</param>
         /// <returns>该资源的精灵</returns>
-        private MySprite GetGraphicSprite(string sourceName, ResourceType rtype)
+        private MySprite GetGraphicSprite(string sourceName, ResourceType rtype, Int32Rect? cutRect)
         {
             if (sourceName == "") { return null; }
             MySprite sprite = new MySprite();
@@ -148,7 +165,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL(PackURI + GlobalDataContainer.PackPostfix),
                     sourceName, sourceLocation.Key, sourceLocation.Value);
                 MemoryStream ms = new MemoryStream(ob);
-                sprite.Init(sourceName, rtype, ms);
+                sprite.Init(sourceName, rtype, ms, cutRect);
             }
             // 没有封包数据再搜索开发目录
             else
@@ -157,7 +174,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 if (File.Exists(IOUtils.ParseURItoURL(furi)))
                 {
                     Uri bg = new Uri(furi, UriKind.RelativeOrAbsolute);
-                    sprite.Init(sourceName, rtype, bg);
+                    sprite.Init(sourceName, rtype, bg, cutRect);
                 }
                 else
                 {

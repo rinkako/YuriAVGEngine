@@ -326,7 +326,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         private void InitMsgLayerTria()
         {
-            this.MainMsgTriangleSprite = ResourceManager.GetInstance().GetPicture(GlobalDataContainer.GAME_MESSAGELAYER_TRIA_FILENAME);
+            this.MainMsgTriangleSprite = ResourceManager.GetInstance().GetPicture(GlobalDataContainer.GAME_MESSAGELAYER_TRIA_FILENAME, new Int32Rect(-1, 0, 0, 0));
             Image TriaView = new Image();
             BitmapImage bmp = MainMsgTriangleSprite.myImage;
             this.MainMsgTriangleSprite.displayBinding = TriaView;
@@ -491,14 +491,42 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             switch (action.aType)
             {
-                case SActionType.act_bgm:
-                    this.Bgm(action.argsDict["filename"], this.ParseDouble(action.argsDict["vol"], 1000));
+                case SActionType.act_a:
+                    this.A(
+                        action.argsDict["name"],
+                        this.ParseInt(action.argsDict["vid"], -1),
+                        action.argsDict["face"],
+                        action.argsDict["loc"]
+                        );
                     break;
-                case SActionType.act_stopbgm:
-                    this.Stopbgm();
+                case SActionType.act_picture:
+                    this.Picture(
+                        this.ParseInt(action.argsDict["id"], 0),
+                        action.argsDict["filename"],
+                        this.ParseDouble(action.argsDict["x"], 0),
+                        this.ParseDouble(action.argsDict["y"], 0),
+                        this.ParseDouble(action.argsDict["opacity"], 1),
+                        this.ParseDouble(action.argsDict["xscale"], 1),
+                        this.ParseDouble(action.argsDict["yscale"], 1),
+                        this.ParseDouble(action.argsDict["ro"], 0),
+                        SpriteAnchorType.Center,
+                        new Int32Rect(-1, 0, 0, 0)
+                        );
                     break;
-                case SActionType.act_var:
-                    this.Var(action.argsDict["name"], action.argsDict["dash"]);
+                case SActionType.act_move:
+                    string moveResType = action.argsDict["name"];
+                    //this.Move(
+                    //    this.ParseInt(action.argsDict["id"], 0),
+                    //    moveResType == "picture" ? ResourceType.Pictures : (moveResType == "stand" ? ResourceType.Stand : ResourceType.Background),
+                    //    action.argsDict["target"],
+
+                    //    );
+                    break;
+                case SActionType.act_deletepicture:
+                    this.Deletepicture(
+                        this.ParseInt(action.argsDict["id"], 0),
+                        ResourceType.Pictures
+                        );
                     break;
                 case SActionType.act_cstand:
                     this.Cstand(
@@ -513,14 +541,72 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         action.argsDict["anchor"] == "" ? (action.argsDict["anchor"] == "center" ? SpriteAnchorType.Center : SpriteAnchorType.LeftTop) : SpriteAnchorType.Center,
                         new Int32Rect(0, 0, 0, 0));
                     break;
-                case SActionType.act_a:
-                    this.A(action.argsDict["name"],
-                        this.ParseInt(action.argsDict["vid"], -1),
-                        action.argsDict["face"],
-                        action.argsDict["loc"]
+                case SActionType.act_deletecstand:
+                    this.Deletecstand(
+                        (CharacterStandType)this.ParseInt(action.argsDict["id"], 0)
                         );
                     break;
-
+                case SActionType.act_se:
+                    this.Se(
+                        action.argsDict["filename"],
+                        this.ParseDouble(action.argsDict["vol"], 1000)
+                        );
+                    break;
+                case SActionType.act_bgm:
+                    this.Bgm(
+                        action.argsDict["filename"],
+                        this.ParseDouble(action.argsDict["vol"], 1000)
+                        );
+                    break;
+                case SActionType.act_stopbgm:
+                    this.Stopbgm();
+                    break;
+                case SActionType.act_vocal:
+                    break;
+                case SActionType.act_stopvocal:
+                    break;
+                case SActionType.act_title:
+                    break;
+                case SActionType.act_menu:
+                    break;
+                case SActionType.act_save:
+                    break;
+                case SActionType.act_load:
+                    break;
+                case SActionType.act_lable:
+                    break;
+                case SActionType.act_switch:
+                    break;
+                case SActionType.act_var:
+                    this.Var(action.argsDict["name"], action.argsDict["dash"]);
+                    break;
+                case SActionType.act_break:
+                    break;
+                case SActionType.act_shutdown:
+                    this.Shutdown();
+                    break;
+                case SActionType.act_branch:
+                    break;
+                case SActionType.act_titlepoint:
+                    break;
+                case SActionType.act_freeze:
+                    break;
+                case SActionType.act_trans:
+                    break;
+                case SActionType.act_button:
+                    break;
+                case SActionType.act_style:
+                    break;
+                case SActionType.act_msglayer:
+                    break;
+                case SActionType.act_msglayeropt:
+                    break;
+                case SActionType.act_dialog:
+                    break;
+                case SActionType.act_dialogTerminator:
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -785,10 +871,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="resourceName">资源名称</param>
         /// <param name="volume">音量</param>
-        private void Se(string resourceName, float volume)
+        private void Se(string resourceName, double volume)
         {
             var seKVP = this.resMana.GetSE(resourceName);
-            this.musician.PlaySE(seKVP.Key, seKVP.Value, volume);
+            this.musician.PlaySE(seKVP.Key, seKVP.Value, (float)volume);
         }
 
         /// <summary>
@@ -824,9 +910,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="name">角色名称</param>
         /// <param name="vid">语音编号</param>
         /// <param name="volume">音量</param>
-        private void Vocal(string name, int vid, float volume)
+        private void Vocal(string name, int vid, double volume)
         {
-            this.Vocal(String.Format("{0}_{1}{2}", name, vid, GlobalDataContainer.GAME_VOCAL_POSTFIX), volume);
+            this.Vocal(String.Format("{0}_{1}{2}", name, vid, GlobalDataContainer.GAME_VOCAL_POSTFIX), (float)volume);
         }
 
         /// <summary>
@@ -834,12 +920,12 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="resourceName">资源名称</param>
         /// <param name="volume">音量</param>
-        private void Vocal(string resourceName, float volume)
+        private void Vocal(string resourceName, double volume)
         {
             if (resourceName != "")
             {
                 var vocalKVP = this.resMana.GetVocal(resourceName);
-                this.musician.PlayVocal(vocalKVP.Key, vocalKVP.Value, volume);
+                this.musician.PlayVocal(vocalKVP.Key, vocalKVP.Value, (float)volume);
             }
         }
 

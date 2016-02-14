@@ -844,7 +844,7 @@ namespace Lyyneheym.SlyviaInterpreter
         }
 
         /// <summary>
-        /// 核心算法：递归下降构造语法树并取下一节点
+        /// 递归下降构造语法树并取下一节点
         /// </summary>
         /// <param name="res">母亲节点</param>
         /// <returns>下一个拿去展开的产生式</returns>
@@ -886,7 +886,7 @@ namespace Lyyneheym.SlyviaInterpreter
         }
 
         /// <summary>
-        /// 核心处理器：将所有非推导项构造到语法树上
+        /// 处理器：将所有非推导项构造到语法树上
         /// </summary>
         /// <returns>预处理完毕的单语句语法树根节点</returns>
         private SyntaxTreeNode Kaguya()
@@ -925,6 +925,7 @@ namespace Lyyneheym.SlyviaInterpreter
                         break;
                     case TokenType.Token_o_move:
                         statementNode.nodeSyntaxType = SyntaxType.synr_move;
+                        statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
                         statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
                         statementNode.paramDict["time"] = new SyntaxTreeNode(SyntaxType.para_time, statementNode);
                         statementNode.paramDict["target"] = new SyntaxTreeNode(SyntaxType.para_target, statementNode);
@@ -934,7 +935,6 @@ namespace Lyyneheym.SlyviaInterpreter
                     case TokenType.Token_o_deletepicture:
                         statementNode.nodeSyntaxType = SyntaxType.synr_deletepicture;
                         statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
-                        statementNode.paramDict["time"] = new SyntaxTreeNode(SyntaxType.para_time, statementNode);
                         break;
                     case TokenType.Token_o_cstand:
                         statementNode.nodeSyntaxType = SyntaxType.synr_cstand;
@@ -1598,7 +1598,7 @@ namespace Lyyneheym.SlyviaInterpreter
         }
 
         /// <summary>
-        /// 核心处理器：通用产生式处理函数
+        /// 通用产生式处理函数
         /// </summary>
         /// <param name="myNode">产生式节点</param>
         /// <param name="myType">候选式类型</param>

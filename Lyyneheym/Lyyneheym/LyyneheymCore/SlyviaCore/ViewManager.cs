@@ -137,6 +137,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             spriteImage.Height = bmp.PixelHeight;
             spriteImage.Source = bmp;
             spriteImage.Opacity = descriptor.Opacity;
+            sprite.cutRect = descriptor.cutRect;
             sprite.displayBinding = spriteImage;
             sprite.anchor = descriptor.anchorType;
             Canvas.SetLeft(spriteImage, descriptor.X);
