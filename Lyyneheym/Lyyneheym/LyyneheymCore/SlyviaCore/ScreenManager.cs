@@ -206,7 +206,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="Visible"></param>
         /// <param name="W"></param>
         /// <param name="H"></param>
-        /// <param name="Margin"></param>
+        /// <param name="Padding"></param>
         /// <param name="X"></param>
         /// <param name="Y"></param>
         /// <param name="Z"></param>
@@ -217,7 +217,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="Ha"></param>
         /// <param name="Va"></param>
         /// <param name="LineHeight"></param>
-        public void EditMsgLayer(int id, string source, bool Visible, double W, double H, Thickness Margin, double X, double Y, int Z, double Opacity, string FontName, Color FontColor, double FontSize, HorizontalAlignment Ha, VerticalAlignment Va, double LineHeight, bool shadow)
+        public void EditMsgLayer(int id, string source, bool Visible, double W, double H, Thickness Padding, double X, double Y, int Z, double Opacity, string FontName, Color FontColor, double FontSize, HorizontalAlignment Ha, VerticalAlignment Va, double LineHeight, bool shadow)
         {
             MessageLayerDescriptor mld = new MessageLayerDescriptor()
             {
@@ -227,7 +227,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 Y = Y,
                 Z = Z + GlobalDataContainer.GAME_Z_MESSAGELAYER,
                 Opacity = Opacity,
-                Margin = Margin,
+                Padding = Padding,
                 Width = W,
                 Height = H,
                 FontName = FontName,
@@ -352,7 +352,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 Z = GlobalDataContainer.GAME_Z_MESSAGELAYER,
                 Height = GlobalDataContainer.GAME_MESSAGELAYER_H,
                 Width = GlobalDataContainer.GAME_MESSAGELAYER_W,
-                Margin = GlobalDataContainer.GAME_MESSAGELAYER_MARGIN,
+                Padding = GlobalDataContainer.GAME_MESSAGELAYER_PADDING,
                 Opacity = 1.0,
                 Visible = true,
                 text = ""
@@ -376,7 +376,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     Z = GlobalDataContainer.GAME_Z_MESSAGELAYER + i,
                     Height = GlobalDataContainer.GAME_MESSAGELAYER_H,
                     Width = GlobalDataContainer.GAME_MESSAGELAYER_W,
-                    Margin = GlobalDataContainer.GAME_MESSAGELAYER_MARGIN,
+                    Padding = GlobalDataContainer.GAME_MESSAGELAYER_PADDING,
                     Opacity = 1.0,
                     Visible = false,
                     text = ""

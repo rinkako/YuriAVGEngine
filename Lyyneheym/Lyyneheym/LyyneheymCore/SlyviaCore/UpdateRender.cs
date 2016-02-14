@@ -139,12 +139,19 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         public void UpdateForMouseState()
         {
+            // 按下了鼠标左键
             if (UpdateRender.KS_MOUSE_Dict[MouseButton.Left] == MouseButtonState.Pressed)
             {
+                // 正在显示对话则向前推进一个趟
+                if (this.IsShowingDialog)
+                {
 
+                }
             }
+            // 按下了鼠标右键
             if (UpdateRender.KS_MOUSE_Dict[MouseButton.Right] == MouseButtonState.Pressed)
             {
+                // 正在显示对话则隐藏对话
                 if (this.IsShowingDialog)
                 {
                     if (this.viewMana.GetMessageLayer(0).displayBinding.Visibility == Visibility.Hidden)
@@ -212,7 +219,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 {
                     this.TypeWriter(preStr, desStr, this.viewMana.GetMessageLayer(msglayId).displayBinding, GlobalDataContainer.GAME_MSG_TYPING_DELAY);
                     if (i == strRuns.Length - 1) { break; }
-                    preStr = desStr;
+                    preStr += desStr;
                     desStr = strRuns[i + 1];
                     DateTime beginTime = DateTime.Now;
                     TimeSpan ts = TimeSpan.FromMilliseconds(1000.0 / 60.0);
@@ -418,11 +425,24 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="mw">窗体引用</param>
         public void SetMainWindow(MainWindow mw)
         {
-            this.view = mw;
+            if (mw != null)
+            {
+                this.view = mw;
+                this.ViewLoadedInit();
+            }
+        }
+
+        /// <summary>
+        /// 在主视窗加载后的初始化动作
+        /// </summary>
+        private void ViewLoadedInit()
+        {
             // 为视窗管理设置引用
             this.viewMana.SetMainWndReference(this.view);
             // 初始化小三角
             this.InitMsgLayerTria();
+            // 初始化文本层
+            this.viewMana.InitMessageLayer();
         }
 
         /// <summary>
@@ -594,7 +614,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 显示背景
+        /// 演绎函数：显示背景
         /// </summary>
         /// <param name="id">图片ID</param>
         /// <param name="filename">资源名称</param>
@@ -613,7 +633,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 显示图片
+        /// 演绎函数：显示图片
         /// </summary>
         /// <param name="id">图片ID</param>
         /// <param name="filename">资源名称</param>
@@ -632,7 +652,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 移动图片
+        /// 演绎函数：移动图片
         /// </summary>
         /// <param name="id">图片ID</param>
         /// <param name="rType">资源类型</param>
@@ -687,7 +707,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 移除图片
+        /// 演绎函数：移除图片
         /// </summary>
         private void Deletepicture(int id, ResourceType rType)
         {
@@ -695,7 +715,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 显示立绘
+        /// 演绎函数：显示立绘
         /// </summary>
         /// <param name="id">图片ID</param>
         /// <param name="filename">资源名称</param>
@@ -741,7 +761,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 显示立绘
+        /// 演绎函数：显示立绘
         /// </summary>
         /// <param name="id">图片ID</param>
         /// <param name="filename">资源名称</param>
@@ -760,7 +780,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 移除立绘
+        /// 演绎函数：移除立绘
         /// </summary>
         private void Deletecstand(CharacterStandType cst)
         {
@@ -768,7 +788,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 播放音效
+        /// 演绎函数：播放音效
         /// </summary>
         /// <param name="resourceName">资源名称</param>
         /// <param name="volume">音量</param>

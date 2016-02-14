@@ -48,7 +48,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="sourceName">资源名称</param>
         /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
-        public KeyValuePair<GCHandle, long> GetBGM(string sourceName)
+        public KeyValuePair<GCHandle?, long> GetBGM(string sourceName)
         {
             return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.BGM);
         }
@@ -58,7 +58,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="sourceName">资源名称</param>
         /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
-        public KeyValuePair<GCHandle, long> GetBGS(string sourceName)
+        public KeyValuePair<GCHandle?, long> GetBGS(string sourceName)
         {
             return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.BGS);
         }
@@ -68,7 +68,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="sourceName">资源名称</param>
         /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
-        public KeyValuePair<GCHandle, long> GetSE(string sourceName)
+        public KeyValuePair<GCHandle?, long> GetSE(string sourceName)
         {
             return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.SE);
         }
@@ -78,7 +78,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="sourceName">资源名称</param>
         /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
-        public KeyValuePair<GCHandle, long> GetVocal(string sourceName)
+        public KeyValuePair<GCHandle?, long> GetVocal(string sourceName)
         {
             return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.VOCAL);
         }
@@ -173,9 +173,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="sourceName">资源名称</param>
         /// <param name="rtype">资源类型</param>
         /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
-        private KeyValuePair<GCHandle, long> GetMusicGCHandleLengthKVP(string sourceName, ResourceType rtype)
+        private KeyValuePair<GCHandle?, long> GetMusicGCHandleLengthKVP(string sourceName, ResourceType rtype)
         {
-            if (sourceName == "") { return null; }
+            if (sourceName == "") { return new KeyValuePair<GCHandle?,long>(null, 0); }
             string DevURI = null, PackURI = null;
             // 处理路径
             switch (rtype)
@@ -206,7 +206,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 KeyValuePair<long, long> sourceLocation = this.resourceTable[DevURI][sourceName];
                 GCHandle ptr = PackageUtils.getObjectIntPtr(IOUtils.ParseURItoURL(PackURI + GlobalDataContainer.PackPostfix),
                     sourceName, sourceLocation.Key, sourceLocation.Value);
-                return new KeyValuePair<GCHandle, long>(ptr, sourceLocation.Value);
+                return new KeyValuePair<GCHandle?, long>(ptr, sourceLocation.Value);
             }
             // 没有封包数据再搜索开发目录
             else
@@ -215,7 +215,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 if (File.Exists(IOUtils.ParseURItoURL(furi)))
                 {
                     byte[] bytes = File.ReadAllBytes(IOUtils.ParseURItoURL(furi));
-                    return new KeyValuePair<GCHandle, long>(GCHandle.Alloc(bytes, GCHandleType.Pinned), bytes.Length);
+                    return new KeyValuePair<GCHandle?, long>(GCHandle.Alloc(bytes, GCHandleType.Pinned), bytes.Length);
                 }
                 else
                 {

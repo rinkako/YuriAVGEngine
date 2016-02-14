@@ -165,7 +165,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             msglay.Width = descriptor.Width;
             msglay.Height = descriptor.Height;
             msglay.Opacity = descriptor.Opacity;
-            msglay.Margin = descriptor.Margin;
+            msglay.Padding = descriptor.Padding;
             msglay.LineHeight = descriptor.LineHeight;
             msglay.HorizontalAlignment = descriptor.HorizonAlign;
             msglay.VerticalAlignment = descriptor.VertiAlign;
@@ -294,7 +294,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 初始化文字层实例
         /// </summary>
-        private void InitMessageLayer()
+        public void InitMessageLayer()
         {
             for (int i = 0; i < GlobalDataContainer.GAME_MESSAGELAYER_COUNT; i++)
             {
@@ -343,7 +343,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             {
                 this.PictureSpriteVec.Add(null);
             }
-            this.InitMessageLayer();
+            for (int i = 0; i < GlobalDataContainer.GAME_MESSAGELAYER_COUNT; i++)
+            {
+                this.MessageLayerVec.Add(null);
+            }
         }
 
         /// <summary>

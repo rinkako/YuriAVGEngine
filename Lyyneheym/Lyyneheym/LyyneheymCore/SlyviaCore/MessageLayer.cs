@@ -19,7 +19,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.X = this.Y = 0;
             this.Opacity = 1.0f;
             this.Visibility = System.Windows.Visibility.Visible;
-            this.Margin = new Thickness(GlobalDataContainer.GAME_MESSAGELAYER_MARGIN_LEFT, GlobalDataContainer.GAME_MESSAGELAYER_MARGIN_TOP, GlobalDataContainer.GAME_MESSAGELAYER_MARGIN_RIGHT, GlobalDataContainer.GAME_MESSAGELAYER_MARGIN_BOTTOM);
+            this.Padding = GlobalDataContainer.GAME_MESSAGELAYER_PADDING;
             this.StyleReset();
         }
 
@@ -214,15 +214,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 获取或设置文字层边距
         /// </summary>
-        public Thickness Margin
+        public Thickness Padding
         {
             get
             {
-                return this.displayBinding.Margin;
+                return this.displayBinding.Padding;
             }
             set
             {
-                this.displayBinding.Margin = value;
+                this.displayBinding.Padding = value;
             }
         }
 

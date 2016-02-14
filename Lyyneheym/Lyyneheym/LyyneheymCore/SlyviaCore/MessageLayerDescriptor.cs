@@ -39,7 +39,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         public double Width { get; set; }
 
-        public Thickness Margin { get; set; }
+        public Thickness Padding { get; set; }
 
         public HorizontalAlignment HorizonAlign { get; set; }
 

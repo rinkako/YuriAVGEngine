@@ -313,6 +313,9 @@ namespace Lyyneheym
                     this.updateRender.Shutdown();
                     break;
             }
+            // 处理IO
+            this.updateRender.UpdateForMouseState();
+            this.updateRender.UpdateForKeyboardState();
         }
 
         private GameState curState;
@@ -328,8 +331,7 @@ namespace Lyyneheym
         /// <param name="mw">主窗体</param>
         public void SetMainWindow(MainWindow mw)
         {
-            this.mwReference = mw;
-            this.updateRender.SetMainWindow(this.mwReference);
+            this.updateRender.SetMainWindow(this.mwReference = mw);
         }
 
         /// <summary>

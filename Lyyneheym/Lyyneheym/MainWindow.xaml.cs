@@ -256,7 +256,7 @@ namespace Lyyneheym
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
             string pstr = "测试文本测试文本测试文本测试文本" + Environment.NewLine + "233333 here is new line without pause" + Environment.NewLine
-                + "\\|" + "Here third line, with pause";
+                + "\\|" + "Here third line, with pause" + "\\|" + Environment.NewLine + "444666888";
             string[] strRun = pstr.Split(new string[] {"\\|"}, StringSplitOptions.None);
             string preStr = String.Empty, desStr = strRun[0];
             for (int i = 0; i < strRun.Length; i++)
@@ -264,12 +264,12 @@ namespace Lyyneheym
                 //int oldRunCount = runcount;
                 TypewriteTextblock(preStr, desStr, this.BO_MainText, 60);
                 if (i == strRun.Length - 1) { break; }
-                preStr = desStr;
+                preStr += desStr;
                 desStr = strRun[i + 1];
                 DateTime beginTime = DateTime.Now;
                 TimeSpan ts = TimeSpan.FromMilliseconds(1000.0 / 60.0);
 
-                while (Rc == 0)//(runcount == oldRunCount)
+                while (clickFlag == false)//(runcount == oldRunCount)
                 {
                     if (DateTime.Now - beginTime > ts)
                     {
@@ -278,19 +278,19 @@ namespace Lyyneheym
                     }
                 }
 
-                Rc = 0;
+                clickFlag = false;
 
                 
             }
 
         }
 
-        private int Rc = 0;
+        private bool clickFlag = false;
 
         private void Button_Click_15(object sender, RoutedEventArgs e)
         {
             //TypewriteTextblock("测试文本测试文本测试文本测试文本", Environment.NewLine + "2333333", this.BO_MainText, 30);
-            Rc++;
+            clickFlag = true;
         }
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
@@ -586,6 +586,11 @@ namespace Lyyneheym
         }
 
         private void BO_LeftChara_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void window_Loaded(object sender, RoutedEventArgs e)
         {
 
         }
