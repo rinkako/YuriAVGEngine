@@ -562,8 +562,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     this.Stopbgm();
                     break;
                 case SActionType.act_vocal:
+                    this.Vocal(
+                        action.argsDict["name"],
+                        this.ParseInt(action.argsDict["vid"], -1),
+                        1000
+                        );
                     break;
                 case SActionType.act_stopvocal:
+                    this.Stopvocal();
                     break;
                 case SActionType.act_title:
                     break;
@@ -578,7 +584,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 case SActionType.act_switch:
                     break;
                 case SActionType.act_var:
-                    this.Var(action.argsDict["name"], action.argsDict["dash"]);
+                    this.Var(
+                        action.argsDict["name"],
+                        action.argsDict["dash"]
+                        );
                     break;
                 case SActionType.act_break:
                     break;
@@ -598,8 +607,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 case SActionType.act_style:
                     break;
                 case SActionType.act_msglayer:
+                    this.MsgLayer(
+                        this.ParseInt(action.argsDict["id"], 0)
+                        );
                     break;
                 case SActionType.act_msglayeropt:
+                    this.MsgLayerOpt(
+                        this.ParseInt(action.argsDict["id"], 0),
+                        action.argsDict["target"],
+                        this.runMana.CalculatePolish(action.argsDict["dash"]).ToString()
+                        );
                     break;
                 case SActionType.act_dialog:
                     break;
@@ -912,6 +929,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="volume">音量</param>
         private void Vocal(string name, int vid, double volume)
         {
+            if (vid == -1) { return; }
             this.Vocal(String.Format("{0}_{1}{2}", name, vid, GlobalDataContainer.GAME_VOCAL_POSTFIX), (float)volume);
         }
 
@@ -937,9 +955,30 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.musician.StopAndReleaseVocal();
         }
 
+        /// <summary>
+        /// 回到标题，这个动作会在弹空整个调用堆栈后再施加
+        /// </summary>
         private void Title()
         {
-
+            this.runMana.ExitAll();
+            // 没有标志回归点就从程序入口重新开始
+            if (this.titlePointContainer.Key == null || this.titlePointContainer.Value == null)
+            {
+                var mainScene = this.resMana.GetScene(GlobalDataContainer.Script_Main);
+                if (mainScene == null)
+                {
+                    DebugUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalDataContainer.Script_Main),
+                        "Director", OutputStyle.Error);
+                    Environment.Exit(0);
+                }
+                this.runMana.CallScene(mainScene);
+            }
+            // 有回归点就调用回归点场景并把IP指针偏移到回归点动作
+            else
+            {
+                this.runMana.CallScene(this.titlePointContainer.Key);
+                this.runMana.CallStack.ESP.IP = this.titlePointContainer.Value;
+            }
         }
 
         private void Menu()
@@ -972,10 +1011,20 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         }
 
+        /// <summary>
+        /// 标记标题回归点
+        /// </summary>
         private void Titlepoint()
         {
-
+            this.titlePointContainer = new KeyValuePair<Scene, SceneAction>(
+                this.resMana.GetScene(this.runMana.CallStack.ESP.bindingSceneName),
+                this.runMana.CallStack.ESP.IP);
         }
+
+        /// <summary>
+        /// 标题动作节点
+        /// </summary>
+        private KeyValuePair<Scene, SceneAction> titlePointContainer = new KeyValuePair<Scene, SceneAction>(null, null);
 
         /// <summary>
         /// 演绎函数：选定要操作的文字层
@@ -992,8 +1041,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="msglayId">层id</param>
         /// <param name="property">要修改的属性名</param>
         /// <param name="valueStr">值字符串</param>
-        /// <param name="valueNum">值数值</param>
-        private void MsgLayerOpt(int msglayId, string property, string valueStr, double valueNum)
+        private void MsgLayerOpt(int msglayId, string property, string valueStr)
         {
             if (msglayId >= 0 && msglayId < GlobalDataContainer.GAME_MESSAGELAYER_COUNT)
             {
@@ -1003,7 +1051,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 {
                     case "fs":
                     case "fontsize":
-                        ml.FontSize = mld.FontSize = valueNum;
+                        ml.FontSize = mld.FontSize = Convert.ToDouble(valueStr);
                         break;
                     case "fn":
                     case "fontname":
@@ -1026,28 +1074,28 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         break;
                     case "l":
                     case "lineheight":
-                        ml.LineHeight = mld.LineHeight = valueNum;
+                        ml.LineHeight = mld.LineHeight = Convert.ToDouble(valueStr);
                         break;
                     case "o":
                     case "opacity":
-                        ml.Opacity = mld.Opacity = valueNum;
+                        ml.Opacity = mld.Opacity = Convert.ToDouble(valueStr);
                         break;
                     case "x":
-                        ml.X = mld.X = valueNum;
+                        ml.X = mld.X = Convert.ToDouble(valueStr);
                         break;
                     case "y":
-                        ml.Y = mld.Y = valueNum;
+                        ml.Y = mld.Y = Convert.ToDouble(valueStr);
                         break;
                     case "z":
-                        ml.Z = mld.Z = (int)valueNum;
+                        ml.Z = mld.Z = (int)Convert.ToDouble(valueStr);
                         break;
                     case "h":
                     case "height":
-                        ml.Height = mld.Height = valueNum;
+                        ml.Height = mld.Height = Convert.ToDouble(valueStr);
                         break;
                     case "w":
                     case "width":
-                        ml.Width = mld.Width = valueNum;
+                        ml.Width = mld.Width = Convert.ToDouble(valueStr);
                         break;
                     case "p":
                     case "padding":

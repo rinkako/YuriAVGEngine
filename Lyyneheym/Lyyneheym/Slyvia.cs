@@ -21,12 +21,12 @@ namespace Lyyneheym
         #region debug用
         public MySprite testBitmapImage(string filename)
         {
-            return this.ResMana.GetBackground(filename);
+            return this.ResMana.GetBackground(filename, new System.Windows.Int32Rect(-1, 0, 0, 0));
         }
 
         public MySprite testCharaStand(string filename)
         {
-            return this.ResMana.GetCharacterStand(filename);
+            return this.ResMana.GetCharacterStand(filename, new System.Windows.Int32Rect(-1, 0, 0, 0));
         }
 
 

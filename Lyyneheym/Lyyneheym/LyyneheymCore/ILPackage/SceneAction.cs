@@ -20,9 +20,9 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
         public string condPolish = null;
         // 下一节点
         public SceneAction next = null;
-        // 下一真节点向量
+        // 真节点向量
         public List<SceneAction> trueRouting = null;
-        // 下一假节点向量
+        // 假节点向量
         public List<SceneAction> falseRouting = null;
         // 是否依存函数
         public bool isBelongFunc = false;

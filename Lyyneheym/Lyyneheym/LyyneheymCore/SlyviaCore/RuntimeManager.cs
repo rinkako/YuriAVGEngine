@@ -197,6 +197,17 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 弹空整个调用堆栈
+        /// </summary>
+        public void ExitAll()
+        {
+            while (this.CallStack.Count() != 0)
+            {
+                this.CallStack.Consume();
+            }
+        }
+
+        /// <summary>
         /// 场景调用
         /// </summary>
         /// <param name="scene">场景实例</param>
