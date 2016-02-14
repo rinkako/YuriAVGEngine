@@ -237,7 +237,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 VertiAlign = Va,
                 LineHeight = LineHeight,
                 FontShadow = shadow,
-                text = ""
+                Text = ""
             };
             this.MsgLayerDescVec[id] = mld;
         }
@@ -339,6 +339,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             // 初始化主文本层
             MessageLayerDescriptor mainMsgLayer = new MessageLayerDescriptor()
             {
+                Id = 0,
                 BackgroundResourceName = GlobalDataContainer.GAME_MESSAGELAYER_BACKGROUNDFILENAME,
                 FontColor = GlobalDataContainer.GAME_FONT_COLOR,
                 FontName = GlobalDataContainer.GAME_FONT_NAME,
@@ -355,7 +356,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 Padding = GlobalDataContainer.GAME_MESSAGELAYER_PADDING,
                 Opacity = 1.0,
                 Visible = true,
-                text = ""
+                Text = ""
             };
             this.MsgLayerDescVec.Add(mainMsgLayer);
             // 初始化附加文本层
@@ -363,6 +364,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             {
                 MessageLayerDescriptor mld = new MessageLayerDescriptor()
                 {
+                    Id = i,
                     BackgroundResourceName = "",
                     FontColor = GlobalDataContainer.GAME_FONT_COLOR,
                     FontName = GlobalDataContainer.GAME_FONT_NAME,
@@ -379,7 +381,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     Padding = GlobalDataContainer.GAME_MESSAGELAYER_PADDING,
                     Opacity = 1.0,
                     Visible = false,
-                    text = ""
+                    Text = ""
                 };
                 this.MsgLayerDescVec.Add(mld);
             }

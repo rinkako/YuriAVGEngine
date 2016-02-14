@@ -619,6 +619,15 @@ namespace Lyyneheym.SlyviaInterpreter
                         okFlag = true;
                     }
                 }
+                else if (str == "target")
+                {
+                    res.aType = TokenType.Token_p_target;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 6]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
                 else if (str == "endfor")
                 {
                     res.aType = TokenType.Token_o_endfor;

@@ -918,7 +918,7 @@ namespace Lyyneheym.SlyviaInterpreter
                         statementNode.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename, statementNode);
                         statementNode.paramDict["x"] = new SyntaxTreeNode(SyntaxType.para_x, statementNode);
                         statementNode.paramDict["y"] = new SyntaxTreeNode(SyntaxType.para_y, statementNode);
-                        statementNode.paramDict["capacity"] = new SyntaxTreeNode(SyntaxType.para_capacity, statementNode);
+                        statementNode.paramDict["opacity"] = new SyntaxTreeNode(SyntaxType.para_opacity, statementNode);
                         statementNode.paramDict["xscale"] = new SyntaxTreeNode(SyntaxType.para_xscale, statementNode);
                         statementNode.paramDict["yscale"] = new SyntaxTreeNode(SyntaxType.para_yscale, statementNode);
                         statementNode.paramDict["ro"] = new SyntaxTreeNode(SyntaxType.para_ro, statementNode);
@@ -927,14 +927,9 @@ namespace Lyyneheym.SlyviaInterpreter
                         statementNode.nodeSyntaxType = SyntaxType.synr_move;
                         statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
                         statementNode.paramDict["time"] = new SyntaxTreeNode(SyntaxType.para_time, statementNode);
-                        statementNode.paramDict["x"] = new SyntaxTreeNode(SyntaxType.para_x, statementNode);
-                        statementNode.paramDict["y"] = new SyntaxTreeNode(SyntaxType.para_y, statementNode);
-                        statementNode.paramDict["xacc"] = new SyntaxTreeNode(SyntaxType.para_xacc, statementNode);
-                        statementNode.paramDict["yacc"] = new SyntaxTreeNode(SyntaxType.para_yacc, statementNode);
-                        statementNode.paramDict["capacity"] = new SyntaxTreeNode(SyntaxType.para_capacity, statementNode);
-                        statementNode.paramDict["xscale"] = new SyntaxTreeNode(SyntaxType.para_xscale, statementNode);
-                        statementNode.paramDict["yscale"] = new SyntaxTreeNode(SyntaxType.para_yscale, statementNode);
-                        statementNode.paramDict["ro"] = new SyntaxTreeNode(SyntaxType.para_ro, statementNode);
+                        statementNode.paramDict["target"] = new SyntaxTreeNode(SyntaxType.para_target, statementNode);
+                        statementNode.paramDict["dash"] = new SyntaxTreeNode(SyntaxType.para_dash, statementNode);
+                        statementNode.paramDict["acc"] = new SyntaxTreeNode(SyntaxType.para_acc, statementNode);
                         break;
                     case TokenType.Token_o_deletepicture:
                         statementNode.nodeSyntaxType = SyntaxType.synr_deletepicture;
@@ -1127,6 +1122,16 @@ namespace Lyyneheym.SlyviaInterpreter
                         statementNode.nodeSyntaxType = SyntaxType.synr_branch;
                         statementNode.paramDict["link"] = new SyntaxTreeNode(SyntaxType.para_link, statementNode);
                         break;
+                    case TokenType.Token_o_msglayer:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_msglayer;
+                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
+                        break;
+                    case TokenType.Token_o_msglayeropt:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_msglayeropt;
+                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
+                        statementNode.paramDict["target"] = new SyntaxTreeNode(SyntaxType.para_target, statementNode);
+                        statementNode.paramDict["dash"] = new SyntaxTreeNode(SyntaxType.para_dash, statementNode);
+                        break;
                     case TokenType.scenecluster:
                         throw new InterpreterException()
                         {
@@ -1211,6 +1216,21 @@ namespace Lyyneheym.SlyviaInterpreter
                             // 加入不推导队列
                             this.iQueue.Enqueue(w_id);
                             break;
+                        case TokenType.Token_p_target:
+                            statementNode.paramDict["target"].children = new List<SyntaxTreeNode>();
+                            SyntaxTreeNode w_target = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["target"]);
+                            w_target.paramTokenStream = new List<Token>();
+                            prescanPointer += 2;
+                            while (prescanPointer < this.istream.Count
+                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
+                                && this.istream[prescanPointer].aType != TokenType.startend)
+                            {
+                                w_target.paramTokenStream.Add(this.istream[prescanPointer++]);
+                            }
+                            statementNode.paramDict["target"].children.Add(w_target);
+                            // 加入不推导队列
+                            this.iQueue.Enqueue(w_target);
+                            break;
                         case TokenType.Token_p_x:
                             statementNode.paramDict["x"].children = new List<SyntaxTreeNode>();
                             SyntaxTreeNode w_x = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["x"]);
@@ -1256,6 +1276,21 @@ namespace Lyyneheym.SlyviaInterpreter
                             // 加入不推导队列
                             this.iQueue.Enqueue(w_z);
                             break;
+                        case TokenType.Token_p_acc:
+                            statementNode.paramDict["acc"].children = new List<SyntaxTreeNode>();
+                            SyntaxTreeNode w_acc = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["acc"]);
+                            w_acc.paramTokenStream = new List<Token>();
+                            prescanPointer += 2;
+                            while (prescanPointer < this.istream.Count
+                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
+                                && this.istream[prescanPointer].aType != TokenType.startend)
+                            {
+                                w_acc.paramTokenStream.Add(this.istream[prescanPointer++]);
+                            }
+                            statementNode.paramDict["acc"].children.Add(w_acc);
+                            // 加入不推导队列
+                            this.iQueue.Enqueue(w_acc);
+                            break;
                         case TokenType.Token_p_xacc:
                             statementNode.paramDict["xacc"].children = new List<SyntaxTreeNode>();
                             SyntaxTreeNode w_xacc = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["xacc"]);
@@ -1288,18 +1323,18 @@ namespace Lyyneheym.SlyviaInterpreter
                             break;
                         case TokenType.Token_p_opacity:
                             statementNode.paramDict["opacity"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_capacity = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["capacity"]);
-                            w_capacity.paramTokenStream = new List<Token>();
+                            SyntaxTreeNode w_opacity = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["opacity"]);
+                            w_opacity.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count
                                 && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
                                 && this.istream[prescanPointer].aType != TokenType.startend)
                             {
-                                w_capacity.paramTokenStream.Add(this.istream[prescanPointer++]);
+                                w_opacity.paramTokenStream.Add(this.istream[prescanPointer++]);
                             }
-                            statementNode.paramDict["capacity"].children.Add(w_capacity);
+                            statementNode.paramDict["opacity"].children.Add(w_opacity);
                             // 加入不推导队列
-                            this.iQueue.Enqueue(w_capacity);
+                            this.iQueue.Enqueue(w_opacity);
                             break;
                         case TokenType.Token_p_xscale:
                             statementNode.paramDict["xscale"].children = new List<SyntaxTreeNode>();

@@ -43,7 +43,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 将精灵描述子转化为精灵并显示到前端
+        /// 将描述子转化为精灵/文字层并显示到前端
         /// </summary>
         /// <param name="id">控件id</param>
         /// <param name="rType">资源类型</param>
@@ -116,6 +116,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 MySprite bgSprite = ResourceManager.GetInstance().GetPicture(descriptor.BackgroundResourceName);
                 MessageLayer newLayer = new MessageLayer();
                 newLayer.backgroundSprite = bgSprite;
+                newLayer.Id = msglayId;
                 this.MessageLayerVec[msglayId] = msglay = newLayer;
             }
             // 重绘精灵

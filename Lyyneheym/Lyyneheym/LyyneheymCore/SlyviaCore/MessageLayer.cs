@@ -17,6 +17,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             this.Text = "";
             this.X = this.Y = 0;
+            this.Z = GlobalDataContainer.GAME_Z_MESSAGELAYER + Id;
             this.Opacity = 1.0f;
             this.Visibility = System.Windows.Visibility.Visible;
             this.Padding = GlobalDataContainer.GAME_MESSAGELAYER_PADDING;
@@ -32,6 +33,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.FontSize = GlobalDataContainer.GAME_FONT_FONTSIZE;
             this.FontName = GlobalDataContainer.GAME_FONT_NAME;
             this.LineHeight = GlobalDataContainer.GAME_FONT_LINEHEIGHT;
+        }
+
+        /// <summary>
+        /// 获取或设置文字层id
+        /// </summary>
+        public int Id
+        {
+            get;
+            set;
         }
 
         /// <summary>

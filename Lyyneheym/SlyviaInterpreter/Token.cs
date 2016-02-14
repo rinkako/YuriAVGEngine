@@ -209,6 +209,8 @@ namespace Lyyneheym.SlyviaInterpreter
         Token_p_y,
         // 参数：z坐标
         Token_p_z,
+        // 参数：加速度
+        Token_p_acc,
         // 参数：x加速度
         Token_p_xacc,
         // 参数：y加速度
@@ -249,11 +251,7 @@ namespace Lyyneheym.SlyviaInterpreter
         Token_p_size,
         // 参数：颜色
         Token_p_color,
-        // 参数值：左
-        Token_v_left,
-        // 参数值：右
-        Token_v_right,
-        // 参数值：中
-        Token_v_mid
+        // 参数：作用目标
+        Token_p_target
     }
 }

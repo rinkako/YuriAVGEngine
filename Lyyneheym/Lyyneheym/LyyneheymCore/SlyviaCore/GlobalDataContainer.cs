@@ -41,7 +41,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         // 文本层：文本层默认高度
         public static double GAME_MESSAGELAYER_H = 170;
         // 文本层：文本层默认边距
-        public static Thickness GAME_MESSAGELAYER_PADDING = new Thickness(30, 30, 30, 30);
+        public static Thickness GAME_MESSAGELAYER_PADDING = new Thickness(60, 45, 60, 45);
         // 文本层：对话小三角文件名
         public static string GAME_MESSAGELAYER_TRIA_FILENAME = "MessageTria.png";
         // 文本层：对话背景文件名
@@ -117,9 +117,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         // 字体：颜色
         public static System.Windows.Media.Color GAME_FONT_COLOR = Colors.Black;
         // 字体：行距
-        public static int GAME_FONT_LINEHEIGHT = 36;
+        public static int GAME_FONT_LINEHEIGHT = 22;
         // 字体：字号
-        public static int GAME_FONT_FONTSIZE = 12;
+        public static int GAME_FONT_FONTSIZE = 16;
         // 音乐：BGS轨道数
         public static int GAME_MUSIC_BGSTRACKNUM = 5;
         // 开发：控制台输出

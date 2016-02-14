@@ -661,29 +661,36 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             {
                 case "x":
                     SpriteAnimation.XYMoveAnimation(actionSprite, duration, fromValue, toValue, actionSprite.displayY, actionSprite.displayY, acc, 0);
+                    descriptor.X = toValue;
                     break;
                 case "y":
                     SpriteAnimation.XYMoveAnimation(actionSprite, duration, actionSprite.displayX, actionSprite.displayX, fromValue, toValue, 0, acc);
+                    descriptor.Y = toValue;
                     break;
                 case "o":
                 case "opacity":
                     SpriteAnimation.OpacityAnimation(actionSprite, duration, fromValue, toValue, acc);
+                    descriptor.Opacity = toValue;
                     break;
                 case "a":
                 case "angle":
                     SpriteAnimation.RotateAnimation(actionSprite, duration, fromValue, toValue, acc);
+                    descriptor.Angle = toValue;
                     break;
                 case "s":
                 case "scale":
                     SpriteAnimation.ScaleAnimation(actionSprite, duration, fromValue, toValue, fromValue, toValue, acc, acc);
+                    descriptor.ScaleX = descriptor.ScaleY = toValue;
                     break;
                 case "sx":
                 case "scalex":
                     SpriteAnimation.ScaleAnimation(actionSprite, duration, fromValue, toValue, descriptor.ScaleY, descriptor.ScaleY, acc, 0);
+                    descriptor.ScaleX = toValue;
                     break;
                 case "sy":
                 case "scaley":
                     SpriteAnimation.ScaleAnimation(actionSprite, duration, descriptor.ScaleX, descriptor.ScaleX, fromValue, toValue, 0, acc);
+                    descriptor.ScaleY = toValue;
                     break;
                 default:
                     DebugUtils.ConsoleLine(String.Format("Move instruction without valid parameters: {0}", property),
@@ -893,9 +900,102 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.currentMsgLayer = id;
         }
 
-        private void MsgLayerOpt()
+        /// <summary>
+        /// 演绎函数：修改文字层的属性
+        /// </summary>
+        /// <param name="msglayId">层id</param>
+        /// <param name="property">要修改的属性名</param>
+        /// <param name="valueStr">值字符串</param>
+        /// <param name="valueNum">值数值</param>
+        private void MsgLayerOpt(int msglayId, string property, string valueStr, double valueNum)
         {
-
+            if (msglayId >= 0 && msglayId < GlobalDataContainer.GAME_MESSAGELAYER_COUNT)
+            {
+                MessageLayer ml = this.viewMana.GetMessageLayer(msglayId);
+                MessageLayerDescriptor mld = this.scrMana.GetMsgLayerDescriptor(msglayId);
+                switch (property)
+                {
+                    case "fs":
+                    case "fontsize":
+                        ml.FontSize = mld.FontSize = valueNum;
+                        break;
+                    case "fn":
+                    case "fontname":
+                        ml.FontName = mld.FontName = valueStr;
+                        break;
+                    case "fc":
+                    case "fontcolor":
+                        string[] rgbItem = valueStr.Split(',');
+                        if (rgbItem.Length != 3)
+                        {
+                            DebugUtils.ConsoleLine("Font Color should be RGB format", "UpdateRender", OutputStyle.Error);
+                            return;
+                        }
+                        ml.FontColor = mld.FontColor = Color.FromRgb(Convert.ToByte(rgbItem[0]), Convert.ToByte(rgbItem[1]), Convert.ToByte(rgbItem[2]));
+                        break;
+                    case "v":
+                    case "visible":
+                        mld.Visible = valueStr == "true";
+                        ml.Visibility = mld.Visible ? Visibility.Visible : Visibility.Hidden;
+                        break;
+                    case "l":
+                    case "lineheight":
+                        ml.LineHeight = mld.LineHeight = valueNum;
+                        break;
+                    case "o":
+                    case "opacity":
+                        ml.Opacity = mld.Opacity = valueNum;
+                        break;
+                    case "x":
+                        ml.X = mld.X = valueNum;
+                        break;
+                    case "y":
+                        ml.Y = mld.Y = valueNum;
+                        break;
+                    case "z":
+                        ml.Z = mld.Z = (int)valueNum;
+                        break;
+                    case "h":
+                    case "height":
+                        ml.Height = mld.Height = valueNum;
+                        break;
+                    case "w":
+                    case "width":
+                        ml.Width = mld.Width = valueNum;
+                        break;
+                    case "p":
+                    case "padding":
+                        string[] padItem = valueStr.Split(',');
+                        ml.Padding = mld.Padding = new Thickness(Convert.ToDouble(padItem[0]), Convert.ToDouble(padItem[1]), Convert.ToDouble(padItem[2]), Convert.ToDouble(padItem[3]));
+                        break;
+                    case "ha":
+                    case "horizontal":
+                        ml.HorizontalAlignment = mld.HorizonAlign = (HorizontalAlignment)Enum.Parse(typeof(HorizontalAlignment), valueStr, true);
+                        break;
+                    case "va":
+                    case "vertical":
+                        ml.VerticalAlignment = mld.VertiAlign = (VerticalAlignment)Enum.Parse(typeof(VerticalAlignment), valueStr);
+                        break;
+                    case "bg":
+                    case "backgroundname":
+                        mld.BackgroundResourceName = valueStr;
+                        this.viewMana.Draw(msglayId, ResourceType.MessageLayerBackground);
+                        break;
+                    case "r":
+                    case "reset":
+                        this.viewMana.GetMessageLayer(msglayId).Reset();
+                        break;
+                    case "sr":
+                    case "stylereset":
+                        this.viewMana.GetMessageLayer(msglayId).StyleReset();
+                        break;
+                }
+            }
+            else
+            {
+                DebugUtils.ConsoleLine(String.Format("msglayeropt id out of range: MsgLayer {0}", msglayId),
+                    "UpdateRender", OutputStyle.Error);
+            }
         }
         #endregion
 

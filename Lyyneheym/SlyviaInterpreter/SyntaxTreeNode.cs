@@ -352,12 +352,14 @@ namespace Lyyneheym.SlyviaInterpreter
         para_y,
         // 参数：z坐标
         para_z,
+        // 参数：加速度
+        para_acc,
         // 参数：x加速度
         para_xacc,
         // 参数：y加速度
         para_yacc,
         // 参数：透明度
-        para_capacity,
+        para_opacity,
         // 参数：x轴缩放比
         para_xscale,
         // 参数：y轴缩放比
@@ -378,14 +380,10 @@ namespace Lyyneheym.SlyviaInterpreter
         para_ro,
         // 参数：音量
         para_vol,
-        // 参数：开光状态
+        // 参数：开关状态
         para_state,
-        // 参数值：左边
-        para_left,
-        // 参数值：中间
-        para_mid,
-        // 参数值：右边
-        para_right,
+        // 参数：作用目标
+        para_target,
         // 根节点
         case_kotori,
         // <disjunct> ::= <conjunct> <disjunct_pi>;
