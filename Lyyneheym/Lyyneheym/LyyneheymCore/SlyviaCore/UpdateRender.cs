@@ -21,16 +21,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     {
         #region 辅助函数
         /// <summary>
-        /// 调用运行时环境计算表达式
-        /// </summary>
-        /// <param name="polish">逆波兰式</param>
-        /// <returns>表达式的值</returns>
-        private object CalculatePolish(string polish)
-        {
-            return this.runMana.CalculatePolish(polish);
-        }
-
-        /// <summary>
         /// <para>将逆波兰式计算为等价的Double类型实例</para>
         /// <para>如果逆波兰式为空，则返回参数nullValue的值</para>
         /// </summary>
@@ -43,7 +33,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             {
                 return nullValue;
             }
-            return Convert.ToDouble(this.CalculatePolish(polish));
+            return Convert.ToDouble(this.runMana.CalculatePolish(polish));
         }
 
         /// <summary>
@@ -59,7 +49,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             {
                 return nullValue;
             }
-            return (int)(Convert.ToDouble(this.CalculatePolish(polish)));
+            return (int)(Convert.ToDouble(this.runMana.CalculatePolish(polish)));
         }
         #endregion
 
@@ -145,7 +135,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 // 正在显示对话则向前推进一个趟
                 if (this.IsShowingDialog)
                 {
-
+                    this.DrawDialogRunQueue();
                 }
             }
             // 按下了鼠标右键
@@ -210,60 +200,56 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="str">要描绘的字符串</param>
         public void DrawStringToMsgLayer(int msglayId, string str)
         {
-            // 打字模式
-            if (GlobalDataContainer.GAME_MSG_ISTYPING)
+            this.IsShowingDialog = true;
+            string[] strRuns = this.DialogToRuns(str);
+            foreach (string run in strRuns)
             {
-                string[] strRuns = this.DialogToRuns(str);
-                string preStr = String.Empty, desStr = strRuns[0];
-                for (int i = 0; i < strRuns.Length; i++)
-                {
-                    this.TypeWriter(preStr, desStr, this.viewMana.GetMessageLayer(msglayId).displayBinding, GlobalDataContainer.GAME_MSG_TYPING_DELAY);
-                    if (i == strRuns.Length - 1) { break; }
-                    preStr += desStr;
-                    desStr = strRuns[i + 1];
-                    DateTime beginTime = DateTime.Now;
-                    TimeSpan ts = TimeSpan.FromMilliseconds(1000.0 / 60.0);
-                    // 等待鼠标点击
-                    while (this.MsgClickFlag == false)
-                    {
-                        // 一定时间就强制刷新画面防止崩溃
-                        if (DateTime.Now - beginTime > ts)
-                        {
-                            this.view.DoEvent();
-                            beginTime = DateTime.Now;
-                        }
-                    }
-                    this.MsgClickFlag = false;
-                }
+                this.pendingDialogQueue.Enqueue(run);
             }
-            // 直接显示
-            else
+            // 主动调用一次显示
+            this.DrawDialogRunQueue();
+            this.runMana.UserWait("UpdateRender", "DialogWaitForClick");
+        }
+
+        /// <summary>
+        /// 将对话队列里的一趟显示出来，如果显示完毕后队列已空则结束对话状态
+        /// </summary>
+        private void DrawDialogRunQueue()
+        {
+            if (this.pendingDialogQueue.Count != 0)
             {
-                string[] strRuns = this.DialogToRuns(str);
-                string pendDrawStr = String.Concat(strRuns);
-                this.TypeWriter(String.Empty, pendDrawStr, this.viewMana.GetMessageLayer(msglayId).displayBinding, 0);
-                DateTime beginTime = DateTime.Now;
-                TimeSpan ts = TimeSpan.FromMilliseconds(1000.0 / 60.0);
-                // 等待鼠标点击
-                while (this.MsgClickFlag == false)
+                string currentRun = this.pendingDialogQueue.Dequeue();
+                this.TypeWriter(this.dialogPreStr, currentRun, this.viewMana.GetMessageLayer(0).displayBinding, GlobalDataContainer.GAME_MSG_TYPING_DELAY);
+                // 出队后判断是否已经完成全部趟的显示
+                if (this.pendingDialogQueue.Count == 0)
                 {
-                    // 一定时间就强制刷新画面防止崩溃
-                    if (DateTime.Now - beginTime > ts)
-                    {
-                        this.view.DoEvent();
-                        beginTime = DateTime.Now;
-                    }
+                    // 弹掉用户等待状态
+                    this.runMana.ExitCall();
+                    this.IsShowingDialog = false;
                 }
-                this.MsgClickFlag = false;
+                else
+                {
+                    this.dialogPreStr += currentRun;
+                }
             }
         }
+
+        /// <summary>
+        /// 当前已经显示的文本内容
+        /// </summary>
+        private string dialogPreStr = String.Empty;
+
+        /// <summary>
+        /// 待显示的文本趟队列
+        /// </summary>
+        private Queue<string> pendingDialogQueue = new Queue<string>();
 
         /// <summary>
         /// 将文字直接描绘到文字层上而不等待
         /// </summary>
         /// <param name="id">文字层id</param>
         /// <param name="text">要描绘的字符串</param>
-        public void DrawTextDirectly(int id, string text)
+        private void DrawTextDirectly(int id, string text)
         {
             TextBlock t = this.viewMana.GetMessageLayer(id).displayBinding;
             t.Text = text;
@@ -506,7 +492,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             switch (action.aType)
             {
                 case SActionType.act_bgm:
-                    this.Bgm(action.argsDict["filename"], Convert.ToDouble(this.CalculatePolish(action.argsDict["vol"])));
+                    this.Bgm(action.argsDict["filename"], this.ParseDouble(action.argsDict["vol"], 1000));
                     break;
                 case SActionType.act_stopbgm:
                     this.Stopbgm();

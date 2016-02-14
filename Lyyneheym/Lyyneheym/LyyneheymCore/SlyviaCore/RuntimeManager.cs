@@ -801,8 +801,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     {
         // 游戏剧情进行时
         Performing,
-        // 用户操作界面
-        UserPanel,
+        // 等待用户操作
+        WaitForUserInput,
         // 中断
         Interrupt,
         // 系统执行中

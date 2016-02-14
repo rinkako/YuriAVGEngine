@@ -143,7 +143,7 @@ namespace Lyyneheym
                     this.curState = GameState.Performing;
                     break;
                 case GameStackMachineState.WaitUser:
-                    this.curState = GameState.UserPanel;
+                    this.curState = GameState.WaitForUserInput;
                     break;
                 case GameStackMachineState.WaitAnimation:
                     this.curState = GameState.WaitAni;
@@ -177,7 +177,7 @@ namespace Lyyneheym
                     }
                     break;
                 // 等待用户操作
-                case GameState.UserPanel:
+                case GameState.WaitForUserInput:
                     break;
                 // 中断
                 case GameState.Interrupt:

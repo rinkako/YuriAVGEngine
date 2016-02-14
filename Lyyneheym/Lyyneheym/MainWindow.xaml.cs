@@ -252,38 +252,51 @@ namespace Lyyneheym
             SpriteAnimation.SkipAnimation(this.rightChara);
         }
 
+        private void ConsumeWords()
+        {
+                            
+            if (this.strRuns.Count != 0)
+            {
+                var str = this.strRuns.Dequeue();
+                desStr = str;
+                TypewriteTextblock(preStr, desStr, this.BO_MainText, 60);
+                preStr += desStr;
+            }
+        }
+
+        string preStr = String.Empty;
+        string desStr = String.Empty;
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
             string pstr = "测试文本测试文本测试文本测试文本" + Environment.NewLine + "233333 here is new line without pause" + Environment.NewLine
                 + "\\|" + "Here third line, with pause" + "\\|" + Environment.NewLine + "444666888";
             string[] strRun = pstr.Split(new string[] {"\\|"}, StringSplitOptions.None);
-            string preStr = String.Empty, desStr = strRun[0];
-            for (int i = 0; i < strRun.Length; i++)
-            {
-                //int oldRunCount = runcount;
-                TypewriteTextblock(preStr, desStr, this.BO_MainText, 60);
-                if (i == strRun.Length - 1) { break; }
-                preStr += desStr;
-                desStr = strRun[i + 1];
-                DateTime beginTime = DateTime.Now;
-                TimeSpan ts = TimeSpan.FromMilliseconds(1000.0 / 60.0);
+            foreach (var s in strRun) { this.strRuns.Enqueue(s); }
+            
+            //for (int i = 0; i < strRun.Length; i++)
+            //{
+                
+            //    DateTime beginTime = DateTime.Now;
+            //    TimeSpan ts = TimeSpan.FromMilliseconds(1000.0 / 60.0);
 
-                while (clickFlag == false)//(runcount == oldRunCount)
-                {
-                    if (DateTime.Now - beginTime > ts)
-                    {
-                        this.DoEvent();
-                        beginTime = DateTime.Now;
-                    }
-                }
+            //    while (clickFlag == false)
+            //    {
+            //        if (DateTime.Now - beginTime > ts)
+            //        {
+            //            this.DoEvent();
+            //            beginTime = DateTime.Now;
+            //        }
+            //    }
 
-                clickFlag = false;
+            //    clickFlag = false;
 
                 
-            }
+            //}
 
         }
+
+        private Queue<string> strRuns = new Queue<string>();
 
         private bool clickFlag = false;
 
@@ -558,6 +571,10 @@ namespace Lyyneheym
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.core.UpdateMouse(e);
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.ConsumeWords();
+            }
         }
 
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
