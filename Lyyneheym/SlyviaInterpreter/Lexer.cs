@@ -1063,6 +1063,15 @@ namespace Lyyneheym.SlyviaInterpreter
                         okFlag = true;
                     }
                 }
+                else if (str == "acc")
+                {
+                    res.aType = TokenType.Token_p_acc;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 3]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
                 // 如果命中了符号就返回
                 if (okFlag)
                 {

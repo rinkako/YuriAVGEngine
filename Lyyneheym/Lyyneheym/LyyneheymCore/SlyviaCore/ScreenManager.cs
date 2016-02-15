@@ -42,7 +42,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 anchorType = anchor,
                 cutRect = cut
             };
-            this.BackgroundDescVec[0] = sd;
+            this.BackgroundDescVec[id] = sd;
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="Opacity"></param>
         /// <param name="anchor"></param>
         /// <param name="cut"></param>
-        public void AddPicture(int id, string source, double X, double Y, int Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
+        public void AddPicture(int id, string source, double X, double Y, int Z, double ScaleX, double ScaleY, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
         {
             SpriteDescriptor sd = new SpriteDescriptor()
             {
@@ -192,12 +192,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 X = X,
                 Y = Y,
                 Z = Z + GlobalDataContainer.GAME_Z_PICTURES,
+                ScaleX = ScaleX,
+                ScaleY = ScaleY,
                 Angle = Angle,
                 Opacity = Opacity,
                 anchorType = anchor,
                 cutRect = cut
             };
-            this.CharacterDescVec[id] = sd;
+            this.PictureDescVec[id] = sd;
         }
 
         /// <summary>

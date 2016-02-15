@@ -96,12 +96,21 @@ namespace Lyyneheym.SlyviaInterpreter
         /// <returns></returns>
         public CandidateFunction GetCFunciton(SyntaxType left, TokenType leave, iHandle nilserver)
         {
-            if (left == SyntaxType.epsilonLeave)
+            try
             {
-                return new CandidateFunction(nilserver, CFunctionType.umi_epsilon);
+                if (left == SyntaxType.epsilonLeave)
+                {
+                    return new CandidateFunction(nilserver, CFunctionType.umi_epsilon);
+                }
+                CandidateFunction candidator = this.GetCFunciton(this.iLeftNodes[left], this.iNextLeaves[leave]);
+                return candidator == null ? new CandidateFunction(null, CFunctionType.umi_errorEnd) : candidator;
             }
-            CandidateFunction candidator = this.GetCFunciton(this.iLeftNodes[left], this.iNextLeaves[leave]);
-            return candidator == null ? new CandidateFunction(null, CFunctionType.umi_errorEnd) : candidator;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine(String.Format("{0} --> {1}", left.ToString(), leave.ToString()));
+                throw;
+            }
         }
 
         // 行游标

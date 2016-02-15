@@ -785,7 +785,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="cut">纹理切割矩</param>
         private void Picture(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
-            this.scrMana.AddPicture(id, filename, x, y, id, ro, opacity, anchor, cut);
+            this.scrMana.AddPicture(id, filename, x, y, id, xscale, yscale, ro, opacity, anchor, cut);
             this.viewMana.Draw(id, ResourceType.Pictures);
         }
 
