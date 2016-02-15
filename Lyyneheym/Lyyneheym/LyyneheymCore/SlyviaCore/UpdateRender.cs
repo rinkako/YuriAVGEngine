@@ -152,6 +152,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         this.runMana.ExitCall();
                         this.IsShowingDialog = false;
                         this.dialogPreStr = string.Empty;
+                        // 非连续对话时消除对话框
+                        if (this.IsContinousDialog == false)
+                        {
+                            this.viewMana.GetMessageLayer(0).Visibility = Visibility.Hidden;
+                        }
                     }
                     // 正在显示对话则向前推进一个趟
                     else if (this.MsgMouseUpFlag == true)
@@ -330,24 +335,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 this.ShowMessageTria();
                 this.BeginMessageTriaUpDownAnimation();
             }
-            //List<int> finishList = new List<int>();
-            //foreach (var ani in this.MsgStoryboardDict)
-            //{
-            //    if (ani.Value.GetCurrentTime() == ani.Value.Duration)
-            //    {
-            //        finishList.Add(ani.Key);
-            //    }
-            //}
-            //foreach (var ri in finishList)
-            //{
-            //    //this.MsgStoryboardDict.Remove(ri);
-            //    // 只有主文字层需要作用小三角
-            //    if (ri == 0)
-            //    {
-            //        this.ShowMessageTria();
-            //        this.BeginMessageTriaUpDownAnimation();
-            //    }
-            //}
         }
 
         /// <summary>
@@ -362,6 +349,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             TriaView.Width = bmp.PixelWidth;
             TriaView.Height = bmp.PixelHeight;
             TriaView.Source = bmp;
+            TriaView.Visibility = Visibility.Hidden;
             TriaView.RenderTransform = new TranslateTransform();
             Canvas.SetLeft(TriaView, GlobalDataContainer.GAME_MESSAGELAYER_TRIA_X);
             Canvas.SetTop(TriaView, GlobalDataContainer.GAME_MESSAGELAYER_TRIA_Y);
@@ -421,9 +409,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         private bool IsShowingDialog = false;
 
         /// <summary>
-        /// 等待点击信号量
+        /// 是否下一动作仍为对话
         /// </summary>
-        private bool MsgClickFlag = false;
+        private bool IsContinousDialog = false;
 
         /// <summary>
         /// 主文字层背景精灵
@@ -528,6 +516,20 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         action.argsDict["loc"]
                         );
                     break;
+                case SActionType.act_bg:
+                    this.Background(
+                        this.ParseInt(action.argsDict["id"], 0),
+                        action.argsDict["filename"],
+                        this.ParseDouble(action.argsDict["x"], 0),
+                        this.ParseDouble(action.argsDict["y"], 0),
+                        this.ParseDouble(action.argsDict["opacity"], 1),
+                        this.ParseDouble(action.argsDict["xscale"], 1),
+                        this.ParseDouble(action.argsDict["yscale"], 1),
+                        this.ParseDouble(action.argsDict["ro"], 0),
+                        SpriteAnchorType.Center,
+                        new Int32Rect(-1, 0, 0, 0)
+                        );
+                    break;
                 case SActionType.act_picture:
                     this.Picture(
                         this.ParseInt(action.argsDict["id"], 0),
@@ -544,12 +546,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     break;
                 case SActionType.act_move:
                     string moveResType = action.argsDict["name"];
-                    //this.Move(
-                    //    this.ParseInt(action.argsDict["id"], 0),
-                    //    moveResType == "picture" ? ResourceType.Pictures : (moveResType == "stand" ? ResourceType.Stand : ResourceType.Background),
-                    //    action.argsDict["target"],
-
-                    //    );
+                    this.Move(
+                        this.ParseInt(action.argsDict["id"], 0),
+                        moveResType == "picture" ? ResourceType.Pictures : (moveResType == "stand" ? ResourceType.Stand : ResourceType.Background),
+                        action.argsDict["target"],
+                        this.ParseDouble(action.argsDict["dash"], 1),
+                        this.ParseDouble(action.argsDict["acc"], 0),
+                        TimeSpan.FromMilliseconds(this.ParseDouble(action.argsDict["time"], 0))
+                        );
                     break;
                 case SActionType.act_deletepicture:
                     this.Deletepicture(
@@ -653,7 +657,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         );
                     break;
                 case SActionType.act_dialogTerminator:
-                    this.DialogTerminator();
+                    this.DialogTerminator(
+                        action.aTag.Split('#')[1] == "1"
+                        );
                     break;
                 default:
                     break;
@@ -689,10 +695,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 演绎函数：结束本节对话并清空文字层
         /// </summary>
-        private void DialogTerminator()
+        /// <param name="continous">下一动作是否为对话</param>
+        private void DialogTerminator(bool continous)
         {
-            this.DrawStringToMsgLayer(this.currentMsgLayer, this.pendingDialog);
+            this.viewMana.GetMessageLayer(0).Visibility = Visibility.Visible;
+            this.DrawStringToMsgLayer(0, this.pendingDialog);
             this.pendingDialog = string.Empty;
+            this.IsContinousDialog = continous;
         }
 
         /// <summary>
@@ -750,7 +759,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="cut">纹理切割矩</param>
         private void Background(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
-            this.scrMana.AddBackground(id, filename, x, y, id, ro, opacity, anchor, cut);
+            this.scrMana.AddBackground(id, filename, x, y, id, ro, opacity, xscale, yscale, anchor, cut);
             this.viewMana.Draw(id, ResourceType.Background);
         }
 
@@ -779,11 +788,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="id">图片ID</param>
         /// <param name="rType">资源类型</param>
         /// <param name="property">改变的属性</param>
-        /// <param name="fromValue">起始值</param>
         /// <param name="toValue">目标值</param>
         /// <param name="acc">加速度</param>
         /// <param name="duration">完成所需时间</param>
-        private void Move(int id, ResourceType rType, string property, double fromValue, double toValue, double acc, Duration duration)
+        private void Move(int id, ResourceType rType, string property, double toValue, double acc, Duration duration)
         {
             MySprite actionSprite = this.viewMana.GetSprite(id, rType);
             SpriteDescriptor descriptor = this.scrMana.GetSpriteDescriptor(id, rType);
@@ -796,36 +804,36 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             switch (property)
             {
                 case "x":
-                    SpriteAnimation.XYMoveAnimation(actionSprite, duration, fromValue, toValue, actionSprite.displayY, actionSprite.displayY, acc, 0);
+                    SpriteAnimation.XYMoveToAnimation(actionSprite, duration, toValue, actionSprite.displayY, acc, 0);
                     descriptor.X = toValue;
                     break;
                 case "y":
-                    SpriteAnimation.XYMoveAnimation(actionSprite, duration, actionSprite.displayX, actionSprite.displayX, fromValue, toValue, 0, acc);
+                    SpriteAnimation.XYMoveToAnimation(actionSprite, duration, actionSprite.displayX, toValue, 0, acc);
                     descriptor.Y = toValue;
                     break;
                 case "o":
                 case "opacity":
-                    SpriteAnimation.OpacityAnimation(actionSprite, duration, fromValue, toValue, acc);
+                    SpriteAnimation.OpacityToAnimation(actionSprite, duration, toValue, acc);
                     descriptor.Opacity = toValue;
                     break;
                 case "a":
                 case "angle":
-                    SpriteAnimation.RotateAnimation(actionSprite, duration, fromValue, toValue, acc);
+                    SpriteAnimation.RotateToAnimation(actionSprite, duration, toValue, acc);
                     descriptor.Angle = toValue;
                     break;
                 case "s":
                 case "scale":
-                    SpriteAnimation.ScaleAnimation(actionSprite, duration, fromValue, toValue, fromValue, toValue, acc, acc);
+                    SpriteAnimation.ScaleToAnimation(actionSprite, duration, toValue, toValue, acc, acc);
                     descriptor.ScaleX = descriptor.ScaleY = toValue;
                     break;
                 case "sx":
                 case "scalex":
-                    SpriteAnimation.ScaleAnimation(actionSprite, duration, fromValue, toValue, descriptor.ScaleY, descriptor.ScaleY, acc, 0);
+                    SpriteAnimation.ScaleToAnimation(actionSprite, duration, toValue, descriptor.ScaleY, acc, 0);
                     descriptor.ScaleX = toValue;
                     break;
                 case "sy":
                 case "scaley":
-                    SpriteAnimation.ScaleAnimation(actionSprite, duration, descriptor.ScaleX, descriptor.ScaleX, fromValue, toValue, 0, acc);
+                    SpriteAnimation.ScaleToAnimation(actionSprite, duration, descriptor.ScaleX, toValue, 0, acc);
                     descriptor.ScaleY = toValue;
                     break;
                 default:

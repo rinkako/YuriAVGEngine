@@ -49,9 +49,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         // 文本层：对话文字投影
         public static bool GAME_MESSAGELAYER_SHADOW = false;
         // 文字层：对话小三角X坐标
-        public static double GAME_MESSAGELAYER_TRIA_X = 950;
+        public static double GAME_MESSAGELAYER_TRIA_X = 960;
         // 文字层：对话小三角Y坐标
-        public static double GAME_MESSAGELAYER_TRIA_Y = 500;
+        public static double GAME_MESSAGELAYER_TRIA_Y = 530;
         // 文本展示：是否打字模式
         public static bool GAME_MSG_ISTYPING = true;
         // 文本展示：打字模式延迟
@@ -113,7 +113,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         // 存档：存档目录名
         public static string GAME_SAVE_DIR = "save";
         // 字体：字体名称
-        public static string GAME_FONT_NAME = "宋体";
+        public static string GAME_FONT_NAME = "黑体";
         // 字体：颜色
         public static System.Windows.Media.Color GAME_FONT_COLOR = Colors.Black;
         // 字体：行距

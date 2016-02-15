@@ -254,6 +254,8 @@ namespace Lyyneheym.SlyviaInterpreter
         synr_dialogTerminator,
         // 显示文本
         synr_a,
+        // 显示背景
+        synr_bg,
         // 显示图片
         synr_picture,
         // 移动图片

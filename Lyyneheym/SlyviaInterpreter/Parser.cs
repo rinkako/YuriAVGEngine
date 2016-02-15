@@ -912,6 +912,17 @@ namespace Lyyneheym.SlyviaInterpreter
                         statementNode.paramDict["face"] = new SyntaxTreeNode(SyntaxType.para_face, statementNode);
                         statementNode.paramDict["loc"] = new SyntaxTreeNode(SyntaxType.para_loc, statementNode);
                         break;
+                    case TokenType.Token_o_bg:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_bg;
+                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
+                        statementNode.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename, statementNode);
+                        statementNode.paramDict["x"] = new SyntaxTreeNode(SyntaxType.para_x, statementNode);
+                        statementNode.paramDict["y"] = new SyntaxTreeNode(SyntaxType.para_y, statementNode);
+                        statementNode.paramDict["opacity"] = new SyntaxTreeNode(SyntaxType.para_opacity, statementNode);
+                        statementNode.paramDict["xscale"] = new SyntaxTreeNode(SyntaxType.para_xscale, statementNode);
+                        statementNode.paramDict["yscale"] = new SyntaxTreeNode(SyntaxType.para_yscale, statementNode);
+                        statementNode.paramDict["ro"] = new SyntaxTreeNode(SyntaxType.para_ro, statementNode);
+                        break;
                     case TokenType.Token_o_picture:
                         statementNode.nodeSyntaxType = SyntaxType.synr_picture;
                         statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);

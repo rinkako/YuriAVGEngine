@@ -23,7 +23,7 @@
             <Button Content="Button" HorizontalAlignment="Left" Margin="287,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_4"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="367,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_5"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="487,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_6"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="594,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
+            <Button Panel.ZIndex="9999" Content="Button" HorizontalAlignment="Left" Margin="594,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="674,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_8"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="754,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_9"/>
             <Image Name="mytestbutton" Height="20" Canvas.Left="405" Canvas.Top="61" Width="25" MouseDown="Image_MouseDown"/>

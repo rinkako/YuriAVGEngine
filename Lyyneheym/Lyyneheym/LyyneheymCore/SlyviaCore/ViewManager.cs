@@ -76,7 +76,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="forceReload">是否强制重新载入资源文件</param>
         private void ReDrawSprite(int spriteId, List<MySprite> vector, ResourceType rType, SpriteDescriptor descriptor, bool forceReload)
         {
-            MySprite sprite = vector[spriteId];
+            MySprite sprite = vector[spriteId], newSprite = null;
             // 强制重新载入或资源名称不同时重新加载资源文件
             if (sprite == null ||
                 sprite.resourceName != descriptor.resourceName ||
@@ -85,19 +85,19 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 switch (rType)
                 {
                     case ResourceType.Background:
-                        vector[spriteId] = sprite = ResourceManager.GetInstance().GetBackground(descriptor.resourceName, descriptor.cutRect);
+                        vector[spriteId] = newSprite = ResourceManager.GetInstance().GetBackground(descriptor.resourceName, descriptor.cutRect);
                         break;
                     case ResourceType.Stand:
-                        vector[spriteId] = sprite = ResourceManager.GetInstance().GetCharacterStand(descriptor.resourceName, descriptor.cutRect);
+                        vector[spriteId] = newSprite = ResourceManager.GetInstance().GetCharacterStand(descriptor.resourceName, descriptor.cutRect);
                         break;
                     case ResourceType.Pictures:
-                        vector[spriteId] = sprite = ResourceManager.GetInstance().GetPicture(descriptor.resourceName, descriptor.cutRect);
+                        vector[spriteId] = newSprite = ResourceManager.GetInstance().GetPicture(descriptor.resourceName, descriptor.cutRect);
                         break;
                 }
             }
             // 重绘精灵
             this.RemoveSprite(sprite);
-            this.DrawSprite(sprite, descriptor);
+            this.DrawSprite(newSprite, descriptor);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 newLayer.Id = msglayId;
                 this.MessageLayerVec[msglayId] = msglay = newLayer;
             }
-            // 重绘精灵
+            // 重绘文本层
             this.RemoveMessageLayer(msglay);
             this.DrawMessageLayer(msglay, descriptor);
         }
@@ -143,10 +143,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             Canvas.SetLeft(spriteImage, descriptor.X);
             Canvas.SetTop(spriteImage, descriptor.Y);
             Canvas.SetZIndex(spriteImage, descriptor.Z);
-            SpriteAnimation.RotateAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.Angle, 0);
             spriteImage.Visibility = Visibility.Visible;
             this.view.BO_MainGrid.Children.Add(spriteImage);
             sprite.InitAnimationRenderTransform();
+            SpriteAnimation.RotateToAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.Angle, 0);
+            SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.ScaleX, descriptor.ScaleY, 0, 0);
         }
 
         /// <summary>
@@ -162,6 +163,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             {
                 ImageBrush ib = new ImageBrush(msglay.backgroundSprite.myImage);
                 ib.Stretch = Stretch.Fill;
+                ib.TileMode = TileMode.Tile;
                 msgBlock.Background = ib;
             }
             msglay.Width = descriptor.Width;
@@ -175,6 +177,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             msglay.FontSize = descriptor.FontSize;
             msglay.FontName = descriptor.FontName;
             msglay.FontShadow = descriptor.FontShadow;
+            msglay.displayBinding.TextWrapping = TextWrapping.Wrap;
+            msglay.displayBinding.TextAlignment = TextAlignment.Left;
             Canvas.SetLeft(msgBlock, descriptor.X);
             Canvas.SetTop(msgBlock, descriptor.Y);
             Canvas.SetZIndex(msgBlock, descriptor.Z);

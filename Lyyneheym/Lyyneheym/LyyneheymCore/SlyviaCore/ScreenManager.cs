@@ -25,7 +25,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="Opacity"></param>
         /// <param name="anchor"></param>
         /// <param name="cut"></param>
-        public void AddBackground(int id, string source, double X, double Y, int Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
+        public void AddBackground(int id, string source, double X, double Y, int Z, double Angle, double Opacity, double ScaleX, double ScaleY, SpriteAnchorType anchor, Int32Rect cut)
         {
             SpriteDescriptor sd = new SpriteDescriptor()
             {
@@ -35,6 +35,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 X = X,
                 Y = Y,
                 Z = Z + GlobalDataContainer.GAME_Z_BACKGROUND,
+                ScaleX = ScaleX,
+                ScaleY = ScaleY,
                 Angle = Angle,
                 Opacity = Opacity,
                 anchorType = anchor,
@@ -355,7 +357,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 Width = GlobalDataContainer.GAME_MESSAGELAYER_W,
                 Padding = GlobalDataContainer.GAME_MESSAGELAYER_PADDING,
                 Opacity = 1.0,
-                Visible = true,
+                Visible = false,
                 Text = ""
             };
             this.MsgLayerDescVec.Add(mainMsgLayer);

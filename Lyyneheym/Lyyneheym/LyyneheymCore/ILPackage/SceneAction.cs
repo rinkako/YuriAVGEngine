@@ -105,6 +105,8 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
         act_dialogTerminator,
         // 显示文本
         act_a,
+        // 显示背景
+        act_bg,
         // 显示图片
         act_picture,
         // 移动图片

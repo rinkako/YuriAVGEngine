@@ -113,6 +113,8 @@ namespace Lyyneheym.SlyviaInterpreter
         Token_NOP,
         // 显示文本
         Token_o_a,
+        // 显示背景
+        Token_o_bg,
         // 显示图片
         Token_o_picture,
         // 移动图片

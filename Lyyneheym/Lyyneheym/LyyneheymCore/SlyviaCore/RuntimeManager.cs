@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using Lyyneheym.LyyneheymCore.ILPackage;
@@ -583,8 +584,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             foreach (string item in polishItem)
             {
                 PolishItem poi = null;
+                Regex floatRegEx = new Regex("^(\\d*\\.)?\\d+$");
                 // 常数项
-                if (item.All((x) => x >= '0' && x <= '9'))
+                //if (item.All((x) => x >= '0' && x <= '9'))
+                if (floatRegEx.IsMatch(item))
                 {
                     double numitem = Convert.ToDouble(item);
                     poi = new PolishItem()

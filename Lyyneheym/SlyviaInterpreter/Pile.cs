@@ -365,13 +365,7 @@ namespace Lyyneheym.SlyviaInterpreter
             this.blockDict = new Dictionary<string, SceneAction>();
             this.Mise(this.parseTree, ref resSa, funcSaVec);
             this.Tamao(resSa, resSa, false);
-            //funcSaVec.ForEach((x) => funcVec.Add(this.Tamao(x, x, true)));
-
-            for (int i = 0; i < funcSaVec.Count; i++)
-            {
-                funcVec.Add(this.Tamao(funcSaVec[i], funcSaVec[i], true));
-            }
-
+            funcSaVec.ForEach((x) => funcVec.Add(this.Tamao(x, x, true)));
             resSa.aTag = this.scenario;
             return new KeyValuePair<SceneAction, List<SceneFunction>>(resSa, funcVec);
         }
@@ -780,6 +774,35 @@ namespace Lyyneheym.SlyviaInterpreter
                     }
                     // 最后一个孩子的下一节点修改为它母节点的后继
                     saNode.trueRouting[saNode.trueRouting.Count - 1].next = parent.next;
+                    break;
+                case SActionType.act_dialog:
+                    // 合并dialog项
+                    SceneAction basePtr = saNode;
+                    SceneAction iterPtr = saNode;
+                    string dialogBuilder = iterPtr.aTag;
+                    iterPtr = iterPtr.next;
+                    while (iterPtr.aType != SActionType.act_dialogTerminator)
+                    {
+                        dialogBuilder += iterPtr.aTag;
+                        if (!parent.trueRouting.Remove(iterPtr))
+                        {
+                            parent.falseRouting.Remove(iterPtr);
+                        }
+                        iterPtr = iterPtr.next;
+                    }
+                    basePtr.aTag = dialogBuilder;
+                    basePtr.next = iterPtr;
+                    break;
+                case SActionType.act_dialogTerminator:
+                    // 处理对话继续标志位
+                    if (saNode.next != null && saNode.next.aType == SActionType.act_dialog)
+                    {
+                        saNode.aTag += "#1";
+                    }
+                    else
+                    {
+                        saNode.aTag += "#0";
+                    }
                     break;
                 case SActionType.act_for:
                     if (saNode.trueRouting == null || saNode.trueRouting.Count == 0)

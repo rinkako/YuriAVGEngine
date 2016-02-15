@@ -206,11 +206,77 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="duration">动画时长</param>
         /// <param name="deltaTheta">差分</param>
         /// <param name="acc">加速度</param>
-        public static void RotateAnimation(MySprite sprite, Duration duration, double deltaTheta, double acc)
+        public static void RotateAnimation(MySprite sprite, Duration duration, double deltaTheta, double acc = 0)
         {
             RotateTransform rotater = ((TransformGroup)(sprite.displayBinding.RenderTransform)).Children[2] as RotateTransform;
             double curAngle = rotater.Angle;
             SpriteAnimation.RotateAnimation(sprite, duration, curAngle, curAngle + deltaTheta, acc);
+        }
+
+        /// <summary>
+        /// 笛卡尔平面上平移精灵到目标点
+        /// </summary>
+        /// <param name="sprite">精灵实例</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="toX">目标X</param>
+        /// <param name="toY">目标Y</param>
+        /// <param name="accX">加速度X</param>
+        /// <param name="accY">加速度Y</param>
+        public static void XYMoveToAnimation(MySprite sprite, Duration duration, double toX, double toY, double accX = 0, double accY = 0)
+        {
+            SpriteAnimation.XYMoveAnimation(sprite, duration, sprite.displayX, toX, sprite.displayY, toY, accX, accY);
+        }
+
+        /// <summary>
+        /// 在层次深度上移动精灵到目标深度值
+        /// </summary>
+        /// <param name="sprite">精灵实例</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="toZ">目标Z</param>
+        /// <param name="accZ">加速度Z</param>
+        public static void ZMoveToAnimation(MySprite sprite, Duration duration, int toZ, double accZ = 0)
+        {
+            SpriteAnimation.ZMoveAnimation(sprite, duration, sprite.displayZ, toZ, accZ);
+        }
+
+        /// <summary>
+        /// 在笛卡尔平面上关于锚点放缩精灵到目标比例
+        /// </summary>
+        /// <param name="sprite">精灵实例</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="toScaleX">横向目标比例</param>
+        /// <param name="toScaleY">纵向目标比例</param>
+        /// <param name="accX">横向加速度</param>
+        /// <param name="accY">纵向加速度</param>
+        public static void ScaleToAnimation(MySprite sprite, Duration duration, double toScaleX, double toScaleY, double accX = 0, double accY = 0)
+        {
+            ScaleTransform scaler = ((TransformGroup)(sprite.displayBinding.RenderTransform)).Children[1] as ScaleTransform;
+            SpriteAnimation.ScaleAnimation(sprite, duration, scaler.ScaleX, toScaleX, scaler.ScaleY, toScaleY, accX, accY);
+        }
+
+        /// <summary>
+        /// 变更精灵的不透明度到目标值
+        /// </summary>
+        /// <param name="sprite">精灵实例</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="toOpacity">目标不透明度</param>
+        /// <param name="acc">加速度</param>
+        public static void OpacityToAnimation(MySprite sprite, Duration duration, double toOpacity, double acc = 0)
+        {
+            SpriteAnimation.OpacityAnimation(sprite, duration, sprite.displayOpacity, toOpacity, acc);
+        }
+
+        /// <summary>
+        /// 在笛卡尔平面上关于锚点旋转精灵到目标角度
+        /// </summary>
+        /// <param name="sprite">精灵实例</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="toTheta">目标角度</param>
+        /// <param name="acc">加速度</param>
+        public static void RotateToAnimation(MySprite sprite, Duration duration, double toTheta, double acc = 0)
+        {
+            RotateTransform rotater = ((TransformGroup)(sprite.displayBinding.RenderTransform)).Children[2] as RotateTransform;
+            SpriteAnimation.RotateAnimation(sprite, duration, rotater.Angle, toTheta, acc);
         }
 
         /// <summary>
