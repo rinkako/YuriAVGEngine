@@ -347,7 +347,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 FontShadow = GlobalDataContainer.GAME_MESSAGELAYER_SHADOW,
                 LineHeight = GlobalDataContainer.GAME_FONT_LINEHEIGHT,
                 HorizonAlign = HorizontalAlignment.Left,
-                VertiAlign = VerticalAlignment.Top,
+                VertiAlign = VerticalAlignment.Bottom,
                 X = GlobalDataContainer.GAME_MESSAGELAYER_X,
                 Y = GlobalDataContainer.GAME_MESSAGELAYER_Y,
                 Z = GlobalDataContainer.GAME_Z_MESSAGELAYER,

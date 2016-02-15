@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="608" Width="1024" ResizeMode="CanResizeWithGrip" MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" Closing="Window_Closing" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" MouseWheel="Window_MouseWheel" Loaded="window_Loaded">
     <Viewbox x:Name="viewbox" Stretch="Fill">
-        <Canvas Name="BO_MainGrid" Width="1024" Height="576">
+        <Canvas Name="BO_MainGrid" Width="1024" Height="576" Background="Black">
             <Image Name="BO_MessageBoxLayer" Opacity="0.75" Panel.ZIndex="91" Height="170" VerticalAlignment="Bottom" Width="1024" Stretch="UniformToFill" Source="ImageAssets/originMessageBox2.png" Canvas.Top="406" Visibility="Hidden"/>
-            <TextBlock x:Name="BO_MainName" HorizontalAlignment="Left" Panel.ZIndex="92" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="22" Width="300" FontFamily="FZXiaoBiaoSong-B05" LineHeight="36" LineStackingStrategy="BlockLineHeight" Height="30" Canvas.Left="37" Canvas.Top="439"><Run Language="zh-cn" Text="春日野穹"/></TextBlock>
-            <TextBlock x:Name="BO_MainText" HorizontalAlignment="Left" Panel.ZIndex="93" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="935" Height="91" LineHeight="22" FontSize="16" TextDecorations="{x:Null}" FontFamily="FZXiaoBiaoSong-B05" LineStackingStrategy="BlockLineHeight" Canvas.Left="62" Canvas.Top="474">
+            <TextBlock Visibility="Hidden" x:Name="BO_MainName" HorizontalAlignment="Left" Panel.ZIndex="92" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="22" Width="300" FontFamily="FZXiaoBiaoSong-B05" LineHeight="36" LineStackingStrategy="BlockLineHeight" Height="30" Canvas.Left="37" Canvas.Top="439"><Run Language="zh-cn" Text="春日野穹"/></TextBlock>
+            <TextBlock Visibility="Hidden" x:Name="BO_MainText" HorizontalAlignment="Left" Panel.ZIndex="93" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="935" Height="91" LineHeight="22" FontSize="16" TextDecorations="{x:Null}" FontFamily="FZXiaoBiaoSong-B05" LineStackingStrategy="BlockLineHeight" Canvas.Left="62" Canvas.Top="474">
                 <TextBlock.Background>
                     <ImageBrush/>
                 </TextBlock.Background><Run Language="zh-cn" Text="这是一个测试语句块，她很可爱"/><LineBreak/><Run Language="zh-cn" Text="非常长的测试用例句子就是这句话啦啊哈哈哈哈　あけみほうむら"/><LineBreak/><Run Language="zh-cn" Text="穹妹穹妹"/><LineBreak/><Run Language="zh-cn" Text="Sora Cyan"/></TextBlock>

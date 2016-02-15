@@ -41,7 +41,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         // 文本层：文本层默认高度
         public static double GAME_MESSAGELAYER_H = 170;
         // 文本层：文本层默认边距
-        public static Thickness GAME_MESSAGELAYER_PADDING = new Thickness(60, 45, 60, 45);
+        public static Thickness GAME_MESSAGELAYER_PADDING = new Thickness(60, 45, 60, 0);
         // 文本层：对话小三角文件名
         public static string GAME_MESSAGELAYER_TRIA_FILENAME = "MessageTria.png";
         // 文本层：对话背景文件名

@@ -132,11 +132,39 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             // 按下了鼠标左键
             if (UpdateRender.KS_MOUSE_Dict[MouseButton.Left] == MouseButtonState.Pressed)
             {
-                // 正在显示对话则向前推进一个趟
+                // 正在显示对话
                 if (this.IsShowingDialog)
                 {
-                    this.DrawDialogRunQueue();
+                    // 如果还在播放打字动画就跳跃
+                    if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() != 1.0)
+                    {
+                        if (this.MsgMouseUpFlag == true)
+                        {
+                            this.MsgStoryboardDict[0].SkipToFill();
+                            this.MsgMouseUpFlag = false;
+                            return;
+                        }
+                    }
+                    // 判断是否已经完成全部趟的显示
+                    else if (this.MsgMouseUpFlag == true && this.pendingDialogQueue.Count == 0)
+                    {
+                        // 弹掉用户等待状态
+                        this.runMana.ExitCall();
+                        this.IsShowingDialog = false;
+                        this.dialogPreStr = string.Empty;
+                    }
+                    // 正在显示对话则向前推进一个趟
+                    else if (this.MsgMouseUpFlag == true)
+                    {
+                        this.DrawDialogRunQueue();
+                    }
+                    this.MsgMouseUpFlag = false;
                 }
+            }
+            // 松开了鼠标左键
+            else
+            {
+                this.MsgMouseUpFlag = true;
             }
             // 按下了鼠标右键
             if (UpdateRender.KS_MOUSE_Dict[MouseButton.Right] == MouseButtonState.Pressed)
@@ -155,6 +183,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 }
             }
         }
+
+        private bool MsgMouseUpFlag = true;
 
         /// <summary>
         /// 导演类周期性调用的更新函数：根据键盘状态更新游戏，它的优先级低于精灵按钮
@@ -219,18 +249,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             if (this.pendingDialogQueue.Count != 0)
             {
                 string currentRun = this.pendingDialogQueue.Dequeue();
-                this.TypeWriter(this.dialogPreStr, currentRun, this.viewMana.GetMessageLayer(0).displayBinding, GlobalDataContainer.GAME_MSG_TYPING_DELAY);
-                // 出队后判断是否已经完成全部趟的显示
-                if (this.pendingDialogQueue.Count == 0)
-                {
-                    // 弹掉用户等待状态
-                    this.runMana.ExitCall();
-                    this.IsShowingDialog = false;
-                }
-                else
-                {
-                    this.dialogPreStr += currentRun;
-                }
+                this.TypeWriter(0, this.dialogPreStr, currentRun, this.viewMana.GetMessageLayer(0).displayBinding, GlobalDataContainer.GAME_MSG_TYPING_DELAY);
+                this.dialogPreStr += currentRun;
             }
         }
 
@@ -268,18 +288,20 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 在指定的文字层绑定控件上进行打字动画
         /// </summary>
+        /// <param name="id">层id</param>
         /// <param name="orgString">原字符串</param>
         /// <param name="appendString">要追加的字符串</param>
         /// <param name="msglayBinding">文字层的控件</param>
         /// <param name="wordTimeSpan">字符之间的打字时间间隔</param>
-        private void TypeWriter(string orgString, string appendString, TextBlock msglayBinding, int wordTimeSpan)
+        private void TypeWriter(int id, string orgString, string appendString, TextBlock msglayBinding, int wordTimeSpan)
         {
             this.HideMessageTria();
-            Storyboard story = new Storyboard();
-            story.FillBehavior = FillBehavior.HoldEnd;
+            Storyboard MsgLayerTypingStory = new Storyboard();
             DiscreteStringKeyFrame discreteStringKeyFrame;
             StringAnimationUsingKeyFrames stringAnimationUsingKeyFrames = new StringAnimationUsingKeyFrames();
-            stringAnimationUsingKeyFrames.Duration = new Duration(TimeSpan.FromMilliseconds(wordTimeSpan * appendString.Length));
+            Duration aniDuration = new Duration(TimeSpan.FromMilliseconds(wordTimeSpan * appendString.Length));
+            stringAnimationUsingKeyFrames.Duration = aniDuration;
+            MsgLayerTypingStory.Duration = aniDuration;
             string tmp = orgString;
             foreach (char c in appendString)
             {
@@ -291,34 +313,41 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             }
             Storyboard.SetTarget(stringAnimationUsingKeyFrames, msglayBinding);
             Storyboard.SetTargetProperty(stringAnimationUsingKeyFrames, new PropertyPath(TextBlock.TextProperty));
-            story.Children.Add(stringAnimationUsingKeyFrames);
-            story.Completed += new EventHandler(this.TypeWriterAnimationCompletedCallback);
-            story.Begin(msglayBinding);
+            MsgLayerTypingStory.Children.Add(stringAnimationUsingKeyFrames);
+            MsgLayerTypingStory.Completed += new EventHandler(this.TypeWriterAnimationCompletedCallback);
+            MsgLayerTypingStory.Begin();
+            this.MsgStoryboardDict[id] = MsgLayerTypingStory;
         }
+
 
         /// <summary>
         /// 打字动画完成回调
         /// </summary>
         private void TypeWriterAnimationCompletedCallback(object sender, EventArgs e)
         {
-            List<int> removeList = new List<int>();
-            foreach (var ani in this.MsgStoryboardDict)
+            if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() == 1.0)
             {
-                if (ani.Value.GetCurrentTime() == ani.Value.Duration)
-                {
-                    removeList.Add(ani.Key);
-                }
+                this.ShowMessageTria();
+                this.BeginMessageTriaUpDownAnimation();
             }
-            foreach (var ri in removeList)
-            {
-                this.MsgStoryboardDict.Remove(ri);
-                // 只有主文字层需要作用小三角
-                if (ri == 0)
-                {
-                    this.ShowMessageTria();
-                    this.BeginMessageTriaUpDownAnimation();
-                }
-            }
+            //List<int> finishList = new List<int>();
+            //foreach (var ani in this.MsgStoryboardDict)
+            //{
+            //    if (ani.Value.GetCurrentTime() == ani.Value.Duration)
+            //    {
+            //        finishList.Add(ani.Key);
+            //    }
+            //}
+            //foreach (var ri in finishList)
+            //{
+            //    //this.MsgStoryboardDict.Remove(ri);
+            //    // 只有主文字层需要作用小三角
+            //    if (ri == 0)
+            //    {
+            //        this.ShowMessageTria();
+            //        this.BeginMessageTriaUpDownAnimation();
+            //    }
+            //}
         }
 
         /// <summary>
@@ -619,8 +648,12 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         );
                     break;
                 case SActionType.act_dialog:
+                    this.Dialog(
+                        action.aTag
+                        );
                     break;
                 case SActionType.act_dialogTerminator:
+                    this.DialogTerminator();
                     break;
                 default:
                     break;

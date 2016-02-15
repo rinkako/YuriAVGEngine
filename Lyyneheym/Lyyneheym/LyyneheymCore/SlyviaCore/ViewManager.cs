@@ -85,13 +85,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 switch (rType)
                 {
                     case ResourceType.Background:
-                        vector[spriteId] = sprite = ResourceManager.GetInstance().GetBackground(descriptor.resourceName);
+                        vector[spriteId] = sprite = ResourceManager.GetInstance().GetBackground(descriptor.resourceName, descriptor.cutRect);
                         break;
                     case ResourceType.Stand:
-                        vector[spriteId] = sprite = ResourceManager.GetInstance().GetCharacterStand(descriptor.resourceName);
+                        vector[spriteId] = sprite = ResourceManager.GetInstance().GetCharacterStand(descriptor.resourceName, descriptor.cutRect);
                         break;
                     case ResourceType.Pictures:
-                        vector[spriteId] = sprite = ResourceManager.GetInstance().GetPicture(descriptor.resourceName);
+                        vector[spriteId] = sprite = ResourceManager.GetInstance().GetPicture(descriptor.resourceName, descriptor.cutRect);
                         break;
                 }
             }
@@ -113,7 +113,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 msglay.backgroundSprite.resourceName != descriptor.BackgroundResourceName ||
                 forceReload)
             {
-                MySprite bgSprite = ResourceManager.GetInstance().GetPicture(descriptor.BackgroundResourceName);
+                MySprite bgSprite = ResourceManager.GetInstance().GetPicture(descriptor.BackgroundResourceName, new Int32Rect(-1, 0, 0, 0));
                 MessageLayer newLayer = new MessageLayer();
                 newLayer.backgroundSprite = bgSprite;
                 newLayer.Id = msglayId;

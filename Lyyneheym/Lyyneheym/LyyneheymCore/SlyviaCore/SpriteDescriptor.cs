@@ -19,7 +19,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.X = this.Y = this.Angle = 0;
             this.Opacity = this.ScaleX = this.ScaleY = 1;
             this.anchorType = SpriteAnchorType.Center;
-            this.cutRect = new Int32Rect(0, 0, 0, 0);
+            this.cutRect = new Int32Rect(-1, 0, 0, 0);
             this.resourceName = null;
             this.resType = ResourceType.Unknown;
         }

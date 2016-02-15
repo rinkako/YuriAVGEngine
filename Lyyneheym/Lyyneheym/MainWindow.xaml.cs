@@ -191,7 +191,7 @@ namespace Lyyneheym
             ////img.Name = "UBO_PIC_01";
             //this.BO_MainGrid.Children.Add(img);
 
-            MySprite sprite = ResourceManager.GetInstance().GetCharacterStand("穹_校服普通.png");
+            MySprite sprite = ResourceManager.GetInstance().GetCharacterStand("穹_校服普通.png", new Int32Rect(-1, 0, 0, 0));
 
             Image spriteImage = new Image();
             BitmapImage bmp = sprite.myImage;

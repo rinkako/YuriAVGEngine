@@ -812,15 +812,6 @@ namespace Lyyneheym.SlyviaInterpreter
                         okFlag = true;
                     }
                 }
-                else if (str == "right")
-                {
-                    res.aType = TokenType.Token_v_right;
-                    // 如果后面还有英文字符，那说明这里不可以截断
-                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 5]) != CharacterType.Letter)
-                    {
-                        okFlag = true;
-                    }
-                }
                 // 如果命中了符号就返回
                 if (okFlag)
                 {
@@ -960,15 +951,6 @@ namespace Lyyneheym.SlyviaInterpreter
                         okFlag = true;
                     }
                 }
-                else if (str == "left")
-                {
-                    res.aType = TokenType.Token_v_left;
-                    // 如果后面还有英文字符，那说明这里不可以截断
-                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
-                    {
-                        okFlag = true;
-                    }
-                }
                 else if (str == "xacc")
                 {
                     res.aType = TokenType.Token_p_xacc;
@@ -1066,15 +1048,6 @@ namespace Lyyneheym.SlyviaInterpreter
                 else if (str == "loc")
                 {
                     res.aType = TokenType.Token_p_loc;
-                    // 如果后面还有英文字符，那说明这里不可以截断
-                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 3]) != CharacterType.Letter)
-                    {
-                        okFlag = true;
-                    }
-                }
-                else if (str == "mid")
-                {
-                    res.aType = TokenType.Token_v_mid;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 3]) != CharacterType.Letter)
                     {
