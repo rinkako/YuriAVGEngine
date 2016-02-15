@@ -132,64 +132,87 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             // 按下了鼠标左键
             if (UpdateRender.KS_MOUSE_Dict[MouseButton.Left] == MouseButtonState.Pressed)
             {
-                // 正在显示对话
-                if (this.IsShowingDialog)
+                // 要松开才生效的情况下
+                if (this.MouseLeftUpFlag == true)
                 {
-                    // 如果还在播放打字动画就跳跃
-                    if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() != 1.0)
+                    // 正在显示对话
+                    if (this.IsShowingDialog)
                     {
-                        if (this.MsgMouseUpFlag == true)
+                        // 如果还在播放打字动画就跳跃
+                        if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() != 1.0)
                         {
                             this.MsgStoryboardDict[0].SkipToFill();
-                            this.MsgMouseUpFlag = false;
+                            this.MouseLeftUpFlag = false;
                             return;
                         }
-                    }
-                    // 判断是否已经完成全部趟的显示
-                    else if (this.MsgMouseUpFlag == true && this.pendingDialogQueue.Count == 0)
-                    {
-                        // 弹掉用户等待状态
-                        this.runMana.ExitCall();
-                        this.IsShowingDialog = false;
-                        this.dialogPreStr = string.Empty;
-                        // 非连续对话时消除对话框
-                        if (this.IsContinousDialog == false)
+                        // 判断是否已经完成全部趟的显示
+                        else if (this.pendingDialogQueue.Count == 0)
                         {
-                            this.viewMana.GetMessageLayer(0).Visibility = Visibility.Hidden;
+                            // 弹掉用户等待状态
+                            this.runMana.ExitCall();
+                            this.IsShowingDialog = false;
+                            this.dialogPreStr = string.Empty;
+                            // 非连续对话时消除对话框
+                            if (this.IsContinousDialog == false)
+                            {
+                                this.viewMana.GetMessageLayer(0).Visibility = Visibility.Hidden;
+                                this.HideMessageTria();
+                            }
+                        }
+                        // 正在显示对话则向前推进一个趟
+                        else
+                        {
+                            this.viewMana.GetMessageLayer(0).displayBinding.Visibility = Visibility.Visible;
+                            this.DrawDialogRunQueue();
                         }
                     }
-                    // 正在显示对话则向前推进一个趟
-                    else if (this.MsgMouseUpFlag == true)
-                    {
-                        this.DrawDialogRunQueue();
-                    }
-                    this.MsgMouseUpFlag = false;
                 }
+                // 连续按压生效的情况下
+                else
+                {
+
+                }
+                // 保持按下的状态
+                this.MouseLeftUpFlag = false;
             }
             // 松开了鼠标左键
             else
             {
-                this.MsgMouseUpFlag = true;
+                this.MouseLeftUpFlag = true;
             }
             // 按下了鼠标右键
             if (UpdateRender.KS_MOUSE_Dict[MouseButton.Right] == MouseButtonState.Pressed)
             {
-                // 正在显示对话则隐藏对话
-                if (this.IsShowingDialog)
+                // 要松开才生效的情况下
+                if (this.MouseRightUpFlag == true)
                 {
-                    if (this.viewMana.GetMessageLayer(0).displayBinding.Visibility == Visibility.Hidden)
+                    // 正在显示对话则隐藏对话
+                    if (this.IsShowingDialog)
                     {
-                        
-                    }
-                    else
-                    {
-
+                        var mainMsgLayer = this.viewMana.GetMessageLayer(0).displayBinding;
+                        if (mainMsgLayer.Visibility == Visibility.Hidden)
+                        {
+                            mainMsgLayer.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            mainMsgLayer.Visibility = Visibility.Hidden;
+                        }
                     }
                 }
+                // 连续按压生效的情况下
+                else
+                {
+
+                }
+                // 保持按下的状态
+                this.MouseRightUpFlag = false;
+            }
+            else
+            {
+                this.MouseRightUpFlag = true;
             }
         }
-
-        private bool MsgMouseUpFlag = true;
 
         /// <summary>
         /// 导演类周期性调用的更新函数：根据键盘状态更新游戏，它的优先级低于精灵按钮
@@ -199,33 +222,17 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             
         }
 
-
-
-        #endregion
+        
+        /// <summary>
+        /// 鼠标左键是否松开标志位
+        /// </summary>
+        private bool MouseLeftUpFlag = true;
 
         /// <summary>
-        /// 处理游戏窗体的鼠标按下信息
+        /// 鼠标右键是否松开标志位
         /// </summary>
-        /// <param name="e"></param>
-        public void WMouseDownEventHandler(MouseButtonEventArgs e)
-        {
-            if (e.RightButton == MouseButtonState.Pressed)
-            {
-                if (this.view.BO_MessageBoxLayer.Visibility == System.Windows.Visibility.Hidden)
-                {
-                    this.view.BO_MainName.Visibility = this.view.BO_MainText.Visibility = this.view.BO_MsgTria.Visibility =
-                        this.view.BO_MessageBoxLayer.Visibility = System.Windows.Visibility.Visible;
-
-                }
-                else
-                {
-                    this.view.BO_MainName.Visibility = this.view.BO_MainText.Visibility = this.view.BO_MsgTria.Visibility =
-                        this.view.BO_MessageBoxLayer.Visibility = System.Windows.Visibility.Hidden;
-                }
-            }
-            
-        }
-
+        private bool MouseRightUpFlag = true;
+        #endregion
 
         #region 文字层相关
         /// <summary>
@@ -360,7 +367,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 隐藏对话小三角
         /// </summary>
-        public void HideMessageTria()
+        private void HideMessageTria()
         {
             // 只有主文字层需要作用小三角
             if (this.currentMsgLayer == 0)
@@ -373,7 +380,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 显示对话小三角
         /// </summary>
         /// <param name="opacity">透明度</param>
-        public void ShowMessageTria(double opacity = 1.0f)
+        private void ShowMessageTria(double opacity = 1.0f)
         {
             this.MainMsgTriangleSprite.displayOpacity = opacity;
             this.MainMsgTriangleSprite.displayBinding.Visibility = Visibility.Visible;
@@ -382,7 +389,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 为对话小三角施加跳动动画
         /// </summary>
-        public void BeginMessageTriaUpDownAnimation()
+        private void BeginMessageTriaUpDownAnimation()
         {
             SpriteAnimation.UpDownRepeatAnimation(this.MainMsgTriangleSprite, TimeSpan.FromMilliseconds(500), 10, 0.8);
         }
@@ -392,7 +399,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         /// <param name="X">目标X坐标</param>
         /// <param name="Y">目标Y坐标</param>
-        public void SetMessageTriaPosition(double X, double Y)
+        private void SetMessageTriaPosition(double X, double Y)
         {
             Canvas.SetLeft(this.view.BO_MsgTria, X);
             Canvas.SetTop(this.view.BO_MsgTria, Y);
