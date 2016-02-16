@@ -89,8 +89,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         
                 }
                 // 移动下一指令指针，为下次处理做准备
-                this.CallStack.ESP.PC++;
-                this.CallStack.ESP.IP = ret.next;
+                if (ret.aType != SActionType.act_for)
+                {
+                    this.CallStack.ESP.PC++;
+                    this.CallStack.ESP.IP = ret.next;
+                }
                 // 返回当前要执行的指令实例
                 return ret;
             }
@@ -187,6 +190,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public void Delay(string causedBy, DateTime begin, TimeSpan timespan)
         {
             this.CallStack.Submit(causedBy, begin, timespan);
+        }
+
+        /// <summary>
+        /// 等待动画完成
+        /// </summary>
+        /// <param name="causedBy">触发的原因</param>
+        public void AniWait(string causedBy)
+        {
+            this.CallStack.Submit(causedBy);
         }
 
         /// <summary>

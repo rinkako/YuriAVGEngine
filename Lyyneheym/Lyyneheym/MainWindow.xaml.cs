@@ -87,18 +87,6 @@ namespace Lyyneheym
         }
 
 
-        private void testLexer()
-        {
-
-            Interpreter ip = new Interpreter("TestProj", @"C:\Users\Kako\Desktop\testDir");
-            ip.Dash(InterpreterType.RELEASE_WITH_IL, 8);
-            ip.GetILFile(@"Scenario\main.sil");
-
-            ILConvertor ilc = ILConvertor.GetInstance();
-            List<Scene> rS = ilc.Dash(@"Scenario");
-        }
-
-
         private void testFontEffect(TextBlock label)
         {
             //LinearGradientBrush brush = new LinearGradientBrush();
@@ -308,10 +296,12 @@ namespace Lyyneheym
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
-            //mp = new MediaPlayer();
-            //mp.Open(new Uri(@"Sound\bgm\bgm01.mp3", UriKind.RelativeOrAbsolute));
-            //mp.Play();
-            this.testLexer();
+            Interpreter ip = new Interpreter("TestProj", @"C:\Users\Kako\Desktop\testDir");
+            ip.Dash(InterpreterType.RELEASE_WITH_IL, 8);
+            ip.GetILFile(@"Scenario\main.sil");
+
+            ILConvertor ilc = ILConvertor.GetInstance();
+            List<Scene> rS = ilc.Dash(@"Scenario");
         }
 
 

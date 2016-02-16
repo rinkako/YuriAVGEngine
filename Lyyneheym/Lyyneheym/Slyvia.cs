@@ -214,6 +214,11 @@ namespace Lyyneheym
                         this.RunMana.Delay(nextInstruct.saNodeName, DateTime.Now, TimeSpan.FromMilliseconds(waitMs));
                         break;
                     }
+                    else if (nextInstruct.aType == SActionType.act_waitani)
+                    {
+                        this.RunMana.AniWait(nextInstruct.saNodeName);
+                        break;
+                    }
                     else if (nextInstruct.aType == SActionType.act_waituser)
                     {
                         this.RunMana.UserWait("Director", nextInstruct.saNodeName);
