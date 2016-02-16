@@ -361,7 +361,8 @@ namespace Lyyneheym.SlyviaInterpreter
             SceneAction resSa = null;
             List<SceneAction> funcSaVec = new List<SceneAction>();
             List<SceneFunction> funcVec = new List<SceneFunction>();
-            this.saStack = new Stack<SceneAction>();
+            this.forStack = new Stack<SceneAction>();
+            this.removeQueueDict = new Dictionary<SceneAction, Queue<SceneAction>>();
             this.blockDict = new Dictionary<string, SceneAction>();
             this.Mise(this.parseTree, ref resSa, funcSaVec);
             this.Tamao(resSa, resSa, false);
@@ -772,22 +773,38 @@ namespace Lyyneheym.SlyviaInterpreter
                     {
                         this.Tamao(saNode.trueRouting[i], saNode, false);
                     }
+                    // 清理要移除的节点
+                    while (this.removeQueueDict.ContainsKey(saNode) && this.removeQueueDict[saNode].Count != 0)
+                    {
+                        saNode.trueRouting.Remove(this.removeQueueDict[saNode].Dequeue());
+                    }
                     // 最后一个孩子的下一节点修改为它母节点的后继
-                    saNode.trueRouting[saNode.trueRouting.Count - 1].next = parent.next;
+                    SceneAction lastNop = saNode.trueRouting[saNode.trueRouting.Count - 1];
+                    if (lastNop.aType != SActionType.act_break && lastNop.aType != SActionType.act_endfor)
+                    {
+                        lastNop.next = parent.next;
+                    }
+                    else
+                    {
+                        this.Tamao(lastNop, saNode, false);
+                    }
                     break;
                 case SActionType.act_dialog:
                     // 合并dialog项
+                    if (saNode.dialogDirtyBit) { break; }
                     SceneAction basePtr = saNode;
                     SceneAction iterPtr = saNode;
                     string dialogBuilder = iterPtr.aTag;
                     iterPtr = iterPtr.next;
+                    if (this.removeQueueDict.ContainsKey(parent) == false)
+                    {
+                        this.removeQueueDict[parent] = new Queue<SceneAction>();
+                    }
                     while (iterPtr.aType != SActionType.act_dialogTerminator)
                     {
+                        iterPtr.dialogDirtyBit = true;
                         dialogBuilder += iterPtr.aTag;
-                        if (!parent.trueRouting.Remove(iterPtr))
-                        {
-                            parent.falseRouting.Remove(iterPtr);
-                        }
+                        this.removeQueueDict[parent].Enqueue(iterPtr);
                         iterPtr = iterPtr.next;
                     }
                     basePtr.aTag = dialogBuilder;
@@ -805,6 +822,7 @@ namespace Lyyneheym.SlyviaInterpreter
                     }
                     break;
                 case SActionType.act_for:
+                    this.forStack.Push(saNode);
                     if (saNode.trueRouting == null || saNode.trueRouting.Count == 0)
                     {
                         break;
@@ -814,16 +832,38 @@ namespace Lyyneheym.SlyviaInterpreter
                     {
                         this.Tamao(saNode.trueRouting[i], saNode, false);
                     }
+                    // 清理要移除的节点
+                    while (this.removeQueueDict.ContainsKey(saNode) && this.removeQueueDict[saNode].Count != 0)
+                    {
+                        saNode.trueRouting.Remove(this.removeQueueDict[saNode].Dequeue());
+                    }
                     // 最后一个孩子的下一节点修改为for子句本身
-                    saNode.trueRouting[saNode.trueRouting.Count - 1].next = saNode;
+                    SceneAction lastFor = saNode.trueRouting[saNode.trueRouting.Count - 1];
+                    if (lastFor.aType != SActionType.act_break && lastFor.aType != SActionType.act_endfor)
+                    {
+                        lastFor.next = parent.next;
+                    }
+                    else
+                    {
+                        this.Tamao(lastFor, saNode, false);
+                    }
                     break;
                 case SActionType.act_endfor:
                     // endfor节点的下一节点是她的for母节点
                     saNode.next = parent;
+                    // 弹for结构栈
+                    this.forStack.Pop();
                     break;
                 case SActionType.act_break:
                     // break节点的下一节点是她的for母节点的后继
-                    saNode.next = parent.next;
+                    if (this.forStack.Count > 0)
+                    {
+                        saNode.next = this.forStack.Peek().next;
+                    }
+                    else
+                    {
+                        throw new InterpreterException("break必须存在for结构的内部");
+                    }
                     break;
                 case SActionType.act_if:
                     // 处理真分支
@@ -836,8 +876,21 @@ namespace Lyyneheym.SlyviaInterpreter
                     {
                         this.Tamao(saNode.trueRouting[i], saNode, false);
                     }
+                    // 清理要移除的节点
+                    while (this.removeQueueDict.ContainsKey(saNode) && this.removeQueueDict[saNode].Count != 0)
+                    {
+                        saNode.trueRouting.Remove(this.removeQueueDict[saNode].Dequeue());
+                    }
                     // 最后一个孩子的下一节点修改为if子句节点的后继
-                    saNode.trueRouting[saNode.trueRouting.Count - 1].next = saNode.next;
+                    SceneAction lastIfTrue = saNode.trueRouting[saNode.trueRouting.Count - 1];
+                    if (lastIfTrue.aType != SActionType.act_break && lastIfTrue.aType != SActionType.act_endfor)
+                    {
+                        lastIfTrue.next = parent.next;
+                    }
+                    else
+                    {
+                        this.Tamao(lastIfTrue, saNode, false);
+                    }
                     // 处理假分支
                     if (saNode.falseRouting == null || saNode.falseRouting.Count == 0)
                     {
@@ -848,23 +901,20 @@ namespace Lyyneheym.SlyviaInterpreter
                     {
                         this.Tamao(saNode.falseRouting[i], saNode, false);
                     }
-                    // 最后一个孩子的下一节点修改为if子句节点的后继
-                    saNode.falseRouting[saNode.falseRouting.Count - 1].next = saNode.next;
-                    break;
-                case SActionType.act_jump:
-                    // 跳转指令的下一节点通过lable字典指定
-                    string jumpToLable = saNode.aTag;
-                    if (this.blockDict.ContainsKey(jumpToLable))
+                    // 清理要移除的节点
+                    while (this.removeQueueDict.ContainsKey(saNode) && this.removeQueueDict[saNode].Count != 0)
                     {
-                        saNode.next = this.blockDict[jumpToLable];
+                        saNode.falseRouting.Remove(this.removeQueueDict[saNode].Dequeue());
+                    }
+                    // 最后一个孩子的下一节点修改为if子句节点的后继
+                    SceneAction lastIfFalse = saNode.falseRouting[saNode.trueRouting.Count - 1];
+                    if (lastIfFalse.aType != SActionType.act_break && lastIfFalse.aType != SActionType.act_endfor)
+                    {
+                        lastIfFalse.next = parent.next;
                     }
                     else
                     {
-                        // 如果没有直接后继节点就返回母节点的后继
-                        if (saNode.next == null)
-                        {
-                            saNode.next = parent.next;
-                        }
+                        this.Tamao(lastIfFalse, saNode, false);
                     }
                     break;
                 default:
@@ -1260,8 +1310,10 @@ namespace Lyyneheym.SlyviaInterpreter
         private PackageScene rootScene = null;
         // 语法树根节点
         private SyntaxTreeNode parseTree = null;
-        // 动作序列嵌套栈
-        private Stack<SceneAction> saStack = null;
+        // For嵌套栈
+        private Stack<SceneAction> forStack = null;
+        // 带移除节点队列
+        private Dictionary<SceneAction, Queue<SceneAction>> removeQueueDict = null;
         // 标签跳转字典
         private Dictionary<string, SceneAction> blockDict = null;
     }

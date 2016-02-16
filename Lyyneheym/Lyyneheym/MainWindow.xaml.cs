@@ -240,17 +240,6 @@ namespace Lyyneheym
             SpriteAnimation.SkipAnimation(this.rightChara);
         }
 
-        private void ConsumeWords()
-        {
-                            
-            if (this.strRuns.Count != 0)
-            {
-                var str = this.strRuns.Dequeue();
-                desStr = str;
-                TypewriteTextblock(preStr, desStr, this.BO_MainText, 60);
-                preStr += desStr;
-            }
-        }
 
         string preStr = String.Empty;
         string desStr = String.Empty;
@@ -325,30 +314,6 @@ namespace Lyyneheym
         }
 
 
-        private void TypewriteTextblock(string orgString, string appendString, TextBlock txt, int timeSpan)
-        {
-            this.BO_MsgTria.Visibility = System.Windows.Visibility.Hidden;
-            Storyboard story = new Storyboard();
-            story.FillBehavior = FillBehavior.HoldEnd;
-            DiscreteStringKeyFrame discreteStringKeyFrame;
-            StringAnimationUsingKeyFrames stringAnimationUsingKeyFrames = new StringAnimationUsingKeyFrames();
-            stringAnimationUsingKeyFrames.Duration = new Duration(TimeSpan.FromMilliseconds(timeSpan * appendString.Length));
-            string tmp = orgString;
-            foreach (char c in appendString)
-            {
-                discreteStringKeyFrame = new DiscreteStringKeyFrame();
-                discreteStringKeyFrame.KeyTime = KeyTime.Paced;
-                tmp += c;
-                discreteStringKeyFrame.Value = tmp;
-                stringAnimationUsingKeyFrames.KeyFrames.Add(discreteStringKeyFrame);
-            }
-            Storyboard.SetTarget(stringAnimationUsingKeyFrames, txt);
-            Storyboard.SetTargetProperty(stringAnimationUsingKeyFrames, new PropertyPath(TextBlock.TextProperty));
-            story.Children.Add(stringAnimationUsingKeyFrames);
-            story.Completed += new EventHandler(callback_typing);
-            story.Begin(txt);
-
-        }
 
         private void callback_typing(object sender, EventArgs e)
         {
@@ -561,10 +526,6 @@ namespace Lyyneheym
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.core.UpdateMouse(e);
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                this.ConsumeWords();
-            }
         }
 
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)

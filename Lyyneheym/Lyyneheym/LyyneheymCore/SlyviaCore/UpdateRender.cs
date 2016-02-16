@@ -579,7 +579,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         this.ParseDouble(action.argsDict["yscale"], 1),
                         this.ParseDouble(action.argsDict["ro"], 0),
                         action.argsDict["anchor"] == "" ? (action.argsDict["anchor"] == "center" ? SpriteAnchorType.Center : SpriteAnchorType.LeftTop) : SpriteAnchorType.Center,
-                        new Int32Rect(0, 0, 0, 0));
+                        new Int32Rect(0, 0, 0, 0)
+                        );
                     break;
                 case SActionType.act_deletecstand:
                     this.Deletecstand(
@@ -630,6 +631,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         );
                     break;
                 case SActionType.act_break:
+                    this.Break(
+                        action
+                        );
                     break;
                 case SActionType.act_shutdown:
                     this.Shutdown();
@@ -749,6 +753,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             {
                 this.Vocal(name, vid, this.musician.VocalDefaultVolume);
             }
+        }
+
+        /// <summary>
+        /// 演绎函数：中断循环
+        /// </summary>
+        /// <param name="breakSa">中断循环动作实例</param>
+        private void Break(SceneAction breakSa)
+        {
+            this.runMana.CallStack.ESP.IP = breakSa.next;
         }
 
         /// <summary>

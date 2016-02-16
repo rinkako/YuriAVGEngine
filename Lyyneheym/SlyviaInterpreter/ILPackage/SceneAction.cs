@@ -31,6 +31,8 @@ namespace Lyyneheym.SlyviaInterpreter.ILPackage
         public string funcName = null;
         // 附加值
         public string aTag = null;
+        // 对话合并脏位
+        public bool dialogDirtyBit = false;
 
         /// <summary>
         /// 将动作转化为可序列化字符串
