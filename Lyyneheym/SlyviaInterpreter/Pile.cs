@@ -510,7 +510,7 @@ namespace Lyyneheym.SlyviaInterpreter
                     this.blockDict[labelKey] = curSa;
                     break;
                 case SyntaxType.synr_jump:
-                    string jumpKey = mynode.paramDict["name"].children[0].nodeValue;
+                    string jumpKey = mynode.paramDict["target"].children[0].nodeValue;
                     curSa.aTag = jumpKey;
                     break;
                 case SyntaxType.synr_dialog:

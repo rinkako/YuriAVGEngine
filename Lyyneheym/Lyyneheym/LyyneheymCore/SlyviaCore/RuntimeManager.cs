@@ -210,6 +210,17 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 弹空栈顶的所有用户等待
+        /// </summary>
+        public void ExitUserWait()
+        {
+            while (this.CallStack.Count() > 0 && this.CallStack.ESP.state == GameStackMachineState.WaitUser)
+            {
+                this.CallStack.Consume();
+            }
+        }
+
+        /// <summary>
         /// 弹空整个调用堆栈
         /// </summary>
         public void ExitAll()

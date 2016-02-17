@@ -193,9 +193,11 @@ namespace Lyyneheym
                             iterSa = iterSa.next;
                         }
                     }
+                    // 退出中断
+                    this.RunMana.ExitCall();
+                    // 跳出所有用户等待
+                    this.RunMana.ExitUserWait();
                     // 处理跳转
-                    this.RunMana.ExitCall(); // 退出中断
-                    this.RunMana.ExitCall(); // 退出用户等待
                     if (interruptExitPoint != null)
                     {
                         var curScene = this.ResMana.GetScene(this.RunMana.CallStack.EBP.bindingSceneName);
@@ -233,7 +235,7 @@ namespace Lyyneheym
                     else if (nextInstruct.aType == SActionType.act_jump)
                     {
                         var jumpToScene = nextInstruct.argsDict["filename"];
-                        var jumpToTarget = nextInstruct.argsDict["name"];
+                        var jumpToTarget = nextInstruct.argsDict["target"];
                         // 场景内跳转
                         if (jumpToScene == "")
                         {

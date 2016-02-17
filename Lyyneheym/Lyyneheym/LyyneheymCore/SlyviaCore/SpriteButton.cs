@@ -15,28 +15,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     /// </summary>
     public class SpriteButton
     {
-        /// <summary>
-        /// 创建一个精灵按钮
-        /// </summary>
-        /// <param name="label">鼠标按下时跳转的标签名</param>
-        /// <param name="normal">正常时的精灵</param>
-        /// <param name="over">悬停时的精灵</param>
-        /// <param name="on">按下时的精灵</param>
-        public SpriteButton(string label, MySprite normal, MySprite over = null, MySprite on = null, SceneAction sa = null)
+        public SpriteButton()
         {
+            this.ntr = null;
+            this.displayBinding = null;
             this.Enable = true;
-            this.ImageNormal = normal;
-            this.ImageMouseOver = over;
-            this.ImageMouseOn = on;
+            this.X = this.Y = 0;
             this.Z = GlobalDataContainer.GAME_Z_BUTTON;
-            Interrupt intr = new Interrupt()
-            {
-                returnTarget = label,
-                interruptSA = sa,
-                type = InterruptType.ButtonJump,
-                detail = "SpriteButton"
-            };
-            this.ntr = intr;
+            this.isMouseOn = this.isMouseOver = false;
         }
 
         /// <summary>

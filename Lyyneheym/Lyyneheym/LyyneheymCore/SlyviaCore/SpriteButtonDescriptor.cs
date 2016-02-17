@@ -11,6 +11,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     [Serializable]
     public class SpriteButtonDescriptor
     {
+        public SpriteButtonDescriptor()
+        {
+            this.normalDescriptor = this.overDescriptor = this.onDescriptor = null;
+            this.jumpLabel = String.Empty;
+            this.X = this.Y = 0;
+            this.Z = GlobalDataContainer.GAME_Z_BUTTON;
+            this.Opacity = 1;
+            this.Enable = true;
+        }
+
         public SpriteDescriptor normalDescriptor { get; set; }
 
         public SpriteDescriptor overDescriptor { get; set; }

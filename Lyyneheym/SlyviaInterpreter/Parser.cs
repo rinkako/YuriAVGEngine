@@ -970,6 +970,16 @@ namespace Lyyneheym.SlyviaInterpreter
                         statementNode.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename, statementNode);
                         statementNode.paramDict["vol"] = new SyntaxTreeNode(SyntaxType.para_vol, statementNode);
                         break;
+                    case TokenType.Token_o_button:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_button;
+                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
+                        statementNode.paramDict["x"] = new SyntaxTreeNode(SyntaxType.para_x, statementNode);
+                        statementNode.paramDict["y"] = new SyntaxTreeNode(SyntaxType.para_y, statementNode);
+                        statementNode.paramDict["target"] = new SyntaxTreeNode(SyntaxType.para_target, statementNode);
+                        statementNode.paramDict["normal"] = new SyntaxTreeNode(SyntaxType.para_normal, statementNode);
+                        statementNode.paramDict["over"] = new SyntaxTreeNode(SyntaxType.para_over, statementNode);
+                        statementNode.paramDict["on"] = new SyntaxTreeNode(SyntaxType.para_on, statementNode);
+                        break;
                     case TokenType.Token_o_stopbgm:
                         statementNode.nodeSyntaxType = SyntaxType.synr_stopbgm;
                         break;
@@ -1007,7 +1017,7 @@ namespace Lyyneheym.SlyviaInterpreter
                     case TokenType.Token_o_jump:
                         statementNode.nodeSyntaxType = SyntaxType.synr_jump;
                         statementNode.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename, statementNode);
-                        statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
+                        statementNode.paramDict["target"] = new SyntaxTreeNode(SyntaxType.para_target, statementNode);
                         statementNode.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);
                         break;
                     case TokenType.Token_o_call:
@@ -1291,6 +1301,51 @@ namespace Lyyneheym.SlyviaInterpreter
                             statementNode.paramDict["z"].children.Add(w_z);
                             // 加入不推导队列
                             this.iQueue.Enqueue(w_z);
+                            break;
+                        case TokenType.Token_p_normal:
+                            statementNode.paramDict["normal"].children = new List<SyntaxTreeNode>();
+                            SyntaxTreeNode w_normal = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["normal"]);
+                            w_normal.paramTokenStream = new List<Token>();
+                            prescanPointer += 2;
+                            while (prescanPointer < this.istream.Count
+                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
+                                && this.istream[prescanPointer].aType != TokenType.startend)
+                            {
+                                w_normal.paramTokenStream.Add(this.istream[prescanPointer++]);
+                            }
+                            statementNode.paramDict["normal"].children.Add(w_normal);
+                            // 加入不推导队列
+                            this.iQueue.Enqueue(w_normal);
+                            break;
+                        case TokenType.Token_p_over:
+                            statementNode.paramDict["over"].children = new List<SyntaxTreeNode>();
+                            SyntaxTreeNode w_over = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["over"]);
+                            w_over.paramTokenStream = new List<Token>();
+                            prescanPointer += 2;
+                            while (prescanPointer < this.istream.Count
+                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
+                                && this.istream[prescanPointer].aType != TokenType.startend)
+                            {
+                                w_over.paramTokenStream.Add(this.istream[prescanPointer++]);
+                            }
+                            statementNode.paramDict["over"].children.Add(w_over);
+                            // 加入不推导队列
+                            this.iQueue.Enqueue(w_over);
+                            break;
+                        case TokenType.Token_p_on:
+                            statementNode.paramDict["on"].children = new List<SyntaxTreeNode>();
+                            SyntaxTreeNode w_on = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["on"]);
+                            w_on.paramTokenStream = new List<Token>();
+                            prescanPointer += 2;
+                            while (prescanPointer < this.istream.Count
+                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
+                                && this.istream[prescanPointer].aType != TokenType.startend)
+                            {
+                                w_on.paramTokenStream.Add(this.istream[prescanPointer++]);
+                            }
+                            statementNode.paramDict["on"].children.Add(w_on);
+                            // 加入不推导队列
+                            this.iQueue.Enqueue(w_on);
                             break;
                         case TokenType.Token_p_acc:
                             statementNode.paramDict["acc"].children = new List<SyntaxTreeNode>();

@@ -388,6 +388,12 @@ namespace Lyyneheym.SlyviaInterpreter
         para_state,
         // 参数：作用目标
         para_target,
+        // 参数：按钮正常
+        para_normal,
+        // 参数：按钮悬停
+        para_over,
+        // 参数：按钮按下
+        para_on,
         // 根节点
         case_kotori,
         // <disjunct> ::= <conjunct> <disjunct_pi>;

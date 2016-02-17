@@ -256,6 +256,12 @@ namespace Lyyneheym.SlyviaInterpreter
         // 参数：颜色
         Token_p_color,
         // 参数：作用目标
-        Token_p_target
+        Token_p_target,
+        // 参数：正常按钮
+        Token_p_normal,
+        // 参数：鼠标悬停按钮
+        Token_p_over,
+        // 参数：鼠标按下按钮
+        Token_p_on
     }
 }

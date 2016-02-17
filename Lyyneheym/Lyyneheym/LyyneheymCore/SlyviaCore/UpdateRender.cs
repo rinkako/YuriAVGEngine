@@ -136,7 +136,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 if (this.MouseLeftUpFlag == true)
                 {
                     // 正在显示对话
-                    if (this.IsShowingDialog)
+                    if (this.isShowingDialog)
                     {
                         // 如果还在播放打字动画就跳跃
                         if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() != 1.0)
@@ -150,7 +150,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         {
                             // 弹掉用户等待状态
                             this.runMana.ExitCall();
-                            this.IsShowingDialog = false;
+                            this.isShowingDialog = false;
                             this.dialogPreStr = string.Empty;
                             // 非连续对话时消除对话框
                             if (this.IsContinousDialog == false)
@@ -189,7 +189,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 if (this.MouseRightUpFlag == true)
                 {
                     // 正在显示对话则隐藏对话
-                    if (this.IsShowingDialog)
+                    if (this.isShowingDialog)
                     {
                         var mainMsgLayer = this.viewMana.GetMessageLayer(0).displayBinding;
                         if (mainMsgLayer.Visibility == Visibility.Hidden)
@@ -251,7 +251,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="str">要描绘的字符串</param>
         public void DrawStringToMsgLayer(int msglayId, string str)
         {
-            this.IsShowingDialog = true;
+            this.isShowingDialog = true;
             string[] strRuns = this.DialogToRuns(str);
             foreach (string run in strRuns)
             {
@@ -422,7 +422,22 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 是否正在显示对话
         /// </summary>
-        private bool IsShowingDialog = false;
+        private bool isShowingDialog = false;
+
+        /// <summary>
+        /// 获取当前是否正在显示对话
+        /// </summary>
+        public bool IsShowingDialog
+        {
+            get
+            {
+                return this.isShowingDialog;
+            }
+            private set
+            {
+                this.isShowingDialog = value;
+            }
+        }
 
         /// <summary>
         /// 是否下一动作仍为对话
@@ -656,6 +671,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 case SActionType.act_trans:
                     break;
                 case SActionType.act_button:
+                    this.Button(
+                        this.ParseInt(action.argsDict["id"], 0),
+                        true,
+                        this.ParseDouble(action.argsDict["x"], 0),
+                        this.ParseDouble(action.argsDict["y"], 0),
+                        action.argsDict["target"],
+                        action.argsDict["normal"],
+                        action.argsDict["over"],
+                        action.argsDict["on"]
+                        );
                     break;
                 case SActionType.act_style:
                     break;

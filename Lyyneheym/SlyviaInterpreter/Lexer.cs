@@ -628,6 +628,15 @@ namespace Lyyneheym.SlyviaInterpreter
                         okFlag = true;
                     }
                 }
+                else if (str == "normal")
+                {
+                    res.aType = TokenType.Token_p_normal;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 6]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
                 else if (str == "endfor")
                 {
                     res.aType = TokenType.Token_o_endfor;
@@ -846,6 +855,15 @@ namespace Lyyneheym.SlyviaInterpreter
                 else if (str == "call")
                 {
                     res.aType = TokenType.Token_o_call;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "over")
+                {
+                    res.aType = TokenType.Token_p_over;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {
@@ -1133,6 +1151,15 @@ namespace Lyyneheym.SlyviaInterpreter
                 else if (str == "bg")
                 {
                     res.aType = TokenType.Token_o_bg;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 2]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "on")
+                {
+                    res.aType = TokenType.Token_p_on;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 2]) != CharacterType.Letter)
                     {

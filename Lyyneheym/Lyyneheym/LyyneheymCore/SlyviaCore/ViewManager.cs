@@ -139,7 +139,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="descriptor">按钮描述子</param>
         private void ReDrawButton(int buttonId, SpriteButtonDescriptor descriptor)
         {
-            SpriteButton sbutton = this.ButtonLayerVec[buttonId];
+            SpriteButton sbutton = this.ButtonLayerVec[buttonId] = new SpriteButton();
             sbutton.ImageNormal = descriptor.normalDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.normalDescriptor.resourceName, new Int32Rect(-1, 0, 0, 0));
             sbutton.ImageMouseOver = descriptor.overDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.overDescriptor.resourceName, new Int32Rect(-1, 0, 0, 0));
             sbutton.ImageMouseOn = descriptor.onDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.onDescriptor.resourceName, new Int32Rect(-1, 0, 0, 0));
@@ -226,6 +226,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             buttonImage.Source = bmp;
             buttonImage.Opacity = descriptor.Opacity;
             sbutton.displayBinding = buttonImage;
+            sbutton.ntr = new Interrupt()
+            {
+                detail = "ButtonNTRInterrupt",
+                interruptSA = null,
+                type = InterruptType.ButtonJump,
+                returnTarget = descriptor.jumpLabel
+            };
             Canvas.SetLeft(buttonImage, descriptor.X);
             Canvas.SetTop(buttonImage, descriptor.Y);
             Canvas.SetZIndex(buttonImage, descriptor.Z);
