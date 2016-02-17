@@ -253,7 +253,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="value">右值逆波兰式</param>
         public void Assignment(string varname, string valuePolish)
         {
-            this.Symbols.assign(this.CallStack.ESP.scriptName, varname.Replace("$", "").Replace("&", ""), this.CalculatePolish(valuePolish));
+            this.Symbols.assign(this.CallStack.EBP.scriptName, varname.Replace("$", "").Replace("&", ""), this.CalculatePolish(valuePolish));
         }
 
         /// <summary>
@@ -263,7 +263,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <returns>变量的引用</returns>
         public object Fetch(string varname)
         {
-            return this.Symbols.signal(ResourceManager.GetInstance().GetScene(this.CallStack.ESP.scriptName), varname.Replace("$", "").Replace("&", ""));
+            return this.Symbols.signal(ResourceManager.GetInstance().GetScene(this.CallStack.EBP.scriptName), varname.Replace("$", "").Replace("&", ""));
         }
 
         /// <summary>

@@ -272,7 +272,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 case ResourceType.Background:
                     return this.BackgroundSpriteVec[id];
                 case ResourceType.Stand:
-                    return this.BackgroundSpriteVec[id];
+                    return this.CharacterStandSpriteVec[id];
                 default:
                     return this.PictureSpriteVec[id];
             }

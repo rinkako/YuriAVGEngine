@@ -125,7 +125,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
 
         #region 周期性调用
         /// <summary>
-        /// 导演类周期性调用的更新函数：根据鼠标状态更新游戏，它的优先级低于精灵按钮
+        /// 更新函数：根据鼠标状态更新游戏，它的优先级低于精灵按钮
         /// </summary>
         public void UpdateForMouseState()
         {
@@ -158,6 +158,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                                 this.viewMana.GetMessageLayer(0).Visibility = Visibility.Hidden;
                                 this.HideMessageTria();
                             }
+                            // 截断语音
+                            this.Stopvocal();
                         }
                         // 正在显示对话则向前推进一个趟
                         else
@@ -215,13 +217,20 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
-        /// 导演类周期性调用的更新函数：根据键盘状态更新游戏，它的优先级低于精灵按钮
+        /// 更新函数：根据键盘状态更新游戏，它的优先级低于精灵按钮
         /// </summary>
         public void UpdateForKeyboardState()
         {
             
         }
 
+        /// <summary>
+        /// 更新函数：并行处理器，每帧被调用一次
+        /// </summary>
+        public void ParallelProcessor()
+        {
+
+        }
         
         /// <summary>
         /// 鼠标左键是否松开标志位

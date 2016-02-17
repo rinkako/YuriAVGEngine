@@ -519,6 +519,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.BassEngine = BassPlayer.GetInstance();
             this.musicianTimer = new Timer(1000);
             this.musicianTimer.Elapsed += musicianTimer_Elapsed;
+            this.BGSDefaultVolume = 800;
+            this.bgmVolume = 800;
+            this.VocalDefaultVolume = 1000;
+            this.seVolume = 1000;
             this.Reset();
         }
     }

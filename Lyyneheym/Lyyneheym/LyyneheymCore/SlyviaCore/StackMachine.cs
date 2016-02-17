@@ -70,6 +70,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 aTag = ""
             };
             this.coreStack.Push(smf);
+            this.EBP = this.coreStack.Peek();
         }
 
         /// <summary>
@@ -209,11 +210,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         {
             get
             {
-                if (this.coreStack.Contains(this.ebp))
+                if (this.ebp != null && this.coreStack.Contains(this.ebp))
                 {
                     return this.ebp;
                 }
-                return this.ESP;
+                return this.ebp = this.ESP;
             }
             private set
             {

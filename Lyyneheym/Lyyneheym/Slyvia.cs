@@ -321,6 +321,8 @@ namespace Lyyneheym
             // 处理IO
             this.updateRender.UpdateForMouseState();
             this.updateRender.UpdateForKeyboardState();
+
+            this.updateRender.ParallelProcessor();
         }
 
         private GameState curState;
