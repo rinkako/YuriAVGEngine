@@ -1087,7 +1087,7 @@ namespace Lyyneheym.SlyviaInterpreter
                 string str = this.sourceCode.Substring(this.nextCharPointer, 2).ToLower();
                 if (str == "se")
                 {
-                    res.aType = TokenType.Token_o_stopvocal;
+                    res.aType = TokenType.Token_o_se;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 2]) != CharacterType.Letter)
                     {

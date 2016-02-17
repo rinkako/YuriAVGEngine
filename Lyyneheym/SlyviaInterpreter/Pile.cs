@@ -782,7 +782,7 @@ namespace Lyyneheym.SlyviaInterpreter
                     SceneAction lastNop = saNode.trueRouting[saNode.trueRouting.Count - 1];
                     if (lastNop.aType != SActionType.act_break && lastNop.aType != SActionType.act_endfor)
                     {
-                        lastNop.next = parent.next;
+                        lastNop.next = saNode.next;
                     }
                     else
                     {
@@ -841,7 +841,7 @@ namespace Lyyneheym.SlyviaInterpreter
                     SceneAction lastFor = saNode.trueRouting[saNode.trueRouting.Count - 1];
                     if (lastFor.aType != SActionType.act_break && lastFor.aType != SActionType.act_endfor)
                     {
-                        lastFor.next = parent.next;
+                        lastFor.next = saNode.next;
                     }
                     else
                     {
@@ -885,7 +885,7 @@ namespace Lyyneheym.SlyviaInterpreter
                     SceneAction lastIfTrue = saNode.trueRouting[saNode.trueRouting.Count - 1];
                     if (lastIfTrue.aType != SActionType.act_break && lastIfTrue.aType != SActionType.act_endfor)
                     {
-                        lastIfTrue.next = parent.next;
+                        lastIfTrue.next = saNode.next;
                     }
                     else
                     {
@@ -907,10 +907,10 @@ namespace Lyyneheym.SlyviaInterpreter
                         saNode.falseRouting.Remove(this.removeQueueDict[saNode].Dequeue());
                     }
                     // 最后一个孩子的下一节点修改为if子句节点的后继
-                    SceneAction lastIfFalse = saNode.falseRouting[saNode.trueRouting.Count - 1];
+                    SceneAction lastIfFalse = saNode.falseRouting[saNode.falseRouting.Count - 1];
                     if (lastIfFalse.aType != SActionType.act_break && lastIfFalse.aType != SActionType.act_endfor)
                     {
-                        lastIfFalse.next = parent.next;
+                        lastIfFalse.next = saNode.next;
                     }
                     else
                     {
