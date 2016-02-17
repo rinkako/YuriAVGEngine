@@ -186,6 +186,8 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
         // 等待用户操作
         act_waituser,
         // 等待动画结束
-        act_waitani
+        act_waitani,
+        // 描绘字符串
+        act_draw
     }
 }

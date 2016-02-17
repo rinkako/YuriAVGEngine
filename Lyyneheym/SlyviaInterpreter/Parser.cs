@@ -1015,6 +1015,11 @@ namespace Lyyneheym.SlyviaInterpreter
                         statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
                         statementNode.paramDict["sign"] = new SyntaxTreeNode(SyntaxType.para_sign, statementNode);
                         break;
+                    case TokenType.Token_o_draw:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_draw;
+                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
+                        statementNode.paramDict["dash"] = new SyntaxTreeNode(SyntaxType.para_dash, statementNode);
+                        break;
                     case TokenType.Token_o_for:
                         statementNode.nodeSyntaxType = SyntaxType.synr_for;
                         statementNode.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);

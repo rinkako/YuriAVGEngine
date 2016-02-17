@@ -987,6 +987,15 @@ namespace Lyyneheym.SlyviaInterpreter
                         okFlag = true;
                     }
                 }
+                else if (str == "draw")
+                {
+                    res.aType = TokenType.Token_o_draw;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
                 else if (str == "size")
                 {
                     res.aType = TokenType.Token_p_size;
@@ -1277,7 +1286,7 @@ namespace Lyyneheym.SlyviaInterpreter
         /// <summary>
         /// 剧本对白段落终止符的自动机路径
         /// </summary>
-        /// <param name="res"></param>
+        /// <param name="res">结果实例</param>
         /// <returns>是否命中</returns>
         private bool EndSceneCluster(Token res)
         {
@@ -1428,8 +1437,9 @@ namespace Lyyneheym.SlyviaInterpreter
                     ct == CharacterType.Quotation)
                 {
                     // 跳游程
+                    char retChar = this.sourceCode[this.nextCharPointer + 1];
                     this.Jump(2);
-                    return this.sourceCode[this.nextCharPointer + 1];
+                    return retChar;
                 }
             }
             // 跳游程

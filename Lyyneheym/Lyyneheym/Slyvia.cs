@@ -186,20 +186,26 @@ namespace Lyyneheym
                     // 处理可选表达式计算
                     if (interruptSa != null)
                     {
-                        this.updateRender.Accept(interruptSa);
+                        var iterSa = interruptSa;
+                        while (iterSa != null)
+                        {
+                            this.updateRender.Accept(interruptSa);
+                            iterSa = iterSa.next;
+                        }
                     }
                     // 处理跳转
-                    this.RunMana.ExitCall();
+                    this.RunMana.ExitCall(); // 退出中断
+                    this.RunMana.ExitCall(); // 退出用户等待
                     if (interruptExitPoint != null)
                     {
-                        var curScene = this.ResMana.GetScene(this.RunMana.CallStack.ESP.bindingSceneName);
+                        var curScene = this.ResMana.GetScene(this.RunMana.CallStack.EBP.bindingSceneName);
                         if (!curScene.labelDictionary.ContainsKey(interruptExitPoint))
                         {
-                            DebugUtils.ConsoleLine(String.Format("Ignored Button jump Instruction (target not exist): {0}", interruptExitPoint),
+                            DebugUtils.ConsoleLine(String.Format("Ignored Interrupt jump Instruction (target not exist): {0}", interruptExitPoint),
                                         "Director", OutputStyle.Error);
                             break;
                         }
-                        this.RunMana.CallStack.ESP.IP = curScene.labelDictionary[interruptExitPoint];
+                        this.RunMana.CallStack.EBP.IP = curScene.labelDictionary[interruptExitPoint];
                     }
                     break;
                 // 演绎脚本

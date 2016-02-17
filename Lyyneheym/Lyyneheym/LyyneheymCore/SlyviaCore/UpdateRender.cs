@@ -671,6 +671,12 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         this.runMana.CalculatePolish(action.argsDict["dash"]).ToString()
                         );
                     break;
+                case SActionType.act_draw:
+                    this.DrawCommand(
+                        this.ParseInt(action.argsDict["id"], 0),
+                        action.argsDict["dash"]
+                        );
+                    break;
                 case SActionType.act_dialog:
                     this.Dialog(
                         action.aTag
@@ -771,6 +777,41 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         private void Break(SceneAction breakSa)
         {
             this.runMana.CallStack.ESP.IP = breakSa.next;
+        }
+
+        /// <summary>
+        /// 演绎函数：放置按钮
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="enable"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="target"></param>
+        /// <param name="normal"></param>
+        /// <param name="over"></param>
+        /// <param name="on"></param>
+        private void Button(int id, bool enable, double x, double y, string target, string normal, string over = "", string on = "")
+        {
+            SpriteDescriptor normalDesc = new SpriteDescriptor()
+            {
+                resourceName = normal
+            }, overDesc = null, onDesc = null;
+            if (over != "")
+            {
+                overDesc = new SpriteDescriptor()
+                {
+                    resourceName = over
+                };
+            }
+            if (on != "")
+            {
+                onDesc = new SpriteDescriptor()
+                {
+                    resourceName = on
+                };
+            }
+            this.scrMana.AddButton(id, enable, x, y, target, normalDesc, overDesc, onDesc);
+            this.viewMana.Draw(id, ResourceType.Button);
         }
 
         /// <summary>
@@ -1200,6 +1241,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 DebugUtils.ConsoleLine(String.Format("msglayeropt id out of range: MsgLayer {0}", msglayId),
                     "UpdateRender", OutputStyle.Error);
             }
+        }
+
+        /// <summary>
+        /// 把字符串描绘到指定的文字层上
+        /// </summary>
+        /// <param name="id">文字层id</param>
+        /// <param name="str"></param>
+        private void DrawCommand(int id, string str)
+        {
+            this.Drawtext(id, str);
         }
         #endregion
 

@@ -195,6 +195,8 @@ namespace Lyyneheym.SlyviaInterpreter
         Token_o_waituser,
         // 等待动画完成
         Token_o_waitani,
+        // 描绘字符串
+        Token_o_draw,
         // 参数：函数签名
         Token_p_sign,
         // 参数：名称

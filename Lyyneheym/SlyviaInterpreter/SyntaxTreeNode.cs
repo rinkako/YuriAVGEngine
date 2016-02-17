@@ -332,6 +332,8 @@ namespace Lyyneheym.SlyviaInterpreter
         synr_msglayer,
         // 修改层属性
         synr_msglayeropt,
+        // 描绘字符串
+        synr_draw,
         // 等待用户操作
         synr_waituser,
         // 等待动画完成

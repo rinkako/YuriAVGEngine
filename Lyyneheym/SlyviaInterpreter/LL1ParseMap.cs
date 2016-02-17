@@ -93,7 +93,7 @@ namespace Lyyneheym.SlyviaInterpreter
         /// <param name="left">语法类型</param>
         /// <param name="leave">Token类型</param>
         /// <param name="nilserver">空节点展开式处理函数</param>
-        /// <returns></returns>
+        /// <returns>候选式实例</returns>
         public CandidateFunction GetCFunciton(SyntaxType left, TokenType leave, iHandle nilserver)
         {
             try

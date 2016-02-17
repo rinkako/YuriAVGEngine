@@ -66,6 +66,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public static int GAME_CHARACTERSTAND_COUNT = 5;
         // 图像层：背景层数量
         public static int GAME_BACKGROUND_COUNT = 2;
+        // 图像层：按钮层数量
+        public static int GAME_BUTTON_COUNT = 50;
         // 图像层：默认位置
         public static Point GAME_IMAGELAYER_POSITION = new Point(0, 0);
         // 图像层：图像层默认上边距
@@ -104,6 +106,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public static int GAME_Z_MESSAGELAYER = 51;
         // 全局：图片Z坐标最小值
         public static int GAME_Z_PICTURES = 101;
+        // 全局：按钮Z坐标最小值
+        public static int GAME_Z_BUTTON = 201;
         // 音频：语音文件后缀
         public static string GAME_VOCAL_POSTFIX = ".mp3";
         // 存档：截图存档

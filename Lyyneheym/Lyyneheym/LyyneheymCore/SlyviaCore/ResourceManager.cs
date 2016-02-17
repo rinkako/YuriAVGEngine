@@ -507,6 +507,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         BGS,
         SE,
         VOCAL,
-        MessageLayerBackground
+        MessageLayerBackground,
+        Button
     }
 }

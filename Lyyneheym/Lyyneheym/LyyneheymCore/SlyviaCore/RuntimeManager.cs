@@ -613,12 +613,13 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 // 字符串
                 else if (item.StartsWith("\"") && item.EndsWith("\""))
                 {
+                    string trimItem = item.Substring(1, item.Length - 2);
                     poi = new PolishItem()
                     {
                         number = 0.0f,
-                        cluster = item,
+                        cluster = trimItem,
                         itemType = PolishItemType.STRING,
-                        reference = item
+                        reference = trimItem
                     };
                 }
                 // 变量时

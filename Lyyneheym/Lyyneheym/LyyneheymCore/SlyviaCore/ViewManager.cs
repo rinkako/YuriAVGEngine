@@ -40,6 +40,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             {
                 this.ReDrawMessageLayer(i, this.scrMana.GetMsgLayerDescriptor(i), false);
             }
+            // 重绘按钮
+            for (int i = 0; i < this.ButtonLayerVec.Count; i++)
+            {
+                this.ReDrawButton(i, this.scrMana.GetButtonDescriptor(i));
+            }
         }
 
         /// <summary>
@@ -62,6 +67,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     break;
                 case ResourceType.MessageLayerBackground:
                     this.ReDrawMessageLayer(id, this.scrMana.GetMsgLayerDescriptor(id), true);
+                    break;
+                case ResourceType.Button:
+                    this.ReDrawButton(id, this.scrMana.GetButtonDescriptor(id));
                     break;
             }
         }
@@ -125,6 +133,23 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 重绘按钮
+        /// </summary>
+        /// <param name="buttonId">按钮id</param>
+        /// <param name="descriptor">按钮描述子</param>
+        private void ReDrawButton(int buttonId, SpriteButtonDescriptor descriptor)
+        {
+            SpriteButton sbutton = this.ButtonLayerVec[buttonId];
+            sbutton.ImageNormal = descriptor.normalDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.normalDescriptor.resourceName, new Int32Rect(-1, 0, 0, 0));
+            sbutton.ImageMouseOver = descriptor.overDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.overDescriptor.resourceName, new Int32Rect(-1, 0, 0, 0));
+            sbutton.ImageMouseOn = descriptor.onDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.onDescriptor.resourceName, new Int32Rect(-1, 0, 0, 0));
+            this.ButtonLayerVec[buttonId] = sbutton;
+            // 重绘
+            this.RemoveButton(sbutton);
+            this.DrawButton(sbutton, descriptor);
+        }
+
+        /// <summary>
         /// 为主窗体描绘一个精灵
         /// </summary>
         /// <param name="sprite">精灵</param>
@@ -162,8 +187,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             if (msglay.backgroundSprite != null && msglay.backgroundSprite.myImage != null)
             {
                 ImageBrush ib = new ImageBrush(msglay.backgroundSprite.myImage);
-                ib.Stretch = Stretch.Fill;
-                ib.TileMode = TileMode.Tile;
+                ib.Stretch = Stretch.None;
+                ib.AlignmentX = AlignmentX.Left;
+                ib.AlignmentY = AlignmentY.Top;
                 msgBlock.Background = ib;
             }
             msglay.Width = descriptor.Width;
@@ -187,9 +213,35 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 为主窗体描绘一个按钮
+        /// </summary>
+        /// <param name="sbutton">按钮实例</param>
+        /// <param name="descriptor">按钮描述子</param>
+        private void DrawButton(SpriteButton sbutton, SpriteButtonDescriptor descriptor)
+        {
+            Image buttonImage = new Image();
+            BitmapImage bmp = sbutton.ImageNormal.myImage;
+            buttonImage.Width = bmp.PixelWidth;
+            buttonImage.Height = bmp.PixelHeight;
+            buttonImage.Source = bmp;
+            buttonImage.Opacity = descriptor.Opacity;
+            sbutton.displayBinding = buttonImage;
+            Canvas.SetLeft(buttonImage, descriptor.X);
+            Canvas.SetTop(buttonImage, descriptor.Y);
+            Canvas.SetZIndex(buttonImage, descriptor.Z);
+            buttonImage.Visibility = Visibility.Visible;
+            buttonImage.MouseDown += sbutton.MouseOnHandler;
+            buttonImage.MouseEnter += sbutton.MouseEnterHandler;
+            buttonImage.MouseLeave += sbutton.MouseLeaveHandler;
+            buttonImage.MouseUp += sbutton.MouseUpHandler;
+            this.view.BO_MainGrid.Children.Add(buttonImage);
+            sbutton.InitAnimationRenderTransform();
+        }
+
+        /// <summary>
         /// 将指定精灵从画面移除并释放
         /// </summary>
-        /// <param name="spriteId">精灵ID</param>
+        /// <param name="spriteId">精灵id</param>
         /// <param name="rType">类型</param>
         public void RemoveSprite(int spriteId, ResourceType rType)
         {
@@ -216,13 +268,25 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 将指定文字层从画面移除并释放
         /// </summary>
-        /// <param name="msglayId">文字层ID</param>
+        /// <param name="msglayId">文字层id</param>
         public void RemoveMessageLayer(int msglayId)
         {
             this.scrMana.RemoveMsgLayer(msglayId);
             MessageLayer removeOne = this.MessageLayerVec[msglayId];
             this.MessageLayerVec[msglayId] = null;
             this.RemoveMessageLayer(removeOne);
+        }
+
+        /// <summary>
+        /// 将指定按钮从画面移除并释放
+        /// </summary>
+        /// <param name="id">按钮id</param>
+        public void RemoveButton(int id)
+        {
+            this.scrMana.RemoveButton(id);
+            SpriteButton removeOne = this.ButtonLayerVec[id];
+            this.ButtonLayerVec[id] = null;
+            this.RemoveButton(removeOne);
         }
 
         /// <summary>
@@ -260,6 +324,35 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 将按钮从画面移除
+        /// </summary>
+        /// <param name="sbutton">按钮实例</param>
+        private void RemoveButton(SpriteButton sbutton)
+        {
+            if (sbutton != null)
+            {
+                Image buttonView = sbutton.displayBinding;
+                if (buttonView != null && this.view.BO_MainGrid.Children.Contains(buttonView))
+                {
+                    this.view.BO_MainGrid.Children.Remove(buttonView);
+                    if (sbutton.ImageNormal != null)
+                    {
+                        sbutton.ImageNormal.displayBinding = null;
+                    }
+                    if (sbutton.ImageMouseOver != null)
+                    {
+                        sbutton.ImageMouseOver.displayBinding = null;
+                    }
+                    if (sbutton.ImageMouseOn != null)
+                    {
+                        sbutton.ImageMouseOn.displayBinding = null;
+                    }
+                }
+                sbutton.displayBinding = null;
+            }
+        }
+
+        /// <summary>
         /// 获取画面上的精灵实例
         /// </summary>
         /// <param name="id">精灵id</param>
@@ -281,11 +374,21 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <summary>
         /// 获取画面上的文字层实例
         /// </summary>
-        /// <param name="id">文字层ID</param>
+        /// <param name="id">文字层id</param>
         /// <returns>文字层实例</returns>
         public MessageLayer GetMessageLayer(int id)
         {
             return this.MessageLayerVec[id];
+        }
+
+        /// <summary>
+        /// 获取画面上的按钮实例
+        /// </summary>
+        /// <param name="id">按钮id</param>
+        /// <returns>按钮实例</returns>
+        public SpriteButton GetSpriteButton(int id)
+        {
+            return this.ButtonLayerVec[id];
         }
 
         /// <summary>
@@ -329,6 +432,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         private List<MessageLayer> MessageLayerVec;
 
         /// <summary>
+        /// 按钮层向量
+        /// </summary>
+        private List<SpriteButton> ButtonLayerVec;
+
+        /// <summary>
         /// 私有的构造器
         /// </summary>
         private ViewManager()
@@ -337,6 +445,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.CharacterStandSpriteVec = new List<MySprite>();
             this.PictureSpriteVec = new List<MySprite>();
             this.MessageLayerVec = new List<MessageLayer>();
+            this.ButtonLayerVec = new List<SpriteButton>();
             for (int i = 0; i < GlobalDataContainer.GAME_BACKGROUND_COUNT; i++)
             {
                 this.BackgroundSpriteVec.Add(null);
@@ -348,6 +457,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             for (int i = 0; i < GlobalDataContainer.GAME_IMAGELAYER_COUNT; i++)
             {
                 this.PictureSpriteVec.Add(null);
+            }
+            for (int i = 0; i < GlobalDataContainer.GAME_BUTTON_COUNT; i++)
+            {
+                this.ButtonLayerVec.Add(null);
             }
             for (int i = 0; i < GlobalDataContainer.GAME_MESSAGELAYER_COUNT; i++)
             {

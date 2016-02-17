@@ -203,6 +203,33 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 为屏幕增加一个按钮描述子
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="enable"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="jumpTarget"></param>
+        /// <param name="normalDesc"></param>
+        /// <param name="overDesc"></param>
+        /// <param name="onDesc"></param>
+        public void AddButton(int id, bool enable, double X, double Y, string jumpTarget, SpriteDescriptor normalDesc, SpriteDescriptor overDesc = null, SpriteDescriptor onDesc = null)
+        {
+            SpriteButtonDescriptor sbd = new SpriteButtonDescriptor()
+            {
+                Enable = enable,
+                X = X,
+                Y = Y,
+                Z = GlobalDataContainer.GAME_Z_BUTTON + id,
+                jumpLabel = jumpTarget,
+                normalDescriptor = normalDesc,
+                overDescriptor = overDesc,
+                onDescriptor = onDesc
+            };
+            this.ButtonDescVec[id] = sbd;
+        }
+
+        /// <summary>
         /// 为屏幕增加一个文字层描述子
         /// </summary>
         /// <param name="id"></param>
@@ -277,6 +304,15 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 从屏幕上移除一个按钮
+        /// </summary>
+        /// <param name="id">按钮id</param>
+        public void RemoveButton(int id)
+        {
+            this.ButtonDescVec[id] = null;
+        }
+
+        /// <summary>
         /// 获取一个精灵的描述子
         /// </summary>
         /// <param name="spriteId">精灵ID</param>
@@ -316,6 +352,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         }
 
         /// <summary>
+        /// 获取一个按钮描述子
+        /// </summary>
+        /// <param name="buttonId">按钮id</param>
+        /// <returns>描述子实例</returns>
+        public SpriteButtonDescriptor GetButtonDescriptor(int buttonId)
+        {
+            return this.ButtonDescVec[buttonId];
+        }
+
+        /// <summary>
         /// 背景描述向量
         /// </summary>
         private List<SpriteDescriptor> BackgroundDescVec;
@@ -334,6 +380,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 文字层描述向量
         /// </summary>
         private List<MessageLayerDescriptor> MsgLayerDescVec;
+
+        /// <summary>
+        /// 按钮层描述向量
+        /// </summary>
+        private List<SpriteButtonDescriptor> ButtonDescVec;
 
         /// <summary>
         /// 初始化文字层描述子
@@ -399,6 +450,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             this.BackgroundDescVec = new List<SpriteDescriptor>();
             this.CharacterDescVec = new List<SpriteDescriptor>();
             this.PictureDescVec = new List<SpriteDescriptor>();
+            this.ButtonDescVec = new List<SpriteButtonDescriptor>();
             this.MsgLayerDescVec = new List<MessageLayerDescriptor>();
             for (int i = 0; i < GlobalDataContainer.GAME_BACKGROUND_COUNT; i++)
             {
@@ -411,6 +463,10 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             for (int i = 0; i < GlobalDataContainer.GAME_IMAGELAYER_COUNT; i++)
             {
                 this.PictureDescVec.Add(null);
+            }
+            for (int i = 0; i < GlobalDataContainer.GAME_BUTTON_COUNT; i++)
+            {
+                this.ButtonDescVec.Add(null);
             }
             this.InitMessageLayerDescriptors();
         }
