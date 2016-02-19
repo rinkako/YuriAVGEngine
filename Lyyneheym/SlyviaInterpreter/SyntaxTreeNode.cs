@@ -338,6 +338,10 @@ namespace Lyyneheym.SlyviaInterpreter
         synr_waituser,
         // 等待动画完成
         synr_waitani,
+        // 移除按钮
+        synr_deletebutton,
+        // 参数：类型
+        para_type,
         // 参数：函数签名
         para_sign,
         // 参数：选择支链

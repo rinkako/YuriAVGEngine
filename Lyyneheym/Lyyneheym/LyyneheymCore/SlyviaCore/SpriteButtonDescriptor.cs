@@ -38,5 +38,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         public double Opacity { get; set; }
 
         public bool Enable { get; set; }
+
+        public bool Eternal { get; set; }
     }
 }

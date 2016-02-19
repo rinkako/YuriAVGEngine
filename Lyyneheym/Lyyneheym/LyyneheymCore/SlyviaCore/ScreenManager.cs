@@ -213,7 +213,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="normalDesc"></param>
         /// <param name="overDesc"></param>
         /// <param name="onDesc"></param>
-        public void AddButton(int id, bool enable, double X, double Y, string jumpTarget, SpriteDescriptor normalDesc, SpriteDescriptor overDesc = null, SpriteDescriptor onDesc = null)
+        public void AddButton(int id, bool enable, double X, double Y, string jumpTarget, string type, SpriteDescriptor normalDesc, SpriteDescriptor overDesc = null, SpriteDescriptor onDesc = null)
         {
             SpriteButtonDescriptor sbd = new SpriteButtonDescriptor()
             {
@@ -224,7 +224,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 jumpLabel = jumpTarget,
                 normalDescriptor = normalDesc,
                 overDescriptor = overDesc,
-                onDescriptor = onDesc
+                onDescriptor = onDesc,
+                Opacity = 1.0,
+                Eternal = type == "once" ? false : true
             };
             this.ButtonDescVec[id] = sbd;
         }
@@ -496,5 +498,6 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         Mid,
         MidRight,
         Right,
+        All
     }
 }

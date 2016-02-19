@@ -979,6 +979,11 @@ namespace Lyyneheym.SlyviaInterpreter
                         statementNode.paramDict["normal"] = new SyntaxTreeNode(SyntaxType.para_normal, statementNode);
                         statementNode.paramDict["over"] = new SyntaxTreeNode(SyntaxType.para_over, statementNode);
                         statementNode.paramDict["on"] = new SyntaxTreeNode(SyntaxType.para_on, statementNode);
+                        statementNode.paramDict["type"] = new SyntaxTreeNode(SyntaxType.para_type, statementNode);
+                        break;
+                    case TokenType.Token_o_deletebutton:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_deletebutton;
+                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
                         break;
                     case TokenType.Token_o_stopbgm:
                         statementNode.nodeSyntaxType = SyntaxType.synr_stopbgm;
@@ -1256,6 +1261,21 @@ namespace Lyyneheym.SlyviaInterpreter
                             statementNode.paramDict["target"].children.Add(w_target);
                             // 加入不推导队列
                             this.iQueue.Enqueue(w_target);
+                            break;
+                        case TokenType.Token_p_type:
+                            statementNode.paramDict["type"].children = new List<SyntaxTreeNode>();
+                            SyntaxTreeNode w_type = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["type"]);
+                            w_type.paramTokenStream = new List<Token>();
+                            prescanPointer += 2;
+                            while (prescanPointer < this.istream.Count
+                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
+                                && this.istream[prescanPointer].aType != TokenType.startend)
+                            {
+                                w_type.paramTokenStream.Add(this.istream[prescanPointer++]);
+                            }
+                            statementNode.paramDict["type"].children.Add(w_type);
+                            // 加入不推导队列
+                            this.iQueue.Enqueue(w_type);
                             break;
                         case TokenType.Token_p_x:
                             statementNode.paramDict["x"].children = new List<SyntaxTreeNode>();

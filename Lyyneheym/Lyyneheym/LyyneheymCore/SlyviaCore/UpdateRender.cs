@@ -51,6 +51,22 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             }
             return (int)(Convert.ToDouble(this.runMana.CalculatePolish(polish)));
         }
+
+        /// <summary>
+        /// <para>把逆波兰式直接看做字符串处理</para>
+        /// <para>如果逆波兰式为空，则返回参数nullValue的值</para>
+        /// </summary>
+        /// <param name="polish">逆波兰式</param>
+        /// <param name="nullValue">默认值</param>
+        /// <returns>String实例</returns>
+        private string ParseDirectString(string polish, string nullValue)
+        {
+            if (polish == "")
+            {
+                return nullValue;
+            }
+            return polish;
+        }
         #endregion
 
         #region 键位按钮状态
@@ -541,16 +557,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             {
                 case SActionType.act_a:
                     this.A(
-                        action.argsDict["name"],
+                        this.ParseDirectString(action.argsDict["name"], ""),
                         this.ParseInt(action.argsDict["vid"], -1),
-                        action.argsDict["face"],
-                        action.argsDict["loc"]
+                        this.ParseDirectString(action.argsDict["face"], ""),
+                        this.ParseDirectString(action.argsDict["loc"], "")
                         );
                     break;
                 case SActionType.act_bg:
                     this.Background(
                         this.ParseInt(action.argsDict["id"], 0),
-                        action.argsDict["filename"],
+                        this.ParseDirectString(action.argsDict["filename"], ""),
                         this.ParseDouble(action.argsDict["x"], 0),
                         this.ParseDouble(action.argsDict["y"], 0),
                         this.ParseDouble(action.argsDict["opacity"], 1),
@@ -564,7 +580,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 case SActionType.act_picture:
                     this.Picture(
                         this.ParseInt(action.argsDict["id"], 0),
-                        action.argsDict["filename"],
+                        this.ParseDirectString(action.argsDict["filename"], ""),
                         this.ParseDouble(action.argsDict["x"], 0),
                         this.ParseDouble(action.argsDict["y"], 0),
                         this.ParseDouble(action.argsDict["opacity"], 1),
@@ -580,7 +596,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     this.Move(
                         this.ParseInt(action.argsDict["id"], 0),
                         moveResType == "picture" ? ResourceType.Pictures : (moveResType == "stand" ? ResourceType.Stand : ResourceType.Background),
-                        action.argsDict["target"],
+                        this.ParseDirectString(action.argsDict["target"], ""),
                         this.ParseDouble(action.argsDict["dash"], 1),
                         this.ParseDouble(action.argsDict["acc"], 0),
                         TimeSpan.FromMilliseconds(this.ParseDouble(action.argsDict["time"], 0))
@@ -588,7 +604,7 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     break;
                 case SActionType.act_deletepicture:
                     this.Deletepicture(
-                        this.ParseInt(action.argsDict["id"], 0),
+                        this.ParseInt(action.argsDict["id"], -1),
                         ResourceType.Pictures
                         );
                     break;
@@ -608,18 +624,18 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     break;
                 case SActionType.act_deletecstand:
                     this.Deletecstand(
-                        (CharacterStandType)this.ParseInt(action.argsDict["id"], 0)
+                        (CharacterStandType)this.ParseInt(action.argsDict["id"], 5)
                         );
                     break;
                 case SActionType.act_se:
                     this.Se(
-                        action.argsDict["filename"],
+                        this.ParseDirectString(action.argsDict["filename"], ""),
                         this.ParseDouble(action.argsDict["vol"], 1000)
                         );
                     break;
                 case SActionType.act_bgm:
                     this.Bgm(
-                        action.argsDict["filename"],
+                        this.ParseDirectString(action.argsDict["filename"], ""),
                         this.ParseDouble(action.argsDict["vol"], 1000)
                         );
                     break;
@@ -628,9 +644,9 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     break;
                 case SActionType.act_vocal:
                     this.Vocal(
-                        action.argsDict["name"],
+                        this.ParseDirectString(action.argsDict["name"], ""),
                         this.ParseInt(action.argsDict["vid"], -1),
-                        1000
+                        this.musician.VocalDefaultVolume
                         );
                     break;
                 case SActionType.act_stopvocal:
@@ -650,8 +666,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     break;
                 case SActionType.act_var:
                     this.Var(
-                        action.argsDict["name"],
-                        action.argsDict["dash"]
+                        this.ParseDirectString(action.argsDict["name"], "$__LyynehermTempVar"),
+                        this.ParseDirectString(action.argsDict["dash"], "1")
                         );
                     break;
                 case SActionType.act_break:
@@ -676,10 +692,16 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                         true,
                         this.ParseDouble(action.argsDict["x"], 0),
                         this.ParseDouble(action.argsDict["y"], 0),
-                        action.argsDict["target"],
-                        action.argsDict["normal"],
-                        action.argsDict["over"],
-                        action.argsDict["on"]
+                        this.ParseDirectString(action.argsDict["target"], ""),
+                        this.ParseDirectString(action.argsDict["normal"], ""),
+                        this.ParseDirectString(action.argsDict["over"], ""),
+                        this.ParseDirectString(action.argsDict["on"], ""),
+                        this.ParseDirectString(action.argsDict["type"], "once")
+                        );
+                    break;
+                case SActionType.act_deletebutton:
+                    this.Deletebutton(
+                        this.ParseInt(action.argsDict["id"], -1)
                         );
                     break;
                 case SActionType.act_style:
@@ -692,14 +714,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                 case SActionType.act_msglayeropt:
                     this.MsgLayerOpt(
                         this.ParseInt(action.argsDict["id"], 0),
-                        action.argsDict["target"],
+                        this.ParseDirectString(action.argsDict["target"], ""),
                         this.runMana.CalculatePolish(action.argsDict["dash"]).ToString()
                         );
                     break;
                 case SActionType.act_draw:
                     this.DrawCommand(
                         this.ParseInt(action.argsDict["id"], 0),
-                        action.argsDict["dash"]
+                        this.ParseDirectString(action.argsDict["dash"], "")
                         );
                     break;
                 case SActionType.act_dialog:
@@ -815,7 +837,8 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="normal"></param>
         /// <param name="over"></param>
         /// <param name="on"></param>
-        private void Button(int id, bool enable, double x, double y, string target, string normal, string over = "", string on = "")
+        /// <param name="type"></param>
+        private void Button(int id, bool enable, double x, double y, string target, string normal, string over, string on, string type)
         {
             SpriteDescriptor normalDesc = new SpriteDescriptor()
             {
@@ -835,8 +858,24 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
                     resourceName = on
                 };
             }
-            this.scrMana.AddButton(id, enable, x, y, target, normalDesc, overDesc, onDesc);
+            this.scrMana.AddButton(id, enable, x, y, target, type, normalDesc, overDesc, onDesc);
             this.viewMana.Draw(id, ResourceType.Button);
+        }
+
+        /// <summary>
+        /// 从画面移除一个按钮
+        /// </summary>
+        /// <param name="id">按钮id</param>
+        public void Deletebutton(int id)
+        {
+            if (id == -1)
+            {
+                this.viewMana.RemoveView(ResourceType.Button);
+            }
+            else
+            {
+                this.viewMana.RemoveButton(id);
+            }
         }
 
         /// <summary>
@@ -943,7 +982,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         private void Deletepicture(int id, ResourceType rType)
         {
-            this.viewMana.RemoveSprite(id, rType);
+            if (id == -1)
+            {
+                this.viewMana.RemoveView(rType);
+            }
+            else
+            {
+                this.viewMana.RemoveSprite(id, rType);
+            }
         }
 
         /// <summary>
@@ -1016,7 +1062,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// </summary>
         private void Deletecstand(CharacterStandType cst)
         {
-            this.viewMana.RemoveSprite(Convert.ToInt32(cst), ResourceType.Stand);
+            if (cst == CharacterStandType.All)
+            {
+                this.viewMana.RemoveView(ResourceType.Stand);
+            }
+            else
+            {
+                this.viewMana.RemoveSprite(Convert.ToInt32(cst), ResourceType.Stand);
+            }
         }
 
         /// <summary>

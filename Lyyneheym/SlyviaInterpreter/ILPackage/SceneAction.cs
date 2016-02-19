@@ -253,6 +253,8 @@ namespace Lyyneheym.SlyviaInterpreter.ILPackage
         // 等待动画结束
         act_waitani,
         // 描绘字符串
-        act_draw
+        act_draw,
+        // 移除按钮
+        act_deletebutton
     }
 }

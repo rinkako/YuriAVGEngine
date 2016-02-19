@@ -15,15 +15,22 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
     /// </summary>
     public class SpriteButton
     {
-        public SpriteButton()
+        public SpriteButton(int bid)
         {
+            this.id = bid;
             this.ntr = null;
             this.displayBinding = null;
             this.Enable = true;
+            this.Eternal = false;
             this.X = this.Y = 0;
             this.Z = GlobalDataContainer.GAME_Z_BUTTON;
             this.isMouseOn = this.isMouseOver = false;
         }
+
+        /// <summary>
+        /// 按钮编号
+        /// </summary>
+        public int id { get; set; }
 
         /// <summary>
         /// 按下时的中断
@@ -39,6 +46,11 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// 获取或设置按钮是否有效
         /// </summary>
         public bool Enable { get; set; }
+
+        /// <summary>
+        /// 获取或设置按钮是否在点击后仍存留屏幕上
+        /// </summary>
+        public bool Eternal { get; set; }
 
         /// <summary>
         /// 获取或设置按钮的X坐标
@@ -199,14 +211,17 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="e">鼠标参数</param>
         public void MouseLeaveHandler(object sender, MouseEventArgs e)
         {
-            this.isMouseOver = this.isMouseOn = false;
-            if (this.ImageMouseOver != null || this.ImageMouseOn != null)
+            if (this.Enable)
             {
-                BitmapImage myBitmapImage = this.ImageNormal.myImage;
-                this.ImageNormal.displayBinding = this.displayBinding;
-                this.displayBinding.Width = myBitmapImage.PixelWidth;
-                this.displayBinding.Height = myBitmapImage.PixelHeight;
-                this.displayBinding.Source = myBitmapImage;
+                this.isMouseOver = this.isMouseOn = false;
+                if (this.displayBinding != null && (this.ImageMouseOver != null || this.ImageMouseOn != null))
+                {
+                    BitmapImage myBitmapImage = this.ImageNormal.myImage;
+                    this.ImageNormal.displayBinding = this.displayBinding;
+                    this.displayBinding.Width = myBitmapImage.PixelWidth;
+                    this.displayBinding.Height = myBitmapImage.PixelHeight;
+                    this.displayBinding.Source = myBitmapImage;
+                }
             }
         }
 
@@ -217,16 +232,19 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="e">鼠标参数</param>
         public void MouseEnterHandler(object sender, MouseEventArgs e)
         {
-            this.isMouseOver = true;
-            if (this.ImageMouseOver != null)
+            if (this.Enable)
             {
-                BitmapImage myBitmapImage = this.ImageMouseOver.myImage;
-                this.ImageNormal.displayBinding = null;
-                this.ImageMouseOn.displayBinding = null;
-                this.ImageMouseOver.displayBinding = this.displayBinding;
-                this.displayBinding.Width = myBitmapImage.PixelWidth;
-                this.displayBinding.Height = myBitmapImage.PixelHeight;
-                this.displayBinding.Source = myBitmapImage;
+                this.isMouseOver = true;
+                if (this.displayBinding != null && this.ImageMouseOver != null)
+                {
+                    BitmapImage myBitmapImage = this.ImageMouseOver.myImage;
+                    this.ImageNormal.displayBinding = null;
+                    this.ImageMouseOn.displayBinding = null;
+                    this.ImageMouseOver.displayBinding = this.displayBinding;
+                    this.displayBinding.Width = myBitmapImage.PixelWidth;
+                    this.displayBinding.Height = myBitmapImage.PixelHeight;
+                    this.displayBinding.Source = myBitmapImage;
+                }
             }
         }
 
@@ -237,16 +255,19 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="e">鼠标参数</param>
         public void MouseOnHandler(object sender, MouseEventArgs e)
         {
-            this.isMouseOn = true;
-            if (this.ImageMouseOn != null)
+            if (this.Enable)
             {
-                BitmapImage myBitmapImage = this.ImageMouseOn.myImage;
-                this.ImageNormal.displayBinding = null;
-                this.ImageMouseOn.displayBinding = this.displayBinding;
-                this.ImageMouseOver.displayBinding = null;
-                this.displayBinding.Width = myBitmapImage.PixelWidth;
-                this.displayBinding.Height = myBitmapImage.PixelHeight;
-                this.displayBinding.Source = myBitmapImage;
+                this.isMouseOn = true;
+                if (this.displayBinding != null && this.ImageMouseOn != null)
+                {
+                    BitmapImage myBitmapImage = this.ImageMouseOn.myImage;
+                    this.ImageNormal.displayBinding = null;
+                    this.ImageMouseOn.displayBinding = this.displayBinding;
+                    this.ImageMouseOver.displayBinding = null;
+                    this.displayBinding.Width = myBitmapImage.PixelWidth;
+                    this.displayBinding.Height = myBitmapImage.PixelHeight;
+                    this.displayBinding.Source = myBitmapImage;
+                }
             }
         }
 
@@ -257,38 +278,47 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="e">鼠标参数</param>
         public void MouseUpHandler(object sender, MouseEventArgs e)
         {
-            if (this.isMouseOn)
+            if (this.Enable)
             {
-                if (this.isMouseOver && this.ImageMouseOver != null)
+                if (this.isMouseOn)
                 {
-                    BitmapImage myBitmapImage2 = this.ImageNormal.myImage;
+                    if (this.displayBinding != null && this.isMouseOver && this.ImageMouseOver != null)
+                    {
+                        BitmapImage myBitmapImage2 = this.ImageMouseOver.myImage;
+                        this.ImageNormal.displayBinding = null;
+                        this.ImageMouseOn.displayBinding = null;
+                        this.ImageMouseOver.displayBinding = this.displayBinding;
+                        this.displayBinding.Width = myBitmapImage2.PixelWidth;
+                        this.displayBinding.Height = myBitmapImage2.PixelHeight;
+                        this.displayBinding.Source = myBitmapImage2;
+                        // 向运行时环境提交中断
+                        Slyvia.GetInstance().SubmitInterrupt(this.ntr);
+                        // 移除按钮
+                        if (!this.Eternal)
+                        {
+                            this.Enable = false;
+                            Slyvia.GetInstance().RemoveButton(this.id);
+                        }
+                        return;
+                    }
+                    BitmapImage myBitmapImage = this.ImageNormal.myImage;
                     this.ImageNormal.displayBinding = this.displayBinding;
                     this.ImageMouseOn.displayBinding = null;
                     this.ImageMouseOver.displayBinding = null;
-                    this.displayBinding.Width = myBitmapImage2.PixelWidth;
-                    this.displayBinding.Height = myBitmapImage2.PixelHeight;
-                    this.displayBinding.Source = myBitmapImage2;
+                    this.displayBinding.Width = myBitmapImage.PixelWidth;
+                    this.displayBinding.Height = myBitmapImage.PixelHeight;
+                    this.displayBinding.Source = myBitmapImage;
                     // 向运行时环境提交中断
-                    if (this.Enable)
-                    {
-                        Slyvia.GetInstance().SubmitInterrupt(this.ntr);
-                    }
-                    return;
-                }
-                BitmapImage myBitmapImage = this.ImageNormal.myImage;
-                this.ImageNormal.displayBinding = this.displayBinding;
-                this.ImageMouseOn.displayBinding = null;
-                this.ImageMouseOver.displayBinding = null;
-                this.displayBinding.Width = myBitmapImage.PixelWidth;
-                this.displayBinding.Height = myBitmapImage.PixelHeight;
-                this.displayBinding.Source = myBitmapImage;
-                // 向运行时环境提交中断
-                if (this.Enable)
-                {
                     Slyvia.GetInstance().SubmitInterrupt(this.ntr);
+                    // 移除按钮
+                    if (!this.Eternal)
+                    {
+                        this.Enable = false;
+                        Slyvia.GetInstance().RemoveButton(this.id);
+                    }
                 }
+                this.isMouseOn = false;
             }
-            this.isMouseOn = false;
         }
     }
 }

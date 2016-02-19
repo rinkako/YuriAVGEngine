@@ -58,7 +58,7 @@ namespace Lyyneheym.LyyneheymCore.ILPackage
                             // 处理label字典
                             if (currentSAP.aType == SActionType.act_lable)
                             {
-                                labelDict.Add(currentSAP.aTag, this.iResContainer[sceneName][currentSAP.saNodeName]);
+                                labelDict[currentSAP.aTag] = this.iResContainer[sceneName][currentSAP.saNodeName];
                             }
                             // 处理next
                             if (currentSAP.next != "" && currentSAP.next != null)

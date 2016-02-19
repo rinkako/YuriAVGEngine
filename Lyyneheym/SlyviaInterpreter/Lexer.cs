@@ -415,6 +415,15 @@ namespace Lyyneheym.SlyviaInterpreter
                         okFlag = true;
                     }
                 }
+                else if (str == "deletebutton")
+                {
+                    res.aType = TokenType.Token_o_deletebutton;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 12]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
                 // 如果命中了符号就返回
                 if (okFlag)
                 {
@@ -837,6 +846,15 @@ namespace Lyyneheym.SlyviaInterpreter
                 if (str == "move")
                 {
                     res.aType = TokenType.Token_o_move;
+                    // 如果后面还有英文字符，那说明这里不可以截断
+                    if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
+                    {
+                        okFlag = true;
+                    }
+                }
+                else if (str == "type")
+                {
+                    res.aType = TokenType.Token_p_type;
                     // 如果后面还有英文字符，那说明这里不可以截断
                     if (this.GetCharType(this.sourceCode[this.nextCharPointer + 4]) != CharacterType.Letter)
                     {

@@ -111,6 +111,7 @@ namespace Lyyneheym
         }
         #endregion
 
+        #region 辅助函数
         /// <summary>
         /// 向运行时环境发出中断
         /// </summary>
@@ -128,6 +129,16 @@ namespace Lyyneheym
         {
             this.RunMana.Delay("Director", DateTime.Now, waitSpan);
         }
+
+        /// <summary>
+        /// 从屏幕移除按钮，用于按钮自我消除
+        /// </summary>
+        /// <param name="id">按钮id</param>
+        public void RemoveButton(int id)
+        {
+            this.updateRender.Deletebutton(id);
+        }
+        #endregion
 
         /// <summary>
         /// 处理消息循环
@@ -329,14 +340,14 @@ namespace Lyyneheym
             // 处理IO
             this.updateRender.UpdateForMouseState();
             this.updateRender.UpdateForKeyboardState();
-
+            // 处理并行调用
             this.updateRender.ParallelProcessor();
         }
 
+        /// <summary>
+        /// 当前游戏的状态
+        /// </summary>
         private GameState curState;
-
-
-
 
 
         #region 导演类自身资源相关

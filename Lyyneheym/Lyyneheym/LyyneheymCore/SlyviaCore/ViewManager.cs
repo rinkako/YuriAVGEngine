@@ -139,13 +139,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
         /// <param name="descriptor">按钮描述子</param>
         private void ReDrawButton(int buttonId, SpriteButtonDescriptor descriptor)
         {
-            SpriteButton sbutton = this.ButtonLayerVec[buttonId] = new SpriteButton();
+            SpriteButton oldButton = this.ButtonLayerVec[buttonId];
+            SpriteButton sbutton = this.ButtonLayerVec[buttonId] = new SpriteButton(buttonId);
             sbutton.ImageNormal = descriptor.normalDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.normalDescriptor.resourceName, new Int32Rect(-1, 0, 0, 0));
             sbutton.ImageMouseOver = descriptor.overDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.overDescriptor.resourceName, new Int32Rect(-1, 0, 0, 0));
             sbutton.ImageMouseOn = descriptor.onDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.onDescriptor.resourceName, new Int32Rect(-1, 0, 0, 0));
             this.ButtonLayerVec[buttonId] = sbutton;
             // 重绘
-            this.RemoveButton(sbutton);
+            this.RemoveButton(oldButton);
             this.DrawButton(sbutton, descriptor);
         }
 
@@ -226,12 +227,14 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             buttonImage.Source = bmp;
             buttonImage.Opacity = descriptor.Opacity;
             sbutton.displayBinding = buttonImage;
+            sbutton.Eternal = descriptor.Eternal;
+            sbutton.Enable = descriptor.Enable;
             sbutton.ntr = new Interrupt()
             {
                 detail = "ButtonNTRInterrupt",
                 interruptSA = null,
                 type = InterruptType.ButtonJump,
-                returnTarget = descriptor.jumpLabel
+                returnTarget = descriptor.jumpLabel,
             };
             Canvas.SetLeft(buttonImage, descriptor.X);
             Canvas.SetTop(buttonImage, descriptor.Y);
@@ -243,6 +246,61 @@ namespace Lyyneheym.LyyneheymCore.SlyviaCore
             buttonImage.MouseUp += sbutton.MouseUpHandler;
             this.view.BO_MainGrid.Children.Add(buttonImage);
             sbutton.InitAnimationRenderTransform();
+        }
+
+        /// <summary>
+        /// 将指定类型的所有项目从画面移除
+        /// </summary>
+        public void RemoveView(ResourceType rType)
+        {
+            switch (rType)
+            {
+                case ResourceType.Button:
+                    for (int bi = 0; bi < this.ButtonLayerVec.Count; bi++)
+                    {
+                        if (this.ButtonLayerVec[bi] != null)
+                        {
+                            this.RemoveButton(bi);
+                        }
+                    }
+                    break;
+                case ResourceType.Background:
+                    for (int bi = 0; bi < this.BackgroundSpriteVec.Count; bi++)
+                    {
+                        if (this.BackgroundSpriteVec[bi] != null)
+                        {
+                            this.RemoveSprite(bi, ResourceType.Background);
+                        }
+                    }
+                    break;
+                case ResourceType.Stand:
+                    for (int bi = 0; bi < this.CharacterStandSpriteVec.Count; bi++)
+                    {
+                        if (this.CharacterStandSpriteVec[bi] != null)
+                        {
+                            this.RemoveSprite(bi, ResourceType.Stand);
+                        }
+                    }
+                    break;
+                case ResourceType.Pictures:
+                    for (int bi = 0; bi < this.PictureSpriteVec.Count; bi++)
+                    {
+                        if (this.PictureSpriteVec[bi] != null)
+                        {
+                            this.RemoveSprite(bi, ResourceType.Pictures);
+                        }
+                    }
+                    break;
+                case ResourceType.MessageLayerBackground:
+                    for (int bi = 0; bi < this.MessageLayerVec.Count; bi++)
+                    {
+                        if (this.MessageLayerVec[bi] != null)
+                        {
+                            this.RemoveMessageLayer(bi);
+                        }
+                    }
+                    break;
+            }
         }
 
         /// <summary>
