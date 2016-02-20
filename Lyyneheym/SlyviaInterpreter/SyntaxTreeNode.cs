@@ -8,7 +8,7 @@ namespace Yuri.YuriInterpreter
     /// <summary>
     /// 语法节点类：构成语法树的最小单元
     /// </summary>
-    public sealed class SyntaxTreeNode
+    internal sealed class SyntaxTreeNode
     {
         // 构造函数
         public SyntaxTreeNode(SyntaxType type = SyntaxType.Unknown, SyntaxTreeNode parent = null)

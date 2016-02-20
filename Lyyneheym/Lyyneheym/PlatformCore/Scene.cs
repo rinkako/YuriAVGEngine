@@ -11,7 +11,6 @@ namespace Yuri.PlatformCore
     /// <para>通常，一个场景拥有一个动作序列和生命在它上面的函数</para>
     /// <para>演绎剧本的过程就是遍历这个序列的过程</para>
     /// </summary>
-    [Serializable]
     public class Scene
     {
         /// <summary>
@@ -34,7 +33,7 @@ namespace Yuri.PlatformCore
         /// <returns>IL文件头字符串</returns>
         public string GetILSign()
         {
-            return String.Format(">>>SlyviaIL?{0}", this.scenario);
+            return String.Format(">>>YuriIL?{0}", this.scenario);
         }
 
         /// <summary>
@@ -44,7 +43,7 @@ namespace Yuri.PlatformCore
         /// <returns>IL文件头字符串</returns>
         public static string GetILSign(Scene scene)
         {
-            return String.Format(">>>SlyviaIL?{0}", scene.scenario);
+            return String.Format(">>>YuriIL?{0}", scene.scenario);
         }
 
         // 场景名称

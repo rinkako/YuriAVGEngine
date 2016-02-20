@@ -8,7 +8,7 @@ namespace Yuri.YuriInterpreter.ILPackage
     /// <summary>
     /// 函数调用类：处理场景里的函数
     /// </summary>
-    internal class SceneFunction
+    internal sealed class SceneFunction
     {
         /// <summary>
         /// 构造器
@@ -39,14 +39,6 @@ namespace Yuri.YuriInterpreter.ILPackage
             return String.Format("SlyviaFunction: {0}({1})", this.callname, paraStr);
         }
 
-        // 在变量字典中的名字
-        public string varDictName
-        {
-            get
-            {
-                return String.Format("__SlyviaFunc@{0}?{1}", this.callname, this.parentSceneName);
-            }
-        }
         // 绑定动作序列
         public SceneAction sa = null;
         // 函数名

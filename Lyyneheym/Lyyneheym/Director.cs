@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define NOTIME
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -147,26 +148,26 @@ namespace Yuri
         private void UpdateContext(object sender, EventArgs e)
         {
             // 取得调用堆栈顶部状态
-            GameStackMachineState stackState = this.RunMana.GameState();
+            StackMachineState stackState = this.RunMana.GameState();
             switch (stackState)
             {
-                case GameStackMachineState.Interpreting:
-                case GameStackMachineState.FunctionCalling:
+                case StackMachineState.Interpreting:
+                case StackMachineState.FunctionCalling:
                     this.curState = GameState.Performing;
                     break;
-                case GameStackMachineState.WaitUser:
+                case StackMachineState.WaitUser:
                     this.curState = GameState.WaitForUserInput;
                     break;
-                case GameStackMachineState.WaitAnimation:
+                case StackMachineState.WaitAnimation:
                     this.curState = GameState.WaitAni;
                     break;
-                case GameStackMachineState.Await:
+                case StackMachineState.Await:
                     this.curState = GameState.Waiting;
                     break;
-                case GameStackMachineState.Interrupt:
+                case StackMachineState.Interrupt:
                     this.curState = GameState.Interrupt;
                     break;
-                case GameStackMachineState.NOP:
+                case StackMachineState.NOP:
                     this.curState = GameState.Exit;
                     break;
             }
@@ -236,7 +237,7 @@ namespace Yuri
                     }
                     else if (nextInstruct.aType == SActionType.act_waitani)
                     {
-                        this.RunMana.AniWait(nextInstruct.saNodeName);
+                        this.RunMana.AnimateWait(nextInstruct.saNodeName);
                         break;
                     }
                     else if (nextInstruct.aType == SActionType.act_waituser)
@@ -285,7 +286,7 @@ namespace Yuri
                     {
                         var callFunc = nextInstruct.argsDict["name"];
                         var signFunc = nextInstruct.argsDict["sign"];
-                        if (!signFunc.StartsWith("(") && !signFunc.EndsWith(")"))
+                        if (signFunc != "" && (!signFunc.StartsWith("(") || !signFunc.EndsWith(")")))
                         {
                             DebugUtils.ConsoleLine(String.Format("Ignored Function calling (sign not valid): {0} -> {1}", callFunc, signFunc),
                                 "Director", OutputStyle.Error);
@@ -300,7 +301,7 @@ namespace Yuri
                             break;
                         }
                         var sceneFunc = sceneFuncList.First();
-                        var signItem = signFunc.Split(',');
+                        var signItem = signFunc.Replace("(", "").Replace(")", "").Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
                         if (sceneFunc.param.Count != signItem.Length)
                         {
                             DebugUtils.ConsoleLine(String.Format("Ignored Function calling (in {0}, require args num: {1}, but actual:{2})", callFunc, sceneFunc.param.Count, signItem.Length),
@@ -315,7 +316,7 @@ namespace Yuri
                             object varref = null;
                             if (trimedPara.StartsWith("$") || trimedPara.StartsWith("&"))
                             {
-                                varref = this.RunMana.Fetch(trimedPara.Substring(1));
+                                varref = this.RunMana.Fetch(trimedPara);
                             }
                             else if (trimedPara.StartsWith("\"") && trimedPara.EndsWith("\""))
                             {
@@ -389,11 +390,15 @@ namespace Yuri
             this.RunMana = new RuntimeManager();
             this.updateRender = new UpdateRender();
             this.updateRender.SetRuntimeManagerReference(this.RunMana);
+            this.RunMana.SetScreenManager(ScreenManager.GetInstance());
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromMilliseconds(GlobalDataContainer.DirectorTimerInterval);
             this.timer.Tick += UpdateContext;
+#if NOTIME
+#else
             this.timer.Start();
             this.InitRuntime();
+#endif
         }
 
         /// <summary>

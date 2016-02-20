@@ -13,7 +13,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置栈帧状态
         /// </summary>
-        public GameStackMachineState state = GameStackMachineState.NOP;
+        public StackMachineState state = StackMachineState.NOP;
 
         /// <summary>
         /// 获取或设置指令计数器
@@ -64,7 +64,7 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 枚举：游戏栈机的状态
     /// </summary>
-    public enum GameStackMachineState
+    public enum StackMachineState
     {
         // 无动作
         NOP,

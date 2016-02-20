@@ -970,7 +970,7 @@ namespace Yuri.YuriInterpreter
                 string[] varItem = signItem[1].Split(new char[] {',', ' '}, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string ivar in varItem)
                 {
-                    if (IsSymbol(ivar))
+                    if (ivar.StartsWith("$") && IsSymbol(ivar.Substring(1)))
                     {
                         funcParas.Add(ivar);
                     }

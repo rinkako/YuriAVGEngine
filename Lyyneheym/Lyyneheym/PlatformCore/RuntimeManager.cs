@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Input;
 using Yuri.ILPackage;
 
 namespace Yuri.PlatformCore
@@ -21,11 +16,11 @@ namespace Yuri.PlatformCore
         /// 获取当前调用堆栈顶部状态
         /// </summary>
         /// <returns>栈顶状态</returns>
-        public GameStackMachineState GameState()
+        public StackMachineState GameState()
         {
             if (this.CallStack.ESP == null)
             {
-                return GameStackMachineState.NOP;
+                return StackMachineState.NOP;
             }
             else
             {
@@ -60,6 +55,7 @@ namespace Yuri.PlatformCore
                 switch (ret.aType)
                 {
                     case SActionType.NOP:
+                    case SActionType.act_function:
                         // 优先进入trueRouting
                         if (ret.trueRouting != null && ret.trueRouting.Count > 0)
                         {
@@ -196,7 +192,7 @@ namespace Yuri.PlatformCore
         /// 等待动画完成
         /// </summary>
         /// <param name="causedBy">触发的原因</param>
-        public void AniWait(string causedBy)
+        public void AnimateWait(string causedBy)
         {
             this.CallStack.Submit(causedBy);
         }
@@ -214,7 +210,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void ExitUserWait()
         {
-            while (this.CallStack.Count() > 0 && this.CallStack.ESP.state == GameStackMachineState.WaitUser)
+            while (this.CallStack.Count() > 0 && this.CallStack.ESP.state == StackMachineState.WaitUser)
             {
                 this.CallStack.Consume();
             }
@@ -250,10 +246,10 @@ namespace Yuri.PlatformCore
         {
             this.CallStack.Submit(function, args);
             // 处理参数传递
-            var funcSymbols = this.Symbols.CallFunctionSymbolTable(function);
+            var funcSymbols = function.symbols;
             for (int i = 0; i < args.Count; i++)
             {
-                funcSymbols.Add(function.param[i], args[i]);
+                funcSymbols.Add(function.param[i].Substring(1), args[i]);
             }
         }
 
@@ -264,17 +260,64 @@ namespace Yuri.PlatformCore
         /// <param name="value">右值逆波兰式</param>
         public void Assignment(string varname, string valuePolish)
         {
-            this.Symbols.assign(this.CallStack.EBP.scriptName, varname.Replace("$", "").Replace("&", ""), this.CalculatePolish(valuePolish));
+            // 处理局部变量
+            if (varname.StartsWith("$"))
+            {
+                // 非函数调用
+                if (this.GameState() != StackMachineState.FunctionCalling)
+                {
+                    this.Symbols.Assign(this.CallStack.EBP.scriptName, varname.Replace("$", ""), this.CalculatePolish(valuePolish));
+                }
+                // 函数调用
+                else
+                {
+                    var functionFrame = ResourceManager.GetInstance().GetScene(this.CallStack.ESP.bindingSceneName).funcContainer.Find((x) => x.callname == this.CallStack.ESP.scriptName);
+                    functionFrame.symbols[varname.Replace("$", "")] = this.CalculatePolish(valuePolish);
+                }
+            }
+            // 处理全局变量
+            else if (varname.StartsWith("&"))
+            {
+                this.Symbols.GlobalAssign(varname.Replace("&", ""), this.CalculatePolish(valuePolish));
+            }
         }
 
         /// <summary>
         /// 取一个变量作右值
         /// </summary>
-        /// <param name="varname">变量名</param>
+        /// <param name="varName">变量名</param>
         /// <returns>变量的引用</returns>
-        public object Fetch(string varname)
+        public object Fetch(string varName)
         {
-            return this.Symbols.signal(ResourceManager.GetInstance().GetScene(this.CallStack.EBP.scriptName), varname.Replace("$", "").Replace("&", ""));
+            // 处理局部变量
+            if (varName.StartsWith("$"))
+            {
+                // 非函数调用
+                if (this.GameState() != StackMachineState.FunctionCalling)
+                {
+                    return this.Symbols.Fetch(ResourceManager.GetInstance().GetScene(this.CallStack.EBP.scriptName), varName.Replace("$", ""));
+                }
+                // 函数调用
+                else
+                {
+                    var functionFrame = ResourceManager.GetInstance().GetScene(this.CallStack.ESP.bindingSceneName).funcContainer.Find((x) => x.callname == this.CallStack.ESP.scriptName);
+                    return functionFrame.symbols[varName.Replace("$", "")];
+                }
+            }
+            // 处理全局变量
+            else if (varName.StartsWith("&"))
+            {
+                return this.Symbols.GlobalFetch(varName.Replace("&", ""));
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 设置场景管理器引用
+        /// </summary>
+        public void SetScreenManager(ScreenManager scr)
+        {
+            this.Screen = scr;
         }
 
         /// <summary>
@@ -795,14 +838,16 @@ namespace Yuri.PlatformCore
             }
             return resVec;
         }
-
+        
         /// <summary>
         /// 将运行时环境恢复最初状态
         /// </summary>
         public void Reset()
         {
             this.CallStack = new StackMachine();
-            this.Symbols = SymbolTable.getInstance();
+            this.Symbols = SymbolTable.GetInstance();
+            this.Screen = null;
+            this.TitlePoint = new KeyValuePair<string, SceneAction>(null, null);
         }
 
         /// <summary>
@@ -812,7 +857,7 @@ namespace Yuri.PlatformCore
         {
             this.Reset();
         }
-
+        
         /// <summary>
         /// 获取调用堆栈
         /// </summary>
@@ -829,6 +874,24 @@ namespace Yuri.PlatformCore
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 获取屏幕管理器
+        /// </summary>
+        public ScreenManager Screen
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 获取或设置标题回归点
+        /// </summary>
+        public KeyValuePair<string, SceneAction> TitlePoint
+        {
+            get;
+            set;
         }
     }
 

@@ -9,7 +9,6 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 函数调用类：处理场景里的函数
     /// </summary>
-    [Serializable]
     public class SceneFunction
     {
         /// <summary>
@@ -38,7 +37,7 @@ namespace Yuri.PlatformCore
             {
                 paraStr = sb.ToString().Substring(0, sb.Length - 2);
             }
-            return String.Format("SlyviaFunction: {0}({1})", this.callname, paraStr);
+            return String.Format("Function: {0}({1})", this.callname, paraStr);
         }
 
         /// <summary>
@@ -48,7 +47,7 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return String.Format("__SlyviaFunc@{0}?{1}", this.callname, this.parentSceneName);
+                return String.Format("__YuriFunc@{0}?{1}", this.callname, this.parentSceneName);
             }
         }
         // 绑定动作序列
@@ -60,6 +59,6 @@ namespace Yuri.PlatformCore
         // 场景名称
         public string parentSceneName = null;
         // 绑定符号表
-        public Dictionary<string, object> symbolsRef = null;
+        public Dictionary<string, object> symbols = new Dictionary<string,object>();
     }
 }

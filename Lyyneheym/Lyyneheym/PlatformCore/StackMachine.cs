@@ -35,7 +35,7 @@ namespace Yuri.PlatformCore
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
-                state = GameStackMachineState.Interpreting,
+                state = StackMachineState.Interpreting,
                 scriptName = sc.scenario,
                 PC = 0,
                 IP = offset == null ? sc.mainSa : offset,
@@ -59,13 +59,13 @@ namespace Yuri.PlatformCore
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
-                state = GameStackMachineState.FunctionCalling,
+                state = StackMachineState.FunctionCalling,
                 scriptName = sf.callname,
                 PC = offset,
                 IP = sf.sa,
                 argv = args,
-                bindingFunctionName = sf.globalName,
-                bindingSceneName = sf.globalName,
+                bindingFunctionName = String.Format("{0}?{1}", sf.globalName, this.coreStack.Count.ToString()),
+                bindingSceneName = sf.parentSceneName,
                 delay = TimeSpan.FromMilliseconds(0),
                 aTag = ""
             };
@@ -81,7 +81,7 @@ namespace Yuri.PlatformCore
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
-                state = GameStackMachineState.Interrupt,
+                state = StackMachineState.Interrupt,
                 scriptName = null,
                 PC = 0,
                 IP = ntr.interruptSA,
@@ -104,7 +104,7 @@ namespace Yuri.PlatformCore
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
-                state = GameStackMachineState.Await,
+                state = StackMachineState.Await,
                 scriptName = null,
                 PC = 0,
                 IP = null,
@@ -127,7 +127,7 @@ namespace Yuri.PlatformCore
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
-                state = GameStackMachineState.WaitUser,
+                state = StackMachineState.WaitUser,
                 scriptName = null,
                 PC = 0,
                 IP = null,
@@ -148,7 +148,7 @@ namespace Yuri.PlatformCore
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
-                state = GameStackMachineState.WaitAnimation,
+                state = StackMachineState.WaitAnimation,
                 scriptName = null,
                 PC = 0,
                 IP = null,
@@ -229,7 +229,7 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return this.ESP.state != GameStackMachineState.FunctionCalling;
+                return this.ESP.state != StackMachineState.FunctionCalling;
             }
         }
 

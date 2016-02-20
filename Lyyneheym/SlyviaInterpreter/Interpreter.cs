@@ -10,7 +10,7 @@ namespace Yuri.YuriInterpreter
     /// <summary>
     /// 翻译器类：控制编译工作
     /// </summary>
-    public class Interpreter
+    public sealed class Interpreter
     {
         /// <summary>
         /// 启动解释器
@@ -46,13 +46,13 @@ namespace Yuri.YuriInterpreter
             {
                 FileStream fs = new FileStream(storeFile, FileMode.Create);
                 StreamWriter sw = new StreamWriter(fs);
-                sw.WriteLine(">>>SlyviaAEIL?" + this.projectName);
+                sw.WriteLine(">>>YuriAEIL?" + this.projectName);
                 foreach (KeyValuePair<string, string> ilp in this.ILVector)
                 {
                     string ils = ilp.Value;
                     sw.Write(ils);
                 }
-                sw.WriteLine(">>>SlyviaEOF");
+                sw.WriteLine(">>>YuriEOF");
                 sw.Close();
                 fs.Close();
             }

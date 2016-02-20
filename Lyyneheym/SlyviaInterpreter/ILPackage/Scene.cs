@@ -10,7 +10,7 @@ namespace Yuri.YuriInterpreter.ILPackage
     /// <para>通常，一个场景拥有一个动作序列和生命在它上面的函数</para>
     /// </summary>
     [Serializable]
-    internal class PackageScene
+    internal sealed class PackageScene
     {
         /// <summary>
         /// 构造器
@@ -31,7 +31,7 @@ namespace Yuri.YuriInterpreter.ILPackage
         /// <returns>IL文件头字符串</returns>
         public string GetILSign()
         {
-            return String.Format(">>>SlyviaIL?{0}", this.scenario);
+            return String.Format(">>>YuriIL?{0}", this.scenario);
         }
 
         // 场景名称
