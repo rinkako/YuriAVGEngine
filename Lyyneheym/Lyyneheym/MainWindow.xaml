@@ -5,27 +5,16 @@
     <Viewbox x:Name="viewbox" Stretch="Fill">
         <Canvas Name="BO_MainGrid" Width="1024" Height="576" Background="Black">
 
-            <Image Name="BO_MsgTria" Panel.ZIndex="999" Visibility="Hidden" Opacity="0.55" Height="20" Width="20" Canvas.Left="950" Canvas.Top="530" Source="ImageAssets/MessageTria.png"/>
+            <Image Name="BO_MsgTria" Panel.ZIndex="999" Visibility="Hidden" Opacity="0.55" Height="20" Width="20" Canvas.Left="950" Canvas.Top="530"/>
 
             <Button Content="Button" HorizontalAlignment="Left" Margin="933,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="90,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="170,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="287,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_4"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="367,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_5"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="487,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_6"/>
             <Button Panel.ZIndex="9999" Content="Button" HorizontalAlignment="Left" Margin="594,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="674,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_8"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="754,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_9"/>
             <Image Name="mytestbutton" Height="20" Canvas.Left="405" Canvas.Top="61" Width="25" MouseDown="Image_MouseDown"/>
-            <Button Content="Button" Canvas.Left="933" Canvas.Top="32" Width="75" Click="Button_Click_10"/>
-            <Button Content="Button" Canvas.Left="933" Canvas.Top="61" Width="75" Click="Button_Click_11"/>
-            <Button Content="Button" Canvas.Left="933" Canvas.Top="88" Width="75" Click="Button_Click_12"/>
             <Button Content="Button" Canvas.Left="674" Canvas.Top="32" Width="75" Click="Button_Click_13"/>
-            <Button Content="Button" Canvas.Left="674" Canvas.Top="59" Width="75" Click="Button_Click_14"/>
             <Slider Canvas.Left="10" Canvas.Top="33" Width="235" Maximum="1000" Value="999" ValueChanged="Slider_ValueChanged"/>
             <Slider Canvas.Top="59" Width="235" Canvas.Left="10" Maximum="1" Minimum="-1" ValueChanged="Slider_ValueChanged_1"/>
-            <Button Content="Button" Canvas.Left="487" Canvas.Top="33" Width="75" Click="Button_Click_15"/>
 
 
 
