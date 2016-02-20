@@ -9,7 +9,7 @@ namespace Yuri.Utils
     /// <summary>
     /// 输入输出类：管理整个游戏环境的IO动作
     /// </summary>
-    public sealed class IOUtils
+    public static class IOUtils
     {
         /// <summary>
         /// 把一个相对URI转化为绝对路径
