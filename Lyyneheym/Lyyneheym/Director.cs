@@ -271,14 +271,14 @@ namespace Yuri
                                     "Director", OutputStyle.Error);
                                 break;
                             }
-                            if (!jumpScene.labelDictionary.ContainsKey(jumpToTarget))
+                            if (jumpToTarget != "" && !jumpScene.labelDictionary.ContainsKey(jumpToTarget))
                             {
                                 DebugUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0} -> {1}", jumpToScene, jumpToTarget),
                                     "Director", OutputStyle.Error);
                                 break;
                             }
                             this.RunMana.ExitCall();
-                            this.RunMana.CallScene(jumpScene, jumpScene.labelDictionary[jumpToTarget]);
+                            this.RunMana.CallScene(jumpScene, jumpToTarget == "" ? jumpScene.mainSa : jumpScene.labelDictionary[jumpToTarget]);
                         }
                         break;
                     }

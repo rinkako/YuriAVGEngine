@@ -293,16 +293,6 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 当前已经显示的文本内容
-        /// </summary>
-        private string dialogPreStr = String.Empty;
-
-        /// <summary>
-        /// 待显示的文本趟队列
-        /// </summary>
-        private Queue<string> pendingDialogQueue = new Queue<string>();
-
-        /// <summary>
         /// 将文字直接描绘到文字层上而不等待
         /// </summary>
         /// <param name="id">文字层id</param>
@@ -356,7 +346,6 @@ namespace Yuri.PlatformCore
             MsgLayerTypingStory.Begin();
             this.MsgStoryboardDict[id] = MsgLayerTypingStory;
         }
-
 
         /// <summary>
         /// 打字动画完成回调
@@ -466,6 +455,19 @@ namespace Yuri.PlatformCore
         /// </summary>
         private MySprite MainMsgTriangleSprite;
 
+        /// <summary>
+        /// 当前已经显示的文本内容
+        /// </summary>
+        private string dialogPreStr = String.Empty;
+
+        /// <summary>
+        /// 待显示的文本趟队列
+        /// </summary>
+        private Queue<string> pendingDialogQueue = new Queue<string>();
+
+        /// <summary>
+        /// 对话故事板容器
+        /// </summary>
         private Dictionary<int, Storyboard> MsgStoryboardDict = new Dictionary<int, Storyboard>();
         #endregion
 

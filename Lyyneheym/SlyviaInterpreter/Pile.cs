@@ -510,8 +510,6 @@ namespace Yuri.YuriInterpreter
                     this.blockDict[labelKey] = curSa;
                     break;
                 case SyntaxType.synr_jump:
-                    string jumpKey = mynode.paramDict["target"].children[0].nodeValue;
-                    curSa.aTag = jumpKey;
                     break;
                 case SyntaxType.synr_dialog:
                     curSa.aTag = mynode.nodeValue;
@@ -812,7 +810,9 @@ namespace Yuri.YuriInterpreter
                     break;
                 case SActionType.act_dialogTerminator:
                     // 处理对话继续标志位
-                    if (saNode.next != null && saNode.next.aType == SActionType.act_dialog)
+                    if (saNode.next != null && 
+                        (saNode.next.aType == SActionType.act_dialog ||
+                        saNode.next.aType == SActionType.act_a))
                     {
                         saNode.aTag += "#1";
                     }
