@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lyyneheym.SlyviaInterpreter
+namespace Yuri.YuriInterpreter
 {
     /// <summary>
     /// 语法节点类：构成语法树的最小单元

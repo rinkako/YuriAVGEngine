@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lyyneheym.SlyviaInterpreter.ILPackage
+namespace Yuri.YuriInterpreter.ILPackage
 {
     /// <summary>
     /// 场景动作类：语义分析器输出的中间代码类

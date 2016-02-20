@@ -3,9 +3,9 @@ using System.Text;
 using System.IO;
 using System.Threading;
 using System.Collections.Generic;
-using Lyyneheym.SlyviaInterpreter.ILPackage;
+using Yuri.YuriInterpreter.ILPackage;
 
-namespace Lyyneheym.SlyviaInterpreter
+namespace Yuri.YuriInterpreter
 {
     /// <summary>
     /// 翻译器类：控制编译工作

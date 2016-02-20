@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Yuri.ILPackage;
 
-namespace Yuri.YuriInterpreter.ILPackage
+namespace Yuri.PlatformCore
 {
     /// <summary>
     /// 函数调用类：处理场景里的函数
     /// </summary>
-    internal class SceneFunction
+    [Serializable]
+    public class SceneFunction
     {
         /// <summary>
         /// 构造器
@@ -39,8 +41,10 @@ namespace Yuri.YuriInterpreter.ILPackage
             return String.Format("SlyviaFunction: {0}({1})", this.callname, paraStr);
         }
 
-        // 在变量字典中的名字
-        public string varDictName
+        /// <summary>
+        /// 获取或设置函数的全局名称
+        /// </summary>
+        public string globalName
         {
             get
             {
@@ -55,5 +59,7 @@ namespace Yuri.YuriInterpreter.ILPackage
         public List<string> param = null;
         // 场景名称
         public string parentSceneName = null;
+        // 绑定符号表
+        public Dictionary<string, object> symbolsRef = null;
     }
 }

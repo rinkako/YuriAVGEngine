@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Lyyneheym.SlyviaInterpreter.ILPackage;
+using Yuri.YuriInterpreter.ILPackage;
 
-namespace Lyyneheym.SlyviaInterpreter
+namespace Yuri.YuriInterpreter
 {
     /// <summary>
     /// 语义分析器：将语法树翻译为运行时环境能够解析的中间代码

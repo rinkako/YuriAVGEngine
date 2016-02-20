@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 
-namespace Lyyneheym.LyynePacker
+namespace Yuri.YuriPacker
 {
     public partial class UserPackerForm : Form
     {

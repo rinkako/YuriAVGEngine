@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyyneheym", "Lyyneheym\Lyyneheym.csproj", "{D513CF82-CCCE-4D15-8F34-D17663C26FA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriPlatform", "Lyyneheym\YuriPlatform.csproj", "{D513CF82-CCCE-4D15-8F34-D17663C26FA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LyynePacker", "LyynePacker\LyynePacker.csproj", "{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriPacker", "LyynePacker\YuriPacker.csproj", "{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimSlyvia", "SlimSlyvia\SlimSlyvia.csproj", "{48AE4058-1FA1-46D9-96E7-B7679F639984}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlyviaInterpreter", "SlyviaInterpreter\SlyviaInterpreter.csproj", "{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriInterpreter", "SlyviaInterpreter\YuriInterpreter.csproj", "{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

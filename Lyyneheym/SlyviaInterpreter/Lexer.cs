@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lyyneheym.SlyviaInterpreter
+namespace Yuri.YuriInterpreter
 {
     /// <summary>
     /// 词法分析器类：负责把用户脚本分割为单词流的类

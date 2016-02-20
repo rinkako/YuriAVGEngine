@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Lyyneheym.Properties
+namespace Yuri.Properties
 {
 
 

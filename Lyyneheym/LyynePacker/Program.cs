@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Lyyneheym.LyynePacker
+namespace Yuri.YuriPacker
 {
     static class Program
     {

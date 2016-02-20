@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
+using System.Runtime.InteropServices;
 
-namespace Yuri.YuriPacker
+
+namespace Yuri.Utils
 {
     /// <summary>
     /// <para>包管理类：负责资源包的封装、解封、寻址和维护的类</para>
@@ -18,10 +20,8 @@ namespace Yuri.YuriPacker
         /// </summary>
         /// <param name="fileList">一个装有待打包数据路径的向量</param>
         /// <param name="saveFile">打包文件的保存路径</param>
-        /// <param name="pak">指示封装的内容在运行时环境的字典键</param>
-        /// <param name="sign">包的签名</param>
         /// <returns>操作成功与否</returns>
-        public static bool pack(List<string> fileList, string saveFile, string pak, string sign)
+        public static bool pack(List<string> fileList, string saveFile)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace Yuri.YuriPacker
                 BinaryWriter pakBw = new BinaryWriter(pakFs);
                 // 获取文件长度
                 int fileEncounter = fileList.Count;
-                synWriter.WriteLine(String.Format("___SlyviaLyyneheym@{0}@{1}@{2}", fileEncounter, pak, sign));
+                synWriter.WriteLine(String.Format("___SlyviaLyyneheym@{0}", fileEncounter));
                 // 打包文件
                 FileStream fs;
                 BinaryReader fbr;
@@ -144,6 +144,31 @@ namespace Yuri.YuriPacker
         /// <param name="offset">资源在包中的偏移量</param>
         /// <param name="length">资源字节数</param>
         /// <returns>资源的字节序列</returns>
+        public static GCHandle getObjectIntPtr(string packFile, string resourceName, long offset, long length)
+        {
+            FileStream pakFs = new FileStream(packFile, FileMode.Open);
+            BinaryReader pakBr = new BinaryReader(pakFs);
+            pakFs.Seek(offset, SeekOrigin.Begin);
+            byte[] buffer = new byte[length];
+            for (int i = 0; i < length; i++)
+            {
+                buffer[i] = pakBr.ReadByte();
+            }
+            pakBr.Close();
+            pakFs.Close();
+            GCHandle hObject = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            //IntPtr resPtr = hObject.AddrOfPinnedObject();
+            return hObject;
+        }
+
+        /// <summary>
+        /// 获得一个封包对象的字节序列
+        /// </summary>
+        /// <param name="packFile">包路径</param>
+        /// <param name="resourceName">资源名称</param>
+        /// <param name="offset">资源在包中的偏移量</param>
+        /// <param name="length">资源字节数</param>
+        /// <returns>资源的字节序列</returns>
         public static byte[] getObjectBytes(string packFile, string resourceName, long offset, long length)
         {
             FileStream pakFs = new FileStream(packFile, FileMode.Open);
@@ -154,6 +179,8 @@ namespace Yuri.YuriPacker
             {
                 buffer[i] = pakBr.ReadByte();
             }
+            pakBr.Close();
+            pakFs.Close();
             return buffer;
         }
 
@@ -194,5 +221,8 @@ namespace Yuri.YuriPacker
                 throw e;
             }
         }
+
+
+
     }
 }

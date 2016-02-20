@@ -1,4 +1,4 @@
-﻿namespace Lyyneheym.LyynePacker
+﻿namespace Yuri.YuriPacker
 {
     partial class UserPackerForm
     {

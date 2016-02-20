@@ -16,26 +16,26 @@ using System.Windows.Threading;
 using System.Windows.Media.Animation;
 using System.IO;
 
-using Lyyneheym.LyyneheymCore.Utils;
-using Lyyneheym.LyyneheymCore.SlyviaCore;
-using Lyyneheym.LyyneheymCore.ILPackage;
-using Lyyneheym.LyyneheymCore;
-using Lyyneheym.SlyviaInterpreter;
+using Yuri.Utils;
+using Yuri.PlatformCore;
+using Yuri.ILPackage;
+using Yuri;
+using Yuri.YuriInterpreter;
 
 
-namespace Lyyneheym
+namespace Yuri
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Slyvia core = Slyvia.GetInstance();
+        private Director core = Director.GetInstance();
 
         public MainWindow()
         {
             InitializeComponent();
-            this.testFontEffect(this.BO_MainText);
+            //this.testFontEffect(this.BO_MainText);
             core.SetMainWindow(this);
             //this.window.BO_MainGrid.Width = this.window.Width = 1900;
             //this.window.BO_MainGrid.Height = this.window.Height = 1000;
@@ -118,12 +118,12 @@ namespace Lyyneheym
             //myBitmapImage.BeginInit();
             //myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA01.png", UriKind.RelativeOrAbsolute);
             //myBitmapImage.EndInit();
-            leftChara = core.testCharaStand("CA01.png");
-            BitmapImage myBitmapImage = leftChara.myImage;
-            leftChara.displayBinding = this.BO_LeftChara;
-            this.BO_LeftChara.Width = myBitmapImage.PixelWidth;
-            this.BO_LeftChara.Height = myBitmapImage.PixelHeight;
-            this.BO_LeftChara.Source = myBitmapImage;
+            //leftChara = core.testCharaStand("CA01.png");
+            //BitmapImage myBitmapImage = leftChara.myImage;
+            //leftChara.displayBinding = this.BO_LeftChara;
+            //this.BO_LeftChara.Width = myBitmapImage.PixelWidth;
+            //this.BO_LeftChara.Height = myBitmapImage.PixelHeight;
+            //this.BO_LeftChara.Source = myBitmapImage;
         }
 
         MySprite rightChara;
@@ -133,27 +133,27 @@ namespace Lyyneheym
             //myBitmapImage.BeginInit();
             //myBitmapImage.UriSource = new Uri(@"PictureAssets\character\CA02.png", UriKind.RelativeOrAbsolute);
             //myBitmapImage.EndInit();
-            rightChara = core.testCharaStand("CA02.png");
-            BitmapImage myBitmapImage = rightChara.myImage;
-            rightChara.displayBinding = this.BO_RightChara;
-            this.BO_RightChara.Width = myBitmapImage.PixelWidth;
-            this.BO_RightChara.Height = myBitmapImage.PixelHeight;
-            this.BO_RightChara.Source = myBitmapImage;
+            //rightChara = core.testCharaStand("CA02.png");
+            //BitmapImage myBitmapImage = rightChara.myImage;
+            //rightChara.displayBinding = this.BO_RightChara;
+            //this.BO_RightChara.Width = myBitmapImage.PixelWidth;
+            //this.BO_RightChara.Height = myBitmapImage.PixelHeight;
+            //this.BO_RightChara.Source = myBitmapImage;
         }
 
         bool flag2 = false;
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            if (flag2 == false)
-            {
-                Panel.SetZIndex(this.BO_MessageBoxLayer, 91);
-                flag2 = true;
-            }
-            else
-            {
-                Panel.SetZIndex(this.BO_MessageBoxLayer, -1);
-                flag2 = false;
-            }
+            //if (flag2 == false)
+            //{
+            //    Panel.SetZIndex(this.BO_MessageBoxLayer, 91);
+            //    flag2 = true;
+            //}
+            //else
+            //{
+            //    Panel.SetZIndex(this.BO_MessageBoxLayer, -1);
+            //    flag2 = false;
+            //}
             
         }
 
@@ -317,9 +317,9 @@ namespace Lyyneheym
 
         private void callback_typing(object sender, EventArgs e)
         {
-            this.BO_MsgTria.Visibility = Visibility.Visible;
-            this.BO_MsgTria.RenderTransform = new TranslateTransform();
-            this.ApplyUpDownAnimation(this.BO_MsgTria.Name);
+            //this.BO_MsgTria.Visibility = Visibility.Visible;
+            //this.BO_MsgTria.RenderTransform = new TranslateTransform();
+            //this.ApplyUpDownAnimation(this.BO_MsgTria.Name);
         }
         
 
