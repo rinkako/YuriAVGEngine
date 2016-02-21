@@ -44,22 +44,6 @@ namespace Yuri
             Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.Background);
         }
 
-        bool flag = false;
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (flag == false)
-            {
-
-                this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage("bg1.png").myImage);
-                flag = true;
-            }
-            else
-            {
-                this.BO_MainGrid.Background = new ImageBrush(core.testBitmapImage("bg2.png").myImage);
-                flag = false;
-            }
-        }
-
 
         private void testFontEffect(TextBlock label)
         {
@@ -96,46 +80,6 @@ namespace Yuri
         }
 
 
-
-
-        private void Button_Click_8(object sender, RoutedEventArgs e)
-        {
-
-            Musician m = Musician.GetInstance();
-            m.PlayBGM(@"Boss01.wav", @"Sound\bgm\Boss01.wav", 1000);
-            //timer.Start();
-            
-        }
-
-        private void Button_Click_13(object sender, RoutedEventArgs e)
-        {
-            core.testBGM("车椅子の未来宇宙.mp3");
-            //core.testBGM("Boss01.wav");
-            
-            //timer.Start();
-        }
-
-
-
-        private void callback_typing(object sender, EventArgs e)
-        {
-            //this.BO_MsgTria.Visibility = Visibility.Visible;
-            //this.BO_MsgTria.RenderTransform = new TranslateTransform();
-            //this.ApplyUpDownAnimation(this.BO_MsgTria.Name);
-        }
-        
-
-
-
-        private void Button_Click_9(object sender, RoutedEventArgs e)
-        {
-            //mp.Stop();
-            //System.Media.SoundPlayer sp = new System.Media.SoundPlayer(@"Sound\se\se01.wav");
-            //sp.Play();
-            core.testVocal("Alice002.mp3");
-        }
-
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             core.DisposeResource();
@@ -164,26 +108,6 @@ namespace Yuri
         private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             this.core.UpdateMouseWheel(e.Delta);
-        }
-
-        private void BO_LeftChara_MouseEnter(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void BO_LeftChara_MouseLeave(object sender, MouseEventArgs e)
-        {
-            
-        }
-
-        private void BO_LeftChara_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            
-        }
-
-        private void BO_LeftChara_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-
         }
 
         private void window_Loaded(object sender, RoutedEventArgs e)

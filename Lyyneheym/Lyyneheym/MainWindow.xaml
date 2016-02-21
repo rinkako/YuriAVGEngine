@@ -5,11 +5,7 @@
     <Viewbox x:Name="viewbox" Stretch="Fill">
         <Canvas Name="BO_MainGrid" Width="1024" Height="576" Background="Black">
             <Image Name="BO_MsgTria" Panel.ZIndex="999" Visibility="Hidden" Opacity="0.55" Height="20" Width="20" Canvas.Left="950" Canvas.Top="530"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="933,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
             <Button Panel.ZIndex="9999" Content="Button" HorizontalAlignment="Left" Margin="594,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="674,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_8"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="754,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_9"/>
-            <Button Content="Button" Canvas.Left="674" Canvas.Top="32" Width="75" Click="Button_Click_13"/>
         </Canvas>
     </Viewbox>
 </Window>

@@ -18,35 +18,6 @@ namespace Yuri
     /// </summary>
     public class Director
     {
-
-        #region debug用
-        public YuriSprite testBitmapImage(string filename)
-        {
-            return this.ResMana.GetBackground(filename, new System.Windows.Int32Rect(-1, 0, 0, 0));
-        }
-
-        public YuriSprite testCharaStand(string filename)
-        {
-            return this.ResMana.GetCharacterStand(filename, new System.Windows.Int32Rect(-1, 0, 0, 0));
-        }
-
-
-        public void testBGM(string sourceName)
-        {
-            Musician m = Musician.GetInstance();
-            var r = this.ResMana.GetBGM(sourceName);
-            m.PlayBGM(sourceName, r.Key, r.Value, 1000);
-
-        }
-
-        public void testVocal(string vocalName)
-        {
-            Musician m = Musician.GetInstance();
-            var r = this.ResMana.GetVocal(vocalName);
-            m.PlayVocal(r.Key, r.Value, 1000);
-        }
-        #endregion
-
         #region 初次进入时的初始化相关函数
         /// <summary>
         /// 初始化游戏设置
