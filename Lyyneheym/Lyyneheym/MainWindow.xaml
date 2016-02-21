@@ -10,7 +10,6 @@
             <Button Content="Button" HorizontalAlignment="Left" Margin="674,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_8"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="754,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_9"/>
             <Button Content="Button" Canvas.Left="674" Canvas.Top="32" Width="75" Click="Button_Click_13"/>
-            <TextBlock Canvas.Left="236" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="141" Height="42" Width="405"/>
         </Canvas>
     </Viewbox>
 </Window>

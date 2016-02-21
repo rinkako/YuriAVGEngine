@@ -504,6 +504,7 @@ namespace Yuri.PlatformCore
             this.BackgroundDescVec = new List<SpriteDescriptor>();
             this.CharacterDescVec = new List<SpriteDescriptor>();
             this.PictureDescVec = new List<SpriteDescriptor>();
+            this.BranchDescVec = new List<BranchButtonDescriptor>();
             this.ButtonDescVec = new List<SpriteButtonDescriptor>();
             this.MsgLayerDescVec = new List<MessageLayerDescriptor>();
             for (int i = 0; i < GlobalDataContainer.GAME_BACKGROUND_COUNT; i++)
@@ -517,6 +518,10 @@ namespace Yuri.PlatformCore
             for (int i = 0; i < GlobalDataContainer.GAME_IMAGELAYER_COUNT; i++)
             {
                 this.PictureDescVec.Add(null);
+            }
+            for (int i = 0; i < GlobalDataContainer.GAME_BRANCH_COUNT; i++)
+            {
+                this.BranchDescVec.Add(null);
             }
             for (int i = 0; i < GlobalDataContainer.GAME_BUTTON_COUNT; i++)
             {

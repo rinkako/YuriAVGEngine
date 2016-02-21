@@ -686,6 +686,9 @@ namespace Yuri.PlatformCore
                     this.Shutdown();
                     break;
                 case SActionType.act_branch:
+                    this.Branch(
+                        this.ParseDirectString(action.argsDict["link"], "")
+                        );
                     break;
                 case SActionType.act_titlepoint:
                     break;
@@ -1234,6 +1237,10 @@ namespace Yuri.PlatformCore
                         "UpdateRender", OutputStyle.Error);
                 }
             }
+            if (tagList.Count == 0)
+            {
+                return;
+            }
             // 处理按钮显示参数
             double GroupX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0 - GlobalDataContainer.GAME_BRANCH_WIDTH / 2.0;
             double BeginY = GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT / 2.0 - (GlobalDataContainer.GAME_BRANCH_HEIGHT * 2.0) * (tagList.Count / 2.0);
@@ -1243,17 +1250,17 @@ namespace Yuri.PlatformCore
             {
                 SpriteDescriptor normalDesc = new SpriteDescriptor()
                 {
-                    resourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUND
+                    resourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUNDNORMAL
                 },
                 overDesc = new SpriteDescriptor()
                 {
-                    resourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUND
+                    resourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUNDSELECT
                 },
                 onDesc = new SpriteDescriptor()
                 {
-                    resourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUND
+                    resourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUNDSELECT
                 };
-                this.scrMana.AddBranchButton(i, GroupX, BeginY + DeltaY * i, tagList[i].Value, tagList[i].Key, normalDesc, overDesc, onDesc);
+                this.scrMana.AddBranchButton(i, GroupX, BeginY + DeltaY * 2 * i, tagList[i].Value, tagList[i].Key, normalDesc, overDesc, onDesc);
                 this.viewMana.Draw(i, ResourceType.BranchButton);
             }
             // 追加等待

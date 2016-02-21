@@ -281,19 +281,25 @@ namespace Yuri.PlatformCore
         /// <param name="descriptor">按钮描述子</param>
         private void DrawBranchButton(BranchButton bbutton, BranchButtonDescriptor descriptor)
         {
-            TextBlock buttonTextBlock = new TextBlock();
+            TextBlock buttonTextView = new TextBlock();
             BitmapImage bmp = bbutton.ImageNormal.myImage;
-            buttonTextBlock.Width = bmp.PixelWidth;
-            buttonTextBlock.Height = bmp.PixelHeight;
+            buttonTextView.Width = bmp.PixelWidth;
+            buttonTextView.Height = bmp.PixelHeight;
             ImageBrush ib = new ImageBrush(bmp);
             ib.AlignmentX = AlignmentX.Left;
             ib.AlignmentY = AlignmentY.Top;
             ib.TileMode = TileMode.None;
             ib.Stretch = Stretch.Fill;
-            buttonTextBlock.Background = ib;
-            bbutton.displayBinding = buttonTextBlock;
+            buttonTextView.FontSize = GlobalDataContainer.GAME_BRANCH_FONTSIZE;
+            buttonTextView.Foreground = new SolidColorBrush(GlobalDataContainer.GAME_BRANCH_FONTCOLOR);
+            buttonTextView.FontFamily = new FontFamily(GlobalDataContainer.GAME_BRANCH_FONTNAME);
+            buttonTextView.TextAlignment = TextAlignment.Center;
+            buttonTextView.Padding = new Thickness(0, GlobalDataContainer.GAME_BRANCH_TOPPAD, 0, 0);
+            buttonTextView.Background = ib;
+            bbutton.displayBinding = buttonTextView;
             bbutton.Eternal = false;
             bbutton.Enable = true;
+            bbutton.Text = descriptor.Text;
             bbutton.ntr = new Interrupt()
             {
                 detail = "BranchButtonNTRInterrupt",
@@ -301,15 +307,15 @@ namespace Yuri.PlatformCore
                 type = InterruptType.ButtonJump,
                 returnTarget = descriptor.JumpTarget,
             };
-            Canvas.SetLeft(buttonTextBlock, descriptor.X);
-            Canvas.SetTop(buttonTextBlock, descriptor.Y);
-            Canvas.SetZIndex(buttonTextBlock, descriptor.Z);
-            buttonTextBlock.Visibility = Visibility.Visible;
-            buttonTextBlock.MouseDown += bbutton.MouseOnHandler;
-            buttonTextBlock.MouseEnter += bbutton.MouseEnterHandler;
-            buttonTextBlock.MouseLeave += bbutton.MouseLeaveHandler;
-            buttonTextBlock.MouseUp += bbutton.MouseUpHandler;
-            this.view.BO_MainGrid.Children.Add(buttonTextBlock);
+            Canvas.SetLeft(buttonTextView, descriptor.X);
+            Canvas.SetTop(buttonTextView, descriptor.Y);
+            Canvas.SetZIndex(buttonTextView, descriptor.Z);
+            buttonTextView.Visibility = Visibility.Visible;
+            buttonTextView.MouseDown += bbutton.MouseOnHandler;
+            buttonTextView.MouseEnter += bbutton.MouseEnterHandler;
+            buttonTextView.MouseLeave += bbutton.MouseLeaveHandler;
+            buttonTextView.MouseUp += bbutton.MouseUpHandler;
+            this.view.BO_MainGrid.Children.Add(buttonTextView);
             bbutton.InitAnimationRenderTransform();
         }
 
@@ -511,7 +517,7 @@ namespace Yuri.PlatformCore
         {
             if (bbutton != null)
             {
-                TextBlock bbView = bbutton.displayBinding;
+                var bbView = bbutton.displayBinding;
                 if (bbView != null && this.view.BO_MainGrid.Children.Contains(bbView))
                 {
                     this.view.BO_MainGrid.Children.Remove(bbView);

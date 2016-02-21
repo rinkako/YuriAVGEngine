@@ -64,14 +64,18 @@ namespace Yuri.PlatformCore
         public static bool GAME_MSG_SKIP = false;
         // 选择项：最大数量
         public static int GAME_BRANCH_COUNT = 8;
-        // 选择项：背景图
-        public static string GAME_BRANCH_BACKGROUND = "branchItem.png";
+        // 选择项：正常背景图
+        public static string GAME_BRANCH_BACKGROUNDNORMAL = "branchItemNormal.png";
+        // 选择项：选中背景图
+        public static string GAME_BRANCH_BACKGROUNDSELECT = "branchItemSelect.png";
         // 选择项：宽度
         public static int GAME_BRANCH_WIDTH = 400;
         // 选择项：高度
         public static int GAME_BRANCH_HEIGHT = 40;
         // 选择项：字体大小
         public static int GAME_BRANCH_FONTSIZE = 22;
+        // 选择项：上边距
+        public static int GAME_BRANCH_TOPPAD = 7;
         // 选择项：字体颜色
         public static Color GAME_BRANCH_FONTCOLOR = Colors.White;
         // 选择项：字体
