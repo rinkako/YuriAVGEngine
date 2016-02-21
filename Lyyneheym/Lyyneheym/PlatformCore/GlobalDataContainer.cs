@@ -27,7 +27,9 @@ namespace Yuri.PlatformCore
         // 窗体分辨率：宽度
         public static int GAME_WINDOW_WIDTH = 1024;
         // 窗体分辨率：高度
-        public static int GAME_WINDOW_HEIGHT = 608;
+        public static int GAME_WINDOW_HEIGHT = 576;
+        // 窗体分辨率：实际高度（标题栏含）
+        public static int GAME_WINDOW_ACTUALHEIGHT { get { return GlobalDataContainer.GAME_WINDOW_HEIGHT + 32; } }
         // 文本展示：模式
         public static MessageLayerType GAME_MESSAGE_MODE = MessageLayerType.Dialog;
         // 文本层：文本层数量
@@ -60,6 +62,12 @@ namespace Yuri.PlatformCore
         public static int GAME_MSG_PASSAGE_DELAY = 120;
         // 文本展示：是否已读快进
         public static bool GAME_MSG_SKIP = false;
+        // 选择项：背景图
+        public static string GAME_BRANCH_BACKGROUND = "branchItem.png";
+        // 选择项：宽度
+        public static int GAME_BRANCH_WIDTH = 400;
+        // 选择项：高度
+        public static int GAME_BRANCH_HEIGHT = 40;
         // 图像层：图像层数量
         public static int GAME_IMAGELAYER_COUNT = 50;
         // 图像层：最大立绘数
@@ -126,6 +134,8 @@ namespace Yuri.PlatformCore
         public static int GAME_FONT_FONTSIZE = 16;
         // 音乐：BGS轨道数
         public static int GAME_MUSIC_BGSTRACKNUM = 5;
+        // 开发：全局开关总数
+        public static int GAME_SWITCH_COUNT = 100;
         // 开发：控制台输出
         public static bool GAME_DEBUG_CONSOLE = true;
         // 开发：日志输出

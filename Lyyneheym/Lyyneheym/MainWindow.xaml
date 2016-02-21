@@ -4,20 +4,13 @@
         Title="MainWindow" Height="608" Width="1024" MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" Closing="Window_Closing" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" MouseWheel="Window_MouseWheel" Loaded="window_Loaded">
     <Viewbox x:Name="viewbox" Stretch="Fill">
         <Canvas Name="BO_MainGrid" Width="1024" Height="576" Background="Black">
-
             <Image Name="BO_MsgTria" Panel.ZIndex="999" Visibility="Hidden" Opacity="0.55" Height="20" Width="20" Canvas.Left="950" Canvas.Top="530"/>
-
             <Button Content="Button" HorizontalAlignment="Left" Margin="933,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
             <Button Panel.ZIndex="9999" Content="Button" HorizontalAlignment="Left" Margin="594,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="674,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_8"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="754,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_9"/>
-            <Image Name="mytestbutton" Height="20" Canvas.Left="405" Canvas.Top="61" Width="25" MouseDown="Image_MouseDown"/>
             <Button Content="Button" Canvas.Left="674" Canvas.Top="32" Width="75" Click="Button_Click_13"/>
-            <Slider Canvas.Left="10" Canvas.Top="33" Width="235" Maximum="1000" Value="999" ValueChanged="Slider_ValueChanged"/>
-            <Slider Canvas.Top="59" Width="235" Canvas.Left="10" Maximum="1" Minimum="-1" ValueChanged="Slider_ValueChanged_1"/>
-
-
-
+            <TextBlock Canvas.Left="236" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="141" Height="42" Width="405"/>
         </Canvas>
     </Viewbox>
 </Window>

@@ -136,62 +136,9 @@ namespace Yuri
         }
 
 
-        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-            Point p = e.MouseDevice.GetPosition((Image)sender);
-            BitmapImage myBitmapImage = new BitmapImage();
-            myBitmapImage.BeginInit();
-            myBitmapImage.UriSource = new Uri(@"PictureAssets\pictures\MenuItems2.png", UriKind.RelativeOrAbsolute);
-            myBitmapImage.SourceRect = new Int32Rect(187, 2, 226, 226);
-            myBitmapImage.EndInit();
-
-            Color hitC = this.GetPixelColor(myBitmapImage, (int)p.X, (int)p.Y);
-
-            if (hitC.A > 10)
-            {
-                MessageBox.Show(p.ToString() + " == " + hitC.ToString());
-            }
-            
-        }
-
-        public Color GetPixelColor(BitmapSource source, int x, int y)
-        {
-            Color c = Colors.White;
-            if (source != null)
-            {
-                try
-                {
-                    CroppedBitmap cb = new CroppedBitmap(source, new Int32Rect(x, y, 1, 1));
-                    var pixels = new byte[4];
-                    cb.CopyPixels(pixels, 4, 0);
-                    c = Color.FromArgb(pixels[3] ,pixels[2], pixels[1], pixels[0]);
-                }
-                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
-            }
-            return c;
-        }
-
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             core.DisposeResource();
-        }
-
-        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (Musician.GetInstance().isBGMPlaying)
-            {
-                Musician.GetInstance().SetBGMVolume((float)e.NewValue);
-            }
-        }
-
-        private void Slider_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (Musician.GetInstance().isBGMPlaying)
-            {
-                Musician.GetInstance().SetBGMStereo((float)e.NewValue);
-            }
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

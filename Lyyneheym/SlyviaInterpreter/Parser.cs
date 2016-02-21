@@ -48,7 +48,7 @@ namespace Yuri.YuriInterpreter
         {
             this.nextTokenPointer = 0;
             this.dealingLine = line;
-            this.dashReset(SyntaxType.case_kotori);
+            this.DashReset(SyntaxType.case_kotori);
         }
 
         /// <summary>
@@ -823,7 +823,7 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 复位匹配器：不推导向推导过程转化时内部使用
         /// </summary>
-        private void dashReset(SyntaxType startNodeType)
+        private void DashReset(SyntaxType startNodeType)
         {
             // 变数初期化
             this.nextTokenPointer = 0;
@@ -848,7 +848,7 @@ namespace Yuri.YuriInterpreter
         /// </summary>
         /// <param name="res">母亲节点</param>
         /// <returns>下一个拿去展开的产生式</returns>
-        private SyntaxTreeNode Kotori(SyntaxTreeNode res)
+        private SyntaxTreeNode RecursiveDescent(SyntaxTreeNode res)
         {
             // 已经没有需要递归下降的节点
             if (res == null)
@@ -872,7 +872,7 @@ namespace Yuri.YuriInterpreter
                 return parent.children[i + 1];
             }
             // 如果自己没有妹妹，那就递归去找母亲的妹妹
-            SyntaxTreeNode obac = this.Kotori(parent);
+            SyntaxTreeNode obac = this.RecursiveDescent(parent);
             if (obac != null)
             {
                 return obac;
@@ -886,7 +886,7 @@ namespace Yuri.YuriInterpreter
         }
 
         /// <summary>
-        /// 处理器：将所有非推导项构造到语法树上
+        /// 将所有非LL1推导项构造到语法树上
         /// </summary>
         /// <returns>预处理完毕的单语句语法树根节点</returns>
         private SyntaxTreeNode Kaguya()
@@ -1751,7 +1751,7 @@ namespace Yuri.YuriInterpreter
                     this.nextTokenPointer++;
                 }
                 // 返回她的后继
-                return this.Kotori(myNode);
+                return this.RecursiveDescent(myNode);
             }
         }
 

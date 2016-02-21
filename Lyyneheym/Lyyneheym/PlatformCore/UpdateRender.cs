@@ -666,6 +666,7 @@ namespace Yuri.PlatformCore
                 case SActionType.act_lable:
                     break;
                 case SActionType.act_switch:
+
                     break;
                 case SActionType.act_var:
                     this.Var(
@@ -1196,6 +1197,16 @@ namespace Yuri.PlatformCore
         private void Var(string varname, string dashPolish)
         {
             this.runMana.Assignment(varname, dashPolish);
+        }
+
+        /// <summary>
+        /// 开关操作
+        /// </summary>
+        /// <param name="swiname"></param>
+        /// <param name="toState"></param>
+        private void Switch(string swiname, bool toState)
+        {
+
         }
 
         private void Branch()

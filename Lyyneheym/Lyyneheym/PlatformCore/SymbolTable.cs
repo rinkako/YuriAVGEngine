@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
+using Yuri.Utils;
 
 namespace Yuri.PlatformCore
 {
@@ -63,9 +62,27 @@ namespace Yuri.PlatformCore
         /// <returns>变量在运行时环境的引用</returns>
         public object GlobalFetch(string varName)
         {
+            // 处理开关操作
+            if (SymbolTable.IsSwitchExpression(varName))
+            {
+                string[] swiItem = varName.Split(new char[] { '(', ')' });
+                int fetchId = Convert.ToInt32(swiItem[1]);
+                if (fetchId >= 0 && fetchId < GlobalDataContainer.GAME_SWITCH_COUNT)
+                {
+                    return this.globalSwitchList[fetchId] == true ? 1.0 : 0.0;
+                }
+                else
+                {
+                    DebugUtils.ConsoleLine(String.Format("Invalid Switch id: {0}, TRUE will be returned instead", fetchId),
+                        "SymbolManager", OutputStyle.Error);
+                    return 1.0;
+                }
+            }
             // 如果查无此键
             if (this.globalSymbolTable.ContainsKey(varName) == false)
             {
+                DebugUtils.ConsoleLine(String.Format("Invalid Variable Fetch: {0}, which haven't been left-value yet", varName),
+                        "SymbolManager", OutputStyle.Error);
                 throw new Exception("变量 " + varName + " 在作为左值之前被引用");
             }
             return this.globalSymbolTable[varName];
@@ -94,6 +111,17 @@ namespace Yuri.PlatformCore
             }
             this.userSymbolTableContainer.Add(scene.scenario, new Dictionary<string, object>());
             return true;
+        }
+
+        /// <summary>
+        /// 测试一个符号是否为开关表达式
+        /// </summary>
+        /// <param name="parStr">测试字符串</param>
+        /// <returns>是否是系统开关操作</returns>
+        public static bool IsSwitchExpression(string parStr)
+        {
+            Regex regex = new Regex(@"^switches\(\d+\)$");
+            return regex.IsMatch(parStr);
         }
 
         /// <summary>
@@ -135,6 +163,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private SymbolTable()
         {
+            this.globalSwitchList = new List<bool>();
             this.globalSymbolTable = new Dictionary<string, object>();
             this.userSymbolTableContainer = new Dictionary<string, Dictionary<string, object>>();
             this.InitSystemVars();
@@ -144,7 +173,7 @@ namespace Yuri.PlatformCore
         /// 唯一实例
         /// </summary>
         private static SymbolTable synObject = null;
-
+        
         /// <summary>
         /// 局部符号字典（K：场景名称 - V：符号表对象）
         /// </summary>
@@ -154,5 +183,10 @@ namespace Yuri.PlatformCore
         /// 全局符号字典
         /// </summary>
         private Dictionary<string, object> globalSymbolTable = null;
+
+        /// <summary>
+        /// 全局开关容器
+        /// </summary>
+        private List<bool> globalSwitchList = null;
     }
 }
