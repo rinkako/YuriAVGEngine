@@ -663,7 +663,7 @@ namespace Yuri.PlatformCore
                     break;
                 case SActionType.act_load:
                     break;
-                case SActionType.act_lable:
+                case SActionType.act_label:
                     break;
                 case SActionType.act_switch:
                     this.Switch(

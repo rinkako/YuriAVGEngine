@@ -136,7 +136,7 @@ namespace Yuri.ILPackage
         // 调用读档
         act_load,
         // 标签
-        act_lable,
+        act_label,
         // 标签跳转
         act_jump,
         // 循环（头）

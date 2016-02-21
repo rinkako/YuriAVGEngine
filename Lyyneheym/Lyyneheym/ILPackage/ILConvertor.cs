@@ -56,7 +56,7 @@ namespace Yuri.ILPackage
                             SceneActionPackage currentSAP = this.ilPackageContainer[sceneName][openSet.Dequeue()];
                             currentSAP.dirtyBit = true;
                             // 处理label字典
-                            if (currentSAP.aType == SActionType.act_lable)
+                            if (currentSAP.aType == SActionType.act_label)
                             {
                                 labelDict[currentSAP.aTag] = this.iResContainer[sceneName][currentSAP.saNodeName];
                             }

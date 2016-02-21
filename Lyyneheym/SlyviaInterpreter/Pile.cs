@@ -504,7 +504,7 @@ namespace Yuri.YuriInterpreter
                     // 加到函数向量里
                     funcSaVec.Add(curSa);
                     break;
-                case SyntaxType.synr_lable:
+                case SyntaxType.synr_label:
                     string labelKey = mynode.paramDict["name"].children[0].nodeValue;
                     curSa.aTag = labelKey;
                     this.blockDict[labelKey] = curSa;

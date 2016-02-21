@@ -51,7 +51,7 @@ namespace Yuri.YuriInterpreter.ILPackage
                 string args = this.argsDict.Aggregate("", (x, y) => x + ":#:" + y.Key + ":@:" + y.Value);
                 sb.Append(args.Length > 0 ? args.Substring(3) + "^" : "^");
                 if (this.aType != SActionType.act_else && this.aType != SActionType.act_endif && this.aType != SActionType.act_endfor
-                    && this.aType != SActionType.act_function && this.aType != SActionType.act_endfunction && this.aType != SActionType.act_lable)
+                    && this.aType != SActionType.act_function && this.aType != SActionType.act_endfunction && this.aType != SActionType.act_label)
                 {
                     sb.Append(this.condPolish + "^");
                 }
@@ -201,7 +201,7 @@ namespace Yuri.YuriInterpreter.ILPackage
         // 调用读档
         act_load,
         // 标签
-        act_lable,
+        act_label,
         // 标签跳转
         act_jump,
         // 循环（头）

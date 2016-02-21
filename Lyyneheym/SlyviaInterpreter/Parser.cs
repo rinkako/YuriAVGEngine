@@ -886,6 +886,44 @@ namespace Yuri.YuriInterpreter
         }
 
         /// <summary>
+        /// 为脚本命令追加参数字典
+        /// </summary>
+        /// <param name="statementNode">命令在树上的节点</param>
+        /// <param name="sType">命令的语法类型</param>
+        /// <param name="argv">参数列表</param>
+        private void ConstructArgumentDict(SyntaxTreeNode statementNode, SyntaxType sType, params string[] argv)
+        {
+            statementNode.nodeSyntaxType = sType;
+            foreach (string arg in argv)
+            {
+                statementNode.paramDict[arg] = new SyntaxTreeNode(
+                    (SyntaxType)Enum.Parse(typeof(SyntaxType), String.Format("para_{0}", arg)), statementNode);
+            }
+        }
+
+        /// <summary>
+        /// 为参数的字典节点追加LL1推导项
+        /// </summary>
+        /// <param name="arg">参数在字典中的名字</param>
+        /// <param name="derivator">LL1文法推导起始类型</param>
+        private void ProcessArgumentDerivator(SyntaxTreeNode statementNode, ref int prescanPointer, string arg, SyntaxType derivator)
+        {
+            statementNode.paramDict[arg].children = new List<SyntaxTreeNode>();
+            SyntaxTreeNode derivationNode = new SyntaxTreeNode(derivator, statementNode.paramDict[arg]);
+            derivationNode.paramTokenStream = new List<Token>();
+            prescanPointer += 2;
+            while (prescanPointer < this.istream.Count
+                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
+                && this.istream[prescanPointer].aType != TokenType.startend)
+            {
+                derivationNode.paramTokenStream.Add(this.istream[prescanPointer++]);
+            }
+            statementNode.paramDict[arg].children.Add(derivationNode);
+            // 加入不推导队列
+            this.iQueue.Enqueue(derivationNode);
+        }
+        
+        /// <summary>
         /// 将所有非LL1推导项构造到语法树上
         /// </summary>
         /// <returns>预处理完毕的单语句语法树根节点</returns>
@@ -906,96 +944,76 @@ namespace Yuri.YuriInterpreter
                 switch (mainToken.aType)
                 {
                     case TokenType.Token_o_a:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_a;
-                        statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
-                        statementNode.paramDict["vid"] = new SyntaxTreeNode(SyntaxType.para_vid, statementNode);
-                        statementNode.paramDict["face"] = new SyntaxTreeNode(SyntaxType.para_face, statementNode);
-                        statementNode.paramDict["loc"] = new SyntaxTreeNode(SyntaxType.para_loc, statementNode);
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_a, "name", "vid", "face", "loc");
                         break;
                     case TokenType.Token_o_bg:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_bg;
-                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
-                        statementNode.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename, statementNode);
-                        statementNode.paramDict["x"] = new SyntaxTreeNode(SyntaxType.para_x, statementNode);
-                        statementNode.paramDict["y"] = new SyntaxTreeNode(SyntaxType.para_y, statementNode);
-                        statementNode.paramDict["opacity"] = new SyntaxTreeNode(SyntaxType.para_opacity, statementNode);
-                        statementNode.paramDict["xscale"] = new SyntaxTreeNode(SyntaxType.para_xscale, statementNode);
-                        statementNode.paramDict["yscale"] = new SyntaxTreeNode(SyntaxType.para_yscale, statementNode);
-                        statementNode.paramDict["ro"] = new SyntaxTreeNode(SyntaxType.para_ro, statementNode);
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_bg, "id", "filename", "x", "y", "opacity", "xscale", "yscale", "ro");
                         break;
                     case TokenType.Token_o_picture:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_picture;
-                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
-                        statementNode.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename, statementNode);
-                        statementNode.paramDict["x"] = new SyntaxTreeNode(SyntaxType.para_x, statementNode);
-                        statementNode.paramDict["y"] = new SyntaxTreeNode(SyntaxType.para_y, statementNode);
-                        statementNode.paramDict["opacity"] = new SyntaxTreeNode(SyntaxType.para_opacity, statementNode);
-                        statementNode.paramDict["xscale"] = new SyntaxTreeNode(SyntaxType.para_xscale, statementNode);
-                        statementNode.paramDict["yscale"] = new SyntaxTreeNode(SyntaxType.para_yscale, statementNode);
-                        statementNode.paramDict["ro"] = new SyntaxTreeNode(SyntaxType.para_ro, statementNode);
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_picture, "id", "filename", "x", "y", "opacity", "xscale", "yscale", "ro");
                         break;
                     case TokenType.Token_o_move:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_move;
-                        statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
-                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
-                        statementNode.paramDict["time"] = new SyntaxTreeNode(SyntaxType.para_time, statementNode);
-                        statementNode.paramDict["target"] = new SyntaxTreeNode(SyntaxType.para_target, statementNode);
-                        statementNode.paramDict["dash"] = new SyntaxTreeNode(SyntaxType.para_dash, statementNode);
-                        statementNode.paramDict["acc"] = new SyntaxTreeNode(SyntaxType.para_acc, statementNode);
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_move, "name", "id", "time", "target", "dash", "acc");
                         break;
                     case TokenType.Token_o_deletepicture:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_deletepicture;
-                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_deletecstand, "id");
                         break;
                     case TokenType.Token_o_cstand:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_cstand;
-                        statementNode.paramDict["cstand"] = new SyntaxTreeNode(SyntaxType.synr_cstand, statementNode);
-                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
-                        statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
-                        statementNode.paramDict["face"] = new SyntaxTreeNode(SyntaxType.para_face, statementNode);
-                        statementNode.paramDict["x"] = new SyntaxTreeNode(SyntaxType.para_x, statementNode);
-                        statementNode.paramDict["y"] = new SyntaxTreeNode(SyntaxType.para_y, statementNode);
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_cstand, "id", "name", "face", "x", "y");
                         break;
                     case TokenType.Token_o_deletecstand:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_deletecstand;
-                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_deletecstand, "id");
                         break;
                     case TokenType.Token_o_se:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_se;
-                        statementNode.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename, statementNode);
-                        statementNode.paramDict["vol"] = new SyntaxTreeNode(SyntaxType.para_vol, statementNode);
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_se, "filename", "vol");
                         break;
                     case TokenType.Token_o_bgm:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_bgm;
-                        statementNode.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename, statementNode);
-                        statementNode.paramDict["vol"] = new SyntaxTreeNode(SyntaxType.para_vol, statementNode);
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_bgm, "filename", "vol");
                         break;
                     case TokenType.Token_o_button:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_button;
-                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
-                        statementNode.paramDict["x"] = new SyntaxTreeNode(SyntaxType.para_x, statementNode);
-                        statementNode.paramDict["y"] = new SyntaxTreeNode(SyntaxType.para_y, statementNode);
-                        statementNode.paramDict["target"] = new SyntaxTreeNode(SyntaxType.para_target, statementNode);
-                        statementNode.paramDict["normal"] = new SyntaxTreeNode(SyntaxType.para_normal, statementNode);
-                        statementNode.paramDict["over"] = new SyntaxTreeNode(SyntaxType.para_over, statementNode);
-                        statementNode.paramDict["on"] = new SyntaxTreeNode(SyntaxType.para_on, statementNode);
-                        statementNode.paramDict["type"] = new SyntaxTreeNode(SyntaxType.para_type, statementNode);
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_button, "id", "x", "y", "target", "normal", "over", "on", "type");
                         break;
                     case TokenType.Token_o_deletebutton:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_deletebutton;
-                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_deletebutton, "id");
+                        break;
+                    case TokenType.Token_o_vocal:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_vocal, "name", "vid", "vol");
+                        break;
+                    case TokenType.Token_o_label:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_label, "name");
+                        break;
+                    case TokenType.Token_o_jump:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_jump, "filename", "target", "cond");
+                        break;
+                    case TokenType.Token_o_call:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_call, "name", "sign");
+                        break;
+                    case TokenType.Token_o_draw:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_draw, "id", "dash");
+                        break;
+                    case TokenType.Token_o_switch:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_switch, "id", "state");
+                        break;
+                    case TokenType.Token_o_var:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_var, "name", "dash");
+                        break;
+                    case TokenType.Token_o_wait:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_wait, "time");
+                        break;
+                    case TokenType.Token_o_branch:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_branch, "link");
+                        break;
+                    case TokenType.Token_o_msglayer:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_msglayer, "id");
+                        break;
+                    case TokenType.Token_o_msglayeropt:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_msglayeropt, "id", "target", "dash");
                         break;
                     case TokenType.Token_o_stopbgm:
                         statementNode.nodeSyntaxType = SyntaxType.synr_stopbgm;
                         break;
                     case TokenType.Token_o_titlepoint:
                         statementNode.nodeSyntaxType = SyntaxType.synr_titlepoint;
-                        break;
-                    case TokenType.Token_o_vocal:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_vocal;
-                        statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
-                        statementNode.paramDict["vid"] = new SyntaxTreeNode(SyntaxType.para_vid, statementNode);
-                        statementNode.paramDict["vol"] = new SyntaxTreeNode(SyntaxType.para_vol, statementNode);
                         break;
                     case TokenType.Token_o_stopvocal:
                         statementNode.nodeSyntaxType = SyntaxType.synr_stopvocal;
@@ -1015,25 +1033,20 @@ namespace Yuri.YuriInterpreter
                     case TokenType.Token_o_load:
                         statementNode.nodeSyntaxType = SyntaxType.synr_load;
                         break;
-                    case TokenType.Token_o_label:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_lable;
-                        statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
+                    case TokenType.Token_o_break:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_break;
                         break;
-                    case TokenType.Token_o_jump:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_jump;
-                        statementNode.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename, statementNode);
-                        statementNode.paramDict["target"] = new SyntaxTreeNode(SyntaxType.para_target, statementNode);
-                        statementNode.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);
+                    case TokenType.Token_o_trans:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_trans;
                         break;
-                    case TokenType.Token_o_call:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_call;
-                        statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
-                        statementNode.paramDict["sign"] = new SyntaxTreeNode(SyntaxType.para_sign, statementNode);
+                    case TokenType.Token_o_waituser:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_waituser;
                         break;
-                    case TokenType.Token_o_draw:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_draw;
-                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
-                        statementNode.paramDict["dash"] = new SyntaxTreeNode(SyntaxType.para_dash, statementNode);
+                    case TokenType.Token_o_freeze:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_freeze;
+                        break;
+                    case TokenType.Token_o_shutdown:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_shutdown;
                         break;
                     case TokenType.Token_o_for:
                         statementNode.nodeSyntaxType = SyntaxType.synr_for;
@@ -1115,54 +1128,6 @@ namespace Yuri.YuriInterpreter
                             };
                         }
                         break;
-                    case TokenType.Token_o_scene:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_scene;
-                        statementNode.paramDict["filename"] = new SyntaxTreeNode(SyntaxType.para_filename, statementNode);
-                        statementNode.paramDict["lable"] = new SyntaxTreeNode(SyntaxType.synr_lable, statementNode);
-                        break;
-                    case TokenType.Token_o_switch:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_switch;
-                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
-                        statementNode.paramDict["state"] = new SyntaxTreeNode(SyntaxType.para_state, statementNode);
-                        break;
-                    case TokenType.Token_o_var:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_var;
-                        statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
-                        statementNode.paramDict["dash"] = new SyntaxTreeNode(SyntaxType.para_dash, statementNode);
-                        break;
-                    case TokenType.Token_o_break:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_break;
-                        break;
-                    case TokenType.Token_o_trans:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_trans;
-                        break;
-                    case TokenType.Token_o_waituser:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_waituser;
-                        break;
-                    case TokenType.Token_o_freeze:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_freeze;
-                        break;
-                    case TokenType.Token_o_shutdown:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_shutdown;
-                        break;
-                    case TokenType.Token_o_wait:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_wait;
-                        statementNode.paramDict["time"] = new SyntaxTreeNode(SyntaxType.para_time, statementNode);
-                        break;
-                    case TokenType.Token_o_branch:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_branch;
-                        statementNode.paramDict["link"] = new SyntaxTreeNode(SyntaxType.para_link, statementNode);
-                        break;
-                    case TokenType.Token_o_msglayer:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_msglayer;
-                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
-                        break;
-                    case TokenType.Token_o_msglayeropt:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_msglayeropt;
-                        statementNode.paramDict["id"] = new SyntaxTreeNode(SyntaxType.para_id, statementNode);
-                        statementNode.paramDict["target"] = new SyntaxTreeNode(SyntaxType.para_target, statementNode);
-                        statementNode.paramDict["dash"] = new SyntaxTreeNode(SyntaxType.para_dash, statementNode);
-                        break;
                     case TokenType.scenecluster:
                         throw new InterpreterException()
                         {
@@ -1188,439 +1153,82 @@ namespace Yuri.YuriInterpreter
                     switch (this.istream[prescanPointer].aType)
                     {
                         case TokenType.Token_p_name:
-                            statementNode.paramDict["name"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_name = new SyntaxTreeNode(SyntaxType.tail_idenLeave, statementNode.paramDict["name"]);
-                            w_name.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && this.istream[prescanPointer].aType.ToString().StartsWith("Token_p") == false
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_name.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["name"].children.Add(w_name);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_name);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "name", SyntaxType.tail_idenLeave);
                             break;
                         case TokenType.Token_p_vid:
-                            statementNode.paramDict["vid"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_vid = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["vid"]);
-                            w_vid.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_vid.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["vid"].children.Add(w_vid);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_vid);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "vid", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_face:
-                            statementNode.paramDict["face"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_face = new SyntaxTreeNode(SyntaxType.tail_idenLeave, statementNode.paramDict["face"]);
-                            w_face.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_face.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["face"].children.Add(w_face);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_face);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "face", SyntaxType.tail_idenLeave);
                             break;
                         case TokenType.Token_p_id:
-                            statementNode.paramDict["id"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_id = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["id"]);
-                            w_id.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_id.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["id"].children.Add(w_id);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_id);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "id", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_target:
-                            statementNode.paramDict["target"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_target = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["target"]);
-                            w_target.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_target.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["target"].children.Add(w_target);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_target);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "target", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_type:
-                            statementNode.paramDict["type"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_type = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["type"]);
-                            w_type.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_type.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["type"].children.Add(w_type);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_type);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "type", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_x:
-                            statementNode.paramDict["x"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_x = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["x"]);
-                            w_x.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_x.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["x"].children.Add(w_x);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_x);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "x", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_y:
-                            statementNode.paramDict["y"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_y = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["y"]);
-                            w_y.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_y.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["y"].children.Add(w_y);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_y);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "y", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_z:
-                            statementNode.paramDict["z"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_z = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["z"]);
-                            w_z.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_z.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["z"].children.Add(w_z);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_z);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "z", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_normal:
-                            statementNode.paramDict["normal"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_normal = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["normal"]);
-                            w_normal.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_normal.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["normal"].children.Add(w_normal);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_normal);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "normal", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_over:
-                            statementNode.paramDict["over"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_over = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["over"]);
-                            w_over.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_over.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["over"].children.Add(w_over);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_over);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "over", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_on:
-                            statementNode.paramDict["on"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_on = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["on"]);
-                            w_on.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_on.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["on"].children.Add(w_on);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_on);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "on", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_acc:
-                            statementNode.paramDict["acc"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_acc = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["acc"]);
-                            w_acc.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_acc.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["acc"].children.Add(w_acc);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_acc);
-                            break;
-                        case TokenType.Token_p_xacc:
-                            statementNode.paramDict["xacc"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_xacc = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["xacc"]);
-                            w_xacc.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_xacc.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["xacc"].children.Add(w_xacc);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_xacc);
-                            break;
-                        case TokenType.Token_p_yacc:
-                            statementNode.paramDict["yacc"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_yacc = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["yacc"]);
-                            w_yacc.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_yacc.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["yacc"].children.Add(w_yacc);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_yacc);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "acc", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_opacity:
-                            statementNode.paramDict["opacity"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_opacity = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["opacity"]);
-                            w_opacity.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_opacity.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["opacity"].children.Add(w_opacity);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_opacity);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "opacity", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_xscale:
-                            statementNode.paramDict["xscale"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_xscale = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["xscale"]);
-                            w_xscale.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_xscale.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["xscale"].children.Add(w_xscale);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_xscale);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "xscale", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_yscale:
-                            statementNode.paramDict["yscale"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_yscale = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["yscale"]);
-                            w_yscale.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_yscale.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["yscale"].children.Add(w_yscale);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_yscale);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "yscale", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_time:
-                            statementNode.paramDict["time"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_time = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["time"]);
-                            w_time.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_time.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["time"].children.Add(w_time);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_time);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "time", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_filename:
-                            statementNode.paramDict["filename"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_filename = new SyntaxTreeNode(SyntaxType.tail_idenLeave, statementNode.paramDict["filename"]);
-                            w_filename.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_filename.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["filename"].children.Add(w_filename);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_filename);
-                            break;
-                        case TokenType.Token_p_track:
-                            statementNode.paramDict["track"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_track = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["track"]);
-                            w_track.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_track.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["track"].children.Add(w_track);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_track);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "filename", SyntaxType.tail_idenLeave);
                             break;
                         case TokenType.Token_p_cond:
-                            statementNode.paramDict["cond"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_cond = new SyntaxTreeNode(SyntaxType.case_disjunct, statementNode.paramDict["cond"]);
-                            w_cond.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_cond.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["cond"].children.Add(w_cond);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_cond);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "cond", SyntaxType.case_disjunct);
                             break;
                         case TokenType.Token_p_dash:
-                            statementNode.paramDict["dash"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_dash = new SyntaxTreeNode(SyntaxType.case_disjunct, statementNode.paramDict["dash"]);
-                            w_dash.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_dash.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["dash"].children.Add(w_dash);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_dash);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "dash", SyntaxType.case_disjunct);
                             break;
                         case TokenType.Token_p_state:
-                            statementNode.paramDict["state"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_state = new SyntaxTreeNode(SyntaxType.tail_idenLeave, statementNode.paramDict["state"]);
-                            w_state.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_state.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["state"].children.Add(w_state);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_state);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "state", SyntaxType.tail_idenLeave);
                             break;
                         case TokenType.Token_p_vol:
-                            statementNode.paramDict["vol"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_vol = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["vol"]);
-                            w_vol.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_vol.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["vol"].children.Add(w_vol);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_vol);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "vol", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_loc:
-                            statementNode.paramDict["loc"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_loc = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["loc"]);
-                            w_loc.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_loc.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["loc"].children.Add(w_loc);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_loc);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "loc", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_ro:
-                            statementNode.paramDict["ro"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_ro = new SyntaxTreeNode(SyntaxType.case_wunit, statementNode.paramDict["ro"]);
-                            w_ro.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_ro.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["ro"].children.Add(w_ro);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_ro);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "ro", SyntaxType.case_wunit);
                             break;
                         case TokenType.Token_p_link:
-                            statementNode.paramDict["link"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_link = new SyntaxTreeNode(SyntaxType.tail_idenLeave, statementNode.paramDict["link"]);
-                            w_link.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_link.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["link"].children.Add(w_link);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_link);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "link", SyntaxType.tail_idenLeave);
                             break;
                         case TokenType.Token_p_sign:
-                            statementNode.paramDict["sign"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_sign = new SyntaxTreeNode(SyntaxType.tail_idenLeave, statementNode.paramDict["sign"]);
-                            w_sign.paramTokenStream = new List<Token>();
-                            prescanPointer += 2;
-                            while (prescanPointer < this.istream.Count
-                                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                                && this.istream[prescanPointer].aType != TokenType.startend)
-                            {
-                                w_sign.paramTokenStream.Add(this.istream[prescanPointer++]);
-                            }
-                            statementNode.paramDict["sign"].children.Add(w_sign);
-                            // 加入不推导队列
-                            this.iQueue.Enqueue(w_sign);
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "sign", SyntaxType.tail_idenLeave);
                             break;
                         case TokenType.startend:
                             break;

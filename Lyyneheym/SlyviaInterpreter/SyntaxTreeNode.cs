@@ -285,7 +285,7 @@ namespace Yuri.YuriInterpreter
         // 调用读档
         synr_load,
         // 标签
-        synr_lable,
+        synr_label,
         // 标签跳转
         synr_jump,
         // 函数调用
