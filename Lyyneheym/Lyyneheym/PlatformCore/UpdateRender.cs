@@ -666,7 +666,10 @@ namespace Yuri.PlatformCore
                 case SActionType.act_lable:
                     break;
                 case SActionType.act_switch:
-
+                    this.Switch(
+                        this.ParseInt(action.argsDict["id"], 0),
+                        this.ParseDirectString(action.argsDict["state"], "on") == "on"
+                        );
                     break;
                 case SActionType.act_var:
                     this.Var(
@@ -1202,11 +1205,11 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 开关操作
         /// </summary>
-        /// <param name="swiname"></param>
-        /// <param name="toState"></param>
-        private void Switch(string swiname, bool toState)
+        /// <param name="switchId">开关id</param>
+        /// <param name="toState">目标状态</param>
+        private void Switch(int switchId, bool toState)
         {
-
+            this.runMana.Symbols.SwitchAssign(switchId, toState);
         }
 
         private void Branch()

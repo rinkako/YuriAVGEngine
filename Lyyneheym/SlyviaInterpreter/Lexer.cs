@@ -1260,7 +1260,8 @@ namespace Yuri.YuriInterpreter
             while (this.nextCharPointer < this.sourceCode.Length)
             {
                 CharacterType cara = this.GetCharType(this.sourceCode[this.nextCharPointer]);
-                if (cara == CharacterType.Letter || cara == CharacterType.Number || cara == CharacterType.UnderLine)
+                if (cara == CharacterType.Letter || cara == CharacterType.Number
+                    || cara == CharacterType.UnderLine || cara == CharacterType.LeftBrace || cara == CharacterType.RightBrace)
                 {
                     sb.Append(this.sourceCode[this.nextCharPointer]);
                     this.Jump(1);

@@ -1534,7 +1534,7 @@ namespace Yuri.YuriInterpreter
                             break;
                         case TokenType.Token_p_state:
                             statementNode.paramDict["state"].children = new List<SyntaxTreeNode>();
-                            SyntaxTreeNode w_state = new SyntaxTreeNode(SyntaxType.case_disjunct, statementNode.paramDict["state"]);
+                            SyntaxTreeNode w_state = new SyntaxTreeNode(SyntaxType.tail_idenLeave, statementNode.paramDict["state"]);
                             w_state.paramTokenStream = new List<Token>();
                             prescanPointer += 2;
                             while (prescanPointer < this.istream.Count

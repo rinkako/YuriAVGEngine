@@ -65,7 +65,7 @@ namespace Yuri.PlatformCore
             // 处理开关操作
             if (SymbolTable.IsSwitchExpression(varName))
             {
-                string[] swiItem = varName.Split(new char[] { '(', ')' });
+                string[] swiItem = varName.Split(new char[] { '{', '}' });
                 int fetchId = Convert.ToInt32(swiItem[1]);
                 if (fetchId >= 0 && fetchId < GlobalDataContainer.GAME_SWITCH_COUNT)
                 {
@@ -95,7 +95,67 @@ namespace Yuri.PlatformCore
         /// <param name="value">变量的值</param>
         public void GlobalAssign(string varName, object value)
         {
+            // 处理开关操作
+            if (SymbolTable.IsSwitchExpression(varName))
+            {
+                string[] swiItem = varName.Split(new char[] { '{', '}' });
+                int fetchId = Convert.ToInt32(swiItem[1]);
+                if (fetchId >= 0 && fetchId < GlobalDataContainer.GAME_SWITCH_COUNT)
+                {
+                    if (value == null)
+                    {
+                        this.globalSwitchList[fetchId] = false;
+                    }
+                    else if (value is string)
+                    {
+                        this.globalSwitchList[fetchId] = value == String.Empty;
+                    }
+                    else
+                    {
+                        this.globalSwitchList[fetchId] = (double)value != 0;
+                    }
+                    return;
+                }
+                else
+                {
+                    DebugUtils.ConsoleLine(String.Format("Invalid Switch id: {0}", fetchId), "SymbolManager", OutputStyle.Error);
+                    return;
+                }
+            }
+            // 处理全局符号
             this.globalSymbolTable[varName] = value;
+        }
+
+        /// <summary>
+        /// 获取一个开关的状态，如果该开关从未被使用过，将返回True
+        /// </summary>
+        /// <param name="id">开关id</param>
+        /// <returns>返回开关的状态</returns>
+        public bool SwitchFetch(int id)
+        {
+            if (id >= 0 && id < GlobalDataContainer.GAME_SWITCH_COUNT)
+            {
+                return this.globalSwitchList[id];
+            }
+            DebugUtils.ConsoleLine(String.Format("Invalid Switch id: {0}, TRUE will be returned instead", id), "SymbolManager", OutputStyle.Error);
+            return true;
+        }
+
+        /// <summary>
+        /// 设置一个开关的状态
+        /// </summary>
+        /// <param name="id">开关id</param>
+        /// <param name="state">目标状态</param>
+        public void SwitchAssign(int id, bool state)
+        {
+            if (id >= 0 && id < GlobalDataContainer.GAME_SWITCH_COUNT)
+            {
+                this.globalSwitchList[id] = state;
+            }
+            else
+            {
+                DebugUtils.ConsoleLine(String.Format("Invalid Switch id: {0}", id), "SymbolManager", OutputStyle.Error);
+            }
         }
 
         /// <summary>
@@ -120,7 +180,7 @@ namespace Yuri.PlatformCore
         /// <returns>是否是系统开关操作</returns>
         public static bool IsSwitchExpression(string parStr)
         {
-            Regex regex = new Regex(@"^switches\(\d+\)$");
+            Regex regex = new Regex(@"^switches{\d+}$");
             return regex.IsMatch(parStr);
         }
 
@@ -166,6 +226,10 @@ namespace Yuri.PlatformCore
             this.globalSwitchList = new List<bool>();
             this.globalSymbolTable = new Dictionary<string, object>();
             this.userSymbolTableContainer = new Dictionary<string, Dictionary<string, object>>();
+            for (int i = 0; i < GlobalDataContainer.GAME_SWITCH_COUNT; i++)
+            {
+                this.globalSwitchList.Add(true);
+            }
             this.InitSystemVars();
         }
 
