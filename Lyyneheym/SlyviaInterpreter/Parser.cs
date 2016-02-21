@@ -1015,7 +1015,7 @@ namespace Yuri.YuriInterpreter
                     case TokenType.Token_o_load:
                         statementNode.nodeSyntaxType = SyntaxType.synr_load;
                         break;
-                    case TokenType.Token_o_lable:
+                    case TokenType.Token_o_label:
                         statementNode.nodeSyntaxType = SyntaxType.synr_lable;
                         statementNode.paramDict["name"] = new SyntaxTreeNode(SyntaxType.para_name, statementNode);
                         break;

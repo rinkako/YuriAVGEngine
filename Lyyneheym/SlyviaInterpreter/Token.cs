@@ -144,7 +144,7 @@ namespace Yuri.YuriInterpreter
         // 调用读档
         Token_o_load,
         // 标签
-        Token_o_lable,
+        Token_o_label,
         // 标签跳转
         Token_o_jump,
         // 循环（头）

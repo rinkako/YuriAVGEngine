@@ -358,9 +358,11 @@ namespace Yuri.PlatformCore
                     if (peeker.itemType == PolishItemType.CONSTANT || peeker.itemType == PolishItemType.VAR_NUM)
                     {
                         calcStack.Pop();
+                        double notres = Math.Abs(peeker.number) < 1e-15 ? 1.0 : 0.0;
                         PolishItem np = new PolishItem()
                         {
-                            number = Math.Abs(peeker.number) < 1e-15 ? 1 : 0
+                            number = notres,
+                            reference = notres
                         };
                         calcStack.Push(np);
                         continue;
@@ -368,9 +370,12 @@ namespace Yuri.PlatformCore
                     else if (peeker.itemType == PolishItemType.STRING || peeker.itemType == PolishItemType.VAR_STRING)
                     {
                         calcStack.Pop();
+                        double notres = peeker.cluster == "" ? 1.0 : 0.0;
+
                         PolishItem np = new PolishItem()
                         {
-                            number = peeker.cluster == "" ? 1 : 0
+                            number = notres,
+                            reference = notres
                         };
                         calcStack.Push(np);
                         continue;
