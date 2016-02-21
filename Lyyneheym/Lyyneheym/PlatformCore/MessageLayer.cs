@@ -287,7 +287,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置文字层的背景精灵
         /// </summary>
-        public MySprite backgroundSprite
+        public YuriSprite backgroundSprite
         {
             get
             {
@@ -302,6 +302,6 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 文字层背景精灵
         /// </summary>
-        private MySprite bgSprite = null;
+        private YuriSprite bgSprite = null;
     }
 }

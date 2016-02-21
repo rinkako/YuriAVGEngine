@@ -20,7 +20,7 @@ namespace Yuri.PlatformCore
         /// <param name="sourceName">资源名称</param>
         /// <param name="cutRect">纹理切割矩（X值-1代表取全图）</param>
         /// <returns>该资源的精灵</returns>
-        public MySprite GetBackground(string sourceName, Int32Rect cutRect)
+        public YuriSprite GetBackground(string sourceName, Int32Rect cutRect)
         {
             if (cutRect.X == -1)
             {
@@ -35,7 +35,7 @@ namespace Yuri.PlatformCore
         /// <param name="sourceName">资源名称</param>
         /// <param name="cutRect">纹理切割矩（X值-1代表取全图）</param>
         /// <returns>该资源的精灵</returns>
-        public MySprite GetCharacterStand(string sourceName, Int32Rect cutRect)
+        public YuriSprite GetCharacterStand(string sourceName, Int32Rect cutRect)
         {
             if (cutRect.X == -1)
             {
@@ -50,7 +50,7 @@ namespace Yuri.PlatformCore
         /// <param name="sourceName">资源名称</param>
         /// <param name="cutRect">纹理切割矩（X值-1代表取全图）</param>
         /// <returns>该资源的精灵</returns>
-        public MySprite GetPicture(string sourceName, Int32Rect cutRect)
+        public YuriSprite GetPicture(string sourceName, Int32Rect cutRect)
         {
             if (cutRect.X == -1)
             {
@@ -134,10 +134,10 @@ namespace Yuri.PlatformCore
         /// <param name="rtype">资源类型</param>
         /// <param name="cutRect">纹理切割矩</param>
         /// <returns>该资源的精灵</returns>
-        private MySprite GetGraphicSprite(string sourceName, ResourceType rtype, Int32Rect? cutRect)
+        private YuriSprite GetGraphicSprite(string sourceName, ResourceType rtype, Int32Rect? cutRect)
         {
             if (sourceName == "") { return null; }
-            MySprite sprite = new MySprite();
+            YuriSprite sprite = new YuriSprite();
             string DevURI = null, PackURI = null;
             // 处理路径
             switch (rtype)
@@ -508,6 +508,7 @@ namespace Yuri.PlatformCore
         SE,
         VOCAL,
         MessageLayerBackground,
-        Button
+        Button,
+        BranchButton
     }
 }

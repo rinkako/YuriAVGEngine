@@ -20,12 +20,12 @@ namespace Yuri
     {
 
         #region debug用
-        public MySprite testBitmapImage(string filename)
+        public YuriSprite testBitmapImage(string filename)
         {
             return this.ResMana.GetBackground(filename, new System.Windows.Int32Rect(-1, 0, 0, 0));
         }
 
-        public MySprite testCharaStand(string filename)
+        public YuriSprite testCharaStand(string filename)
         {
             return this.ResMana.GetCharacterStand(filename, new System.Windows.Int32Rect(-1, 0, 0, 0));
         }
@@ -138,6 +138,14 @@ namespace Yuri
         public void RemoveButton(int id)
         {
             this.updateRender.Deletebutton(id);
+        }
+
+        /// <summary>
+        /// 从屏幕上移除所有选择项，用户选择项按钮按下后的回调
+        /// </summary>
+        public void RemoveAllBranchButton()
+        {
+            this.updateRender.RemoveAllBranchButton();
         }
         #endregion
 

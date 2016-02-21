@@ -23,7 +23,7 @@ namespace Yuri.PlatformCore
         /// <param name="toY">目标Y</param>
         /// <param name="accX">加速度X</param>
         /// <param name="accY">加速度Y</param>
-        public static void XYMoveAnimation(MySprite sprite, Duration duration, double fromX, double toX, double fromY, double toY, double accX, double accY)
+        public static void XYMoveAnimation(YuriSprite sprite, Duration duration, double fromX, double toX, double fromY, double toY, double accX, double accY)
         {
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniLeft = new DoubleAnimation(fromX, toX, duration);
@@ -52,7 +52,7 @@ namespace Yuri.PlatformCore
         /// <param name="fromZ">起始Z</param>
         /// <param name="toZ">目标Z</param>
         /// <param name="accZ">加速度Z</param>
-        public static void ZMoveAnimation(MySprite sprite, Duration duration, int fromZ, int toZ, double accZ)
+        public static void ZMoveAnimation(YuriSprite sprite, Duration duration, int fromZ, int toZ, double accZ)
         {
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniZ = new DoubleAnimation(fromZ, toZ, duration);
@@ -78,7 +78,7 @@ namespace Yuri.PlatformCore
         /// <param name="toScaleY">目标纵向比例</param>
         /// <param name="accX">横向加速度</param>
         /// <param name="accY">纵向加速度</param>
-        public static void ScaleAnimation(MySprite sprite, Duration duration, double fromScaleX, double toScaleX, double fromScaleY, double toScaleY, double accX, double accY)
+        public static void ScaleAnimation(YuriSprite sprite, Duration duration, double fromScaleX, double toScaleX, double fromScaleY, double toScaleY, double accX, double accY)
         {
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniScaleX = new DoubleAnimation(fromScaleX, toScaleX, duration);
@@ -106,7 +106,7 @@ namespace Yuri.PlatformCore
         /// <param name="fromOpacity">起始不透明度</param>
         /// <param name="toOpacity">目标不透明度</param>
         /// <param name="acc">加速度</param>
-        public static void OpacityAnimation(MySprite sprite, Duration duration, double fromOpacity, double toOpacity, double acc)
+        public static void OpacityAnimation(YuriSprite sprite, Duration duration, double fromOpacity, double toOpacity, double acc)
         {
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniOpacity = new DoubleAnimation(fromOpacity, toOpacity, duration);
@@ -129,7 +129,7 @@ namespace Yuri.PlatformCore
         /// <param name="fromTheta">起始角度</param>
         /// <param name="toTheta">目标角度</param>
         /// <param name="acc">加速度</param>
-        public static void RotateAnimation(MySprite sprite, Duration duration, double fromTheta, double toTheta, double acc)
+        public static void RotateAnimation(YuriSprite sprite, Duration duration, double fromTheta, double toTheta, double acc)
         {
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniRotate = new DoubleAnimation(fromTheta, toTheta, duration);
@@ -153,7 +153,7 @@ namespace Yuri.PlatformCore
         /// <param name="deltaY">差分Y</param>
         /// <param name="accX">加速度X</param>
         /// <param name="accY">加速度Y</param>
-        public static void XYMoveAnimation(MySprite sprite, Duration duration, double deltaX, double deltaY, double accX = 0, double accY = 0)
+        public static void XYMoveAnimation(YuriSprite sprite, Duration duration, double deltaX, double deltaY, double accX = 0, double accY = 0)
         {
             if (sprite.displayBinding == null) { return; }
             SpriteAnimation.XYMoveAnimation(sprite, duration, sprite.displayX, sprite.displayX + deltaX, sprite.displayY, sprite.displayY + deltaY, accX, accY);
@@ -166,7 +166,7 @@ namespace Yuri.PlatformCore
         /// <param name="duration">动画时长</param>
         /// <param name="deltaZ">差分值</param>
         /// <param name="accZ">加速度Z</param>
-        public static void ZMoveAnimation(MySprite sprite, Duration duration, int deltaZ, double accZ = 0)
+        public static void ZMoveAnimation(YuriSprite sprite, Duration duration, int deltaZ, double accZ = 0)
         {
             if (sprite.displayBinding == null) { return; }
             SpriteAnimation.ZMoveAnimation(sprite, duration, sprite.displayZ, sprite.displayZ + deltaZ, accZ);
@@ -181,7 +181,7 @@ namespace Yuri.PlatformCore
         /// <param name="deltaScaleY">纵向比例差分</param>
         /// <param name="accX">横向加速度</param>
         /// <param name="accY">纵向加速度</param>
-        public static void ScaleAnimation(MySprite sprite, Duration duration, double deltaScaleX, double deltaScaleY, double accX = 0, double accY = 0)
+        public static void ScaleAnimation(YuriSprite sprite, Duration duration, double deltaScaleX, double deltaScaleY, double accX = 0, double accY = 0)
         {
             if (sprite.displayBinding == null) { return; }
             ScaleTransform scaler = ((TransformGroup)(sprite.displayBinding.RenderTransform)).Children[1] as ScaleTransform;
@@ -197,7 +197,7 @@ namespace Yuri.PlatformCore
         /// <param name="duration">动画时长</param>
         /// <param name="deltaOpacity">差分值</param>
         /// <param name="acc">加速度</param>
-        public static void OpacityAnimation(MySprite sprite, Duration duration, double deltaOpacity, double acc = 0)
+        public static void OpacityAnimation(YuriSprite sprite, Duration duration, double deltaOpacity, double acc = 0)
         {
             if (sprite.displayBinding == null) { return; }
             SpriteAnimation.OpacityAnimation(sprite, duration, sprite.displayOpacity, sprite.displayOpacity + deltaOpacity, acc);
@@ -210,7 +210,7 @@ namespace Yuri.PlatformCore
         /// <param name="duration">动画时长</param>
         /// <param name="deltaTheta">差分</param>
         /// <param name="acc">加速度</param>
-        public static void RotateAnimation(MySprite sprite, Duration duration, double deltaTheta, double acc = 0)
+        public static void RotateAnimation(YuriSprite sprite, Duration duration, double deltaTheta, double acc = 0)
         {
             if (sprite.displayBinding == null) { return; }
             RotateTransform rotater = ((TransformGroup)(sprite.displayBinding.RenderTransform)).Children[2] as RotateTransform;
@@ -227,7 +227,7 @@ namespace Yuri.PlatformCore
         /// <param name="toY">目标Y</param>
         /// <param name="accX">加速度X</param>
         /// <param name="accY">加速度Y</param>
-        public static void XYMoveToAnimation(MySprite sprite, Duration duration, double toX, double toY, double accX = 0, double accY = 0)
+        public static void XYMoveToAnimation(YuriSprite sprite, Duration duration, double toX, double toY, double accX = 0, double accY = 0)
         {
             if (sprite.displayBinding == null) { return; }
             SpriteAnimation.XYMoveAnimation(sprite, duration, sprite.displayX, toX, sprite.displayY, toY, accX, accY);
@@ -240,7 +240,7 @@ namespace Yuri.PlatformCore
         /// <param name="duration">动画时长</param>
         /// <param name="toZ">目标Z</param>
         /// <param name="accZ">加速度Z</param>
-        public static void ZMoveToAnimation(MySprite sprite, Duration duration, int toZ, double accZ = 0)
+        public static void ZMoveToAnimation(YuriSprite sprite, Duration duration, int toZ, double accZ = 0)
         {
             if (sprite.displayBinding == null) { return; }
             SpriteAnimation.ZMoveAnimation(sprite, duration, sprite.displayZ, toZ, accZ);
@@ -255,7 +255,7 @@ namespace Yuri.PlatformCore
         /// <param name="toScaleY">纵向目标比例</param>
         /// <param name="accX">横向加速度</param>
         /// <param name="accY">纵向加速度</param>
-        public static void ScaleToAnimation(MySprite sprite, Duration duration, double toScaleX, double toScaleY, double accX = 0, double accY = 0)
+        public static void ScaleToAnimation(YuriSprite sprite, Duration duration, double toScaleX, double toScaleY, double accX = 0, double accY = 0)
         {
             if (sprite.displayBinding == null) { return; }
             ScaleTransform scaler = ((TransformGroup)(sprite.displayBinding.RenderTransform)).Children[1] as ScaleTransform;
@@ -269,7 +269,7 @@ namespace Yuri.PlatformCore
         /// <param name="duration">动画时长</param>
         /// <param name="toOpacity">目标不透明度</param>
         /// <param name="acc">加速度</param>
-        public static void OpacityToAnimation(MySprite sprite, Duration duration, double toOpacity, double acc = 0)
+        public static void OpacityToAnimation(YuriSprite sprite, Duration duration, double toOpacity, double acc = 0)
         {
             if (sprite.displayBinding == null) { return; }
             SpriteAnimation.OpacityAnimation(sprite, duration, sprite.displayOpacity, toOpacity, acc);
@@ -282,7 +282,7 @@ namespace Yuri.PlatformCore
         /// <param name="duration">动画时长</param>
         /// <param name="toTheta">目标角度</param>
         /// <param name="acc">加速度</param>
-        public static void RotateToAnimation(MySprite sprite, Duration duration, double toTheta, double acc = 0)
+        public static void RotateToAnimation(YuriSprite sprite, Duration duration, double toTheta, double acc = 0)
         {
             if (sprite.displayBinding == null) { return; }
             RotateTransform rotater = ((TransformGroup)(sprite.displayBinding.RenderTransform)).Children[2] as RotateTransform;
@@ -298,7 +298,7 @@ namespace Yuri.PlatformCore
         /// <param name="toValue">目标值</param>
         /// <param name="acc">加速度</param>
         /// <param name="propath">依赖链</param>
-        public static void PropertyAnimation(MySprite sprite, Duration duration, double fromValue, double toValue, double acc, PropertyPath propath)
+        public static void PropertyAnimation(YuriSprite sprite, Duration duration, double fromValue, double toValue, double acc, PropertyPath propath)
         {
             if (sprite.displayBinding == null) { return; }
             Storyboard story = new Storyboard();
@@ -317,7 +317,7 @@ namespace Yuri.PlatformCore
         /// <param name="duration">动画时长</param>
         /// <param name="jumpDelta">下跳幅度</param>
         /// <param name="acc">加速度</param>
-        public static void UpDownRepeatAnimation(MySprite sprite, Duration duration, double jumpDelta, double acc)
+        public static void UpDownRepeatAnimation(YuriSprite sprite, Duration duration, double jumpDelta, double acc)
         {
             Storyboard sb = new Storyboard();
             DoubleAnimation da = new DoubleAnimation(0, jumpDelta, duration);
@@ -370,7 +370,7 @@ namespace Yuri.PlatformCore
         /// 跳过指定精灵上的动画
         /// </summary>
         /// <param name="sprite">精灵实例</param>
-        public static void SkipAnimation(MySprite sprite)
+        public static void SkipAnimation(YuriSprite sprite)
         {
             if (sprite != null)
             {
@@ -413,6 +413,6 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 正在进行的动画字典
         /// </summary>
-        private static Dictionary<Storyboard, MySprite> aniDict = new Dictionary<Storyboard, MySprite>();
+        private static Dictionary<Storyboard, YuriSprite> aniDict = new Dictionary<Storyboard, YuriSprite>();
     }
 }

@@ -16,7 +16,7 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 精灵类：为图形资源提供展示、用户互动和动画效果的类
     /// </summary>
-    public class MySprite
+    public class YuriSprite
     {
         /// <summary>
         /// 初始化精灵对象，它只能被执行一次

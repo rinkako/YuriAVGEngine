@@ -64,12 +64,13 @@
     </ApplicationDefinition>
     <Compile Include="ILPackage\ILConvertor.cs" />
     <Compile Include="ILPackage\SceneAction.cs" />
+    <Compile Include="PlatformCore\BranchButtonDescriptor.cs" />
     <Compile Include="PlatformCore\GlobalDataContainer.cs" />
     <Compile Include="PlatformCore\Interrupt.cs" />
     <Compile Include="PlatformCore\MessageLayer.cs" />
     <Compile Include="PlatformCore\MessageLayerDescriptor.cs" />
     <Compile Include="PlatformCore\Musician.cs" />
-    <Compile Include="PlatformCore\MySprite.cs" />
+    <Compile Include="PlatformCore\YuriSprite.cs" />
     <Compile Include="PlatformCore\PolishItem.cs" />
     <Compile Include="PlatformCore\ResourceManager.cs" />
     <Compile Include="PlatformCore\RuntimeManager.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="PlatformCore\ScreenManager.cs" />
     <Compile Include="PlatformCore\SpiritContainer.cs" />
     <Compile Include="PlatformCore\SpriteAnimation.cs" />
+    <Compile Include="PlatformCore\BranchButton.cs" />
     <Compile Include="PlatformCore\SpriteButton.cs" />
     <Compile Include="PlatformCore\SpriteButtonDescriptor.cs" />
     <Compile Include="PlatformCore\SpriteDescriptor.cs" />

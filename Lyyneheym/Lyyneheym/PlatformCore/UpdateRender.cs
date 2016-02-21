@@ -34,7 +34,7 @@ namespace Yuri.PlatformCore
             {
                 return nullValue;
             }
-            return Convert.ToDouble(this.runMana.CalculatePolish(polish));
+            return Convert.ToDouble(this.RunMana.CalculatePolish(polish));
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Yuri.PlatformCore
             {
                 return nullValue;
             }
-            return (int)(Convert.ToDouble(this.runMana.CalculatePolish(polish)));
+            return (int)(Convert.ToDouble(this.RunMana.CalculatePolish(polish)));
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Yuri.PlatformCore
                         else if (this.pendingDialogQueue.Count == 0)
                         {
                             // 弹掉用户等待状态
-                            this.runMana.ExitCall();
+                            this.RunMana.ExitCall();
                             this.isShowingDialog = false;
                             this.dialogPreStr = string.Empty;
                             // 非连续对话时消除对话框
@@ -276,7 +276,7 @@ namespace Yuri.PlatformCore
             }
             // 主动调用一次显示
             this.DrawDialogRunQueue();
-            this.runMana.UserWait("UpdateRender", "DialogWaitForClick");
+            this.RunMana.UserWait("UpdateRender", "DialogWaitForClick");
         }
 
         /// <summary>
@@ -453,7 +453,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 主文字层背景精灵
         /// </summary>
-        private MySprite MainMsgTriangleSprite;
+        private YuriSprite MainMsgTriangleSprite;
 
         /// <summary>
         /// 当前已经显示的文本内容
@@ -504,7 +504,7 @@ namespace Yuri.PlatformCore
         /// <param name="rm">运行时环境</param>
         public void SetRuntimeManagerReference(RuntimeManager rm)
         {
-            this.runMana = rm;
+            this.RunMana = rm;
         }
 
         /// <summary>
@@ -526,7 +526,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 运行时环境引用
         /// </summary>
-        private RuntimeManager runMana = null;
+        private RuntimeManager RunMana = null;
 
         /// <summary>
         /// 音乐引擎
@@ -722,7 +722,7 @@ namespace Yuri.PlatformCore
                     this.MsgLayerOpt(
                         this.ParseInt(action.argsDict["id"], 0),
                         this.ParseDirectString(action.argsDict["target"], ""),
-                        this.runMana.CalculatePolish(action.argsDict["dash"]).ToString()
+                        this.RunMana.CalculatePolish(action.argsDict["dash"]).ToString()
                         );
                     break;
                 case SActionType.act_draw:
@@ -830,7 +830,7 @@ namespace Yuri.PlatformCore
         /// <param name="breakSa">中断循环动作实例</param>
         private void Break(SceneAction breakSa)
         {
-            this.runMana.CallStack.ESP.IP = breakSa.next;
+            this.RunMana.CallStack.ESP.IP = breakSa.next;
         }
 
         /// <summary>
@@ -934,7 +934,7 @@ namespace Yuri.PlatformCore
         /// <param name="duration">完成所需时间</param>
         private void Move(int id, ResourceType rType, string property, double toValue, double acc, Duration duration)
         {
-            MySprite actionSprite = this.viewMana.GetSprite(id, rType);
+            YuriSprite actionSprite = this.viewMana.GetSprite(id, rType);
             SpriteDescriptor descriptor = this.scrMana.GetSpriteDescriptor(id, rType);
             if (actionSprite == null)
             {
@@ -1156,7 +1156,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private void Title()
         {
-            this.runMana.ExitAll();
+            this.RunMana.ExitAll();
             // 没有标志回归点就从程序入口重新开始
             if (this.titlePointContainer.Key == null || this.titlePointContainer.Value == null)
             {
@@ -1167,13 +1167,13 @@ namespace Yuri.PlatformCore
                         "Director", OutputStyle.Error);
                     Environment.Exit(0);
                 }
-                this.runMana.CallScene(mainScene);
+                this.RunMana.CallScene(mainScene);
             }
             // 有回归点就调用回归点场景并把IP指针偏移到回归点动作
             else
             {
-                this.runMana.CallScene(this.titlePointContainer.Key);
-                this.runMana.CallStack.ESP.IP = this.titlePointContainer.Value;
+                this.RunMana.CallScene(this.titlePointContainer.Key);
+                this.RunMana.CallStack.ESP.IP = this.titlePointContainer.Value;
             }
         }
 
@@ -1199,7 +1199,7 @@ namespace Yuri.PlatformCore
         /// <param name="dashPolish">表达式的等价逆波兰式</param>
         private void Var(string varname, string dashPolish)
         {
-            this.runMana.Assignment(varname, dashPolish);
+            this.RunMana.Assignment(varname, dashPolish);
         }
 
         /// <summary>
@@ -1209,12 +1209,63 @@ namespace Yuri.PlatformCore
         /// <param name="toState">目标状态</param>
         private void Switch(int switchId, bool toState)
         {
-            this.runMana.Symbols.SwitchAssign(switchId, toState);
+            this.RunMana.Symbols.SwitchAssign(switchId, toState);
         }
 
-        private void Branch()
+        /// <summary>
+        /// 选择项
+        /// </summary>
+        /// <param name="linkStr">选择项跳转链</param>
+        private void Branch(string linkStr)
         {
+            // 处理跳转链
+            List<KeyValuePair<string, string>> tagList = new List<KeyValuePair<string, string>>();
+            string[] linkItems = linkStr.Split(';');
+            foreach (var linkItem in linkItems)
+            {
+                string[] linkPair = linkItem.Split(',');
+                if (linkPair.Length == 2)
+                {
+                    tagList.Add(new KeyValuePair<string,string>(linkPair[0].Trim(), linkPair[1].Trim()));
+                }
+                else
+                {
+                    DebugUtils.ConsoleLine(String.Format("Ignore Branch Item: {0}", linkItem),
+                        "UpdateRender", OutputStyle.Error);
+                }
+            }
+            // 处理按钮显示参数
+            double GroupX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0 - GlobalDataContainer.GAME_BRANCH_WIDTH / 2.0;
+            double BeginY = GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT / 2.0 - (GlobalDataContainer.GAME_BRANCH_HEIGHT * 2.0) * (tagList.Count / 2.0);
+            double DeltaY = GlobalDataContainer.GAME_BRANCH_HEIGHT;
+            // 描绘按钮
+            for (int i = 0; i < tagList.Count; i++)
+            {
+                SpriteDescriptor normalDesc = new SpriteDescriptor()
+                {
+                    resourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUND
+                },
+                overDesc = new SpriteDescriptor()
+                {
+                    resourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUND
+                },
+                onDesc = new SpriteDescriptor()
+                {
+                    resourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUND
+                };
+                this.scrMana.AddBranchButton(i, GroupX, BeginY + DeltaY * i, tagList[i].Value, tagList[i].Key, normalDesc, overDesc, onDesc);
+                this.viewMana.Draw(i, ResourceType.BranchButton);
+            }
+            // 追加等待
+            this.RunMana.UserWait("UpdateRender", String.Format("BranchWaitFor:{0}", linkStr));
+        }
 
+        /// <summary>
+        /// 移除屏幕上所有的选择项按钮
+        /// </summary>
+        public void RemoveAllBranchButton()
+        {
+            this.viewMana.RemoveView(ResourceType.BranchButton);
         }
 
         /// <summary>
@@ -1223,8 +1274,8 @@ namespace Yuri.PlatformCore
         private void Titlepoint()
         {
             this.titlePointContainer = new KeyValuePair<Scene, SceneAction>(
-                this.resMana.GetScene(this.runMana.CallStack.ESP.bindingSceneName),
-                this.runMana.CallStack.ESP.IP);
+                this.resMana.GetScene(this.RunMana.CallStack.ESP.bindingSceneName),
+                this.RunMana.CallStack.ESP.IP);
         }
 
         /// <summary>

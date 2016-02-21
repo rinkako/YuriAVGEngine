@@ -232,6 +232,34 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 为屏幕增加一个选择支描述子
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="jumpTarget"></param>
+        /// <param name="text"></param>
+        /// <param name="normalDesc"></param>
+        /// <param name="overDesc"></param>
+        /// <param name="onDesc"></param>
+        public void AddBranchButton(int id, double X, double Y, string jumpTarget, string text, SpriteDescriptor normalDesc, SpriteDescriptor overDesc = null, SpriteDescriptor onDesc = null)
+        {
+            BranchButtonDescriptor bbd = new BranchButtonDescriptor()
+            {
+                Id = id,
+                JumpTarget = jumpTarget,
+                X = X,
+                Y = Y,
+                Z = GlobalDataContainer.GAME_Z_BRANCHBUTTON + id,
+                Text = text,
+                normalDescriptor = normalDesc,
+                overDescriptor = overDesc,
+                onDescriptor = onDesc
+            };
+            this.BranchDescVec[id] = bbd;
+        }
+
+        /// <summary>
         /// 为屏幕增加一个文字层描述子
         /// </summary>
         /// <param name="id"></param>
@@ -315,23 +343,32 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 从屏幕上移除一个选择支
+        /// </summary>
+        /// <param name="id">选择支id</param>
+        public void RemoveBranchButton(int id)
+        {
+            this.BranchDescVec[id] = null;
+        }
+
+        /// <summary>
         /// 获取一个精灵的描述子
         /// </summary>
-        /// <param name="spriteId">精灵ID</param>
+        /// <param name="id">精灵ID</param>
         /// <param name="rType">资源类型</param>
         /// <returns>描述子实例</returns>
-        public SpriteDescriptor GetSpriteDescriptor(int spriteId, ResourceType rType)
+        public SpriteDescriptor GetSpriteDescriptor(int id, ResourceType rType)
         {
             try
             {
                 switch (rType)
                 {
                     case ResourceType.Background:
-                        return this.BackgroundDescVec[spriteId];
+                        return this.BackgroundDescVec[id];
                     case ResourceType.Stand:
-                        return this.CharacterDescVec[spriteId];
+                        return this.CharacterDescVec[id];
                     case ResourceType.Pictures:
-                        return this.PictureDescVec[spriteId];
+                        return this.PictureDescVec[id];
                     default:
                         return null;
                 }
@@ -346,21 +383,31 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取一个文字层描述子
         /// </summary>
-        /// <param name="layerId">文字层ID</param>
+        /// <param name="id">文字层ID</param>
         /// <returns>描述子实例</returns>
-        public MessageLayerDescriptor GetMsgLayerDescriptor(int layerId)
+        public MessageLayerDescriptor GetMsgLayerDescriptor(int id)
         {
-            return this.MsgLayerDescVec[layerId];
+            return this.MsgLayerDescVec[id];
         }
 
         /// <summary>
         /// 获取一个按钮描述子
         /// </summary>
-        /// <param name="buttonId">按钮id</param>
+        /// <param name="id">按钮ID</param>
         /// <returns>描述子实例</returns>
-        public SpriteButtonDescriptor GetButtonDescriptor(int buttonId)
+        public SpriteButtonDescriptor GetButtonDescriptor(int id)
         {
-            return this.ButtonDescVec[buttonId];
+            return this.ButtonDescVec[id];
+        }
+
+        /// <summary>
+        /// 获取一个选择支描述子
+        /// </summary>
+        /// <param name="bbId">选择支ID</param>
+        /// <returns描述子实例></returns>
+        public BranchButtonDescriptor GetBranchButtonDescriptor(int id)
+        {
+            return this.BranchDescVec[id];
         }
 
         /// <summary>
@@ -377,6 +424,11 @@ namespace Yuri.PlatformCore
         /// 图片描述向量
         /// </summary>
         private List<SpriteDescriptor> PictureDescVec;
+
+        /// <summary>
+        /// 选择项描述向量
+        /// </summary>
+        private List<BranchButtonDescriptor> BranchDescVec;
 
         /// <summary>
         /// 文字层描述向量

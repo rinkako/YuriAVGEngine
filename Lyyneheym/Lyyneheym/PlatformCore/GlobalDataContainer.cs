@@ -62,12 +62,20 @@ namespace Yuri.PlatformCore
         public static int GAME_MSG_PASSAGE_DELAY = 120;
         // 文本展示：是否已读快进
         public static bool GAME_MSG_SKIP = false;
+        // 选择项：最大数量
+        public static int GAME_BRANCH_COUNT = 8;
         // 选择项：背景图
         public static string GAME_BRANCH_BACKGROUND = "branchItem.png";
         // 选择项：宽度
         public static int GAME_BRANCH_WIDTH = 400;
         // 选择项：高度
         public static int GAME_BRANCH_HEIGHT = 40;
+        // 选择项：字体大小
+        public static int GAME_BRANCH_FONTSIZE = 22;
+        // 选择项：字体颜色
+        public static Color GAME_BRANCH_FONTCOLOR = Colors.White;
+        // 选择项：字体
+        public static string GAME_BRANCH_FONTNAME = "黑体";
         // 图像层：图像层数量
         public static int GAME_IMAGELAYER_COUNT = 50;
         // 图像层：最大立绘数
@@ -116,6 +124,8 @@ namespace Yuri.PlatformCore
         public static int GAME_Z_PICTURES = 101;
         // 全局：按钮Z坐标最小值
         public static int GAME_Z_BUTTON = 201;
+        // 全局：选择项按钮Z坐标最小值
+        public static int GAME_Z_BRANCHBUTTON = 251;
         // 音频：语音文件后缀
         public static string GAME_VOCAL_POSTFIX = ".mp3";
         // 存档：截图存档
@@ -127,7 +137,7 @@ namespace Yuri.PlatformCore
         // 字体：字体名称
         public static string GAME_FONT_NAME = "黑体";
         // 字体：颜色
-        public static System.Windows.Media.Color GAME_FONT_COLOR = Colors.Black;
+        public static Color GAME_FONT_COLOR = Colors.Black;
         // 字体：行距
         public static int GAME_FONT_LINEHEIGHT = 22;
         // 字体：字号

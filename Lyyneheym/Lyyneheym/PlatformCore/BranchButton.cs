@@ -13,13 +13,13 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 精灵按钮类
     /// </summary>
-    public class SpriteButton
+    public class BranchButton
     {
         /// <summary>
-        /// 构造精灵按钮
+        /// 构造选择项按钮
         /// </summary>
         /// <param name="bid"></param>
-        public SpriteButton(int bid)
+        public BranchButton(int bid)
         {
             this.id = bid;
             this.ntr = null;
@@ -44,7 +44,22 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置绑定前端显示控件
         /// </summary>
-        public Image displayBinding { get; set; }
+        public TextBlock displayBinding { get; set; }
+
+        /// <summary>
+        /// 获取或设置选择项按钮上的文本
+        /// </summary>
+        public string Text
+        {
+            get
+            {
+                return this.displayBinding.Text;
+            }
+            set
+            {
+                this.displayBinding.Text = value;
+            }
+        }
 
         /// <summary>
         /// 获取或设置按钮是否有效
@@ -153,7 +168,7 @@ namespace Yuri.PlatformCore
                 this.InitAnimationRenderTransform();
             }
         }
-
+        
         /// <summary>
         /// 动画锚点类型
         /// </summary>
@@ -221,10 +236,9 @@ namespace Yuri.PlatformCore
                 if (this.displayBinding != null && (this.ImageMouseOver != null || this.ImageMouseOn != null))
                 {
                     BitmapImage myBitmapImage = this.ImageNormal.myImage;
-                    this.ImageNormal.displayBinding = this.displayBinding;
                     this.displayBinding.Width = myBitmapImage.PixelWidth;
                     this.displayBinding.Height = myBitmapImage.PixelHeight;
-                    this.displayBinding.Source = myBitmapImage;
+                    this.displayBinding.Background = new ImageBrush(myBitmapImage);
                 }
             }
         }
@@ -242,12 +256,9 @@ namespace Yuri.PlatformCore
                 if (this.displayBinding != null && this.ImageMouseOver != null)
                 {
                     BitmapImage myBitmapImage = this.ImageMouseOver.myImage;
-                    this.ImageNormal.displayBinding = null;
-                    this.ImageMouseOn.displayBinding = null;
-                    this.ImageMouseOver.displayBinding = this.displayBinding;
                     this.displayBinding.Width = myBitmapImage.PixelWidth;
                     this.displayBinding.Height = myBitmapImage.PixelHeight;
-                    this.displayBinding.Source = myBitmapImage;
+                    this.displayBinding.Background = new ImageBrush(myBitmapImage);
                 }
             }
         }
@@ -265,12 +276,9 @@ namespace Yuri.PlatformCore
                 if (this.displayBinding != null && this.ImageMouseOn != null)
                 {
                     BitmapImage myBitmapImage = this.ImageMouseOn.myImage;
-                    this.ImageNormal.displayBinding = null;
-                    this.ImageMouseOn.displayBinding = this.displayBinding;
-                    this.ImageMouseOver.displayBinding = null;
                     this.displayBinding.Width = myBitmapImage.PixelWidth;
                     this.displayBinding.Height = myBitmapImage.PixelHeight;
-                    this.displayBinding.Source = myBitmapImage;
+                    this.displayBinding.Background = new ImageBrush(myBitmapImage);
                 }
             }
         }
@@ -289,36 +297,30 @@ namespace Yuri.PlatformCore
                     if (this.displayBinding != null && this.isMouseOver && this.ImageMouseOver != null)
                     {
                         BitmapImage myBitmapImage2 = this.ImageMouseOver.myImage;
-                        this.ImageNormal.displayBinding = null;
-                        this.ImageMouseOn.displayBinding = null;
-                        this.ImageMouseOver.displayBinding = this.displayBinding;
                         this.displayBinding.Width = myBitmapImage2.PixelWidth;
                         this.displayBinding.Height = myBitmapImage2.PixelHeight;
-                        this.displayBinding.Source = myBitmapImage2;
+                        this.displayBinding.Background = new ImageBrush(myBitmapImage2);
                         // 向运行时环境提交中断
                         Director.GetInstance().SubmitInterrupt(this.ntr);
                         // 移除按钮
                         if (!this.Eternal)
                         {
                             this.Enable = false;
-                            Director.GetInstance().RemoveButton(this.id);
+                            Director.GetInstance().RemoveAllBranchButton();
                         }
                         return;
                     }
                     BitmapImage myBitmapImage = this.ImageNormal.myImage;
-                    this.ImageNormal.displayBinding = this.displayBinding;
-                    this.ImageMouseOn.displayBinding = null;
-                    this.ImageMouseOver.displayBinding = null;
                     this.displayBinding.Width = myBitmapImage.PixelWidth;
                     this.displayBinding.Height = myBitmapImage.PixelHeight;
-                    this.displayBinding.Source = myBitmapImage;
+                    this.displayBinding.Background = new ImageBrush(myBitmapImage);
                     // 向运行时环境提交中断
                     Director.GetInstance().SubmitInterrupt(this.ntr);
                     // 移除按钮
                     if (!this.Eternal)
                     {
                         this.Enable = false;
-                        Director.GetInstance().RemoveButton(this.id);
+                        Director.GetInstance().RemoveAllBranchButton();
                     }
                 }
                 this.isMouseOn = false;
