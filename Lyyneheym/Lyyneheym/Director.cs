@@ -206,6 +206,11 @@ namespace Yuri
                 case GameState.Performing:
                     // 取下一动作
                     var nextInstruct = this.RunMana.MoveNext();
+                    // 如果指令空了就立即迭代本次消息循环
+                    if (nextInstruct == null)
+                    {
+                        return;
+                    }
                     // 处理影响调用堆栈的动作
                     if (nextInstruct.aType == SActionType.act_wait)
                     {

@@ -1048,6 +1048,9 @@ namespace Yuri.YuriInterpreter
                     case TokenType.Token_o_shutdown:
                         statementNode.nodeSyntaxType = SyntaxType.synr_shutdown;
                         break;
+                    case TokenType.Token_o_return:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_return;
+                        break;
                     case TokenType.Token_o_for:
                         statementNode.nodeSyntaxType = SyntaxType.synr_for;
                         statementNode.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);

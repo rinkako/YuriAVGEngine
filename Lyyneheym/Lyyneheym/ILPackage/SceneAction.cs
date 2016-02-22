@@ -163,6 +163,8 @@ namespace Yuri.ILPackage
         act_break,
         // 退出程序
         act_shutdown,
+        // 中断事件处理
+        act_return,
         // 等待
         act_wait,
         // 选择支

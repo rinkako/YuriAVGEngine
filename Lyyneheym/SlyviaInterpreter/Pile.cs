@@ -854,6 +854,10 @@ namespace Yuri.YuriInterpreter
                     // 弹for结构栈
                     this.forStack.Pop();
                     break;
+                case SActionType.act_return:
+                    // 下一节点是null，这样运行时环境就会弹栈
+                    saNode.next = null;
+                    break;
                 case SActionType.act_break:
                     // break节点的下一节点是她的for母节点的后继
                     if (this.forStack.Count > 0)
@@ -883,7 +887,10 @@ namespace Yuri.YuriInterpreter
                     }
                     // 最后一个孩子的下一节点修改为if子句节点的后继
                     SceneAction lastIfTrue = saNode.trueRouting[saNode.trueRouting.Count - 1];
-                    if (lastIfTrue.aType != SActionType.act_break && lastIfTrue.aType != SActionType.act_endfor)
+                    // 考虑要更变next属性的节点
+                    if (lastIfTrue.aType != SActionType.act_break 
+                        && lastIfTrue.aType != SActionType.act_endfor
+                        && lastIfTrue.aType != SActionType.act_return)
                     {
                         lastIfTrue.next = saNode.next;
                     }
@@ -908,7 +915,10 @@ namespace Yuri.YuriInterpreter
                     }
                     // 最后一个孩子的下一节点修改为if子句节点的后继
                     SceneAction lastIfFalse = saNode.falseRouting[saNode.falseRouting.Count - 1];
-                    if (lastIfFalse.aType != SActionType.act_break && lastIfFalse.aType != SActionType.act_endfor)
+                    // 考虑要更变next属性的节点
+                    if (lastIfFalse.aType != SActionType.act_break 
+                        && lastIfFalse.aType != SActionType.act_endfor
+                        && lastIfFalse.aType != SActionType.act_return)
                     {
                         lastIfFalse.next = saNode.next;
                     }

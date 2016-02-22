@@ -167,6 +167,8 @@ namespace Yuri.YuriInterpreter
         Token_o_break,
         // 退出程序
         Token_o_shutdown,
+        // 中断事件处理
+        Token_o_return,
         // 等待
         Token_o_wait,
         // 选择支

@@ -324,6 +324,8 @@ namespace Yuri.YuriInterpreter
         synr_freeze,
         // 执行渐变
         synr_trans,
+        // 中断事件处理
+        synr_return,
         // 按钮
         synr_button,
         // 对话样式
