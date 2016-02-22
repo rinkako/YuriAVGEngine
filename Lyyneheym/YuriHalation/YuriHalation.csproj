@@ -7,8 +7,8 @@
     <ProjectGuid>{CB704EFC-BD27-4422-A61E-E7EBB9370577}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>YuriHalation</RootNamespace>
-    <AssemblyName>YuriHalation</AssemblyName>
+    <RootNamespace>Yuri</RootNamespace>
+    <AssemblyName>Yuri</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -51,6 +51,54 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="YuriForms\BranchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\BranchForm.Designer.cs">
+      <DependentUpon>BranchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\DrawStringForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\DrawStringForm.Designer.cs">
+      <DependentUpon>DrawStringForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\ForForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\ForForm.Designer.cs">
+      <DependentUpon>ForForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\MsgLayerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\MsgLayerForm.Designer.cs">
+      <DependentUpon>MsgLayerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\MsgLayerOptForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\MsgLayerOptForm.Designer.cs">
+      <DependentUpon>MsgLayerOptForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\SwitchesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\SwitchesForm.Designer.cs">
+      <DependentUpon>SwitchesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\VarForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\VarForm.Designer.cs">
+      <DependentUpon>VarForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\WaitForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\WaitForm.Designer.cs">
+      <DependentUpon>WaitForm.cs</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -59,10 +107,40 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainForm.cs">
+    <Compile Include="YuriForms\AFrom.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="YuriForms\AFrom.Designer.cs">
+      <DependentUpon>AFrom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\DeleteViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\DeleteViewForm.Designer.cs">
+      <DependentUpon>DeleteViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\DialogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\DialogForm.Designer.cs">
+      <DependentUpon>DialogForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\JumpForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\JumpForm.Designer.cs">
+      <DependentUpon>JumpForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\LabelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\LabelForm.Designer.cs">
+      <DependentUpon>LabelForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
@@ -84,12 +162,51 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="YuriForms\AFrom.resx">
+      <DependentUpon>AFrom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\BranchForm.resx">
+      <DependentUpon>BranchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\DeleteViewForm.resx">
+      <DependentUpon>DeleteViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\DialogForm.resx">
+      <DependentUpon>DialogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\DrawStringForm.resx">
+      <DependentUpon>DrawStringForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\ForForm.resx">
+      <DependentUpon>ForForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\JumpForm.resx">
+      <DependentUpon>JumpForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\LabelForm.resx">
+      <DependentUpon>LabelForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\MsgLayerForm.resx">
+      <DependentUpon>MsgLayerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\MsgLayerOptForm.resx">
+      <DependentUpon>MsgLayerOptForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\SwitchesForm.resx">
+      <DependentUpon>SwitchesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\VarForm.resx">
+      <DependentUpon>VarForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\WaitForm.resx">
+      <DependentUpon>WaitForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -7,14 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace YuriHalation
+namespace Yuri.YuriForms
 {
-    public partial class MainForm : Form
+    public partial class DialogForm : Form
     {
-        public MainForm()
+        public DialogForm()
         {
             InitializeComponent();
         }
-
     }
 }
