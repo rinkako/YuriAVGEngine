@@ -65,6 +65,8 @@
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button33 = new System.Windows.Forms.Button();
+            this.button34 = new System.Windows.Forms.Button();
             this.button31 = new System.Windows.Forms.Button();
             this.button32 = new System.Windows.Forms.Button();
             this.button29 = new System.Windows.Forms.Button();
@@ -99,8 +101,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.treeView2 = new System.Windows.Forms.TreeView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button33 = new System.Windows.Forms.Button();
-            this.button34 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -196,41 +196,41 @@
             // 全局设定ToolStripMenuItem
             // 
             this.全局设定ToolStripMenuItem.Name = "全局设定ToolStripMenuItem";
-            this.全局设定ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.全局设定ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.全局设定ToolStripMenuItem.Text = "全局设定";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(145, 6);
             // 
             // 场景管理器ToolStripMenuItem
             // 
             this.场景管理器ToolStripMenuItem.Name = "场景管理器ToolStripMenuItem";
-            this.场景管理器ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.场景管理器ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.场景管理器ToolStripMenuItem.Text = "场景管理器";
             // 
             // 变量管理器ToolStripMenuItem
             // 
             this.变量管理器ToolStripMenuItem.Name = "变量管理器ToolStripMenuItem";
-            this.变量管理器ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.变量管理器ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.变量管理器ToolStripMenuItem.Text = "变量管理器";
             // 
             // 开关管理器ToolStripMenuItem
             // 
             this.开关管理器ToolStripMenuItem.Name = "开关管理器ToolStripMenuItem";
-            this.开关管理器ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.开关管理器ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.开关管理器ToolStripMenuItem.Text = "开关管理器";
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(145, 6);
             // 
             // 打开游戏目录ToolStripMenuItem
             // 
             this.打开游戏目录ToolStripMenuItem.Name = "打开游戏目录ToolStripMenuItem";
-            this.打开游戏目录ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.打开游戏目录ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.打开游戏目录ToolStripMenuItem.Text = "打开游戏目录";
             // 
             // 资源ToolStripMenuItem
@@ -415,6 +415,24 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "动作";
             // 
+            // button33
+            // 
+            this.button33.Location = new System.Drawing.Point(112, 595);
+            this.button33.Name = "button33";
+            this.button33.Size = new System.Drawing.Size(100, 28);
+            this.button33.TabIndex = 33;
+            this.button33.Text = "代码片段";
+            this.button33.UseVisualStyleBackColor = true;
+            // 
+            // button34
+            // 
+            this.button34.Location = new System.Drawing.Point(6, 595);
+            this.button34.Name = "button34";
+            this.button34.Size = new System.Drawing.Size(100, 28);
+            this.button34.TabIndex = 32;
+            this.button34.Text = "退出当前场景";
+            this.button34.UseVisualStyleBackColor = true;
+            // 
             // button31
             // 
             this.button31.Location = new System.Drawing.Point(112, 235);
@@ -493,7 +511,7 @@
             this.button23.Name = "button23";
             this.button23.Size = new System.Drawing.Size(100, 28);
             this.button23.TabIndex = 23;
-            this.button23.Text = "移除按钮";
+            this.button23.Text = "注释";
             this.button23.UseVisualStyleBackColor = true;
             // 
             // button24
@@ -725,24 +743,6 @@
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "场景 [main]";
-            // 
-            // button33
-            // 
-            this.button33.Location = new System.Drawing.Point(112, 595);
-            this.button33.Name = "button33";
-            this.button33.Size = new System.Drawing.Size(100, 28);
-            this.button33.TabIndex = 33;
-            this.button33.Text = "代码片段";
-            this.button33.UseVisualStyleBackColor = true;
-            // 
-            // button34
-            // 
-            this.button34.Location = new System.Drawing.Point(6, 595);
-            this.button34.Name = "button34";
-            this.button34.Size = new System.Drawing.Size(100, 28);
-            this.button34.TabIndex = 32;
-            this.button34.Text = "退出当前场景";
-            this.button34.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 

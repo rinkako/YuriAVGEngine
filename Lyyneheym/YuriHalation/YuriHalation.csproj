@@ -51,6 +51,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Halation.cs" />
+    <Compile Include="HalationCore\CodeGenerator.cs" />
+    <Compile Include="HalationCore\CodeManager.cs" />
+    <Compile Include="HalationCore\FileManager.cs" />
+    <Compile Include="HalationCore\HalationSymbol.cs" />
     <Compile Include="YuriForms\BranchForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,6 +73,12 @@
     </Compile>
     <Compile Include="YuriForms\ForForm.Designer.cs">
       <DependentUpon>ForForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\FunctionCallForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\FunctionCallForm.Designer.cs">
+      <DependentUpon>FunctionCallForm.cs</DependentUpon>
     </Compile>
     <Compile Include="YuriForms\MsgLayerForm.cs">
       <SubType>Form</SubType>
@@ -180,6 +191,9 @@
     <EmbeddedResource Include="YuriForms\ForForm.resx">
       <DependentUpon>ForForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\FunctionCallForm.resx">
+      <DependentUpon>FunctionCallForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\JumpForm.resx">
       <DependentUpon>JumpForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -214,6 +228,7 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
