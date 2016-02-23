@@ -56,6 +56,11 @@ namespace Yuri.PlatformCore
         public DateTime timeStamp = DateTime.Now;
 
         /// <summary>
+        /// 获取或设置绑定的中断动作
+        /// </summary>
+        public Interrupt bindingInterrupt = null;
+
+        /// <summary>
         /// 获取或设置该栈帧的备注信息
         /// </summary>
         public string aTag = null;

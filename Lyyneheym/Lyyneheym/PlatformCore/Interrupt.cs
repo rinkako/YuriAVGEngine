@@ -9,6 +9,7 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 系统中断类
     /// </summary>
+    [Serializable]
     public class Interrupt
     {
         /// <summary>
@@ -30,6 +31,11 @@ namespace Yuri.PlatformCore
         /// 中断结束后跳转的标签名
         /// </summary>
         public string returnTarget = null;
+
+        /// <summary>
+        /// 在执行完中断动作后是否处理后续动作
+        /// </summary>
+        public bool pureInterrupt = false;
     }
 
     /// <summary>
@@ -46,8 +52,12 @@ namespace Yuri.PlatformCore
         /// </summary>
         ButtonJump,
         /// <summary>
+        /// 读取保存数据后重现动作
+        /// </summary>
+        LoadReaction,
+        /// <summary>
         /// 菜单调用
         /// </summary>
-        MenuCalling,
+        MenuCalling
     }
 }

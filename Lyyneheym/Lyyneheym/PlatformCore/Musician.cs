@@ -469,22 +469,22 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// BGM音量值
         /// </summary>
-        private float bgmVolume = 1000f;
+        private float bgmVolume = GlobalDataContainer.GAME_SOUND_BGMVOL;
 
         /// <summary>
         /// BGS音量值
         /// </summary>
-        private float bgsVolume = 800f;
+        private float bgsVolume = GlobalDataContainer.GAME_SOUND_BGSVOL;
 
         /// <summary>
         /// SE音量值
         /// </summary>
-        private float seVolume = 800f;
+        private float seVolume = GlobalDataContainer.GAME_SOUND_SEVOL;
 
         /// <summary>
         /// Vocal音量值
         /// </summary>
-        private float vocalVolume = 1000f;
+        private float vocalVolume = GlobalDataContainer.GAME_SOUND_VOCALVOL;
 
         /// <summary>
         /// 唯一实例

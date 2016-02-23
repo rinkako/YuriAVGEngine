@@ -34,6 +34,17 @@ namespace Yuri.PlatformCore
         /// <returns>动作实例</returns>
         public SceneAction MoveNext()
         {
+            SceneAction fetched = this.FetchNextInstruction();
+            this.DashingPureSa = fetched.Clone(true);
+            return fetched;
+        }
+
+        /// <summary>
+        /// 寻找下一动作指令
+        /// </summary>
+        /// <returns>动作实例</returns>
+        private SceneAction FetchNextInstruction()
+        {
             // 调用栈已经为空时预备退出
             if (this.CallStack.Count() == 0)
             {
@@ -82,7 +93,7 @@ namespace Yuri.PlatformCore
                         this.CallStack.ESP.PC++;
                         ret = this.CallStack.ESP.IP = ret.next;
                         break;
-                        
+
                 }
                 // 移动下一指令指针，为下次处理做准备
                 if (ret.aType != SActionType.act_for)
@@ -852,7 +863,8 @@ namespace Yuri.PlatformCore
             this.CallStack = new StackMachine();
             this.Symbols = SymbolTable.GetInstance();
             this.Screen = null;
-            this.TitlePoint = new KeyValuePair<string, SceneAction>(null, null);
+            this.PlayingBGM = null;
+            //this.TitlePoint = new KeyValuePair<string, SceneAction>(null, null);
         }
 
         /// <summary>
@@ -891,13 +903,31 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 获取或设置标题回归点
+        /// 获取或设置正在播放的BGM
         /// </summary>
-        public KeyValuePair<string, SceneAction> TitlePoint
+        public string PlayingBGM
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// 当前正在执行的动作的无关系副本
+        /// </summary>
+        public SceneAction DashingPureSa
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取或设置标题回归点
+        /// </summary>
+        //public KeyValuePair<string, SceneAction> TitlePoint
+        //{
+        //    get;
+        //    set;
+        //}
     }
 
     /// <summary>

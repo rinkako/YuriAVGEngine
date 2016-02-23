@@ -18,6 +18,25 @@ namespace Yuri
     /// </summary>
     public class Director
     {
+        #region DEBUG用
+        public void RemoveAll()
+        {
+            ViewManager.GetInstance().RemoveView(ResourceType.Unknown);
+        }
+
+        public void SaveIt()
+        {
+            IOUtils.serialization(Director.RunMana, @"saveRm.dat");
+        }
+
+        public void LoadIt()
+        {
+            var rm = (RuntimeManager)IOUtils.unserialization(@"saveRm.dat");
+            this.ResumeFromSaveData(rm);
+        }
+
+        #endregion
+
         #region 初次进入时的初始化相关函数
         /// <summary>
         /// 初始化游戏设置
@@ -46,9 +65,9 @@ namespace Yuri
             }
             foreach (var sc in this.ResMana.GetAllScene())
             {
-                this.RunMana.Symbols.AddSymbolTable(sc);
+                Director.RunMana.Symbols.AddSymbolTable(sc);
             }
-            this.RunMana.CallScene(mainScene);
+            Director.RunMana.CallScene(mainScene);
         }
         #endregion
 
@@ -85,12 +104,45 @@ namespace Yuri
 
         #region 辅助函数
         /// <summary>
+        /// 设置运行时环境管理器，用于读取保存的信息
+        /// </summary>
+        /// <param name="rm">反序列化后的RM实例</param>
+        public void ResumeFromSaveData(RuntimeManager rm)
+        {
+            // 清空画面并停下BGM
+            ViewManager.GetInstance().RemoveView(ResourceType.Unknown);
+            Musician.GetInstance().StopAndReleaseBGM();
+            // 变更运行时环境
+            Director.RunMana = rm;
+            DebugUtils.ConsoleLine("RuntimeManager is replaced", "Director", OutputStyle.Important);
+            // 变更屏幕管理器
+            ScreenManager.ResetSynObject(Director.RunMana.Screen);
+            DebugUtils.ConsoleLine("ScreenManager is replaced", "Director", OutputStyle.Important);
+            // 重绘整个画面
+            ViewManager.GetInstance().ReDraw();
+            // 恢复背景音乐
+            this.updateRender.Bgm(Director.RunMana.PlayingBGM, GlobalDataContainer.GAME_SOUND_BGMVOL);
+            // 弹空全部等待，复现保存最后一个动作
+            Director.RunMana.ExitUserWait();
+            Interrupt reactionNtr = new Interrupt()
+            {
+                type = InterruptType.LoadReaction,
+                detail = "Reaction for load data",
+                interruptSA = Director.RunMana.DashingPureSa,
+                returnTarget = null,
+                pureInterrupt = true
+            };
+            // 提交中断
+            Director.RunMana.CallStack.Submit(reactionNtr);
+        }
+
+        /// <summary>
         /// 向运行时环境发出中断
         /// </summary>
         /// <param name="ntr">中断</param>
         public void SubmitInterrupt(Interrupt ntr)
         {
-            this.RunMana.CallStack.Submit(ntr);
+            Director.RunMana.CallStack.Submit(ntr);
         }
 
         /// <summary>
@@ -99,7 +151,7 @@ namespace Yuri
         /// <param name="waitSpan">等待的时间间隔</param>
         public void SubmitWait(TimeSpan waitSpan)
         {
-            this.RunMana.Delay("Director", DateTime.Now, waitSpan);
+            Director.RunMana.Delay("Director", DateTime.Now, waitSpan);
         }
 
         /// <summary>
@@ -127,7 +179,7 @@ namespace Yuri
         private void UpdateContext(object sender, EventArgs e)
         {
             // 取得调用堆栈顶部状态
-            StackMachineState stackState = this.RunMana.GameState();
+            StackMachineState stackState = Director.RunMana.GameState();
             switch (stackState)
             {
                 case StackMachineState.Interpreting:
@@ -156,16 +208,16 @@ namespace Yuri
                 // 等待状态
                 case GameState.Waiting:
                     // 计算已经等待的时间（这里，不考虑并行处理）
-                    if (DateTime.Now - this.RunMana.CallStack.ESP.timeStamp > this.RunMana.CallStack.ESP.delay)
+                    if (DateTime.Now - Director.RunMana.CallStack.ESP.timeStamp > Director.RunMana.CallStack.ESP.delay)
                     {
-                        this.RunMana.ExitCall();
+                        Director.RunMana.ExitCall();
                     }
                     break;
                 // 等待动画
                 case GameState.WaitAni:
                     if (SpriteAnimation.isAnyAnimation() == false)
                     {
-                        this.RunMana.ExitCall();
+                        Director.RunMana.ExitCall();
                     }
                     break;
                 // 等待用户操作
@@ -173,8 +225,11 @@ namespace Yuri
                     break;
                 // 中断
                 case GameState.Interrupt:
-                    var interruptSa = this.RunMana.CallStack.ESP.IP;
-                    var interruptExitPoint = this.RunMana.CallStack.ESP.aTag;
+                    var interruptSa = Director.RunMana.CallStack.ESP.IP;
+                    var interruptExitPoint = Director.RunMana.CallStack.ESP.aTag;
+                    // 退出中断
+                    var pureInt = Director.RunMana.CallStack.ESP.bindingInterrupt.pureInterrupt;
+                    Director.RunMana.ExitCall();
                     // 处理可选表达式计算
                     if (interruptSa != null)
                     {
@@ -185,27 +240,30 @@ namespace Yuri
                             iterSa = iterSa.next;
                         }
                     }
-                    // 退出中断
-                    this.RunMana.ExitCall();
+                    // 判断中断是否需要处理后续动作
+                    if (pureInt)
+                    {
+                        break;
+                    }
                     // 跳出所有用户等待
-                    this.RunMana.ExitUserWait();
+                    Director.RunMana.ExitUserWait();
                     // 处理跳转
                     if (interruptExitPoint != null)
                     {
-                        var curScene = this.ResMana.GetScene(this.RunMana.CallStack.EBP.bindingSceneName);
+                        var curScene = this.ResMana.GetScene(Director.RunMana.CallStack.EBP.bindingSceneName);
                         if (!curScene.labelDictionary.ContainsKey(interruptExitPoint))
                         {
                             DebugUtils.ConsoleLine(String.Format("Ignored Interrupt jump Instruction (target not exist): {0}", interruptExitPoint),
                                         "Director", OutputStyle.Error);
                             break;
                         }
-                        this.RunMana.CallStack.EBP.IP = curScene.labelDictionary[interruptExitPoint];
+                        Director.RunMana.CallStack.EBP.IP = curScene.labelDictionary[interruptExitPoint];
                     }
                     break;
                 // 演绎脚本
                 case GameState.Performing:
                     // 取下一动作
-                    var nextInstruct = this.RunMana.MoveNext();
+                    var nextInstruct = Director.RunMana.MoveNext();
                     // 如果指令空了就立即迭代本次消息循环
                     if (nextInstruct == null)
                     {
@@ -215,18 +273,18 @@ namespace Yuri
                     if (nextInstruct.aType == SActionType.act_wait)
                     {
                         double waitMs = nextInstruct.argsDict.ContainsKey("time") ?
-                                (double)this.RunMana.CalculatePolish(nextInstruct.argsDict["time"]) : 0;
-                        this.RunMana.Delay(nextInstruct.saNodeName, DateTime.Now, TimeSpan.FromMilliseconds(waitMs));
+                                (double)Director.RunMana.CalculatePolish(nextInstruct.argsDict["time"]) : 0;
+                        Director.RunMana.Delay(nextInstruct.saNodeName, DateTime.Now, TimeSpan.FromMilliseconds(waitMs));
                         break;
                     }
                     else if (nextInstruct.aType == SActionType.act_waitani)
                     {
-                        this.RunMana.AnimateWait(nextInstruct.saNodeName);
+                        Director.RunMana.AnimateWait(nextInstruct.saNodeName);
                         break;
                     }
                     else if (nextInstruct.aType == SActionType.act_waituser)
                     {
-                        this.RunMana.UserWait("Director", nextInstruct.saNodeName);
+                        Director.RunMana.UserWait("Director", nextInstruct.saNodeName);
                         break;
                     }
                     else if (nextInstruct.aType == SActionType.act_jump)
@@ -236,14 +294,14 @@ namespace Yuri
                         // 场景内跳转
                         if (jumpToScene == "")
                         {
-                            var currentScene = this.ResMana.GetScene(this.RunMana.CallStack.ESP.bindingSceneName);
+                            var currentScene = this.ResMana.GetScene(Director.RunMana.CallStack.ESP.bindingSceneName);
                             if (!currentScene.labelDictionary.ContainsKey(jumpToTarget))
                             {
                                 DebugUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
                                     "Director", OutputStyle.Error);
                                 break;
                             }
-                            this.RunMana.CallStack.ESP.IP = currentScene.labelDictionary[jumpToTarget];
+                            Director.RunMana.CallStack.ESP.IP = currentScene.labelDictionary[jumpToTarget];
                         }
                         // 跨场景跳转
                         else
@@ -261,8 +319,8 @@ namespace Yuri
                                     "Director", OutputStyle.Error);
                                 break;
                             }
-                            this.RunMana.ExitCall();
-                            this.RunMana.CallScene(jumpScene, jumpToTarget == "" ? jumpScene.mainSa : jumpScene.labelDictionary[jumpToTarget]);
+                            Director.RunMana.ExitCall();
+                            Director.RunMana.CallScene(jumpScene, jumpToTarget == "" ? jumpScene.mainSa : jumpScene.labelDictionary[jumpToTarget]);
                         }
                         break;
                     }
@@ -276,7 +334,7 @@ namespace Yuri
                                 "Director", OutputStyle.Error);
                             break;
                         }
-                        var sceneFuncContainer = this.ResMana.GetScene(this.RunMana.CallStack.ESP.bindingSceneName).funcContainer;
+                        var sceneFuncContainer = this.ResMana.GetScene(Director.RunMana.CallStack.ESP.bindingSceneName).funcContainer;
                         var sceneFuncList = from f in sceneFuncContainer where f.callname == callFunc select f;
                         if (sceneFuncList.Count() == 0)
                         {
@@ -300,7 +358,7 @@ namespace Yuri
                             object varref = null;
                             if (trimedPara.StartsWith("$") || trimedPara.StartsWith("&"))
                             {
-                                varref = this.RunMana.Fetch(trimedPara);
+                                varref = Director.RunMana.Fetch(trimedPara);
                             }
                             else if (trimedPara.StartsWith("\"") && trimedPara.EndsWith("\""))
                             {
@@ -312,7 +370,7 @@ namespace Yuri
                             }
                             argsVec.Add(varref);
                         }
-                        this.RunMana.CallFunction(sceneFunc, argsVec);
+                        Director.RunMana.CallFunction(sceneFunc, argsVec);
                         break;
                     }
                     // 处理常规动作
@@ -371,10 +429,9 @@ namespace Yuri
         private Director()
         {
             this.ResMana = ResourceManager.GetInstance();
-            this.RunMana = new RuntimeManager();
+            Director.RunMana = new RuntimeManager();
             this.updateRender = new UpdateRender();
-            this.updateRender.SetRuntimeManagerReference(this.RunMana);
-            this.RunMana.SetScreenManager(ScreenManager.GetInstance());
+            Director.RunMana.SetScreenManager(ScreenManager.GetInstance());
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromMilliseconds(GlobalDataContainer.DirectorTimerInterval);
             this.timer.Tick += UpdateContext;
@@ -393,7 +450,7 @@ namespace Yuri
         /// <summary>
         /// 运行时环境
         /// </summary>
-        private RuntimeManager RunMana;
+        public static RuntimeManager RunMana;
 
         /// <summary>
         /// 资源管理器
@@ -404,6 +461,21 @@ namespace Yuri
         /// 画面刷新器
         /// </summary>
         private UpdateRender updateRender;
+
+        /// <summary>
+        /// 屏幕管理器
+        /// </summary>
+        public static ScreenManager ScrMana
+        {
+            get
+            {
+                return Director.RunMana.Screen;
+            }
+            private set
+            {
+                Director.RunMana.Screen = value;
+            }
+        }
 
         /// <summary>
         /// 主窗体引用

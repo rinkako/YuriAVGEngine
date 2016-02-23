@@ -89,7 +89,8 @@ namespace Yuri.PlatformCore
                 bindingFunctionName = null,
                 bindingSceneName = null,
                 delay = TimeSpan.FromMilliseconds(0),
-                aTag = ntr.returnTarget
+                aTag = ntr.returnTarget,
+                bindingInterrupt = ntr
             };
             this.coreStack.Push(smf);
         }

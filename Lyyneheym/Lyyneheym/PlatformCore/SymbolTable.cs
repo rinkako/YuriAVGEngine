@@ -108,7 +108,7 @@ namespace Yuri.PlatformCore
                     }
                     else if (value is string)
                     {
-                        this.globalSwitchList[fetchId] = value == String.Empty;
+                        this.globalSwitchList[fetchId] = (string)value == String.Empty;
                     }
                     else
                     {

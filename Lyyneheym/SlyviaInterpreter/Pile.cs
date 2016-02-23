@@ -805,8 +805,19 @@ namespace Yuri.YuriInterpreter
                         this.removeQueueDict[parent].Enqueue(iterPtr);
                         iterPtr = iterPtr.next;
                     }
+                    this.removeQueueDict[parent].Enqueue(iterPtr);
+                    if (iterPtr.next != null &&
+                        (iterPtr.next.aType == SActionType.act_dialog ||
+                        iterPtr.next.aType == SActionType.act_a))
+                    {
+                        dialogBuilder += "#1";
+                    }
+                    else
+                    {
+                        dialogBuilder += "#0";
+                    }
                     basePtr.aTag = dialogBuilder;
-                    basePtr.next = iterPtr;
+                    basePtr.next = iterPtr.next;
                     break;
                 case SActionType.act_dialogTerminator:
                     // 处理对话继续标志位

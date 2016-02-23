@@ -288,11 +288,13 @@ namespace Yuri.PlatformCore
                 Y = Y,
                 Z = Z + GlobalDataContainer.GAME_Z_MESSAGELAYER,
                 Opacity = Opacity,
-                Padding = Padding,
+                Padding = new MyThickness(Padding),
                 Width = W,
                 Height = H,
                 FontName = FontName,
-                FontColor = FontColor,
+                FontColorR = FontColor.R,
+                FontColorG = FontColor.G,
+                FontColorB = FontColor.B,
                 FontSize = FontSize,
                 HorizonAlign = Ha,
                 VertiAlign = Va,
@@ -450,7 +452,9 @@ namespace Yuri.PlatformCore
             {
                 Id = 0,
                 BackgroundResourceName = GlobalDataContainer.GAME_MESSAGELAYER_BACKGROUNDFILENAME,
-                FontColor = GlobalDataContainer.GAME_FONT_COLOR,
+                FontColorR = GlobalDataContainer.GAME_FONT_COLOR.R,
+                FontColorG = GlobalDataContainer.GAME_FONT_COLOR.G,
+                FontColorB = GlobalDataContainer.GAME_FONT_COLOR.B,
                 FontName = GlobalDataContainer.GAME_FONT_NAME,
                 FontSize = GlobalDataContainer.GAME_FONT_FONTSIZE,
                 FontShadow = GlobalDataContainer.GAME_MESSAGELAYER_SHADOW,
@@ -462,7 +466,7 @@ namespace Yuri.PlatformCore
                 Z = GlobalDataContainer.GAME_Z_MESSAGELAYER,
                 Height = GlobalDataContainer.GAME_MESSAGELAYER_H,
                 Width = GlobalDataContainer.GAME_MESSAGELAYER_W,
-                Padding = GlobalDataContainer.GAME_MESSAGELAYER_PADDING,
+                Padding = new MyThickness(GlobalDataContainer.GAME_MESSAGELAYER_PADDING),
                 Opacity = 1.0,
                 Visible = false,
                 Text = ""
@@ -475,7 +479,9 @@ namespace Yuri.PlatformCore
                 {
                     Id = i,
                     BackgroundResourceName = "",
-                    FontColor = GlobalDataContainer.GAME_FONT_COLOR,
+                    FontColorR = GlobalDataContainer.GAME_FONT_COLOR.R,
+                    FontColorG = GlobalDataContainer.GAME_FONT_COLOR.G,
+                    FontColorB = GlobalDataContainer.GAME_FONT_COLOR.B,
                     FontName = GlobalDataContainer.GAME_FONT_NAME,
                     FontSize = GlobalDataContainer.GAME_FONT_FONTSIZE,
                     FontShadow = GlobalDataContainer.GAME_MESSAGELAYER_SHADOW,
@@ -487,7 +493,7 @@ namespace Yuri.PlatformCore
                     Z = GlobalDataContainer.GAME_Z_MESSAGELAYER + i,
                     Height = GlobalDataContainer.GAME_MESSAGELAYER_H,
                     Width = GlobalDataContainer.GAME_MESSAGELAYER_W,
-                    Padding = GlobalDataContainer.GAME_MESSAGELAYER_PADDING,
+                    Padding = new MyThickness(GlobalDataContainer.GAME_MESSAGELAYER_PADDING),
                     Opacity = 1.0,
                     Visible = false,
                     Text = ""
@@ -528,6 +534,15 @@ namespace Yuri.PlatformCore
                 this.ButtonDescVec.Add(null);
             }
             this.InitMessageLayerDescriptors();
+        }
+
+        /// <summary>
+        /// 重置唯一实例，用于读取保存数据时
+        /// </summary>
+        /// <param name="sm">反序列化后的实例</param>
+        public static void ResetSynObject(ScreenManager sm)
+        {
+            ScreenManager.synObject = sm;
         }
 
         /// <summary>

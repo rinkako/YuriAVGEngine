@@ -25,30 +25,30 @@ namespace Yuri.PlatformCore
             // 重绘精灵
             for (int i = 0; i < this.BackgroundSpriteVec.Count; i++)
             {
-                this.ReDrawSprite(i, this.BackgroundSpriteVec, ResourceType.Background, this.scrMana.GetSpriteDescriptor(i, ResourceType.Background), false);
+                this.ReDrawSprite(i, this.BackgroundSpriteVec, ResourceType.Background, Director.ScrMana.GetSpriteDescriptor(i, ResourceType.Background), false);
             }
             for (int i = 0; i < this.CharacterStandSpriteVec.Count; i++)
             {
-                this.ReDrawSprite(i, this.CharacterStandSpriteVec, ResourceType.Stand, this.scrMana.GetSpriteDescriptor(i, ResourceType.Stand), false);
+                this.ReDrawSprite(i, this.CharacterStandSpriteVec, ResourceType.Stand, Director.ScrMana.GetSpriteDescriptor(i, ResourceType.Stand), false);
             }
             for (int i = 0; i < this.PictureSpriteVec.Count; i++)
             {
-                this.ReDrawSprite(i, this.PictureSpriteVec, ResourceType.Pictures, this.scrMana.GetSpriteDescriptor(i, ResourceType.Pictures), false);
+                this.ReDrawSprite(i, this.PictureSpriteVec, ResourceType.Pictures, Director.ScrMana.GetSpriteDescriptor(i, ResourceType.Pictures), false);
             }
             // 重绘文字层
             for (int i = 0; i < this.MessageLayerVec.Count; i++)
             {
-                this.ReDrawMessageLayer(i, this.scrMana.GetMsgLayerDescriptor(i), false);
+                this.ReDrawMessageLayer(i, Director.ScrMana.GetMsgLayerDescriptor(i), false);
             }
             // 重绘按钮
             for (int i = 0; i < this.ButtonLayerVec.Count; i++)
             {
-                this.ReDrawButton(i, this.scrMana.GetButtonDescriptor(i));
+                this.ReDrawButton(i, Director.ScrMana.GetButtonDescriptor(i));
             }
             // 重绘选择项
             for (int i = 0; i < this.BranchButtonVec.Count; i++)
             {
-                this.ReDrawBranchButton(i, this.scrMana.GetBranchButtonDescriptor(i));
+                this.ReDrawBranchButton(i, Director.ScrMana.GetBranchButtonDescriptor(i));
             }
         }
 
@@ -62,22 +62,22 @@ namespace Yuri.PlatformCore
             switch (rType)
             {
                 case ResourceType.Background:
-                    this.ReDrawSprite(id, this.BackgroundSpriteVec, ResourceType.Background, this.scrMana.GetSpriteDescriptor(id, ResourceType.Background), true);
+                    this.ReDrawSprite(id, this.BackgroundSpriteVec, ResourceType.Background, Director.ScrMana.GetSpriteDescriptor(id, ResourceType.Background), true);
                     break;
                 case ResourceType.Stand:
-                    this.ReDrawSprite(id, this.CharacterStandSpriteVec, ResourceType.Stand, this.scrMana.GetSpriteDescriptor(id, ResourceType.Stand), true);
+                    this.ReDrawSprite(id, this.CharacterStandSpriteVec, ResourceType.Stand, Director.ScrMana.GetSpriteDescriptor(id, ResourceType.Stand), true);
                     break;
                 case ResourceType.Pictures:
-                    this.ReDrawSprite(id, this.PictureSpriteVec, ResourceType.Pictures, this.scrMana.GetSpriteDescriptor(id, ResourceType.Pictures), true);
+                    this.ReDrawSprite(id, this.PictureSpriteVec, ResourceType.Pictures, Director.ScrMana.GetSpriteDescriptor(id, ResourceType.Pictures), true);
                     break;
                 case ResourceType.MessageLayerBackground:
-                    this.ReDrawMessageLayer(id, this.scrMana.GetMsgLayerDescriptor(id), true);
+                    this.ReDrawMessageLayer(id, Director.ScrMana.GetMsgLayerDescriptor(id), true);
                     break;
                 case ResourceType.Button:
-                    this.ReDrawButton(id, this.scrMana.GetButtonDescriptor(id));
+                    this.ReDrawButton(id, Director.ScrMana.GetButtonDescriptor(id));
                     break;
                 case ResourceType.BranchButton:
-                    this.ReDrawBranchButton(id, this.scrMana.GetBranchButtonDescriptor(id));
+                    this.ReDrawBranchButton(id, Director.ScrMana.GetBranchButtonDescriptor(id));
                     break;
             }
         }
@@ -92,6 +92,8 @@ namespace Yuri.PlatformCore
         /// <param name="forceReload">是否强制重新载入资源文件</param>
         private void ReDrawSprite(int id, List<YuriSprite> vector, ResourceType rType, SpriteDescriptor descriptor, bool forceReload)
         {
+            // 不需要重绘的情况
+            if (descriptor == null) { return; }
             YuriSprite sprite = vector[id], newSprite = null;
             // 强制重新载入或资源名称不同时重新加载资源文件
             if (sprite == null ||
@@ -124,6 +126,8 @@ namespace Yuri.PlatformCore
         /// <param name="forceReload">是否强制重新载入背景图资源文件</param>
         private void ReDrawMessageLayer(int id, MessageLayerDescriptor descriptor, bool forceReload)
         {
+            // 不需要重绘的情况
+            if (descriptor == null) { return; }
             MessageLayer msglay = this.MessageLayerVec[id];
             if (msglay == null ||
                 msglay.backgroundSprite.resourceName != descriptor.BackgroundResourceName ||
@@ -147,6 +151,8 @@ namespace Yuri.PlatformCore
         /// <param name="descriptor">按钮描述子</param>
         private void ReDrawButton(int id, SpriteButtonDescriptor descriptor)
         {
+            // 不需要重绘的情况
+            if (descriptor == null) { return; }
             SpriteButton oldButton = this.ButtonLayerVec[id];
             SpriteButton sbutton = new SpriteButton(id);
             sbutton.ImageNormal = descriptor.normalDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.normalDescriptor.resourceName, new Int32Rect(-1, 0, 0, 0));
@@ -165,6 +171,8 @@ namespace Yuri.PlatformCore
         /// <param name="descriptor">选择支描述子</param>
         private void ReDrawBranchButton(int id, BranchButtonDescriptor descriptor)
         {
+            // 不需要重绘的情况
+            if (descriptor == null) { return; }
             BranchButton oldButton = this.BranchButtonVec[id];
             BranchButton sbutton = new BranchButton(id);
             sbutton.ImageNormal = descriptor.normalDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.normalDescriptor.resourceName, new Int32Rect(-1, 0, 0, 0));
@@ -222,11 +230,11 @@ namespace Yuri.PlatformCore
             msglay.Width = descriptor.Width;
             msglay.Height = descriptor.Height;
             msglay.Opacity = descriptor.Opacity;
-            msglay.Padding = descriptor.Padding;
+            msglay.Padding = (Thickness)descriptor.Padding;
             msglay.LineHeight = descriptor.LineHeight;
             msglay.HorizontalAlignment = descriptor.HorizonAlign;
             msglay.VerticalAlignment = descriptor.VertiAlign;
-            msglay.FontColor = descriptor.FontColor;
+            msglay.FontColor = Color.FromRgb(descriptor.FontColorR, descriptor.FontColorG, descriptor.FontColorB);
             msglay.FontSize = descriptor.FontSize;
             msglay.FontName = descriptor.FontName;
             msglay.FontShadow = descriptor.FontShadow;
@@ -261,6 +269,7 @@ namespace Yuri.PlatformCore
                 interruptSA = null,
                 type = InterruptType.ButtonJump,
                 returnTarget = descriptor.jumpLabel,
+                pureInterrupt = false
             };
             Canvas.SetLeft(buttonImage, descriptor.X);
             Canvas.SetTop(buttonImage, descriptor.Y);
@@ -334,7 +343,7 @@ namespace Yuri.PlatformCore
                             this.RemoveButton(bi);
                         }
                     }
-                    break;
+                    return;
                 case ResourceType.Background:
                     for (int bi = 0; bi < this.BackgroundSpriteVec.Count; bi++)
                     {
@@ -343,7 +352,7 @@ namespace Yuri.PlatformCore
                             this.RemoveSprite(bi, ResourceType.Background);
                         }
                     }
-                    break;
+                    return;
                 case ResourceType.Stand:
                     for (int bi = 0; bi < this.CharacterStandSpriteVec.Count; bi++)
                     {
@@ -352,7 +361,7 @@ namespace Yuri.PlatformCore
                             this.RemoveSprite(bi, ResourceType.Stand);
                         }
                     }
-                    break;
+                    return;
                 case ResourceType.Pictures:
                     for (int bi = 0; bi < this.PictureSpriteVec.Count; bi++)
                     {
@@ -361,7 +370,7 @@ namespace Yuri.PlatformCore
                             this.RemoveSprite(bi, ResourceType.Pictures);
                         }
                     }
-                    break;
+                    return;
                 case ResourceType.MessageLayerBackground:
                     for (int bi = 0; bi < this.MessageLayerVec.Count; bi++)
                     {
@@ -370,7 +379,7 @@ namespace Yuri.PlatformCore
                             this.RemoveMessageLayer(bi);
                         }
                     }
-                    break;
+                    return;
                 case ResourceType.BranchButton:
                     for (int bi = 0; bi < this.BranchButtonVec.Count; bi++)
                     {
@@ -379,7 +388,51 @@ namespace Yuri.PlatformCore
                             this.RemoveBranchButton(bi);
                         }
                     }
+                    return;
+                default:
                     break;
+            }
+            for (int bi = 0; bi < this.ButtonLayerVec.Count; bi++)
+            {
+                if (this.ButtonLayerVec[bi] != null)
+                {
+                    this.RemoveButton(bi);
+                }
+            }
+            for (int bi = 0; bi < this.BackgroundSpriteVec.Count; bi++)
+            {
+                if (this.BackgroundSpriteVec[bi] != null)
+                {
+                    this.RemoveSprite(bi, ResourceType.Background);
+                }
+            }
+            for (int bi = 0; bi < this.CharacterStandSpriteVec.Count; bi++)
+            {
+                if (this.CharacterStandSpriteVec[bi] != null)
+                {
+                    this.RemoveSprite(bi, ResourceType.Stand);
+                }
+            }
+            for (int bi = 0; bi < this.PictureSpriteVec.Count; bi++)
+            {
+                if (this.PictureSpriteVec[bi] != null)
+                {
+                    this.RemoveSprite(bi, ResourceType.Pictures);
+                }
+            }
+            for (int bi = 0; bi < this.MessageLayerVec.Count; bi++)
+            {
+                if (this.MessageLayerVec[bi] != null)
+                {
+                    this.RemoveMessageLayer(bi);
+                }
+            }
+            for (int bi = 0; bi < this.BranchButtonVec.Count; bi++)
+            {
+                if (this.BranchButtonVec[bi] != null)
+                {
+                    this.RemoveBranchButton(bi);
+                }
             }
         }
 
@@ -390,7 +443,7 @@ namespace Yuri.PlatformCore
         /// <param name="rType">类型</param>
         public void RemoveSprite(int id, ResourceType rType)
         {
-            this.scrMana.RemoveSprite(id, rType);
+            Director.ScrMana.RemoveSprite(id, rType);
             YuriSprite removeOne = null;
             switch (rType)
             {
@@ -416,7 +469,7 @@ namespace Yuri.PlatformCore
         /// <param name="id">文字层id</param>
         public void RemoveMessageLayer(int id)
         {
-            this.scrMana.RemoveMsgLayer(id);
+            Director.ScrMana.RemoveMsgLayer(id);
             MessageLayer removeOne = this.MessageLayerVec[id];
             this.MessageLayerVec[id] = null;
             this.RemoveMessageLayer(removeOne);
@@ -428,7 +481,7 @@ namespace Yuri.PlatformCore
         /// <param name="id">按钮id</param>
         public void RemoveButton(int id)
         {
-            this.scrMana.RemoveButton(id);
+            Director.ScrMana.RemoveButton(id);
             SpriteButton removeOne = this.ButtonLayerVec[id];
             this.ButtonLayerVec[id] = null;
             this.RemoveButton(removeOne);
@@ -440,7 +493,7 @@ namespace Yuri.PlatformCore
         /// <param name="id">选择支id</param>
         public void RemoveBranchButton(int id)
         {
-            this.scrMana.RemoveBranchButton(id);
+            Director.ScrMana.RemoveBranchButton(id);
             BranchButton removeOne = this.BranchButtonVec[id];
             this.BranchButtonVec[id] = null;
             this.RemoveBranchButton(removeOne);
@@ -591,7 +644,7 @@ namespace Yuri.PlatformCore
         {
             for (int i = 0; i < GlobalDataContainer.GAME_MESSAGELAYER_COUNT; i++)
             {
-                this.ReDrawMessageLayer(i, this.scrMana.GetMsgLayerDescriptor(i), true);
+                this.ReDrawMessageLayer(i, Director.ScrMana.GetMsgLayerDescriptor(i), true);
             }
         }
 
@@ -674,7 +727,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 画面管理器
         /// </summary>
-        private ScreenManager scrMana = ScreenManager.GetInstance();
+        //public ScreenManager ScrMana = ScreenManager.GetInstance();
 
         /// <summary>
         /// 主窗体引用

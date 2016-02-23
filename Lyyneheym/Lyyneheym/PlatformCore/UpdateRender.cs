@@ -34,7 +34,7 @@ namespace Yuri.PlatformCore
             {
                 return nullValue;
             }
-            return Convert.ToDouble(this.RunMana.CalculatePolish(polish));
+            return Convert.ToDouble(Director.RunMana.CalculatePolish(polish));
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Yuri.PlatformCore
             {
                 return nullValue;
             }
-            return (int)(Convert.ToDouble(this.RunMana.CalculatePolish(polish)));
+            return (int)(Convert.ToDouble(Director.RunMana.CalculatePolish(polish)));
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Yuri.PlatformCore
                         else if (this.pendingDialogQueue.Count == 0)
                         {
                             // 弹掉用户等待状态
-                            this.RunMana.ExitCall();
+                            Director.RunMana.ExitCall();
                             this.isShowingDialog = false;
                             this.dialogPreStr = string.Empty;
                             // 非连续对话时消除对话框
@@ -276,7 +276,7 @@ namespace Yuri.PlatformCore
             }
             // 主动调用一次显示
             this.DrawDialogRunQueue();
-            this.RunMana.UserWait("UpdateRender", "DialogWaitForClick");
+            Director.RunMana.UserWait("UpdateRender", "DialogWaitForClick");
         }
 
         /// <summary>
@@ -410,17 +410,6 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 设置小三角位置
-        /// </summary>
-        /// <param name="X">目标X坐标</param>
-        /// <param name="Y">目标Y坐标</param>
-        private void SetMessageTriaPosition(double X, double Y)
-        {
-            Canvas.SetLeft(this.view.BO_MsgTria, X);
-            Canvas.SetTop(this.view.BO_MsgTria, Y);
-        }
-
-        /// <summary>
         /// 当前正在操作的文字层
         /// </summary>
         private int currentMsgLayer = 0;
@@ -499,15 +488,6 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 设置运行时环境引用
-        /// </summary>
-        /// <param name="rm">运行时环境</param>
-        public void SetRuntimeManagerReference(RuntimeManager rm)
-        {
-            this.RunMana = rm;
-        }
-
-        /// <summary>
         /// 渲染类构造器
         /// </summary>
         public UpdateRender()
@@ -524,11 +504,6 @@ namespace Yuri.PlatformCore
         private MainWindow view = null;
 
         /// <summary>
-        /// 运行时环境引用
-        /// </summary>
-        private RuntimeManager RunMana = null;
-
-        /// <summary>
         /// 音乐引擎
         /// </summary>
         private Musician musician = Musician.GetInstance();
@@ -537,11 +512,6 @@ namespace Yuri.PlatformCore
         /// 资源管理器
         /// </summary>
         private ResourceManager resMana = ResourceManager.GetInstance();
-
-        /// <summary>
-        /// 屏幕管理器
-        /// </summary>
-        private ScreenManager scrMana = ScreenManager.GetInstance();
 
         /// <summary>
         /// 视窗管理器
@@ -725,7 +695,7 @@ namespace Yuri.PlatformCore
                     this.MsgLayerOpt(
                         this.ParseInt(action.argsDict["id"], 0),
                         this.ParseDirectString(action.argsDict["target"], ""),
-                        this.RunMana.CalculatePolish(action.argsDict["dash"]).ToString()
+                        Director.RunMana.CalculatePolish(action.argsDict["dash"]).ToString()
                         );
                     break;
                 case SActionType.act_draw:
@@ -736,7 +706,8 @@ namespace Yuri.PlatformCore
                     break;
                 case SActionType.act_dialog:
                     this.Dialog(
-                        action.aTag
+                        action.aTag.Substring(0, action.aTag.Length - 2),
+                        action.aTag.Last() == '1'
                         );
                     break;
                 case SActionType.act_dialogTerminator:
@@ -770,9 +741,12 @@ namespace Yuri.PlatformCore
         /// 演绎函数：显示文本
         /// </summary>
         /// <param name="dialogStr">要显示的文本</param>
-        private void Dialog(string dialogStr)
+        private void Dialog(string dialogStr, bool continous)
         {
-            this.pendingDialog += dialogStr;
+            this.pendingDialog = dialogStr;
+            this.viewMana.GetMessageLayer(0).Visibility = Visibility.Visible;
+            this.DrawStringToMsgLayer(0, this.pendingDialog);
+            this.pendingDialog = string.Empty;
         }
 
         /// <summary>
@@ -781,10 +755,10 @@ namespace Yuri.PlatformCore
         /// <param name="continous">下一动作是否为对话</param>
         private void DialogTerminator(bool continous)
         {
-            this.viewMana.GetMessageLayer(0).Visibility = Visibility.Visible;
-            this.DrawStringToMsgLayer(0, this.pendingDialog);
-            this.pendingDialog = string.Empty;
-            this.IsContinousDialog = continous;
+            //this.viewMana.GetMessageLayer(0).Visibility = Visibility.Visible;
+            //this.DrawStringToMsgLayer(0, this.pendingDialog);
+            //this.pendingDialog = string.Empty;
+            //this.IsContinousDialog = continous;
         }
 
         /// <summary>
@@ -833,7 +807,7 @@ namespace Yuri.PlatformCore
         /// <param name="breakSa">中断循环动作实例</param>
         private void Break(SceneAction breakSa)
         {
-            this.RunMana.CallStack.ESP.IP = breakSa.next;
+            Director.RunMana.CallStack.ESP.IP = breakSa.next;
         }
 
         /// <summary>
@@ -868,7 +842,7 @@ namespace Yuri.PlatformCore
                     resourceName = on
                 };
             }
-            this.scrMana.AddButton(id, enable, x, y, target, type, normalDesc, overDesc, onDesc);
+            Director.ScrMana.AddButton(id, enable, x, y, target, type, normalDesc, overDesc, onDesc);
             this.viewMana.Draw(id, ResourceType.Button);
         }
 
@@ -903,7 +877,7 @@ namespace Yuri.PlatformCore
         /// <param name="cut">纹理切割矩</param>
         private void Background(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
-            this.scrMana.AddBackground(id, filename, x, y, id, ro, opacity, xscale, yscale, anchor, cut);
+            Director.ScrMana.AddBackground(id, filename, x, y, id, ro, opacity, xscale, yscale, anchor, cut);
             this.viewMana.Draw(id, ResourceType.Background);
         }
 
@@ -922,7 +896,7 @@ namespace Yuri.PlatformCore
         /// <param name="cut">纹理切割矩</param>
         private void Picture(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
-            this.scrMana.AddPicture(id, filename, x, y, id, xscale, yscale, ro, opacity, anchor, cut);
+            Director.ScrMana.AddPicture(id, filename, x, y, id, xscale, yscale, ro, opacity, anchor, cut);
             this.viewMana.Draw(id, ResourceType.Pictures);
         }
 
@@ -938,7 +912,7 @@ namespace Yuri.PlatformCore
         private void Move(int id, ResourceType rType, string property, double toValue, double acc, Duration duration)
         {
             YuriSprite actionSprite = this.viewMana.GetSprite(id, rType);
-            SpriteDescriptor descriptor = this.scrMana.GetSpriteDescriptor(id, rType);
+            SpriteDescriptor descriptor = Director.ScrMana.GetSpriteDescriptor(id, rType);
             if (actionSprite == null)
             {
                 DebugUtils.ConsoleLine(String.Format("Ignored move (sprite is null): {0}, {1}", rType.ToString(), id),
@@ -1044,7 +1018,7 @@ namespace Yuri.PlatformCore
                     if (id == -1) { id = 2; }
                     break;
             }
-            this.scrMana.AddCharacterStand(id, filename, cst, id, ro, opacity, anchor, cut);
+            Director.ScrMana.AddCharacterStand(id, filename, cst, id, ro, opacity, anchor, cut);
             this.viewMana.Draw(id, ResourceType.Stand);
         }
 
@@ -1063,7 +1037,7 @@ namespace Yuri.PlatformCore
         /// <param name="cut">纹理切割矩</param>
         private void Cstand(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
-            this.scrMana.AddCharacterStand(id, filename, x, y, id, ro, opacity, anchor, cut);
+            Director.ScrMana.AddCharacterStand(id, filename, x, y, id, ro, opacity, anchor, cut);
             this.viewMana.Draw(id, ResourceType.Stand);
         }
 
@@ -1098,13 +1072,20 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="resourceName">资源名称</param>
         /// <param name="volume">音量</param>
-        private void Bgm(string resourceName, double volume)
+        public void Bgm(string resourceName, double volume)
         {
             // 如果当前BGM就是此BGM就只调整音量
             if (this.musician.currentBGM != resourceName)
             {
                 var bgmKVP = this.resMana.GetBGM(resourceName);
+                Director.RunMana.PlayingBGM = resourceName;
                 this.musician.PlayBGM(resourceName, bgmKVP.Key, bgmKVP.Value, (float)volume);
+            }
+            // 空即为停止
+            else if (resourceName == "")
+            {
+                Director.RunMana.PlayingBGM = "";
+                this.musician.StopAndReleaseBGM();
             }
             else
             {
@@ -1159,7 +1140,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private void Title()
         {
-            this.RunMana.ExitAll();
+            Director.RunMana.ExitAll();
             // 没有标志回归点就从程序入口重新开始
             if (this.titlePointContainer.Key == null || this.titlePointContainer.Value == null)
             {
@@ -1170,13 +1151,13 @@ namespace Yuri.PlatformCore
                         "Director", OutputStyle.Error);
                     Environment.Exit(0);
                 }
-                this.RunMana.CallScene(mainScene);
+                Director.RunMana.CallScene(mainScene);
             }
             // 有回归点就调用回归点场景并把IP指针偏移到回归点动作
             else
             {
-                this.RunMana.CallScene(this.titlePointContainer.Key);
-                this.RunMana.CallStack.ESP.IP = this.titlePointContainer.Value;
+                Director.RunMana.CallScene(this.titlePointContainer.Key);
+                Director.RunMana.CallStack.ESP.IP = this.titlePointContainer.Value;
             }
         }
 
@@ -1202,7 +1183,7 @@ namespace Yuri.PlatformCore
         /// <param name="dashPolish">表达式的等价逆波兰式</param>
         private void Var(string varname, string dashPolish)
         {
-            this.RunMana.Assignment(varname, dashPolish);
+            Director.RunMana.Assignment(varname, dashPolish);
         }
 
         /// <summary>
@@ -1212,7 +1193,7 @@ namespace Yuri.PlatformCore
         /// <param name="toState">目标状态</param>
         private void Switch(int switchId, bool toState)
         {
-            this.RunMana.Symbols.SwitchAssign(switchId, toState);
+            Director.RunMana.Symbols.SwitchAssign(switchId, toState);
         }
 
         /// <summary>
@@ -1260,11 +1241,11 @@ namespace Yuri.PlatformCore
                 {
                     resourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUNDSELECT
                 };
-                this.scrMana.AddBranchButton(i, GroupX, BeginY + DeltaY * 2 * i, tagList[i].Value, tagList[i].Key, normalDesc, overDesc, onDesc);
+                Director.ScrMana.AddBranchButton(i, GroupX, BeginY + DeltaY * 2 * i, tagList[i].Value, tagList[i].Key, normalDesc, overDesc, onDesc);
                 this.viewMana.Draw(i, ResourceType.BranchButton);
             }
             // 追加等待
-            this.RunMana.UserWait("UpdateRender", String.Format("BranchWaitFor:{0}", linkStr));
+            Director.RunMana.UserWait("UpdateRender", String.Format("BranchWaitFor:{0}", linkStr));
         }
 
         /// <summary>
@@ -1281,8 +1262,8 @@ namespace Yuri.PlatformCore
         private void Titlepoint()
         {
             this.titlePointContainer = new KeyValuePair<Scene, SceneAction>(
-                this.resMana.GetScene(this.RunMana.CallStack.ESP.bindingSceneName),
-                this.RunMana.CallStack.ESP.IP);
+                this.resMana.GetScene(Director.RunMana.CallStack.ESP.bindingSceneName),
+                Director.RunMana.CallStack.ESP.IP);
         }
 
         /// <summary>
@@ -1310,7 +1291,7 @@ namespace Yuri.PlatformCore
             if (msglayId >= 0 && msglayId < GlobalDataContainer.GAME_MESSAGELAYER_COUNT)
             {
                 MessageLayer ml = this.viewMana.GetMessageLayer(msglayId);
-                MessageLayerDescriptor mld = this.scrMana.GetMsgLayerDescriptor(msglayId);
+                MessageLayerDescriptor mld = Director.ScrMana.GetMsgLayerDescriptor(msglayId);
                 switch (property)
                 {
                     case "fs":
@@ -1329,7 +1310,10 @@ namespace Yuri.PlatformCore
                             DebugUtils.ConsoleLine("Font Color should be RGB format", "UpdateRender", OutputStyle.Error);
                             return;
                         }
-                        ml.FontColor = mld.FontColor = Color.FromRgb(Convert.ToByte(rgbItem[0]), Convert.ToByte(rgbItem[1]), Convert.ToByte(rgbItem[2]));
+                        mld.FontColorR = Convert.ToByte(rgbItem[0]);
+                        mld.FontColorG = Convert.ToByte(rgbItem[1]);
+                        mld.FontColorB = Convert.ToByte(rgbItem[2]);
+                        ml.FontColor = Color.FromRgb(Convert.ToByte(rgbItem[0]), Convert.ToByte(rgbItem[1]), Convert.ToByte(rgbItem[2]));
                         break;
                     case "v":
                     case "visible":
@@ -1364,7 +1348,8 @@ namespace Yuri.PlatformCore
                     case "p":
                     case "padding":
                         string[] padItem = valueStr.Split(',');
-                        ml.Padding = mld.Padding = new Thickness(Convert.ToDouble(padItem[0]), Convert.ToDouble(padItem[1]), Convert.ToDouble(padItem[2]), Convert.ToDouble(padItem[3]));
+                        ml.Padding = new Thickness(Convert.ToDouble(padItem[0]), Convert.ToDouble(padItem[1]), Convert.ToDouble(padItem[2]), Convert.ToDouble(padItem[3]));
+                        mld.Padding = new MyThickness(ml.Padding);
                         break;
                     case "ha":
                     case "horizontal":

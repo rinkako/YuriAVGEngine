@@ -132,6 +132,14 @@ namespace Yuri.PlatformCore
         public static int GAME_Z_BRANCHBUTTON = 251;
         // 音频：语音文件后缀
         public static string GAME_VOCAL_POSTFIX = ".mp3";
+        // 音频：BGM默认音量
+        public static float GAME_SOUND_BGMVOL = 800;
+        // 音频：BGS默认音量
+        public static float GAME_SOUND_BGSVOL = 800;
+        // 音频：SE默认音量
+        public static float GAME_SOUND_SEVOL = 1000;
+        // 音频：VOCAL默认音量
+        public static float GAME_SOUND_VOCALVOL = 1000;
         // 存档：截图存档
         public static bool GAME_SAVE_SCRPRINT = true;
         // 存档：最大存档数

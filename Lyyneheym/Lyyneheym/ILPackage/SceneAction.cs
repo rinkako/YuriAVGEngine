@@ -47,6 +47,51 @@ namespace Yuri.ILPackage
         }
 
         /// <summary>
+        /// 默认构造函数
+        /// </summary>
+        public SceneAction()
+        {
+
+        }
+
+        /// <summary>
+        /// 为当前动作创建一个副本
+        /// </summary>
+        /// <param name="pureClone">是否保留关系</param>
+        /// <returns>原动作的深拷贝副本</returns>
+        public SceneAction Clone(bool pureClone)
+        {
+            SceneAction resSa = new SceneAction();
+            resSa.argsDict = new Dictionary<string, string>();
+            foreach (var kv in this.argsDict)
+            {
+                resSa.argsDict.Add(kv.Key, kv.Value);
+            }
+            resSa.aTag = this.aTag;
+            resSa.aType = this.aType;
+            resSa.funcName = this.funcName;
+            resSa.isBelongFunc = this.isBelongFunc;
+            resSa.saNodeName = this.saNodeName;
+            if (pureClone == false)
+            {
+                resSa.condPolish = this.condPolish;
+                resSa.next = this.next;
+                resSa.saNodeName = this.saNodeName;
+                resSa.trueRouting = new List<SceneAction>();
+                foreach (var tr in this.trueRouting)
+                {
+                    resSa.trueRouting.Add(tr);
+                }
+                resSa.falseRouting = new List<SceneAction>();
+                foreach (var fr in this.falseRouting)
+                {
+                    resSa.falseRouting.Add(fr);
+                }
+            }
+            return resSa;
+        }
+
+        /// <summary>
         /// 字符串化方法
         /// </summary>
         /// <returns>该动作的名字</returns>

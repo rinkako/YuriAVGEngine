@@ -115,6 +115,16 @@ namespace Yuri
 
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            core.SaveIt();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            core.LoadIt();
+        }
+
         
 
 

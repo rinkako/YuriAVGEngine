@@ -8,6 +8,7 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 选择项按钮描述类
     /// </summary>
+    [Serializable]
     public class BranchButtonDescriptor
     {
         public int Id { get; set; }

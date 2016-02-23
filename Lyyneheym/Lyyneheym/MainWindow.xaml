@@ -4,8 +4,9 @@
         Title="MainWindow" Height="608" Width="1024" MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" Closing="Window_Closing" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" MouseWheel="Window_MouseWheel" Loaded="window_Loaded">
     <Viewbox x:Name="viewbox" Stretch="Fill">
         <Canvas Name="BO_MainGrid" Width="1024" Height="576" Background="Black">
-            <Image Name="BO_MsgTria" Panel.ZIndex="999" Visibility="Hidden" Opacity="0.55" Height="20" Width="20" Canvas.Left="950" Canvas.Top="530"/>
             <Button Panel.ZIndex="9999" Content="Button" HorizontalAlignment="Left" Margin="594,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
+            <Button Panel.ZIndex="9999" Content="SAVE" Canvas.Left="695" Canvas.Top="5" Width="75" Click="Button_Click"/>
+            <Button Panel.ZIndex="9999" Content="LOAD" Width="75" Canvas.Left="775" Canvas.Top="5" Click="Button_Click_1"/>
         </Canvas>
     </Viewbox>
 </Window>
