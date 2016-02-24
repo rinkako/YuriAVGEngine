@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Diagnostics;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Yuri.Utils
@@ -8,7 +9,7 @@ namespace Yuri.Utils
     /// <summary>
     /// 开发辅助相关的静态方法
     /// </summary>
-    public static class DebugUtils
+    public static class CommonUtils
     {
         /// <summary>
         /// 提供将运行时环境信息输出到控制台的方法
@@ -70,9 +71,37 @@ namespace Yuri.Utils
         {
             lock (consoleMutex)
             {
-                DebugUtils.ConsoleLine(information, causer, oStyle);
+                CommonUtils.ConsoleLine(information, causer, oStyle);
             }
         }
+
+        /// <summary>
+        /// 交换两个对象的引用
+        /// </summary>
+        /// <typeparam name="T">T是要交换的类型</typeparam>
+        /// <param name="a">交换变量</param>
+        /// <param name="b">交换变量</param>
+        public static void Swap<T>(ref T a, ref T b)
+        {
+            T swaper = a;
+            a = b;
+            b = swaper;
+        }
+
+        /// <summary>
+        /// 交换两个对象在容器中的引用
+        /// </summary>
+        /// <typeparam name="T">T是要交换的类型</typeparam>
+        /// <param name="container">交换容器</param>
+        /// <param name="aId">交换变量下标</param>
+        /// <param name="bId">交换变量下标</param>
+        public static void Swap<T>(List<T> container, int aId, int bId)
+        {
+            var exchange = container[aId];
+            container[aId] = container[bId];
+            container[bId] = exchange;
+        }
+
     }
 
     /// <summary>

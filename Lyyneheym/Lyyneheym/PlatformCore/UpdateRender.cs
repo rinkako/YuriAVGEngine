@@ -662,9 +662,10 @@ namespace Yuri.PlatformCore
                     break;
                 case SActionType.act_titlepoint:
                     break;
-                case SActionType.act_freeze:
-                    break;
                 case SActionType.act_trans:
+                    this.Trans(
+                        this.ParseDirectString(action.argsDict["name"], "FadeTransition")
+                        );
                     break;
                 case SActionType.act_button:
                     this.Button(
@@ -710,11 +711,6 @@ namespace Yuri.PlatformCore
                         action.aTag.Last() == '1'
                         );
                     break;
-                case SActionType.act_dialogTerminator:
-                    this.DialogTerminator(
-                        action.aTag.Split('#')[1] == "1"
-                        );
-                    break;
                 default:
                     break;
             }
@@ -725,7 +721,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void Shutdown()
         {
-            DebugUtils.ConsoleLine("Shutdown is called", "UpdateRender", OutputStyle.Important);
+            CommonUtils.ConsoleLine("Shutdown is called", "UpdateRender", OutputStyle.Important);
             this.view.Close();
         }
 
@@ -750,15 +746,12 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 演绎函数：结束本节对话并清空文字层
+        /// 演绎函数：执行过渡
         /// </summary>
-        /// <param name="continous">下一动作是否为对话</param>
-        private void DialogTerminator(bool continous)
+        /// <param name="transName">效果的名称</param>
+        private void Trans(string transName)
         {
-            //this.viewMana.GetMessageLayer(0).Visibility = Visibility.Visible;
-            //this.DrawStringToMsgLayer(0, this.pendingDialog);
-            //this.pendingDialog = string.Empty;
-            //this.IsContinousDialog = continous;
+            this.viewMana.ApplyTransition(transName);
         }
 
         /// <summary>
@@ -772,7 +765,7 @@ namespace Yuri.PlatformCore
             }
             else
             {
-                DebugUtils.ConsoleLine(String.Format("Drawtext cannot apply on MessageLayer0 (Main MsgLayer): {0}", text), 
+                CommonUtils.ConsoleLine(String.Format("Drawtext cannot apply on MessageLayer0 (Main MsgLayer): {0}", text), 
                     "UpdateRender", OutputStyle.Error);
             }
         }
@@ -915,7 +908,7 @@ namespace Yuri.PlatformCore
             SpriteDescriptor descriptor = Director.ScrMana.GetSpriteDescriptor(id, rType);
             if (actionSprite == null)
             {
-                DebugUtils.ConsoleLine(String.Format("Ignored move (sprite is null): {0}, {1}", rType.ToString(), id),
+                CommonUtils.ConsoleLine(String.Format("Ignored move (sprite is null): {0}, {1}", rType.ToString(), id),
                     "UpdateRender", OutputStyle.Warning);
                 return;
             }
@@ -955,7 +948,7 @@ namespace Yuri.PlatformCore
                     descriptor.ScaleY = toValue;
                     break;
                 default:
-                    DebugUtils.ConsoleLine(String.Format("Move instruction without valid parameters: {0}", property),
+                    CommonUtils.ConsoleLine(String.Format("Move instruction without valid parameters: {0}", property),
                         "UpdateRender", OutputStyle.Warning);
                     break;
             }
@@ -1147,7 +1140,7 @@ namespace Yuri.PlatformCore
                 var mainScene = this.resMana.GetScene(GlobalDataContainer.Script_Main);
                 if (mainScene == null)
                 {
-                    DebugUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalDataContainer.Script_Main),
+                    CommonUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalDataContainer.Script_Main),
                         "Director", OutputStyle.Error);
                     Environment.Exit(0);
                 }
@@ -1214,7 +1207,7 @@ namespace Yuri.PlatformCore
                 }
                 else
                 {
-                    DebugUtils.ConsoleLine(String.Format("Ignore Branch Item: {0}", linkItem),
+                    CommonUtils.ConsoleLine(String.Format("Ignore Branch Item: {0}", linkItem),
                         "UpdateRender", OutputStyle.Error);
                 }
             }
@@ -1307,7 +1300,7 @@ namespace Yuri.PlatformCore
                         string[] rgbItem = valueStr.Split(',');
                         if (rgbItem.Length != 3)
                         {
-                            DebugUtils.ConsoleLine("Font Color should be RGB format", "UpdateRender", OutputStyle.Error);
+                            CommonUtils.ConsoleLine("Font Color should be RGB format", "UpdateRender", OutputStyle.Error);
                             return;
                         }
                         mld.FontColorR = Convert.ToByte(rgbItem[0]);
@@ -1376,7 +1369,7 @@ namespace Yuri.PlatformCore
             }
             else
             {
-                DebugUtils.ConsoleLine(String.Format("msglayeropt id out of range: MsgLayer {0}", msglayId),
+                CommonUtils.ConsoleLine(String.Format("msglayeropt id out of range: MsgLayer {0}", msglayId),
                     "UpdateRender", OutputStyle.Error);
             }
         }

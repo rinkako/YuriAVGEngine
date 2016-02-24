@@ -73,7 +73,7 @@ namespace Yuri.PlatformCore
                 }
                 else
                 {
-                    DebugUtils.ConsoleLine(String.Format("Invalid Switch id: {0}, TRUE will be returned instead", fetchId),
+                    CommonUtils.ConsoleLine(String.Format("Invalid Switch id: {0}, TRUE will be returned instead", fetchId),
                         "SymbolManager", OutputStyle.Error);
                     return 1.0;
                 }
@@ -81,7 +81,7 @@ namespace Yuri.PlatformCore
             // 如果查无此键
             if (this.globalSymbolTable.ContainsKey(varName) == false)
             {
-                DebugUtils.ConsoleLine(String.Format("Invalid Variable Fetch: {0}, which haven't been left-value yet", varName),
+                CommonUtils.ConsoleLine(String.Format("Invalid Variable Fetch: {0}, which haven't been left-value yet", varName),
                         "SymbolManager", OutputStyle.Error);
                 throw new Exception("变量 " + varName + " 在作为左值之前被引用");
             }
@@ -118,7 +118,7 @@ namespace Yuri.PlatformCore
                 }
                 else
                 {
-                    DebugUtils.ConsoleLine(String.Format("Invalid Switch id: {0}", fetchId), "SymbolManager", OutputStyle.Error);
+                    CommonUtils.ConsoleLine(String.Format("Invalid Switch id: {0}", fetchId), "SymbolManager", OutputStyle.Error);
                     return;
                 }
             }
@@ -137,7 +137,7 @@ namespace Yuri.PlatformCore
             {
                 return this.globalSwitchList[id];
             }
-            DebugUtils.ConsoleLine(String.Format("Invalid Switch id: {0}, TRUE will be returned instead", id), "SymbolManager", OutputStyle.Error);
+            CommonUtils.ConsoleLine(String.Format("Invalid Switch id: {0}, TRUE will be returned instead", id), "SymbolManager", OutputStyle.Error);
             return true;
         }
 
@@ -154,7 +154,7 @@ namespace Yuri.PlatformCore
             }
             else
             {
-                DebugUtils.ConsoleLine(String.Format("Invalid Switch id: {0}", id), "SymbolManager", OutputStyle.Error);
+                CommonUtils.ConsoleLine(String.Format("Invalid Switch id: {0}", id), "SymbolManager", OutputStyle.Error);
             }
         }
 

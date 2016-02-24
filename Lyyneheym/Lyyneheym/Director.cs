@@ -59,7 +59,7 @@ namespace Yuri
             var mainScene = this.ResMana.GetScene(GlobalDataContainer.Script_Main);
             if (mainScene == null)
             {
-                DebugUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalDataContainer.Script_Main),
+                CommonUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalDataContainer.Script_Main),
                     "Director", OutputStyle.Error);
                 Environment.Exit(0);
             }
@@ -79,7 +79,7 @@ namespace Yuri
         public void UpdateKeyboard(KeyEventArgs e)
         {
             this.updateRender.SetKeyboardState(e.Key, e.KeyStates);
-            DebugUtils.ConsoleLine(String.Format("Keyboard event: {0} <- {1}", e.Key.ToString(), e.KeyStates.ToString()),
+            CommonUtils.ConsoleLine(String.Format("Keyboard event: {0} <- {1}", e.Key.ToString(), e.KeyStates.ToString()),
                 "Director", OutputStyle.Normal);
         }
 
@@ -114,10 +114,10 @@ namespace Yuri
             Musician.GetInstance().StopAndReleaseBGM();
             // 变更运行时环境
             Director.RunMana = rm;
-            DebugUtils.ConsoleLine("RuntimeManager is replaced", "Director", OutputStyle.Important);
+            CommonUtils.ConsoleLine("RuntimeManager is replaced", "Director", OutputStyle.Important);
             // 变更屏幕管理器
             ScreenManager.ResetSynObject(Director.RunMana.Screen);
-            DebugUtils.ConsoleLine("ScreenManager is replaced", "Director", OutputStyle.Important);
+            CommonUtils.ConsoleLine("ScreenManager is replaced", "Director", OutputStyle.Important);
             // 重绘整个画面
             ViewManager.GetInstance().ReDraw();
             // 恢复背景音乐
@@ -253,7 +253,7 @@ namespace Yuri
                         var curScene = this.ResMana.GetScene(Director.RunMana.CallStack.EBP.bindingSceneName);
                         if (!curScene.labelDictionary.ContainsKey(interruptExitPoint))
                         {
-                            DebugUtils.ConsoleLine(String.Format("Ignored Interrupt jump Instruction (target not exist): {0}", interruptExitPoint),
+                            CommonUtils.ConsoleLine(String.Format("Ignored Interrupt jump Instruction (target not exist): {0}", interruptExitPoint),
                                         "Director", OutputStyle.Error);
                             break;
                         }
@@ -297,7 +297,7 @@ namespace Yuri
                             var currentScene = this.ResMana.GetScene(Director.RunMana.CallStack.ESP.bindingSceneName);
                             if (!currentScene.labelDictionary.ContainsKey(jumpToTarget))
                             {
-                                DebugUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
+                                CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
                                     "Director", OutputStyle.Error);
                                 break;
                             }
@@ -309,13 +309,13 @@ namespace Yuri
                             var jumpScene = this.ResMana.GetScene(jumpToScene);
                             if (jumpScene == null)
                             {
-                                DebugUtils.ConsoleLine(String.Format("Ignored Jump Instruction (scene not exist): {0}", jumpToScene),
+                                CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (scene not exist): {0}", jumpToScene),
                                     "Director", OutputStyle.Error);
                                 break;
                             }
                             if (jumpToTarget != "" && !jumpScene.labelDictionary.ContainsKey(jumpToTarget))
                             {
-                                DebugUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0} -> {1}", jumpToScene, jumpToTarget),
+                                CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0} -> {1}", jumpToScene, jumpToTarget),
                                     "Director", OutputStyle.Error);
                                 break;
                             }
@@ -330,7 +330,7 @@ namespace Yuri
                         var signFunc = nextInstruct.argsDict["sign"];
                         if (signFunc != "" && (!signFunc.StartsWith("(") || !signFunc.EndsWith(")")))
                         {
-                            DebugUtils.ConsoleLine(String.Format("Ignored Function calling (sign not valid): {0} -> {1}", callFunc, signFunc),
+                            CommonUtils.ConsoleLine(String.Format("Ignored Function calling (sign not valid): {0} -> {1}", callFunc, signFunc),
                                 "Director", OutputStyle.Error);
                             break;
                         }
@@ -338,7 +338,7 @@ namespace Yuri
                         var sceneFuncList = from f in sceneFuncContainer where f.callname == callFunc select f;
                         if (sceneFuncList.Count() == 0)
                         {
-                            DebugUtils.ConsoleLine(String.Format("Ignored Function calling (function not exist): {0}", callFunc),
+                            CommonUtils.ConsoleLine(String.Format("Ignored Function calling (function not exist): {0}", callFunc),
                                 "Director", OutputStyle.Error);
                             break;
                         }
@@ -346,7 +346,7 @@ namespace Yuri
                         var signItem = signFunc.Replace("(", "").Replace(")", "").Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
                         if (sceneFunc.param.Count != signItem.Length)
                         {
-                            DebugUtils.ConsoleLine(String.Format("Ignored Function calling (in {0}, require args num: {1}, but actual:{2})", callFunc, sceneFunc.param.Count, signItem.Length),
+                            CommonUtils.ConsoleLine(String.Format("Ignored Function calling (in {0}, require args num: {1}, but actual:{2})", callFunc, sceneFunc.param.Count, signItem.Length),
                                 "Director", OutputStyle.Error);
                             break;
                         }
@@ -409,9 +409,9 @@ namespace Yuri
         /// </summary>
         public void DisposeResource()
         {
-            DebugUtils.ConsoleLine(String.Format("Begin dispose resource"), "Director", OutputStyle.Important);
+            CommonUtils.ConsoleLine(String.Format("Begin dispose resource"), "Director", OutputStyle.Important);
             BassPlayer.GetInstance().Dispose();
-            DebugUtils.ConsoleLine(String.Format("Finished dispose resource, program will shutdown"), "Director", OutputStyle.Important);
+            CommonUtils.ConsoleLine(String.Format("Finished dispose resource, program will shutdown"), "Director", OutputStyle.Important);
         }
 
         /// <summary>

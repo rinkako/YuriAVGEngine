@@ -377,7 +377,7 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
-                DebugUtils.ConsoleLine(ex.ToString(), "ScreenManager / CLR", OutputStyle.Error);
+                CommonUtils.ConsoleLine(ex.ToString(), "ScreenManager / CLR", OutputStyle.Error);
                 return null;
             }
         }
@@ -410,6 +410,14 @@ namespace Yuri.PlatformCore
         public BranchButtonDescriptor GetBranchButtonDescriptor(int id)
         {
             return this.BranchDescVec[id];
+        }
+
+        /// <summary>
+        /// 交换背景的前后层
+        /// </summary>
+        public void Backlay()
+        {
+            CommonUtils.Swap<SpriteDescriptor>(this.BackgroundDescVec, 0, 1);
         }
 
         /// <summary>

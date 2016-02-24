@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +8,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Reflection;
+using Transitionals;
+
+using Yuri.Utils;
 
 namespace Yuri.PlatformCore
 {
@@ -191,6 +196,7 @@ namespace Yuri.PlatformCore
         /// <param name="descriptor">精灵描述子</param>
         private void DrawSprite(YuriSprite sprite, SpriteDescriptor descriptor)
         {
+            if (sprite == null) { return; }
             Image spriteImage = new Image();
             BitmapImage bmp = sprite.myImage;
             spriteImage.Width = bmp.PixelWidth;
@@ -508,9 +514,12 @@ namespace Yuri.PlatformCore
             if (sprite != null)
             {
                 Image spriteView = sprite.displayBinding;
-                if (spriteView != null && this.view.BO_MainGrid.Children.Contains(spriteView))
+                if (spriteView != null)
                 {
-                    this.view.BO_MainGrid.Children.Remove(spriteView);
+                    if (this.view.BO_MainGrid.Children.Contains(spriteView))
+                    {
+                        this.view.BO_MainGrid.Children.Remove(spriteView);
+                    }
                 }
                 sprite.displayBinding = null;
             }
@@ -627,6 +636,65 @@ namespace Yuri.PlatformCore
         {
             return this.BranchButtonVec[id];
         }
+        
+        /// <summary>
+        /// 加载过渡样式
+        /// </summary>
+        /// <param name="assembly">过渡所在的程序集</param>
+        public void LoadTransitions(Assembly assembly)
+        {
+            foreach (Type type in assembly.GetTypes())
+            {
+                // Must not already exist
+                if (transitionTypes.Contains(type)) { continue; }
+
+                // Must not be abstract.
+                if ((typeof(Transition).IsAssignableFrom(type)) && (!type.IsAbstract))
+                {
+                    transitionTypes.Add(type);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 执行过渡
+        /// </summary>
+        /// <param name="transTypeName">过渡类型的名字</param>
+        public void ApplyTransition(string transTypeName)
+        {
+            Type transType = this.transitionTypes[0];
+            foreach (var t in this.transitionTypes)
+            {
+                string[] nameItem = t.ToString().Split('.');
+                if (nameItem[nameItem.Length - 1].ToLower() == transTypeName.ToLower())
+                {
+                    transType = t;
+                    break;
+                }
+            }
+            Transition transition = (Transition)Activator.CreateInstance(transType);
+
+            CommonUtils.Swap<YuriSprite>(this.BackgroundSpriteVec, (int)BackgroundPage.Fore, (int)BackgroundPage.Back);
+            if (this.BackgroundSpriteVec[(int)BackgroundPage.Fore] != null)
+            {
+                this.BackgroundSpriteVec[(int)BackgroundPage.Fore].displayZ = (int)BackgroundPage.Fore + GlobalDataContainer.GAME_Z_BACKGROUND;
+            }
+            if (this.BackgroundSpriteVec[(int)BackgroundPage.Back] != null)
+            {
+                this.BackgroundSpriteVec[(int)BackgroundPage.Back].displayZ = (int)BackgroundPage.Back + GlobalDataContainer.GAME_Z_BACKGROUND;
+            }
+            Director.ScrMana.Backlay();
+
+            this.view.TransitionDS.ObjectInstance = transition;
+            var viewBinder = this.BackgroundSpriteVec[(int)BackgroundPage.Fore] == null ?
+                null : this.BackgroundSpriteVec[(int)BackgroundPage.Fore].displayBinding;
+            if (viewBinder != null && this.view.BO_MainGrid.Children.Contains(viewBinder))
+            {
+                this.view.BO_MainGrid.Children.Remove(viewBinder);
+                Canvas.SetZIndex(this.view.TransitionBox, Canvas.GetZIndex(viewBinder));
+            }
+            this.view.TransitionBox.Content = viewBinder;
+        }
 
         /// <summary>
         /// 为视窗管理器设置主窗体的引用
@@ -678,11 +746,14 @@ namespace Yuri.PlatformCore
         /// </summary>
         private List<BranchButton> BranchButtonVec;
 
+        private ObservableCollection<Type> transitionTypes = new ObservableCollection<Type>();
+
         /// <summary>
         /// 私有的构造器
         /// </summary>
         private ViewManager()
         {
+            this.LoadTransitions(Assembly.GetAssembly(typeof(Transition)));
             this.BackgroundSpriteVec = new List<YuriSprite>();
             this.CharacterStandSpriteVec = new List<YuriSprite>();
             this.PictureSpriteVec = new List<YuriSprite>();
@@ -738,6 +809,11 @@ namespace Yuri.PlatformCore
         /// 唯一实例
         /// </summary>
         private static ViewManager synObject = null;
+    }
 
+    public enum BackgroundPage
+    {
+        Back = 0,
+        Fore = 1
     }
 }

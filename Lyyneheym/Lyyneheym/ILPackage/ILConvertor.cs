@@ -91,7 +91,7 @@ namespace Yuri.ILPackage
                         }
                     }
                 }
-                DebugUtils.ConsoleLine(String.Format("Finished SAP Relation Recovery: {0}", sceneName), "YuriIL Convertor", OutputStyle.Normal);
+                CommonUtils.ConsoleLine(String.Format("Finished SAP Relation Recovery: {0}", sceneName), "YuriIL Convertor", OutputStyle.Normal);
                 Scene parseScene = null;
                 if (saHeaderList.Count > 0)
                 {
@@ -105,7 +105,7 @@ namespace Yuri.ILPackage
                     parseScene = new Scene(sceneName, mainSa, funcVec, labelDict);
                 }
                 resList.Add(parseScene);
-                DebugUtils.ConsoleLine(String.Format("Finished SAP Function Recovery: {0}", sceneName), "YuriIL Convertor", OutputStyle.Normal);
+                CommonUtils.ConsoleLine(String.Format("Finished SAP Function Recovery: {0}", sceneName), "YuriIL Convertor", OutputStyle.Normal);
             }
             return resList;
         }
@@ -180,7 +180,7 @@ namespace Yuri.ILPackage
                     this.iResContainer[currentSceneKey].Add(sa.saNodeName, sa);
                 }
             }
-            DebugUtils.ConsoleLine(String.Format("Finished Convert IL to SAP"), "YuriIL Convertor", OutputStyle.Normal);
+            CommonUtils.ConsoleLine(String.Format("Finished Convert IL to SAP"), "YuriIL Convertor", OutputStyle.Normal);
         }
         
         /// <summary>
@@ -194,11 +194,11 @@ namespace Yuri.ILPackage
             {
                 if (finfo.Extension != ".sil")
                 {
-                    DebugUtils.ConsoleLine(String.Format("Ignored file: {0}", finfo.FullName), "YuriIL Convertor", OutputStyle.Warning);
+                    CommonUtils.ConsoleLine(String.Format("Ignored file: {0}", finfo.FullName), "YuriIL Convertor", OutputStyle.Warning);
                     continue;
                 }
                 // 分割文件为行
-                DebugUtils.ConsoleLine(String.Format("Spliting file: {0}", finfo.FullName), "YuriIL Convertor", OutputStyle.Normal);
+                CommonUtils.ConsoleLine(String.Format("Spliting file: {0}", finfo.FullName), "YuriIL Convertor", OutputStyle.Normal);
                 FileStream fs = new FileStream(finfo.FullName, FileMode.Open);
                 StreamReader sr = new StreamReader(fs);
                 while (!sr.EndOfStream)

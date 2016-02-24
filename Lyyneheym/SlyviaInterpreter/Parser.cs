@@ -1009,6 +1009,9 @@ namespace Yuri.YuriInterpreter
                     case TokenType.Token_o_msglayeropt:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_msglayeropt, "id", "target", "dash");
                         break;
+                    case TokenType.Token_o_trans:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_trans, "name");
+                        break;
                     case TokenType.Token_o_stopbgm:
                         statementNode.nodeSyntaxType = SyntaxType.synr_stopbgm;
                         break;
@@ -1035,9 +1038,6 @@ namespace Yuri.YuriInterpreter
                         break;
                     case TokenType.Token_o_break:
                         statementNode.nodeSyntaxType = SyntaxType.synr_break;
-                        break;
-                    case TokenType.Token_o_trans:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_trans;
                         break;
                     case TokenType.Token_o_waituser:
                         statementNode.nodeSyntaxType = SyntaxType.synr_waituser;

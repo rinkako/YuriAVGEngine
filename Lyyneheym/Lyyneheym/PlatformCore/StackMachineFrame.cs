@@ -64,6 +64,14 @@ namespace Yuri.PlatformCore
         /// 获取或设置该栈帧的备注信息
         /// </summary>
         public string aTag = null;
+
+        /// <summary>
+        /// 字符串化方法
+        /// </summary>
+        public override string ToString()
+        {
+            return String.Format("StackFrame:{0} -> {1}", this.state.ToString(), this.IP.ToString());
+        }
     }
 
     /// <summary>
