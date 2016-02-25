@@ -16,15 +16,15 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 为屏幕增加一个背景精灵描述子
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="source"></param>
-        /// <param name="X"></param>
-        /// <param name="Y"></param>
-        /// <param name="Z"></param>
-        /// <param name="Angle"></param>
-        /// <param name="Opacity"></param>
-        /// <param name="anchor"></param>
-        /// <param name="cut"></param>
+        /// <param name="id">背景层的类型：0-背景 1-前景</param>
+        /// <param name="source">资源名称</param>
+        /// <param name="X">左上角在画面的X坐标</param>
+        /// <param name="Y">左上角在画面的Y坐标</param>
+        /// <param name="Z">Z坐标</param>
+        /// <param name="Angle">角度</param>
+        /// <param name="Opacity">不透明度</param>
+        /// <param name="anchor">锚点类型</param>
+        /// <param name="cut">纹理切割矩</param>
         public void AddBackground(int id, string source, double X, double Y, int Z, double Angle, double Opacity, double ScaleX, double ScaleY, SpriteAnchorType anchor, Int32Rect cut)
         {
             SpriteDescriptor sd = new SpriteDescriptor()
@@ -48,15 +48,15 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 为屏幕增加一个立绘精灵描述子
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="source"></param>
-        /// <param name="X"></param>
-        /// <param name="Y"></param>
-        /// <param name="Z"></param>
-        /// <param name="Angle"></param>
-        /// <param name="Opacity"></param>
-        /// <param name="anchor"></param>
-        /// <param name="cut"></param>
+        /// <param name="id">立绘位置id号</param>
+        /// <param name="source">资源名称</param>
+        /// <param name="X">左上角在画面的X坐标</param>
+        /// <param name="Y">左上角在画面的Y坐标</param>
+        /// <param name="Z">Z坐标</param>
+        /// <param name="Angle">角度</param>
+        /// <param name="Opacity">不透明度</param>
+        /// <param name="anchor">锚点类型</param>
+        /// <param name="cut">纹理切割矩</param>
         public void AddCharacterStand(int id, string source, double X, double Y, int Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
         {
             SpriteDescriptor sd = new SpriteDescriptor()
@@ -78,14 +78,14 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 为屏幕增加一个立绘精灵描述子
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="source"></param>
-        /// <param name="cst"></param>
-        /// <param name="Z"></param>
-        /// <param name="Angle"></param>
-        /// <param name="Opacity"></param>
-        /// <param name="anchor"></param>
-        /// <param name="cut"></param>
+        /// <param name="id">立绘位置id号</param>
+        /// <param name="source">资源名称</param>
+        /// <param name="cst">立绘位置枚举</param>
+        /// <param name="Z">Z坐标</param>
+        /// <param name="Angle">角度</param>
+        /// <param name="Opacity">不透明度</param>
+        /// <param name="anchor">锚点类型</param>
+        /// <param name="cut">纹理切割矩</param>
         public void AddCharacterStand(int id, string source, CharacterStandType cst, int Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
         {
             SpriteDescriptor sd = null;
@@ -173,15 +173,15 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 为屏幕增加一个图片精灵描述子
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="source"></param>
-        /// <param name="X"></param>
-        /// <param name="Y"></param>
-        /// <param name="Z"></param>
-        /// <param name="Angle"></param>
-        /// <param name="Opacity"></param>
-        /// <param name="anchor"></param>
-        /// <param name="cut"></param>
+        /// <param name="id">图片的id</param>
+        /// <param name="source">资源名称</param>
+        /// <param name="X">左上角在画面的X坐标</param>
+        /// <param name="Y">左上角在画面的Y坐标</param>
+        /// <param name="Z">Z坐标</param>
+        /// <param name="Angle">角度</param>
+        /// <param name="Opacity">不透明度</param>
+        /// <param name="anchor">锚点类型</param>
+        /// <param name="cut">纹理切割矩</param>
         public void AddPicture(int id, string source, double X, double Y, int Z, double ScaleX, double ScaleY, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
         {
             SpriteDescriptor sd = new SpriteDescriptor()
@@ -205,14 +205,14 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 为屏幕增加一个按钮描述子
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="enable"></param>
-        /// <param name="X"></param>
-        /// <param name="Y"></param>
-        /// <param name="jumpTarget"></param>
-        /// <param name="normalDesc"></param>
-        /// <param name="overDesc"></param>
-        /// <param name="onDesc"></param>
+        /// <param name="id">按钮的id</param>
+        /// <param name="enable">是否可点击</param>
+        /// <param name="X">左上角在画面的X坐标</param>
+        /// <param name="Y">左上角在画面的Y坐标</param>
+        /// <param name="jumpTarget">按下后要跳转的标签名</param>
+        /// <param name="normalDesc">正常时的精灵描述子</param>
+        /// <param name="overDesc">鼠标悬停时的精灵描述子</param>
+        /// <param name="onDesc">鼠标按下时的精灵描述子</param>
         public void AddButton(int id, bool enable, double X, double Y, string jumpTarget, string type, SpriteDescriptor normalDesc, SpriteDescriptor overDesc = null, SpriteDescriptor onDesc = null)
         {
             SpriteButtonDescriptor sbd = new SpriteButtonDescriptor()
@@ -234,14 +234,14 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 为屏幕增加一个选择支描述子
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="X"></param>
-        /// <param name="Y"></param>
-        /// <param name="jumpTarget"></param>
-        /// <param name="text"></param>
-        /// <param name="normalDesc"></param>
-        /// <param name="overDesc"></param>
-        /// <param name="onDesc"></param>
+        /// <param name="id">选择支按钮id</param>
+        /// <param name="X">左上角在画面的X坐标</param>
+        /// <param name="Y">左上角在画面的Y坐标</param>
+        /// <param name="jumpTarget">按下后要跳转的标签名</param>
+        /// <param name="text">选择支按钮上的文本</param>
+        /// <param name="normalDesc">正常时的精灵描述子</param>
+        /// <param name="overDesc">鼠标悬停时的精灵描述子</param>
+        /// <param name="onDesc">鼠标按下时的精灵描述子</param>
         public void AddBranchButton(int id, double X, double Y, string jumpTarget, string text, SpriteDescriptor normalDesc, SpriteDescriptor overDesc = null, SpriteDescriptor onDesc = null)
         {
             BranchButtonDescriptor bbd = new BranchButtonDescriptor()
@@ -262,22 +262,22 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 为屏幕增加一个文字层描述子
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="source"></param>
-        /// <param name="Visible"></param>
-        /// <param name="W"></param>
-        /// <param name="H"></param>
-        /// <param name="Padding"></param>
-        /// <param name="X"></param>
-        /// <param name="Y"></param>
-        /// <param name="Z"></param>
-        /// <param name="Opacity"></param>
-        /// <param name="FontName"></param>
-        /// <param name="FontColor"></param>
-        /// <param name="FontSize"></param>
-        /// <param name="Ha"></param>
-        /// <param name="Va"></param>
-        /// <param name="LineHeight"></param>
+        /// <param name="id">文字层id</param>
+        /// <param name="source">文字层背景图资源名</param>
+        /// <param name="Visible">文字层可见性</param>
+        /// <param name="W">层宽度</param>
+        /// <param name="H">层高度</param>
+        /// <param name="Padding">文字在层内与层边框的间距</param>
+        /// <param name="X">左上角在画面的X坐标</param>
+        /// <param name="Y">左上角在画面的Y坐标</param>
+        /// <param name="Z">Z坐标</param>
+        /// <param name="Opacity">不透明度</param>
+        /// <param name="FontName">字体名称</param>
+        /// <param name="FontColor">字体颜色</param>
+        /// <param name="FontSize">字号</param>
+        /// <param name="Ha">层在屏幕上横向对齐属性</param>
+        /// <param name="Va">层在屏幕上纵向对齐属性</param>
+        /// <param name="LineHeight">行距</param>
         public void EditMsgLayer(int id, string source, bool Visible, double W, double H, Thickness Padding, double X, double Y, int Z, double Opacity, string FontName, Color FontColor, double FontSize, HorizontalAlignment Ha, VerticalAlignment Va, double LineHeight, bool shadow)
         {
             MessageLayerDescriptor mld = new MessageLayerDescriptor()
@@ -308,7 +308,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 从屏幕上移除一个精灵描述子
         /// </summary>
-        /// <param name="spriteId">精灵ID</param>
+        /// <param name="spriteId">精灵id</param>
         /// <param name="rType">资源类型</param>
         public void RemoveSprite(int spriteId, ResourceType rType)
         {
@@ -329,7 +329,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 从屏幕上移除一个文字层
         /// </summary>
-        /// <param name="layerId">文字层ID</param>
+        /// <param name="layerId">文字层id</param>
         public void RemoveMsgLayer(int layerId)
         {
             this.MsgLayerDescVec[layerId] = null;
@@ -356,7 +356,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取一个精灵的描述子
         /// </summary>
-        /// <param name="id">精灵ID</param>
+        /// <param name="id">精灵id</param>
         /// <param name="rType">资源类型</param>
         /// <returns>描述子实例</returns>
         public SpriteDescriptor GetSpriteDescriptor(int id, ResourceType rType)
@@ -385,7 +385,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取一个文字层描述子
         /// </summary>
-        /// <param name="id">文字层ID</param>
+        /// <param name="id">文字层id</param>
         /// <returns>描述子实例</returns>
         public MessageLayerDescriptor GetMsgLayerDescriptor(int id)
         {
@@ -395,7 +395,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取一个按钮描述子
         /// </summary>
-        /// <param name="id">按钮ID</param>
+        /// <param name="id">按钮id</param>
         /// <returns>描述子实例</returns>
         public SpriteButtonDescriptor GetButtonDescriptor(int id)
         {
@@ -405,7 +405,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取一个选择支描述子
         /// </summary>
-        /// <param name="bbId">选择支ID</param>
+        /// <param name="bbId">选择支id</param>
         /// <returns描述子实例></returns>
         public BranchButtonDescriptor GetBranchButtonDescriptor(int id)
         {
