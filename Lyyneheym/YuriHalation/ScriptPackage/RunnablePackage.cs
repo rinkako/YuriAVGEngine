@@ -133,11 +133,11 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// <summary>
         /// 场景动作向量
         /// </summary>
-        private List<ActionPackage> APList = new List<ActionPackage>();
+        protected List<ActionPackage> APList = new List<ActionPackage>();
 
         /// <summary>
         /// 场景内变量向量
         /// </summary>
-        private List<VariablePackage> localVarList = new List<VariablePackage>();
+        protected List<VariablePackage> localVarList = new List<VariablePackage>();
     }
 }

@@ -66,7 +66,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         public override string ToString()
         {
             return String.Format("Scene: {0} ({1} lines, {2} funcs)",
-                this.sceneName, this.APListCount(), funcList.Count);
+                this.sceneName, this.APList.Count, funcList.Count);
         }
 
         /// <summary>
