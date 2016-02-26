@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace YuriHalation.HalationCore
+namespace Yuri.YuriHalation.ScriptPackage
 {
     /// <summary>
-    /// 封装场景代码的类
+    /// 工程包装类
     /// </summary>
-    class ScenePackage
+    [Serializable]
+    class ProjectPackage
     {
-        
 
 
     }

@@ -439,7 +439,7 @@
             this.button31.Name = "button31";
             this.button31.Size = new System.Drawing.Size(100, 28);
             this.button31.TabIndex = 31;
-            this.button31.Text = "执行过渡";
+            this.button31.Text = "移除按钮";
             this.button31.UseVisualStyleBackColor = true;
             // 
             // button32
@@ -448,7 +448,7 @@
             this.button32.Name = "button32";
             this.button32.Size = new System.Drawing.Size(100, 28);
             this.button32.TabIndex = 30;
-            this.button32.Text = "准备过渡";
+            this.button32.Text = "移除图片";
             this.button32.UseVisualStyleBackColor = true;
             // 
             // button29
@@ -637,7 +637,7 @@
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(100, 28);
             this.button9.TabIndex = 9;
-            this.button9.Text = "移除图片";
+            this.button9.Text = "过渡";
             this.button9.UseVisualStyleBackColor = true;
             // 
             // button10

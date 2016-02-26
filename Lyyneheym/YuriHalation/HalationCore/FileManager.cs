@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Yuri.HalationCore
+namespace Yuri.YuriHalation.HalationCore
 {
     /// <summary>
     /// 文件管理器：管理Halation的文件IO动作
