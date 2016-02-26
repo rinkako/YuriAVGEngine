@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace YuriHalation.ScriptPackage
+namespace Yuri.YuriHalation.ScriptPackage
 {
     /// <summary>
     /// 变量包装类

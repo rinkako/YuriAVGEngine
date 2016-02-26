@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace YuriHalation.ScriptPackage
+namespace Yuri.YuriHalation.ScriptPackage
 {
     /// <summary>
     /// 参数包装类

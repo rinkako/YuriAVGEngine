@@ -59,6 +59,7 @@
     <Compile Include="ScriptPackage\ArgumentPackage.cs" />
     <Compile Include="ScriptPackage\FunctionPackage.cs" />
     <Compile Include="ScriptPackage\ProjectPackage.cs" />
+    <Compile Include="ScriptPackage\RunnablePackage.cs" />
     <Compile Include="ScriptPackage\ScenePackage.cs" />
     <Compile Include="ScriptPackage\VariablePackage.cs" />
     <Compile Include="YuriForms\BranchForm.cs">

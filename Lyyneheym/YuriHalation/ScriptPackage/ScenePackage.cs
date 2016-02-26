@@ -1,57 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace YuriHalation.ScriptPackage
+namespace Yuri.YuriHalation.ScriptPackage
 {
     /// <summary>
     /// 场景包装类
     /// </summary>
     [Serializable]
-    class ScenePackage
+    class ScenePackage : RunnablePackage
     {
         /// <summary>
-        /// 场景的名称
+        /// 创建一个指定名称的场景
         /// </summary>
-        public string sceneName = "";
-
-        /// <summary>
-        /// 函数向量
-        /// </summary>
-        public List<FunctionPackage> funcList = new List<FunctionPackage>();
-
-        /// <summary>
-        /// 场景动作向量
-        /// </summary>
-        public List<ActionPackage> mainAPList = new List<ActionPackage>();
-
-        /// <summary>
-        /// 场景内变量向量
-        /// </summary>
-        public List<VariablePackage> localVariableList = new List<VariablePackage>();
-
-        /// <summary>
-        /// 增加一个动作
-        /// </summary>
-        /// <param name="ap">动作包装</param>
-        /// <param name="insertLine">插入的行</param>
-        /// <returns>操作成功与否</returns>
-        public bool AddAction(ActionPackage ap, int insertLine = -1)
+        /// <param name="scenario">场景名</param>
+        public ScenePackage(string scenario)
         {
-            if (insertLine < 0)
-            {
-                this.mainAPList.Add(ap);
-            }
-            else if (insertLine >= 0 && insertLine < this.mainAPList.Count)
-            {
-                this.mainAPList.Insert(insertLine, ap);
-            }
-            else
-            {
-                return false;
-            }
-            return true;
+            this.sceneName = scenario;
         }
 
         /// <summary>
@@ -65,40 +29,36 @@ namespace YuriHalation.ScriptPackage
             {
                 return false;
             }
-            this.funcList.Add(new FunctionPackage() { functionName = funcName });
+            this.funcList.Add(new FunctionPackage(funcName, this.sceneName));
             return true;
         }
 
         /// <summary>
-        /// 查找一个局部变量，如果不存在就增加它；并且增添它的被引用次数
+        /// 删除一个函数
         /// </summary>
-        /// <param name="varName">变量名</param>
-        /// <param name="isLeftValue">是否作为左值</param>
-        /// <param name="line">出现的行</param>
-        /// <returns>在调用方法前该变量是否不存在</returns>
-        public bool SignalVar(string varName, bool isLeftValue, int line)
+        /// <param name="funcName">函数名</param>
+        /// <returns>操作成功与否</returns>
+        public bool DeleteFunction(string funcName)
         {
-            VariablePackage varItem = null;
-            if ((varItem = this.localVariableList.Find((x) => x.varName == varName)) != null)
+            var removeOne = this.funcList.Find((x) => x.functionName == funcName);
+            if (removeOne != null)
             {
-                if (isLeftValue)
-                {
-                    varItem.firstLeftValueLine = Math.Min(line, varItem.firstLeftValueLine);
-                }
-                varItem.referenceCount++;
-                return false;
+                this.funcList.Remove(removeOne);
+                return true;
             }
-            varItem = new VariablePackage()
-            {
-                varName = varName,
-                firstLeftValueLine = isLeftValue ? line : Int32.MaxValue,
-                isGlobal = false,
-                referenceCount = 1
-            };
-            this.localVariableList.Add(varItem);
-            return true;
+            return false;
         }
 
+        /// <summary>
+        /// 获取一个函数包装
+        /// </summary>
+        /// <param name="name">函数名</param>
+        /// <returns>函数包装实例</returns>
+        public FunctionPackage GetFunc(string name)
+        {
+            return this.funcList.Find((x) => x.functionName == name);
+        }
+        
         /// <summary>
         /// 字符串化方法
         /// </summary>
@@ -106,7 +66,17 @@ namespace YuriHalation.ScriptPackage
         public override string ToString()
         {
             return String.Format("Scene: {0} ({1} lines, {2} funcs)",
-                this.sceneName, this.mainAPList.Count, funcList.Count);
+                this.sceneName, this.APListCount(), funcList.Count);
         }
+
+        /// <summary>
+        /// 场景的名称
+        /// </summary>
+        public string sceneName = "";
+
+        /// <summary>
+        /// 函数向量
+        /// </summary>
+        private List<FunctionPackage> funcList = new List<FunctionPackage>();
     }
 }
