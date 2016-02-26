@@ -14,7 +14,19 @@ namespace Yuri
     {
 
         #region 各模块的引用
-        
+        /// <summary>
+        /// 为程序各模块设置更新主窗体的引用
+        /// </summary>
+        /// <param name="mw">主窗体实例</param>
+        public static void SetViewReference(MainForm mw)
+        {
+            Halation.mainView = mw;
+        }
+
+        /// <summary>
+        /// 主窗体引用
+        /// </summary>
+        public static MainForm mainView = null;
         #endregion
 
         #region 类自身相关

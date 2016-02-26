@@ -62,7 +62,7 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.发布ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.projTreeView = new System.Windows.Forms.TreeView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button33 = new System.Windows.Forms.Button();
@@ -99,8 +99,10 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.treeView2 = new System.Windows.Forms.TreeView();
+            this.codeTreeView = new System.Windows.Forms.TreeView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.撤销ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.重做ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -175,6 +177,9 @@
             // 
             // 编辑ToolStripMenuItem
             // 
+            this.编辑ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.撤销ToolStripMenuItem,
+            this.重做ToolStripMenuItem});
             this.编辑ToolStripMenuItem.Name = "编辑ToolStripMenuItem";
             this.编辑ToolStripMenuItem.Size = new System.Drawing.Size(59, 21);
             this.编辑ToolStripMenuItem.Text = "编辑(&E)";
@@ -348,21 +353,21 @@
             this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(59, 21);
             this.帮助ToolStripMenuItem.Text = "帮助(&P)";
             // 
-            // treeView1
+            // projTreeView
             // 
-            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.projTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.treeView1.Location = new System.Drawing.Point(6, 20);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(185, 609);
-            this.treeView1.TabIndex = 2;
+            this.projTreeView.Location = new System.Drawing.Point(6, 20);
+            this.projTreeView.Name = "projTreeView";
+            this.projTreeView.Size = new System.Drawing.Size(185, 609);
+            this.projTreeView.TabIndex = 2;
             // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBox1.Controls.Add(this.treeView1);
+            this.groupBox1.Controls.Add(this.projTreeView);
             this.groupBox1.Location = new System.Drawing.Point(12, 28);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(200, 635);
@@ -721,28 +726,40 @@
             this.button1.Text = "显示对话";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // treeView2
+            // codeTreeView
             // 
-            this.treeView2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.codeTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.treeView2.Location = new System.Drawing.Point(6, 20);
-            this.treeView2.Name = "treeView2";
-            this.treeView2.Size = new System.Drawing.Size(541, 608);
-            this.treeView2.TabIndex = 5;
+            this.codeTreeView.Location = new System.Drawing.Point(6, 20);
+            this.codeTreeView.Name = "codeTreeView";
+            this.codeTreeView.Size = new System.Drawing.Size(541, 608);
+            this.codeTreeView.TabIndex = 5;
             // 
             // groupBox3
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.treeView2);
+            this.groupBox3.Controls.Add(this.codeTreeView);
             this.groupBox3.Location = new System.Drawing.Point(219, 29);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(553, 634);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "场景 [main]";
+            // 
+            // 撤销ToolStripMenuItem
+            // 
+            this.撤销ToolStripMenuItem.Name = "撤销ToolStripMenuItem";
+            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.撤销ToolStripMenuItem.Text = "撤销";
+            // 
+            // 重做ToolStripMenuItem
+            // 
+            this.重做ToolStripMenuItem.Name = "重做ToolStripMenuItem";
+            this.重做ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.重做ToolStripMenuItem.Text = "重做";
             // 
             // MainForm
             // 
@@ -802,10 +819,10 @@
         private System.Windows.Forms.ToolStripMenuItem vOCALToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem 包管理器ToolStripMenuItem;
-        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.TreeView projTreeView;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TreeView treeView2;
+        private System.Windows.Forms.TreeView codeTreeView;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
@@ -841,5 +858,7 @@
         private System.Windows.Forms.Button button30;
         private System.Windows.Forms.Button button33;
         private System.Windows.Forms.Button button34;
+        private System.Windows.Forms.ToolStripMenuItem 撤销ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 重做ToolStripMenuItem;
     }
 }
