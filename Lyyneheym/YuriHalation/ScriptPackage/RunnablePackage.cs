@@ -20,10 +20,13 @@ namespace Yuri.YuriHalation.ScriptPackage
             if (insertLine < 0)
             {
                 this.APList.Add(ap);
+                ap.line = this.APList.Count;
             }
             else if (insertLine >= 0 && insertLine < this.APList.Count)
             {
                 this.APList.Insert(insertLine, ap);
+                ap.line = insertLine;
+                this.UpdateLineStamp(insertLine + 1, 1);
             }
             else
             {
@@ -72,6 +75,7 @@ namespace Yuri.YuriHalation.ScriptPackage
             if (line >= 0 && line < this.APList.Count)
             {
                 this.APList.RemoveAt(line);
+                this.UpdateLineStamp(line, -1);
                 return true;
             }
             return false;
@@ -128,6 +132,19 @@ namespace Yuri.YuriHalation.ScriptPackage
         public int APListCount()
         {
             return this.APList.Count;
+        }
+
+        /// <summary>
+        /// 更新动作包装实例中的行号
+        /// </summary>
+        /// <param name="beginLine">开始更新的行号</param>
+        /// <param name="offset">更新偏移</param>
+        protected void UpdateLineStamp(int  beginLine, int offset)
+        {
+            for (int i = beginLine; i < this.APList.Count; i++)
+            {
+                this.APList[i].line += offset;
+            }
         }
 
         /// <summary>

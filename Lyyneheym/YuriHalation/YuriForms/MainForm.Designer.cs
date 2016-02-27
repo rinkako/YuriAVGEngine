@@ -37,6 +37,8 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.撤销ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.重做ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.工程ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.全局设定ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -99,10 +101,8 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.codeTreeView = new System.Windows.Forms.TreeView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.撤销ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.重做ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.codeListBox = new System.Windows.Forms.ListBox();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -183,6 +183,18 @@
             this.编辑ToolStripMenuItem.Name = "编辑ToolStripMenuItem";
             this.编辑ToolStripMenuItem.Size = new System.Drawing.Size(59, 21);
             this.编辑ToolStripMenuItem.Text = "编辑(&E)";
+            // 
+            // 撤销ToolStripMenuItem
+            // 
+            this.撤销ToolStripMenuItem.Name = "撤销ToolStripMenuItem";
+            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.撤销ToolStripMenuItem.Text = "撤销";
+            // 
+            // 重做ToolStripMenuItem
+            // 
+            this.重做ToolStripMenuItem.Name = "重做ToolStripMenuItem";
+            this.重做ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.重做ToolStripMenuItem.Text = "重做";
             // 
             // 工程ToolStripMenuItem
             // 
@@ -726,22 +738,12 @@
             this.button1.Text = "显示对话";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // codeTreeView
-            // 
-            this.codeTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.codeTreeView.Location = new System.Drawing.Point(6, 20);
-            this.codeTreeView.Name = "codeTreeView";
-            this.codeTreeView.Size = new System.Drawing.Size(541, 608);
-            this.codeTreeView.TabIndex = 5;
-            // 
             // groupBox3
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.codeTreeView);
+            this.groupBox3.Controls.Add(this.codeListBox);
             this.groupBox3.Location = new System.Drawing.Point(219, 29);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(553, 634);
@@ -749,17 +751,22 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "场景 [main]";
             // 
-            // 撤销ToolStripMenuItem
+            // codeListBox
             // 
-            this.撤销ToolStripMenuItem.Name = "撤销ToolStripMenuItem";
-            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.撤销ToolStripMenuItem.Text = "撤销";
-            // 
-            // 重做ToolStripMenuItem
-            // 
-            this.重做ToolStripMenuItem.Name = "重做ToolStripMenuItem";
-            this.重做ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.重做ToolStripMenuItem.Text = "重做";
+            this.codeListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.codeListBox.FormattingEnabled = true;
+            this.codeListBox.ItemHeight = 12;
+            this.codeListBox.Items.AddRange(new object[] {
+            "测试1",
+            "测试2",
+            "测试3"});
+            this.codeListBox.Location = new System.Drawing.Point(6, 20);
+            this.codeListBox.Name = "codeListBox";
+            this.codeListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.codeListBox.Size = new System.Drawing.Size(541, 604);
+            this.codeListBox.TabIndex = 6;
             // 
             // MainForm
             // 
@@ -819,10 +826,8 @@
         private System.Windows.Forms.ToolStripMenuItem vOCALToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem 包管理器ToolStripMenuItem;
-        private System.Windows.Forms.TreeView projTreeView;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TreeView codeTreeView;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
@@ -860,5 +865,7 @@
         private System.Windows.Forms.Button button34;
         private System.Windows.Forms.ToolStripMenuItem 撤销ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 重做ToolStripMenuItem;
+        internal System.Windows.Forms.TreeView projTreeView;
+        internal System.Windows.Forms.ListBox codeListBox;
     }
 }

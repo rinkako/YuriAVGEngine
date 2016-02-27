@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using YuriHalation;
+using Yuri.YuriHalation.ScriptPackage;
 using Yuri.YuriForms;
 
 namespace Yuri
@@ -12,6 +13,13 @@ namespace Yuri
     /// </summary>
     internal sealed class Halation
     {
+
+        #region 工程实例的引用
+        /// <summary>
+        /// 获取或设置当前工程包装
+        /// </summary>
+        public static ProjectPackage project { get; set; }
+        #endregion
 
         #region 各模块的引用
         /// <summary>
