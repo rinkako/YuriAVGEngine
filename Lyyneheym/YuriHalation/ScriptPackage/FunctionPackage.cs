@@ -36,5 +36,16 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// 所在场景的名称
         /// </summary>
         public string parentName;
+
+        /// <summary>
+        /// 调用名
+        /// </summary>
+        public string functionCallName
+        {
+            get
+            {
+                return String.Format("{0}@{1}", functionName, parentName);
+            }
+        }
     }
 }

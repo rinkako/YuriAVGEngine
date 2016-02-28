@@ -80,11 +80,14 @@ namespace Yuri.YuriForms
             {
                 this.projTreeView.SelectedNode = Halation.projectTreeMain;
             }
-            this.codeGroupBox.Text = String.Format("脚本 [{0}]", this.projTreeView.SelectedNode.Text);
+            Halation.projectTreeChosen = this.projTreeView.SelectedNode;
+            Halation.currentScriptName = this.projTreeView.SelectedNode.Text;
+            this.codeGroupBox.Text = String.Format("脚本 [{0}]", Halation.currentScriptName);
             this.button_AddNewFunc.Enabled = this.projTreeView.SelectedNode.Level == 1;
             this.core.ChangeCodePackage(this.projTreeView.SelectedNode.Text,
                 this.projTreeView.SelectedNode.Level == 1 ? "" : this.projTreeView.SelectedNode.Parent.Text);
             this.core.RefreshCodeContext();
+            this.core.RefreshRedoUndo();
         }
 
         /// <summary>

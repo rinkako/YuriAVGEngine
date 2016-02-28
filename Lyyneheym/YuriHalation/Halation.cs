@@ -44,7 +44,7 @@ namespace Yuri
                 var curNode = Halation.projectTreeRoot.Nodes.Add(sc.sceneName);
                 foreach (var fc in sc.GetFunc())
                 {
-                    curNode.Nodes.Add(fc.functionName);
+                    curNode.Nodes.Add(fc.functionCallName);
                 }
                 if (sc.sceneName == selectSc)
                 {
@@ -70,6 +70,8 @@ namespace Yuri
                 HalationViewCommand.AddItemToCodeListbox(-1, act.indent,
                     String.Format("{0}{1}  {2}", act.GetFlag(), act.GetActionName(), act.GetParaDescription()));
             }
+            Halation.mainView.projTreeView.ExpandAll();
+            this.RefreshRedoUndo();
         }
 
         /// <summary>
@@ -85,11 +87,30 @@ namespace Yuri
             }
             else
             {
-                rp = ((ScenePackage)Halation.project.GetScene(parent)).GetFunc(toRunnable);
+                rp = ((ScenePackage)Halation.project.GetScene(parent)).GetFunc(toRunnable.Split('@')[0]);
             }
 
             Halation.currentCodePackage = rp;
         }
+
+        /// <summary>
+        /// 刷新菜单重做与否的可执行性
+        /// </summary>
+        public void RefreshRedoUndo()
+        {
+            Halation.mainView.menuStrip1.Items.Find("撤销ToolStripMenuItem", true)[0].Enabled = this.IsAbleUndo();
+            Halation.mainView.menuStrip1.Items.Find("重做ToolStripMenuItem", true)[0].Enabled = this.IsAbleRedo();
+        }
+
+        /// <summary>
+        /// 正在编辑的可运行代码名称
+        /// </summary>
+        public static string currentScriptName = "";
+
+        /// <summary>
+        /// 代码树被选中节点
+        /// </summary>
+        public static TreeNode projectTreeChosen = null;
 
         /// <summary>
         /// 代码树前端根节点
@@ -103,7 +124,7 @@ namespace Yuri
         #endregion
 
         #region 前端命令相关
-
+        
         public bool DashAddScene(string scenario)
         {
             bool flag = Halation.project.AddScene(scenario);
@@ -117,6 +138,7 @@ namespace Yuri
         public void DashDeleteScene(string scenario)
         {
             Halation.project.DeleteScene(scenario);
+            HalationInvoker.RemoveScene(scenario);
             this.RefreshProjectTree();
         }
 
@@ -125,7 +147,8 @@ namespace Yuri
             bool flag = ((ScenePackage)Halation.currentCodePackage).AddFunction(functionName, argv);
             if (flag)
             {
-                this.RefreshProjectTree(functionName);
+                string callName = String.Format("{0}@{1}", functionName, Halation.currentScriptName);
+                this.RefreshProjectTree(callName);
             }
             return flag;
         }
@@ -133,13 +156,15 @@ namespace Yuri
         public void DashDeleteFunction(string functionName)
         {
             ((ScenePackage)Halation.currentCodePackage).DeleteFunction(functionName);
+            string callName = String.Format("{0}@{1}", functionName, Halation.projectTreeChosen.Parent.Text);
+            HalationInvoker.RemoveScene(callName);
             this.RefreshProjectTree();
         }
 
         public void DashDialog(int insertLine, string context)
         {
             IHalationCommand cmd = new DialogCommand(insertLine, this.GetIndent(insertLine), Halation.currentCodePackage, context);
-            HalationInvoker.Dash(cmd);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
         #endregion
@@ -148,24 +173,24 @@ namespace Yuri
 
         public bool MenuUndo()
         {
-            HalationInvoker.Undo();
-            return HalationInvoker.IsAbleUndo();
+            HalationInvoker.Undo(Halation.currentScriptName);
+            return HalationInvoker.IsAbleUndo(Halation.currentScriptName);
         }
 
         public bool MenuRedo()
         {
-            HalationInvoker.Redo();
-            return HalationInvoker.IsAbleRedo();
+            HalationInvoker.Redo(Halation.currentScriptName);
+            return HalationInvoker.IsAbleRedo(Halation.currentScriptName);
         }
 
         public bool IsAbleUndo()
         {
-            return HalationInvoker.IsAbleUndo();
+            return HalationInvoker.IsAbleUndo(Halation.currentScriptName);
         }
 
         public bool IsAbleRedo()
         {
-            return HalationInvoker.IsAbleRedo();
+            return HalationInvoker.IsAbleRedo(Halation.currentScriptName);
         }
 
         public void NewProject(string path, string projName)

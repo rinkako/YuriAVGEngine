@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Yuri.YuriHalation.Command;
 
 namespace Yuri.YuriHalation.ScriptPackage
 {
@@ -30,7 +31,9 @@ namespace Yuri.YuriHalation.ScriptPackage
             {
                 return false;
             }
-            this.funcList.Add(new FunctionPackage(funcName, this.sceneName, argv));
+            var nf = new FunctionPackage(funcName, this.sceneName, argv);
+            this.funcList.Add(nf);
+            HalationInvoker.AddScene(nf.functionCallName);
             return true;
         }
 

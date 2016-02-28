@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Yuri.YuriHalation.Command;
 
 namespace Yuri.YuriHalation.ScriptPackage
 {
@@ -30,6 +31,7 @@ namespace Yuri.YuriHalation.ScriptPackage
                 return false;
             }
             sceneDict.Add(scenario, new ScenePackage(scenario));
+            HalationInvoker.AddScene(scenario);
             return true;
         }
 

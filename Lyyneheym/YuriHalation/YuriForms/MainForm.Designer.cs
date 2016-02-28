@@ -828,7 +828,6 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 文件ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 编辑ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 工程ToolStripMenuItem;
@@ -905,5 +904,6 @@
         internal System.Windows.Forms.ListBox codeListBox;
         private System.Windows.Forms.Button button_AddNewFunc;
         private System.Windows.Forms.Button button36;
+        internal System.Windows.Forms.MenuStrip menuStrip1;
     }
 }
