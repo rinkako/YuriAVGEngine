@@ -37,8 +37,8 @@ namespace Yuri.YuriForms
         /// </summary>
         private void 撤销ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.menuStrip1.Items["撤销ToolStripMenuItem"].Enabled = core.MenuUndo();
-            this.menuStrip1.Items["重做ToolStripMenuItem"].Enabled = core.IsAbleRedo();
+            this.menuStrip1.Items.Find("撤销ToolStripMenuItem", true)[0].Enabled = core.MenuUndo();
+            this.menuStrip1.Items.Find("重做ToolStripMenuItem", true)[0].Enabled = core.IsAbleRedo();
         }
 
         /// <summary>
@@ -46,8 +46,8 @@ namespace Yuri.YuriForms
         /// </summary>
         private void 重做ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.menuStrip1.Items["撤销ToolStripMenuItem"].Enabled = core.IsAbleUndo();
-            this.menuStrip1.Items["重做ToolStripMenuItem"].Enabled = core.MenuRedo();
+            this.menuStrip1.Items.Find("撤销ToolStripMenuItem", true)[0].Enabled = core.IsAbleUndo();
+            this.menuStrip1.Items.Find("重做ToolStripMenuItem", true)[0].Enabled = core.MenuRedo();
         }
 
         /// <summary>
@@ -80,9 +80,29 @@ namespace Yuri.YuriForms
             {
                 this.projTreeView.SelectedNode = Halation.projectTreeMain;
             }
-            this.codeListBox.Text = String.Format("脚本 [{0}]", this.projTreeView.SelectedNode.Text);
+            this.codeGroupBox.Text = String.Format("脚本 [{0}]", this.projTreeView.SelectedNode.Text);
+            this.button_AddNewFunc.Enabled = this.projTreeView.SelectedNode.Level == 1;
+            this.core.ChangeCodePackage(this.projTreeView.SelectedNode.Text,
+                this.projTreeView.SelectedNode.Level == 1 ? "" : this.projTreeView.SelectedNode.Parent.Text);
+            this.core.RefreshCodeContext();
         }
 
+        /// <summary>
+        /// 按钮：新建场景
+        /// </summary>
+        private void button36_Click(object sender, EventArgs e)
+        {
+            AddSceneForm arf = new AddSceneForm();
+            arf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：新建函数
+        /// </summary>
+        private void button35_Click(object sender, EventArgs e)
+        {
+
+        }
 
 
     }

@@ -78,6 +78,11 @@ namespace Yuri.YuriHalation.ScriptPackage
         }
 
         /// <summary>
+        /// 开关描述向量
+        /// </summary>
+        public List<string> switchDescriptorList = new List<string>();
+
+        /// <summary>
         /// 全局变量向量
         /// </summary>
         private List<VariablePackage> globalVarList = new List<VariablePackage>();

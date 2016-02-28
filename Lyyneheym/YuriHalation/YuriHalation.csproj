@@ -65,6 +65,18 @@
     <Compile Include="ScriptPackage\RunnablePackage.cs" />
     <Compile Include="ScriptPackage\ScenePackage.cs" />
     <Compile Include="ScriptPackage\VariablePackage.cs" />
+    <Compile Include="YuriForms\AddFuncForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\AddFuncForm.Designer.cs">
+      <DependentUpon>AddFuncForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\AddSceneForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\AddSceneForm.Designer.cs">
+      <DependentUpon>AddSceneForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="YuriForms\BranchForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -188,6 +200,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="YuriForms\AddFuncForm.resx">
+      <DependentUpon>AddFuncForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\AddSceneForm.resx">
+      <DependentUpon>AddSceneForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\AFrom.resx">
       <DependentUpon>AFrom.cs</DependentUpon>
     </EmbeddedResource>

@@ -10,6 +10,19 @@ namespace Yuri.YuriHalation.ScriptPackage
     class RunnablePackage
     {
         /// <summary>
+        /// 构造函数
+        /// </summary>
+        public RunnablePackage()
+        {
+            ActionPackage pad = new ActionPackage()
+            {
+                nodeName = "pad",
+                nodeType = ActionPackageType.NOP
+            };
+            this.APList.Add(pad);
+        }
+
+        /// <summary>
         /// 增加一个动作
         /// </summary>
         /// <param name="ap">动作包装</param>
@@ -108,6 +121,15 @@ namespace Yuri.YuriHalation.ScriptPackage
                 return this.APList[line];
             }
             return null;
+        }
+
+        /// <summary>
+        /// 获取该场景的所有动作包装
+        /// </summary>
+        /// <returns>动作包装序列</returns>
+        public List<ActionPackage> GetAction()
+        {
+            return this.APList;
         }
 
         /// <summary>

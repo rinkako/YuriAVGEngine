@@ -43,13 +43,8 @@ namespace Yuri.YuriHalation.Command
                 nodeType = ActionPackageType.act_dialog
             };
             this.parent.AddAction(ap, this.commandLine);
-            StringBuilder indentSb = new StringBuilder();
-            for (int i = 0; i < this.indent; i++)
-            {
-                indentSb.Append(" ");
-            }
-            HalationViewCommand.AddItemToCodeListbox(this.commandLine,
-                String.Format("{0}◆ {1}: {2}", indentSb.ToString(), ap.GetActionName(), ap.GetParaDescription()));
+            HalationViewCommand.AddItemToCodeListbox(this.commandLine, ap.indent,
+                String.Format("◆{0}  {1}", ap.GetActionName(), ap.GetParaDescription()));
         }
 
         /// <summary>

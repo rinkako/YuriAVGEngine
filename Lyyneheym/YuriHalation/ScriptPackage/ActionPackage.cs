@@ -41,7 +41,24 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// </summary>
         public string GetActionName()
         {
-            return ((ActionName)this.nodeType).ToString();
+            if (this.nodeType != ActionPackageType.NOP)
+            {
+                return ((ActionName)this.nodeType).ToString();
+            }
+            return "";
+        }
+
+        /// <summary>
+        /// 获取动作名和参数之间的分割
+        /// </summary>
+        public string GetFlag()
+        {
+            if (this.nodeType != ActionPackageType.NOP && this.nodeType != ActionPackageType.act_else
+                && this.nodeType != ActionPackageType.act_endif && this.nodeType != ActionPackageType.act_endfor)
+            {
+                return "◆";
+            }
+            return ":";
         }
 
         /// <summary>
@@ -53,7 +70,7 @@ namespace Yuri.YuriHalation.ScriptPackage
             switch (this.nodeType)
             {
                 case ActionPackageType.act_dialog:
-                    desSb.Append(String.Format("\"{0}\"", this.argsDict["context"]));
+                    desSb.Append(String.Format("\"{0}\"", this.argsDict["context"].valueExp));
                     break;
             }
             return desSb.ToString();

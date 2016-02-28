@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Yuri;
 using Yuri.YuriForms;
 using Yuri.YuriHalation;
@@ -9,16 +10,21 @@ namespace Yuri.YuriHalation.Command
 {
     static class HalationViewCommand
     {
-        public static bool AddItemToCodeListbox(int insertLine, string text)
+        public static bool AddItemToCodeListbox(int insertLine, int indent, string text)
         {
+            StringBuilder indentSb = new StringBuilder();
+            for (int i = 0; i < indent; i++)
+            {
+                indentSb.Append(" ");
+            }
             if (insertLine >= 0 && insertLine <= HalationViewCommand.LineCount())
             {
-                Halation.mainView.codeListBox.Items.Insert(insertLine, text);
+                Halation.mainView.codeListBox.Items.Insert(insertLine, indentSb.ToString() + text);
                 return true;
             }
             else if (insertLine == -1)
             {
-                Halation.mainView.codeListBox.Items.Add(text);
+                Halation.mainView.codeListBox.Items.Add(indentSb.ToString() + text);
                 return true;
             }
             return false;
@@ -37,6 +43,11 @@ namespace Yuri.YuriHalation.Command
         public static int LineCount()
         {
             return Halation.mainView.codeListBox.Items.Count;
+        }
+
+        public static void ClearAll()
+        {
+            Halation.mainView.codeListBox.Items.Clear();
         }
     }
 }

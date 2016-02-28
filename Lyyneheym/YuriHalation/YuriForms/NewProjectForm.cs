@@ -22,6 +22,7 @@ namespace Yuri.YuriForms
         {
             InitializeComponent();
             this.InitSuccess = false;
+            this.textBox1.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         }
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace Yuri.YuriForms
         private void button1_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fd = new FolderBrowserDialog();
+            fd.RootFolder = Environment.SpecialFolder.Desktop;
             DialogResult dr = fd.ShowDialog(this);
             if (dr == System.Windows.Forms.DialogResult.OK)
             {

@@ -14,20 +14,27 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// </summary>
         /// <param name="funcName">函数名</param>
         /// <param name="parentName">上级场景名</param>
-        public FunctionPackage(string funcName, string parentName)
+        /// <param name="argv">形参列表</param>
+        public FunctionPackage(string funcName, string parentName, List<string> argv)
         {
             this.functionName = funcName;
             this.parentName = parentName;
+            this.Argv = argv;
         }
+
+        /// <summary>
+        /// 形参列表
+        /// </summary>
+        public List<string> Argv;
 
         /// <summary>
         /// 函数名
         /// </summary>
-        public string functionName = "";
+        public string functionName;
 
         /// <summary>
         /// 所在场景的名称
         /// </summary>
-        public string parentName = "";
+        public string parentName;
     }
 }

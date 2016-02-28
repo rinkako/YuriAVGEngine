@@ -9,18 +9,14 @@ using System.Windows.Forms;
 
 namespace Yuri.YuriForms
 {
-    /// <summary>
-    /// 窗体：显示对话
-    /// </summary>
-    public partial class DialogForm : Form
+    public partial class AddSceneForm : Form
     {
         /// <summary>
-        /// 构造器
+        /// 私有的构造器
         /// </summary>
-        public DialogForm(int line)
+        public AddSceneForm()
         {
             InitializeComponent();
-            this.line = line;
         }
 
         /// <summary>
@@ -28,18 +24,21 @@ namespace Yuri.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            core.DashDialog(line, this.textBox1.Text);
+            bool flag = this.core.DashAddScene(this.textBox1.Text);
+            // 刷新前台
+            if (!flag)
+            {
+                MessageBox.Show("建立失败，请检查是否有重名/名称不合法的场景", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            this.core.RefreshProjectTree(this.textBox1.Text);
             this.Close();
         }
 
         /// <summary>
-        /// 插入的行号
-        /// </summary>
-        private int line = 0;
-
-        /// <summary>
-        /// 控制器引用
+        /// 控制器
         /// </summary>
         private Halation core = Halation.GetInstance();
+
     }
 }

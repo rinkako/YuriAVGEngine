@@ -66,9 +66,7 @@
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projTreeView = new System.Windows.Forms.TreeView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button37 = new System.Windows.Forms.Button();
-            this.button38 = new System.Windows.Forms.Button();
-            this.button35 = new System.Windows.Forms.Button();
+            this.button_AddNewFunc = new System.Windows.Forms.Button();
             this.button36 = new System.Windows.Forms.Button();
             this.actionGroupBox = new System.Windows.Forms.GroupBox();
             this.button33 = new System.Windows.Forms.Button();
@@ -105,12 +103,12 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.codeGroupBox = new System.Windows.Forms.GroupBox();
             this.codeListBox = new System.Windows.Forms.ListBox();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.actionGroupBox.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            this.codeGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -383,7 +381,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.projTreeView.Location = new System.Drawing.Point(6, 20);
             this.projTreeView.Name = "projTreeView";
-            this.projTreeView.Size = new System.Drawing.Size(185, 541);
+            this.projTreeView.Size = new System.Drawing.Size(185, 571);
             this.projTreeView.TabIndex = 2;
             this.projTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.projTreeView_AfterSelect);
             // 
@@ -391,9 +389,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBox1.Controls.Add(this.button37);
-            this.groupBox1.Controls.Add(this.button38);
-            this.groupBox1.Controls.Add(this.button35);
+            this.groupBox1.Controls.Add(this.button_AddNewFunc);
             this.groupBox1.Controls.Add(this.projTreeView);
             this.groupBox1.Controls.Add(this.button36);
             this.groupBox1.Location = new System.Drawing.Point(12, 28);
@@ -403,45 +399,27 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "工程树";
             // 
-            // button37
+            // button_AddNewFunc
             // 
-            this.button37.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button37.Location = new System.Drawing.Point(102, 601);
-            this.button37.Name = "button37";
-            this.button37.Size = new System.Drawing.Size(89, 28);
-            this.button37.TabIndex = 37;
-            this.button37.Text = "移除函数";
-            this.button37.UseVisualStyleBackColor = true;
-            // 
-            // button38
-            // 
-            this.button38.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button38.Location = new System.Drawing.Point(6, 601);
-            this.button38.Name = "button38";
-            this.button38.Size = new System.Drawing.Size(89, 28);
-            this.button38.TabIndex = 36;
-            this.button38.Text = "新建函数";
-            this.button38.UseVisualStyleBackColor = true;
-            // 
-            // button35
-            // 
-            this.button35.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button35.Location = new System.Drawing.Point(102, 567);
-            this.button35.Name = "button35";
-            this.button35.Size = new System.Drawing.Size(89, 28);
-            this.button35.TabIndex = 35;
-            this.button35.Text = "移除场景";
-            this.button35.UseVisualStyleBackColor = true;
+            this.button_AddNewFunc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_AddNewFunc.Location = new System.Drawing.Point(102, 597);
+            this.button_AddNewFunc.Name = "button_AddNewFunc";
+            this.button_AddNewFunc.Size = new System.Drawing.Size(89, 28);
+            this.button_AddNewFunc.TabIndex = 35;
+            this.button_AddNewFunc.Text = "新建函数";
+            this.button_AddNewFunc.UseVisualStyleBackColor = true;
+            this.button_AddNewFunc.Click += new System.EventHandler(this.button35_Click);
             // 
             // button36
             // 
             this.button36.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button36.Location = new System.Drawing.Point(6, 567);
+            this.button36.Location = new System.Drawing.Point(6, 597);
             this.button36.Name = "button36";
             this.button36.Size = new System.Drawing.Size(89, 28);
             this.button36.TabIndex = 34;
             this.button36.Text = "新建场景";
             this.button36.UseVisualStyleBackColor = true;
+            this.button36.Click += new System.EventHandler(this.button36_Click);
             // 
             // actionGroupBox
             // 
@@ -795,18 +773,18 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // groupBox3
+            // codeGroupBox
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.codeGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.codeListBox);
-            this.groupBox3.Location = new System.Drawing.Point(219, 29);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(553, 634);
-            this.groupBox3.TabIndex = 6;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "场景 [main]";
+            this.codeGroupBox.Controls.Add(this.codeListBox);
+            this.codeGroupBox.Location = new System.Drawing.Point(219, 29);
+            this.codeGroupBox.Name = "codeGroupBox";
+            this.codeGroupBox.Size = new System.Drawing.Size(553, 634);
+            this.codeGroupBox.TabIndex = 6;
+            this.codeGroupBox.TabStop = false;
+            this.codeGroupBox.Text = "场景 [main]";
             // 
             // codeListBox
             // 
@@ -830,18 +808,19 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 675);
-            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.codeGroupBox);
             this.Controls.Add(this.actionGroupBox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Yuri Halation";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.actionGroupBox.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
+            this.codeGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -885,7 +864,7 @@
         private System.Windows.Forms.ToolStripMenuItem 包管理器ToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox actionGroupBox;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox codeGroupBox;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button2;
@@ -924,9 +903,7 @@
         private System.Windows.Forms.ToolStripMenuItem 重做ToolStripMenuItem;
         internal System.Windows.Forms.TreeView projTreeView;
         internal System.Windows.Forms.ListBox codeListBox;
-        private System.Windows.Forms.Button button37;
-        private System.Windows.Forms.Button button38;
-        private System.Windows.Forms.Button button35;
+        private System.Windows.Forms.Button button_AddNewFunc;
         private System.Windows.Forms.Button button36;
     }
 }

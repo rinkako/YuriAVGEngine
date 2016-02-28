@@ -59,6 +59,39 @@ namespace Yuri
         }
 
         /// <summary>
+        /// 根据后台数据更新前端代码
+        /// </summary>
+        public void RefreshCodeContext()
+        {
+            HalationViewCommand.ClearAll();
+            var ActList = Halation.currentCodePackage.GetAction();
+            foreach (var act in ActList)
+            {
+                HalationViewCommand.AddItemToCodeListbox(-1, act.indent,
+                    String.Format("{0}{1}  {2}", act.GetFlag(), act.GetActionName(), act.GetParaDescription()));
+            }
+        }
+
+        /// <summary>
+        /// 变更当前操作的场景或函数
+        /// </summary>
+        /// <param name="toRunnable">目标场景或函数</param>
+        public void ChangeCodePackage(string toRunnable, string parent)
+        {
+            RunnablePackage rp = null;
+            if (parent == "")
+            {
+                rp = Halation.project.GetScene(toRunnable);
+            }
+            else
+            {
+                rp = ((ScenePackage)Halation.currentCodePackage).GetFunc(toRunnable);
+            }
+
+            Halation.currentCodePackage = rp;
+        }
+
+        /// <summary>
         /// 代码树前端根节点
         /// </summary>
         public static TreeNode projectTreeRoot = null;
@@ -70,6 +103,24 @@ namespace Yuri
         #endregion
 
         #region 前端命令相关
+
+        public bool DashAddScene(string scenario)
+        {
+            bool flag = Halation.project.AddScene(scenario);
+            if (flag)
+            {
+                this.RefreshProjectTree(scenario);
+            }
+            return flag;
+        }
+
+        public void DashDeleteScene(string scenario)
+        {
+            Halation.project.DeleteScene(scenario);
+            this.RefreshProjectTree();
+        }
+
+
 
         public void DashDialog(int insertLine, string context)
         {

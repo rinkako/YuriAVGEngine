@@ -67,6 +67,7 @@
             this.Name = "DialogForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "显示对话";
             this.ResumeLayout(false);
             this.PerformLayout();

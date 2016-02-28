@@ -22,14 +22,15 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// 增加一个函数
         /// </summary>
         /// <param name="funcName">函数名</param>
+        /// <param name="argv">形参列表</param>
         /// <returns>操作成功与否</returns>
-        public bool AddFunction(string funcName)
+        public bool AddFunction(string funcName, List<string> argv)
         {
             if (this.funcList.Find((x) => x.functionName == funcName) != null)
             {
                 return false;
             }
-            this.funcList.Add(new FunctionPackage(funcName, this.sceneName));
+            this.funcList.Add(new FunctionPackage(funcName, this.sceneName, argv));
             return true;
         }
 
