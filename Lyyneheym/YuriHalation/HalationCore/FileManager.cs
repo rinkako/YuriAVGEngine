@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Yuri.YuriHalation.HalationCore
 {
@@ -11,6 +12,10 @@ namespace Yuri.YuriHalation.HalationCore
     /// </summary>
     class FileManager
     {
+        /// <summary>
+        /// 为工程初始化目录
+        /// </summary>
+        /// <param name="path">要建立的根路径</param>
         public void CreateInitFolder(string path)
         {
             // 建立根目录
@@ -62,8 +67,65 @@ namespace Yuri.YuriHalation.HalationCore
             }
         }
 
+        /// <summary>
+        /// 把一个实例序列化
+        /// </summary>
+        /// <param name="instance">类的实例</param>
+        /// <param name="savePath">保存路径</param>
+        /// <returns>操作成功与否</returns>
+        public static bool serialization(object instance, string savePath)
+        {
+            try
+            {
+                Stream myStream = File.Open(savePath, FileMode.Create);
+                if (myStream == null)
+                {
+                    throw new IOException();
+                }
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(myStream, instance);
+                myStream.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return true;
+        }
 
+        /// <summary>
+        /// 把二进制文件反序列化
+        /// </summary>
+        /// <param name="loadPath">二进制文件路径</param>
+        /// <returns>类的实例</returns>
+        public static object unserialization(string loadPath)
+        {
+            try
+            {
+                Stream s = File.Open(loadPath, FileMode.Open);
+                if (s == null)
+                {
+                    throw new IOException();
+                }
+                BinaryFormatter bf = new BinaryFormatter();
+                object ob = bf.Deserialize(s);
+                s.Close();
+                return ob;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 私有的构造器
+        /// </summary>
         private FileManager() { }
+
+        /// <summary>
+        /// 获取文件管理器唯一实例
+        /// </summary>
         public static readonly FileManager Instance = new FileManager();
 
 

@@ -16,19 +16,15 @@ namespace Yuri.YuriHalation.Command
         /// 显示对话
         /// </summary>
         /// <param name="line">命令的行</param>
+        /// <param name="indent">对齐偏移</param>
+        /// <param name="parent">所属的可运行包装</param>
         /// <param name="dialog">对话的内容</param>
-        public DialogCommand(int line, string dialog)
+        public DialogCommand(int line, int indent, RunnablePackage parent, string dialog)
         {
             this.dialogContext = dialog;
-            ActionPackage ap = new ActionPackage()
-            {
-                line = line,
-                argsVector = null,
-                nodeName = "dialog",
-                nodeType = ActionPackageType.act_dialog
-            };
-
-            HalationViewCommand.AddItemToCodeListbox(line, String.Format("◆ 显示"));
+            this.commandLine = line;
+            this.indent = indent;
+            this.parent = parent;
         }
         
         /// <summary>
@@ -36,7 +32,24 @@ namespace Yuri.YuriHalation.Command
         /// </summary>
         public void Dash()
         {
-            
+            var ArgDict = new Dictionary<string, ArgumentPackage>();
+            ArgDict.Add("context", new ArgumentPackage() { aType = ArgType.unknown, valueExp = this.dialogContext });
+            ActionPackage ap = new ActionPackage()
+            {
+                line = this.commandLine,
+                indent = this.indent,
+                argsDict = ArgDict,
+                nodeName = "dialog",
+                nodeType = ActionPackageType.act_dialog
+            };
+            this.parent.AddAction(ap, this.commandLine);
+            StringBuilder indentSb = new StringBuilder();
+            for (int i = 0; i < this.indent; i++)
+            {
+                indentSb.Append(" ");
+            }
+            HalationViewCommand.AddItemToCodeListbox(this.commandLine,
+                String.Format("{0}◆ {1}: {2}", indentSb.ToString(), ap.GetActionName(), ap.GetParaDescription()));
         }
 
         /// <summary>
@@ -44,8 +57,24 @@ namespace Yuri.YuriHalation.Command
         /// </summary>
         public void Undo()
         {
-
+            this.parent.DeleteAction(this.commandLine);
+            HalationViewCommand.RemoveItemFromCodeListbox(this.commandLine);
         }
+
+        /// <summary>
+        /// 属于的场景或函数
+        /// </summary>
+        public RunnablePackage parent { get; set; }
+
+        /// <summary>
+        /// 前端显示的对齐偏移
+        /// </summary>
+        public int indent { get; set; }
+
+        /// <summary>
+        /// 所在的行
+        /// </summary>
+        public int commandLine { get; set; }
 
         /// <summary>
         /// 对话的内容

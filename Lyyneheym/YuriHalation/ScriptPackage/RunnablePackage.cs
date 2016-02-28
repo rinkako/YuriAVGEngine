@@ -15,14 +15,9 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// <param name="ap">动作包装</param>
         /// <param name="insertLine">插入的行</param>
         /// <returns>操作成功与否</returns>
-        public bool AddAction(ActionPackage ap, int insertLine = -1)
+        public bool AddAction(ActionPackage ap, int insertLine)
         {
-            if (insertLine < 0)
-            {
-                this.APList.Add(ap);
-                ap.line = this.APList.Count;
-            }
-            else if (insertLine >= 0 && insertLine < this.APList.Count)
+            if (insertLine >= 0 && insertLine < this.APList.Count)
             {
                 this.APList.Insert(insertLine, ap);
                 ap.line = insertLine;

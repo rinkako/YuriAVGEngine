@@ -66,6 +66,7 @@ namespace Yuri.YuriHalation.Command
         public static void Clear()
         {
             HalationInvoker.commandStack.Clear();
+            HalationInvoker.redoStack.Clear();
         }
 
         /// <summary>

@@ -101,6 +101,12 @@
     <Compile Include="YuriForms\MsgLayerOptForm.Designer.cs">
       <DependentUpon>MsgLayerOptForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="YuriForms\NewProjectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\NewProjectForm.Designer.cs">
+      <DependentUpon>NewProjectForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="YuriForms\SwitchesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -221,6 +227,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\MsgLayerOptForm.resx">
       <DependentUpon>MsgLayerOptForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\NewProjectForm.resx">
+      <DependentUpon>NewProjectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\SwitchesForm.resx">
       <DependentUpon>SwitchesForm.cs</DependentUpon>

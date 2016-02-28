@@ -22,24 +22,41 @@ namespace Yuri.YuriHalation.ScriptPackage
         public int line = 0;
 
         /// <summary>
+        /// 对齐偏移量
+        /// </summary>
+        public int indent = 0;
+
+        /// <summary>
         /// 动作的类型
         /// </summary>
         public ActionPackageType nodeType = ActionPackageType.NOP;
 
         /// <summary>
-        /// 参数向量
+        /// 参数字典
         /// </summary>
-        public List<ArgumentPackage> argsVector = new List<ArgumentPackage>();
+        public Dictionary<string, ArgumentPackage> argsDict = new Dictionary<string, ArgumentPackage>();
 
         /// <summary>
         /// 获取动作的名称
         /// </summary>
-        public string GetActionName
+        public string GetActionName()
         {
-            get
+            return ((ActionName)this.nodeType).ToString();
+        }
+
+        /// <summary>
+        /// 获取动作的参数描述
+        /// </summary>
+        public string GetParaDescription()
+        {
+            StringBuilder desSb = new StringBuilder();
+            switch (this.nodeType)
             {
-                return ((ActionName)this.nodeType).ToString();
+                case ActionPackageType.act_dialog:
+                    desSb.Append(String.Format("\"{0}\"", this.argsDict["context"]));
+                    break;
             }
+            return desSb.ToString();
         }
     }
 

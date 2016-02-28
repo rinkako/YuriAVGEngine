@@ -63,6 +63,21 @@ namespace Yuri.YuriHalation.ScriptPackage
         }
 
         /// <summary>
+        /// 获取所有场景并按字典序排序
+        /// </summary>
+        /// <returns>场景向量</returns>
+        public List<ScenePackage> GetScene()
+        {
+            List<ScenePackage> resVect = new List<ScenePackage>();
+            foreach (var sc in this.sceneDict)
+            {
+                resVect.Add(sc.Value);
+            }
+            resVect.Sort(delegate(ScenePackage x, ScenePackage y) { return x.sceneName.CompareTo(y.sceneName); });
+            return resVect;
+        }
+
+        /// <summary>
         /// 全局变量向量
         /// </summary>
         private List<VariablePackage> globalVarList = new List<VariablePackage>();

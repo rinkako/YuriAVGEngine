@@ -58,7 +58,22 @@ namespace Yuri.YuriHalation.ScriptPackage
         {
             return this.funcList.Find((x) => x.functionName == name);
         }
-        
+
+        /// <summary>
+        /// 获取所有场景函数的向量并按字典序排序
+        /// </summary>
+        /// <returns>场景函数向量</returns>
+        public List<FunctionPackage> GetFunc()
+        {
+            List<FunctionPackage> resVect = new List<FunctionPackage>();
+            foreach (var sc in this.funcList)
+            {
+                resVect.Add(sc);
+            }
+            resVect.Sort(delegate(FunctionPackage x, FunctionPackage y) { return x.functionName.CompareTo(y.functionName); });
+            return resVect;
+        }
+
         /// <summary>
         /// 字符串化方法
         /// </summary>
