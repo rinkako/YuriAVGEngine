@@ -82,6 +82,7 @@
             this.button1.TabIndex = 7;
             this.button1.Text = "确定";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // comboBox1
             // 
@@ -118,6 +119,7 @@
             this.Name = "SwitchesForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "开关操作";
             ((System.ComponentModel.ISupportInitialize)(this.switchDataGridView)).EndInit();
             this.ResumeLayout(false);

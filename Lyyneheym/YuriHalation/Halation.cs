@@ -85,7 +85,7 @@ namespace Yuri
             }
             else
             {
-                rp = ((ScenePackage)Halation.currentCodePackage).GetFunc(toRunnable);
+                rp = ((ScenePackage)Halation.project.GetScene(parent)).GetFunc(toRunnable);
             }
 
             Halation.currentCodePackage = rp;
@@ -120,7 +120,21 @@ namespace Yuri
             this.RefreshProjectTree();
         }
 
-
+        public bool DashAddFunction(string functionName, List<string> argv)
+        {
+            bool flag = ((ScenePackage)Halation.currentCodePackage).AddFunction(functionName, argv);
+            if (flag)
+            {
+                this.RefreshProjectTree(functionName);
+            }
+            return flag;
+        }
+        
+        public void DashDeleteFunction(string functionName)
+        {
+            ((ScenePackage)Halation.currentCodePackage).DeleteFunction(functionName);
+            this.RefreshProjectTree();
+        }
 
         public void DashDialog(int insertLine, string context)
         {

@@ -117,6 +117,7 @@
             this.Name = "JumpForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "跳转";
             this.ResumeLayout(false);
             this.PerformLayout();

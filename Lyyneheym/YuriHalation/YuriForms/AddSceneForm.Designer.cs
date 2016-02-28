@@ -59,7 +59,7 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "名称：";
             // 
-            // AddRunnableForm
+            // AddSceneForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -70,9 +70,10 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AddRunnableForm";
+            this.Name = "AddSceneForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "添加场景";
             this.ResumeLayout(false);
             this.PerformLayout();

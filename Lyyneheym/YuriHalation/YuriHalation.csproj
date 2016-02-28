@@ -60,6 +60,7 @@
     <Compile Include="HalationCore\FileManager.cs" />
     <Compile Include="ScriptPackage\ActionPackage.cs" />
     <Compile Include="ScriptPackage\ArgumentPackage.cs" />
+    <Compile Include="ScriptPackage\ConfigPackage.cs" />
     <Compile Include="ScriptPackage\FunctionPackage.cs" />
     <Compile Include="ScriptPackage\ProjectPackage.cs" />
     <Compile Include="ScriptPackage\RunnablePackage.cs" />

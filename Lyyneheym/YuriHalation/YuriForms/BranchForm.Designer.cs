@@ -30,9 +30,9 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.switchDataGridView = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
             this.文本 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.跳转标签 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.switchDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,15 +52,6 @@
             this.switchDataGridView.Size = new System.Drawing.Size(351, 297);
             this.switchDataGridView.TabIndex = 3;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(369, 286);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "确定";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // 文本
             // 
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
@@ -77,6 +68,15 @@
             this.跳转标签.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.跳转标签.Width = 120;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(369, 286);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "确定";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // BranchForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -90,6 +90,7 @@
             this.Name = "BranchForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "选择支";
             ((System.ComponentModel.ISupportInitialize)(this.switchDataGridView)).EndInit();
             this.ResumeLayout(false);

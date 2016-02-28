@@ -101,7 +101,8 @@ namespace Yuri.YuriForms
         /// </summary>
         private void button35_Click(object sender, EventArgs e)
         {
-
+            AddFuncForm aff = new AddFuncForm();
+            aff.ShowDialog(this);
         }
 
 

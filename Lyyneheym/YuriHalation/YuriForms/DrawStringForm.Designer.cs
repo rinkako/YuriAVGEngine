@@ -79,6 +79,7 @@
             this.Name = "DrawStringForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "直接描绘文本";
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -366,6 +366,7 @@
             this.Name = "VarForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "变量操作";
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();

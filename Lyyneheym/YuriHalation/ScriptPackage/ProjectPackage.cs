@@ -78,9 +78,14 @@ namespace Yuri.YuriHalation.ScriptPackage
         }
 
         /// <summary>
+        /// 游戏设置信息
+        /// </summary>
+        public ConfigPackage Config = new ConfigPackage();
+
+        /// <summary>
         /// 开关描述向量
         /// </summary>
-        public List<string> switchDescriptorList = new List<string>();
+        public List<string> SwitchDescriptorList = new List<string>();
 
         /// <summary>
         /// 全局变量向量

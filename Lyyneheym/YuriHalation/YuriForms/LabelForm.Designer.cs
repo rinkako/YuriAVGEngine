@@ -72,6 +72,7 @@
             this.Name = "LabelForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "标签";
             this.ResumeLayout(false);
             this.PerformLayout();
