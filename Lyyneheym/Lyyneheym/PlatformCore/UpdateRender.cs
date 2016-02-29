@@ -693,10 +693,11 @@ namespace Yuri.PlatformCore
                         );
                     break;
                 case SActionType.act_msglayeropt:
+                    var dashMsgoptItem = Director.RunMana.CalculatePolish(action.argsDict["dash"]);
                     this.MsgLayerOpt(
                         this.ParseInt(action.argsDict["id"], 0),
                         this.ParseDirectString(action.argsDict["target"], ""),
-                        Director.RunMana.CalculatePolish(action.argsDict["dash"]).ToString()
+                        dashMsgoptItem == null ? "" : dashMsgoptItem.ToString()
                         );
                     break;
                 case SActionType.act_draw:
