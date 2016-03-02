@@ -133,8 +133,7 @@ namespace Yuri.YuriForms
             if (e.Index > -1)
             {
                 string itemFull = listBox.Items[e.Index].ToString();
-                string splitor = (itemFull.Split(' ')[0]).Substring(1);
-                switch (splitor)
+                switch ((itemFull.Split(' ')[0]).Substring(1))
                 {
                     case "角色状态": FontBrush = Brushes.Brown; break;
                     case "Major": FontBrush = Brushes.Red; break;
@@ -143,9 +142,18 @@ namespace Yuri.YuriForms
                     default: FontBrush = Brushes.Black; break;
                 }
                 e.DrawBackground();
-                e.Graphics.DrawString(listBox.Items[e.Index].ToString(), e.Font, FontBrush, e.Bounds);
+                e.Graphics.DrawString(itemFull, e.Font, FontBrush, e.Bounds);
                 e.DrawFocusRectangle();
             }
+        }
+
+        /// <summary>
+        /// 按钮：变更文字层
+        /// </summary>
+        private void button4_Click(object sender, EventArgs e)
+        {
+            MsgLayerForm mlf = new MsgLayerForm();
+            mlf.ShowDialog(this);
         }
 
 

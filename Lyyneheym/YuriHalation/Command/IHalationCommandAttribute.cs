@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Yuri.YuriHalation.ScriptPackage;
 
 namespace Yuri.YuriHalation.Command
 {
-    class IHalationCommandAttribute
+    using HalaAttrList = List<KeyValuePair<string, KeyValuePair<ArgType, string>>>;
+
+    class IHalationSingleCommand : IHalationCommand
     {
         /// <summary>
         /// 构造器
@@ -11,11 +14,64 @@ namespace Yuri.YuriHalation.Command
         /// <param name="line">所在的行</param>
         /// <param name="indent">列偏移</param>
         /// <param name="parent">所述包装</param>
-        public IHalationCommandAttribute(int line, int indent, RunnablePackage parent)
+        public IHalationSingleCommand(int line, int indent, RunnablePackage parent)
         {
             this.parent = parent;
             this.indent = indent;
             this.commandLine = line;
+        }
+
+        /// <summary>
+        /// 执行这条指令
+        /// </summary>
+        public void Dash()
+        {
+            var ArgDict = new Dictionary<string, ArgumentPackage>();
+            foreach (var kvp in this.ArgumentList)
+            {
+                ArgDict.Add(kvp.Key, new ArgumentPackage() { aType = kvp.Value.Key, valueExp = kvp.Value.Value });
+            }
+            ActionPackage ap = new ActionPackage()
+            {
+                line = this.commandLine,
+                indent = this.indent,
+                argsDict = ArgDict,
+                nodeName = String.Format("{0}@{1}", this.commandLine, this.apType.ToString()),
+                nodeType = this.apType
+            };
+            this.parent.AddAction(ap, this.commandLine);
+            HalationViewCommand.AddItemToCodeListbox(this.commandLine, ap.indent,
+                String.Format("◆{0}  {1}", ap.GetActionName(), ap.GetParaDescription()));
+        }
+
+        /// <summary>
+        /// 初始化执行参数
+        /// </summary>
+        /// <param name="argv">参数列表</param>
+        /// <param name="apType">命令类型</param>
+        public void Init(HalaAttrList argv, ActionPackageType apType)
+        {
+            this.ArgumentList = argv;
+            this.apType = apType;
+        }
+
+        /// <summary>
+        /// 参数列表
+        /// </summary>
+        private HalaAttrList ArgumentList;
+
+        /// <summary>
+        /// 命令的类型
+        /// </summary>
+        private ActionPackageType apType;
+
+        /// <summary>
+        /// 撤销这条指令
+        /// </summary>
+        public void Undo()
+        {
+            this.parent.DeleteAction(this.commandLine);
+            HalationViewCommand.RemoveItemFromCodeListbox(this.commandLine);
         }
 
         /// <summary>

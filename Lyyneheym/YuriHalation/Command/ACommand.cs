@@ -7,7 +7,9 @@ using Yuri.YuriHalation.ScriptPackage;
 
 namespace Yuri.YuriHalation.Command
 {
-    class ACommand : IHalationCommandAttribute, IHalationCommand
+    using HalaAttrList = List<KeyValuePair<string, KeyValuePair<ArgType, string>>>;
+
+    class ACommand : IHalationSingleCommand
     {
         public ACommand(int line, int indent, RunnablePackage parent, string name, string face, string loc, string vid)
             : base(line, indent, parent)
@@ -16,40 +18,20 @@ namespace Yuri.YuriHalation.Command
             this.toFace = face;
             this.toLoc = loc;
             this.toVid = vid;
+            HalaAttrList hal = new HalaAttrList();
+            hal.Add(new KeyValuePair<string, KeyValuePair<ArgType, string>>("name", new KeyValuePair<ArgType, string>(ArgType.Arg_name, this.toName)));
+            hal.Add(new KeyValuePair<string, KeyValuePair<ArgType, string>>("face", new KeyValuePair<ArgType, string>(ArgType.Arg_face, this.toName)));
+            hal.Add(new KeyValuePair<string, KeyValuePair<ArgType, string>>("loc", new KeyValuePair<ArgType, string>(ArgType.Arg_loc, this.toName)));
+            hal.Add(new KeyValuePair<string, KeyValuePair<ArgType, string>>("vid", new KeyValuePair<ArgType, string>(ArgType.Arg_vid, this.toName)));
+            base.Init(hal, ActionPackageType.act_a);
         }
 
-        public void Dash()
-        {
-            var ArgDict = new Dictionary<string, ArgumentPackage>();
-            ArgDict.Add("name", new ArgumentPackage() { aType = ArgType.Arg_name, valueExp = this.toName });
-            ArgDict.Add("face", new ArgumentPackage() { aType = ArgType.Arg_face, valueExp = this.toFace });
-            ArgDict.Add("loc", new ArgumentPackage() { aType = ArgType.Arg_loc, valueExp = this.toLoc });
-            ArgDict.Add("vid", new ArgumentPackage() { aType = ArgType.Arg_vid, valueExp = this.toVid });
-            ActionPackage ap = new ActionPackage()
-            {
-                line = this.commandLine,
-                indent = this.indent,
-                argsDict = ArgDict,
-                nodeName = this.ToString(),
-                nodeType = ActionPackageType.act_a
-            };
-            this.parent.AddAction(ap, this.commandLine);
-            HalationViewCommand.AddItemToCodeListbox(this.commandLine, ap.indent,
-                String.Format("◆{0}  {1}", ap.GetActionName(), ap.GetParaDescription()));
-        }
+        private string toName { get; set; }
 
-        public void Undo()
-        {
-            this.parent.DeleteAction(this.commandLine);
-            HalationViewCommand.RemoveItemFromCodeListbox(this.commandLine);
-        }
+        private string toFace { get; set; }
 
-        private string toName;
+        private string toLoc { get; set; }
 
-        private string toFace;
-
-        private string toLoc;
-
-        private string toVid;
+        private string toVid { get; set; }
     }
 }

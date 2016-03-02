@@ -57,6 +57,7 @@
     <Compile Include="Command\HalationViewCommand.cs" />
     <Compile Include="Command\IHalationCommand.cs" />
     <Compile Include="Command\IHalationCommandAttribute.cs" />
+    <Compile Include="Command\MsgLayerCommand.cs" />
     <Compile Include="Halation.cs" />
     <Compile Include="HalationCore\CodeGenerator.cs" />
     <Compile Include="HalationCore\FileManager.cs" />

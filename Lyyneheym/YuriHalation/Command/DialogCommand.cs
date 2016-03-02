@@ -7,10 +7,12 @@ using Yuri.YuriHalation.ScriptPackage;
 
 namespace Yuri.YuriHalation.Command
 {
+    using HalaAttrList = List<KeyValuePair<string, KeyValuePair<ArgType, string>>>;
+
     /// <summary>
     /// 命令类：显示对话
     /// </summary>
-    class DialogCommand : IHalationCommandAttribute, IHalationCommand
+    class DialogCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 显示对话
@@ -23,37 +25,11 @@ namespace Yuri.YuriHalation.Command
             : base(line, indent, parent)
         {
             this.dialogContext = dialog;
+            HalaAttrList hal = new HalaAttrList();
+            hal.Add(new KeyValuePair<string, KeyValuePair<ArgType, string>>("context", new KeyValuePair<ArgType, string>(ArgType.unknown, this.dialogContext)));
+            base.Init(hal, ActionPackageType.act_dialog);
         }
         
-        /// <summary>
-        /// 执行命令
-        /// </summary>
-        public void Dash()
-        {
-            var ArgDict = new Dictionary<string, ArgumentPackage>();
-            ArgDict.Add("context", new ArgumentPackage() { aType = ArgType.unknown, valueExp = this.dialogContext });
-            ActionPackage ap = new ActionPackage()
-            {
-                line = this.commandLine,
-                indent = this.indent,
-                argsDict = ArgDict,
-                nodeName = this.ToString(),
-                nodeType = ActionPackageType.act_dialog
-            };
-            this.parent.AddAction(ap, this.commandLine);
-            HalationViewCommand.AddItemToCodeListbox(this.commandLine, ap.indent,
-                String.Format("◆{0}  {1}", ap.GetActionName(), ap.GetParaDescription()));
-        }
-
-        /// <summary>
-        /// 撤销命令
-        /// </summary>
-        public void Undo()
-        {
-            this.parent.DeleteAction(this.commandLine);
-            HalationViewCommand.RemoveItemFromCodeListbox(this.commandLine);
-        }
-
         /// <summary>
         /// 对话的内容
         /// </summary>

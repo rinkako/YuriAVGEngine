@@ -789,6 +789,7 @@
             this.button4.TabIndex = 2;
             this.button4.Text = "变更文字层";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button2
             // 

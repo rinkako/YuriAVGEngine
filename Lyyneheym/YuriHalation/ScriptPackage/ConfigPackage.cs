@@ -15,5 +15,10 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// 开关数量
         /// </summary>
         public int MaxSwitchCount = 100;
+
+        /// <summary>
+        /// 文字层数量
+        /// </summary>
+        public int MaxMessageLayer = 10;
     }
 }
