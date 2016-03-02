@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     class IHalationSingleCommand : IHalationCommand
     {
         /// <summary>
-        /// 构造器
+        /// 构造一个待执行的单条语句
         /// </summary>
         /// <param name="line">所在的行</param>
         /// <param name="indent">列偏移</param>

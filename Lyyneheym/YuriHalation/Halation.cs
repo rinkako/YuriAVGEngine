@@ -184,6 +184,12 @@ namespace Yuri
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
+        public void DashMsgLayer(string toLayerId)
+        {
+            IHalationCommand cmd = new MsgLayerCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, toLayerId);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
         #endregion
 
         #region 前端菜单相关
