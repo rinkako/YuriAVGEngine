@@ -163,6 +163,7 @@
             this.button1.TabIndex = 7;
             this.button1.Text = "确定";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // AFrom
             // 
@@ -181,6 +182,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "状态变更";
+            this.Load += new System.EventHandler(this.AFrom_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

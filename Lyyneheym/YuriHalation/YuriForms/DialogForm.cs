@@ -17,10 +17,9 @@ namespace Yuri.YuriForms
         /// <summary>
         /// 构造器
         /// </summary>
-        public DialogForm(int line)
+        public DialogForm()
         {
             InitializeComponent();
-            this.line = line;
         }
 
         /// <summary>
@@ -28,14 +27,9 @@ namespace Yuri.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            core.DashDialog(line, this.textBox1.Text);
+            core.DashDialog(this.textBox1.Text);
             this.Close();
         }
-
-        /// <summary>
-        /// 插入的行号
-        /// </summary>
-        private int line = 0;
 
         /// <summary>
         /// 控制器引用

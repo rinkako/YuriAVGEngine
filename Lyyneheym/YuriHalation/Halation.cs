@@ -125,6 +125,17 @@ namespace Yuri
 
         #region 前端命令相关
         
+        /// <summary>
+        /// 当前选中的行号
+        /// </summary>
+        public static int CurrentSelectedLine
+        {
+            get
+            {
+                return Halation.mainView.codeListBox.SelectedIndex;
+            }
+        }
+
         public bool DashAddScene(string scenario)
         {
             bool flag = Halation.project.AddScene(scenario);
@@ -161,9 +172,15 @@ namespace Yuri
             this.RefreshProjectTree();
         }
 
-        public void DashDialog(int insertLine, string context)
+        public void DashDialog(string context)
         {
-            IHalationCommand cmd = new DialogCommand(insertLine, this.GetIndent(insertLine), Halation.currentCodePackage, context);
+            IHalationCommand cmd = new DialogCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, context);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashA(string toName, string toFace, string toLoc, string toVocal)
+        {
+            IHalationCommand cmd = new ACommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, toName, toFace, toLoc, toVocal);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 

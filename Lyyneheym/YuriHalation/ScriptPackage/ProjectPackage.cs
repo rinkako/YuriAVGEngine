@@ -85,6 +85,11 @@ namespace Yuri.YuriHalation.ScriptPackage
         public ConfigPackage Config = new ConfigPackage();
 
         /// <summary>
+        /// 角色向量
+        /// </summary>
+        public List<string> CharacterList = new List<string>();
+            
+        /// <summary>
         /// 开关描述向量
         /// </summary>
         public List<string> SwitchDescriptorList = new List<string>();

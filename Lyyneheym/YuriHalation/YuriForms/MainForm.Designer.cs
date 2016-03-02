@@ -39,6 +39,10 @@
             this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.撤销ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.重做ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.复制ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.剪切ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.粘贴ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.工程ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.全局设定ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -105,10 +109,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.codeGroupBox = new System.Windows.Forms.GroupBox();
             this.codeListBox = new System.Windows.Forms.ListBox();
-            this.复制ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.剪切ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.粘贴ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.actionGroupBox.SuspendLayout();
@@ -201,7 +201,7 @@
             // 
             this.撤销ToolStripMenuItem.Name = "撤销ToolStripMenuItem";
             this.撤销ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.撤销ToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.撤销ToolStripMenuItem.Text = "撤销";
             this.撤销ToolStripMenuItem.Click += new System.EventHandler(this.撤销ToolStripMenuItem_Click);
             // 
@@ -209,9 +209,35 @@
             // 
             this.重做ToolStripMenuItem.Name = "重做ToolStripMenuItem";
             this.重做ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.重做ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.重做ToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.重做ToolStripMenuItem.Text = "重做";
             this.重做ToolStripMenuItem.Click += new System.EventHandler(this.重做ToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(142, 6);
+            // 
+            // 复制ToolStripMenuItem
+            // 
+            this.复制ToolStripMenuItem.Name = "复制ToolStripMenuItem";
+            this.复制ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.复制ToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.复制ToolStripMenuItem.Text = "复制";
+            // 
+            // 剪切ToolStripMenuItem
+            // 
+            this.剪切ToolStripMenuItem.Name = "剪切ToolStripMenuItem";
+            this.剪切ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.剪切ToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.剪切ToolStripMenuItem.Text = "剪切";
+            // 
+            // 粘贴ToolStripMenuItem
+            // 
+            this.粘贴ToolStripMenuItem.Name = "粘贴ToolStripMenuItem";
+            this.粘贴ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.粘贴ToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.粘贴ToolStripMenuItem.Text = "粘贴";
             // 
             // 工程ToolStripMenuItem
             // 
@@ -232,6 +258,7 @@
             this.全局设定ToolStripMenuItem.Name = "全局设定ToolStripMenuItem";
             this.全局设定ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.全局设定ToolStripMenuItem.Text = "全局设定";
+            this.全局设定ToolStripMenuItem.Click += new System.EventHandler(this.全局设定ToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -467,10 +494,11 @@
             this.actionGroupBox.Controls.Add(this.button4);
             this.actionGroupBox.Controls.Add(this.button2);
             this.actionGroupBox.Controls.Add(this.button1);
+            this.actionGroupBox.Enabled = false;
             this.actionGroupBox.Location = new System.Drawing.Point(778, 28);
             this.actionGroupBox.Name = "actionGroupBox";
             this.actionGroupBox.Size = new System.Drawing.Size(218, 635);
-            this.actionGroupBox.TabIndex = 4;
+            this.actionGroupBox.TabIndex = 0;
             this.actionGroupBox.TabStop = false;
             this.actionGroupBox.Text = "动作";
             // 
@@ -770,6 +798,7 @@
             this.button2.TabIndex = 1;
             this.button2.Text = "角色状态";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
@@ -799,6 +828,7 @@
             this.codeListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.codeListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.codeListBox.FormattingEnabled = true;
             this.codeListBox.HorizontalScrollbar = true;
             this.codeListBox.ItemHeight = 12;
@@ -809,33 +839,8 @@
             this.codeListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.codeListBox.Size = new System.Drawing.Size(541, 604);
             this.codeListBox.TabIndex = 6;
+            this.codeListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.codeListBox_DrawItem);
             this.codeListBox.SelectedIndexChanged += new System.EventHandler(this.codeListBox_SelectedIndexChanged);
-            // 
-            // 复制ToolStripMenuItem
-            // 
-            this.复制ToolStripMenuItem.Name = "复制ToolStripMenuItem";
-            this.复制ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.复制ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.复制ToolStripMenuItem.Text = "复制";
-            // 
-            // 剪切ToolStripMenuItem
-            // 
-            this.剪切ToolStripMenuItem.Name = "剪切ToolStripMenuItem";
-            this.剪切ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.剪切ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.剪切ToolStripMenuItem.Text = "剪切";
-            // 
-            // 粘贴ToolStripMenuItem
-            // 
-            this.粘贴ToolStripMenuItem.Name = "粘贴ToolStripMenuItem";
-            this.粘贴ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.粘贴ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.粘贴ToolStripMenuItem.Text = "粘贴";
-            // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(149, 6);
             // 
             // MainForm
             // 

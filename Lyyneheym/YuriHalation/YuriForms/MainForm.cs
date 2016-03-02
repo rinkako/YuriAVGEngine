@@ -28,7 +28,7 @@ namespace Yuri.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            DialogForm formDialog = new DialogForm(this.codeListBox.SelectedIndex);
+            DialogForm formDialog = new DialogForm();
             formDialog.ShowDialog(this);
         }
 
@@ -107,6 +107,49 @@ namespace Yuri.YuriForms
             AddFuncForm aff = new AddFuncForm();
             aff.ShowDialog(this);
         }
+
+        /// <summary>
+        /// 按钮：状态变更
+        /// </summary>
+        private void button2_Click(object sender, EventArgs e)
+        {
+            AFrom af = new AFrom();
+            af.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 菜单：全局设定
+        /// </summary>
+        private void 全局设定ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GlobalConfigForm gcf = new GlobalConfigForm();
+            gcf.ShowDialog(this);
+        }
+
+        private void codeListBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            Brush FontBrush = null;
+            ListBox listBox = sender as ListBox;
+            if (e.Index > -1)
+            {
+                string itemFull = listBox.Items[e.Index].ToString();
+                string splitor = (itemFull.Split(' ')[0]).Substring(1);
+                switch (splitor)
+                {
+                    case "角色状态": FontBrush = Brushes.Brown; break;
+                    case "Major": FontBrush = Brushes.Red; break;
+                    case "Minor": FontBrush = Brushes.Orange; break;
+                    case "Warning": FontBrush = Brushes.Yellow; break;
+                    default: FontBrush = Brushes.Black; break;
+                }
+                e.DrawBackground();
+                e.Graphics.DrawString(listBox.Items[e.Index].ToString(), e.Font, FontBrush, e.Bounds);
+                e.DrawFocusRectangle();
+            }
+        }
+
+
+
 
 
     }

@@ -72,6 +72,13 @@ namespace Yuri.YuriHalation.ScriptPackage
                 case ActionPackageType.act_dialog:
                     desSb.Append(String.Format("\"{0}\"", this.argsDict["context"].valueExp));
                     break;
+                case ActionPackageType.act_a:
+                    desSb.Append(String.Format(" 名字:{0}", this.argsDict["name"].valueExp));
+                    desSb.Append(String.Format(" 表情:{0}", this.argsDict["face"].valueExp));
+                    desSb.Append(String.Format(" 位置:{0}", this.argsDict["loc"].valueExp));
+                    desSb.Append(String.Format(" 语音:{0}", this.argsDict["vid"].valueExp));
+                    break;
+                    
             }
             return desSb.ToString();
         }

@@ -51,10 +51,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\ACommand.cs" />
     <Compile Include="Command\DialogCommand.cs" />
     <Compile Include="Command\HalationInvoker.cs" />
     <Compile Include="Command\HalationViewCommand.cs" />
     <Compile Include="Command\IHalationCommand.cs" />
+    <Compile Include="Command\IHalationCommandAttribute.cs" />
     <Compile Include="Halation.cs" />
     <Compile Include="HalationCore\CodeGenerator.cs" />
     <Compile Include="HalationCore\FileManager.cs" />
@@ -101,6 +103,12 @@
     </Compile>
     <Compile Include="YuriForms\FunctionCallForm.Designer.cs">
       <DependentUpon>FunctionCallForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\GlobalConfigForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\GlobalConfigForm.Designer.cs">
+      <DependentUpon>GlobalConfigForm.cs</DependentUpon>
     </Compile>
     <Compile Include="YuriForms\MsgLayerForm.cs">
       <SubType>Form</SubType>
@@ -227,6 +235,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\FunctionCallForm.resx">
       <DependentUpon>FunctionCallForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\GlobalConfigForm.resx">
+      <DependentUpon>GlobalConfigForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\JumpForm.resx">
       <DependentUpon>JumpForm.cs</DependentUpon>
