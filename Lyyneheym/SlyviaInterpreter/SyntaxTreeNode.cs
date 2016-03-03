@@ -272,6 +272,8 @@ namespace Yuri.YuriInterpreter
         synr_bgm,
         // 停止音乐
         synr_stopbgm,
+        // 停止BGS
+        synr_stopbgs,
         // 播放语音
         synr_vocal,
         // 停止语音

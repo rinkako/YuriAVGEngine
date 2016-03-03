@@ -168,6 +168,8 @@ namespace Yuri.ILPackage
         act_bgm,
         // 停止音乐
         act_stopbgm,
+        // 停止bgs
+        act_stopbgs,
         // 播放语音
         act_vocal,
         // 停止语音

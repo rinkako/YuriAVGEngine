@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Yuri.YuriHalation.ScriptPackage;
 
 namespace Yuri.YuriHalation.Command
 {
     using HalaAttrList = List<KeyValuePair<string, KeyValuePair<ArgType, string>>>;
 
+    /// <summary>
+    /// 命令类：状态变更
+    /// </summary>
     class ACommand : IHalationSingleCommand
     {
         /// <summary>

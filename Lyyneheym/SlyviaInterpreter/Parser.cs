@@ -1015,6 +1015,9 @@ namespace Yuri.YuriInterpreter
                     case TokenType.Token_o_stopbgm:
                         statementNode.nodeSyntaxType = SyntaxType.synr_stopbgm;
                         break;
+                    case TokenType.Token_o_stopbgs:
+                        statementNode.nodeSyntaxType = SyntaxType.synr_stopbgs;
+                        break;
                     case TokenType.Token_o_titlepoint:
                         statementNode.nodeSyntaxType = SyntaxType.synr_titlepoint;
                         break;

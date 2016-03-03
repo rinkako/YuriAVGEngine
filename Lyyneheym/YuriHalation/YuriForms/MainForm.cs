@@ -91,6 +91,30 @@ namespace Yuri.YuriForms
         }
 
         /// <summary>
+        /// 代码树重绘事件
+        /// </summary>
+        private void codeListBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            Brush FontBrush = null;
+            ListBox listBox = sender as ListBox;
+            if (e.Index > -1)
+            {
+                string itemFull = listBox.Items[e.Index].ToString();
+                switch ((itemFull.Split(' ')[0]).Substring(1))
+                {
+                    case "角色状态": FontBrush = Brushes.Brown; break;
+                    case "Major": FontBrush = Brushes.Red; break;
+                    case "Minor": FontBrush = Brushes.Orange; break;
+                    case "Warning": FontBrush = Brushes.Yellow; break;
+                    default: FontBrush = Brushes.Black; break;
+                }
+                e.DrawBackground();
+                e.Graphics.DrawString(itemFull, e.Font, FontBrush, e.Bounds);
+                e.DrawFocusRectangle();
+            }
+        }
+
+        /// <summary>
         /// 按钮：新建场景
         /// </summary>
         private void button36_Click(object sender, EventArgs e)
@@ -126,27 +150,6 @@ namespace Yuri.YuriForms
             gcf.ShowDialog(this);
         }
 
-        private void codeListBox_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            Brush FontBrush = null;
-            ListBox listBox = sender as ListBox;
-            if (e.Index > -1)
-            {
-                string itemFull = listBox.Items[e.Index].ToString();
-                switch ((itemFull.Split(' ')[0]).Substring(1))
-                {
-                    case "角色状态": FontBrush = Brushes.Brown; break;
-                    case "Major": FontBrush = Brushes.Red; break;
-                    case "Minor": FontBrush = Brushes.Orange; break;
-                    case "Warning": FontBrush = Brushes.Yellow; break;
-                    default: FontBrush = Brushes.Black; break;
-                }
-                e.DrawBackground();
-                e.Graphics.DrawString(itemFull, e.Font, FontBrush, e.Bounds);
-                e.DrawFocusRectangle();
-            }
-        }
-
         /// <summary>
         /// 按钮：变更文字层
         /// </summary>
@@ -154,6 +157,40 @@ namespace Yuri.YuriForms
         {
             MsgLayerForm mlf = new MsgLayerForm();
             mlf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：直接描绘文本
+        /// </summary>
+        private void button5_Click(object sender, EventArgs e)
+        {
+            DrawStringForm dsf = new DrawStringForm();
+            dsf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：选择项
+        /// </summary>
+        private void button6_Click(object sender, EventArgs e)
+        {
+            BranchForm bf = new BranchForm();
+            bf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：停止BGM
+        /// </summary>
+        private void button18_Click(object sender, EventArgs e)
+        {
+            Halation.GetInstance().DashStopBGM();
+        }
+
+        /// <summary>
+        /// 按钮：停止BGS
+        /// </summary>
+        private void button17_Click(object sender, EventArgs e)
+        {
+            Halation.GetInstance().DashStopBGS();
         }
 
 

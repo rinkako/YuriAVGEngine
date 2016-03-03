@@ -52,12 +52,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Command\ACommand.cs" />
+    <Compile Include="Command\BranchCommand.cs" />
     <Compile Include="Command\DialogCommand.cs" />
+    <Compile Include="Command\DrawCommand.cs" />
     <Compile Include="Command\HalationInvoker.cs" />
     <Compile Include="Command\HalationViewCommand.cs" />
     <Compile Include="Command\IHalationCommand.cs" />
-    <Compile Include="Command\IHalationCommandAttribute.cs" />
+    <Compile Include="Command\IHalationSingleCommand.cs" />
     <Compile Include="Command\MsgLayerCommand.cs" />
+    <Compile Include="Command\MsgLayerOptCommand.cs" />
+    <Compile Include="Command\StopBGSCommand.cs" />
+    <Compile Include="Command\StopBGMCommand.cs" />
     <Compile Include="Halation.cs" />
     <Compile Include="HalationCore\CodeGenerator.cs" />
     <Compile Include="HalationCore\FileManager.cs" />

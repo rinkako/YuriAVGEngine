@@ -19,7 +19,8 @@ namespace Yuri.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            Halation.GetInstance()
+            Halation.GetInstance().DashMsgLayer(this.numericUpDown1.Value.ToString());
+            this.Close();
         }
     }
 }

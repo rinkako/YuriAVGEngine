@@ -654,6 +654,7 @@
             this.button17.TabIndex = 17;
             this.button17.Text = "停止BGS";
             this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
             // 
             // button18
             // 
@@ -663,6 +664,7 @@
             this.button18.TabIndex = 16;
             this.button18.Text = "停止BGM";
             this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
             // 
             // button15
             // 
@@ -762,6 +764,7 @@
             this.button5.TabIndex = 5;
             this.button5.Text = "直接描绘文本";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button6
             // 
@@ -771,6 +774,7 @@
             this.button6.TabIndex = 4;
             this.button6.Text = "选择项";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button3
             // 

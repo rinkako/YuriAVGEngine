@@ -70,15 +70,23 @@ namespace Yuri.YuriHalation.ScriptPackage
             switch (this.nodeType)
             {
                 case ActionPackageType.act_dialog:
-                    desSb.Append(String.Format("\"{0}\"", this.argsDict["context"].valueExp));
+                    desSb.Append(String.Format("\"{0}\" ", this.argsDict["context"].valueExp));
                     break;
                 case ActionPackageType.act_a:
-                    desSb.Append(String.Format(" 名字:{0}", this.argsDict["name"].valueExp));
-                    desSb.Append(String.Format(" 表情:{0}", this.argsDict["face"].valueExp));
-                    desSb.Append(String.Format(" 位置:{0}", this.argsDict["loc"].valueExp));
-                    desSb.Append(String.Format(" 语音:{0}", this.argsDict["vid"].valueExp));
+                    desSb.Append(String.Format("名字:{0} ", this.argsDict["name"].valueExp));
+                    desSb.Append(String.Format("表情:{0} ", this.argsDict["face"].valueExp));
+                    desSb.Append(String.Format("位置:{0} ", this.argsDict["loc"].valueExp));
+                    desSb.Append(String.Format("语音:{0} ", this.argsDict["vid"].valueExp));
                     break;
-                    
+                case ActionPackageType.act_draw:
+                    desSb.Append(String.Format("\"{0}\" ", this.argsDict["dash"].valueExp));
+                    break;
+                case ActionPackageType.act_branch:
+                    desSb.Append(String.Format("{0} ", this.argsDict["link"].valueExp));
+                    break;
+                case ActionPackageType.act_msglayer:
+                    desSb.Append(String.Format("目标层：{0} ", this.argsDict["id"].valueExp));
+                    break;
             }
             return desSb.ToString();
         }
@@ -115,6 +123,8 @@ namespace Yuri.YuriHalation.ScriptPackage
         act_bgm,
         // 停止音乐
         act_stopbgm,
+        // 停止bgs
+        act_stopbgs,
         // 播放语音
         act_vocal,
         // 停止语音
@@ -218,6 +228,8 @@ namespace Yuri.YuriHalation.ScriptPackage
         播放音乐,
         // 停止音乐
         停止音乐,
+        // 停止背景声效
+        停止背景声效,
         // 播放语音
         播放语音,
         // 停止语音

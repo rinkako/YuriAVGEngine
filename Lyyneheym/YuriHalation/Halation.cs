@@ -190,6 +190,36 @@ namespace Yuri
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
+        public void DashDraw(string str)
+        {
+            IHalationCommand cmd = new DrawCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, str);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashBranch(List<string> branchItems)
+        {
+            IHalationCommand cmd = new BranchCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, branchItems);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashMsgLayerOpt(string layerId, string target, string value)
+        {
+            IHalationCommand cmd = new MsgLayerOptCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, layerId, target, value);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashStopBGM()
+        {
+            IHalationCommand cmd = new StopBGMCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashStopBGS()
+        {
+            IHalationCommand cmd = new StopBGSCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
         #endregion
 
         #region 前端菜单相关

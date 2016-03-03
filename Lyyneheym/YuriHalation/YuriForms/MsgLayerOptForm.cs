@@ -14,14 +14,46 @@ namespace Yuri.YuriForms
         public MsgLayerOptForm()
         {
             InitializeComponent();
-            this.radioButton1.Checked = true;
-            this.radioButton2.Checked = false;
+            foreach (var s in this.msgLayOptionDescription)
+            {
+                this.comboBox1.Items.Add(s);
+            }
+            this.numericUpDown1.Maximum = Halation.project.Config.MaxMessageLayer;
+            this.comboBox1.SelectedIndex = 0;
         }
 
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        public string[] msgLayOptionDescription = new string[]
+        { 
+            "字号", "字体", "颜色",
+            "可见性", "行距", "不透明度",
+            "X坐标", "Y坐标", "Z坐标",
+            "高度", "宽度", "侧边距",
+            "横向对齐", "纵向对齐", "层背景图名称",
+            "重置", "重置风格"
+        };
+
+        public string[] msgLayOptions = new string[]
+        { 
+            "fontsize", "fontname", "fontcolor",
+            "visible", "lineheight", "opacity",
+            "x", "y", "z",
+            "height", "width", "padding",
+            "horizontal", "vertical", "backgroundname",
+            "reset", "stylereset"
+        };
+
+        /// <summary>
+        /// 按钮：确定
+        /// </summary>
+        private void button1_Click(object sender, EventArgs e)
         {
-            this.groupBox1.Enabled = this.radioButton1.Checked;
+            if (this.comboBox1.SelectedIndex < 15 && this.textBox1.Text == "")
+            {
+                MessageBox.Show("请正确填写目标值");
+                return;
+            }
+            Halation.GetInstance().DashMsgLayerOpt(this.numericUpDown1.Value.ToString(), this.msgLayOptions[this.comboBox1.SelectedIndex], this.textBox1.Text);
+            this.Close();
         }
-
     }
 }

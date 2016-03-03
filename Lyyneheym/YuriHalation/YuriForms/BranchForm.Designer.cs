@@ -47,9 +47,8 @@
             this.switchDataGridView.Location = new System.Drawing.Point(12, 12);
             this.switchDataGridView.MultiSelect = false;
             this.switchDataGridView.Name = "switchDataGridView";
-            this.switchDataGridView.RowHeadersVisible = false;
             this.switchDataGridView.RowTemplate.Height = 23;
-            this.switchDataGridView.Size = new System.Drawing.Size(351, 297);
+            this.switchDataGridView.Size = new System.Drawing.Size(380, 297);
             this.switchDataGridView.TabIndex = 3;
             // 
             // 文本
@@ -70,18 +69,19 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(369, 286);
+            this.button1.Location = new System.Drawing.Point(398, 286);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 4;
             this.button1.Text = "确定";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // BranchForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(451, 317);
+            this.ClientSize = new System.Drawing.Size(483, 317);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.switchDataGridView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
