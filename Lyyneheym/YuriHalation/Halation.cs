@@ -254,7 +254,13 @@ namespace Yuri
             Halation.projectName = projName;
             Halation.mainView.Text = String.Format("Yuri Halation - [{0}]", Halation.projectName);
             FileManager.serialization(Halation.project, string.Format("{0}\\{1}\\game.yrproj", path, projName));
+            Halation.projectFolder = string.Format("{0}\\{1}", path, projName);
         }
+
+        /// <summary>
+        /// 目前工程的根目录
+        /// </summary>
+        public static string projectFolder;
 
         #endregion
 

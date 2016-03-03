@@ -20,5 +20,10 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// 文字层数量
         /// </summary>
         public int MaxMessageLayer = 10;
+
+        /// <summary>
+        /// BGS轨道数量
+        /// </summary>
+        public int BgsCount = 10;
     }
 }

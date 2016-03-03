@@ -193,6 +193,47 @@ namespace Yuri.YuriForms
             Halation.GetInstance().DashStopBGS();
         }
 
+        private void button14_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// 菜单：BGM
+        /// </summary>
+        private void bGMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MusicForm mf = new MusicForm("音乐管理", 0);
+            mf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 菜单：BGS
+        /// </summary>
+        private void bGSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MusicForm mf = new MusicForm("音乐管理", 1);
+            mf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 菜单：SE
+        /// </summary>
+        private void sEToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MusicForm mf = new MusicForm("音乐管理", 2);
+            mf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 菜单：Vocal
+        /// </summary>
+        private void vOCALToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MusicForm mf = new MusicForm("音乐管理", 3);
+            mf.ShowDialog(this);
+        }
+
 
 
 

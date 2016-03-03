@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>YuriHalation</RootNamespace>
     <AssemblyName>YuriHalation</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,10 +35,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bass.Net, Version=2.4.11.1, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\BASS.NET\v4.0\Bass.Net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -66,6 +72,7 @@
     <Compile Include="Halation.cs" />
     <Compile Include="HalationCore\CodeGenerator.cs" />
     <Compile Include="HalationCore\FileManager.cs" />
+    <Compile Include="HalationCore\Musician.cs" />
     <Compile Include="ScriptPackage\ActionPackage.cs" />
     <Compile Include="ScriptPackage\ArgumentPackage.cs" />
     <Compile Include="ScriptPackage\ConfigPackage.cs" />
@@ -127,6 +134,12 @@
     </Compile>
     <Compile Include="YuriForms\MsgLayerOptForm.Designer.cs">
       <DependentUpon>MsgLayerOptForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\MusicForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\MusicForm.Designer.cs">
+      <DependentUpon>MusicForm.cs</DependentUpon>
     </Compile>
     <Compile Include="YuriForms\NewProjectForm.cs">
       <SubType>Form</SubType>
@@ -264,6 +277,9 @@
     <EmbeddedResource Include="YuriForms\MsgLayerOptForm.resx">
       <DependentUpon>MsgLayerOptForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\MusicForm.resx">
+      <DependentUpon>MusicForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\NewProjectForm.resx">
       <DependentUpon>NewProjectForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -276,6 +292,7 @@
     <EmbeddedResource Include="YuriForms\WaitForm.resx">
       <DependentUpon>WaitForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -337,26 +337,30 @@
             // bGMToolStripMenuItem
             // 
             this.bGMToolStripMenuItem.Name = "bGMToolStripMenuItem";
-            this.bGMToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.bGMToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.bGMToolStripMenuItem.Text = "BGM";
+            this.bGMToolStripMenuItem.Click += new System.EventHandler(this.bGMToolStripMenuItem_Click);
             // 
             // bGSToolStripMenuItem
             // 
             this.bGSToolStripMenuItem.Name = "bGSToolStripMenuItem";
-            this.bGSToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.bGSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.bGSToolStripMenuItem.Text = "BGS";
+            this.bGSToolStripMenuItem.Click += new System.EventHandler(this.bGSToolStripMenuItem_Click);
             // 
             // sEToolStripMenuItem
             // 
             this.sEToolStripMenuItem.Name = "sEToolStripMenuItem";
-            this.sEToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.sEToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.sEToolStripMenuItem.Text = "SE";
+            this.sEToolStripMenuItem.Click += new System.EventHandler(this.sEToolStripMenuItem_Click);
             // 
             // vOCALToolStripMenuItem
             // 
             this.vOCALToolStripMenuItem.Name = "vOCALToolStripMenuItem";
-            this.vOCALToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.vOCALToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.vOCALToolStripMenuItem.Text = "VOCAL";
+            this.vOCALToolStripMenuItem.Click += new System.EventHandler(this.vOCALToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
@@ -701,6 +705,7 @@
             this.button14.TabIndex = 12;
             this.button14.Text = "播放BGM";
             this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
             // button11
             // 
