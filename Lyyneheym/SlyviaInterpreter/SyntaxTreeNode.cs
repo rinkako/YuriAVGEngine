@@ -270,6 +270,8 @@ namespace Yuri.YuriInterpreter
         synr_se,
         // 播放音乐
         synr_bgm,
+        // 播放bgs
+        synr_bgs,
         // 停止音乐
         synr_stopbgm,
         // 停止BGS

@@ -631,6 +631,7 @@
             this.button22.TabIndex = 20;
             this.button22.Text = "开关操作";
             this.button22.UseVisualStyleBackColor = true;
+            this.button22.Click += new System.EventHandler(this.button22_Click);
             // 
             // button19
             // 
@@ -640,6 +641,7 @@
             this.button19.TabIndex = 19;
             this.button19.Text = "跳转";
             this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
             // 
             // button20
             // 
@@ -649,6 +651,7 @@
             this.button20.TabIndex = 18;
             this.button20.Text = "标签";
             this.button20.UseVisualStyleBackColor = true;
+            this.button20.Click += new System.EventHandler(this.button20_Click);
             // 
             // button17
             // 
@@ -678,6 +681,7 @@
             this.button15.TabIndex = 15;
             this.button15.Text = "播放Vocal";
             this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
             // 
             // button16
             // 
@@ -687,6 +691,7 @@
             this.button16.TabIndex = 14;
             this.button16.Text = "播放SE";
             this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // button13
             // 
@@ -696,6 +701,7 @@
             this.button13.TabIndex = 13;
             this.button13.Text = "播放BGS";
             this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
             // button14
             // 

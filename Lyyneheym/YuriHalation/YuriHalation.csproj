@@ -58,6 +58,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Command\ACommand.cs" />
+    <Compile Include="Command\JumpCommand.cs" />
+    <Compile Include="Command\SwitchCommand.cs" />
+    <Compile Include="Command\LabelCommand.cs" />
+    <Compile Include="Command\VocalCommand.cs" />
+    <Compile Include="Command\SECommand.cs" />
+    <Compile Include="Command\BGSCommand.cs" />
+    <Compile Include="Command\BGMCommand.cs" />
     <Compile Include="Command\BranchCommand.cs" />
     <Compile Include="Command\DialogCommand.cs" />
     <Compile Include="Command\DrawCommand.cs" />
@@ -158,6 +165,12 @@
     </Compile>
     <Compile Include="YuriForms\VarForm.Designer.cs">
       <DependentUpon>VarForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\VocalForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\VocalForm.Designer.cs">
+      <DependentUpon>VocalForm.cs</DependentUpon>
     </Compile>
     <Compile Include="YuriForms\WaitForm.cs">
       <SubType>Form</SubType>
@@ -288,6 +301,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\VarForm.resx">
       <DependentUpon>VarForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\VocalForm.resx">
+      <DependentUpon>VocalForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\WaitForm.resx">
       <DependentUpon>WaitForm.cs</DependentUpon>

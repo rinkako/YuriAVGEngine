@@ -20,6 +20,7 @@ namespace Yuri.YuriForms
             else
             {
                 this.isMusicMana = false;
+                this.tabControl1.TabPages.RemoveAt(3);
                 this.button1.Text = "选中";
                 this.button2.Text = "取消";
             }
@@ -92,7 +93,28 @@ namespace Yuri.YuriForms
             }
             else
             {
-
+                switch (this.tabControl1.SelectedTab.Text)
+                {
+                    case "BGM":
+                        if (this.listBoxBGM.SelectedIndex != -1)
+                        {
+                            Halation.GetInstance().DashPlayBGM(this.listBoxBGM.SelectedItem.ToString(), this.volTrackBar.Value.ToString());
+                        }
+                        break;
+                    case "BGS":
+                        if (this.listBoxBGS.SelectedIndex != -1)
+                        {
+                            Halation.GetInstance().DashPlayBGS(this.listBoxBGS.SelectedItem.ToString(), this.volTrackBar.Value.ToString());
+                        }
+                        break;
+                    case "SE":
+                        if (this.listBoxSE.SelectedIndex != -1)
+                        {
+                            Halation.GetInstance().DashPlaySE(this.listBoxSE.SelectedItem.ToString(), this.volTrackBar.Value.ToString());
+                        }
+                        break;
+                }
+                this.Close();
             }
         }
 

@@ -220,6 +220,42 @@ namespace Yuri
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
+        public void DashPlayBGM(string filename, string vol)
+        {
+            IHalationCommand cmd = new BGMCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, filename, vol);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashPlayBGS(string filename, string vol)
+        {
+            IHalationCommand cmd = new BGSCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, filename, vol);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashPlaySE(string filename, string vol)
+        {
+            IHalationCommand cmd = new SECommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, filename, vol);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashPlayVocal(string name, string vid)
+        {
+            IHalationCommand cmd = new VocalCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, name, vid);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashLabel(string label)
+        {
+            IHalationCommand cmd = new LabelCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, label);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashJump(string target, string filename = "", string cond = "")
+        {
+            IHalationCommand cmd = new JumpCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, filename, target, cond);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
         #endregion
 
         #region 前端菜单相关

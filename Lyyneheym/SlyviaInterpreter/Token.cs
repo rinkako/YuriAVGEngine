@@ -129,6 +129,8 @@ namespace Yuri.YuriInterpreter
         Token_o_se,
         // 播放音乐
         Token_o_bgm,
+        // 播放bgs
+        Token_o_bgs,
         // 停止音乐
         Token_o_stopbgm,
         // 停止BGS

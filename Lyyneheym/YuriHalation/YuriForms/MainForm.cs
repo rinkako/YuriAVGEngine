@@ -100,12 +100,11 @@ namespace Yuri.YuriForms
             if (e.Index > -1)
             {
                 string itemFull = listBox.Items[e.Index].ToString();
-                switch ((itemFull.Split(' ')[0]).Substring(1))
+                switch ((itemFull.Split('\t')[0]).Substring(1))
                 {
                     case "角色状态": FontBrush = Brushes.Brown; break;
                     case "Major": FontBrush = Brushes.Red; break;
-                    case "Minor": FontBrush = Brushes.Orange; break;
-                    case "Warning": FontBrush = Brushes.Yellow; break;
+                    case "标签": FontBrush = Brushes.Orange; break;
                     default: FontBrush = Brushes.Black; break;
                 }
                 e.DrawBackground();
@@ -193,9 +192,40 @@ namespace Yuri.YuriForms
             Halation.GetInstance().DashStopBGS();
         }
 
+        /// <summary>
+        /// 按钮：播放BGM
+        /// </summary>
         private void button14_Click(object sender, EventArgs e)
         {
+            MusicForm mf = new MusicForm("插入音乐", 0);
+            mf.ShowDialog(this);
+        }
 
+        /// <summary>
+        /// 按钮：播放BGS
+        /// </summary>
+        private void button13_Click(object sender, EventArgs e)
+        {
+            MusicForm mf = new MusicForm("插入音乐", 1);
+            mf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：播放SE
+        /// </summary>
+        private void button16_Click(object sender, EventArgs e)
+        {
+            MusicForm mf = new MusicForm("插入音乐", 2);
+            mf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：播放Vocal
+        /// </summary>
+        private void button15_Click(object sender, EventArgs e)
+        {
+            VocalForm vf = new VocalForm();
+            vf.ShowDialog(this);
         }
 
         /// <summary>
@@ -212,7 +242,7 @@ namespace Yuri.YuriForms
         /// </summary>
         private void bGSToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MusicForm mf = new MusicForm("音乐管理", 1);
+            MusicForm mf = new MusicForm("99", 1);
             mf.ShowDialog(this);
         }
 
@@ -233,6 +263,37 @@ namespace Yuri.YuriForms
             MusicForm mf = new MusicForm("音乐管理", 3);
             mf.ShowDialog(this);
         }
+
+        /// <summary>
+        /// 按钮：标签
+        /// </summary>
+        private void button20_Click(object sender, EventArgs e)
+        {
+            LabelForm lf = new LabelForm();
+            lf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：跳转
+        /// </summary>
+        private void button19_Click(object sender, EventArgs e)
+        {
+            JumpForm jf = new JumpForm();
+            jf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：开关操作
+        /// </summary>
+        private void button22_Click(object sender, EventArgs e)
+        {
+            SwitchesForm sf = new SwitchesForm();
+            sf.ShowDialog(this);
+        }
+
+
+
+
 
 
 

@@ -87,6 +87,26 @@ namespace Yuri.YuriHalation.ScriptPackage
                 case ActionPackageType.act_msglayer:
                     desSb.Append(String.Format("目标层：{0} ", this.argsDict["id"].valueExp));
                     break;
+                case ActionPackageType.act_bgm:
+                case ActionPackageType.act_bgs:
+                case ActionPackageType.act_se:
+                    desSb.Append(String.Format("{0} ", this.argsDict["filename"].valueExp));
+                    desSb.Append(String.Format("音量：{0} ", this.argsDict["vol"].valueExp));
+                    break;
+                case ActionPackageType.act_label:
+                    desSb.Append(String.Format("{0} ", this.argsDict["name"].valueExp));
+                    break;
+                case ActionPackageType.act_jump:
+                    desSb.Append(String.Format("场景：{0} ", this.argsDict["filename"].valueExp));
+                    if (this.argsDict["target"].valueExp != "")
+                    {
+                        desSb.Append(String.Format("标签：{0} ", this.argsDict["target"].valueExp));
+                    }
+                    if (this.argsDict["cond"].valueExp != "")
+                    {
+                        desSb.Append(String.Format("条件：{0} ", this.argsDict["cond"].valueExp));
+                    }
+                    break;
             }
             return desSb.ToString();
         }
@@ -121,6 +141,8 @@ namespace Yuri.YuriHalation.ScriptPackage
         act_se,
         // 播放音乐
         act_bgm,
+        // 播放bgs
+        act_bgs,
         // 停止音乐
         act_stopbgm,
         // 停止bgs
@@ -226,6 +248,8 @@ namespace Yuri.YuriHalation.ScriptPackage
         播放声效,
         // 播放音乐
         播放音乐,
+        // 播放bgs
+        播放背景音效,
         // 停止音乐
         停止音乐,
         // 停止背景声效

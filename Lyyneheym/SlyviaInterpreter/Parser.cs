@@ -970,6 +970,9 @@ namespace Yuri.YuriInterpreter
                     case TokenType.Token_o_bgm:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_bgm, "filename", "vol");
                         break;
+                    case TokenType.Token_o_bgs:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_bgs, "filename", "vol");
+                        break;
                     case TokenType.Token_o_button:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_button, "id", "x", "y", "target", "normal", "over", "on", "type");
                         break;

@@ -224,6 +224,8 @@ namespace Yuri.YuriInterpreter.ILPackage
         act_se,
         // 播放音乐
         act_bgm,
+        // 播放bgs
+        act_bgs,
         // 停止音乐
         act_stopbgm,
         // 停止bgs
