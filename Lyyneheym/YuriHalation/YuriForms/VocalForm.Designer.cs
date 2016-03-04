@@ -1,4 +1,4 @@
-﻿namespace Yuri.YuriForms
+﻿namespace YuriHalation.YuriForms
 {
     partial class VocalForm
     {

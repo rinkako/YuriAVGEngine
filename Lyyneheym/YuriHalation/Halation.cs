@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using YuriHalation;
+using YuriHalation.YuriForms;
 using Yuri.YuriHalation.ScriptPackage;
 using Yuri.YuriHalation.HalationCore;
 using Yuri.YuriHalation.Command;
-using Yuri.YuriForms;
 
 namespace Yuri
 {

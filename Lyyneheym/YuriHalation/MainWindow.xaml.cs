@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Yuri;
-using Yuri.YuriForms;
+using YuriHalation.YuriForms;
 
 namespace YuriHalation
 {

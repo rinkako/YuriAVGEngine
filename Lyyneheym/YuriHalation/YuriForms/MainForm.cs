@@ -4,8 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using Yuri;
 
-namespace Yuri.YuriForms
+namespace YuriHalation.YuriForms
 {
     public partial class MainForm : Form
     {
@@ -78,7 +79,7 @@ namespace Yuri.YuriForms
                 var allAct = Halation.currentCodePackage.GetAction();
                 for (int i = this.codeListBox.SelectedIndex + 1; i < allAct.Count; i++)
                 {
-                    if (act.indent == allAct[i].indent && allAct[i].nodeType == YuriHalation.ScriptPackage.ActionPackageType.act_endfor)
+                    if (act.indent == allAct[i].indent && allAct[i].nodeType == Yuri.YuriHalation.ScriptPackage.ActionPackageType.act_endfor)
                     {
                         for (int j = this.codeListBox.SelectedIndex; j <= i; j++)
                         {

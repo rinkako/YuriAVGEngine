@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using Yuri;
 using Yuri.YuriHalation.HalationCore;
 
-namespace Yuri.YuriForms
+namespace YuriHalation.YuriForms
 {
     public partial class NewProjectForm : Form
     {

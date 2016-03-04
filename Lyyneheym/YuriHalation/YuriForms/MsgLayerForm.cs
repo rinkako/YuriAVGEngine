@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using Yuri;
 
-namespace Yuri.YuriForms
+namespace YuriHalation.YuriForms
 {
     public partial class MsgLayerForm : Form
     {

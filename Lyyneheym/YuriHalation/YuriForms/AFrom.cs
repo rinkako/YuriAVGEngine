@@ -6,8 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Yuri;
 
-namespace Yuri.YuriForms
+namespace YuriHalation.YuriForms
 {
     public partial class AFrom : Form
     {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using Yuri;
-using Yuri.YuriForms;
 using Yuri.YuriHalation;
 using YuriHalation;
+using YuriHalation.YuriForms;
 
 namespace Yuri.YuriHalation.Command
 {
