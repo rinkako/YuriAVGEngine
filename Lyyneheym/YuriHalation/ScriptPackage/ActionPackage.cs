@@ -49,6 +49,28 @@ namespace Yuri.YuriHalation.ScriptPackage
         }
 
         /// <summary>
+        /// 获取参数对齐空格
+        /// </summary>
+        public string GetSpace()
+        {
+            StringBuilder sb = new StringBuilder();
+            if (this.nodeType != ActionPackageType.NOP)
+            {
+                var chChar = ((ActionName)this.nodeType).ToString().Length * 2;
+                var delta = 12 - chChar;
+                for (int i = 0; i < delta; i++)
+                {
+                    sb.Append(' ');
+                }
+                return sb.ToString();
+            }
+            else
+            {
+                return "        ";
+            }
+        }
+
+        /// <summary>
         /// 获取动作名和参数之间的分割
         /// </summary>
         public string GetFlag()
@@ -70,6 +92,7 @@ namespace Yuri.YuriHalation.ScriptPackage
             switch (this.nodeType)
             {
                 case ActionPackageType.notation:
+                case ActionPackageType.script:
                 case ActionPackageType.act_dialog:
                     desSb.Append(String.Format("{0} ", this.argsDict["context"].valueExp));
                     break;
@@ -86,26 +109,26 @@ namespace Yuri.YuriHalation.ScriptPackage
                     desSb.Append(String.Format("{0} ", this.argsDict["link"].valueExp));
                     break;
                 case ActionPackageType.act_msglayer:
-                    desSb.Append(String.Format("目标层：{0} ", this.argsDict["id"].valueExp));
+                    desSb.Append(String.Format("目标层:{0} ", this.argsDict["id"].valueExp));
                     break;
                 case ActionPackageType.act_bgm:
                 case ActionPackageType.act_bgs:
                 case ActionPackageType.act_se:
                     desSb.Append(String.Format("{0} ", this.argsDict["filename"].valueExp));
-                    desSb.Append(String.Format("音量：{0} ", this.argsDict["vol"].valueExp));
+                    desSb.Append(String.Format("音量:{0} ", this.argsDict["vol"].valueExp));
                     break;
                 case ActionPackageType.act_label:
                     desSb.Append(String.Format("{0} ", this.argsDict["name"].valueExp));
                     break;
                 case ActionPackageType.act_jump:
-                    desSb.Append(String.Format("场景：{0} ", this.argsDict["filename"].valueExp));
+                    desSb.Append(String.Format("场景:{0} ", this.argsDict["filename"].valueExp));
                     if (this.argsDict["target"].valueExp != "")
                     {
-                        desSb.Append(String.Format("标签：{0} ", this.argsDict["target"].valueExp));
+                        desSb.Append(String.Format("标签:{0} ", this.argsDict["target"].valueExp));
                     }
                     if (this.argsDict["cond"].valueExp != "")
                     {
-                        desSb.Append(String.Format("条件：{0} ", this.argsDict["cond"].valueExp));
+                        desSb.Append(String.Format("条件:{0} ", this.argsDict["cond"].valueExp));
                     }
                     break;
                 case ActionPackageType.act_switch:
@@ -115,7 +138,28 @@ namespace Yuri.YuriHalation.ScriptPackage
                 case ActionPackageType.act_wait:
                     desSb.Append(String.Format("{0} ms ", this.argsDict["time"].valueExp));
                     break;
-
+                case ActionPackageType.act_deletebutton:
+                case ActionPackageType.act_deletecstand:
+                case ActionPackageType.act_deletepicture:
+                    desSb.Append(String.Format("{0} ", this.argsDict["id"].valueExp));
+                    break;
+                case ActionPackageType.act_trans:
+                    desSb.Append(String.Format("样式:{0} ", this.argsDict["name"].valueExp));
+                    break;
+                case ActionPackageType.act_msglayeropt:
+                    desSb.Append(String.Format("Target:{0} ", this.argsDict["target"].valueExp));
+                    if (this.argsDict["dash"].valueExp != "")
+                    {
+                        desSb.Append(String.Format("目标值:{0} ", this.argsDict["dash"].valueExp));
+                    }
+                    break;
+                case ActionPackageType.act_move:
+                    desSb.Append(String.Format("对象:[{0}:{1}] ", this.argsDict["name"].valueExp, this.argsDict["id"].valueExp));
+                    desSb.Append(String.Format("时间:{0}ms ", this.argsDict["time"].valueExp));
+                    desSb.Append(String.Format("属性:{0} ", this.argsDict["target"].valueExp));
+                    desSb.Append(String.Format("目标值:{0} ", this.argsDict["dash"].valueExp));
+                    desSb.Append(String.Format("加速度:{0} ", this.argsDict["acc"].valueExp));
+                    break;
             }
             return desSb.ToString();
         }
@@ -227,7 +271,9 @@ namespace Yuri.YuriHalation.ScriptPackage
         // 移除按钮
         act_deletebutton,
         // 注释
-        notation
+        notation,
+        // 代码片段
+        script
     }
 
     /// <summary>
@@ -318,7 +364,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         // 准备渐变
         act_freeze,
         // 执行渐变
-        执行渐变,
+        执行过渡,
         // 按钮
         放置按钮,
         // 对话样式
@@ -336,6 +382,8 @@ namespace Yuri.YuriHalation.ScriptPackage
         // 移除按钮
         移除按钮,
         // 注释
-        注释
+        注释,
+        // 代码片段
+        代码片段
     }
 }

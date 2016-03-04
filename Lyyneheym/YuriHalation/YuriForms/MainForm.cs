@@ -28,7 +28,7 @@ namespace Yuri.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            DialogForm formDialog = new DialogForm();
+            DialogForm formDialog = new DialogForm("显示对话");
             formDialog.ShowDialog(this);
         }
 
@@ -68,7 +68,25 @@ namespace Yuri.YuriForms
         /// </summary>
         private void codeListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.actionGroupBox.Enabled = this.codeListBox.SelectedIndices.Count == 1;
+            // 可插入
+            this.actionGroupBox.Enabled = this.codeListBox.Enabled;
+            // 语句块选择
+            string itemStr = this.codeListBox.SelectedItem.ToString();
+            if (itemStr.Trim().Substring(1) == "循环")
+            {
+                var act = Halation.currentCodePackage.GetAction(this.codeListBox.SelectedIndex);
+                var allAct = Halation.currentCodePackage.GetAction();
+                for (int i = this.codeListBox.SelectedIndex + 1; i < allAct.Count; i++)
+                {
+                    if (act.indent == allAct[i].indent && allAct[i].nodeType == YuriHalation.ScriptPackage.ActionPackageType.act_endfor)
+                    {
+                        for (int j = this.codeListBox.SelectedIndex; j <= i; j++)
+                        {
+                            this.codeListBox.SelectedIndices.Add(j);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -100,30 +118,41 @@ namespace Yuri.YuriForms
             if (e.Index > -1)
             {
                 string itemFull = listBox.Items[e.Index].ToString();
-                switch ((itemFull.Split('\t')[0]).TrimStart().Substring(1))
+                string trimItem = itemFull.Trim().Split(' ')[0];
+                if (trimItem.Length == 0)
                 {
-                    case "角色状态":
-                        FontBrush = Brushes.Brown;
-                        break;
-                    case "开关操作":
-                    case "变量操作":
-                        FontBrush = Brushes.Red;
-                        break;
-                    case "标签":
-                    case "标签跳转":
-                        FontBrush = Brushes.Orange;
-                        break;
-                    case "注释":
-                        FontBrush = Brushes.Green;
-                        break;
-                    case "循环":
-                    case "以上反复":
-                    case "中断循环":
-                        FontBrush = Brushes.Blue;
-                        break;
-                    default:
-                        FontBrush = Brushes.Black;
-                        break;
+                    FontBrush = Brushes.Black;
+                }
+                else
+                {
+                    switch (trimItem.Substring(1))
+                    {
+                        case "角色状态":
+                            FontBrush = Brushes.Brown;
+                            break;
+                        case "开关操作":
+                        case "变量操作":
+                            FontBrush = Brushes.Red;
+                            break;
+                        case "标签":
+                        case "标签跳转":
+                            FontBrush = Brushes.Orange;
+                            break;
+                        case "注释":
+                            FontBrush = Brushes.Green;
+                            break;
+                        case "循环":
+                        case "以上反复":
+                        case "中断循环":
+                            FontBrush = Brushes.Blue;
+                            break;
+                        case "代码片段":
+                            FontBrush = Brushes.Gray;
+                            break;
+                        default:
+                            FontBrush = Brushes.Black;
+                            break;
+                    }
                 }
                 e.DrawBackground();
                 e.Graphics.DrawString(itemFull, e.Font, FontBrush, e.Bounds);
@@ -359,11 +388,102 @@ namespace Yuri.YuriForms
             this.core.DashFor();
         }
 
+        /// <summary>
+        /// 按钮：代码片段
+        /// </summary>
+        private void button33_Click(object sender, EventArgs e)
+        {
+            DialogForm df = new DialogForm("代码片段");
+            df.ShowDialog(this);
+        }
 
+        /// <summary>
+        /// 按钮：移除图片
+        /// </summary>
+        private void button32_Click(object sender, EventArgs e)
+        {
+            DeleteViewForm dvf = new DeleteViewForm(0);
+            dvf.ShowDialog(this);
+        }
 
+        /// <summary>
+        /// 按钮：移除按钮
+        /// </summary>
+        private void button31_Click(object sender, EventArgs e)
+        {
+            DeleteViewForm dvf = new DeleteViewForm(2);
+            dvf.ShowDialog(this);
+        }
 
+        /// <summary>
+        /// 按钮：等待动画结束
+        /// </summary>
+        private void button11_Click(object sender, EventArgs e)
+        {
+            this.core.DashWaitani();
+        }
 
+        /// <summary>
+        /// 按钮：过渡
+        /// </summary>
+        private void button9_Click(object sender, EventArgs e)
+        {
+            TransForm tf = new TransForm();
+            tf.ShowDialog(this);
+        }
 
+        /// <summary>
+        /// 按钮：修改文字层属性
+        /// </summary>
+        private void button3_Click(object sender, EventArgs e)
+        {
+            MsgLayerOptForm mlof = new MsgLayerOptForm();
+            mlof.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：动画
+        /// </summary>
+        private void button12_Click(object sender, EventArgs e)
+        {
+            MoveForm mf = new MoveForm();
+            mf.ShowDialog(this);
+        }
+        
+        /// <summary>
+        /// 菜单：退出
+        /// </summary>
+        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dr = MessageBox.Show("确定要退出吗" + Environment.NewLine + "未保存的工作将会丢失", "退出Halation",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            if (dr == System.Windows.Forms.DialogResult.OK)
+            {
+                Environment.Exit(0);
+            }
+        }
+
+        /// <summary>
+        /// 菜单：保存
+        /// </summary>
+        private void 保存ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.core.SaveProject();
+        }
+
+        /// <summary>
+        /// 菜单：打开
+        /// </summary>
+        private void 打开ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FileDialog fd = new OpenFileDialog();
+            fd.Filter = "Halation工程|*.yrproj";
+            fd.ShowDialog(this);
+            if (fd.FileName != "")
+            {
+                this.core.LoadProject(fd.FileName);
+            }
+        }
 
 
 

@@ -41,7 +41,7 @@ namespace Yuri.YuriHalation.Command
             };
             this.parent.AddAction(ap, this.commandLine);
             HalationViewCommand.AddItemToCodeListbox(this.commandLine, ap.indent,
-                String.Format("◆{0}\t{1}", ap.GetActionName(), ap.GetParaDescription()));
+                String.Format("◆{0}{1}{2}", ap.GetActionName(), ap.GetSpace(), ap.GetParaDescription()));
         }
 
         /// <summary>

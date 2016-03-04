@@ -749,10 +749,10 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 演绎函数：执行过渡
         /// </summary>
-        /// <param name="transName">效果的名称</param>
+        /// <param name="transName">效果的减缩名字</param>
         private void Trans(string transName)
         {
-            this.viewMana.ApplyTransition(transName);
+            this.viewMana.ApplyTransition(transName + "Transition");
         }
 
         /// <summary>

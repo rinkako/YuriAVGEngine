@@ -157,6 +157,7 @@
             this.打开ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.打开ToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.打开ToolStripMenuItem.Text = "打开";
+            this.打开ToolStripMenuItem.Click += new System.EventHandler(this.打开ToolStripMenuItem_Click);
             // 
             // 保存ToolStripMenuItem
             // 
@@ -164,6 +165,7 @@
             this.保存ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.保存ToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.保存ToolStripMenuItem.Text = "保存";
+            this.保存ToolStripMenuItem.Click += new System.EventHandler(this.保存ToolStripMenuItem_Click);
             // 
             // 另存为ToolStripMenuItem
             // 
@@ -183,6 +185,7 @@
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
             this.退出ToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.退出ToolStripMenuItem.Text = "退出";
+            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
             // 编辑ToolStripMenuItem
             // 
@@ -514,6 +517,7 @@
             this.button33.TabIndex = 33;
             this.button33.Text = "代码片段";
             this.button33.UseVisualStyleBackColor = true;
+            this.button33.Click += new System.EventHandler(this.button33_Click);
             // 
             // button34
             // 
@@ -533,6 +537,7 @@
             this.button31.TabIndex = 31;
             this.button31.Text = "移除按钮";
             this.button31.UseVisualStyleBackColor = true;
+            this.button31.Click += new System.EventHandler(this.button31_Click);
             // 
             // button32
             // 
@@ -542,6 +547,7 @@
             this.button32.TabIndex = 30;
             this.button32.Text = "移除图片";
             this.button32.UseVisualStyleBackColor = true;
+            this.button32.Click += new System.EventHandler(this.button32_Click);
             // 
             // button29
             // 
@@ -727,6 +733,7 @@
             this.button11.TabIndex = 11;
             this.button11.Text = "等待动画结束";
             this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // button12
             // 
@@ -736,6 +743,7 @@
             this.button12.TabIndex = 10;
             this.button12.Text = "动画";
             this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // button9
             // 
@@ -745,6 +753,7 @@
             this.button9.TabIndex = 9;
             this.button9.Text = "过渡";
             this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // button10
             // 
@@ -801,6 +810,7 @@
             this.button3.TabIndex = 3;
             this.button3.Text = "修改文字层属性";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 

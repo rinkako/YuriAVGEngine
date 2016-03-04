@@ -17,9 +17,10 @@ namespace Yuri.YuriForms
         /// <summary>
         /// 构造器
         /// </summary>
-        public DialogForm()
+        public DialogForm(string text)
         {
             InitializeComponent();
+            this.Text = text;
         }
 
         /// <summary>
@@ -27,13 +28,15 @@ namespace Yuri.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            core.DashDialog(this.textBox1.Text);
+            if (this.Text == "显示对话")
+            {
+                Halation.GetInstance().DashDialog(this.textBox1.Text);
+            }
+            else
+            {
+                Halation.GetInstance().DashScript(this.textBox1.Text);
+            }
             this.Close();
         }
-
-        /// <summary>
-        /// 控制器引用
-        /// </summary>
-        private Halation core = Halation.GetInstance();
     }
 }

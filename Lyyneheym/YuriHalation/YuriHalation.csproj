@@ -57,9 +57,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\MoveCommand.cs" />
     <Compile Include="Command\ACommand.cs" />
+    <Compile Include="Command\DeletebuttonCommand.cs" />
+    <Compile Include="Command\DeletestandCommand.cs" />
+    <Compile Include="Command\DeletepicCommand.cs" />
+    <Compile Include="Command\TransCommand.cs" />
+    <Compile Include="Command\ScriptCommand.cs" />
     <Compile Include="Command\ForCommand.cs" />
     <Compile Include="Command\WaitCommand.cs" />
+    <Compile Include="Command\WaitaniCommand.cs" />
     <Compile Include="Command\WaituserCommand.cs" />
     <Compile Include="Command\ReturnCommand.cs" />
     <Compile Include="Command\NotationCommand.cs" />
@@ -130,6 +137,12 @@
     <Compile Include="YuriForms\GlobalConfigForm.Designer.cs">
       <DependentUpon>GlobalConfigForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="YuriForms\MoveForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\MoveForm.Designer.cs">
+      <DependentUpon>MoveForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="YuriForms\MsgLayerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -165,6 +178,12 @@
     </Compile>
     <Compile Include="YuriForms\SwitchesForm.Designer.cs">
       <DependentUpon>SwitchesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\TransForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\TransForm.Designer.cs">
+      <DependentUpon>TransForm.cs</DependentUpon>
     </Compile>
     <Compile Include="YuriForms\VarForm.cs">
       <SubType>Form</SubType>
@@ -287,6 +306,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\MoveForm.resx">
+      <DependentUpon>MoveForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\MsgLayerForm.resx">
       <DependentUpon>MsgLayerForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -304,6 +326,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\SwitchesForm.resx">
       <DependentUpon>SwitchesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\TransForm.resx">
+      <DependentUpon>TransForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\VarForm.resx">
       <DependentUpon>VarForm.cs</DependentUpon>

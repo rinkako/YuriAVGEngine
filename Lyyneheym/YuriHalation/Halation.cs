@@ -36,7 +36,10 @@ namespace Yuri
         /// </summary>
         public void RefreshProjectTree(string selectSc = "main")
         {
-            Halation.mainView.projTreeView.Nodes.Clear();
+            if (Halation.projectTreeRoot != null)
+            {
+                Halation.mainView.projTreeView.Nodes.Remove(Halation.projectTreeRoot);
+            }
             Halation.projectTreeRoot = Halation.mainView.projTreeView.Nodes.Add(Halation.projectName);
             TreeNode selectNode = null;
             foreach (var sc in Halation.project.GetScene())
@@ -56,6 +59,7 @@ namespace Yuri
                 }
             }
             Halation.mainView.projTreeView.SelectedNode = selectNode != null ? selectNode : Halation.projectTreeMain;
+            Halation.mainView.projTreeView.ExpandAll();
         }
 
         /// <summary>
@@ -77,7 +81,6 @@ namespace Yuri
                     HalationViewCommand.AddItemToCodeListbox(-1, act.indent, "◆ ");
                 }
             }
-            Halation.mainView.projTreeView.ExpandAll();
             this.RefreshRedoUndo();
         }
 
@@ -299,9 +302,51 @@ namespace Yuri
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
+        public void DashWaitani()
+        {
+            IHalationCommand cmd = new WaitaniCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
         public void DashFor()
         {
             IHalationCommand cmd = new ForCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashScript(string context)
+        {
+            IHalationCommand cmd = new ScriptCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, context);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashDeletepicture(string id)
+        {
+            IHalationCommand cmd = new DeletepicCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashDeletecstand(string id)
+        {
+            IHalationCommand cmd = new DeletestandCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashDeletebutton(string id)
+        {
+            IHalationCommand cmd = new DeletebuttonCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashTrans(string type)
+        {
+            IHalationCommand cmd = new TransCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, type);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashMove(string name, string id, string time, string target, string dash, string acc)
+        {
+            IHalationCommand cmd = new MoveCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, name, id, time, target, dash, acc);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
@@ -331,6 +376,11 @@ namespace Yuri
             return HalationInvoker.IsAbleRedo(Halation.currentScriptName);
         }
 
+        /// <summary>
+        /// 建立一个新工程
+        /// </summary>
+        /// <param name="path">要建立工程的目录</param>
+        /// <param name="projName">工程名称</param>
         public void NewProject(string path, string projName)
         {
             FileManager.Instance.CreateInitFolder(string.Format("{0}\\{1}", path, projName));
@@ -340,6 +390,35 @@ namespace Yuri
             Halation.mainView.Text = String.Format("Yuri Halation - [{0}]", Halation.projectName);
             FileManager.serialization(Halation.project, string.Format("{0}\\{1}\\game.yrproj", path, projName));
             Halation.projectFolder = string.Format("{0}\\{1}", path, projName);
+        }
+
+        /// <summary>
+        /// 保存工程
+        /// </summary>
+        public void SaveProject()
+        {
+            FileManager.serialization(Halation.project, string.Format("{0}\\game.yrproj", projectFolder));
+        }
+
+        /// <summary>
+        /// 读取工程
+        /// </summary>
+        /// <param name="projFile">工程文件</param>
+        public void LoadProject(string projFile)
+        {
+            FileInfo fileinf = new FileInfo(projFile);
+            Halation.projectName = fileinf.Directory.Name;
+            Halation.projectFolder = fileinf.DirectoryName;
+            Halation.project = (ProjectPackage)FileManager.unserialization(projFile);
+            foreach (var sc in Halation.project.GetScene())
+            {
+                HalationInvoker.AddScene(sc.sceneName);
+                foreach (var fc in sc.GetFunc())
+                {
+                    HalationInvoker.AddScene(fc.functionCallName);
+                }
+            }
+            this.RefreshProjectTree("main");
         }
 
         /// <summary>
