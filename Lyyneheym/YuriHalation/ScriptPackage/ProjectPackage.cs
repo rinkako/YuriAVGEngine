@@ -17,6 +17,10 @@ namespace Yuri.YuriHalation.ScriptPackage
         public ProjectPackage(string proj)
         {
             this.projectName = proj;
+            for (int i = 0; i < this.Config.MaxSwitchCount; i++)
+            {
+                this.SwitchDescriptorList.Add(String.Empty);
+            }
         }
 
         /// <summary>

@@ -100,12 +100,30 @@ namespace Yuri.YuriForms
             if (e.Index > -1)
             {
                 string itemFull = listBox.Items[e.Index].ToString();
-                switch ((itemFull.Split('\t')[0]).Substring(1))
+                switch ((itemFull.Split('\t')[0]).TrimStart().Substring(1))
                 {
-                    case "角色状态": FontBrush = Brushes.Brown; break;
-                    case "Major": FontBrush = Brushes.Red; break;
-                    case "标签": FontBrush = Brushes.Orange; break;
-                    default: FontBrush = Brushes.Black; break;
+                    case "角色状态":
+                        FontBrush = Brushes.Brown;
+                        break;
+                    case "开关操作":
+                    case "变量操作":
+                        FontBrush = Brushes.Red;
+                        break;
+                    case "标签":
+                    case "标签跳转":
+                        FontBrush = Brushes.Orange;
+                        break;
+                    case "注释":
+                        FontBrush = Brushes.Green;
+                        break;
+                    case "循环":
+                    case "以上反复":
+                    case "中断循环":
+                        FontBrush = Brushes.Blue;
+                        break;
+                    default:
+                        FontBrush = Brushes.Black;
+                        break;
                 }
                 e.DrawBackground();
                 e.Graphics.DrawString(itemFull, e.Font, FontBrush, e.Bounds);
@@ -181,7 +199,7 @@ namespace Yuri.YuriForms
         /// </summary>
         private void button18_Click(object sender, EventArgs e)
         {
-            Halation.GetInstance().DashStopBGM();
+            this.core.DashStopBGM();
         }
 
         /// <summary>
@@ -189,7 +207,7 @@ namespace Yuri.YuriForms
         /// </summary>
         private void button17_Click(object sender, EventArgs e)
         {
-            Halation.GetInstance().DashStopBGS();
+            this.core.DashStopBGS();
         }
 
         /// <summary>
@@ -289,6 +307,56 @@ namespace Yuri.YuriForms
         {
             SwitchesForm sf = new SwitchesForm();
             sf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：注释
+        /// </summary>
+        private void button23_Click(object sender, EventArgs e)
+        {
+            NotationForm nf = new NotationForm();
+            nf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：中断循环
+        /// </summary>
+        private void button27_Click(object sender, EventArgs e)
+        {
+            this.core.DashBreak();
+        }
+
+        /// <summary>
+        /// 按钮：退出当前场景
+        /// </summary>
+        private void button34_Click(object sender, EventArgs e)
+        {
+            this.core.DashReturn();
+        }
+
+        /// <summary>
+        /// 按钮：等待用户操作
+        /// </summary>
+        private void button30_Click(object sender, EventArgs e)
+        {
+            this.core.DashWaituser();
+        }
+
+        /// <summary>
+        /// 按钮：延时等待
+        /// </summary>
+        private void button25_Click(object sender, EventArgs e)
+        {
+            WaitForm wf = new WaitForm();
+            wf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：循环
+        /// </summary>
+        private void button28_Click(object sender, EventArgs e)
+        {
+            this.core.DashFor();
         }
 
 

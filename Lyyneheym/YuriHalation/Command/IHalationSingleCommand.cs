@@ -45,6 +45,15 @@ namespace Yuri.YuriHalation.Command
         }
 
         /// <summary>
+        /// 撤销这条指令
+        /// </summary>
+        public void Undo()
+        {
+            this.parent.DeleteAction(this.commandLine);
+            HalationViewCommand.RemoveItemFromCodeListbox(this.commandLine);
+        }
+
+        /// <summary>
         /// 初始化执行参数
         /// </summary>
         /// <param name="argv">参数列表</param>
@@ -64,15 +73,6 @@ namespace Yuri.YuriHalation.Command
         /// 命令的类型
         /// </summary>
         private ActionPackageType apType;
-
-        /// <summary>
-        /// 撤销这条指令
-        /// </summary>
-        public void Undo()
-        {
-            this.parent.DeleteAction(this.commandLine);
-            HalationViewCommand.RemoveItemFromCodeListbox(this.commandLine);
-        }
 
         /// <summary>
         /// 属于的场景或函数

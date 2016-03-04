@@ -67,8 +67,15 @@ namespace Yuri
             var ActList = Halation.currentCodePackage.GetAction();
             foreach (var act in ActList)
             {
-                HalationViewCommand.AddItemToCodeListbox(-1, act.indent,
-                    String.Format("{0}{1}  {2}", act.GetFlag(), act.GetActionName(), act.GetParaDescription()));
+                if (act.nodeName != "pad")
+                {
+                    HalationViewCommand.AddItemToCodeListbox(-1, act.indent,
+                        String.Format("{0}{1}  {2}", act.GetFlag(), act.GetActionName(), act.GetParaDescription()));
+                }
+                else
+                {
+                    HalationViewCommand.AddItemToCodeListbox(-1, act.indent, "◆ ");
+                }
             }
             Halation.mainView.projTreeView.ExpandAll();
             this.RefreshRedoUndo();
@@ -253,6 +260,48 @@ namespace Yuri
         public void DashJump(string target, string filename = "", string cond = "")
         {
             IHalationCommand cmd = new JumpCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, filename, target, cond);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashSwitches(string id, string state)
+        {
+            IHalationCommand cmd = new SwitchCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, state);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashNotation(string context)
+        {
+            IHalationCommand cmd = new NotationCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, context);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashBreak()
+        {
+            IHalationCommand cmd = new BreakCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashReturn()
+        {
+            IHalationCommand cmd = new ReturnCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashWaituser()
+        {
+            IHalationCommand cmd = new WaituserCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashWait(string span)
+        {
+            IHalationCommand cmd = new WaitCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, span);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashFor()
+        {
+            IHalationCommand cmd = new ForCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 

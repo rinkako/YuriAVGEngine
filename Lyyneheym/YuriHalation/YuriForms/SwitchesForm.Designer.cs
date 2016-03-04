@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.switchDataGridView = new System.Windows.Forms.DataGridView();
-            this.开关序号 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.描述 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button1 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.开关序号 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.描述 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.switchDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,25 +54,6 @@
             this.switchDataGridView.RowTemplate.Height = 23;
             this.switchDataGridView.Size = new System.Drawing.Size(351, 297);
             this.switchDataGridView.TabIndex = 2;
-            // 
-            // 开关序号
-            // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.开关序号.DefaultCellStyle = dataGridViewCellStyle2;
-            this.开关序号.Frozen = true;
-            this.开关序号.HeaderText = "序号";
-            this.开关序号.Name = "开关序号";
-            this.开关序号.ReadOnly = true;
-            this.开关序号.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.开关序号.Width = 40;
-            // 
-            // 描述
-            // 
-            this.描述.HeaderText = "描述";
-            this.描述.Name = "描述";
-            this.描述.ReadOnly = true;
-            this.描述.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.描述.Width = 290;
             // 
             // button1
             // 
@@ -104,6 +85,26 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "将选中的开关设定为：";
             // 
+            // 开关序号
+            // 
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.开关序号.DefaultCellStyle = dataGridViewCellStyle1;
+            this.开关序号.Frozen = true;
+            this.开关序号.HeaderText = "序号";
+            this.开关序号.Name = "开关序号";
+            this.开关序号.ReadOnly = true;
+            this.开关序号.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.开关序号.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.开关序号.Width = 40;
+            // 
+            // 描述
+            // 
+            this.描述.HeaderText = "描述";
+            this.描述.Name = "描述";
+            this.描述.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.描述.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.描述.Width = 290;
+            // 
             // SwitchesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -129,10 +130,10 @@
         #endregion
 
         private System.Windows.Forms.DataGridView switchDataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 开关序号;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 描述;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 开关序号;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 描述;
     }
 }

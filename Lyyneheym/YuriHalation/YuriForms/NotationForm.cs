@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace Yuri.YuriForms
 {
-    public partial class WaitForm : Form
+    public partial class NotationForm : Form
     {
-        public WaitForm()
+        public NotationForm()
         {
             InitializeComponent();
         }
@@ -21,9 +21,8 @@ namespace Yuri.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            Halation.GetInstance().DashWait(this.numericUpDown1.Value.ToString());
+            Halation.GetInstance().DashNotation(this.textBox1.Text);
             this.Close();
         }
-
     }
 }

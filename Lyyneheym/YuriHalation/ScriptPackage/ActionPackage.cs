@@ -69,8 +69,9 @@ namespace Yuri.YuriHalation.ScriptPackage
             StringBuilder desSb = new StringBuilder();
             switch (this.nodeType)
             {
+                case ActionPackageType.notation:
                 case ActionPackageType.act_dialog:
-                    desSb.Append(String.Format("\"{0}\" ", this.argsDict["context"].valueExp));
+                    desSb.Append(String.Format("{0} ", this.argsDict["context"].valueExp));
                     break;
                 case ActionPackageType.act_a:
                     desSb.Append(String.Format("名字:{0} ", this.argsDict["name"].valueExp));
@@ -107,6 +108,14 @@ namespace Yuri.YuriHalation.ScriptPackage
                         desSb.Append(String.Format("条件：{0} ", this.argsDict["cond"].valueExp));
                     }
                     break;
+                case ActionPackageType.act_switch:
+                    desSb.Append(String.Format("[{0}:{1}] 切换到 {2} ", this.argsDict["id"].valueExp,
+                        Halation.project.SwitchDescriptorList[Convert.ToInt32(this.argsDict["id"].valueExp)], this.argsDict["dash"].valueExp));
+                    break;
+                case ActionPackageType.act_wait:
+                    desSb.Append(String.Format("{0} ms ", this.argsDict["time"].valueExp));
+                    break;
+
             }
             return desSb.ToString();
         }
@@ -216,7 +225,9 @@ namespace Yuri.YuriHalation.ScriptPackage
         // 描绘字符串
         act_draw,
         // 移除按钮
-        act_deletebutton
+        act_deletebutton,
+        // 注释
+        notation
     }
 
     /// <summary>
@@ -287,17 +298,17 @@ namespace Yuri.YuriHalation.ScriptPackage
         // 剧本跳转
         act_scene,
         // 开关操作
-        开关,
+        开关操作,
         // 变量操作
-        变量,
+        变量操作,
         // 退出循环
         中断循环,
         // 退出程序
         结束程序,
         // 中断事件处理
-        中断事件处理,
+        退出当前场景,
         // 等待
-        等待,
+        延时等待,
         // 选择支
         选择支,
         // 函数调用
@@ -309,7 +320,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         // 执行渐变
         执行渐变,
         // 按钮
-        按钮,
+        放置按钮,
         // 对话样式
         act_style,
         // 切换文字层
@@ -323,6 +334,8 @@ namespace Yuri.YuriHalation.ScriptPackage
         // 描绘字符串
         描绘字符串,
         // 移除按钮
-        移除按钮
+        移除按钮,
+        // 注释
+        注释
     }
 }

@@ -337,28 +337,28 @@
             // bGMToolStripMenuItem
             // 
             this.bGMToolStripMenuItem.Name = "bGMToolStripMenuItem";
-            this.bGMToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.bGMToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.bGMToolStripMenuItem.Text = "BGM";
             this.bGMToolStripMenuItem.Click += new System.EventHandler(this.bGMToolStripMenuItem_Click);
             // 
             // bGSToolStripMenuItem
             // 
             this.bGSToolStripMenuItem.Name = "bGSToolStripMenuItem";
-            this.bGSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.bGSToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.bGSToolStripMenuItem.Text = "BGS";
             this.bGSToolStripMenuItem.Click += new System.EventHandler(this.bGSToolStripMenuItem_Click);
             // 
             // sEToolStripMenuItem
             // 
             this.sEToolStripMenuItem.Name = "sEToolStripMenuItem";
-            this.sEToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.sEToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.sEToolStripMenuItem.Text = "SE";
             this.sEToolStripMenuItem.Click += new System.EventHandler(this.sEToolStripMenuItem_Click);
             // 
             // vOCALToolStripMenuItem
             // 
             this.vOCALToolStripMenuItem.Name = "vOCALToolStripMenuItem";
-            this.vOCALToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.vOCALToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.vOCALToolStripMenuItem.Text = "VOCAL";
             this.vOCALToolStripMenuItem.Click += new System.EventHandler(this.vOCALToolStripMenuItem_Click);
             // 
@@ -523,6 +523,7 @@
             this.button34.TabIndex = 32;
             this.button34.Text = "退出当前场景";
             this.button34.UseVisualStyleBackColor = true;
+            this.button34.Click += new System.EventHandler(this.button34_Click);
             // 
             // button31
             // 
@@ -559,6 +560,7 @@
             this.button30.TabIndex = 28;
             this.button30.Text = "等待用户操作";
             this.button30.UseVisualStyleBackColor = true;
+            this.button30.Click += new System.EventHandler(this.button30_Click);
             // 
             // button27
             // 
@@ -568,6 +570,7 @@
             this.button27.TabIndex = 27;
             this.button27.Text = "中断循环";
             this.button27.UseVisualStyleBackColor = true;
+            this.button27.Click += new System.EventHandler(this.button27_Click);
             // 
             // button28
             // 
@@ -577,6 +580,7 @@
             this.button28.TabIndex = 26;
             this.button28.Text = "循环";
             this.button28.UseVisualStyleBackColor = true;
+            this.button28.Click += new System.EventHandler(this.button28_Click);
             // 
             // button25
             // 
@@ -584,8 +588,9 @@
             this.button25.Name = "button25";
             this.button25.Size = new System.Drawing.Size(100, 28);
             this.button25.TabIndex = 25;
-            this.button25.Text = "等待";
+            this.button25.Text = "延时等待";
             this.button25.UseVisualStyleBackColor = true;
+            this.button25.Click += new System.EventHandler(this.button25_Click);
             // 
             // button26
             // 
@@ -604,6 +609,7 @@
             this.button23.TabIndex = 23;
             this.button23.Text = "注释";
             this.button23.UseVisualStyleBackColor = true;
+            this.button23.Click += new System.EventHandler(this.button23_Click);
             // 
             // button24
             // 
@@ -611,7 +617,7 @@
             this.button24.Name = "button24";
             this.button24.Size = new System.Drawing.Size(100, 28);
             this.button24.TabIndex = 22;
-            this.button24.Text = "按钮";
+            this.button24.Text = "放置按钮";
             this.button24.UseVisualStyleBackColor = true;
             // 
             // button21
