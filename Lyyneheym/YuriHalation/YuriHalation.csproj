@@ -173,6 +173,12 @@
     <Compile Include="YuriForms\NotationForm.Designer.cs">
       <DependentUpon>NotationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="YuriForms\PicResourceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\PicResourceForm.Designer.cs">
+      <DependentUpon>PicResourceForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="YuriForms\SwitchesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -323,6 +329,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\NotationForm.resx">
       <DependentUpon>NotationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\PicResourceForm.resx">
+      <DependentUpon>PicResourceForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\SwitchesForm.resx">
       <DependentUpon>SwitchesForm.cs</DependentUpon>

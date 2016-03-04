@@ -290,7 +290,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void bGSToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MusicForm mf = new MusicForm("99", 1);
+            MusicForm mf = new MusicForm("音乐管理", 1);
             mf.ShowDialog(this);
         }
 
@@ -484,6 +484,33 @@ namespace YuriHalation.YuriForms
             {
                 this.core.LoadProject(fd.FileName);
             }
+        }
+
+        /// <summary>
+        /// 菜单：背景
+        /// </summary>
+        private void 背景ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PicResourceForm prf = new PicResourceForm(2);
+            prf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 菜单：立绘
+        /// </summary>
+        private void 立绘ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PicResourceForm prf = new PicResourceForm(1);
+            prf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 菜单：图片
+        /// </summary>
+        private void 图片ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PicResourceForm prf = new PicResourceForm(0);
+            prf.ShowDialog(this);
         }
 
 
