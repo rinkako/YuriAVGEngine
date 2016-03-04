@@ -16,7 +16,7 @@ namespace YuriHalation.YuriForms
         /// <summary>
         /// 图像资源管理窗体
         /// </summary>
-        public PicResourceForm(int index)
+        public PicResourceForm(string title, int index)
         {
             InitializeComponent();
             // 加载文件夹
@@ -25,6 +25,16 @@ namespace YuriHalation.YuriForms
             this.dirInfoBackground = new DirectoryInfo(this.PicDir + @"\background");
             // 选择默认项
             this.comboBox1.SelectedIndex = index;
+            // 标题和模式
+            this.Text = title;
+            if (title != "图像资源管理器")
+            {
+                this.comboBox1.Enabled = false;
+            }
+            else
+            {
+                this.button1.Visible = false;
+            }
         }
 
         /// <summary>
@@ -59,9 +69,61 @@ namespace YuriHalation.YuriForms
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.pictureBox1.Image = new Bitmap(this.pathVect[this.listBox1.SelectedIndex]);
+            this.isZoom = false;
             this.panel1.AutoScrollPosition = new Point(0, 0);
             this.pictureBox1.Location = new Point(0, 0);
+            this.pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            this.button2.Text = "合适大小";    
         }
+
+        /// <summary>
+        /// 按钮：显示模式切换
+        /// </summary>
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.isZoom = !this.isZoom;
+            this.panel1.AutoScrollPosition = new Point(0, 0);
+            this.pictureBox1.Location = new Point(0, 0);
+            if (this.isZoom)
+            {
+                this.pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                this.pictureBox1.Size = this.panel1.Size;
+                this.button2.Text = "实际大小";
+            }
+            else
+            {
+                this.pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+                this.button2.Text = "合适大小";               
+            }
+        }
+
+        /// <summary>
+        /// 按钮：确定
+        /// </summary>
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (this.listBox1.SelectedIndex < 0)
+            {
+                MessageBox.Show("请选择图像");
+                return;
+            }
+            switch (this.Text)
+            {
+                case "选择背景":
+                    ((BgForm)this.Owner).GotFileName = this.listBox1.SelectedItem.ToString();
+                    break;
+                case "选择立绘":
+                    ((CStandForm)this.Owner).GotFileName = this.listBox1.SelectedItem.ToString();
+                    break;
+
+            }
+            this.Close();
+        }
+
+        /// <summary>
+        /// 指示浏览器是否为缩放模式
+        /// </summary>
+        private bool isZoom = false;
 
         /// <summary>
         /// 图片文件夹绝对路径

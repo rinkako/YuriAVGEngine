@@ -795,6 +795,7 @@
             this.button10.TabIndex = 8;
             this.button10.Text = "显示立绘";
             this.button10.UseVisualStyleBackColor = false;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // button7
             // 
@@ -805,6 +806,7 @@
             this.button7.TabIndex = 7;
             this.button7.Text = "显示背景";
             this.button7.UseVisualStyleBackColor = false;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button8
             // 

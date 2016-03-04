@@ -160,6 +160,23 @@ namespace Yuri.YuriHalation.ScriptPackage
                     desSb.Append(String.Format("目标值:{0} ", this.argsDict["dash"].valueExp));
                     desSb.Append(String.Format("加速度:{0} ", this.argsDict["acc"].valueExp));
                     break;
+                case ActionPackageType.act_bg:
+                    desSb.Append(String.Format("图层:{0} ", this.argsDict["id"].valueExp == "0" ? "背景" : "前景"));
+                    desSb.Append(String.Format("文件:{0} ", this.argsDict["filename"].valueExp));
+                    break;
+                case ActionPackageType.act_cstand:
+                    desSb.Append(String.Format("图层:{0} ", this.argsDict["id"].valueExp));
+                    desSb.Append(String.Format("角色:{0} ", this.argsDict["name"].valueExp));
+                    desSb.Append(String.Format("表情:{0} ", this.argsDict["face"].valueExp));
+                    if (this.argsDict["loc"].valueExp == "")
+                    {
+                        desSb.Append(String.Format("X:{0},Y:{1} ", this.argsDict["x"].valueExp, this.argsDict["y"].valueExp));
+                    }
+                    else
+                    {
+                        desSb.Append(String.Format("相对位置:{0} ", this.argsDict["loc"].valueExp));
+                    }
+                    break;
             }
             return desSb.ToString();
         }

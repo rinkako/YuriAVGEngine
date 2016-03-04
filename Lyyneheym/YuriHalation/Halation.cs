@@ -350,6 +350,17 @@ namespace Yuri
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
+        public void DashBg(string id, string filename)
+        {
+            IHalationCommand cmd = new BgCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, filename);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashCstand(string id, string name, string face, string x, string y, string loc)
+        {
+            IHalationCommand cmd = new CstandCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, name, face, x, y, loc);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
         #endregion
 
         #region 前端菜单相关

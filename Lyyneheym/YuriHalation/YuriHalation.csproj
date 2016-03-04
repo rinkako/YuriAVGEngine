@@ -57,6 +57,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\CstandCommand.cs" />
+    <Compile Include="Command\BgCommand.cs" />
     <Compile Include="Command\MoveCommand.cs" />
     <Compile Include="Command\ACommand.cs" />
     <Compile Include="Command\DeletebuttonCommand.cs" />
@@ -113,11 +115,23 @@
     <Compile Include="YuriForms\AddSceneForm.Designer.cs">
       <DependentUpon>AddSceneForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="YuriForms\BgForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\BgForm.Designer.cs">
+      <DependentUpon>BgForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="YuriForms\BranchForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="YuriForms\BranchForm.Designer.cs">
       <DependentUpon>BranchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\CStandForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\CStandForm.Designer.cs">
+      <DependentUpon>CStandForm.cs</DependentUpon>
     </Compile>
     <Compile Include="YuriForms\DrawStringForm.cs">
       <SubType>Form</SubType>
@@ -281,8 +295,14 @@
     <EmbeddedResource Include="YuriForms\AFrom.resx">
       <DependentUpon>AFrom.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\BgForm.resx">
+      <DependentUpon>BgForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\BranchForm.resx">
       <DependentUpon>BranchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\CStandForm.resx">
+      <DependentUpon>CStandForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\DeleteViewForm.resx">
       <DependentUpon>DeleteViewForm.cs</DependentUpon>

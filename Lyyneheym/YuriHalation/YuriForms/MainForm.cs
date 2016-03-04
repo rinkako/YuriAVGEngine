@@ -25,46 +25,6 @@ namespace YuriHalation.YuriForms
         }
 
         /// <summary>
-        /// 按钮：显示对话
-        /// </summary>
-        private void button1_Click(object sender, EventArgs e)
-        {
-            DialogForm formDialog = new DialogForm("显示对话");
-            formDialog.ShowDialog(this);
-        }
-
-        /// <summary>
-        /// 菜单按钮：撤销
-        /// </summary>
-        private void 撤销ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.menuStrip1.Items.Find("撤销ToolStripMenuItem", true)[0].Enabled = core.MenuUndo();
-            this.menuStrip1.Items.Find("重做ToolStripMenuItem", true)[0].Enabled = core.IsAbleRedo();
-        }
-
-        /// <summary>
-        /// 菜单按钮：重做
-        /// </summary>
-        private void 重做ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.menuStrip1.Items.Find("撤销ToolStripMenuItem", true)[0].Enabled = core.IsAbleUndo();
-            this.menuStrip1.Items.Find("重做ToolStripMenuItem", true)[0].Enabled = core.MenuRedo();
-        }
-
-        /// <summary>
-        /// 菜单按钮：新建
-        /// </summary>
-        private void 新建ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            NewProjectForm npf = new NewProjectForm();
-            npf.ShowDialog(this);
-            if (npf.InitSuccess)
-            {
-                core.RefreshProjectTree();
-            }
-        }
-
-        /// <summary>
         /// 代码编辑框选择项改变事件
         /// </summary>
         private void codeListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -180,21 +140,21 @@ namespace YuriHalation.YuriForms
         }
 
         /// <summary>
+        /// 按钮：显示对话
+        /// </summary>
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DialogForm formDialog = new DialogForm("显示对话");
+            formDialog.ShowDialog(this);
+        }
+
+        /// <summary>
         /// 按钮：状态变更
         /// </summary>
         private void button2_Click(object sender, EventArgs e)
         {
             AFrom af = new AFrom();
             af.ShowDialog(this);
-        }
-
-        /// <summary>
-        /// 菜单：全局设定
-        /// </summary>
-        private void 全局设定ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            GlobalConfigForm gcf = new GlobalConfigForm();
-            gcf.ShowDialog(this);
         }
 
         /// <summary>
@@ -274,42 +234,6 @@ namespace YuriHalation.YuriForms
         {
             VocalForm vf = new VocalForm();
             vf.ShowDialog(this);
-        }
-
-        /// <summary>
-        /// 菜单：BGM
-        /// </summary>
-        private void bGMToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MusicForm mf = new MusicForm("音乐管理", 0);
-            mf.ShowDialog(this);
-        }
-
-        /// <summary>
-        /// 菜单：BGS
-        /// </summary>
-        private void bGSToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MusicForm mf = new MusicForm("音乐管理", 1);
-            mf.ShowDialog(this);
-        }
-
-        /// <summary>
-        /// 菜单：SE
-        /// </summary>
-        private void sEToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MusicForm mf = new MusicForm("音乐管理", 2);
-            mf.ShowDialog(this);
-        }
-
-        /// <summary>
-        /// 菜单：Vocal
-        /// </summary>
-        private void vOCALToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MusicForm mf = new MusicForm("音乐管理", 3);
-            mf.ShowDialog(this);
         }
 
         /// <summary>
@@ -452,6 +376,101 @@ namespace YuriHalation.YuriForms
         }
         
         /// <summary>
+        /// 按钮：显示背景
+        /// </summary>
+        private void button7_Click(object sender, EventArgs e)
+        {
+            BgForm bf = new BgForm();
+            bf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：显示立绘
+        /// </summary>
+        private void button10_Click(object sender, EventArgs e)
+        {
+            CStandForm csf = new CStandForm();
+            csf.ShowDialog(this);
+        }
+
+        #region 菜单项
+        /// <summary>
+        /// 菜单：撤销
+        /// </summary>
+        private void 撤销ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.menuStrip1.Items.Find("撤销ToolStripMenuItem", true)[0].Enabled = core.MenuUndo();
+            this.menuStrip1.Items.Find("重做ToolStripMenuItem", true)[0].Enabled = core.IsAbleRedo();
+        }
+
+        /// <summary>
+        /// 菜单：重做
+        /// </summary>
+        private void 重做ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.menuStrip1.Items.Find("撤销ToolStripMenuItem", true)[0].Enabled = core.IsAbleUndo();
+            this.menuStrip1.Items.Find("重做ToolStripMenuItem", true)[0].Enabled = core.MenuRedo();
+        }
+
+        /// <summary>
+        /// 菜单：新建
+        /// </summary>
+        private void 新建ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewProjectForm npf = new NewProjectForm();
+            npf.ShowDialog(this);
+            if (npf.InitSuccess)
+            {
+                core.RefreshProjectTree();
+            }
+        }
+
+        /// <summary>
+        /// 菜单：全局设定
+        /// </summary>
+        private void 全局设定ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GlobalConfigForm gcf = new GlobalConfigForm();
+            gcf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 菜单：BGM
+        /// </summary>
+        private void bGMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MusicForm mf = new MusicForm("音乐管理", 0);
+            mf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 菜单：BGS
+        /// </summary>
+        private void bGSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MusicForm mf = new MusicForm("音乐管理", 1);
+            mf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 菜单：SE
+        /// </summary>
+        private void sEToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MusicForm mf = new MusicForm("音乐管理", 2);
+            mf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 菜单：Vocal
+        /// </summary>
+        private void vOCALToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MusicForm mf = new MusicForm("音乐管理", 3);
+            mf.ShowDialog(this);
+        }
+
+        /// <summary>
         /// 菜单：退出
         /// </summary>
         private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -491,7 +510,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void 背景ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PicResourceForm prf = new PicResourceForm(2);
+            PicResourceForm prf = new PicResourceForm("图像资源管理器", 2);
             prf.ShowDialog(this);
         }
 
@@ -500,7 +519,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void 立绘ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PicResourceForm prf = new PicResourceForm(1);
+            PicResourceForm prf = new PicResourceForm("图像资源管理器", 1);
             prf.ShowDialog(this);
         }
 
@@ -509,9 +528,12 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void 图片ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PicResourceForm prf = new PicResourceForm(0);
+            PicResourceForm prf = new PicResourceForm("图像资源管理器", 0);
             prf.ShowDialog(this);
         }
+        #endregion
+
+
 
 
 
