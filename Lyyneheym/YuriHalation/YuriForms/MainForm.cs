@@ -29,10 +29,19 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void codeListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // 可插入
+            // 跳过空的情况
+            if (this.codeListBox.SelectedItem == null) { return; }
+            // 可插入性
             this.actionGroupBox.Enabled = this.codeListBox.Enabled;
-            // 语句块选择
+            // 可选择性
             string itemStr = this.codeListBox.SelectedItem.ToString();
+            if (itemStr.TrimStart().StartsWith(":"))
+            {
+                this.codeListBox.SelectedIndices.Clear();
+                this.codeListBox.Refresh();
+                return;
+            }
+            // 连续选择嵌套语句块
             if (itemStr.Trim().Substring(1) == "循环")
             {
                 var act = Halation.currentCodePackage.GetAction(this.codeListBox.SelectedIndex);
@@ -554,6 +563,27 @@ namespace YuriHalation.YuriForms
             prf.ShowDialog(this);
         }
         #endregion
+
+        private void codeListBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                this.codeListBox.SelectedIndices.Clear();
+                int posindex = this.codeListBox.IndexFromPoint(new Point(e.X, e.Y));
+                this.codeListBox.ContextMenuStrip = null;
+                if (posindex >= 0 && posindex < this.codeListBox.Items.Count)
+                {
+                    if ((this.codeListBox.Items[posindex].ToString()).TrimStart().StartsWith(":"))
+                    {
+                        this.codeListBox.Refresh();
+                        return;
+                    }
+                    this.codeListBox.SelectedIndex = posindex;
+                    this.CodeListContextMenuStrip.Show(this.codeListBox, new Point(e.X, e.Y));
+                }
+            }
+            this.codeListBox.Refresh();
+        }
 
         
 
