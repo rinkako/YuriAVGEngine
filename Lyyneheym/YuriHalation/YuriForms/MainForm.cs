@@ -45,6 +45,7 @@ namespace YuriHalation.YuriForms
                         {
                             this.codeListBox.SelectedIndices.Add(j);
                         }
+                        break;
                     }
                 }
             }
@@ -65,6 +66,7 @@ namespace YuriHalation.YuriForms
             this.button_AddNewFunc.Enabled = this.projTreeView.SelectedNode.Level == 1;
             this.core.ChangeCodePackage(this.projTreeView.SelectedNode.Text,
                 this.projTreeView.SelectedNode.Level == 1 ? "" : this.projTreeView.SelectedNode.Parent.Text);
+            this.codeListBox.HorizontalExtent = this.codeListBox.Width - 16;
             this.core.RefreshCodeContext();
             this.core.RefreshRedoUndo();
         }
@@ -116,8 +118,10 @@ namespace YuriHalation.YuriForms
                     }
                 }
                 e.DrawBackground();
-                e.Graphics.DrawString(itemFull, e.Font, FontBrush, e.Bounds);
+                e.Graphics.DrawString(itemFull, e.Font, FontBrush, e.Bounds.Location);
                 e.DrawFocusRectangle();
+                this.codeListBox.HorizontalExtent = Math.Max(this.codeListBox.HorizontalExtent,
+                    (int)e.Graphics.MeasureString(itemFull, e.Font).Width);
             }
         }
 
@@ -393,6 +397,24 @@ namespace YuriHalation.YuriForms
             csf.ShowDialog(this);
         }
 
+        /// <summary>
+        /// 按钮：放置按钮
+        /// </summary>
+        private void button24_Click(object sender, EventArgs e)
+        {
+            ButtonForm bf = new ButtonForm();
+            bf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：显示图片
+        /// </summary>
+        private void button8_Click(object sender, EventArgs e)
+        {
+            PicturesForm pf = new PicturesForm();
+            pf.ShowDialog(this);
+        }
+
         #region 菜单项
         /// <summary>
         /// 菜单：撤销
@@ -532,6 +554,10 @@ namespace YuriHalation.YuriForms
             prf.ShowDialog(this);
         }
         #endregion
+
+        
+
+
 
 
 

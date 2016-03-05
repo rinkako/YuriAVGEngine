@@ -74,7 +74,7 @@ namespace Yuri
                 if (act.nodeName != "pad")
                 {
                     HalationViewCommand.AddItemToCodeListbox(-1, act.indent,
-                        String.Format("{0}{1}  {2}", act.GetFlag(), act.GetActionName(), act.GetParaDescription()));
+                    String.Format("{0}{1}{2}{3}", act.GetFlag(), act.GetActionName(), act.GetSpace(), act.GetParaDescription()));
                 }
                 else
                 {
@@ -359,6 +359,18 @@ namespace Yuri
         public void DashCstand(string id, string name, string face, string x, string y, string loc)
         {
             IHalationCommand cmd = new CstandCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, name, face, x, y, loc);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashButton(string id, string x, string y, string target, string type, string normal, string over, string on)
+        {
+            IHalationCommand cmd = new ButtonCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, x, y, target, type, normal, over, on);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashPicture(string id, string filename, string x, string y, string xscale, string yscale, string opacity, string ro)
+        {
+            IHalationCommand cmd = new PictureCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, filename, x, y, xscale, yscale, opacity, ro);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
         #endregion

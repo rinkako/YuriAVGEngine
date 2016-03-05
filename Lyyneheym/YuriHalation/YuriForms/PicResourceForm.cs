@@ -115,7 +115,12 @@ namespace YuriHalation.YuriForms
                 case "选择立绘":
                     ((CStandForm)this.Owner).GotFileName = this.listBox1.SelectedItem.ToString();
                     break;
-
+                case "选择按钮图像":
+                    ((ButtonForm)this.Owner).GotFileName = this.listBox1.SelectedItem.ToString();
+                    break;
+                case "选择显示图片":
+                    ((PicturesForm)this.Owner).GotFileName = this.listBox1.SelectedItem.ToString();
+                    break;
             }
             this.Close();
         }

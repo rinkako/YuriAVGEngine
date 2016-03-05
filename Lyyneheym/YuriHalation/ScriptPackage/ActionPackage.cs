@@ -56,7 +56,8 @@ namespace Yuri.YuriHalation.ScriptPackage
             StringBuilder sb = new StringBuilder();
             if (this.nodeType != ActionPackageType.NOP)
             {
-                var chChar = ((ActionName)this.nodeType).ToString().Length * 2;
+                var chName = ((ActionName)this.nodeType);
+                var chChar = chName.ToString().Length * 2;
                 var delta = 12 - chChar;
                 for (int i = 0; i < delta; i++)
                 {
@@ -66,7 +67,7 @@ namespace Yuri.YuriHalation.ScriptPackage
             }
             else
             {
-                return "        ";
+                return "    ";
             }
         }
 
@@ -176,6 +177,20 @@ namespace Yuri.YuriHalation.ScriptPackage
                     {
                         desSb.Append(String.Format("相对位置:{0} ", this.argsDict["loc"].valueExp));
                     }
+                    break;
+                case ActionPackageType.act_button:
+                    desSb.Append(String.Format("ID:{0} ", this.argsDict["id"].valueExp));
+                    desSb.Append(String.Format("位置:{0},{1} ", this.argsDict["x"].valueExp, this.argsDict["y"].valueExp));
+                    desSb.Append(String.Format("标签:{0} ", this.argsDict["target"].valueExp));
+                    desSb.Append(String.Format("类型:{0} ", this.argsDict["type"].valueExp));
+                    desSb.Append(String.Format("图形:{0}->{1}->{2} ", this.argsDict["normal"].valueExp, this.argsDict["over"].valueExp, this.argsDict["on"].valueExp));
+                    break;
+                case ActionPackageType.act_picture:
+                    desSb.Append(String.Format("[{0}:{1}] ", this.argsDict["id"].valueExp, this.argsDict["filename"].valueExp));
+                    desSb.Append(String.Format("位置:{0},{1} ", this.argsDict["x"].valueExp, this.argsDict["y"].valueExp));
+                    desSb.Append(String.Format("比例:{0}%,{1}% ", this.argsDict["xscale"].valueExp, this.argsDict["yscale"].valueExp));
+                    desSb.Append(String.Format("角度:{0} ", this.argsDict["ro"].valueExp));
+                    desSb.Append(String.Format("不透明度:{0}% ", this.argsDict["opacity"].valueExp));
                     break;
             }
             return desSb.ToString();

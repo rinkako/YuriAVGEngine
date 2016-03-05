@@ -2,7 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Yuri.HalationCore;
+using Yuri.YuriHalation.HalationCore;
 using Yuri;
 
 namespace YuriHalation.YuriForms
@@ -69,25 +69,25 @@ namespace YuriHalation.YuriForms
                     case "BGM":
                         if (this.listBoxBGM.SelectedIndex != -1)
                         {
-                            Musician.GetInstance().PlayBGM(this.listBoxBGM.SelectedItem.ToString(), this.BGMVec[this.listBoxBGM.SelectedIndex], this.volTrackBar.Value);
+                            //Musician.GetInstance().PlayBGM(this.listBoxBGM.SelectedItem.ToString(), this.BGMVec[this.listBoxBGM.SelectedIndex], this.volTrackBar.Value);
                         }
                         break;
                     case "BGS":
                         if (this.listBoxBGS.SelectedIndex != -1)
                         {
-                            Musician.GetInstance().PlayBGS(this.BGSVec[this.listBoxBGS.SelectedIndex], this.volTrackBar.Value);
+                            //Musician.GetInstance().PlayBGS(this.BGSVec[this.listBoxBGS.SelectedIndex], this.volTrackBar.Value);
                         }
                         break;
                     case "SE":
                         if (this.listBoxSE.SelectedIndex != -1)
                         {
-                            Musician.GetInstance().PlaySE(this.SEVec[this.listBoxSE.SelectedIndex], this.volTrackBar.Value);
+                            //Musician.GetInstance().PlaySE(this.SEVec[this.listBoxSE.SelectedIndex], this.volTrackBar.Value);
                         }
                         break;
                     case "Vocal":
                         if (this.listBoxVocal.SelectedIndex != -1)
                         {
-                            Musician.GetInstance().PlayVocal(this.VocalVec[this.listBoxVocal.SelectedIndex], this.volTrackBar.Value);
+                            //Musician.GetInstance().PlayVocal(this.VocalVec[this.listBoxVocal.SelectedIndex], this.volTrackBar.Value);
                         }
                         break;
                 }
@@ -129,13 +129,13 @@ namespace YuriHalation.YuriForms
                 switch (this.tabControl1.SelectedTab.Text)
                 {
                     case "BGM":
-                        Musician.GetInstance().StopAndReleaseBGM();
+                        //Musician.GetInstance().StopAndReleaseBGM();
                         break;
                     case "BGS":
-                        Musician.GetInstance().StopBGS();
+                        //Musician.GetInstance().StopBGS();
                         break;
                     case "Vocal":
-                        Musician.GetInstance().StopAndReleaseVocal();
+                        //Musician.GetInstance().StopAndReleaseVocal();
                         break;
                 }
             }

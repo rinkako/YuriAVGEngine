@@ -57,6 +57,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\PictureCommand.cs" />
+    <Compile Include="Command\ButtonCommand.cs" />
     <Compile Include="Command\CstandCommand.cs" />
     <Compile Include="Command\BgCommand.cs" />
     <Compile Include="Command\MoveCommand.cs" />
@@ -127,6 +129,12 @@
     <Compile Include="YuriForms\BranchForm.Designer.cs">
       <DependentUpon>BranchForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="YuriForms\ButtonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\ButtonForm.Designer.cs">
+      <DependentUpon>ButtonForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="YuriForms\CStandForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,6 +200,12 @@
     </Compile>
     <Compile Include="YuriForms\PicResourceForm.Designer.cs">
       <DependentUpon>PicResourceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\PicturesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\PicturesForm.Designer.cs">
+      <DependentUpon>PicturesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="YuriForms\SwitchesForm.cs">
       <SubType>Form</SubType>
@@ -301,6 +315,9 @@
     <EmbeddedResource Include="YuriForms\BranchForm.resx">
       <DependentUpon>BranchForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\ButtonForm.resx">
+      <DependentUpon>ButtonForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\CStandForm.resx">
       <DependentUpon>CStandForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -352,6 +369,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\PicResourceForm.resx">
       <DependentUpon>PicResourceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\PicturesForm.resx">
+      <DependentUpon>PicturesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\SwitchesForm.resx">
       <DependentUpon>SwitchesForm.cs</DependentUpon>
