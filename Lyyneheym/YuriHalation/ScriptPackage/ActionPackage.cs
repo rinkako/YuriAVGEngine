@@ -37,6 +37,30 @@ namespace Yuri.YuriHalation.ScriptPackage
         public Dictionary<string, ArgumentPackage> argsDict = new Dictionary<string, ArgumentPackage>();
 
         /// <summary>
+        /// 深拷贝一份自身并返回
+        /// </summary>
+        /// <returns>一份深拷贝</returns>
+        public ActionPackage Clone()
+        {
+            ActionPackage ap = new ActionPackage();
+            ap.nodeName = this.nodeName;
+            ap.line = this.line;
+            ap.indent = this.indent;
+            ap.nodeType = this.nodeType;
+            ap.argsDict = new Dictionary<string, ArgumentPackage>();
+            foreach (var kvp in this.argsDict)
+            {
+                ArgumentPackage argp = new ArgumentPackage()
+                {
+                    aType = kvp.Value.aType,
+                    valueExp = kvp.Value.valueExp
+                };
+                ap.argsDict.Add(kvp.Key, argp);
+            }
+            return ap;
+        }
+
+        /// <summary>
         /// 获取动作的名称
         /// </summary>
         public string GetActionName()

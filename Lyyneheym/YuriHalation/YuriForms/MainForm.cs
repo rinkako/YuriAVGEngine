@@ -30,9 +30,11 @@ namespace YuriHalation.YuriForms
         private void codeListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             // 跳过空的情况
-            if (this.codeListBox.SelectedItem == null) { return; }
+            if (this.codeListBox.SelectedItem == null || this.codeListBox.SelectedIndex == -1) {
+                return;
+            }
             // 可插入性
-            this.actionGroupBox.Enabled = this.codeListBox.Enabled;
+            //this.actionGroupBox.Enabled = this.codeListBox.Enabled;
             // 可选择性
             string itemStr = this.codeListBox.SelectedItem.ToString();
             if (itemStr.TrimStart().StartsWith(":"))
@@ -432,6 +434,7 @@ namespace YuriHalation.YuriForms
         {
             this.menuStrip1.Items.Find("撤销ToolStripMenuItem", true)[0].Enabled = core.MenuUndo();
             this.menuStrip1.Items.Find("重做ToolStripMenuItem", true)[0].Enabled = core.IsAbleRedo();
+            this.core.RefreshCodeContext();
         }
 
         /// <summary>
@@ -441,6 +444,7 @@ namespace YuriHalation.YuriForms
         {
             this.menuStrip1.Items.Find("撤销ToolStripMenuItem", true)[0].Enabled = core.IsAbleUndo();
             this.menuStrip1.Items.Find("重做ToolStripMenuItem", true)[0].Enabled = core.MenuRedo();
+            this.core.RefreshCodeContext();
         }
 
         /// <summary>
@@ -584,6 +588,71 @@ namespace YuriHalation.YuriForms
             }
             this.codeListBox.Refresh();
         }
+
+        private void 复制ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.core.CopyCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
+        }
+
+        private void 删除ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.core.DeleteCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
+            this.core.RefreshCodeContext();
+        }
+
+        private void 剪切ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.core.CutCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
+            this.core.RefreshCodeContext();
+        }
+
+        private void 粘贴ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.core.PasteCode(this.codeListBox.SelectedIndex);
+            this.core.RefreshCodeContext();
+        }
+
+        private void 编辑ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.codeListBox.SelectedItem != null &&
+                this.codeListBox.SelectedItem.ToString().TrimStart().StartsWith(":"))
+            {
+                this.复制ToolStripMenuItem.Enabled = false;
+                this.粘贴ToolStripMenuItem.Enabled = false;
+                this.剪切ToolStripMenuItem.Enabled = false;
+                this.删除ToolStripMenuItem.Enabled = false;
+            }
+            if (this.codeListBox.Focused == false||
+                this.codeListBox.SelectedIndex == -1)
+            {
+                this.复制ToolStripMenuItem.Enabled = false;
+                this.粘贴ToolStripMenuItem.Enabled = false;
+                this.剪切ToolStripMenuItem.Enabled = false;
+                this.删除ToolStripMenuItem.Enabled = false;
+            }
+            else
+            {
+                this.复制ToolStripMenuItem.Enabled = true;
+                this.粘贴ToolStripMenuItem.Enabled = Halation.CopyItems != null && Halation.CopyItems.Count > 0;
+                this.剪切ToolStripMenuItem.Enabled = true;
+                this.删除ToolStripMenuItem.Enabled = true;
+            }
+        }
+
+        private void codeListBox_Enter(object sender, EventArgs e)
+        {
+            this.actionGroupBox.Enabled = true;
+        }
+
+        private void codeListBox_Leave(object sender, EventArgs e)
+        {
+            if (this.codeListBox.SelectedIndex <= 0)
+            {
+                this.actionGroupBox.Enabled = false;
+            }
+        }
+
+
 
         
 

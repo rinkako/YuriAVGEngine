@@ -24,7 +24,7 @@ namespace YuriHalation.YuriForms
             this.textBox3.Enabled = false;
             this.numericUpDown2.Enabled = false;
             this.numericUpDown3.Enabled = false;
-            this.comboBox2.Enabled = false;
+            //this.comboBox2.Enabled = false;
             // 加载全局变量表
             List<string> globalVarList = null;// core.getGlobalVar();
             // 如果没有全局变量，那就封锁这个选项
@@ -36,13 +36,13 @@ namespace YuriHalation.YuriForms
             }
             else
             {
-                foreach (string s in globalVarList)
-                {
-                    this.comboBox1.Items.Add(s);
-                    this.comboBox2.Items.Add(s);
-                }
-                this.comboBox1.SelectedIndex = 0;
-                this.comboBox2.SelectedIndex = 0;
+                //foreach (string s in globalVarList)
+                //{
+                //    this.comboBox1.Items.Add(s);
+                //    this.comboBox2.Items.Add(s);
+                //}
+                //this.comboBox1.SelectedIndex = 0;
+                //this.comboBox2.SelectedIndex = 0;
             }
             // 放置焦点
             this.numericUpDown1.Focus();
@@ -50,7 +50,7 @@ namespace YuriHalation.YuriForms
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            this.comboBox1.Enabled = this.radioButton1.Checked;
+            //this.comboBox1.Enabled = this.radioButton1.Checked;
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
@@ -65,7 +65,7 @@ namespace YuriHalation.YuriForms
 
         private void radioButton10_CheckedChanged(object sender, EventArgs e)
         {
-            this.comboBox2.Enabled = this.radioButton10.Checked;
+            //this.comboBox2.Enabled = this.radioButton10.Checked;
         }
 
         private void radioButton11_CheckedChanged(object sender, EventArgs e)
