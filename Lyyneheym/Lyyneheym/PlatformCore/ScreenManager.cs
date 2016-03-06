@@ -210,10 +210,12 @@ namespace Yuri.PlatformCore
         /// <param name="X">左上角在画面的X坐标</param>
         /// <param name="Y">左上角在画面的Y坐标</param>
         /// <param name="jumpTarget">按下后要跳转的标签名</param>
+        /// <param name="funcCallSign">函数调用签名</param>
+        /// <param name="type">按钮存续类型</param>
         /// <param name="normalDesc">正常时的精灵描述子</param>
         /// <param name="overDesc">鼠标悬停时的精灵描述子</param>
         /// <param name="onDesc">鼠标按下时的精灵描述子</param>
-        public void AddButton(int id, bool enable, double X, double Y, string jumpTarget, string type, SpriteDescriptor normalDesc, SpriteDescriptor overDesc = null, SpriteDescriptor onDesc = null)
+        public void AddButton(int id, bool enable, double X, double Y, string jumpTarget, string funcCallSign, string type, SpriteDescriptor normalDesc, SpriteDescriptor overDesc = null, SpriteDescriptor onDesc = null)
         {
             SpriteButtonDescriptor sbd = new SpriteButtonDescriptor()
             {
@@ -222,6 +224,7 @@ namespace Yuri.PlatformCore
                 Y = Y,
                 Z = GlobalDataContainer.GAME_Z_BUTTON + id,
                 jumpLabel = jumpTarget,
+                interruptFuncSign = funcCallSign,
                 normalDescriptor = normalDesc,
                 overDescriptor = overDesc,
                 onDescriptor = onDesc,

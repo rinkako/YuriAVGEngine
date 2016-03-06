@@ -274,6 +274,7 @@ namespace Yuri.PlatformCore
                 detail = "ButtonNTRInterrupt",
                 interruptSA = null,
                 type = InterruptType.ButtonJump,
+                interruptFuncSign = descriptor.interruptFuncSign,
                 returnTarget = descriptor.jumpLabel,
                 pureInterrupt = false
             };

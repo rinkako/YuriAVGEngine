@@ -664,7 +664,7 @@ namespace Yuri.PlatformCore
                     break;
                 case SActionType.act_trans:
                     this.Trans(
-                        this.ParseDirectString(action.argsDict["name"], "FadeTransition")
+                        this.ParseDirectString(action.argsDict["name"], "Fade")
                         );
                     break;
                 case SActionType.act_button:
@@ -674,6 +674,7 @@ namespace Yuri.PlatformCore
                         this.ParseDouble(action.argsDict["x"], 0),
                         this.ParseDouble(action.argsDict["y"], 0),
                         this.ParseDirectString(action.argsDict["target"], ""),
+                        this.ParseDirectString(action.argsDict["sign"], ""),
                         this.ParseDirectString(action.argsDict["normal"], ""),
                         this.ParseDirectString(action.argsDict["over"], ""),
                         this.ParseDirectString(action.argsDict["on"], ""),
@@ -807,16 +808,17 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 演绎函数：放置按钮
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="enable"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="target"></param>
-        /// <param name="normal"></param>
-        /// <param name="over"></param>
-        /// <param name="on"></param>
-        /// <param name="type"></param>
-        private void Button(int id, bool enable, double x, double y, string target, string normal, string over, string on, string type)
+        /// <param name="id">按钮id</param>
+        /// <param name="enable">按钮是否可点击</param>
+        /// <param name="x">X坐标</param>
+        /// <param name="y">Y坐标</param>
+        /// <param name="target">跳转目标</param>
+        /// <param name="funcsign">中断函数调用签名</param>
+        /// <param name="normal">正常图资源名</param>
+        /// <param name="over">悬停图资源名</param>
+        /// <param name="on">按下图资源名</param>
+        /// <param name="type">存续类型</param>
+        private void Button(int id, bool enable, double x, double y, string target, string funcsign, string normal, string over, string on, string type)
         {
             SpriteDescriptor normalDesc = new SpriteDescriptor()
             {
@@ -836,7 +838,7 @@ namespace Yuri.PlatformCore
                     resourceName = on
                 };
             }
-            Director.ScrMana.AddButton(id, enable, x, y, target, type, normalDesc, overDesc, onDesc);
+            Director.ScrMana.AddButton(id, enable, x, y, target, funcsign, type, normalDesc, overDesc, onDesc);
             this.viewMana.Draw(id, ResourceType.Button);
         }
 
@@ -1153,11 +1155,6 @@ namespace Yuri.PlatformCore
                 Director.RunMana.CallScene(this.titlePointContainer.Key);
                 Director.RunMana.CallStack.ESP.IP = this.titlePointContainer.Value;
             }
-        }
-
-        private void Menu()
-        {
-
         }
 
         private void Save()

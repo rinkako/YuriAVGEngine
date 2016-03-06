@@ -315,7 +315,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button22_Click(object sender, EventArgs e)
         {
-            SwitchesForm sf = new SwitchesForm();
+            SwitchesForm sf = new SwitchesForm("开关操作");
             sf.ShowDialog(this);
         }
 
@@ -723,6 +723,15 @@ namespace YuriHalation.YuriForms
         {
             PicResourceForm prf = new PicResourceForm("图像资源管理器", 0);
             prf.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 菜单：开关管理器
+        /// </summary>
+        private void 开关管理器ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SwitchesForm sf = new SwitchesForm("开关管理器");
+            sf.ShowDialog(this);
         }
         #endregion
 

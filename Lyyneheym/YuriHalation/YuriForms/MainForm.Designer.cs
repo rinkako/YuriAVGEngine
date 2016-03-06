@@ -48,7 +48,6 @@
             this.全局设定ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.场景管理器ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.变量管理器ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.开关管理器ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.打开游戏目录ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -265,7 +264,6 @@
             this.全局设定ToolStripMenuItem,
             this.toolStripSeparator2,
             this.场景管理器ToolStripMenuItem,
-            this.变量管理器ToolStripMenuItem,
             this.开关管理器ToolStripMenuItem,
             this.toolStripSeparator3,
             this.打开游戏目录ToolStripMenuItem});
@@ -291,17 +289,12 @@
             this.场景管理器ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.场景管理器ToolStripMenuItem.Text = "场景管理器";
             // 
-            // 变量管理器ToolStripMenuItem
-            // 
-            this.变量管理器ToolStripMenuItem.Name = "变量管理器ToolStripMenuItem";
-            this.变量管理器ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.变量管理器ToolStripMenuItem.Text = "变量管理器";
-            // 
             // 开关管理器ToolStripMenuItem
             // 
             this.开关管理器ToolStripMenuItem.Name = "开关管理器ToolStripMenuItem";
-            this.开关管理器ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.开关管理器ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.开关管理器ToolStripMenuItem.Text = "开关管理器";
+            this.开关管理器ToolStripMenuItem.Click += new System.EventHandler(this.开关管理器ToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -1023,7 +1016,6 @@
         private System.Windows.Forms.ToolStripMenuItem 全局设定ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem 场景管理器ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 变量管理器ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 开关管理器ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem 打开游戏目录ToolStripMenuItem;

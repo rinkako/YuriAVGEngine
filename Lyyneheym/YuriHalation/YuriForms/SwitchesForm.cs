@@ -20,11 +20,20 @@ namespace YuriHalation.YuriForms
         /// <summary>
         /// 构造器
         /// </summary>
-        public SwitchesForm()
+        public SwitchesForm(string title)
         {
             InitializeComponent();
-            // 选中默认开关值
-            this.comboBox1.SelectedIndex = 0;
+            this.Text = title;
+            if (title == "开关管理器")
+            {
+                this.comboBox1.Visible = false;
+                this.label1.Visible = false;
+            }
+            else
+            {
+                // 选中默认开关值
+                this.comboBox1.SelectedIndex = 0;
+            }
             // 加载开关
             List<string> switchVector = Halation.project.SwitchDescriptorList;
             // 加载开关列表
@@ -41,7 +50,8 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            if (this.switchDataGridView.SelectedCells.Count < 1)
+            // 开关操作时没有选择就不要应用
+            if (this.Text != "开关管理器" && this.switchDataGridView.SelectedCells.Count < 1)
             {
                 return;
             }
@@ -60,8 +70,12 @@ namespace YuriHalation.YuriForms
                 }
             }
             Halation.project.SwitchDescriptorList = desList;
-            // 提交命令
-            Halation.GetInstance().DashSwitches(this.switchDataGridView.SelectedCells[0].RowIndex.ToString(), this.comboBox1.SelectedItem.ToString());
+            // 开关操作
+            if (this.Text != "开关管理器")
+            {
+                // 提交命令
+                Halation.GetInstance().DashSwitches(this.switchDataGridView.SelectedCells[0].RowIndex.ToString(), this.comboBox1.SelectedItem.ToString());
+            }
             this.Close();
         }
     }

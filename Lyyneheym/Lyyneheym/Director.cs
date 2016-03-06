@@ -129,6 +129,7 @@ namespace Yuri
                 type = InterruptType.LoadReaction,
                 detail = "Reaction for load data",
                 interruptSA = Director.RunMana.DashingPureSa,
+                interruptFuncSign = "",
                 returnTarget = null,
                 pureInterrupt = true
             };
@@ -229,8 +230,9 @@ namespace Yuri
                     var interruptExitPoint = Director.RunMana.CallStack.ESP.aTag;
                     // 退出中断
                     var pureInt = Director.RunMana.CallStack.ESP.bindingInterrupt.pureInterrupt;
+                    var interruptFuncCalling = Director.RunMana.CallStack.ESP.bindingInterrupt.interruptFuncSign;
                     Director.RunMana.ExitCall();
-                    // 处理可选表达式计算
+                    // 处理中断优先动作
                     if (interruptSa != null)
                     {
                         var iterSa = interruptSa;
@@ -247,7 +249,7 @@ namespace Yuri
                     }
                     // 跳出所有用户等待
                     Director.RunMana.ExitUserWait();
-                    // 处理跳转
+                    // 处理跳转（这里放在中断函数调用前才不会影响EBP的值）
                     if (interruptExitPoint != null)
                     {
                         var curScene = this.ResMana.GetScene(Director.RunMana.CallStack.EBP.bindingSceneName);
@@ -258,6 +260,14 @@ namespace Yuri
                             break;
                         }
                         Director.RunMana.CallStack.EBP.IP = curScene.labelDictionary[interruptExitPoint];
+                    }
+                    // 处理中断函数调用
+                    if (interruptFuncCalling != "")
+                    {
+                        var ifcItems = interruptFuncCalling.Split('(');
+                        var funPureName = ifcItems[0];
+                        var funParas = "(" + ifcItems[1];
+                        FunctionCalling(funPureName, funParas);
                     }
                     break;
                 // 演绎脚本
@@ -328,62 +338,7 @@ namespace Yuri
                     {
                         var callFunc = nextInstruct.argsDict["name"];
                         var signFunc = nextInstruct.argsDict["sign"];
-                        if (signFunc != "" && (!signFunc.StartsWith("(") || !signFunc.EndsWith(")")))
-                        {
-                            CommonUtils.ConsoleLine(String.Format("Ignored Function calling (sign not valid): {0} -> {1}", callFunc, signFunc),
-                                "Director", OutputStyle.Error);
-                            break;
-                        }
-                        var callFuncItems = callFunc.Split('@');
-                        List<SceneFunction> sceneFuncContainer;
-                        IEnumerable<SceneFunction> sceneFuncList;
-                        if (callFuncItems.Length > 1)
-                        {
-                            sceneFuncContainer = this.ResMana.GetScene(callFuncItems[1]).funcContainer;
-                            sceneFuncList = from f in sceneFuncContainer where f.callname == callFuncItems[0] select f;
-                        }
-                        else
-                        {
-                            sceneFuncContainer = this.ResMana.GetScene(Director.RunMana.CallStack.ESP.bindingSceneName).funcContainer;
-                            sceneFuncList = from f in sceneFuncContainer where f.callname == callFunc select f;
-                            CommonUtils.ConsoleLine(String.Format("Function calling for current Scene (Scene not explicit): {0}", callFunc),
-                                "Director", OutputStyle.Warning);
-                        }
-                        if (sceneFuncList.Count() == 0)
-                        {
-                            CommonUtils.ConsoleLine(String.Format("Ignored Function calling (function not exist): {0}", callFunc),
-                                "Director", OutputStyle.Error);
-                            break;
-                        }
-                        var sceneFunc = sceneFuncList.First();
-                        var signItem = signFunc.Replace("(", "").Replace(")", "").Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
-                        if (sceneFunc.param.Count != signItem.Length)
-                        {
-                            CommonUtils.ConsoleLine(String.Format("Ignored Function calling (in {0}, require args num: {1}, but actual:{2})", callFunc, sceneFunc.param.Count, signItem.Length),
-                                "Director", OutputStyle.Error);
-                            break;
-                        }
-                        // 处理参数列表
-                        List<object> argsVec = new List<object>();
-                        foreach (var s in signItem)
-                        {
-                            string trimedPara = s.Trim();
-                            object varref = null;
-                            if (trimedPara.StartsWith("$") || trimedPara.StartsWith("&"))
-                            {
-                                varref = Director.RunMana.Fetch(trimedPara);
-                            }
-                            else if (trimedPara.StartsWith("\"") && trimedPara.EndsWith("\""))
-                            {
-                                varref = (string)trimedPara;
-                            }
-                            else
-                            {
-                                varref = Convert.ToDouble(trimedPara);
-                            }
-                            argsVec.Add(varref);
-                        }
-                        Director.RunMana.CallFunction(sceneFunc, argsVec);
+                        FunctionCalling(callFunc, signFunc);
                         break;
                     }
                     // 处理常规动作
@@ -399,6 +354,71 @@ namespace Yuri
             this.updateRender.UpdateForKeyboardState();
             // 处理并行调用
             this.updateRender.ParallelProcessor();
+        }
+
+        /// <summary>
+        /// 处理函数调用
+        /// </summary>
+        /// <param name="callFunc">函数名</param>
+        /// <param name="signFunc">参数签名</param>
+        private void FunctionCalling(string callFunc, string signFunc)
+        {
+            if (signFunc != "" && (!signFunc.StartsWith("(") || !signFunc.EndsWith(")")))
+            {
+                CommonUtils.ConsoleLine(String.Format("Ignored Function calling (sign not valid): {0} -> {1}", callFunc, signFunc),
+                    "Director", OutputStyle.Error);
+                return;
+            }
+            var callFuncItems = callFunc.Split('@');
+            List<SceneFunction> sceneFuncContainer;
+            IEnumerable<SceneFunction> sceneFuncList;
+            if (callFuncItems.Length > 1)
+            {
+                sceneFuncContainer = this.ResMana.GetScene(callFuncItems[1]).funcContainer;
+                sceneFuncList = from f in sceneFuncContainer where f.callname == callFuncItems[0] select f;
+            }
+            else
+            {
+                sceneFuncContainer = this.ResMana.GetScene(Director.RunMana.CallStack.ESP.bindingSceneName).funcContainer;
+                sceneFuncList = from f in sceneFuncContainer where f.callname == callFunc select f;
+                CommonUtils.ConsoleLine(String.Format("Function calling for current Scene (Scene not explicit): {0}", callFunc),
+                    "Director", OutputStyle.Warning);
+            }
+            if (sceneFuncList.Count() == 0)
+            {
+                CommonUtils.ConsoleLine(String.Format("Ignored Function calling (function not exist): {0}", callFunc),
+                    "Director", OutputStyle.Error);
+                return;
+            }
+            var sceneFunc = sceneFuncList.First();
+            var signItem = signFunc.Replace("(", "").Replace(")", "").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            if (sceneFunc.param.Count != signItem.Length)
+            {
+                CommonUtils.ConsoleLine(String.Format("Ignored Function calling (in {0}, require args num: {1}, but actual:{2})", callFunc, sceneFunc.param.Count, signItem.Length),
+                    "Director", OutputStyle.Error);
+                return;
+            }
+            // 处理参数列表
+            List<object> argsVec = new List<object>();
+            foreach (var s in signItem)
+            {
+                string trimedPara = s.Trim();
+                object varref = null;
+                if (trimedPara.StartsWith("$") || trimedPara.StartsWith("&"))
+                {
+                    varref = Director.RunMana.Fetch(trimedPara);
+                }
+                else if (trimedPara.StartsWith("\"") && trimedPara.EndsWith("\""))
+                {
+                    varref = (string)trimedPara;
+                }
+                else
+                {
+                    varref = Convert.ToDouble(trimedPara);
+                }
+                argsVec.Add(varref);
+            }
+            Director.RunMana.CallFunction(sceneFunc, argsVec);
         }
 
         /// <summary>

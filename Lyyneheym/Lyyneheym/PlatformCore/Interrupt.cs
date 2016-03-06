@@ -23,12 +23,20 @@ namespace Yuri.PlatformCore
         public string detail = "";
 
         /// <summary>
-        /// 中断后执行的动作序列
+        /// <para>中断后执行的中断处理动作</para>
+        /// <para>它在中断发生后最优先被执行，但它的后继结点将被忽略</para>
         /// </summary>
         public SceneAction interruptSA = null;
 
         /// <summary>
-        /// 中断结束后跳转的标签名
+        /// <para>中断处理函数调用签名</para>
+        /// <para>这个动作将在处理完中断动作后被施加到调用堆栈</para>
+        /// </summary>
+        public string interruptFuncSign = "";
+
+        /// <summary>
+        /// <para>中断结束后跳转的标签名</para>
+        /// <para>这个动作将在处理完中断函数调用后被施加到调用堆栈</para>
         /// </summary>
         public string returnTarget = null;
 

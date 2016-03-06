@@ -29,6 +29,8 @@ namespace Yuri.PlatformCore
 
         public string jumpLabel { get; set; }
 
+        public string interruptFuncSign { get; set; }
+
         public double X { get; set; }
 
         public double Y { get; set; }
