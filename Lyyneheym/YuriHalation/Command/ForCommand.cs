@@ -56,7 +56,7 @@ namespace Yuri.YuriHalation.Command
                 nodeType = ActionPackageType.act_endfor
             };
             this.parent.AddAction(ap3, ap3.line);
-            HalationViewCommand.AddItemToCodeListbox(ap3.line, ap3.indent, ":以上反复");            
+            HalationViewCommand.AddItemToCodeListbox(ap3.line, ap3.indent, ":以上反复");
         }
 
         /// <summary>

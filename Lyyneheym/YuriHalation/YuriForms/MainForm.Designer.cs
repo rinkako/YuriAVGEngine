@@ -639,6 +639,7 @@
             this.button26.TabIndex = 24;
             this.button26.Text = "条件分支";
             this.button26.UseVisualStyleBackColor = false;
+            this.button26.Click += new System.EventHandler(this.button26_Click);
             // 
             // button23
             // 

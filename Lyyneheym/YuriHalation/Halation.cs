@@ -406,6 +406,12 @@ namespace Yuri
             IHalationCommand cmd = new VarCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, op1, opm, op2);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
+
+        public void DashIf(bool containElse, string expr, string op1, string opr, string op2)
+        {
+            IHalationCommand cmd = new IfCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, containElse, expr, op1, opr, op2);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
         #endregion
 
         #region 前端菜单相关

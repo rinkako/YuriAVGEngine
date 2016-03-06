@@ -75,7 +75,7 @@ namespace YuriHalation.YuriForms
             }
             else if (this.radioButton8.Checked)
             {
-                rightOp = String.Format("2#{0}", this.textBox5.Text);
+                rightOp = String.Format("2#{0}", this.textBox5.Text.Replace('#', ' '));
             }
             else if (this.radioButton10.Checked)
             {

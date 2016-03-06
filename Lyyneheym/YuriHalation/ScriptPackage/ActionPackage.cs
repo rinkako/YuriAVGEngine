@@ -226,28 +226,70 @@ namespace Yuri.YuriHalation.ScriptPackage
                 case ActionPackageType.act_var:
                     desSb.Append(String.Format("{0} ", this.argsDict["opLeft"].valueExp));
                     desSb.Append(String.Format("{0} ", this.argsDict["op"].valueExp));
-                    string[] rightItems = this.argsDict["opRight"].valueExp.Split('#');
-                    switch (rightItems[0])
+                    string[] varRightItems = this.argsDict["opRight"].valueExp.Split('#');
+                    switch (varRightItems[0])
                     {
                         case "1":
-                            desSb.Append(String.Format("常数[{0}] ", rightItems[1]));
+                            desSb.Append(String.Format("常数[{0}] ", varRightItems[1]));
                             break;
                         case "2":
-                            desSb.Append(String.Format("字符串[{0}] ", rightItems[1]));
+                            desSb.Append(String.Format("字符串[{0}]  ", varRightItems[1]));
                             break;
                         case "3":
-                            desSb.Append(String.Format("&{0}", rightItems[1]));
+                            desSb.Append(String.Format("&{0} ", varRightItems[1]));
                             break;
                         case "4":
-                            desSb.Append(String.Format("${0}", rightItems[1]));
+                            desSb.Append(String.Format("${0} ", varRightItems[1]));
                             break;
                         case "5":
-                            string[] raItems = rightItems[1].Split(':');
-                            desSb.Append(String.Format("随机区间:[{0},{1}]", raItems[0], raItems[1]));
+                            string[] raItems = varRightItems[1].Split(':');
+                            desSb.Append(String.Format("随机区间:[{0},{1}] ", raItems[0], raItems[1]));
                             break;
                         default:
-                            desSb.Append(String.Format("表达式:[{0}]", rightItems[1]));
+                            desSb.Append(String.Format("表达式:[{0}] ", varRightItems[1]));
                             break;
+                    }
+                    break;
+                case ActionPackageType.act_if:
+                    if (this.argsDict["expr"].valueExp == "")
+                    {
+                        string[] ifLeftItems = this.argsDict["op1"].valueExp.ToString().Split('#');
+                        switch (ifLeftItems[0])
+                        {
+                            case "1":
+                                desSb.Append(String.Format("&{0} ", ifLeftItems[1]));
+                                break;
+                            case "2":
+                                desSb.Append(String.Format("${0} ", ifLeftItems[1]));
+                                break;
+                            case "3":
+                                desSb.Append(String.Format("开关[{0}:{1}] ", ifLeftItems[1], Halation.project.SwitchDescriptorList[Convert.ToInt32(ifLeftItems[1])]));
+                                break;
+                        }
+                        desSb.Append(String.Format("{0} ", this.argsDict["opr"].valueExp));
+                        string[] ifRightItems = this.argsDict["op2"].valueExp.Split('#');
+                        switch (ifRightItems[0])
+                        {
+                            case "1":
+                                desSb.Append(String.Format("常数[{0}] ", ifRightItems[1]));
+                                break;
+                            case "2":
+                                desSb.Append(String.Format("字符串[{0}]  ", ifRightItems[1]));
+                                break;
+                            case "3":
+                                desSb.Append(String.Format("&{0} ", ifRightItems[1]));
+                                break;
+                            case "4":
+                                desSb.Append(String.Format("${0} ", ifRightItems[1]));
+                                break;
+                            case "5":
+                                desSb.Append(String.Format("开关状态:[{0}] ", ifRightItems[1]));
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        desSb.Append(String.Format("表达式:[{0}]为真时 ", this.argsDict["expr"].valueExp));
                     }
                     break;
             }

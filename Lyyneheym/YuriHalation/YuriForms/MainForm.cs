@@ -75,6 +75,22 @@ namespace YuriHalation.YuriForms
                     }
                 }
             }
+            else if (itemStr.Trim().Substring(1).StartsWith("条件分支"))
+            {
+                var act = Halation.currentCodePackage.GetAction(this.codeListBox.SelectedIndex);
+                var allAct = Halation.currentCodePackage.GetAction();
+                for (int i = this.codeListBox.SelectedIndex + 1; i < allAct.Count; i++)
+                {
+                    if (act.indent == allAct[i].indent && allAct[i].nodeType == Yuri.YuriHalation.ScriptPackage.ActionPackageType.act_endif)
+                    {
+                        for (int j = this.codeListBox.SelectedIndex; j <= i; j++)
+                        {
+                            this.codeListBox.SelectedIndices.Add(j);
+                        }
+                        break;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -133,6 +149,9 @@ namespace YuriHalation.YuriForms
                         case "循环":
                         case "以上反复":
                         case "中断循环":
+                        case "条件分支":
+                        case "除此以外的情况":
+                        case "分支结束":
                             FontBrush = Brushes.Blue;
                             break;
                         case "代码片段":
@@ -465,6 +484,15 @@ namespace YuriHalation.YuriForms
             VarForm vf = new VarForm();
             vf.ShowDialog(this);
         }
+
+        /// <summary>
+        /// 按钮：条件分歧
+        /// </summary>
+        private void button26_Click(object sender, EventArgs e)
+        {
+            IfForm iff = new IfForm();
+            iff.ShowDialog(this);
+        }
         #endregion
 
         #region 菜单项
@@ -697,5 +725,6 @@ namespace YuriHalation.YuriForms
             prf.ShowDialog(this);
         }
         #endregion
+
     }
 }

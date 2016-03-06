@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\IfCommand.cs" />
     <Compile Include="Command\VarCommand.cs" />
     <Compile Include="Command\FuncallCommand.cs" />
     <Compile Include="Command\MenuPasteCommand.cs" />
@@ -163,6 +164,12 @@
     </Compile>
     <Compile Include="YuriForms\GlobalConfigForm.Designer.cs">
       <DependentUpon>GlobalConfigForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\IfForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\IfForm.Designer.cs">
+      <DependentUpon>IfForm.cs</DependentUpon>
     </Compile>
     <Compile Include="YuriForms\MoveForm.cs">
       <SubType>Form</SubType>
@@ -340,6 +347,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\GlobalConfigForm.resx">
       <DependentUpon>GlobalConfigForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\IfForm.resx">
+      <DependentUpon>IfForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\JumpForm.resx">
       <DependentUpon>JumpForm.cs</DependentUpon>
