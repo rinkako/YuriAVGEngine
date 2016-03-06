@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Yuri;
 
@@ -31,9 +30,8 @@ namespace YuriHalation.YuriForms
         private void button1_Click(object sender, EventArgs e)
         {
             // 检查函数名
-            Regex regEx = new Regex("^[a-zA-Z]+$");
             if (this.textBox1.Text == "" ||
-                !regEx.IsMatch(this.textBox1.Text))
+                !Halation.IsValidVarname(this.textBox1.Text))
             {
                 MessageBox.Show("请使用字母正确填写函数名", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -45,7 +43,7 @@ namespace YuriHalation.YuriForms
             {
                 string varname = this.argsGridDataView.Rows[i].Cells[0].Value.ToString();
                 // 符号合法性
-                if (regEx.IsMatch(varname) == false)
+                if (Halation.IsValidVarname(varname) == false)
                 {
                     MessageBox.Show(String.Format("变量 {0} 命名不合法", varname), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;

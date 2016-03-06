@@ -223,7 +223,33 @@ namespace Yuri.YuriHalation.ScriptPackage
                         desSb.Append(String.Format("({0})", this.argsDict["sign"].valueExp));
                     }
                     break;
-
+                case ActionPackageType.act_var:
+                    desSb.Append(String.Format("{0} ", this.argsDict["opLeft"].valueExp));
+                    desSb.Append(String.Format("{0} ", this.argsDict["op"].valueExp));
+                    string[] rightItems = this.argsDict["opRight"].valueExp.Split('#');
+                    switch (rightItems[0])
+                    {
+                        case "1":
+                            desSb.Append(String.Format("常数[{0}] ", rightItems[1]));
+                            break;
+                        case "2":
+                            desSb.Append(String.Format("字符串[{0}] ", rightItems[1]));
+                            break;
+                        case "3":
+                            desSb.Append(String.Format("&{0}", rightItems[1]));
+                            break;
+                        case "4":
+                            desSb.Append(String.Format("${0}", rightItems[1]));
+                            break;
+                        case "5":
+                            string[] raItems = rightItems[1].Split(':');
+                            desSb.Append(String.Format("随机区间:[{0},{1}]", raItems[0], raItems[1]));
+                            break;
+                        default:
+                            desSb.Append(String.Format("表达式:[{0}]", rightItems[1]));
+                            break;
+                    }
+                    break;
             }
             return desSb.ToString();
         }

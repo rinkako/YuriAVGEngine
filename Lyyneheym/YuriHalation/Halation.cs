@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using YuriHalation;
 using YuriHalation.YuriForms;
 using Yuri.YuriHalation.ScriptPackage;
@@ -27,6 +28,16 @@ namespace Yuri
         {
             var act = Halation.currentCodePackage.GetAction(insertLine);
             return act.indent;
+        }
+
+        /// <summary>
+        /// 看一个变量名是否合法
+        /// </summary>
+        /// <param name="pureName">不带作用域符号的变量名</param>
+        /// <returns>是否可以作为合法变量名</returns>
+        public static bool IsValidVarname(string pureName)
+        {
+            return Regex.IsMatch(pureName, "^[a-zA-Z_][a-zA-Z0-9_]*$");
         }
         #endregion
 
@@ -387,6 +398,12 @@ namespace Yuri
         public void DashFuncall(string funCallName, string args)
         {
             IHalationCommand cmd = new FuncallCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, funCallName, args);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashVar(string op1, string opm, string op2)
+        {
+            IHalationCommand cmd = new VarCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, op1, opm, op2);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
         #endregion

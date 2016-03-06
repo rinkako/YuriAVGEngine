@@ -24,13 +24,28 @@ namespace YuriHalation.YuriForms
             Halation.SetViewReference(this);
         }
 
+        #region 前端响应
+        /// <summary>
+        /// 窗体关闭时
+        /// </summary>
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var dr = MessageBox.Show("确定要退出吗" + Environment.NewLine + "未保存的工作将会丢失", "退出Halation",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            if (dr == System.Windows.Forms.DialogResult.Cancel)
+            {
+                e.Cancel = true;
+            }
+        }
+
         /// <summary>
         /// 代码编辑框选择项改变事件
         /// </summary>
         private void codeListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             // 跳过空的情况
-            if (this.codeListBox.SelectedItem == null || this.codeListBox.SelectedIndex == -1) {
+            if (this.codeListBox.SelectedItem == null || this.codeListBox.SelectedIndex == -1)
+            {
                 return;
             }
             // 可插入性
@@ -138,7 +153,9 @@ namespace YuriHalation.YuriForms
                     (int)e.Graphics.MeasureString(itemFull, e.Font).Width);
             }
         }
+        #endregion
 
+        #region 其他命令按钮
         /// <summary>
         /// 按钮：新建场景
         /// </summary>
@@ -156,7 +173,9 @@ namespace YuriHalation.YuriForms
             AddFuncForm aff = new AddFuncForm();
             aff.ShowDialog(this);
         }
+        #endregion
 
+        #region 添加命令项
         /// <summary>
         /// 按钮：显示对话
         /// </summary>
@@ -392,7 +411,7 @@ namespace YuriHalation.YuriForms
             MoveForm mf = new MoveForm();
             mf.ShowDialog(this);
         }
-        
+
         /// <summary>
         /// 按钮：显示背景
         /// </summary>
@@ -437,6 +456,16 @@ namespace YuriHalation.YuriForms
             FunctionCallForm fcf = new FunctionCallForm();
             fcf.ShowDialog(this);
         }
+
+        /// <summary>
+        /// 按钮：变量操作
+        /// </summary>
+        private void button21_Click(object sender, EventArgs e)
+        {
+            VarForm vf = new VarForm();
+            vf.ShowDialog(this);
+        }
+        #endregion
 
         #region 菜单项
         /// <summary>
@@ -668,16 +697,5 @@ namespace YuriHalation.YuriForms
             prf.ShowDialog(this);
         }
         #endregion
-
-
-
-        
-
-
-
-
-
-
-
     }
 }
