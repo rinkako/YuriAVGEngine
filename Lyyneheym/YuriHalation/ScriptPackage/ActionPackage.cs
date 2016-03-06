@@ -216,6 +216,14 @@ namespace Yuri.YuriHalation.ScriptPackage
                     desSb.Append(String.Format("角度:{0} ", this.argsDict["ro"].valueExp));
                     desSb.Append(String.Format("不透明度:{0}% ", this.argsDict["opacity"].valueExp));
                     break;
+                case ActionPackageType.act_call:
+                    desSb.Append(String.Format("{0} ", this.argsDict["name"].valueExp));
+                    if (this.argsDict["sign"].valueExp.Length > 0)
+                    {
+                        desSb.Append(String.Format("({0})", this.argsDict["sign"].valueExp));
+                    }
+                    break;
+
             }
             return desSb.ToString();
         }

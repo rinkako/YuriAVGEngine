@@ -31,7 +31,7 @@ namespace Yuri.YuriHalation.ScriptPackage
             {
                 return false;
             }
-            var nf = new FunctionPackage(funcName, this.sceneName, argv);
+            var nf = new FunctionPackage(funcName, this, argv);
             this.funcList.Add(nf);
             HalationInvoker.AddScene(nf.functionCallName);
             return true;

@@ -584,6 +584,7 @@
             this.button29.TabIndex = 29;
             this.button29.Text = "函数调用";
             this.button29.UseVisualStyleBackColor = false;
+            this.button29.Click += new System.EventHandler(this.button29_Click);
             // 
             // button30
             // 
@@ -933,8 +934,6 @@
             this.codeListBox.TabIndex = 6;
             this.codeListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.codeListBox_DrawItem);
             this.codeListBox.SelectedIndexChanged += new System.EventHandler(this.codeListBox_SelectedIndexChanged);
-            this.codeListBox.Enter += new System.EventHandler(this.codeListBox_Enter);
-            this.codeListBox.Leave += new System.EventHandler(this.codeListBox_Leave);
             this.codeListBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.codeListBox_MouseUp);
             // 
             // CodeListContextMenuStrip

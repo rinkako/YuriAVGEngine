@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\FuncallCommand.cs" />
     <Compile Include="Command\MenuPasteCommand.cs" />
     <Compile Include="Command\MenuCutCommand.cs" />
     <Compile Include="Command\MenuDeleteCommand.cs" />

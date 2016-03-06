@@ -334,8 +334,21 @@ namespace Yuri
                                 "Director", OutputStyle.Error);
                             break;
                         }
-                        var sceneFuncContainer = this.ResMana.GetScene(Director.RunMana.CallStack.ESP.bindingSceneName).funcContainer;
-                        var sceneFuncList = from f in sceneFuncContainer where f.callname == callFunc select f;
+                        var callFuncItems = callFunc.Split('@');
+                        List<SceneFunction> sceneFuncContainer;
+                        IEnumerable<SceneFunction> sceneFuncList;
+                        if (callFuncItems.Length > 1)
+                        {
+                            sceneFuncContainer = this.ResMana.GetScene(callFuncItems[1]).funcContainer;
+                            sceneFuncList = from f in sceneFuncContainer where f.callname == callFuncItems[0] select f;
+                        }
+                        else
+                        {
+                            sceneFuncContainer = this.ResMana.GetScene(Director.RunMana.CallStack.ESP.bindingSceneName).funcContainer;
+                            sceneFuncList = from f in sceneFuncContainer where f.callname == callFunc select f;
+                            CommonUtils.ConsoleLine(String.Format("Function calling for current Scene (Scene not explicit): {0}", callFunc),
+                                "Director", OutputStyle.Warning);
+                        }
                         if (sceneFuncList.Count() == 0)
                         {
                             CommonUtils.ConsoleLine(String.Format("Ignored Function calling (function not exist): {0}", callFunc),

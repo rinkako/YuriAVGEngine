@@ -34,7 +34,7 @@ namespace YuriHalation.YuriForms
                 return;
             }
             // 可插入性
-            //this.actionGroupBox.Enabled = this.codeListBox.Enabled;
+            this.actionGroupBox.Enabled = this.codeListBox.Enabled && this.codeListBox.SelectedIndex != -1;
             // 可选择性
             string itemStr = this.codeListBox.SelectedItem.ToString();
             if (itemStr.TrimStart().StartsWith(":"))
@@ -122,6 +122,9 @@ namespace YuriHalation.YuriForms
                             break;
                         case "代码片段":
                             FontBrush = Brushes.Gray;
+                            break;
+                        case "函数调用":
+                            FontBrush = Brushes.Purple;
                             break;
                         default:
                             FontBrush = Brushes.Black;
@@ -426,7 +429,105 @@ namespace YuriHalation.YuriForms
             pf.ShowDialog(this);
         }
 
+        /// <summary>
+        /// 按钮：函数调用
+        /// </summary>
+        private void button29_Click(object sender, EventArgs e)
+        {
+            FunctionCallForm fcf = new FunctionCallForm();
+            fcf.ShowDialog(this);
+        }
+
         #region 菜单项
+        /// <summary>
+        /// 代码框右键菜单
+        /// </summary>
+        private void codeListBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                this.codeListBox.SelectedIndices.Clear();
+                int posindex = this.codeListBox.IndexFromPoint(new Point(e.X, e.Y));
+                this.codeListBox.ContextMenuStrip = null;
+                if (posindex >= 0 && posindex < this.codeListBox.Items.Count)
+                {
+                    if ((this.codeListBox.Items[posindex].ToString()).TrimStart().StartsWith(":"))
+                    {
+                        this.codeListBox.Refresh();
+                        return;
+                    }
+                    this.codeListBox.SelectedIndex = posindex;
+                    this.CodeListContextMenuStrip.Show(this.codeListBox, new Point(e.X, e.Y));
+                }
+            }
+            this.codeListBox.Refresh();
+        }
+
+        /// <summary>
+        /// 菜单：复制
+        /// </summary>
+        private void 复制ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.core.CopyCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
+        }
+
+        /// <summary>
+        /// 菜单：删除
+        /// </summary>
+        private void 删除ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.core.DeleteCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
+            this.core.RefreshCodeContext();
+        }
+
+        /// <summary>
+        /// 菜单：剪切
+        /// </summary>
+        private void 剪切ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.core.CutCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
+            this.core.RefreshCodeContext();
+        }
+
+        /// <summary>
+        /// 菜单：粘贴
+        /// </summary>
+        private void 粘贴ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.core.PasteCode(this.codeListBox.SelectedIndex);
+            this.core.RefreshCodeContext();
+        }
+
+        /// <summary>
+        /// 菜单：编辑
+        /// </summary>
+        private void 编辑ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.codeListBox.SelectedItem != null &&
+                this.codeListBox.SelectedItem.ToString().TrimStart().StartsWith(":"))
+            {
+                this.复制ToolStripMenuItem.Enabled = false;
+                this.粘贴ToolStripMenuItem.Enabled = false;
+                this.剪切ToolStripMenuItem.Enabled = false;
+                this.删除ToolStripMenuItem.Enabled = false;
+            }
+            if (this.codeListBox.Focused == false ||
+                this.codeListBox.SelectedIndex == -1)
+            {
+                this.复制ToolStripMenuItem.Enabled = false;
+                this.粘贴ToolStripMenuItem.Enabled = false;
+                this.剪切ToolStripMenuItem.Enabled = false;
+                this.删除ToolStripMenuItem.Enabled = false;
+            }
+            else
+            {
+                this.复制ToolStripMenuItem.Enabled = true;
+                this.粘贴ToolStripMenuItem.Enabled = Halation.CopyItems != null && Halation.CopyItems.Count > 0;
+                this.剪切ToolStripMenuItem.Enabled = true;
+                this.删除ToolStripMenuItem.Enabled = true;
+            }
+        }
+
         /// <summary>
         /// 菜单：撤销
         /// </summary>
@@ -567,90 +668,6 @@ namespace YuriHalation.YuriForms
             prf.ShowDialog(this);
         }
         #endregion
-
-        private void codeListBox_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                this.codeListBox.SelectedIndices.Clear();
-                int posindex = this.codeListBox.IndexFromPoint(new Point(e.X, e.Y));
-                this.codeListBox.ContextMenuStrip = null;
-                if (posindex >= 0 && posindex < this.codeListBox.Items.Count)
-                {
-                    if ((this.codeListBox.Items[posindex].ToString()).TrimStart().StartsWith(":"))
-                    {
-                        this.codeListBox.Refresh();
-                        return;
-                    }
-                    this.codeListBox.SelectedIndex = posindex;
-                    this.CodeListContextMenuStrip.Show(this.codeListBox, new Point(e.X, e.Y));
-                }
-            }
-            this.codeListBox.Refresh();
-        }
-
-        private void 复制ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.core.CopyCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
-        }
-
-        private void 删除ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.core.DeleteCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
-            this.core.RefreshCodeContext();
-        }
-
-        private void 剪切ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.core.CutCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
-            this.core.RefreshCodeContext();
-        }
-
-        private void 粘贴ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.core.PasteCode(this.codeListBox.SelectedIndex);
-            this.core.RefreshCodeContext();
-        }
-
-        private void 编辑ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (this.codeListBox.SelectedItem != null &&
-                this.codeListBox.SelectedItem.ToString().TrimStart().StartsWith(":"))
-            {
-                this.复制ToolStripMenuItem.Enabled = false;
-                this.粘贴ToolStripMenuItem.Enabled = false;
-                this.剪切ToolStripMenuItem.Enabled = false;
-                this.删除ToolStripMenuItem.Enabled = false;
-            }
-            if (this.codeListBox.Focused == false||
-                this.codeListBox.SelectedIndex == -1)
-            {
-                this.复制ToolStripMenuItem.Enabled = false;
-                this.粘贴ToolStripMenuItem.Enabled = false;
-                this.剪切ToolStripMenuItem.Enabled = false;
-                this.删除ToolStripMenuItem.Enabled = false;
-            }
-            else
-            {
-                this.复制ToolStripMenuItem.Enabled = true;
-                this.粘贴ToolStripMenuItem.Enabled = Halation.CopyItems != null && Halation.CopyItems.Count > 0;
-                this.剪切ToolStripMenuItem.Enabled = true;
-                this.删除ToolStripMenuItem.Enabled = true;
-            }
-        }
-
-        private void codeListBox_Enter(object sender, EventArgs e)
-        {
-            this.actionGroupBox.Enabled = true;
-        }
-
-        private void codeListBox_Leave(object sender, EventArgs e)
-        {
-            if (this.codeListBox.SelectedIndex <= 0)
-            {
-                this.actionGroupBox.Enabled = false;
-            }
-        }
 
 
 

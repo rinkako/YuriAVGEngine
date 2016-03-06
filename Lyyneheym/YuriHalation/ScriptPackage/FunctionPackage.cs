@@ -13,12 +13,12 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// 创建一个指定函数名的函数
         /// </summary>
         /// <param name="funcName">函数名</param>
-        /// <param name="parentName">上级场景名</param>
+        /// <param name="parent">上级场景</param>
         /// <param name="argv">形参列表</param>
-        public FunctionPackage(string funcName, string parentName, List<string> argv)
+        public FunctionPackage(string funcName, ScenePackage parent, List<string> argv)
         {
             this.functionName = funcName;
-            this.parentName = parentName;
+            this.parent = parent;
             this.Argv = argv;
         }
 
@@ -33,9 +33,9 @@ namespace Yuri.YuriHalation.ScriptPackage
         public string functionName;
 
         /// <summary>
-        /// 所在场景的名称
+        /// 所在场景
         /// </summary>
-        public string parentName;
+        public ScenePackage parent;
 
         /// <summary>
         /// 调用名
@@ -44,7 +44,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         {
             get
             {
-                return String.Format("{0}@{1}", functionName, parentName);
+                return String.Format("{0}@{1}", functionName, parent.sceneName);
             }
         }
     }

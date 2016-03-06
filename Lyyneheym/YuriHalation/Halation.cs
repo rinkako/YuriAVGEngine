@@ -134,42 +134,6 @@ namespace Yuri
         #endregion
 
         #region 前端命令相关
-        public void DeleteCode(int begin, int count)
-        {
-            IHalationCommand cmd = new MenuDeleteCommand(Halation.currentCodePackage, begin, count);
-            HalationInvoker.Dash(Halation.currentScriptName, cmd);
-        }
-
-        public void CutCode(int begin, int count)
-        {
-            // 这里不能clear，因为命令栈会保存每次的复制项
-            Halation.CopyItems = new List<ActionPackage>();
-            IHalationCommand cmd = new MenuCutCommand(Halation.currentCodePackage, begin, count, Halation.CopyItems);
-            HalationInvoker.Dash(Halation.currentScriptName, cmd);
-        }
-
-        public void CopyCode(int begin, int count)
-        {
-            // 这里不能clear，因为命令栈会保存每次的复制项
-            Halation.CopyItems = new List<ActionPackage>();
-            for (int i = begin; i < begin + count; i++)
-            {
-                Halation.CopyItems.Add(Halation.currentCodePackage.GetAction()[i]);
-            }
-        }
-
-        public void PasteCode(int insertLine)
-        {
-            if (Halation.CopyItems == null || Halation.CopyItems.Count == 0) { return; }
-            IHalationCommand cmd = new MenuPasteCommand(Halation.currentCodePackage, insertLine, Halation.CopyItems);
-            HalationInvoker.Dash(Halation.currentScriptName, cmd);
-        }
-
-        /// <summary>
-        /// 获取或设置复制项
-        /// </summary>
-        public static List<ActionPackage> CopyItems { get; set; }
-
         /// <summary>
         /// 获取当前选中数量
         /// </summary>
@@ -419,9 +383,50 @@ namespace Yuri
             IHalationCommand cmd = new PictureCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, filename, x, y, xscale, yscale, opacity, ro);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
+
+        public void DashFuncall(string funCallName, string args)
+        {
+            IHalationCommand cmd = new FuncallCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, funCallName, args);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
         #endregion
 
         #region 前端菜单相关
+        public void DeleteCode(int begin, int count)
+        {
+            IHalationCommand cmd = new MenuDeleteCommand(Halation.currentCodePackage, begin, count);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void CutCode(int begin, int count)
+        {
+            // 这里不能clear，因为命令栈会保存每次的复制项
+            Halation.CopyItems = new List<ActionPackage>();
+            IHalationCommand cmd = new MenuCutCommand(Halation.currentCodePackage, begin, count, Halation.CopyItems);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void CopyCode(int begin, int count)
+        {
+            // 这里不能clear，因为命令栈会保存每次的复制项
+            Halation.CopyItems = new List<ActionPackage>();
+            for (int i = begin; i < begin + count; i++)
+            {
+                Halation.CopyItems.Add(Halation.currentCodePackage.GetAction()[i]);
+            }
+        }
+
+        public void PasteCode(int insertLine)
+        {
+            if (Halation.CopyItems == null || Halation.CopyItems.Count == 0) { return; }
+            IHalationCommand cmd = new MenuPasteCommand(Halation.currentCodePackage, insertLine, Halation.CopyItems);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        /// <summary>
+        /// 获取或设置复制项
+        /// </summary>
+        public static List<ActionPackage> CopyItems { get; set; }
 
         public bool MenuUndo()
         {
