@@ -30,6 +30,10 @@ namespace Yuri
         public MainWindow()
         {
             InitializeComponent();
+            this.Width = this.BO_MainGrid.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
+            this.Height = GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT;
+            this.BO_MainGrid.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
+            this.Title = GlobalDataContainer.GAME_PROJECT_NAME;
             core.SetMainWindow(this);
             this.TransitionBox.DataContext = this.TransitionDS;
         }

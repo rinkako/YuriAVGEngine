@@ -24,9 +24,9 @@ namespace Yuri.PlatformCore
         #endregion
 
         #region 个性化设置信息
-        // 窗体分辨率：宽度
+        // 窗体分辨率：宽度 1024
         public static int GAME_WINDOW_WIDTH = 1024;
-        // 窗体分辨率：高度
+        // 窗体分辨率：高度 576
         public static int GAME_WINDOW_HEIGHT = 576;
         // 窗体分辨率：实际高度（标题栏含）
         public static int GAME_WINDOW_ACTUALHEIGHT { get { return GlobalDataContainer.GAME_WINDOW_HEIGHT + 32; } }
@@ -88,16 +88,6 @@ namespace Yuri.PlatformCore
         public static int GAME_BACKGROUND_COUNT = 2;
         // 图像层：按钮层数量
         public static int GAME_BUTTON_COUNT = 50;
-        // 图像层：默认位置
-        public static Point GAME_IMAGELAYER_POSITION = new Point(0, 0);
-        // 图像层：图像层默认上边距
-        public static int GAME_IMAGELAYER_MARGIN_TOP = 0;
-        // 图像层：图像层默认下边距
-        public static int GAME_IMAGELAYER_MARGIN_DOWN = 0;
-        // 图像层：图像层默认左边距
-        public static int GAME_IMAGELAYER_MARGIN_LEFT = 0;
-        // 图像层：图像层默认右边距
-        public static int GAME_IMAGELAYER_MARGIN_RIGHT = 0;
         // 图像层：左立绘X
         public static double GAME_CHARACTERSTAND_LEFT_X = 10;
         // 图像层：左立绘Y
@@ -115,7 +105,7 @@ namespace Yuri.PlatformCore
         // 图像层：右中立绘Y
         public static double GAME_CHARACTERSTAND_MIDRIGHT_Y = 60;
         // 图像层：右立绘X
-        public static double GAME_CHARACTERSTAND_RIGHT_X = 500;
+        public static double GAME_CHARACTERSTAND_RIGHT_X = 525;
         // 图像层：右立绘Y
         public static double GAME_CHARACTERSTAND_RIGHT_Y = 60;
         // 全局：背景Z坐标
