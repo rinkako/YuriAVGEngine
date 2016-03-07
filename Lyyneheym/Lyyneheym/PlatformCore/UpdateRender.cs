@@ -184,7 +184,7 @@ namespace Yuri.PlatformCore
                             // 弹掉用户等待状态
                             Director.RunMana.ExitCall();
                             this.isShowingDialog = false;
-                            this.dialogPreStr = string.Empty;
+                            this.dialogPreStr = String.Empty;
                             // 非连续对话时消除对话框
                             if (this.IsContinousDialog == false)
                             {
@@ -296,14 +296,23 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 将对话队列里的一趟显示出来，如果显示完毕后队列已空则结束对话状态
+        /// 将对话队列里指定趟数的趟显示出来，如果显示完毕后队列已空则结束对话状态
         /// </summary>
-        private void DrawDialogRunQueue()
+        /// <param name="runCount">合并的趟数</param>
+        /// <param name="wordDelay">是否有打字效果</param>
+        private void DrawDialogRunQueue(int runCount = 1, bool wordDelay = true)
         {
             if (this.pendingDialogQueue.Count != 0)
             {
-                string currentRun = this.pendingDialogQueue.Dequeue();
-                this.TypeWriter(0, this.dialogPreStr, currentRun, this.viewMana.GetMessageLayer(0).displayBinding, GlobalDataContainer.GAME_MSG_TYPING_DELAY);
+                string currentRun = "";
+                for (int i = 0; i < runCount; i++)
+                {
+                    if (this.pendingDialogQueue.Count != 0)
+                    {
+                        currentRun += this.pendingDialogQueue.Dequeue();
+                    }
+                }
+                this.TypeWriter(0, this.dialogPreStr, currentRun, this.viewMana.GetMessageLayer(0).displayBinding, wordDelay ? GlobalDataContainer.GAME_MSG_TYPING_DELAY : 0);
                 this.dialogPreStr += currentRun;
             }
         }
@@ -468,7 +477,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 待显示的文本趟队列
         /// </summary>
-        private Queue<string> pendingDialogQueue = new Queue<string>();
+        public Queue<string> pendingDialogQueue = new Queue<string>();
 
         /// <summary>
         /// 对话故事板容器
@@ -1184,6 +1193,10 @@ namespace Yuri.PlatformCore
         private void Save(string saveFileName)
         {
             SpriteAnimation.SkipAllAnimation();
+            if (this.pendingDialogQueue.Count > 0)
+            {
+                this.DrawDialogRunQueue(this.pendingDialogQueue.Count, false);
+            }
             Director.RunMana.PreviewSave();
             IOUtils.serialization(Director.RunMana, GlobalDataContainer.GAME_SAVE_DIR + "\\" + saveFileName + GlobalDataContainer.GAME_SAVE_POSTFIX);
             Director.RunMana.FinishedSave();

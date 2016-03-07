@@ -330,6 +330,9 @@ namespace Yuri.PlatformCore
             return null;
         }
 
+        /// <summary>
+        /// 预备存档
+        /// </summary>
         public void PreviewSave()
         {
             this.saveTraceBackStack = new Stack<StackMachineFrame>();
@@ -339,6 +342,9 @@ namespace Yuri.PlatformCore
             }
         }
 
+        /// <summary>
+        /// 完成存档动作
+        /// </summary>
         public void FinishedSave()
         {
             while (this.saveTraceBackStack.Count > 0)

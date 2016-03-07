@@ -105,6 +105,7 @@ namespace Yuri
             Director.GetInstance().updateRender.Bgm(Director.RunMana.PlayingBGM, GlobalDataContainer.GAME_SOUND_BGMVOL);
             // 清空字符串缓冲
             Director.GetInstance().updateRender.dialogPreStr = String.Empty;
+            Director.GetInstance().updateRender.pendingDialogQueue.Clear();
             // 弹空全部等待，复现保存最后一个动作
             Director.RunMana.ExitUserWait();
             Interrupt reactionNtr = new Interrupt()
