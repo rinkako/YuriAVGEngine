@@ -733,7 +733,19 @@ namespace YuriHalation.YuriForms
             SwitchesForm sf = new SwitchesForm("开关管理器");
             sf.ShowDialog(this);
         }
+
+        /// <summary>
+        /// 菜单：打开游戏目录
+        /// </summary>
+        private void 打开游戏目录ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Explorer.exe");
+            psi.Arguments = "/e," + Halation.projectFolder;
+            System.Diagnostics.Process.Start(psi);
+        }
         #endregion
+
+
 
     }
 }

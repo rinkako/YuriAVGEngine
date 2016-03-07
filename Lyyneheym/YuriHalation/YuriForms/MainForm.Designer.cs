@@ -274,19 +274,19 @@
             // 全局设定ToolStripMenuItem
             // 
             this.全局设定ToolStripMenuItem.Name = "全局设定ToolStripMenuItem";
-            this.全局设定ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.全局设定ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.全局设定ToolStripMenuItem.Text = "全局设定";
             this.全局设定ToolStripMenuItem.Click += new System.EventHandler(this.全局设定ToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // 场景管理器ToolStripMenuItem
             // 
             this.场景管理器ToolStripMenuItem.Name = "场景管理器ToolStripMenuItem";
-            this.场景管理器ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.场景管理器ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.场景管理器ToolStripMenuItem.Text = "场景管理器";
             // 
             // 开关管理器ToolStripMenuItem
@@ -299,13 +299,14 @@
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
             // 
             // 打开游戏目录ToolStripMenuItem
             // 
             this.打开游戏目录ToolStripMenuItem.Name = "打开游戏目录ToolStripMenuItem";
-            this.打开游戏目录ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.打开游戏目录ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.打开游戏目录ToolStripMenuItem.Text = "打开游戏目录";
+            this.打开游戏目录ToolStripMenuItem.Click += new System.EventHandler(this.打开游戏目录ToolStripMenuItem_Click);
             // 
             // 资源ToolStripMenuItem
             // 
@@ -327,66 +328,66 @@
             // 背景ToolStripMenuItem
             // 
             this.背景ToolStripMenuItem.Name = "背景ToolStripMenuItem";
-            this.背景ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.背景ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.背景ToolStripMenuItem.Text = "背景";
             this.背景ToolStripMenuItem.Click += new System.EventHandler(this.背景ToolStripMenuItem_Click);
             // 
             // 立绘ToolStripMenuItem
             // 
             this.立绘ToolStripMenuItem.Name = "立绘ToolStripMenuItem";
-            this.立绘ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.立绘ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.立绘ToolStripMenuItem.Text = "立绘";
             this.立绘ToolStripMenuItem.Click += new System.EventHandler(this.立绘ToolStripMenuItem_Click);
             // 
             // 图片ToolStripMenuItem
             // 
             this.图片ToolStripMenuItem.Name = "图片ToolStripMenuItem";
-            this.图片ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.图片ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.图片ToolStripMenuItem.Text = "图片";
             this.图片ToolStripMenuItem.Click += new System.EventHandler(this.图片ToolStripMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(121, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(149, 6);
             // 
             // bGMToolStripMenuItem
             // 
             this.bGMToolStripMenuItem.Name = "bGMToolStripMenuItem";
-            this.bGMToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.bGMToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.bGMToolStripMenuItem.Text = "BGM";
             this.bGMToolStripMenuItem.Click += new System.EventHandler(this.bGMToolStripMenuItem_Click);
             // 
             // bGSToolStripMenuItem
             // 
             this.bGSToolStripMenuItem.Name = "bGSToolStripMenuItem";
-            this.bGSToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.bGSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.bGSToolStripMenuItem.Text = "BGS";
             this.bGSToolStripMenuItem.Click += new System.EventHandler(this.bGSToolStripMenuItem_Click);
             // 
             // sEToolStripMenuItem
             // 
             this.sEToolStripMenuItem.Name = "sEToolStripMenuItem";
-            this.sEToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.sEToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.sEToolStripMenuItem.Text = "SE";
             this.sEToolStripMenuItem.Click += new System.EventHandler(this.sEToolStripMenuItem_Click);
             // 
             // vOCALToolStripMenuItem
             // 
             this.vOCALToolStripMenuItem.Name = "vOCALToolStripMenuItem";
-            this.vOCALToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.vOCALToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.vOCALToolStripMenuItem.Text = "VOCAL";
             this.vOCALToolStripMenuItem.Click += new System.EventHandler(this.vOCALToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(121, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
             // 
             // 包管理器ToolStripMenuItem
             // 
             this.包管理器ToolStripMenuItem.Name = "包管理器ToolStripMenuItem";
-            this.包管理器ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.包管理器ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.包管理器ToolStripMenuItem.Text = "包管理器";
             // 
             // 编译ToolStripMenuItem
@@ -403,24 +404,26 @@
             // 生成工程ToolStripMenuItem
             // 
             this.生成工程ToolStripMenuItem.Name = "生成工程ToolStripMenuItem";
-            this.生成工程ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.生成工程ToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
+            this.生成工程ToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.生成工程ToolStripMenuItem.Text = "编译工程";
             // 
             // 生成并运行ToolStripMenuItem
             // 
             this.生成并运行ToolStripMenuItem.Name = "生成并运行ToolStripMenuItem";
-            this.生成并运行ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.生成并运行ToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
+            this.生成并运行ToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.生成并运行ToolStripMenuItem.Text = "编译并运行";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(133, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(154, 6);
             // 
             // 发布ToolStripMenuItem
             // 
             this.发布ToolStripMenuItem.Name = "发布ToolStripMenuItem";
-            this.发布ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.发布ToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.发布ToolStripMenuItem.Text = "发布";
             // 
             // 帮助ToolStripMenuItem
