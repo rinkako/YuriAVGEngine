@@ -35,7 +35,10 @@ namespace Yuri.PlatformCore
         public SceneAction MoveNext()
         {
             SceneAction fetched = this.FetchNextInstruction();
-            this.DashingPureSa = fetched.Clone(true);
+            if (fetched != null && this.CallStack.ESP.state == StackMachineState.Interpreting)
+            {
+                this.DashingPureSa = fetched.Clone(true);
+            }
             return fetched;
         }
 
@@ -51,13 +54,18 @@ namespace Yuri.PlatformCore
                 return null;
             }
             // 取出当前要执行的指令
+            if (this.CallStack.ESP.state != StackMachineState.Interpreting &&
+                this.CallStack.ESP.state != StackMachineState.FunctionCalling)
+            {
+                return null;
+            }
             SceneAction ret = this.CallStack.ESP.IP;
             // 如果没有下一指令就弹栈
             if (ret == null)
             {
                 this.CallStack.Consume();
                 // 递归寻指
-                return this.MoveNext();
+                return this.FetchNextInstruction();
             }
             // 如果没有条件子句
             if (ret.condPolish == "")
@@ -93,7 +101,6 @@ namespace Yuri.PlatformCore
                         this.CallStack.ESP.PC++;
                         ret = this.CallStack.ESP.IP = ret.next;
                         break;
-
                 }
                 // 移动下一指令指针，为下次处理做准备
                 if (ret.aType != SActionType.act_for)
@@ -260,7 +267,7 @@ namespace Yuri.PlatformCore
             var funcSymbols = function.symbols;
             for (int i = 0; i < args.Count; i++)
             {
-                funcSymbols.Add(function.param[i].Substring(1), args[i]);
+                funcSymbols[function.param[i].Substring(1)] = args[i];
             }
         }
 
@@ -321,6 +328,23 @@ namespace Yuri.PlatformCore
                 return this.Symbols.GlobalFetch(varName.Replace("&", ""));
             }
             return null;
+        }
+
+        public void PreviewSave()
+        {
+            this.saveTraceBackStack = new Stack<StackMachineFrame>();
+            while (this.CallStack.ESP != this.CallStack.SAVEP)
+            {
+                this.saveTraceBackStack.Push(this.CallStack.Consume());
+            }
+        }
+
+        public void FinishedSave()
+        {
+            while (this.saveTraceBackStack.Count > 0)
+            {
+                this.CallStack.Submit(this.saveTraceBackStack.Pop());
+            }
         }
 
         /// <summary>
@@ -921,13 +945,9 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 获取或设置标题回归点
+        /// 存档状态保存栈
         /// </summary>
-        //public KeyValuePair<string, SceneAction> TitlePoint
-        //{
-        //    get;
-        //    set;
-        //}
+        private Stack<StackMachineFrame> saveTraceBackStack;
     }
 
     /// <summary>

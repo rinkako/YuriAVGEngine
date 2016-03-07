@@ -70,7 +70,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         public override string ToString()
         {
-            return String.Format("StackFrame:{0} -> {1}", this.state.ToString(), this.IP.ToString());
+            return String.Format("StackFrame:{0} -> {1}", this.state.ToString(), this.IP == null ? "" : this.IP.ToString());
         }
     }
 

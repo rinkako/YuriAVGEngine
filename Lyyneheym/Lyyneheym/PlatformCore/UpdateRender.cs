@@ -54,6 +54,22 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// <para>将逆波兰式计算为等价的String类型实例</para>
+        /// <para>如果逆波兰式为空，则返回参数nullValue的值</para>
+        /// </summary>
+        /// <param name="polish">逆波兰式</param>
+        /// <param name="nullValue">默认值</param>
+        /// <returns>String实例</returns>
+        private string ParseString(string polish, string nullValue)
+        {
+            if (polish == "")
+            {
+                return nullValue;
+            }
+            return Director.RunMana.CalculatePolish(polish).ToString();
+        }
+
+        /// <summary>
         /// <para>把逆波兰式直接看做字符串处理</para>
         /// <para>如果逆波兰式为空，则返回参数nullValue的值</para>
         /// </summary>
@@ -153,7 +169,7 @@ namespace Yuri.PlatformCore
                 if (this.MouseLeftUpFlag == true)
                 {
                     // 正在显示对话
-                    if (this.isShowingDialog)
+                    if (this.isShowingDialog && Director.buttonClickingFlag == false)
                     {
                         // 如果还在播放打字动画就跳跃
                         if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() != 1.0)
@@ -447,7 +463,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 当前已经显示的文本内容
         /// </summary>
-        private string dialogPreStr = String.Empty;
+        public string dialogPreStr = String.Empty;
 
         /// <summary>
         /// 待显示的文本趟队列
@@ -627,11 +643,15 @@ namespace Yuri.PlatformCore
                     break;
                 case SActionType.act_title:
                     break;
-                case SActionType.act_menu:
-                    break;
                 case SActionType.act_save:
+                    this.Save(
+                        this.ParseString(action.argsDict["filename"], "autosave")
+                        );
                     break;
                 case SActionType.act_load:
+                    this.Load(
+                        this.ParseString(action.argsDict["filename"], "autosave")
+                        );
                     break;
                 case SActionType.act_label:
                     break;
@@ -1132,7 +1152,7 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 回到标题，这个动作会在弹空整个调用堆栈后再施加
+        /// 演绎函数：回到标题，这个动作会在弹空整个调用堆栈后再施加
         /// </summary>
         private void Title()
         {
@@ -1157,14 +1177,27 @@ namespace Yuri.PlatformCore
             }
         }
 
-        private void Save()
+        /// <summary>
+        /// 演绎函数：保存游戏
+        /// </summary>
+        /// <param name="saveFileName">文件名</param>
+        private void Save(string saveFileName)
         {
-
+            SpriteAnimation.SkipAllAnimation();
+            Director.RunMana.PreviewSave();
+            IOUtils.serialization(Director.RunMana, GlobalDataContainer.GAME_SAVE_DIR + "\\" + saveFileName + GlobalDataContainer.GAME_SAVE_POSTFIX);
+            Director.RunMana.FinishedSave();
         }
 
-        private void Load()
+        /// <summary>
+        /// 演绎函数：载入游戏
+        /// </summary>
+        /// <param name="loadFileName">文件名</param>
+        private void Load(string loadFileName)
         {
-
+            SpriteAnimation.SkipAllAnimation();
+            var rm = (RuntimeManager)IOUtils.unserialization(GlobalDataContainer.GAME_SAVE_DIR + "\\" + loadFileName + GlobalDataContainer.GAME_SAVE_POSTFIX);
+            Director.ResumeFromSaveData(rm);
         }
 
         /// <summary>

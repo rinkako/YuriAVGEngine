@@ -145,7 +145,9 @@ namespace Yuri.PlatformCore
         // 存档：最大存档数
         public static int GAME_SAVE_MAX = 99;
         // 存档：存档目录名
-        public static string GAME_SAVE_DIR = "save";
+        public static string GAME_SAVE_DIR = "Save";
+        // 存档：存档后缀名
+        public static string GAME_SAVE_POSTFIX = ".dat";
         // 字体：字体名称
         public static string GAME_FONT_NAME = "黑体";
         // 字体：颜色

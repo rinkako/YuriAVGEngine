@@ -46,7 +46,7 @@ namespace Yuri.PlatformCore
                 aTag = ""
             };
             this.coreStack.Push(smf);
-            this.EBP = this.coreStack.Peek();
+            this.EBP = this.SAVEP = this.coreStack.Peek();
         }
 
         /// <summary>
@@ -177,6 +177,10 @@ namespace Yuri.PlatformCore
         /// <returns>调用栈帧</returns>
         public StackMachineFrame Consume()
         {
+            if (this.ESP.state == StackMachineState.Interpreting)
+            {
+                this.SAVEP = null;
+            }
             return this.coreStack.Pop();
         }
 
@@ -211,16 +215,38 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                if (this.ebp != null && this.coreStack.Contains(this.ebp))
+                if (this.ebp != null && this.coreStack.Contains(this.ebp) &&
+                    (this.ebp.state == StackMachineState.Interpreting || this.ebp.state == StackMachineState.FunctionCalling))
                 {
                     return this.ebp;
                 }
-                return this.ebp = this.ESP;
+                Stack<StackMachineFrame> ebpSerachStack = new Stack<StackMachineFrame>();
+                StackMachineFrame xebp = this.ESP;
+                while (xebp.state != StackMachineState.Interpreting && xebp.state != StackMachineState.FunctionCalling)
+                {
+                    ebpSerachStack.Push(this.coreStack.Pop());
+                    xebp = this.coreStack.Peek();
+                }
+                this.ebp = xebp;
+                while (ebpSerachStack.Count > 0)
+                {
+                    this.coreStack.Push(ebpSerachStack.Pop());
+                }
+                return this.ebp;
             }
             private set
             {
                 this.ebp = value;
             }
+        }
+
+        /// <summary>
+        /// 场景指针
+        /// </summary>
+        public StackMachineFrame SAVEP
+        {
+            get;
+            set;
         }
 
         /// <summary>

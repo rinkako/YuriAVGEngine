@@ -276,7 +276,8 @@ namespace Yuri.PlatformCore
                 type = InterruptType.ButtonJump,
                 interruptFuncSign = descriptor.interruptFuncSign,
                 returnTarget = descriptor.jumpLabel,
-                pureInterrupt = false
+                pureInterrupt = false,
+                exitWait = !descriptor.Eternal
             };
             Canvas.SetLeft(buttonImage, descriptor.X);
             Canvas.SetTop(buttonImage, descriptor.Y);
@@ -322,6 +323,7 @@ namespace Yuri.PlatformCore
                 interruptSA = null,
                 type = InterruptType.ButtonJump,
                 returnTarget = descriptor.JumpTarget,
+                exitWait = true
             };
             Canvas.SetLeft(buttonTextView, descriptor.X);
             Canvas.SetTop(buttonTextView, descriptor.Y);

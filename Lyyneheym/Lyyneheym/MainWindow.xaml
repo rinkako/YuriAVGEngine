@@ -2,13 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:transitionalsControls="clr-namespace:Transitionals.Controls;assembly=Transitionals"
-        Title="MainWindow" Height="608" Width="1024" MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" Closing="Window_Closing" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" MouseWheel="Window_MouseWheel" Loaded="window_Loaded">
+        Title="MainWindow" Height="608" Width="1024" MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" Closing="Window_Closing" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" MouseWheel="Window_MouseWheel">
     <Viewbox x:Name="viewbox" Stretch="Fill">
         <Canvas Name="BO_MainGrid" Width="1024" Height="576" Background="Black">
             <transitionalsControls:TransitionElement x:Name="TransitionBox" Transition="{Binding}" Width="{Binding ActualWidth, ElementName=BO_MainGrid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=BO_MainGrid, Mode=OneWay}"/>
             <Button Panel.ZIndex="9999" Content="Button" HorizontalAlignment="Left" Margin="594,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
-            <Button Panel.ZIndex="9999" Content="SAVE" Canvas.Left="695" Canvas.Top="5" Width="75" Click="Button_Click"/>
-            <Button Panel.ZIndex="9999" Content="LOAD" Width="75" Canvas.Left="775" Canvas.Top="5" Click="Button_Click_1"/>
         </Canvas>
     </Viewbox>
 </Window>

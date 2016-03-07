@@ -1015,6 +1015,12 @@ namespace Yuri.YuriInterpreter
                     case TokenType.Token_o_trans:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_trans, "name");
                         break;
+                    case TokenType.Token_o_save:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_save, "filename");
+                        break;
+                    case TokenType.Token_o_load:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_load, "filename");
+                        break;
                     case TokenType.Token_o_stopbgm:
                         statementNode.nodeSyntaxType = SyntaxType.synr_stopbgm;
                         break;
@@ -1035,12 +1041,6 @@ namespace Yuri.YuriInterpreter
                         break;
                     case TokenType.Token_o_waitani:
                         statementNode.nodeSyntaxType = SyntaxType.synr_waitani;
-                        break;
-                    case TokenType.Token_o_save:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_save;
-                        break;
-                    case TokenType.Token_o_load:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_load;
                         break;
                     case TokenType.Token_o_break:
                         statementNode.nodeSyntaxType = SyntaxType.synr_break;

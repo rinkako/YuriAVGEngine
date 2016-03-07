@@ -106,25 +106,5 @@ namespace Yuri
             this.core.UpdateMouseWheel(e.Delta);
         }
 
-        private void window_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            core.SaveIt();
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            core.LoadIt();
-        }
-
-        
-
-
-
-
     }
 }

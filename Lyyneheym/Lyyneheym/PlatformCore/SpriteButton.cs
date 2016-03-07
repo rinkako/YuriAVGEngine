@@ -259,6 +259,7 @@ namespace Yuri.PlatformCore
         /// <param name="e">鼠标参数</param>
         public void MouseOnHandler(object sender, MouseEventArgs e)
         {
+            Director.buttonClickingFlag = true;
             if (this.Enable)
             {
                 this.isMouseOn = true;
@@ -282,6 +283,8 @@ namespace Yuri.PlatformCore
         /// <param name="e">鼠标参数</param>
         public void MouseUpHandler(object sender, MouseEventArgs e)
         {
+
+            Director.buttonClickingFlag = false;
             if (this.Enable)
             {
                 if (this.isMouseOn)

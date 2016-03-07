@@ -44,6 +44,11 @@ namespace Yuri.PlatformCore
         /// 在执行完中断动作后是否处理后续动作
         /// </summary>
         public bool pureInterrupt = false;
+
+        /// <summary>
+        /// 是否在执行时弹空所有等待
+        /// </summary>
+        public bool exitWait = false;
     }
 
     /// <summary>

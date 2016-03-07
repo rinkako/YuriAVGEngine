@@ -18,25 +18,6 @@ namespace Yuri
     /// </summary>
     public class Director
     {
-        #region DEBUG用
-        public void RemoveAll()
-        {
-            ViewManager.GetInstance().RemoveView(ResourceType.Unknown);
-        }
-
-        public void SaveIt()
-        {
-            IOUtils.serialization(Director.RunMana, @"saveRm.dat");
-        }
-
-        public void LoadIt()
-        {
-            var rm = (RuntimeManager)IOUtils.unserialization(@"saveRm.dat");
-            this.ResumeFromSaveData(rm);
-        }
-
-        #endregion
-
         #region 初次进入时的初始化相关函数
         /// <summary>
         /// 初始化游戏设置
@@ -107,7 +88,7 @@ namespace Yuri
         /// 设置运行时环境管理器，用于读取保存的信息
         /// </summary>
         /// <param name="rm">反序列化后的RM实例</param>
-        public void ResumeFromSaveData(RuntimeManager rm)
+        public static void ResumeFromSaveData(RuntimeManager rm)
         {
             // 清空画面并停下BGM
             ViewManager.GetInstance().RemoveView(ResourceType.Unknown);
@@ -121,7 +102,9 @@ namespace Yuri
             // 重绘整个画面
             ViewManager.GetInstance().ReDraw();
             // 恢复背景音乐
-            this.updateRender.Bgm(Director.RunMana.PlayingBGM, GlobalDataContainer.GAME_SOUND_BGMVOL);
+            Director.GetInstance().updateRender.Bgm(Director.RunMana.PlayingBGM, GlobalDataContainer.GAME_SOUND_BGMVOL);
+            // 清空字符串缓冲
+            Director.GetInstance().updateRender.dialogPreStr = String.Empty;
             // 弹空全部等待，复现保存最后一个动作
             Director.RunMana.ExitUserWait();
             Interrupt reactionNtr = new Interrupt()
@@ -231,6 +214,7 @@ namespace Yuri
                     // 退出中断
                     var pureInt = Director.RunMana.CallStack.ESP.bindingInterrupt.pureInterrupt;
                     var interruptFuncCalling = Director.RunMana.CallStack.ESP.bindingInterrupt.interruptFuncSign;
+                    var needExitWait = Director.RunMana.CallStack.ESP.bindingInterrupt.exitWait;
                     Director.RunMana.ExitCall();
                     // 处理中断优先动作
                     if (interruptSa != null)
@@ -248,9 +232,12 @@ namespace Yuri
                         break;
                     }
                     // 跳出所有用户等待
-                    Director.RunMana.ExitUserWait();
-                    // 处理跳转（这里放在中断函数调用前才不会影响EBP的值）
-                    if (interruptExitPoint != null)
+                    if (needExitWait || interruptExitPoint != "")
+                    {
+                        Director.RunMana.ExitUserWait();
+                    }
+                    // 处理跳转（与中断调用互斥）
+                    if (interruptExitPoint != "")
                     {
                         var curScene = this.ResMana.GetScene(Director.RunMana.CallStack.EBP.bindingSceneName);
                         if (!curScene.labelDictionary.ContainsKey(interruptExitPoint))
@@ -262,7 +249,7 @@ namespace Yuri
                         Director.RunMana.CallStack.EBP.IP = curScene.labelDictionary[interruptExitPoint];
                     }
                     // 处理中断函数调用
-                    if (interruptFuncCalling != "")
+                    else if (interruptFuncCalling != "")
                     {
                         var ifcItems = interruptFuncCalling.Split('(');
                         var funPureName = ifcItems[0];
@@ -420,6 +407,11 @@ namespace Yuri
             }
             Director.RunMana.CallFunction(sceneFunc, argsVec);
         }
+
+        /// <summary>
+        /// 设置当前是否正在点击按钮
+        /// </summary>
+        public static bool buttonClickingFlag = false;
 
         /// <summary>
         /// 当前游戏的状态
