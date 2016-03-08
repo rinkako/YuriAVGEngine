@@ -10,13 +10,13 @@ namespace Yuri.YuriHalation.HalationCore
     /// <summary>
     /// 文件管理器：管理Halation的文件IO动作
     /// </summary>
-    class FileManager
+    static class FileManager
     {
         /// <summary>
         /// 为工程初始化目录
         /// </summary>
         /// <param name="path">要建立的根路径</param>
-        public void CreateInitFolder(string path)
+        public static void CreateInitFolder(string path)
         {
             // 建立根目录
             if (!Directory.Exists(path))
@@ -73,7 +73,7 @@ namespace Yuri.YuriHalation.HalationCore
         /// <param name="instance">类的实例</param>
         /// <param name="savePath">保存路径</param>
         /// <returns>操作成功与否</returns>
-        public static bool serialization(object instance, string savePath)
+        public static bool Serialization(object instance, string savePath)
         {
             try
             {
@@ -98,7 +98,7 @@ namespace Yuri.YuriHalation.HalationCore
         /// </summary>
         /// <param name="loadPath">二进制文件路径</param>
         /// <returns>类的实例</returns>
-        public static object unserialization(string loadPath)
+        public static object Unserialization(string loadPath)
         {
             try
             {
@@ -119,15 +119,39 @@ namespace Yuri.YuriHalation.HalationCore
         }
 
         /// <summary>
-        /// 私有的构造器
+        /// 为项目保存全局配置信息
         /// </summary>
-        private FileManager() { }
+        /// <param name="savePath">保存的路径</param>
+        /// <param name="kvpList">config包装的成员变量反射向量</param>
+        public static void SaveConfigData(string savePath, List<KeyValuePair<string, object>> kvpList)
+        {
+            FileStream fs = new FileStream(savePath, FileMode.Create);
+            StreamWriter sw = new StreamWriter(fs);
+            foreach (var kvp in kvpList)
+            {
+                sw.WriteLine(String.Format("{0}:{1}", kvp.Key, kvp.Value.ToString()));
+            }
+            sw.Close();
+            fs.Close();
+        }
 
         /// <summary>
-        /// 获取文件管理器唯一实例
+        /// 将向量保存为文件组
         /// </summary>
-        public static readonly FileManager Instance = new FileManager();
-
+        /// <param name="savePath">保存根目录</param>
+        /// <param name="postfix">文件的后缀</param>
+        /// <param name="lineitems">一个键值对向量，键是文件名，值是文件内容</param>
+        public static void SaveByLineItem(string savePath, string postfix, List<KeyValuePair<string, string>> lineitems)
+        {
+            foreach (var lineitem in lineitems)
+            {
+                FileStream fs = new FileStream(savePath + "\\" + lineitem.Key + postfix, FileMode.Create);
+                StreamWriter sw = new StreamWriter(fs);
+                sw.Write(lineitem.Value);
+                sw.Close();
+                fs.Close();
+            }
+        }
 
         #region 目录和字典常量
         // 图像资源目录名

@@ -93,7 +93,7 @@ namespace Yuri.YuriHalation.HalationCore
         /// <param name="track">播放的轨道</param>
         public void PlayBGS(string filename, float vol, int track = 0)
         {
-            if (track >= 0 && track < Halation.project.Config.BgsCount)
+            if (track >= 0 && track < Halation.project.Config.GameMusicBgsCount)
             {
                 this.BgsHandleContainer[track] = new KeyValuePair<int, float>(this.BassEngine.LoadFromFile(filename), vol);
                 this.BassEngine.SetVolume(this.BgsHandleContainer[track].Key, this.bgsVolume);
@@ -108,7 +108,7 @@ namespace Yuri.YuriHalation.HalationCore
         /// <param name="track">要停止的BGS轨道，缺省值-1表示全部停止</param>
         public void StopBGS(int track = -1)
         {
-            if (track >= 0 && track < Halation.project.Config.BgsCount && this.BgsHandleContainer[track].Key != 0)
+            if (track >= 0 && track < Halation.project.Config.GameMusicBgsCount && this.BgsHandleContainer[track].Key != 0)
             {
                 this.BassEngine.Stop(this.BgsHandleContainer[track].Key);
             }
@@ -146,7 +146,7 @@ namespace Yuri.YuriHalation.HalationCore
         /// <param name="track">轨道（-1为全部变更）</param>
         public void SetBGSVolume(int vol, int track = 0)
         {
-            if (track >= 0 && track < Halation.project.Config.BgsCount)
+            if (track >= 0 && track < Halation.project.Config.GameMusicBgsCount)
             {
                 this.BassEngine.SetVolume(this.BgsHandleContainer[0].Key, vol);
             }
@@ -227,7 +227,7 @@ namespace Yuri.YuriHalation.HalationCore
             {
                 this.BgsHandleContainer.Clear();
             }
-            for (int i = 0; i < Halation.project.Config.BgsCount; i++)
+            for (int i = 0; i < Halation.project.Config.GameMusicBgsCount; i++)
             {
                 this.BgsHandleContainer.Add(new KeyValuePair<int, float>(0, this.BGSDefaultVolume));
             }

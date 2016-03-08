@@ -15,7 +15,7 @@ namespace YuriHalation.YuriForms
         public PicturesForm()
         {
             InitializeComponent();
-            this.numericUpDown3.Maximum = Halation.project.Config.PictureLayerCount - 1;
+            this.numericUpDown3.Maximum = Halation.project.Config.GameViewPicturesCount - 1;
         }
 
         /// <summary>

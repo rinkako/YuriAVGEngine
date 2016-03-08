@@ -19,7 +19,7 @@ namespace YuriHalation.YuriForms
             {
                 this.comboBox1.Items.Add(s);
             }
-            this.numericUpDown1.Maximum = Halation.project.Config.MessageLayerCount - 1;
+            this.numericUpDown1.Maximum = Halation.project.Config.GameMsgLayerCount - 1;
             this.comboBox1.SelectedIndex = 0;
         }
 

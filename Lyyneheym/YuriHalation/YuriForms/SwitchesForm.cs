@@ -57,7 +57,7 @@ namespace YuriHalation.YuriForms
             }
             // 更新开关描述
             List<string> desList = new List<string>();
-            for (int i = 0; i < Halation.project.Config.MaxSwitchCount; i++)
+            for (int i = 0; i < Halation.project.Config.GameMaxSwitchCount; i++)
             {
                 if (this.switchDataGridView.Rows[i].Cells[1].Value == null)
                 {

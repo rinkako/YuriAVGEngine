@@ -16,7 +16,7 @@ namespace YuriHalation.YuriForms
         {
             InitializeComponent();
             this.comboBox1.SelectedIndex = 0;
-            this.numericUpDown3.Maximum = Halation.project.Config.ButtonLayerCount - 1;
+            this.numericUpDown3.Maximum = Halation.project.Config.GameViewButtonCount - 1;
         }
 
         /// <summary>

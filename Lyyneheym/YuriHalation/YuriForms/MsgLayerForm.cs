@@ -12,7 +12,7 @@ namespace YuriHalation.YuriForms
         public MsgLayerForm()
         {
             InitializeComponent();
-            this.numericUpDown1.Maximum = Halation.project.Config.MessageLayerCount - 1;
+            this.numericUpDown1.Maximum = Halation.project.Config.GameMsgLayerCount - 1;
         }
 
         /// <summary>

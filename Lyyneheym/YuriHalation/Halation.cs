@@ -39,6 +39,32 @@ namespace Yuri
         {
             return Regex.IsMatch(pureName, "^[a-zA-Z_][a-zA-Z0-9_]*$");
         }
+
+        /// <summary>
+        /// 遍历一个类的所有值字段
+        /// </summary>
+        /// <typeparam name="T">要遍历的类型</typeparam>
+        /// <param name="t">类型的实例</param>
+        /// <returns>一个包含了字段与字段值键值对的向量</returns>
+        public static List<KeyValuePair<string, object>> GetNameAndValue<T>(T t)
+        {
+            List<KeyValuePair<string, object>> resList = new List<KeyValuePair<string, object>>();
+            string tStr = string.Empty;
+            if (t == null)
+            {
+                return resList;
+            }
+            var properties = t.GetType().GetFields();
+            if (properties.Length <= 0)
+            {
+                return resList;
+            }
+            foreach (var item in properties)
+            {
+                resList.Add(new KeyValuePair<string, object>(item.Name, item.GetValue(t)));
+            }
+            return resList;
+        }
         #endregion
 
         #region 前端响应相关
@@ -150,7 +176,12 @@ namespace Yuri
         /// </summary>
         public void DashParse()
         {
-            var res = CodeGenerator.GetInstance().Generate();
+            // 保存全局配置
+            FileManager.SaveConfigData(Halation.projectFolder + "\\game.yuriconfig",
+                Halation.GetNameAndValue<ConfigPackage>(Halation.project.Config));
+            // 翻译可视化事件到脚本
+            var scripts = CodeGenerator.GetInstance().Generate();
+            FileManager.SaveByLineItem(Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO, ".sls", scripts);
         }
 
         /// <summary>
@@ -488,12 +519,12 @@ namespace Yuri
         /// <param name="projName">工程名称</param>
         public void NewProject(string path, string projName)
         {
-            FileManager.Instance.CreateInitFolder(string.Format("{0}\\{1}", path, projName));
+            FileManager.CreateInitFolder(string.Format("{0}\\{1}", path, projName));
             Halation.project = new Yuri.YuriHalation.ScriptPackage.ProjectPackage(projName);
             Halation.project.AddScene("main");
             Halation.projectName = projName;
             Halation.mainView.Text = String.Format("Yuri Halation - [{0}]", Halation.projectName);
-            FileManager.serialization(Halation.project, string.Format("{0}\\{1}\\game.yrproj", path, projName));
+            FileManager.Serialization(Halation.project, string.Format("{0}\\{1}\\game.yrproj", path, projName));
             Halation.projectFolder = string.Format("{0}\\{1}", path, projName);
         }
 
@@ -502,7 +533,7 @@ namespace Yuri
         /// </summary>
         public void SaveProject()
         {
-            FileManager.serialization(Halation.project, string.Format("{0}\\game.yrproj", projectFolder));
+            FileManager.Serialization(Halation.project, string.Format("{0}\\game.yrproj", projectFolder));
         }
 
         /// <summary>
@@ -514,7 +545,7 @@ namespace Yuri
             FileInfo fileinf = new FileInfo(projFile);
             Halation.projectName = fileinf.Directory.Name;
             Halation.projectFolder = fileinf.DirectoryName;
-            Halation.project = (ProjectPackage)FileManager.unserialization(projFile);
+            Halation.project = (ProjectPackage)FileManager.Unserialization(projFile);
             foreach (var sc in Halation.project.GetScene())
             {
                 HalationInvoker.AddScene(sc.sceneName);

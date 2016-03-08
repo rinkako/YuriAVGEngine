@@ -21,6 +21,8 @@ namespace YuriHalation.YuriForms
         public MainForm()
         {
             InitializeComponent();
+            this.资源ToolStripMenuItem.Enabled = this.编辑ToolStripMenuItem.Enabled =
+                this.工程ToolStripMenuItem.Enabled = this.编译ToolStripMenuItem.Enabled = false;
             Halation.SetViewReference(this);
         }
 
@@ -623,6 +625,8 @@ namespace YuriHalation.YuriForms
             if (npf.InitSuccess)
             {
                 core.RefreshProjectTree();
+                this.资源ToolStripMenuItem.Enabled = this.编辑ToolStripMenuItem.Enabled =
+                    this.工程ToolStripMenuItem.Enabled = this.编译ToolStripMenuItem.Enabled = true;
             }
         }
 
@@ -703,6 +707,8 @@ namespace YuriHalation.YuriForms
             if (fd.FileName != "")
             {
                 this.core.LoadProject(fd.FileName);
+                this.资源ToolStripMenuItem.Enabled = this.编辑ToolStripMenuItem.Enabled =
+                    this.工程ToolStripMenuItem.Enabled = this.编译ToolStripMenuItem.Enabled = true;
             }
         }
 
@@ -752,10 +758,5 @@ namespace YuriHalation.YuriForms
             System.Diagnostics.Process.Start(psi);
         }
         #endregion
-
-
-
-
-
     }
 }

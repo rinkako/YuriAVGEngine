@@ -18,8 +18,8 @@ namespace YuriHalation.YuriForms
             this.radioButton1.Checked = true;
             this.numericUpDown2.Enabled = false;
             this.comboBox1.Enabled = false;
-            this.numericUpDown1.Maximum = Halation.project.Config.PictureLayerCount - 1;
-            this.numericUpDown2.Maximum = Halation.project.Config.ButtonLayerCount - 1;
+            this.numericUpDown1.Maximum = Halation.project.Config.GameViewPicturesCount - 1;
+            this.numericUpDown2.Maximum = Halation.project.Config.GameViewButtonCount - 1;
             switch (selectedIndex)
             {
                 case 1:

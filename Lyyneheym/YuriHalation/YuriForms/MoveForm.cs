@@ -28,7 +28,7 @@ namespace YuriHalation.YuriForms
             switch (this.comboBox1.SelectedIndex)
             {
                 case 0:
-                    this.numericUpDown1.Maximum = Halation.project.Config.PictureLayerCount - 1;
+                    this.numericUpDown1.Maximum = Halation.project.Config.GameViewPicturesCount - 1;
                     break;
                 case 1:
                     this.numericUpDown1.Maximum = 4;
@@ -37,7 +37,7 @@ namespace YuriHalation.YuriForms
                     this.numericUpDown1.Maximum = 1;
                     break;
                 case 3:
-                    this.numericUpDown1.Maximum = Halation.project.Config.ButtonLayerCount;
+                    this.numericUpDown1.Maximum = Halation.project.Config.GameViewButtonCount;
                     break;
             }
         }

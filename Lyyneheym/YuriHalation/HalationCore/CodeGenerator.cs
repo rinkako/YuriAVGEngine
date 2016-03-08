@@ -15,7 +15,7 @@ namespace Yuri.YuriHalation.HalationCore
         /// 开始生成代码
         /// </summary>
         /// <param name="thread">线程数量</param>
-        public List<string> Generate(int thread = 4)
+        public List<KeyValuePair<string, string>> Generate(int thread = 4)
         {
             thread = (thread > 8 || thread < 1) ? 8 : thread;
             // 将所有待翻译项目加入队列
@@ -26,7 +26,7 @@ namespace Yuri.YuriHalation.HalationCore
             }
             // 开启处理线程
             this.finishedThread = 0;
-            this.resList = new List<string>();
+            this.resList = new List<KeyValuePair<string, string>>();
             this.threadPool = new List<Thread>();
             for (int t = 0; t < this.threadNum; t++)
             {
@@ -71,7 +71,7 @@ namespace Yuri.YuriHalation.HalationCore
                 // 生成代码加入结果向量
                 lock (this.resList)
                 {
-                    this.resList.Add(sceneBuilder.ToString());
+                    this.resList.Add(new KeyValuePair<string, string>(handleSp.sceneName, sceneBuilder.ToString()));
                 }
                 lock (this.consoleMutex)
                 {
@@ -273,7 +273,7 @@ namespace Yuri.YuriHalation.HalationCore
         /// <summary>
         /// 结果向量
         /// </summary>
-        private List<string> resList;
+        private List<KeyValuePair<string, string>> resList;
 
         /// <summary>
         /// 显示输出互斥量
