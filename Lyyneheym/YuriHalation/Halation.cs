@@ -146,6 +146,14 @@ namespace Yuri
 
         #region 前端命令相关
         /// <summary>
+        /// 进行代码编译
+        /// </summary>
+        public void DashParse()
+        {
+            var res = CodeGenerator.GetInstance().Generate();
+        }
+
+        /// <summary>
         /// 获取当前选中数量
         /// </summary>
         public static int CurrentSelectedCount

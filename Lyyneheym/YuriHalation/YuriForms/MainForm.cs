@@ -493,6 +493,14 @@ namespace YuriHalation.YuriForms
             IfForm iff = new IfForm();
             iff.ShowDialog(this);
         }
+
+        /// <summary>
+        /// 按钮：翻译
+        /// </summary>
+        private void 生成工程ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.core.DashParse();
+        }
         #endregion
 
         #region 菜单项
@@ -744,6 +752,8 @@ namespace YuriHalation.YuriForms
             System.Diagnostics.Process.Start(psi);
         }
         #endregion
+
+
 
 
 

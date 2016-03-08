@@ -75,6 +75,7 @@ namespace Yuri.PlatformCore
                 {
                     case SActionType.NOP:
                     case SActionType.act_function:
+                    case SActionType.act_for:
                         // 优先进入trueRouting
                         if (ret.trueRouting != null && ret.trueRouting.Count > 0)
                         {

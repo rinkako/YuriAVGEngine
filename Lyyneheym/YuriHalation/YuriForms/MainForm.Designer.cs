@@ -274,37 +274,37 @@
             // 全局设定ToolStripMenuItem
             // 
             this.全局设定ToolStripMenuItem.Name = "全局设定ToolStripMenuItem";
-            this.全局设定ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.全局设定ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.全局设定ToolStripMenuItem.Text = "全局设定";
             this.全局设定ToolStripMenuItem.Click += new System.EventHandler(this.全局设定ToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(145, 6);
             // 
             // 场景管理器ToolStripMenuItem
             // 
             this.场景管理器ToolStripMenuItem.Name = "场景管理器ToolStripMenuItem";
-            this.场景管理器ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.场景管理器ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.场景管理器ToolStripMenuItem.Text = "场景管理器";
             // 
             // 开关管理器ToolStripMenuItem
             // 
             this.开关管理器ToolStripMenuItem.Name = "开关管理器ToolStripMenuItem";
-            this.开关管理器ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.开关管理器ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.开关管理器ToolStripMenuItem.Text = "开关管理器";
             this.开关管理器ToolStripMenuItem.Click += new System.EventHandler(this.开关管理器ToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(145, 6);
             // 
             // 打开游戏目录ToolStripMenuItem
             // 
             this.打开游戏目录ToolStripMenuItem.Name = "打开游戏目录ToolStripMenuItem";
-            this.打开游戏目录ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.打开游戏目录ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.打开游戏目录ToolStripMenuItem.Text = "打开游戏目录";
             this.打开游戏目录ToolStripMenuItem.Click += new System.EventHandler(this.打开游戏目录ToolStripMenuItem_Click);
             // 
@@ -407,6 +407,7 @@
             this.生成工程ToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
             this.生成工程ToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.生成工程ToolStripMenuItem.Text = "编译工程";
+            this.生成工程ToolStripMenuItem.Click += new System.EventHandler(this.生成工程ToolStripMenuItem_Click);
             // 
             // 生成并运行ToolStripMenuItem
             // 

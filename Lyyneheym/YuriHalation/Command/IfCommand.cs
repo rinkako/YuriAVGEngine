@@ -71,7 +71,7 @@ namespace Yuri.YuriHalation.Command
                     line = this.commandLine + 2,
                     indent = this.indent,
                     argsDict = new Dictionary<string, ArgumentPackage>(),
-                    nodeName = String.Format("{0}@{1}", this.commandLine + 2, ActionPackageType.act_endfor.ToString()),
+                    nodeName = String.Format("{0}@{1}", this.commandLine + 2, ActionPackageType.act_else.ToString()),
                     nodeType = ActionPackageType.act_else
                 };
                 this.parent.AddAction(ap3, ap3.line);
@@ -93,7 +93,7 @@ namespace Yuri.YuriHalation.Command
                     line = this.commandLine + 4,
                     indent = this.indent,
                     argsDict = new Dictionary<string, ArgumentPackage>(),
-                    nodeName = String.Format("{0}@{1}", this.commandLine + 2, ActionPackageType.act_endfor.ToString()),
+                    nodeName = String.Format("{0}@{1}", this.commandLine + 2, ActionPackageType.act_endif.ToString()),
                     nodeType = ActionPackageType.act_endif
                 };
                 this.parent.AddAction(ap5, ap5.line);
@@ -107,7 +107,7 @@ namespace Yuri.YuriHalation.Command
                     line = this.commandLine + 2,
                     indent = this.indent,
                     argsDict = new Dictionary<string, ArgumentPackage>(),
-                    nodeName = String.Format("{0}@{1}", this.commandLine + 2, ActionPackageType.act_endfor.ToString()),
+                    nodeName = String.Format("{0}@{1}", this.commandLine + 2, ActionPackageType.act_endif.ToString()),
                     nodeType = ActionPackageType.act_endif
                 };
                 this.parent.AddAction(ap6, ap6.line);
