@@ -10,6 +10,7 @@ using YuriHalation.YuriForms;
 using Yuri.YuriHalation.ScriptPackage;
 using Yuri.YuriHalation.HalationCore;
 using Yuri.YuriHalation.Command;
+using Yuri.YuriInterpreter;
 
 namespace Yuri
 {
@@ -182,6 +183,10 @@ namespace Yuri
             // 翻译可视化事件到脚本
             var scripts = CodeGenerator.GetInstance().Generate();
             FileManager.SaveByLineItem(Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO, ".sls", scripts);
+            // 编译
+            Interpreter ip = new Interpreter(Halation.projectName, Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO);
+            ip.Dash(InterpreterType.RELEASE_WITH_IL, 8);
+            ip.GetILFile(Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO + @"\main.sil");
         }
 
         /// <summary>

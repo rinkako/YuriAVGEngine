@@ -119,7 +119,8 @@ namespace Yuri.YuriHalation.ScriptPackage
                 case ActionPackageType.notation:
                 case ActionPackageType.script:
                 case ActionPackageType.act_dialog:
-                    desSb.Append(String.Format("{0} ", this.argsDict["context"].valueExp));
+                    string displayStr = this.argsDict["context"].valueExp.Replace(Environment.NewLine, " ");
+                    desSb.Append(String.Format("{0} ", displayStr.Length > 15 ? displayStr.Substring(0, 15) + "..." : displayStr));
                     break;
                 case ActionPackageType.act_a:
                     desSb.Append(String.Format("名字:{0} ", this.argsDict["name"].valueExp));

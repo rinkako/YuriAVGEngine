@@ -173,6 +173,8 @@ namespace YuriHalation.YuriForms
             config.GameMusicVocalPostfix = this.comboBox1.SelectedItem.ToString();
             // 杂项页
             config.GameMaxSwitchCount = (int)this.numericUpDown51.Value;
+            // 关闭窗体
+            this.Close();
         }
 
         private void button6_Click(object sender, EventArgs e)

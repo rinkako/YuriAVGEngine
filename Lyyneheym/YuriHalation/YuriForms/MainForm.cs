@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Diagnostics;
 using Yuri;
 
 namespace YuriHalation.YuriForms
@@ -22,7 +23,8 @@ namespace YuriHalation.YuriForms
         {
             InitializeComponent();
             this.资源ToolStripMenuItem.Enabled = this.编辑ToolStripMenuItem.Enabled =
-                this.工程ToolStripMenuItem.Enabled = this.编译ToolStripMenuItem.Enabled = false;
+                this.工程ToolStripMenuItem.Enabled = this.编译ToolStripMenuItem.Enabled =
+                this.保存ToolStripMenuItem.Enabled = false;
             Halation.SetViewReference(this);
         }
 
@@ -495,14 +497,6 @@ namespace YuriHalation.YuriForms
             IfForm iff = new IfForm();
             iff.ShowDialog(this);
         }
-
-        /// <summary>
-        /// 按钮：翻译
-        /// </summary>
-        private void 生成工程ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.core.DashParse();
-        }
         #endregion
 
         #region 菜单项
@@ -626,7 +620,8 @@ namespace YuriHalation.YuriForms
             {
                 core.RefreshProjectTree();
                 this.资源ToolStripMenuItem.Enabled = this.编辑ToolStripMenuItem.Enabled =
-                    this.工程ToolStripMenuItem.Enabled = this.编译ToolStripMenuItem.Enabled = true;
+                    this.工程ToolStripMenuItem.Enabled = this.编译ToolStripMenuItem.Enabled =
+                    this.保存ToolStripMenuItem.Enabled = true;
             }
         }
 
@@ -708,7 +703,8 @@ namespace YuriHalation.YuriForms
             {
                 this.core.LoadProject(fd.FileName);
                 this.资源ToolStripMenuItem.Enabled = this.编辑ToolStripMenuItem.Enabled =
-                    this.工程ToolStripMenuItem.Enabled = this.编译ToolStripMenuItem.Enabled = true;
+                    this.工程ToolStripMenuItem.Enabled = this.编译ToolStripMenuItem.Enabled =
+                    this.保存ToolStripMenuItem.Enabled = true;
             }
         }
 
@@ -756,6 +752,36 @@ namespace YuriHalation.YuriForms
             System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Explorer.exe");
             psi.Arguments = "/e," + Halation.projectFolder;
             System.Diagnostics.Process.Start(psi);
+        }
+
+        /// <summary>
+        /// 菜单：翻译
+        /// </summary>
+        private void 生成工程ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.core.DashParse();
+        }
+
+        /// <summary>
+        /// 菜单：生成并运行
+        /// </summary>
+        private void 生成并运行ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.core.DashParse();
+            //System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Yuri.exe");
+            //var p = System.Diagnostics.Process.Start(psi);
+            try
+            {
+                Process ps = new Process();
+                ps.StartInfo.FileName = @"C:\Users\Kako\Desktop\ccss\Yuri.exe";
+                ps.StartInfo.Arguments = "";
+                ps.StartInfo.UseShellExecute = false;
+                ps.Start();
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
     }

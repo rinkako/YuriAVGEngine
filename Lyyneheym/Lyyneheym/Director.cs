@@ -24,12 +24,14 @@ namespace Yuri
         /// </summary>
         private void InitConfig()
         {
-            // 读入游戏设定INI
-            
-            // 把设定写到GlobalDataContainer
-
-            // 应用设置到窗体
-
+            try
+            {
+                ConfigParser.ConfigParse();
+            }
+            catch
+            {
+                CommonUtils.ConsoleLine("No config file is detected, use defualt value.", "Director", OutputStyle.Error);
+            }
         }
 
         /// <summary>
@@ -454,6 +456,7 @@ namespace Yuri
         /// </summary>
         private Director()
         {
+            this.InitConfig();
             this.ResMana = ResourceManager.GetInstance();
             Director.RunMana = new RuntimeManager();
             this.updateRender = new UpdateRender();

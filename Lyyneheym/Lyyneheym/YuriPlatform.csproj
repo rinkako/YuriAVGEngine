@@ -66,6 +66,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Director.cs" />
+    <Compile Include="ILPackage\ConfigParser.cs" />
     <Compile Include="Utils\CommonUtils.cs" />
     <Compile Include="Utils\IOUtils.cs" />
     <Compile Include="Utils\PackageUtils.cs" />

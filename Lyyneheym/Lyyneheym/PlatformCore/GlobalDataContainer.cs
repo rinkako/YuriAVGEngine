@@ -30,6 +30,8 @@ namespace Yuri.PlatformCore
         public static int GAME_WINDOW_HEIGHT = 576;
         // 窗体分辨率：实际高度（标题栏含）
         public static int GAME_WINDOW_ACTUALHEIGHT { get { return GlobalDataContainer.GAME_WINDOW_HEIGHT + 32; } }
+        // 窗体分辨率：是否自由调节
+        public static bool GAME_WINDOW_RESIZEABLE = true;
         // 文本展示：模式
         public static MessageLayerType GAME_MESSAGE_MODE = MessageLayerType.Dialog;
         // 文本层：文本层数量
@@ -141,7 +143,7 @@ namespace Yuri.PlatformCore
         // 字体：字体名称
         public static string GAME_FONT_NAME = "黑体";
         // 字体：颜色
-        public static Color GAME_FONT_COLOR = Colors.Black;
+        public static Color GAME_FONT_COLOR = Colors.Black; 
         // 字体：行距
         public static int GAME_FONT_LINEHEIGHT = 22;
         // 字体：字号

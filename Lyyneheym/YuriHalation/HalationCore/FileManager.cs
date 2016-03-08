@@ -65,6 +65,12 @@ namespace Yuri.YuriHalation.HalationCore
             {
                 Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_VOCAL);
             }
+            // 拷贝演绎器到目录
+            File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Yuri.exe", path + "\\Yuri.exe", true);
+            File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\bass.dll", path + "\\bass.dll", true);
+            File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Bass.Net.dll", path + "\\Bass.Net.dll", true);
+            File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Transitionals.dll", path + "\\Transitionals.dll", true);
+            File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Yuri.YuriInterpreter.dll", path + "\\Yuri.YuriInterpreter.dll", true);
         }
 
         /// <summary>
@@ -129,7 +135,7 @@ namespace Yuri.YuriHalation.HalationCore
             StreamWriter sw = new StreamWriter(fs);
             foreach (var kvp in kvpList)
             {
-                sw.WriteLine(String.Format("{0}:{1}", kvp.Key, kvp.Value.ToString()));
+                sw.WriteLine(String.Format("{0} => {1}", kvp.Key, kvp.Value.ToString()));
             }
             sw.Close();
             fs.Close();

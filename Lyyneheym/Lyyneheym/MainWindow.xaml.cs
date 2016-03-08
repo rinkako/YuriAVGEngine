@@ -34,6 +34,7 @@ namespace Yuri
             this.Height = GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT;
             this.BO_MainGrid.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
             this.Title = GlobalDataContainer.GAME_PROJECT_NAME;
+            this.ResizeMode = GlobalDataContainer.GAME_WINDOW_RESIZEABLE ? System.Windows.ResizeMode.CanResize : System.Windows.ResizeMode.NoResize;
             core.SetMainWindow(this);
             this.TransitionBox.DataContext = this.TransitionDS;
         }

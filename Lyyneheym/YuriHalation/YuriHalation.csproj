@@ -410,7 +410,12 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SlyviaInterpreter\YuriInterpreter.csproj">
+      <Project>{6194a2aa-1c9d-40cd-8c8f-ea66f679cc0f}</Project>
+      <Name>YuriInterpreter</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
