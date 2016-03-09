@@ -54,9 +54,14 @@ namespace Yuri.YuriInterpreter
             return this.candidateProcessor(subroot, this.candidateType, syntaxer, detail);
         }
 
-        // 处理器指针
+        /// <summary>
+        /// 处理器指针
+        /// </summary>
         private iHandle candidateProcessor = null;
-        // 产生式类型
+
+        /// <summary>
+        /// 产生式类型
+        /// </summary>
         private CFunctionType candidateType = CFunctionType.None;
     }
 

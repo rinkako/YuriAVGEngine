@@ -11,27 +11,59 @@ namespace Yuri.YuriInterpreter.ILPackage
     [Serializable]
     internal sealed class SceneAction
     {
-        // 节点名称
+        /// <summary>
+        /// 节点名称
+        /// </summary>
         public string saNodeName = null;
-        // 节点动作
+
+        /// <summary>
+        /// 节点动作类型
+        /// </summary>
         public SActionType aType = SActionType.NOP;
-        // 参数字典
+
+        /// <summary>
+        /// 参数字典
+        /// </summary>
         public Dictionary<string, string> argsDict = new Dictionary<string, string>();
-        // 条件从句逆波兰表达
+
+        /// <summary>
+        /// 条件从句逆波兰表达
+        /// </summary>
         public string condPolish = null;
-        // 下一节点
+
+        /// <summary>
+        /// 下一节点
+        /// </summary>
         public SceneAction next = null;
-        // 下一真节点向量
+
+        /// <summary>
+        /// 下一真节点向量
+        /// </summary>
         public List<SceneAction> trueRouting = null;
-        // 下一假节点向量
+
+        /// <summary>
+        /// 下一假节点向量
+        /// </summary>
         public List<SceneAction> falseRouting = null;
-        // 是否依存函数
+
+        /// <summary>
+        /// 是否依存函数
+        /// </summary>
         public bool isBelongFunc = false;
-        // 依存函数名
+
+        /// <summary>
+        /// 依存函数名
+        /// </summary>
         public string funcName = null;
-        // 附加值
+
+        /// <summary>
+        /// 附加值
+        /// </summary>
         public string aTag = null;
-        // 对话合并脏位
+
+        /// <summary>
+        /// 对话合并脏位
+        /// </summary>
         public bool dialogDirtyBit = false;
 
         /// <summary>

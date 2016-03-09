@@ -1327,21 +1327,44 @@ namespace Yuri.YuriInterpreter
             return myRegex.IsMatch(parStr);
         }
 
-        // 场景名称
+        /// <summary>
+        /// 场景名称
+        /// </summary>
         private string scenario = null;
-        // 词法分析器
+        
+        /// <summary>
+        /// 词法分析器
+        /// </summary>
         private Lexer lexer = null;
-        // 语法分析器
+        
+        /// <summary>
+        /// 语法分析器
+        /// </summary>
         private Parser parser = null;
-        // 剧本场景实例
+        
+        /// <summary>
+        /// 剧本场景实例
+        /// </summary>
         private PackageScene rootScene = null;
-        // 语法树根节点
+        
+        /// <summary>
+        /// 语法树根节点
+        /// </summary>
         private SyntaxTreeNode parseTree = null;
-        // For嵌套栈
+        
+        /// <summary>
+        /// For嵌套栈
+        /// </summary>
         private Stack<SceneAction> forStack = null;
-        // 带移除节点队列
+        
+        /// <summary>
+        /// 等待移除节点字典
+        /// </summary>
         private Dictionary<SceneAction, Queue<SceneAction>> removeQueueDict = null;
-        // 标签跳转字典
+        
+        /// <summary>
+        /// 标签跳转字典
+        /// </summary>
         private Dictionary<string, SceneAction> blockDict = null;
     }
 

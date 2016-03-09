@@ -34,11 +34,19 @@ namespace Yuri.YuriInterpreter.ILPackage
             return String.Format(">>>YuriIL?{0}", this.scenario);
         }
 
-        // 场景名称
+        /// <summary>
+        /// 场景名称
+        /// </summary>
         public string scenario;
-        // 场景的主动作序列
+
+        /// <summary>
+        /// 场景的主动作序列
+        /// </summary>
         public SceneAction mainSa;
-        // 场景的函数向量
+        
+        /// <summary>
+        /// 场景的函数向量
+        /// </summary>
         public List<SceneFunction> funcContainer;
     }
 }

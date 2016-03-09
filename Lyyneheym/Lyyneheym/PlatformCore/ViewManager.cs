@@ -749,6 +749,9 @@ namespace Yuri.PlatformCore
         /// </summary>
         private List<BranchButton> BranchButtonVec;
 
+        /// <summary>
+        /// 过渡类型容器
+        /// </summary>
         private ObservableCollection<Type> transitionTypes = new ObservableCollection<Type>();
 
         /// <summary>
@@ -814,6 +817,9 @@ namespace Yuri.PlatformCore
         private static ViewManager synObject = null;
     }
 
+    /// <summary>
+    /// 枚举：背景图所在的层
+    /// </summary>
     public enum BackgroundPage
     {
         Back = 0,

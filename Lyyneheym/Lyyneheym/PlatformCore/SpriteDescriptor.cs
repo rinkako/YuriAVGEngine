@@ -11,7 +11,7 @@ namespace Yuri.PlatformCore
     public class SpriteDescriptor
     {
         /// <summary>
-        /// 默认构造函数
+        /// 构造一个精灵
         /// </summary>
         public SpriteDescriptor()
         {
@@ -25,62 +25,62 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 唯一标识符
+        /// 获取或设置精灵id
         /// </summary>
         public int id { get; set; }
 
         /// <summary>
-        /// 精灵X坐标
+        /// 获取或设置精灵X坐标
         /// </summary>
         public double X { get; set; }
 
         /// <summary>
-        /// 精灵Y坐标
+        /// 获取或设置精灵Y坐标
         /// </summary>
         public double Y { get; set; }
 
         /// <summary>
-        /// 精灵Z坐标
+        /// 获取或设置精灵Z坐标
         /// </summary>
         public int Z { get; set; }
 
         /// <summary>
-        /// 精灵角度
+        /// 获取或设置精灵角度
         /// </summary>
         public double Angle { get; set; }
 
         /// <summary>
-        /// 精灵不透明度
+        /// 获取或设置精灵不透明度
         /// </summary>
         public double Opacity { get; set; }
 
         /// <summary>
-        /// 精灵X缩放
+        /// 获取或设置精灵X缩放
         /// </summary>
         public double ScaleX { get; set; }
 
         /// <summary>
-        /// 精灵Y缩放
+        /// 获取或设置精灵Y缩放
         /// </summary>
         public double ScaleY { get; set; }
 
         /// <summary>
-        /// 精灵锚点方式
+        /// 获取或设置精灵锚点方式
         /// </summary>
         public SpriteAnchorType anchorType { get; set; }
 
         /// <summary>
-        /// 精灵的资源类型
+        /// 获取或设置精灵的资源类型
         /// </summary>
         public ResourceType resType { get; set; }
 
         /// <summary>
-        /// 精灵的资源名
+        /// 获取或设置精灵的资源名
         /// </summary>
         public string resourceName { get; set; }
 
         /// <summary>
-        /// 精灵的纹理切割矩
+        /// 获取或设置精灵的纹理切割矩
         /// </summary>
         public Int32Rect cutRect { get; set; }
     }

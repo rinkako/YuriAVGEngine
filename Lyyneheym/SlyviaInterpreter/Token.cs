@@ -10,27 +10,60 @@ namespace Yuri.YuriInterpreter
     /// </summary>
     internal sealed class Token
     {
-        // 命中行
+        /// <summary>
+        /// 命中行
+        /// </summary>
         public int aLine = -1;
-        // 命中列
+
+        /// <summary>
+        /// 命中列
+        /// </summary>
         public int aColumn = -1;
-        // 位置戳
+
+        /// <summary>
+        /// 位置戳
+        /// </summary>
         public int indexOfCode = -1;
-        // 配对长
+
+        /// <summary>
+        /// 配对长
+        /// </summary>
         public int length = 0;
-        // 附加值
+
+        /// <summary>
+        /// 附加值
+        /// </summary>
         public object aTag = null;
-        // 原字串
+
+        /// <summary>
+        /// 原字串
+        /// </summary>
         public string detail = "";
-        // 错误位
+
+        /// <summary>
+        /// 错误位
+        /// </summary>
         public bool errorBit = false;
-        // 变量位
+
+        /// <summary>
+        /// 变量位
+        /// </summary>
         public bool isVar = false;
-        // 作用域
+
+        /// <summary>
+        /// 作用域
+        /// </summary>
         public bool isGlobal = false;
-        // 词类型
+
+        /// <summary>
+        /// 词类型
+        /// </summary>
         public TokenType aType = TokenType.Token_NOP;
 
+        /// <summary>
+        /// 重载字符串化方法
+        /// </summary>
+        /// <returns>Token的简要信息</returns>
         public override string ToString()
         {
             return "Token: " + aType.ToString() + " (" + this.detail + ") -> " + 

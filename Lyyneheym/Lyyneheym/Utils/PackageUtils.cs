@@ -221,8 +221,5 @@ namespace Yuri.Utils
                 throw e;
             }
         }
-
-
-
     }
 }

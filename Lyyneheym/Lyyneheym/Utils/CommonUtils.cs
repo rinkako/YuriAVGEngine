@@ -101,7 +101,6 @@ namespace Yuri.Utils
             container[aId] = container[bId];
             container[bId] = exchange;
         }
-
     }
 
     /// <summary>

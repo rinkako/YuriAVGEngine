@@ -39,13 +39,24 @@ namespace Yuri.YuriInterpreter.ILPackage
             return String.Format("SlyviaFunction: {0}({1})", this.callname, paraStr);
         }
 
-        // 绑定动作序列
+        /// <summary>
+        /// 绑定动作序列
+        /// </summary>
         public SceneAction sa = null;
-        // 函数名
+
+        /// <summary>
+        /// 函数名
+        /// </summary>
         public string callname = null;
-        // 参数列表
+
+        /// <summary>
+        /// 参数列表
+        /// </summary>
         public List<string> param = null;
-        // 场景名称
+
+        /// <summary>
+        /// 场景名称
+        /// </summary>
         public string parentSceneName = null;
     }
 }

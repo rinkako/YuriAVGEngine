@@ -99,7 +99,6 @@
     <Compile Include="PlatformCore\Scene.cs" />
     <Compile Include="PlatformCore\SceneFunction.cs" />
     <Compile Include="PlatformCore\ScreenManager.cs" />
-    <Compile Include="PlatformCore\SpiritContainer.cs" />
     <Compile Include="PlatformCore\SpriteAnimation.cs" />
     <Compile Include="PlatformCore\SpriteButton.cs" />
     <Compile Include="PlatformCore\SpriteButtonDescriptor.cs" />

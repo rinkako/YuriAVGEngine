@@ -10,44 +10,96 @@ namespace Yuri.YuriInterpreter
     /// </summary>
     internal sealed class SyntaxTreeNode
     {
-        // 构造函数
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="type">节点类型</param>
+        /// <param name="parent">节点的双亲</param>
         public SyntaxTreeNode(SyntaxType type = SyntaxType.Unknown, SyntaxTreeNode parent = null)
         {
             this.nodeName = type.ToString();
             this.nodeSyntaxType = type;
             this.parent = parent;
         }
-        // 绑定处理函数
-        internal CandidateFunction candidateFunction = null;
-        // 子树向量
+        
+        /// <summary>
+        /// 绑定处理函数
+        /// </summary>
+        public CandidateFunction candidateFunction = null;
+
+        /// <summary>
+        /// 子树向量
+        /// </summary>
         public List<SyntaxTreeNode> children = null;
-        // 父指针
+
+        /// <summary>
+        /// 双亲指针
+        /// </summary>
         public SyntaxTreeNode parent = null;
-        // 命中token附加值
+
+        /// <summary>
+        /// 命中token附加值
+        /// </summary>
         public string nodeValue = null;
-        // 命中产生式类型
+
+        /// <summary>
+        /// 命中产生式类型
+        /// </summary>
         public CFunctionType nodeType = CFunctionType.None;
-        // 命中的Token在源代码的行号
+
+        /// <summary>
+        /// 命中的Token在源代码的行号
+        /// </summary> 
         public int line = 0;
-        // 命中的Token在源代码的列号
+        
+        /// <summary>
+        /// 命中的Token在源代码的列号
+        /// </summary>
         public int col = 0;
-        // 节点名字
+        
+        /// <summary>
+        /// 节点名字
+        /// </summary>
         public string nodeName = "";
-        // 附加值
+        
+        /// <summary>
+        /// 附加值
+        /// </summary>
         public object aTag = null;
-        // 逆波兰表达
+        
+        /// <summary>
+        /// 逆波兰表达
+        /// </summary>
         public string polish = null;
-        // 错误位
+
+        /// <summary>
+        /// 错误位
+        /// </summary>
         public bool errorBit = false;
-        // 不推导节点参数孩子字典
+
+        /// <summary>
+        /// 不推导节点参数孩子字典
+        /// </summary>
         public Dictionary<string, SyntaxTreeNode> paramDict = null;
-        // 不推导节点参数Token子流
+
+        /// <summary>
+        /// 不推导节点参数Token子流
+        /// </summary>
         internal List<Token> paramTokenStream = null;
-        // 节点变量类型
+
+        /// <summary>
+        /// 节点变量类型
+        /// </summary>
         public VarScopeType nodeVarType = VarScopeType.NOTVAR;
-        // 命中语法结构类型
+
+        /// <summary>
+        /// 命中语法结构类型
+        /// </summary>
         private SyntaxType nodeSyntaxTyper = SyntaxType.Unknown;
-        // 命中语法结构类型
+
+        /// <summary>
+        /// 命中语法结构类型
+        /// </summary>
         public SyntaxType nodeSyntaxType
         {
             get

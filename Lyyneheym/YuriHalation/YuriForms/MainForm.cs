@@ -776,6 +776,17 @@ namespace YuriHalation.YuriForms
             DebugForm df = new DebugForm(Halation.projectFolder);
             df.ShowDialog(this);
         }
+
+        /// <summary>
+        /// 菜单：关于
+        /// </summary>
+        private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox1 ab = new AboutBox1();
+            ab.ShowDialog(this);
+        }
         #endregion
+
+
     }
 }

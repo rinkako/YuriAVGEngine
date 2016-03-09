@@ -50,15 +50,30 @@ namespace Yuri.PlatformCore
                 return String.Format("__YuriFunc@{0}?{1}", this.callname, this.parentSceneName);
             }
         }
-        // 绑定动作序列
+
+        /// <summary>
+        /// 绑定动作序列
+        /// </summary>
         public SceneAction sa = null;
-        // 函数名
+
+        /// <summary>
+        /// 函数名
+        /// </summary>
         public string callname = null;
-        // 参数列表
+
+        /// <summary>
+        /// 参数列表
+        /// </summary>
         public List<string> param = null;
-        // 场景名称
+
+        /// <summary>
+        /// 场景名称
+        /// </summary>
         public string parentSceneName = null;
-        // 绑定符号表
+
+        /// <summary>
+        /// 绑定符号表
+        /// </summary>
         public Dictionary<string, object> symbols = new Dictionary<string,object>();
     }
 }

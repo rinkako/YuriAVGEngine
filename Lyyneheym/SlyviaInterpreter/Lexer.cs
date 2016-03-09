@@ -761,27 +761,59 @@ namespace Yuri.YuriInterpreter
             return CharacterType.cUnknown;
         }
 
-        // 处理的文件
+        /// <summary>
+        /// 处理的文件
+        /// </summary>
         private string dealingFile = "";
-        // 原剧本字串
+
+        /// <summary>
+        /// 原剧本字串
+        /// </summary>
         private string sourceCode = "";
-        // 指针
+        
+        /// <summary>
+        /// 下一字符指针
+        /// </summary>
         private int nextCharPointer = 0;
-        // 行游标
+
+        /// <summary>
+        /// 行游标
+        /// </summary>
         private int currentLine = 0;
-        // 列游标
+        
+        /// <summary>
+        /// 列游标
+        /// </summary>
         private int currentColumn = 0;
-        // 单词流向量
+
+        /// <summary>
+        /// 单词流向量
+        /// </summary>
         private List<Token> resultVector = null;
-        // 词法分析完成标志位
+        
+        /// <summary>
+        /// 词法分析完成标志位
+        /// </summary>
         private bool finFlag = true;
-        // 剧本花括弧匹配标志位
+        
+        /// <summary>
+        /// 剧本括弧匹配标志位
+        /// </summary>
         private bool blockFlag = false;
-        // 列初始值
+
+        /// <summary>
+        /// 列初始值
+        /// </summary>
         private static readonly int ColStartNum = 0;
-        // 行初始值
+
+        /// <summary>
+        /// 行初始值
+        /// </summary>
         private static readonly int RowStartNum = 0;
-        // 换行符
+
+        /// <summary>
+        /// 换行符
+        /// </summary>
         private static readonly char LineTerminator = '\n';
     }
 

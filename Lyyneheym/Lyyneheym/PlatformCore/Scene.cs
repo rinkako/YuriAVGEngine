@@ -46,13 +46,24 @@ namespace Yuri.PlatformCore
             return String.Format(">>>YuriIL?{0}", scene.scenario);
         }
 
-        // 场景名称
+        /// <summary>
+        /// 场景名称
+        /// </summary>
         public string scenario;
-        // 场景的主动作序列
+
+        /// <summary>
+        /// 场景的主动作序列
+        /// </summary>
         public SceneAction mainSa;
-        // 场景的函数向量
+
+        /// <summary>
+        /// 场景的函数向量
+        /// </summary>
         public List<SceneFunction> funcContainer;
-        // 场景标签字典
+
+        /// <summary>
+        /// 场景标签字典
+        /// </summary>
         public Dictionary<string, SceneAction> labelDictionary;
     }
 }

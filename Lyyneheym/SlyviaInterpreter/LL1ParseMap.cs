@@ -113,15 +113,29 @@ namespace Yuri.YuriInterpreter
             }
         }
 
-        // 行游标
+        /// <summary>
+        /// 行游标
+        /// </summary>
         private int iRowCount = 0;
-        // 列游标
+
+        /// <summary>
+        /// 列游标
+        /// </summary>
         private int iColCount = 0;
-        // 产生式左字典
+
+        /// <summary>
+        /// 产生式左字典
+        /// </summary>
         private Dictionary<SyntaxType, int> iLeftNodes = new Dictionary<SyntaxType,int>();
-        // 产生式右字典
+        
+        /// <summary>
+        /// 产生式右字典
+        /// </summary>
         private Dictionary<TokenType, int> iNextLeaves = new Dictionary<TokenType,int>();
-        // LL1预测表
+        
+        /// <summary>
+        /// LL1预测表
+        /// </summary>
         private CandidateFunction[,] iParserMap = null;
     }
 }

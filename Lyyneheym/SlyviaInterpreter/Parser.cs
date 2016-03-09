@@ -6,6 +6,7 @@ using System.Text;
 namespace Yuri.YuriInterpreter
 {
     using iHandle = Func<SyntaxTreeNode, CFunctionType, SyntaxType, Token, SyntaxTreeNode>;
+    
     /// <summary>
     /// 语法匹配器类：负责把单词流匹配成语法树的类
     /// </summary>
@@ -52,7 +53,7 @@ namespace Yuri.YuriInterpreter
         }
 
         /// <summary>
-        /// 启动语法分析器
+        /// 进行语法分析
         /// </summary>
         /// <param name="line">处理的行号</param>
         /// <returns>匹配完毕的语法树</returns>
@@ -85,10 +86,10 @@ namespace Yuri.YuriInterpreter
             bool fromKaguya = false;
             while (this.iParseStack.Count != 0 || this.iQueue.Count != 0)
             {
-                // 语句根节点，就调用不推导函数去处理，随后立即迭代掉本次循环
+                // 语句根节点，就调用命令推导函数去处理，随后立即迭代掉本次循环
                 if (this.iParseStack.Count > 0 && this.iParseStack.Peek() == SyntaxType.case_kotori)
                 {
-                    SyntaxTreeNode stn = this.Kaguya();
+                    SyntaxTreeNode stn = this.Chitanda();
                     stn.line = line;
                     // 如果这个节点是if、for、function子句，那就要为她增加一个kotori节点
                     if (stn.nodeSyntaxType == SyntaxType.synr_if ||
@@ -167,7 +168,7 @@ namespace Yuri.YuriInterpreter
                     SyntaxType nodeType = this.iParseStack.Peek();
                     Token iToken = this.istream[this.nextTokenPointer];
                     TokenType tokenType = iToken.aType;
-                    CandidateFunction func = this.iMap.GetCFunciton(nodeType, tokenType, this.Homura);
+                    CandidateFunction func = this.iMap.GetCFunciton(nodeType, tokenType, this.Derivator);
                     // 语法出错时
                     if (func.GetCFType() == CFunctionType.umi_errorEnd)
                     {
@@ -194,7 +195,7 @@ namespace Yuri.YuriInterpreter
                         }
                         else
                         {
-                            currentPtr = this.Homura(currentPtr, func.GetCFType(), nodeType, iToken);
+                            currentPtr = this.Derivator(currentPtr, func.GetCFType(), nodeType, iToken);
                         }
                         if (currentPtr != null)
                         {
@@ -211,7 +212,7 @@ namespace Yuri.YuriInterpreter
                         break;
                     }
                 }
-                // 最后看不推导队列
+                // 最后看命令推导队列
                 else if (this.iQueue.Count != 0)
                 {
                     SyntaxTreeNode reroot = this.iQueue.Dequeue();
@@ -400,7 +401,7 @@ namespace Yuri.YuriInterpreter
 
             // 初始化LL1-上下文无关文法
             // iProco都指向通用展开式函数Homura
-            iHandle iProco = this.Homura;
+            iHandle iProco = this.Derivator;
             // 错误的情况下，没有考虑短语层次的错误恢复，因此错误处理器都指向null
             for (int i = 0; i < LL1PARSERMAPROW; i++)
             {
@@ -821,7 +822,7 @@ namespace Yuri.YuriInterpreter
         }
 
         /// <summary>
-        /// 复位匹配器：不推导向推导过程转化时内部使用
+        /// 复位匹配器：命令推导向推导过程转化时内部使用
         /// </summary>
         private void DashReset(SyntaxType startNodeType)
         {
@@ -877,16 +878,11 @@ namespace Yuri.YuriInterpreter
             {
                 return obac;
             }
-            // 最后，看是否还有没用到的不推导节点
-            //if (this.iQueue.Count != 0)
-            //{
-            //    return iQueue.Dequeue();
-            //}
             return null;
         }
 
         /// <summary>
-        /// 为脚本命令追加参数字典
+        /// 为命令推导项追加参数字典
         /// </summary>
         /// <param name="statementNode">命令在树上的节点</param>
         /// <param name="sType">命令的语法类型</param>
@@ -902,7 +898,7 @@ namespace Yuri.YuriInterpreter
         }
 
         /// <summary>
-        /// 为参数的字典节点追加LL1推导项
+        /// 为参数的字典节点追加LL1文法推导项
         /// </summary>
         /// <param name="arg">参数在字典中的名字</param>
         /// <param name="derivator">LL1文法推导起始类型</param>
@@ -919,7 +915,7 @@ namespace Yuri.YuriInterpreter
                 derivationNode.paramTokenStream.Add(this.istream[prescanPointer++]);
             }
             statementNode.paramDict[arg].children.Add(derivationNode);
-            // 加入不推导队列
+            // 加入命令推导队列
             this.iQueue.Enqueue(derivationNode);
         }
         
@@ -927,7 +923,7 @@ namespace Yuri.YuriInterpreter
         /// 将所有非LL1推导项构造到语法树上
         /// </summary>
         /// <returns>预处理完毕的单语句语法树根节点</returns>
-        private SyntaxTreeNode Kaguya()
+        private SyntaxTreeNode Chitanda()
         {
             // 匹配栈出栈
             this.iParseStack.Pop();
@@ -1313,7 +1309,7 @@ namespace Yuri.YuriInterpreter
         /// <param name="mySyntax">节点语法类型</param>
         /// <param name="myToken">命中单词</param>
         /// <returns>下一个展开节点的指针</returns>
-        private SyntaxTreeNode Homura(SyntaxTreeNode myNode, CFunctionType myType, SyntaxType mySyntax, Token myToken)
+        private SyntaxTreeNode Derivator(SyntaxTreeNode myNode, CFunctionType myType, SyntaxType mySyntax, Token myToken)
         {
             // 更新节点信息
             if (myNode != null)
@@ -1372,27 +1368,59 @@ namespace Yuri.YuriInterpreter
             }
         }
 
-        // 语句块嵌套栈
+        /// <summary>
+        /// 语句块嵌套栈
+        /// </summary>
         internal Stack<SyntaxTreeNode> iBlockStack = null;
-        // 下一Token指针
+
+        /// <summary>
+        /// 下一Token指针
+        /// </summary>
         private int nextTokenPointer = 0;
-        // 处理的行号
+
+        /// <summary>
+        /// 处理的行号
+        /// </summary>
         private int dealingLine = 0;
-        // 处理的文件名
+
+        /// <summary>
+        /// 处理的文件名
+        /// </summary>
         private string dealingFile = "";
-        // 单词流
+        
+        /// <summary>
+        /// 单词流
+        /// </summary>
         private List<Token> istream = new List<Token>();
-        // 匹配栈
+        
+        /// <summary>
+        /// 匹配栈
+        /// </summary>
         private Stack<SyntaxType> iParseStack = new Stack<SyntaxType>();
-        // 候选式类型的向量
+        
+        /// <summary>
+        /// 候选式类型的向量
+        /// </summary>
         private List<List<SyntaxType>> iDict = new List<List<SyntaxType>>();
-        // 不推导候选节点队列
+        
+        /// <summary>
+        /// 非LL1推导候选节点队列
+        /// </summary>
         private Queue<SyntaxTreeNode> iQueue = new Queue<SyntaxTreeNode>();
-        // 预测分析表
+        
+        /// <summary>
+        /// LL1预测分析表
+        /// </summary>
         private LL1ParseMap iMap = new LL1ParseMap(LL1PARSERMAPROW, LL1PARSERMAPCOL);
-        // 分析表行数
+        
+        /// <summary>
+        /// LL1分析预测表行数
+        /// </summary>
         private static readonly int LL1PARSERMAPROW = 33;
-        // 分析表列数
+
+        /// <summary>
+        /// LL1分析预测表列数
+        /// </summary>
         private static readonly int LL1PARSERMAPCOL = 19;
     }
 }
