@@ -69,6 +69,7 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.发布ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projTreeView = new System.Windows.Forms.TreeView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button_AddNewFunc = new System.Windows.Forms.Button();
@@ -117,7 +118,8 @@
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button_deleteFunc = new System.Windows.Forms.Button();
+            this.button_deleteScene = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.actionGroupBox.SuspendLayout();
@@ -440,6 +442,13 @@
             this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(59, 21);
             this.帮助ToolStripMenuItem.Text = "帮助(&P)";
             // 
+            // 关于ToolStripMenuItem
+            // 
+            this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
+            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.关于ToolStripMenuItem.Text = "关于";
+            this.关于ToolStripMenuItem.Click += new System.EventHandler(this.关于ToolStripMenuItem_Click);
+            // 
             // projTreeView
             // 
             this.projTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -447,7 +456,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.projTreeView.Location = new System.Drawing.Point(6, 20);
             this.projTreeView.Name = "projTreeView";
-            this.projTreeView.Size = new System.Drawing.Size(185, 636);
+            this.projTreeView.Size = new System.Drawing.Size(185, 603);
             this.projTreeView.TabIndex = 2;
             this.projTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.projTreeView_AfterSelect);
             // 
@@ -455,6 +464,8 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.button_deleteFunc);
+            this.groupBox1.Controls.Add(this.button_deleteScene);
             this.groupBox1.Controls.Add(this.button_AddNewFunc);
             this.groupBox1.Controls.Add(this.projTreeView);
             this.groupBox1.Controls.Add(this.button36);
@@ -469,7 +480,7 @@
             // 
             this.button_AddNewFunc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_AddNewFunc.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button_AddNewFunc.Location = new System.Drawing.Point(102, 662);
+            this.button_AddNewFunc.Location = new System.Drawing.Point(102, 629);
             this.button_AddNewFunc.Name = "button_AddNewFunc";
             this.button_AddNewFunc.Size = new System.Drawing.Size(89, 28);
             this.button_AddNewFunc.TabIndex = 35;
@@ -481,7 +492,7 @@
             // 
             this.button36.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button36.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button36.Location = new System.Drawing.Point(6, 662);
+            this.button36.Location = new System.Drawing.Point(7, 629);
             this.button36.Name = "button36";
             this.button36.Size = new System.Drawing.Size(89, 28);
             this.button36.TabIndex = 34;
@@ -999,12 +1010,29 @@
             this.panel1.Size = new System.Drawing.Size(1030, 705);
             this.panel1.TabIndex = 36;
             // 
-            // 关于ToolStripMenuItem
+            // button_deleteFunc
             // 
-            this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
-            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.关于ToolStripMenuItem.Text = "关于";
-            this.关于ToolStripMenuItem.Click += new System.EventHandler(this.关于ToolStripMenuItem_Click);
+            this.button_deleteFunc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_deleteFunc.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.button_deleteFunc.Location = new System.Drawing.Point(102, 660);
+            this.button_deleteFunc.Name = "button_deleteFunc";
+            this.button_deleteFunc.Size = new System.Drawing.Size(89, 28);
+            this.button_deleteFunc.TabIndex = 37;
+            this.button_deleteFunc.Text = "删除函数";
+            this.button_deleteFunc.UseVisualStyleBackColor = false;
+            this.button_deleteFunc.Click += new System.EventHandler(this.button35_Click_1);
+            // 
+            // button_deleteScene
+            // 
+            this.button_deleteScene.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_deleteScene.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.button_deleteScene.Location = new System.Drawing.Point(7, 660);
+            this.button_deleteScene.Name = "button_deleteScene";
+            this.button_deleteScene.Size = new System.Drawing.Size(89, 28);
+            this.button_deleteScene.TabIndex = 36;
+            this.button_deleteScene.Text = "删除场景";
+            this.button_deleteScene.UseVisualStyleBackColor = false;
+            this.button_deleteScene.Click += new System.EventHandler(this.button37_Click);
             // 
             // MainForm
             // 
@@ -1122,5 +1150,7 @@
         private System.Windows.Forms.ToolStripMenuItem 删除ToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripMenuItem 关于ToolStripMenuItem;
+        private System.Windows.Forms.Button button_deleteFunc;
+        private System.Windows.Forms.Button button_deleteScene;
     }
 }

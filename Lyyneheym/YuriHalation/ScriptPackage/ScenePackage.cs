@@ -40,11 +40,11 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// <summary>
         /// 删除一个函数
         /// </summary>
-        /// <param name="funcName">函数名</param>
+        /// <param name="funcCallName">函数名</param>
         /// <returns>操作成功与否</returns>
-        public bool DeleteFunction(string funcName)
+        public bool DeleteFunction(string funcCallName)
         {
-            var removeOne = this.funcList.Find((x) => x.functionName == funcName);
+            var removeOne = this.funcList.Find((x) => x.functionCallName == funcCallName);
             if (removeOne != null)
             {
                 this.funcList.Remove(removeOne);

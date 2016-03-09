@@ -211,6 +211,11 @@ namespace Yuri
             }
         }
 
+        /// <summary>
+        /// 新建场景
+        /// </summary>
+        /// <param name="scenario">场景名</param>
+        /// <returns>操作成功与否</returns>
         public bool DashAddScene(string scenario)
         {
             bool flag = Halation.project.AddScene(scenario);
@@ -221,6 +226,10 @@ namespace Yuri
             return flag;
         }
 
+        /// <summary>
+        /// 删除场景
+        /// </summary>
+        /// <param name="scenario">场景名</param>
         public void DashDeleteScene(string scenario)
         {
             Halation.project.DeleteScene(scenario);
@@ -228,6 +237,12 @@ namespace Yuri
             this.RefreshProjectTree();
         }
 
+        /// <summary>
+        /// 新建函数
+        /// </summary>
+        /// <param name="functionName">函数名</param>
+        /// <param name="argv">参数列表</param>
+        /// <returns>操作成功与否</returns>
         public bool DashAddFunction(string functionName, List<string> argv)
         {
             bool flag = ((ScenePackage)Halation.currentCodePackage).AddFunction(functionName, argv);
@@ -239,9 +254,14 @@ namespace Yuri
             return flag;
         }
         
-        public void DashDeleteFunction(string functionName)
+        /// <summary>
+        /// 删除函数
+        /// </summary>
+        /// <param name="parentName">所属场景名</param>
+        /// <param name="functionName">函数名</param>
+        public void DashDeleteFunction(string parentName, string functionName)
         {
-            ((ScenePackage)Halation.currentCodePackage).DeleteFunction(functionName);
+            Halation.project.GetScene(parentName).DeleteFunction(functionName);
             string callName = String.Format("{0}@{1}", functionName, Halation.projectTreeChosen.Parent.Text);
             HalationInvoker.RemoveScene(callName);
             this.RefreshProjectTree();

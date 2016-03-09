@@ -112,7 +112,8 @@ namespace YuriHalation.YuriForms
             Halation.projectTreeChosen = this.projTreeView.SelectedNode;
             Halation.currentScriptName = this.projTreeView.SelectedNode.Text;
             this.codeGroupBox.Text = String.Format("脚本 [{0}]", Halation.currentScriptName);
-            this.button_AddNewFunc.Enabled = this.projTreeView.SelectedNode.Level == 1;
+            this.button_AddNewFunc.Enabled = this.button_deleteScene.Enabled = this.projTreeView.SelectedNode.Level == 1;
+            this.button_deleteFunc.Enabled = this.projTreeView.SelectedNode.Level == 2;
             this.core.ChangeCodePackage(this.projTreeView.SelectedNode.Text,
                 this.projTreeView.SelectedNode.Level == 1 ? "" : this.projTreeView.SelectedNode.Parent.Text);
             this.codeListBox.HorizontalExtent = this.codeListBox.Width - 16;
@@ -198,6 +199,37 @@ namespace YuriHalation.YuriForms
         {
             AddFuncForm aff = new AddFuncForm();
             aff.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：删除场景
+        /// </summary>
+        private void button37_Click(object sender, EventArgs e)
+        {
+            if (this.projTreeView.SelectedNode.Text == "main")
+            {
+                MessageBox.Show("main场景不可以被删除");
+                return;
+            }
+            var dr =MessageBox.Show("真的要删除场景吗" + Environment.NewLine + "这是一个不可撤销的动作",
+                "确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            if (dr == System.Windows.Forms.DialogResult.OK)
+            {
+                this.core.DashDeleteScene(this.projTreeView.SelectedNode.Text);
+            }
+        }
+
+        /// <summary>
+        /// 按钮：删除函数
+        /// </summary>
+        private void button35_Click_1(object sender, EventArgs e)
+        {
+            var dr = MessageBox.Show("真的要删除函数吗" + Environment.NewLine + "这是一个不可撤销的动作",
+                "确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            if (dr == System.Windows.Forms.DialogResult.OK)
+            {
+                this.core.DashDeleteFunction(this.projTreeView.SelectedNode.Parent.Text, this.projTreeView.SelectedNode.Text);
+            }
         }
         #endregion
 
@@ -786,7 +818,5 @@ namespace YuriHalation.YuriForms
             ab.ShowDialog(this);
         }
         #endregion
-
-
     }
 }
