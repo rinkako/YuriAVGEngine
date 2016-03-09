@@ -185,7 +185,7 @@ namespace Yuri
             FileManager.SaveByLineItem(Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO, ".sls", scripts);
             // 编译
             Interpreter ip = new Interpreter(Halation.projectName, Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO);
-            ip.Dash(InterpreterType.RELEASE_WITH_IL, 8);
+            ip.Dash(InterpreterType.RELEASE_WITH_IL, 1);
             ip.GetILFile(Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO + @"\main.sil");
         }
 
@@ -461,6 +461,15 @@ namespace Yuri
         #region 前端菜单相关
         public void DeleteCode(int begin, int count)
         {
+            for (int i = begin; i < begin + count; i++)
+            {
+                var act = Halation.currentCodePackage.GetAction(i);
+                if (act.nodeName == "pad" && act.indent <= Halation.currentCodePackage.GetAction(begin).indent)
+                {
+                    MessageBox.Show("不能删除插入节点");
+                    return;
+                }
+            }
             IHalationCommand cmd = new MenuDeleteCommand(Halation.currentCodePackage, begin, count);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }

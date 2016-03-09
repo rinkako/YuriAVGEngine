@@ -33,7 +33,6 @@ namespace Yuri.YuriHalation.Command
             }
             ActionPackage ap = new ActionPackage()
             {
-                line = this.commandLine,
                 indent = this.indent,
                 argsDict = ArgDict,
                 nodeName = String.Format("{0}@{1}", this.commandLine, this.apType.ToString()),

@@ -780,6 +780,7 @@ namespace Yuri.YuriInterpreter
                     SceneAction lastNop = saNode.trueRouting[saNode.trueRouting.Count - 1];
                     if (lastNop.aType != SActionType.act_break && lastNop.aType != SActionType.act_endfor)
                     {
+                        this.Tamao(lastNop, saNode, false);
                         lastNop.next = saNode.next;
                     }
                     else
@@ -794,6 +795,11 @@ namespace Yuri.YuriInterpreter
                     SceneAction iterPtr = saNode;
                     string dialogBuilder = iterPtr.aTag;
                     iterPtr = iterPtr.next;
+                    // 有可能是最后一个孩子递归时DT已经被移除了
+                    if (iterPtr == null)
+                    {
+                        break;
+                    }
                     if (this.removeQueueDict.ContainsKey(parent) == false)
                     {
                         this.removeQueueDict[parent] = new Queue<SceneAction>();

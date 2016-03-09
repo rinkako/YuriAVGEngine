@@ -42,76 +42,70 @@ namespace Yuri.YuriHalation.Command
             ifArgDict.Add("expr", new ArgumentPackage() { aType = ArgType.unknown, valueExp = this.condExpr });
             ActionPackage ap1 = new ActionPackage()
             {
-                line = this.commandLine,
                 indent = this.indent,
                 argsDict = ifArgDict,
                 nodeName = String.Format("{0}@{1}", this.commandLine, ActionPackageType.act_if.ToString()),
                 nodeType = ActionPackageType.act_if
             };
-            this.parent.AddAction(ap1, ap1.line);
+            this.parent.AddAction(ap1, this.commandLine);
             HalationViewCommand.AddItemToCodeListbox(this.commandLine, ap1.indent,
                 String.Format("◆{0}{1}{2}", ap1.GetActionName(), ap1.GetSpace(), ap1.GetParaDescription()));
             // PAD节点
             ActionPackage ap2 = new ActionPackage()
             {
-                line = this.commandLine + 1,
                 indent = this.indent + 2,
                 argsDict = new Dictionary<string, ArgumentPackage>(),
                 nodeName = "pad",
                 nodeType = ActionPackageType.NOP
             };
-            this.parent.AddAction(ap2, ap2.line);
-            HalationViewCommand.AddItemToCodeListbox(ap2.line, ap2.indent, "◆");
+            this.parent.AddAction(ap2, this.commandLine + 1);
+            HalationViewCommand.AddItemToCodeListbox(this.commandLine + 1, ap2.indent, "◆");
             // 考虑ELSE子句
             if (this.isContainElse)
             {
                 // ELSE节点
                 ActionPackage ap3 = new ActionPackage()
                 {
-                    line = this.commandLine + 2,
                     indent = this.indent,
                     argsDict = new Dictionary<string, ArgumentPackage>(),
                     nodeName = String.Format("{0}@{1}", this.commandLine + 2, ActionPackageType.act_else.ToString()),
                     nodeType = ActionPackageType.act_else
                 };
-                this.parent.AddAction(ap3, ap3.line);
-                HalationViewCommand.AddItemToCodeListbox(ap3.line, ap3.indent, ":除此以外的情况");
+                this.parent.AddAction(ap3, this.commandLine + 2);
+                HalationViewCommand.AddItemToCodeListbox(this.commandLine + 2, ap3.indent, ":除此以外的情况");
                 // PAD节点
                 ActionPackage ap4 = new ActionPackage()
                 {
-                    line = this.commandLine + 3,
                     indent = this.indent + 2,
                     argsDict = new Dictionary<string, ArgumentPackage>(),
                     nodeName = "pad",
                     nodeType = ActionPackageType.NOP
                 };
-                this.parent.AddAction(ap4, ap4.line);
-                HalationViewCommand.AddItemToCodeListbox(ap4.line, ap4.indent, "◆");
+                this.parent.AddAction(ap4, this.commandLine + 3);
+                HalationViewCommand.AddItemToCodeListbox(this.commandLine + 3, ap4.indent, "◆");
                 // ENDIF节点
                 ActionPackage ap5 = new ActionPackage()
                 {
-                    line = this.commandLine + 4,
                     indent = this.indent,
                     argsDict = new Dictionary<string, ArgumentPackage>(),
                     nodeName = String.Format("{0}@{1}", this.commandLine + 2, ActionPackageType.act_endif.ToString()),
                     nodeType = ActionPackageType.act_endif
                 };
-                this.parent.AddAction(ap5, ap5.line);
-                HalationViewCommand.AddItemToCodeListbox(ap5.line, ap5.indent, ":分支结束");
+                this.parent.AddAction(ap5, this.commandLine + 4);
+                HalationViewCommand.AddItemToCodeListbox(this.commandLine + 4, ap5.indent, ":分支结束");
             }
             else
             {
                 // ENDIF节点（这里不能与上面的endif合并，因为commandline有变化）
                 ActionPackage ap6 = new ActionPackage()
                 {
-                    line = this.commandLine + 2,
                     indent = this.indent,
                     argsDict = new Dictionary<string, ArgumentPackage>(),
                     nodeName = String.Format("{0}@{1}", this.commandLine + 2, ActionPackageType.act_endif.ToString()),
                     nodeType = ActionPackageType.act_endif
                 };
-                this.parent.AddAction(ap6, ap6.line);
-                HalationViewCommand.AddItemToCodeListbox(ap6.line, ap6.indent, ":分支结束");
+                this.parent.AddAction(ap6, this.commandLine + 2);
+                HalationViewCommand.AddItemToCodeListbox(this.commandLine + 2, ap6.indent, ":分支结束");
             }
         }
 

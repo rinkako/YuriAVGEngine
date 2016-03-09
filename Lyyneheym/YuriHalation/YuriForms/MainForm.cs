@@ -60,7 +60,9 @@ namespace YuriHalation.YuriForms
             if (itemStr.TrimStart().StartsWith(":"))
             {
                 this.codeListBox.SelectedIndices.Clear();
+                this.codeListBox.SelectedIndex = -1;
                 this.codeListBox.Refresh();
+                this.actionGroupBox.Enabled = false;
                 return;
             }
             // 连续选择嵌套语句块

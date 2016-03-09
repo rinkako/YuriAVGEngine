@@ -17,11 +17,6 @@ namespace Yuri.YuriHalation.ScriptPackage
         public string nodeName = "";
 
         /// <summary>
-        /// 节点行号
-        /// </summary>
-        public int line = 0;
-
-        /// <summary>
         /// 对齐偏移量
         /// </summary>
         public int indent = 0;
@@ -44,7 +39,6 @@ namespace Yuri.YuriHalation.ScriptPackage
         {
             ActionPackage ap = new ActionPackage();
             ap.nodeName = this.nodeName;
-            ap.line = this.line;
             ap.indent = this.indent;
             ap.nodeType = this.nodeType;
             ap.argsDict = new Dictionary<string, ArgumentPackage>();
