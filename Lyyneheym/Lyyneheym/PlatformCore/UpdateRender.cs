@@ -335,6 +335,29 @@ namespace Yuri.PlatformCore
         /// <returns>趟数组</returns>
         private string[] DialogToRuns(string dialogStr)
         {
+            for (int i = 0; i < dialogStr.Length; i++)
+            {
+                // 如果出现转义符号
+                if (dialogStr[i] == '\\' && i != dialogStr.Length - 1)
+                {
+                    if (i + 2 < dialogStr.Length && dialogStr[i + 1] == '$' && dialogStr[i + 2] == '{')
+                    {
+                        int varPtr = i + 3;
+                        while (varPtr < dialogStr.Length && dialogStr[varPtr++] != '}');
+                        string varStr = Director.RunMana.Fetch("$" + dialogStr.Substring(i + 3, varPtr - i - 4)).ToString();
+                        dialogStr = dialogStr.Remove(i, varPtr - i);
+                        dialogStr = dialogStr.Insert(i, varStr);
+                    }
+                    else if (i + 2 < dialogStr.Length && dialogStr[i + 1] == '&' && dialogStr[i + 2] == '{')
+                    {
+                        int varPtr = i + 3;
+                        while (varPtr < dialogStr.Length && dialogStr[varPtr++] != '}') ;
+                        string varStr = Director.RunMana.Fetch("&" + dialogStr.Substring(i + 3, varPtr - i - 4)).ToString();
+                        dialogStr = dialogStr.Remove(i, varPtr - i);
+                        dialogStr = dialogStr.Insert(i, varStr);
+                    }
+                }
+            }
             return dialogStr.Split(new string[] { "\\|" }, StringSplitOptions.None);
         }
 

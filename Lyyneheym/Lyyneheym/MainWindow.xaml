@@ -6,7 +6,7 @@
     <Viewbox x:Name="viewbox" Stretch="Fill">
         <Canvas Name="BO_MainGrid" Width="1024" Height="576" Background="Black">
             <transitionalsControls:TransitionElement x:Name="TransitionBox" Transition="{Binding}" Width="{Binding ActualWidth, ElementName=BO_MainGrid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=BO_MainGrid, Mode=OneWay}"/>
-            <Button Visibility="Hidden" Panel.ZIndex="9999" Content="Button" HorizontalAlignment="Left" Margin="594,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
+            <Button Panel.ZIndex="9999" Content="Button" HorizontalAlignment="Left" Margin="594,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
         </Canvas>
     </Viewbox>
 </Window>
