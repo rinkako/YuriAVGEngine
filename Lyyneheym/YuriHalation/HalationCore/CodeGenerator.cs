@@ -208,6 +208,31 @@ namespace Yuri.YuriHalation.HalationCore
                     case ActionPackageType.act_endfor:
                         codeBuilder.AppendLine("@endfor");
                         break;
+                    case ActionPackageType.act_a:
+                        string aCode = "@a ";
+                        aCode += String.Format("name=\"{0}\" ", act.argsDict["name"].valueExp);
+                        aCode += String.Format("face=\"{0}\" ", act.argsDict["face"].valueExp);
+                        aCode += String.Format("vid=\"{0}\" ", act.argsDict["vid"].valueExp);
+                        switch (act.argsDict["loc"].valueExp)
+                        {
+                            case "左":
+                                aCode += "loc=\"left\"";
+                                break;
+                            case "左中":
+                                aCode += "loc=\"midleft\"";
+                                break;
+                            case "右中":
+                                aCode += "loc=\"midright\"";
+                                break;
+                            case "右":
+                                aCode += "loc=\"right\"";
+                                break;
+                            default:
+                                aCode += "loc=\"mid\"";
+                                break;
+                        }
+                        codeBuilder.AppendLine(aCode);
+                        break;
                     case ActionPackageType.act_dialog:
                         codeBuilder.AppendLine("[");
                         codeBuilder.AppendLine(act.argsDict["context"].valueExp);
@@ -241,7 +266,17 @@ namespace Yuri.YuriHalation.HalationCore
                         string singleCode = String.Format("@{0} ", act.nodeType.ToString().Replace("act_", ""));
                         foreach (var arkv in act.argsDict)
                         {
-                            singleCode += String.Format("{0}=\"{1}\" ", arkv.Key, arkv.Value.valueExp);
+                            switch (arkv.Key)
+                            {
+                                case "opacity":
+                                case "xscale":
+                                case "yscale":
+                                    singleCode += String.Format("{0}=\"{1}\" ", arkv.Key, (Convert.ToDouble(arkv.Value.valueExp) / 100.0));
+                                    break;
+                                default:
+                                    singleCode += String.Format("{0}=\"{1}\" ", arkv.Key, arkv.Value.valueExp);
+                                    break;
+                            }
                         }
                         codeBuilder.AppendLine(singleCode);
                         break;

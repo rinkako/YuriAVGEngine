@@ -100,6 +100,13 @@ namespace YuriHalation.YuriForms
             this.comboBox1.SelectedIndex = config.GameMusicVocalPostfix == ".mp3" ? 0 : 1;
             // 杂项页
             this.numericUpDown51.Value = config.GameMaxSwitchCount;
+            // 角色页
+            List<string> charaList = Halation.project.CharacterList;
+            for (int i = 0; i < charaList.Count; i++)
+            {
+                this.switchDataGridView.Rows.Add();
+                this.switchDataGridView.Rows[i].Cells[0].Value = charaList[i];
+            }
         }
 
         /// <summary>
@@ -173,6 +180,13 @@ namespace YuriHalation.YuriForms
             config.GameMusicVocalPostfix = this.comboBox1.SelectedItem.ToString();
             // 杂项页
             config.GameMaxSwitchCount = (int)this.numericUpDown51.Value;
+            // 角色页
+            List<string> charaList = new List<string>();
+            for (int i = 0; i < this.switchDataGridView.Rows.Count - 1; i++)
+            {
+                charaList.Add((string)this.switchDataGridView.Rows[i].Cells[0].Value);
+            }
+            Halation.project.CharacterList = charaList;
             // 关闭窗体
             this.Close();
         }

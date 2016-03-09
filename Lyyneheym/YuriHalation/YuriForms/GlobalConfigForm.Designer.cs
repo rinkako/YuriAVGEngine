@@ -165,7 +165,9 @@
             this.numericUpDown51 = new System.Windows.Forms.NumericUpDown();
             this.label51 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.switchDataGridView = new System.Windows.Forms.DataGridView();
+            this.描述 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -234,6 +236,8 @@
             this.tabPage6.SuspendLayout();
             this.groupBox10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown51)).BeginInit();
+            this.tabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.switchDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -247,6 +251,7 @@
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage6);
+            this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Location = new System.Drawing.Point(1, 1);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -643,7 +648,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(175, 19);
+            this.label16.Location = new System.Drawing.Point(175, 17);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(11, 12);
             this.label16.TabIndex = 21;
@@ -652,7 +657,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(89, 19);
+            this.label15.Location = new System.Drawing.Point(89, 17);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(11, 12);
             this.label15.TabIndex = 20;
@@ -2087,22 +2092,42 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button6
+            // tabPage7
             // 
-            this.button6.Location = new System.Drawing.Point(101, 335);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 11;
-            this.button6.Text = "button6";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.tabPage7.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage7.Controls.Add(this.switchDataGridView);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(539, 302);
+            this.tabPage7.TabIndex = 6;
+            this.tabPage7.Text = "角色";
+            // 
+            // switchDataGridView
+            // 
+            this.switchDataGridView.AllowUserToResizeRows = false;
+            this.switchDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.switchDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.描述});
+            this.switchDataGridView.Location = new System.Drawing.Point(3, 3);
+            this.switchDataGridView.MultiSelect = false;
+            this.switchDataGridView.Name = "switchDataGridView";
+            this.switchDataGridView.RowTemplate.Height = 23;
+            this.switchDataGridView.Size = new System.Drawing.Size(530, 296);
+            this.switchDataGridView.TabIndex = 3;
+            // 
+            // 描述
+            // 
+            this.描述.HeaderText = "角色名";
+            this.描述.Name = "描述";
+            this.描述.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.描述.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.描述.Width = 460;
             // 
             // GlobalConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(550, 365);
-            this.Controls.Add(this.button6);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -2195,6 +2220,8 @@
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown51)).EndInit();
+            this.tabPage7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.switchDataGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2338,6 +2365,8 @@
         private System.Windows.Forms.GroupBox groupBox10;
         private System.Windows.Forms.NumericUpDown numericUpDown51;
         private System.Windows.Forms.Label label51;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.DataGridView switchDataGridView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 描述;
     }
 }
