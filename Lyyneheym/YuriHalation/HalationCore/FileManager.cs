@@ -23,55 +23,84 @@ namespace Yuri.YuriHalation.HalationCore
             {
                 Directory.CreateDirectory(path);
             }
-            // 建立第一级目录
-            if (!Directory.Exists(path + "\\" + DevURI_RT_PICTUREASSETS))
-            {
-                Directory.CreateDirectory(path + "\\" + DevURI_RT_PICTUREASSETS);
-            }
-            if (!Directory.Exists(path + "\\" + DevURI_RT_SCENARIO))
-            {
-                Directory.CreateDirectory(path + "\\" + DevURI_RT_SCENARIO);
-            }
-            if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND))
-            {
-                Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND);
-            }
-            // 建立第二级目录
-            if (!Directory.Exists(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_BACKGROUND))
-            {
-                Directory.CreateDirectory(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_BACKGROUND);
-            }
-            if (!Directory.Exists(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_CHARASTAND))
-            {
-                Directory.CreateDirectory(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_CHARASTAND);
-            }
-            if (!Directory.Exists(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_PICTURES))
-            {
-                Directory.CreateDirectory(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_PICTURES);
-            }
-            if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_BGM))
-            {
-                Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_BGM);
-            }
-            if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_BGS))
-            {
-                Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_BGS);
-            }
-            if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_SE))
-            {
-                Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_SE);
-            }
-            if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_VOCAL))
-            {
-                Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_VOCAL);
-            }
+            //// 建立第一级目录
+            //if (!Directory.Exists(path + "\\" + DevURI_RT_PICTUREASSETS))
+            //{
+            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_PICTUREASSETS);
+            //}
+            //if (!Directory.Exists(path + "\\" + DevURI_RT_SCENARIO))
+            //{
+            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_SCENARIO);
+            //}
+            //if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND))
+            //{
+            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND);
+            //}
+            //// 建立第二级目录
+            //if (!Directory.Exists(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_BACKGROUND))
+            //{
+            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_BACKGROUND);
+            //}
+            //if (!Directory.Exists(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_CHARASTAND))
+            //{
+            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_CHARASTAND);
+            //}
+            //if (!Directory.Exists(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_PICTURES))
+            //{
+            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_PICTURES);
+            //}
+            //if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_BGM))
+            //{
+            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_BGM);
+            //}
+            //if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_BGS))
+            //{
+            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_BGS);
+            //}
+            //if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_SE))
+            //{
+            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_SE);
+            //}
+            //if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_VOCAL))
+            //{
+            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_VOCAL);
+            //}
             // 拷贝演绎器到目录
-            File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Yuri.exe", path + "\\Yuri.exe", true);
-            File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\bass.dll", path + "\\bass.dll", true);
-            File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Bass.Net.dll", path + "\\Bass.Net.dll", true);
-            File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Transitionals.dll", path + "\\Transitionals.dll", true);
-            File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Yuri.YuriInterpreter.dll", path + "\\Yuri.YuriInterpreter.dll", true);
+            //File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Yuri.exe", path + "\\Yuri.exe", true);
+            //File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\bass.dll", path + "\\bass.dll", true);
+            //File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Bass.Net.dll", path + "\\Bass.Net.dll", true);
+            //File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Transitionals.dll", path + "\\Transitionals.dll", true);
+            //File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Yuri.YuriInterpreter.dll", path + "\\Yuri.YuriInterpreter.dll", true);
+            FileManager.DirectoryCopy(System.Windows.Forms.Application.StartupPath + "\\SampleProject", path);
         }
+
+        /// <summary>
+        /// 递归拷贝文件夹
+        /// </summary>
+        /// <param name="sourceDirectory"></param>
+        /// <param name="targetDirectory"></param>
+        private static void DirectoryCopy(string sourceDirectory, string targetDirectory)
+        {
+            if (!Directory.Exists(sourceDirectory) || !Directory.Exists(targetDirectory))
+            {
+                return;
+            }
+            DirectoryInfo sourceInfo = new DirectoryInfo(sourceDirectory);
+            FileInfo[] fileInfo = sourceInfo.GetFiles();
+            foreach (FileInfo fiTemp in fileInfo)
+            {
+                File.Copy(sourceDirectory + "\\" + fiTemp.Name, targetDirectory + "\\" + fiTemp.Name, true);
+            }
+            DirectoryInfo[] diInfo = sourceInfo.GetDirectories();
+            foreach (DirectoryInfo diTemp in diInfo)
+            {
+                string sourcePath = diTemp.FullName;
+                string targetPath = diTemp.FullName.Replace(sourceDirectory, targetDirectory);
+                Directory.CreateDirectory(targetPath);
+                DirectoryCopy(sourcePath, targetPath);
+            }
+        }
+    
 
         /// <summary>
         /// 把一个实例序列化

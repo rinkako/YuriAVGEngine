@@ -527,6 +527,9 @@ namespace Yuri
             FileManager.CreateInitFolder(string.Format("{0}\\{1}", path, projName));
             Halation.project = new Yuri.YuriHalation.ScriptPackage.ProjectPackage(projName);
             Halation.project.AddScene("main");
+            ActionPackage initap = new ActionPackage() { nodeType = ActionPackageType.act_dialog };
+            initap.argsDict.Add("context", new ArgumentPackage() { aType = ArgType.unknown, valueExp = "欢迎来到Yuri世界！" });
+            Halation.project.GetScene("main").AddAction(initap, 0);
             Halation.projectName = projName;
             Halation.mainView.Text = String.Format("Yuri Halation - [{0}]", Halation.projectName);
             FileManager.Serialization(Halation.project, string.Format("{0}\\{1}\\game.yrproj", path, projName));

@@ -115,11 +115,13 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.actionGroupBox.SuspendLayout();
             this.codeGroupBox.SuspendLayout();
             this.CodeListContextMenuStrip.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -134,7 +136,7 @@
             this.帮助ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1008, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(1030, 25);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -441,7 +443,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.projTreeView.Location = new System.Drawing.Point(6, 20);
             this.projTreeView.Name = "projTreeView";
-            this.projTreeView.Size = new System.Drawing.Size(185, 571);
+            this.projTreeView.Size = new System.Drawing.Size(185, 636);
             this.projTreeView.TabIndex = 2;
             this.projTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.projTreeView_AfterSelect);
             // 
@@ -452,9 +454,9 @@
             this.groupBox1.Controls.Add(this.button_AddNewFunc);
             this.groupBox1.Controls.Add(this.projTreeView);
             this.groupBox1.Controls.Add(this.button36);
-            this.groupBox1.Location = new System.Drawing.Point(12, 28);
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 635);
+            this.groupBox1.Size = new System.Drawing.Size(200, 700);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "工程树";
@@ -463,7 +465,7 @@
             // 
             this.button_AddNewFunc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_AddNewFunc.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button_AddNewFunc.Location = new System.Drawing.Point(102, 597);
+            this.button_AddNewFunc.Location = new System.Drawing.Point(102, 662);
             this.button_AddNewFunc.Name = "button_AddNewFunc";
             this.button_AddNewFunc.Size = new System.Drawing.Size(89, 28);
             this.button_AddNewFunc.TabIndex = 35;
@@ -475,7 +477,7 @@
             // 
             this.button36.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button36.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button36.Location = new System.Drawing.Point(6, 597);
+            this.button36.Location = new System.Drawing.Point(6, 662);
             this.button36.Name = "button36";
             this.button36.Size = new System.Drawing.Size(89, 28);
             this.button36.TabIndex = 34;
@@ -522,9 +524,9 @@
             this.actionGroupBox.Controls.Add(this.button2);
             this.actionGroupBox.Controls.Add(this.button1);
             this.actionGroupBox.Enabled = false;
-            this.actionGroupBox.Location = new System.Drawing.Point(778, 28);
+            this.actionGroupBox.Location = new System.Drawing.Point(809, 3);
             this.actionGroupBox.Name = "actionGroupBox";
-            this.actionGroupBox.Size = new System.Drawing.Size(218, 635);
+            this.actionGroupBox.Size = new System.Drawing.Size(218, 700);
             this.actionGroupBox.TabIndex = 0;
             this.actionGroupBox.TabStop = false;
             this.actionGroupBox.Text = "动作";
@@ -909,9 +911,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.codeGroupBox.Controls.Add(this.codeListBox);
-            this.codeGroupBox.Location = new System.Drawing.Point(219, 29);
+            this.codeGroupBox.Location = new System.Drawing.Point(209, 3);
             this.codeGroupBox.Name = "codeGroupBox";
-            this.codeGroupBox.Size = new System.Drawing.Size(553, 634);
+            this.codeGroupBox.Size = new System.Drawing.Size(594, 700);
             this.codeGroupBox.TabIndex = 6;
             this.codeGroupBox.TabStop = false;
             this.codeGroupBox.Text = "场景 [main]";
@@ -930,7 +932,7 @@
             this.codeListBox.Location = new System.Drawing.Point(6, 20);
             this.codeListBox.Name = "codeListBox";
             this.codeListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.codeListBox.Size = new System.Drawing.Size(541, 602);
+            this.codeListBox.Size = new System.Drawing.Size(582, 668);
             this.codeListBox.TabIndex = 6;
             this.codeListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.codeListBox_DrawItem);
             this.codeListBox.SelectedIndexChanged += new System.EventHandler(this.codeListBox_SelectedIndexChanged);
@@ -980,15 +982,26 @@
             this.toolStripMenuItem4.Text = "删除";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.删除ToolStripMenuItem_Click);
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.codeGroupBox);
+            this.panel1.Controls.Add(this.actionGroupBox);
+            this.panel1.Controls.Add(this.groupBox1);
+            this.panel1.Location = new System.Drawing.Point(0, 27);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1030, 705);
+            this.panel1.TabIndex = 36;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(1008, 675);
-            this.Controls.Add(this.codeGroupBox);
-            this.Controls.Add(this.actionGroupBox);
-            this.Controls.Add(this.groupBox1);
+            this.ClientSize = new System.Drawing.Size(1030, 733);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
@@ -1001,6 +1014,7 @@
             this.actionGroupBox.ResumeLayout(false);
             this.codeGroupBox.ResumeLayout(false);
             this.CodeListContextMenuStrip.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1094,5 +1108,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem 删除ToolStripMenuItem;
+        private System.Windows.Forms.Panel panel1;
     }
 }

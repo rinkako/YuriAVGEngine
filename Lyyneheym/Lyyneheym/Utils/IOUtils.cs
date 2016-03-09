@@ -19,7 +19,7 @@ namespace Yuri.Utils
         /// <returns>绝对路径</returns>
         public static string ParseURItoURL(string uri)
         {
-            return IOUtils.JoinPath(Environment.CurrentDirectory, uri);
+            return Director.BasePath + uri;
         }
 
         /// <summary>

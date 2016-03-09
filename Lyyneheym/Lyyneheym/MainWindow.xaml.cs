@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using System.IO;
+using System.Diagnostics;
 
 using Transitionals;
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -622,6 +623,7 @@ namespace YuriHalation.YuriForms
                 this.资源ToolStripMenuItem.Enabled = this.编辑ToolStripMenuItem.Enabled =
                     this.工程ToolStripMenuItem.Enabled = this.编译ToolStripMenuItem.Enabled =
                     this.保存ToolStripMenuItem.Enabled = true;
+                this.Text = String.Format("Yuri Halation - {0}", Halation.projectName);
             }
         }
 
@@ -705,6 +707,7 @@ namespace YuriHalation.YuriForms
                 this.资源ToolStripMenuItem.Enabled = this.编辑ToolStripMenuItem.Enabled =
                     this.工程ToolStripMenuItem.Enabled = this.编译ToolStripMenuItem.Enabled =
                     this.保存ToolStripMenuItem.Enabled = true;
+                this.Text = String.Format("Yuri Halation - {0}", Halation.projectName);
             }
         }
 
@@ -768,20 +771,8 @@ namespace YuriHalation.YuriForms
         private void 生成并运行ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.core.DashParse();
-            //System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Yuri.exe");
-            //var p = System.Diagnostics.Process.Start(psi);
-            try
-            {
-                Process ps = new Process();
-                ps.StartInfo.FileName = @"C:\Users\Kako\Desktop\ccss\Yuri.exe";
-                ps.StartInfo.Arguments = "";
-                ps.StartInfo.UseShellExecute = false;
-                ps.Start();
-            }
-            catch (ArgumentException ex)
-            {
-                MessageBox.Show(ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            DebugForm df = new DebugForm(Halation.projectFolder);
+            df.ShowDialog(this);
         }
         #endregion
     }

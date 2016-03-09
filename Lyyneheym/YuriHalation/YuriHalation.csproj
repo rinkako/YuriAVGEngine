@@ -147,6 +147,12 @@
     <Compile Include="YuriForms\CStandForm.Designer.cs">
       <DependentUpon>CStandForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="YuriForms\DebugForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\DebugForm.Designer.cs">
+      <DependentUpon>DebugForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="YuriForms\DrawStringForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -332,6 +338,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\CStandForm.resx">
       <DependentUpon>CStandForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\DebugForm.resx">
+      <DependentUpon>DebugForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\DeleteViewForm.resx">
       <DependentUpon>DeleteViewForm.cs</DependentUpon>

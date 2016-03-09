@@ -173,7 +173,7 @@ namespace Yuri.PlatformCore
                 string furi = IOUtils.JoinPath(GlobalDataContainer.DevURI_RT_PICTUREASSETS, DevURI, sourceName);
                 if (File.Exists(IOUtils.ParseURItoURL(furi)))
                 {
-                    Uri bg = new Uri(furi, UriKind.RelativeOrAbsolute);
+                    Uri bg = new Uri(IOUtils.ParseURItoURL(furi), UriKind.RelativeOrAbsolute);
                     sprite.Init(sourceName, rtype, bg, cutRect);
                 }
                 else
@@ -430,7 +430,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private void InitScenario()
         {
-            List<Scene> sceneList = Yuri.ILPackage.ILConvertor.GetInstance().Dash(GlobalDataContainer.DevURI_RT_SCENARIO);
+            List<Scene> sceneList = Yuri.ILPackage.ILConvertor.GetInstance().Dash(IOUtils.ParseURItoURL(GlobalDataContainer.DevURI_RT_SCENARIO));
             foreach (Scene sc in sceneList)
             {
                 if (this.sceneTable.ContainsKey(sc.scenario))

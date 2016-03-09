@@ -456,6 +456,8 @@ namespace Yuri
         /// </summary>
         private Director()
         {
+            CommonUtils.ConsoleLine("CurrentDirectory is: " + System.Environment.CurrentDirectory, "Director", OutputStyle.Normal);
+            CommonUtils.ConsoleLine("BaseDirectory is: " + System.AppDomain.CurrentDomain.BaseDirectory, "Director", OutputStyle.Normal);
             this.InitConfig();
             this.ResMana = ResourceManager.GetInstance();
             Director.RunMana = new RuntimeManager();
@@ -470,6 +472,11 @@ namespace Yuri
             this.InitRuntime();
 #endif
         }
+
+        /// <summary>
+        /// 程序启动时的根目录
+        /// </summary>
+        public static string BasePath = System.AppDomain.CurrentDomain.BaseDirectory;
 
         /// <summary>
         /// 消息循环计时器
