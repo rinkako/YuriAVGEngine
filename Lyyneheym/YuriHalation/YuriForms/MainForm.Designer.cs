@@ -72,6 +72,8 @@
             this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projTreeView = new System.Windows.Forms.TreeView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button_deleteFunc = new System.Windows.Forms.Button();
+            this.button_deleteScene = new System.Windows.Forms.Button();
             this.button_AddNewFunc = new System.Windows.Forms.Button();
             this.button36 = new System.Windows.Forms.Button();
             this.actionGroupBox = new System.Windows.Forms.GroupBox();
@@ -118,8 +120,6 @@
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button_deleteFunc = new System.Windows.Forms.Button();
-            this.button_deleteScene = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.actionGroupBox.SuspendLayout();
@@ -334,67 +334,68 @@
             // 背景ToolStripMenuItem
             // 
             this.背景ToolStripMenuItem.Name = "背景ToolStripMenuItem";
-            this.背景ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.背景ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.背景ToolStripMenuItem.Text = "背景";
             this.背景ToolStripMenuItem.Click += new System.EventHandler(this.背景ToolStripMenuItem_Click);
             // 
             // 立绘ToolStripMenuItem
             // 
             this.立绘ToolStripMenuItem.Name = "立绘ToolStripMenuItem";
-            this.立绘ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.立绘ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.立绘ToolStripMenuItem.Text = "立绘";
             this.立绘ToolStripMenuItem.Click += new System.EventHandler(this.立绘ToolStripMenuItem_Click);
             // 
             // 图片ToolStripMenuItem
             // 
             this.图片ToolStripMenuItem.Name = "图片ToolStripMenuItem";
-            this.图片ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.图片ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.图片ToolStripMenuItem.Text = "图片";
             this.图片ToolStripMenuItem.Click += new System.EventHandler(this.图片ToolStripMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(121, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(149, 6);
             // 
             // bGMToolStripMenuItem
             // 
             this.bGMToolStripMenuItem.Name = "bGMToolStripMenuItem";
-            this.bGMToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.bGMToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.bGMToolStripMenuItem.Text = "BGM";
             this.bGMToolStripMenuItem.Click += new System.EventHandler(this.bGMToolStripMenuItem_Click);
             // 
             // bGSToolStripMenuItem
             // 
             this.bGSToolStripMenuItem.Name = "bGSToolStripMenuItem";
-            this.bGSToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.bGSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.bGSToolStripMenuItem.Text = "BGS";
             this.bGSToolStripMenuItem.Click += new System.EventHandler(this.bGSToolStripMenuItem_Click);
             // 
             // sEToolStripMenuItem
             // 
             this.sEToolStripMenuItem.Name = "sEToolStripMenuItem";
-            this.sEToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.sEToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.sEToolStripMenuItem.Text = "SE";
             this.sEToolStripMenuItem.Click += new System.EventHandler(this.sEToolStripMenuItem_Click);
             // 
             // vOCALToolStripMenuItem
             // 
             this.vOCALToolStripMenuItem.Name = "vOCALToolStripMenuItem";
-            this.vOCALToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.vOCALToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.vOCALToolStripMenuItem.Text = "VOCAL";
             this.vOCALToolStripMenuItem.Click += new System.EventHandler(this.vOCALToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(121, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
             // 
             // 包管理器ToolStripMenuItem
             // 
             this.包管理器ToolStripMenuItem.Name = "包管理器ToolStripMenuItem";
-            this.包管理器ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.包管理器ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.包管理器ToolStripMenuItem.Text = "包管理器";
+            this.包管理器ToolStripMenuItem.Click += new System.EventHandler(this.包管理器ToolStripMenuItem_Click);
             // 
             // 编译ToolStripMenuItem
             // 
@@ -475,6 +476,30 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "工程树";
+            // 
+            // button_deleteFunc
+            // 
+            this.button_deleteFunc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_deleteFunc.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.button_deleteFunc.Location = new System.Drawing.Point(102, 660);
+            this.button_deleteFunc.Name = "button_deleteFunc";
+            this.button_deleteFunc.Size = new System.Drawing.Size(89, 28);
+            this.button_deleteFunc.TabIndex = 37;
+            this.button_deleteFunc.Text = "删除函数";
+            this.button_deleteFunc.UseVisualStyleBackColor = false;
+            this.button_deleteFunc.Click += new System.EventHandler(this.button35_Click_1);
+            // 
+            // button_deleteScene
+            // 
+            this.button_deleteScene.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_deleteScene.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.button_deleteScene.Location = new System.Drawing.Point(7, 660);
+            this.button_deleteScene.Name = "button_deleteScene";
+            this.button_deleteScene.Size = new System.Drawing.Size(89, 28);
+            this.button_deleteScene.TabIndex = 36;
+            this.button_deleteScene.Text = "删除场景";
+            this.button_deleteScene.UseVisualStyleBackColor = false;
+            this.button_deleteScene.Click += new System.EventHandler(this.button37_Click);
             // 
             // button_AddNewFunc
             // 
@@ -1010,30 +1035,6 @@
             this.panel1.Size = new System.Drawing.Size(1030, 705);
             this.panel1.TabIndex = 36;
             // 
-            // button_deleteFunc
-            // 
-            this.button_deleteFunc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button_deleteFunc.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button_deleteFunc.Location = new System.Drawing.Point(102, 660);
-            this.button_deleteFunc.Name = "button_deleteFunc";
-            this.button_deleteFunc.Size = new System.Drawing.Size(89, 28);
-            this.button_deleteFunc.TabIndex = 37;
-            this.button_deleteFunc.Text = "删除函数";
-            this.button_deleteFunc.UseVisualStyleBackColor = false;
-            this.button_deleteFunc.Click += new System.EventHandler(this.button35_Click_1);
-            // 
-            // button_deleteScene
-            // 
-            this.button_deleteScene.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button_deleteScene.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button_deleteScene.Location = new System.Drawing.Point(7, 660);
-            this.button_deleteScene.Name = "button_deleteScene";
-            this.button_deleteScene.Size = new System.Drawing.Size(89, 28);
-            this.button_deleteScene.TabIndex = 36;
-            this.button_deleteScene.Text = "删除场景";
-            this.button_deleteScene.UseVisualStyleBackColor = false;
-            this.button_deleteScene.Click += new System.EventHandler(this.button37_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1048,6 +1049,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Yuri Halation";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);

@@ -44,6 +44,15 @@ namespace YuriHalation.YuriForms
         }
 
         /// <summary>
+        /// 窗体变更大小后
+        /// </summary>
+        private void MainForm_ResizeEnd(object sender, EventArgs e)
+        {
+            if (this.Width < 800) { this.Width = 800; }
+            if (this.Height < 750) { this.Height = 750; }
+        }
+
+        /// <summary>
         /// 代码编辑框选择项改变事件
         /// </summary>
         private void codeListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -817,6 +826,18 @@ namespace YuriHalation.YuriForms
             AboutBox1 ab = new AboutBox1();
             ab.ShowDialog(this);
         }
+
+        /// <summary>
+        /// 菜单项：包管理器
+        /// </summary>
+        private void 包管理器ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process packProc = new Process();
+            packProc.StartInfo.FileName = Application.StartupPath + "\\YuriPacker.exe";
+            packProc.Start();
+            packProc.WaitForExit();
+        }
         #endregion
+
     }
 }
