@@ -9,8 +9,14 @@ using Yuri.PlatformCore;
 namespace Yuri.ILPackage
 {
     using GDC = GlobalDataContainer;
+    /// <summary>
+    /// 设置信息语法分析器类
+    /// </summary>
     class ConfigParser
     {
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public static void ConfigParse()
         {
             // 读入数据
