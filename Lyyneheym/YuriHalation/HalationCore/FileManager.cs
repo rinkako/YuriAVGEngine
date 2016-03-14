@@ -23,62 +23,15 @@ namespace Yuri.YuriHalation.HalationCore
             {
                 Directory.CreateDirectory(path);
             }
-            //// 建立第一级目录
-            //if (!Directory.Exists(path + "\\" + DevURI_RT_PICTUREASSETS))
-            //{
-            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_PICTUREASSETS);
-            //}
-            //if (!Directory.Exists(path + "\\" + DevURI_RT_SCENARIO))
-            //{
-            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_SCENARIO);
-            //}
-            //if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND))
-            //{
-            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND);
-            //}
-            //// 建立第二级目录
-            //if (!Directory.Exists(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_BACKGROUND))
-            //{
-            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_BACKGROUND);
-            //}
-            //if (!Directory.Exists(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_CHARASTAND))
-            //{
-            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_CHARASTAND);
-            //}
-            //if (!Directory.Exists(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_PICTURES))
-            //{
-            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_PICTUREASSETS + "\\" + DevURI_PA_PICTURES);
-            //}
-            //if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_BGM))
-            //{
-            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_BGM);
-            //}
-            //if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_BGS))
-            //{
-            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_BGS);
-            //}
-            //if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_SE))
-            //{
-            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_SE);
-            //}
-            //if (!Directory.Exists(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_VOCAL))
-            //{
-            //    Directory.CreateDirectory(path + "\\" + DevURI_RT_SOUND + "\\" + DevURI_SO_VOCAL);
-            //}
-            // 拷贝演绎器到目录
-            //File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Yuri.exe", path + "\\Yuri.exe", true);
-            //File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\bass.dll", path + "\\bass.dll", true);
-            //File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Bass.Net.dll", path + "\\Bass.Net.dll", true);
-            //File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Transitionals.dll", path + "\\Transitionals.dll", true);
-            //File.Copy(@"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Yuri.YuriInterpreter.dll", path + "\\Yuri.YuriInterpreter.dll", true);
+            // 复制样本工程
             FileManager.DirectoryCopy(System.Windows.Forms.Application.StartupPath + "\\SampleProject", path);
         }
 
         /// <summary>
         /// 递归拷贝文件夹
         /// </summary>
-        /// <param name="sourceDirectory"></param>
-        /// <param name="targetDirectory"></param>
+        /// <param name="sourceDirectory">源文件夹</param>
+        /// <param name="targetDirectory">目标文件夹</param>
         private static void DirectoryCopy(string sourceDirectory, string targetDirectory)
         {
             if (!Directory.Exists(sourceDirectory) || !Directory.Exists(targetDirectory))
@@ -100,7 +53,6 @@ namespace Yuri.YuriHalation.HalationCore
                 DirectoryCopy(sourcePath, targetPath);
             }
         }
-    
 
         /// <summary>
         /// 把一个实例序列化
@@ -209,31 +161,6 @@ namespace Yuri.YuriHalation.HalationCore
         public static readonly string DevURI_SO_SE = "se";
         // 声效->语音资源目录名
         public static readonly string DevURI_SO_VOCAL = "vocal";
-        #endregion
-
-        #region 封装包名字常量
-        // 包后缀
-        public static readonly string PackPostfix = ".dat";
-        // 包开头
-        public static readonly string PackHeader = "___SlyviaLyyneheym";
-        // 包结束
-        public static readonly string PackEOF = "___SlyviaLyyneheymEOF";
-        // 包头部项目数
-        public static readonly int PackHeaderItemNum = 4;
-        // 图像->背景资源目录名
-        public static readonly string PackURI_PA_BACKGROUND = "SLPBG";
-        // 图像->立绘资源目录名
-        public static readonly string PackURI_PA_CHARASTAND = "SLPCS";
-        // 图像->图片资源目录名
-        public static readonly string PackURI_PA_PICTURES = "SLPPC";
-        // 声效->音乐资源目录名
-        public static readonly string PackURI_SO_BGM = "SLBGM";
-        // 声效->声效资源目录名
-        public static readonly string PackURI_SO_BGS = "SLBGS";
-        // 声效->声效资源目录名
-        public static readonly string PackURI_SO_SE = "SLSOUND";
-        // 声效->语音资源目录名
-        public static readonly string PackURI_SO_VOCAL = "SLVOCAL";
         #endregion
     }
 }

@@ -66,7 +66,6 @@ namespace YuriHalation.YuriForms
                 debugGameProcess.StartInfo.UseShellExecute = false;
                 debugGameProcess.StartInfo.RedirectStandardOutput = true;
                 debugGameProcess.StartInfo.RedirectStandardError = true;
-                
                 debugGameProcess.EnableRaisingEvents = true;
                 debugGameProcess.Exited += ps_Exited;
                 debugGameProcess.OutputDataReceived += debugGameProcess_OutputDataReceived;
@@ -78,6 +77,7 @@ namespace YuriHalation.YuriForms
             {
                 MessageBox.Show(ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.button1.Enabled = true;
+                this.ControlBox = true;
             }
         }
 

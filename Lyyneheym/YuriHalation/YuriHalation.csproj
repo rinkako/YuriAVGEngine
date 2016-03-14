@@ -106,6 +106,7 @@
     <Compile Include="HalationCore\CodeGenerator.cs" />
     <Compile Include="HalationCore\FileManager.cs" />
     <Compile Include="HalationCore\Musician.cs" />
+    <Compile Include="HalationCore\PackageUtils.cs" />
     <Compile Include="ScriptPackage\ActionPackage.cs" />
     <Compile Include="ScriptPackage\ArgumentPackage.cs" />
     <Compile Include="ScriptPackage\ConfigPackage.cs" />
@@ -245,6 +246,12 @@
     </Compile>
     <Compile Include="YuriForms\TransForm.Designer.cs">
       <DependentUpon>TransForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\UserPackerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\UserPackerForm.Designer.cs">
+      <DependentUpon>UserPackerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="YuriForms\VarForm.cs">
       <SubType>Form</SubType>
@@ -414,6 +421,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\TransForm.resx">
       <DependentUpon>TransForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\UserPackerForm.resx">
+      <DependentUpon>UserPackerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\VarForm.resx">
       <DependentUpon>VarForm.cs</DependentUpon>

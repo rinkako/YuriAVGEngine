@@ -832,10 +832,8 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void 包管理器ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process packProc = new Process();
-            packProc.StartInfo.FileName = Application.StartupPath + "\\YuriPacker.exe";
-            packProc.Start();
-            packProc.WaitForExit();
+            UserPackerForm upf = new UserPackerForm();
+            upf.ShowDialog(this);
         }
         #endregion
 

@@ -43,7 +43,6 @@ namespace YuriHalation.YuriForms
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             DirectoryInfo dirInfo = this.dirInfoPictures;
-            this.pathVect.Clear();
             switch (this.comboBox1.SelectedIndex)
             {
                 case 1:

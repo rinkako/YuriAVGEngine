@@ -346,7 +346,7 @@ namespace Yuri.PlatformCore
         private Queue<string> SearchPST()
         {
             Queue<string> resContainer = new Queue<string>();
-            DirectoryInfo rootDirInfo = new DirectoryInfo(Environment.CurrentDirectory);
+            DirectoryInfo rootDirInfo = new DirectoryInfo(Director.BasePath);
             foreach (FileInfo file in rootDirInfo.GetFiles())
             {
                 if (file.Extension == ".pst")
@@ -354,6 +354,7 @@ namespace Yuri.PlatformCore
                     resContainer.Enqueue(file.FullName);
                 }
             }
+            CommonUtils.ConsoleLine("Total PST: " + resContainer.Count, "ResMana", OutputStyle.Important);
             return resContainer;
         }
 
