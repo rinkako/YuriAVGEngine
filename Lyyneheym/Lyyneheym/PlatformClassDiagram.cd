@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Yuri.Director">
+    <Position X="0.5" Y="12" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BBwAAgGAAABAgIAEAAgIAQAABQBIAAIAAQCBBAgAQAA=</HashCode>
+      <FileName>Director.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.MainWindow" Collapsed="true">
+    <Position X="8.5" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACAAAAAAAABAAAABAAAAAIJAAAAAAAAAABAARAAIA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.ILPackage.ConfigParser">
+    <Position X="15.25" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ILPackage\ConfigParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.ILPackage.ILConvertor">
+    <Position X="8" Y="12" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AABBIAAAAAAAAEIAAAEAAQAQBABAMAAgAAAIAEAAAAA=</HashCode>
+      <FileName>ILPackage\ILConvertor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.ILPackage.SceneAction">
+    <Position X="18" Y="10.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAACAAAgAAAEAAAAAAiRAAAAAAAAAAEAAAIAgBA=</HashCode>
+      <FileName>ILPackage\SceneAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.ILPackage.SceneActionPackage">
+    <Position X="20.5" Y="10.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAgAACAAAgAAAEAAAAAAiRAAAAAAAAAAEAAAIAgAA=</HashCode>
+      <FileName>ILPackage\SceneAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.BranchButton" Collapsed="true">
+    <Position X="12.25" Y="25.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>iQAIAAFAiAEwAAAAAAAgCIAAAAAEAAAAAQAQCAAAYkE=</HashCode>
+      <FileName>PlatformCore\BranchButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.BranchButtonDescriptor" Collapsed="true">
+    <Position X="12.25" Y="32.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACgAAAAAAAAAAAAAgAACAAAAAAAAAAAAAACAAAYAE=</HashCode>
+      <FileName>PlatformCore\BranchButtonDescriptor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.GlobalDataContainer" Collapsed="true">
+    <Position X="0.5" Y="18.75" Width="1.75" />
+    <NestedTypes>
+      <Enum Name="Yuri.PlatformCore.GlobalDataContainer.MessageLayerType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>PlatformCore\GlobalDataContainer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>BgkGQ5VKQCkQLCAYiQIQw5pDsAAuABQCCHASgoMFwRM=</HashCode>
+      <FileName>PlatformCore\GlobalDataContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.Interrupt">
+    <Position X="24.25" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAgAAAAgAAAABAAAAACAIAAAAgAA=</HashCode>
+      <FileName>PlatformCore\Interrupt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.MessageLayer" Collapsed="true">
+    <Position X="12.25" Y="23.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AlACEIAgDAAAFAAAgAAAAkAAAAAAAAQAAAIACAEAYAE=</HashCode>
+      <FileName>PlatformCore\MessageLayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.MessageLayerDescriptor" Collapsed="true">
+    <Position X="12.25" Y="31" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QgICEgAABAQAAAAAAAAAAkCAAAAAAAQIIAIACAEAYAE=</HashCode>
+      <FileName>PlatformCore\MessageLayerDescriptor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.Musician">
+    <Position X="8.5" Y="36.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QSAAAIAAIEAQxAAAKVEYAAAABCAIAACYIAAEIAACAYg=</HashCode>
+      <FileName>PlatformCore\Musician.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.BassPlayer" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="36.25" Width="2.75" />
+    <NestedTypes>
+      <Struct Name="Yuri.PlatformCore.BassPlayer.AudioDeviceInfo" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>PlatformCore\Musician.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gAAoACAAACIwAwBCEAQAAgAgBAZAAAPAoAgAAQAAEBA=</HashCode>
+      <FileName>PlatformCore\Musician.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Yuri.PlatformCore.PolishItem">
+    <Position X="8" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAwEAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>PlatformCore\PolishItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.ResourceManager">
+    <Position X="4.25" Y="12.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AABACAAAYQAiAgAQBAAIAAAABIAKAAAEyAAAEAYAAgA=</HashCode>
+      <FileName>PlatformCore\ResourceManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.RuntimeManager">
+    <Position X="4.25" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAQBAAAhBAJAEABAEQAQAAAAQIAAQAMNAAQABEIAA=</HashCode>
+      <FileName>PlatformCore\RuntimeManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.Scene">
+    <Position X="12.25" Y="12.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAKAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>PlatformCore\Scene.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.SceneFunction">
+    <Position X="15.25" Y="15" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAEBAACAAAEAAAAAQAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PlatformCore\SceneFunction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.ScreenManager">
+    <Position X="8.5" Y="29.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAABQAAAAg4QAAIAAEkBAAAACAAAAACRIlkQAA=</HashCode>
+      <FileName>PlatformCore\ScreenManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.SpriteAnimation">
+    <Position X="15.25" Y="19.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAIwIARCACADEoAAAAQQEAAAgAA=</HashCode>
+      <FileName>PlatformCore\SpriteAnimation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.SpriteButton" Collapsed="true">
+    <Position X="12.25" Y="27.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>iQAIAAFAiAEwAAAAAAAgCIAAAAAEAAAAAQAQAAAAYkE=</HashCode>
+      <FileName>PlatformCore\SpriteButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.SpriteButtonDescriptor" Collapsed="true">
+    <Position X="12.25" Y="34.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAkAAAAAAAAAAAAAgACKgAAAQAAAAAAAAAAAAAYAE=</HashCode>
+      <FileName>PlatformCore\SpriteButtonDescriptor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.SpriteDescriptor" Collapsed="true">
+    <Position X="12.25" Y="29.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEABIAAAAAAAAAAKAAAAAAAAAAAAAAEAAIAAAYgE=</HashCode>
+      <FileName>PlatformCore\SpriteDescriptor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.StackMachine">
+    <Position X="8" Y="5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAIBAAAAAAAAAQCgBAAAAAAAAAAAQBAACA=</HashCode>
+      <FileName>PlatformCore\StackMachine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.StackMachineFrame">
+    <Position X="12" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IIAAAIAAAAAAIAAEAAAAAAgAIACAAAAEAEEAAAQAAAA=</HashCode>
+      <FileName>PlatformCore\StackMachineFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.SymbolTable">
+    <Position X="8" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ABAAABQAAAAAJAAAAAEIgAAQBAAAAAgACAAAAQAAIGA=</HashCode>
+      <FileName>PlatformCore\SymbolTable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.UpdateRender">
+    <Position X="4.25" Y="21.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>gMpAyKEkCNjIhMBCQgEHBQBEABRCoAgDEZEoNQIkBRQ=</HashCode>
+      <FileName>PlatformCore\UpdateRender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.ViewManager">
+    <Position X="8.5" Y="21" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>EQAUJAIBAEAAkgCQAIBYBAAABBAICAAAAQDAxAAgQgI=</HashCode>
+      <FileName>PlatformCore\ViewManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.PlatformCore.YuriSprite" Collapsed="true">
+    <Position X="12.25" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MQAAQCFMiAEAAABAAECACCACACABAAAAQICCAAAEAEA=</HashCode>
+      <FileName>PlatformCore\YuriSprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.Utils.CommonUtils">
+    <Position X="20.75" Y="20" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAASAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\CommonUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.Utils.IOUtils">
+    <Position X="20.75" Y="17.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAEADAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAABAAA=</HashCode>
+      <FileName>Utils\IOUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.Utils.PackageUtils">
+    <Position X="8" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAEAgAAAAAAAAAAAAAAAEABAAA=</HashCode>
+      <FileName>Utils\PackageUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Yuri.PlatformCore.MyThickness" Collapsed="true">
+    <Position X="15.25" Y="31" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAQAAAAAAAIAAAACACAAAAAAAA=</HashCode>
+      <FileName>PlatformCore\MessageLayerDescriptor.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="Yuri.ILPackage.SActionType" Collapsed="true">
+    <Position X="4" Y="45.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FggAACWAELAAIAAgQAYggCCAAAwAAAIyFiACHWALSrQ=</HashCode>
+      <FileName>ILPackage\SceneAction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.PlatformCore.InterruptType" Collapsed="true">
+    <Position X="7.5" Y="45" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAIAAAAAAAAAAAAAAACAAIAAAAAAAA=</HashCode>
+      <FileName>PlatformCore\Interrupt.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.PlatformCore.PolishItemType" Collapsed="true">
+    <Position X="0.5" Y="45.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAgAAAIQAACgACQAABAQAAgAQIBAAACAAgAAACAA=</HashCode>
+      <FileName>PlatformCore\PolishItem.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.PlatformCore.ResourceType" Collapsed="true">
+    <Position X="2.25" Y="45.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQCAAAAAAAAEEEAAAAAAAAAAAACAAAAIAAgAAAAABA=</HashCode>
+      <FileName>PlatformCore\ResourceManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.PlatformCore.GameState" Collapsed="true">
+    <Position X="5.75" Y="45" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAJAAAAEAAAAAAAAAAAAAIAAAQAACAAA=</HashCode>
+      <FileName>PlatformCore\RuntimeManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.PlatformCore.GameStableState" Collapsed="true">
+    <Position X="4" Y="45" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAIAAAAAAAABA=</HashCode>
+      <FileName>PlatformCore\RuntimeManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.PlatformCore.CharacterStandType" Collapsed="true">
+    <Position X="2.25" Y="45" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAkAAAAAgAAAAAAAAACICAAAAAAAA=</HashCode>
+      <FileName>PlatformCore\ScreenManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.PlatformCore.StackMachineState" Collapsed="true">
+    <Position X="5.75" Y="45.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAACAAGAAAAAAABAAAAAAAAAIAAAAAAAACAAA=</HashCode>
+      <FileName>PlatformCore\StackMachineFrame.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.PlatformCore.BackgroundPage" Collapsed="true">
+    <Position X="0.5" Y="45" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>PlatformCore\ViewManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.PlatformCore.SpriteAnchorType" Collapsed="true">
+    <Position X="7.75" Y="45.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAIAAA=</HashCode>
+      <FileName>PlatformCore\YuriSprite.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.Utils.OutputStyle" Collapsed="true">
+    <Position X="9.25" Y="45" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAABAAAAQIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\CommonUtils.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

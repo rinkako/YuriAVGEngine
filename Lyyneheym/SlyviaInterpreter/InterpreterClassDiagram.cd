@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Yuri.YuriInterpreter.CandidateFunction">
+    <Position X="6" Y="7" Width="6.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAEAAABAIA=</HashCode>
+      <FileName>CandidateFunction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriInterpreter.Interpreter">
+    <Position X="11.75" Y="9.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAAJAAAAAgAAAAAAAQQAgQgCAAAAAgAAIAAEAAAAA=</HashCode>
+      <FileName>Interpreter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriInterpreter.InterpreterException">
+    <Position X="14" Y="0.5" Width="2.75" />
+    <NestedTypes>
+      <Enum Name="Yuri.YuriInterpreter.InterpreterException.InterpreterPhase" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>InterpreterException.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAEAAAAAAEAAAAAAAAAAGAAIAIAAAA=</HashCode>
+      <FileName>InterpreterException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriInterpreter.Lexer">
+    <Position X="0.5" Y="9.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>MQUAAAEIAyIAAAAEUABBAAACBAAACAAEAAAiAYBEEEA=</HashCode>
+      <FileName>Lexer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriInterpreter.LL1ParseMap">
+    <Position X="9.25" Y="3.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>ARgDAAAACAAAAAAAACAAQAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>LL1ParseMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriInterpreter.Parser">
+    <Position X="3.5" Y="9.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>QBooEBQAAAAABAAAgAAEAABEAAAAAQAAEAECEQAAAAI=</HashCode>
+      <FileName>Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriInterpreter.Pile">
+    <Position X="6.75" Y="9.75" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>ACIIAQAAEAAARAACkAAIAAAAAgAAAAQAQBAIAgAJJgA=</HashCode>
+      <FileName>Pile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriInterpreter.SyntaxTreeNode">
+    <Position X="13" Y="3.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>ICEAAYAAAAAAABREAEACAQAgAAgAgAAAAAEAAAACAgA=</HashCode>
+      <FileName>SyntaxTreeNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriInterpreter.Token">
+    <Position X="7.25" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAIAEAQAAAAEAEQACAAAAAgAAAAAAAEIAAAAAAA=</HashCode>
+      <FileName>Token.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriInterpreter.ILPackage.PackageScene">
+    <Position X="6" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>ILPackage\Scene.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriInterpreter.ILPackage.SceneAction">
+    <Position X="0.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AIEAAAQCAAAgAAAEAACAAAiRAAAAAAAAAAEAAAIAiBA=</HashCode>
+      <FileName>ILPackage\SceneAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriInterpreter.ILPackage.SceneFunction">
+    <Position X="3.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEBAACAAAEAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ILPackage\SceneFunction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Yuri.YuriInterpreter.CFunctionType" Collapsed="true">
+    <Position X="0.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGMgAAhiATAQALAYBU1AcgCAACAAWJDEAICBRIEIiBE=</HashCode>
+      <FileName>CandidateFunction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.YuriInterpreter.InterpreterType" Collapsed="true">
+    <Position X="0.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgQAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interpreter.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.YuriInterpreter.CharacterType" Collapsed="true">
+    <Position X="2.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>pCAAACAIASAAAECQAcABAEABSKCAgAAkASACCAAEBOg=</HashCode>
+      <FileName>Lexer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.YuriInterpreter.PolishItemType" Collapsed="true">
+    <Position X="2.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAgAAAIQAACgACQAABAQAAgAQIBAAACAAgAAACAA=</HashCode>
+      <FileName>Pile.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.YuriInterpreter.SyntaxType" Collapsed="true">
+    <Position X="2.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oHsFgGdKpAN0CyGqIIWIJCimipAGOUQeG+CFYSiiIhE=</HashCode>
+      <FileName>SyntaxTreeNode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.YuriInterpreter.VarScopeType" Collapsed="true">
+    <Position X="2.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAEAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>SyntaxTreeNode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.YuriInterpreter.TokenType" Collapsed="true">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>uVAAuEwlC1BGdCKFgGBISaOBevrcGHDgiNICAwAIGIo=</HashCode>
+      <FileName>Token.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.YuriInterpreter.ILPackage.SActionType" Collapsed="true">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FggAACWAELAAIAAgQAYggCCAAAwAAAIyFiACHWALSrQ=</HashCode>
+      <FileName>ILPackage\SceneAction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

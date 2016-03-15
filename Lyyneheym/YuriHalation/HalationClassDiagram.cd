@@ -1,0 +1,681 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="YuriHalation.App" Collapsed="true">
+    <Position X="11.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.MainWindow" Collapsed="true">
+    <Position X="14" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.ACommand" Collapsed="true">
+    <Position X="17.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\ACommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.BgCommand" Collapsed="true">
+    <Position X="28.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\BgCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.BGMCommand" Collapsed="true">
+    <Position X="40" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\BGMCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.BGSCommand" Collapsed="true">
+    <Position X="46.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\BGSCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.BranchCommand" Collapsed="true">
+    <Position X="51.25" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\BranchCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.BreakCommand" Collapsed="true">
+    <Position X="58" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\BreakCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.ButtonCommand" Collapsed="true">
+    <Position X="64.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\ButtonCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.CstandCommand" Collapsed="true">
+    <Position X="71.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\CstandCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.DeletebuttonCommand" Collapsed="true">
+    <Position X="4" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\DeletebuttonCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.DeletepicCommand" Collapsed="true">
+    <Position X="10.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\DeletepicCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.DeletestandCommand" Collapsed="true">
+    <Position X="19.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\DeletestandCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.DialogCommand" Collapsed="true">
+    <Position X="31" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\DialogCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.DrawCommand" Collapsed="true">
+    <Position X="42.25" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\DrawCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.ForCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAABABABAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Command\ForCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.FuncallCommand" Collapsed="true">
+    <Position X="53.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\FuncallCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.HalationInvoker" Collapsed="true">
+    <Position X="16.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAABQAAAAAABAABAAEQAAAgAAgAAABAAAA=</HashCode>
+      <FileName>Command\HalationInvoker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.HalationViewCommand" Collapsed="true">
+    <Position X="0.5" Y="9" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABBAABAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\HalationViewCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.IfCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIIAAABAhARAAAAAAAAAgAAAAgAAAAAAAAACA=</HashCode>
+      <FileName>Command\IfCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.IHalationSingleCommand" Collapsed="true">
+    <Position X="39.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAIQAAABABABAAAAAAAAAAAAAAgAAACAAAAAAA=</HashCode>
+      <FileName>Command\IHalationSingleCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.JumpCommand" Collapsed="true">
+    <Position X="22" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\JumpCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.LabelCommand" Collapsed="true">
+    <Position X="33.25" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\LabelCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.MenuCutCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="9" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAABABABAAAAAAQAAAAAAAgAAAIAAAAAAA=</HashCode>
+      <FileName>Command\MenuCutCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.MenuDeleteCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="10" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAABABABAAAAAAQAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Command\MenuDeleteCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.MenuPasteCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="10" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIABABAAAAAAAAQAAAAAAAgCAAIAAAAAAA=</HashCode>
+      <FileName>Command\MenuPasteCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.MoveCommand" Collapsed="true">
+    <Position X="60.25" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\MoveCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.MsgLayerCommand" Collapsed="true">
+    <Position X="67" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\MsgLayerCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.MsgLayerOptCommand" Collapsed="true">
+    <Position X="73.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\MsgLayerOptCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.NotationCommand" Collapsed="true">
+    <Position X="6.25" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\NotationCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.PictureCommand" Collapsed="true">
+    <Position X="13" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\PictureCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.ReturnCommand" Collapsed="true">
+    <Position X="24.25" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\ReturnCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.ScriptCommand" Collapsed="true">
+    <Position X="35.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\ScriptCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.SECommand" Collapsed="true">
+    <Position X="44.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\SECommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.StopBGMCommand" Collapsed="true">
+    <Position X="49" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\StopBGMCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.StopBGSCommand" Collapsed="true">
+    <Position X="55.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\StopBGSCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.SwitchCommand" Collapsed="true">
+    <Position X="62.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\SwitchCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.TransCommand" Collapsed="true">
+    <Position X="69.25" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\TransCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.VarCommand" Collapsed="true">
+    <Position X="76" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\VarCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.VocalCommand" Collapsed="true">
+    <Position X="8.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\VocalCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.WaitaniCommand" Collapsed="true">
+    <Position X="15.25" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\WaitaniCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.WaitCommand" Collapsed="true">
+    <Position X="26.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\WaitCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.Command.WaituserCommand" Collapsed="true">
+    <Position X="37.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command\WaituserCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.Halation" Collapsed="true">
+    <Position X="14" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KgB2ASnxggMEAYSAtJILCigkFkxICICJMMCgDAQgAgI=</HashCode>
+      <FileName>Halation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.HalationCore.CodeGenerator" Collapsed="true">
+    <Position X="7.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAJAEAAAgAAAACAAAAAAAhCBAAAAAAAIAAEAAAAA=</HashCode>
+      <FileName>HalationCore\CodeGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.HalationCore.FileManager" Collapsed="true">
+    <Position X="5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIkAAgBAAAAAQAAIAAAAAAAAgAAEAAQEABhAAAAAQAA=</HashCode>
+      <FileName>HalationCore\FileManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.HalationCore.Musician" Collapsed="true">
+    <Position X="14" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QSAAAIAAIEAQxAAAKVEYAAAABCAIAACYIAAEIAACAYg=</HashCode>
+      <FileName>HalationCore\Musician.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.HalationCore.BassPlayer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAoACAAACIwAwBCEAQAAgAgBAZAAAPAoAgAAQAAEBA=</HashCode>
+      <FileName>HalationCore\Musician.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Yuri.YuriHalation.HalationCore.PackageUtils" Collapsed="true">
+    <Position X="2.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQIAAAAACQCAAIAgEBAIAAIAAAAAAAAAAAAABI=</HashCode>
+      <FileName>HalationCore\PackageUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.Properties.Resources" Collapsed="true">
+    <Position X="11.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.Properties.Settings" Collapsed="true">
+    <Position X="14" Y="11" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.ScriptPackage.ActionPackage" Collapsed="true">
+    <Position X="2.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAQACAAAAAAAABAAAAAAAAAACAAAACAAAAAQAABA=</HashCode>
+      <FileName>ScriptPackage\ActionPackage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.ScriptPackage.ArgumentPackage" Collapsed="true">
+    <Position X="14" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>ScriptPackage\ArgumentPackage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.ScriptPackage.ConfigPackage" Collapsed="true">
+    <Position X="9.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAsAAIZAAAAAIAVAAIGABAAooAIgCQRASFBIIIt58mg=</HashCode>
+      <FileName>ScriptPackage\ConfigPackage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.ScriptPackage.FunctionPackage" Collapsed="true">
+    <Position X="3.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAABAAAAgAQAAAgAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>ScriptPackage\FunctionPackage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.ScriptPackage.ProjectPackage" Collapsed="true">
+    <Position X="9.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAgAAAAAAAgBBAAQAAAACIAABAAAAAA=</HashCode>
+      <FileName>ScriptPackage\ProjectPackage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.ScriptPackage.RunnablePackage" Collapsed="true">
+    <Position X="1.75" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAABAAAAAAAAAAAAASAAAAAIgAAgAABAgAAA=</HashCode>
+      <FileName>ScriptPackage\RunnablePackage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.ScriptPackage.ScenePackage" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAgCAAAEAAAAAAAAAAAAAAAAAAgAAAAAAQA=</HashCode>
+      <FileName>ScriptPackage\ScenePackage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yuri.YuriHalation.ScriptPackage.VariablePackage" Collapsed="true">
+    <Position X="7.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAIAAAAAA=</HashCode>
+      <FileName>ScriptPackage\VariablePackage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.AboutBox1" Collapsed="true">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kIAAAAgAACAgCAUAAACAAAADAAAAEIAAAAAAAAAAAAA=</HashCode>
+      <FileName>YuriForms\AboutBox1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.AddFuncForm" Collapsed="true">
+    <Position X="5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACgAAACIAAoAAAAEGAAAAAAAAA=</HashCode>
+      <FileName>YuriForms\AddFuncForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.AddSceneForm" Collapsed="true">
+    <Position X="7.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACIAAIAAAAEEAAAAAAAAA=</HashCode>
+      <FileName>YuriForms\AddSceneForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.AFrom" Collapsed="true">
+    <Position X="9.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAACAAABAQAACAAAACAAAIAAABEGAAAAAAAAA=</HashCode>
+      <FileName>YuriForms\AFrom.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.BgForm" Collapsed="true">
+    <Position X="0.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACAAAYAAAAEHAAAAAAAAI=</HashCode>
+      <FileName>YuriForms\BgForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.BranchForm" Collapsed="true">
+    <Position X="2.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAACAAAAACAAAACAAAIACAAAEACAAAAAAA=</HashCode>
+      <FileName>YuriForms\BranchForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.ButtonForm" Collapsed="true">
+    <Position X="5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAACAAABAQAACAAABCIEA4AAACEHAIAAQAAAA=</HashCode>
+      <FileName>YuriForms\ButtonForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.CStandForm" Collapsed="true">
+    <Position X="11.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAQAACAAAACAAAYAAACEHAAAAQAgAI=</HashCode>
+      <FileName>YuriForms\CStandForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.DebugForm" Collapsed="true">
+    <Position X="14" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAACBCAAAIAkCAAAACAAAIAgAAAEASABAAAAA=</HashCode>
+      <FileName>YuriForms\DebugForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.DeleteViewForm" Collapsed="true">
+    <Position X="16.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAQAACAAAACAAAIAAACAGAAAAAAgAI=</HashCode>
+      <FileName>YuriForms\DeleteViewForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.DialogForm" Collapsed="true">
+    <Position X="0.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAIAAAAEEAAAAAAAAA=</HashCode>
+      <FileName>YuriForms\DialogForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.DrawStringForm" Collapsed="true">
+    <Position X="2.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACAAAIAAAAEEAAAAAAAAA=</HashCode>
+      <FileName>YuriForms\DrawStringForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.FunctionCallForm" Collapsed="true">
+    <Position X="9.5" Y="8" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAgAAAQAACgAAACAAAoAAAAAGAAAAAAAAA=</HashCode>
+      <FileName>YuriForms\FunctionCallForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.GlobalConfigForm" Collapsed="true">
+    <Position X="11.75" Y="8" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>/yCAQQAQASIASBCQEACAIAhCIMA4EAwCEGACAAUBDDA=</HashCode>
+      <FileName>YuriForms\GlobalConfigForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.IfForm" Collapsed="true">
+    <Position X="5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiAAABAAASAIABGQAACAAABC8AgIAACAEGAAAAEAgAI=</HashCode>
+      <FileName>YuriForms\IfForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.JumpForm" Collapsed="true">
+    <Position X="7.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAACAAABEQAACAAAACAAAIAAAAEEAAAAEAAAA=</HashCode>
+      <FileName>YuriForms\JumpForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.LabelForm" Collapsed="true">
+    <Position X="9.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACAAAIAAAAEEAAAAAAAAA=</HashCode>
+      <FileName>YuriForms\LabelForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.MainForm" Collapsed="true">
+    <Position X="11.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CXwWR/2DDbDBwwzPVICCh8cLoM174vDww3Ifcfn0aMA=</HashCode>
+      <FileName>YuriForms\MainForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.MoveForm" Collapsed="true">
+    <Position X="5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACIgABAQAACAAAACAAAIAAACEGAgAAQAAAA=</HashCode>
+      <FileName>YuriForms\MoveForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.MsgLayerForm" Collapsed="true">
+    <Position X="7.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACAAAIAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>YuriForms\MsgLayerForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.MsgLayerOptForm" Collapsed="true">
+    <Position X="9.5" Y="10" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACCAAABAQAACAAAACAAAIAAAAEGAAAAAAAAI=</HashCode>
+      <FileName>YuriForms\MsgLayerOptForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.MusicForm" Collapsed="true">
+    <Position X="11.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CACAAAAEACAAQBQAABCAAAQCAAAYAAECAmQAABgBBAA=</HashCode>
+      <FileName>YuriForms\MusicForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.NewProjectForm" Collapsed="true">
+    <Position X="16.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAACAAABAAAACAAAACAAAYAAAAEGABAAAAAAA=</HashCode>
+      <FileName>YuriForms\NewProjectForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.NotationForm" Collapsed="true">
+    <Position X="0.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAIAAAAEEAAAAAAAAA=</HashCode>
+      <FileName>YuriForms\NotationForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.PicResourceForm" Collapsed="true">
+    <Position X="5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAEAACAgAAAQABSACAACAAAZAAAAAGEAEQBAAAA=</HashCode>
+      <FileName>YuriForms\PicResourceForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.PicturesForm" Collapsed="true">
+    <Position X="7.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAACAAABAAAACAAAgCAAAYAAwCEHAAAAQAAAA=</HashCode>
+      <FileName>YuriForms\PicturesForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.SwitchesForm" Collapsed="true">
+    <Position X="16.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAACBAQAACAAAACIAAIAAAAAEAAAAEACAA=</HashCode>
+      <FileName>YuriForms\SwitchesForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.TransForm" Collapsed="true">
+    <Position X="0.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAABAQAACAAAACAAAIAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>YuriForms\TransForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.UserPackerForm" Collapsed="true">
+    <Position X="2.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAMAAEQACAgAABQQASAAAAGAABIAAAAAEAABAAAAAA=</HashCode>
+      <FileName>YuriForms\UserPackerForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.VarForm" Collapsed="true">
+    <Position X="5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiAAABAAASAIABCAAACAAABC8AAIAAACEGAAAAwAgEI=</HashCode>
+      <FileName>YuriForms\VarForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.VocalForm" Collapsed="true">
+    <Position X="9.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAQAACAAAACAAAIAAAAEEAAAAAAAAA=</HashCode>
+      <FileName>YuriForms\VocalForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YuriHalation.YuriForms.WaitForm" Collapsed="true">
+    <Position X="11.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACAAAIAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>YuriForms\WaitForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="YuriHalation.YuriForms.PackageData" Collapsed="true">
+    <Position X="0.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAgAAAAAQAAAAAAAAAACAAAAAAAAAAEA=</HashCode>
+      <FileName>YuriForms\UserPackerForm.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Yuri.YuriHalation.Command.IHalationCommand" Collapsed="true">
+    <Position X="0.5" Y="14.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Command\IHalationCommand.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Yuri.YuriHalation.ScriptPackage.ActionPackageType" Collapsed="true">
+    <Position X="2.25" Y="15.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>FigAACWAELAAIAAgQAYggCCIAAwAAAIyFiACHWALSrQ=</HashCode>
+      <FileName>ScriptPackage\ActionPackage.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.YuriHalation.ScriptPackage.ActionName" Collapsed="true">
+    <Position X="0.5" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BkIpgSUMkLgAAAAAACQgAsKCEQohAQIgAFSAUAADIAA=</HashCode>
+      <FileName>ScriptPackage\ActionPackage.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Yuri.YuriHalation.ScriptPackage.ArgType" Collapsed="true">
+    <Position X="4.25" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAFAAAAEAAAACAQFCcQiYgAAAQgAAAQIICEHgBESE=</HashCode>
+      <FileName>ScriptPackage\ArgumentPackage.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>
