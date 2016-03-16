@@ -11,6 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriInterpreter", "SlyviaIn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriHalation", "YuriHalation\YuriHalation.csproj", "{CB704EFC-BD27-4422-A61E-E7EBB9370577}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7CC39F32-EE23-4D85-9D82-0827DB1A6D14}"
+	ProjectSection(SolutionItems) = preProject
+		Modeling\Model UML.vsdx = Modeling\Model UML.vsdx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
