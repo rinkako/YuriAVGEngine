@@ -61,6 +61,11 @@ namespace Yuri.PlatformCore
         public Interrupt BindingInterrupt = null;
 
         /// <summary>
+        /// 获取或设置绑定的函数实例
+        /// </summary>
+        public SceneFunction BindingFunction = null;
+
+        /// <summary>
         /// 获取或设置该栈帧的备注信息
         /// </summary>
         public string Tag = null;

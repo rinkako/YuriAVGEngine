@@ -259,16 +259,18 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 函数调用
         /// </summary>
-        /// <param name="function">函数实例</param>
+        /// <param name="function">函数模板实例</param>
         /// <param name="args">参数列表</param>
         public void CallFunction(SceneFunction function, List<object> args)
         {
-            this.CallStack.Submit(function, args);
+            // 为模板创建一个分支实例
+            var callForker = function.Fork(true);
+            this.CallStack.Submit(callForker, args);
             // 处理参数传递
-            var funcSymbols = function.Symbols;
+            var funcSymbols = callForker.Symbols;
             for (int i = 0; i < args.Count; i++)
             {
-                funcSymbols[function.Param[i].Substring(1)] = args[i];
+                funcSymbols[callForker.Param[i].Substring(1)] = args[i];
             }
         }
 
@@ -319,8 +321,8 @@ namespace Yuri.PlatformCore
                 // 函数调用
                 else
                 {
-                    var functionFrame = ResourceManager.GetInstance().GetScene(this.CallStack.ESP.BindingSceneName).FuncContainer.Find((x) => x.Callname == this.CallStack.ESP.ScriptName);
-                    return functionFrame.Symbols[varName.Replace("$", "")];
+                    var funFrame = this.CallStack.ESP.BindingFunction;
+                    return funFrame.Symbols[varName.Replace("$", "")];
                 }
             }
             // 处理全局变量

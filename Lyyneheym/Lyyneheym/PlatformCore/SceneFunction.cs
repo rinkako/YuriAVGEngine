@@ -9,6 +9,7 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 函数调用类：处理场景里的函数
     /// </summary>
+    [Serializable]
     internal class SceneFunction
     {
         /// <summary>
@@ -19,6 +20,25 @@ namespace Yuri.PlatformCore
             this.ParentSceneName = parent;
             this.Callname = callname;
             this.Sa = sa;
+        }
+
+        /// <summary>
+        /// 复制当前函数实例
+        /// </summary>
+        /// <param name="pureFork">是否不要复制符号表</param>
+        /// <returns>新的符号实例</returns>
+        public SceneFunction Fork(bool pureFork)
+        {
+            SceneFunction nsf = new SceneFunction(this.Callname, this.ParentSceneName, this.Sa);
+            nsf.Param = this.Param;
+            if (!pureFork)
+            {
+                foreach (var svar in this.Symbols)
+                {
+                    nsf.Symbols.Add(svar.Key, svar.Value);
+                }
+            }
+            return nsf;
         }
 
         /// <summary>
@@ -62,7 +82,7 @@ namespace Yuri.PlatformCore
         public string Callname = null;
 
         /// <summary>
-        /// 参数列表
+        /// 形参列表
         /// </summary>
         public List<string> Param = null;
 

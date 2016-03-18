@@ -57,17 +57,28 @@ namespace Yuri.PlatformCore
         /// <param name="offset">PC偏移量</param>
         public void Submit(SceneFunction sf, List<object> args, int offset = 0)
         {
+            // 处理形参顺序
+            string argc = String.Empty;
+            foreach (var arg in sf.Param)
+            {
+                argc += "," + arg;
+            }
+            if (argc.Length > 0)
+            {
+                argc = argc.Substring(1);
+            }
             StackMachineFrame smf = new StackMachineFrame()
             {
                 State = StackMachineState.FunctionCalling,
                 ScriptName = sf.Callname,
                 PC = offset,
                 IP = sf.Sa,
+                BindingFunction = sf,
                 Argv = args,
                 BindingFunctionName = String.Format("{0}?{1}", sf.GlobalName, this.coreStack.Count.ToString()),
                 BindingSceneName = sf.ParentSceneName,
                 Delay = TimeSpan.FromMilliseconds(0),
-                Tag = ""
+                Tag = argc
             };
             this.coreStack.Push(smf);
             this.EBP = this.coreStack.Peek();
