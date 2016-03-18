@@ -13,52 +13,52 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 命中行
         /// </summary>
-        public int aLine = -1;
+        public int Line = -1;
 
         /// <summary>
         /// 命中列
         /// </summary>
-        public int aColumn = -1;
+        public int Column = -1;
 
         /// <summary>
         /// 位置戳
         /// </summary>
-        public int indexOfCode = -1;
+        public int IndexOfCode = -1;
 
         /// <summary>
         /// 配对长
         /// </summary>
-        public int length = 0;
+        public int Length = 0;
 
         /// <summary>
         /// 附加值
         /// </summary>
-        public object aTag = null;
+        public object Tag = null;
 
         /// <summary>
         /// 原字串
         /// </summary>
-        public string detail = "";
+        public string OriginalCodeStr = "";
 
         /// <summary>
         /// 错误位
         /// </summary>
-        public bool errorBit = false;
+        public bool ErrorBit = false;
 
         /// <summary>
         /// 变量位
         /// </summary>
-        public bool isVar = false;
+        public bool IsVar = false;
 
         /// <summary>
         /// 作用域
         /// </summary>
-        public bool isGlobal = false;
+        public bool IsGlobal = false;
 
         /// <summary>
         /// 词类型
         /// </summary>
-        public TokenType aType = TokenType.Token_NOP;
+        public TokenType Type = TokenType.Token_NOP;
 
         /// <summary>
         /// 重载字符串化方法
@@ -66,8 +66,8 @@ namespace Yuri.YuriInterpreter
         /// <returns>Token的简要信息</returns>
         public override string ToString()
         {
-            return "Token: " + aType.ToString() + " (" + this.detail + ") -> " + 
-                (this.aTag == null ? "null" : this.aTag.ToString());
+            return "Token: " + Type.ToString() + " (" + this.OriginalCodeStr + ") -> " + 
+                (this.Tag == null ? "null" : this.Tag.ToString());
         }
     }
 

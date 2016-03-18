@@ -75,7 +75,7 @@ namespace Yuri
         {
             Interpreter ip = new Interpreter("TestProj", @"C:\Users\Kako\Desktop\testDir");
             ip.Dash(InterpreterType.RELEASE_WITH_IL, 8);
-            ip.GetILFile(@"Scenario\main.sil");
+            ip.GenerateIL(@"Scenario\main.sil");
 
             ILConvertor ilc = ILConvertor.GetInstance();
             List<Scene> rS = ilc.Dash(@"Scenario");

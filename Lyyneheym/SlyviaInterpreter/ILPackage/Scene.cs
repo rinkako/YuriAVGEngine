@@ -20,9 +20,9 @@ namespace Yuri.YuriInterpreter.ILPackage
         /// <param name="funcVec">函数向量</param>
         public PackageScene(string scenario, SceneAction mainSa, List<SceneFunction> funcVec)
         {
-            this.scenario = scenario;
-            this.mainSa = mainSa;
-            this.funcContainer = funcVec;
+            this.Scenario = scenario;
+            this.Ctor = mainSa;
+            this.FuncContainer = funcVec;
         }
 
         /// <summary>
@@ -31,22 +31,22 @@ namespace Yuri.YuriInterpreter.ILPackage
         /// <returns>IL文件头字符串</returns>
         public string GetILSign()
         {
-            return String.Format(">>>YuriIL?{0}", this.scenario);
+            return String.Format(">>>YuriIL?{0}", this.Scenario);
         }
 
         /// <summary>
         /// 场景名称
         /// </summary>
-        public string scenario;
+        public string Scenario { get; set; }
 
         /// <summary>
-        /// 场景的主动作序列
+        /// 场景的构造序列
         /// </summary>
-        public SceneAction mainSa;
+        public SceneAction Ctor { get; set; }
         
         /// <summary>
         /// 场景的函数向量
         /// </summary>
-        public List<SceneFunction> funcContainer;
+        public List<SceneFunction> FuncContainer { get; set; }
     }
 }

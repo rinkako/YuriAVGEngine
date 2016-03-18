@@ -28,9 +28,9 @@ namespace Yuri.YuriInterpreter
             StringBuilder sb = new StringBuilder();
             foreach (Token t in this.resultVector)
             {
-                sb.AppendLine("Token: " + t.aType.ToString() + " " + (t.errorBit ? "[ERROR]" : ""));
-                sb.AppendLine("  Location: " + t.aLine + ", " + t.aColumn);
-                sb.AppendLine("  Detail: " + t.detail);
+                sb.AppendLine("Token: " + t.Type.ToString() + " " + (t.ErrorBit ? "[ERROR]" : ""));
+                sb.AppendLine("  Location: " + t.Line + ", " + t.Column);
+                sb.AppendLine("  Detail: " + t.OriginalCodeStr);
                 sb.AppendLine("");
             }
             return sb.ToString();
@@ -119,9 +119,9 @@ namespace Yuri.YuriInterpreter
         {
             // 定义结果实例并初始化
             Token res = new Token();
-            res.aLine = this.currentLine;
-            res.aColumn = this.currentColumn;
-            res.indexOfCode = this.nextCharPointer;
+            res.Line = this.currentLine;
+            res.Column = this.currentColumn;
+            res.IndexOfCode = this.nextCharPointer;
             int alen = this.sourceCode.Length;
             // 获取下一个字符来判断自动机路径
             bool successFlag = false;
@@ -196,9 +196,9 @@ namespace Yuri.YuriInterpreter
                         successFlag = this.GetUnknown(res);
                         throw new InterpreterException()
                         {
-                            Message = "有未识别的字符输入：" + res.detail,
-                            HitLine = res.aLine,
-                            HitColumn = res.aColumn,
+                            Message = "有未识别的字符输入：" + res.OriginalCodeStr,
+                            HitLine = res.Line,
+                            HitColumn = res.Column,
                             HitPhase = InterpreterException.InterpreterPhase.Lexer,
                             SceneFileName = this.dealingFile
                         };
@@ -207,7 +207,7 @@ namespace Yuri.YuriInterpreter
             // 如果成功获得了token，就返回给Lexer
             if (successFlag)
             {
-                res.length = this.nextCharPointer - res.indexOfCode;
+                res.Length = this.nextCharPointer - res.IndexOfCode;
                 nextToken = res;
                 return blockFlag == false;
             }
@@ -237,41 +237,41 @@ namespace Yuri.YuriInterpreter
             if (this.nextCharPointer + 1 <= glen)
             {
                 string str = this.sourceCode.Substring(this.nextCharPointer, 1);
-                res.detail = str;
+                res.OriginalCodeStr = str;
                 switch (str)
                 {
                     case "+":
-                        res.aType = TokenType.Token_Plus;
+                        res.Type = TokenType.Token_Plus;
                         break;
                     case "-":
-                        res.aType = TokenType.Token_Minus;
+                        res.Type = TokenType.Token_Minus;
                         break;
                     case "*":
-                        res.aType = TokenType.Token_Multiply;
+                        res.Type = TokenType.Token_Multiply;
                         break;
                     case "/":
-                        res.aType = TokenType.Token_Divide;
+                        res.Type = TokenType.Token_Divide;
                         break;
                     case "!":
-                        res.aType = TokenType.Token_Not;
+                        res.Type = TokenType.Token_Not;
                         break;
                     case "(":
-                        res.aType = TokenType.Token_LeftParentheses;
+                        res.Type = TokenType.Token_LeftParentheses;
                         break;
                     case ")":
-                        res.aType = TokenType.Token_RightParentheses;
+                        res.Type = TokenType.Token_RightParentheses;
                         break;
                     case "@":
-                        res.aType = TokenType.Token_At;
+                        res.Type = TokenType.Token_At;
                         break;
                     case "[":
-                        res.aType = TokenType.Token_LeftBracket;
+                        res.Type = TokenType.Token_LeftBracket;
                         break;
                     case "]":
-                        res.aType = TokenType.Token_RightBracket;
+                        res.Type = TokenType.Token_RightBracket;
                         break;
                     case "#":
-                        res.aType = TokenType.Token_Sharp;
+                        res.Type = TokenType.Token_Sharp;
                         break;
                     default:
                         break;
@@ -299,27 +299,27 @@ namespace Yuri.YuriInterpreter
                 switch (str)
                 {
                     case "==":
-                        res.aType = TokenType.Token_Equality_Equality;
+                        res.Type = TokenType.Token_Equality_Equality;
                         okFlag = true;
                         break;
                     case ">=":
-                        res.aType = TokenType.Token_GreaterThan_Equality;
+                        res.Type = TokenType.Token_GreaterThan_Equality;
                         okFlag = true;
                         break;
                     case "<=":
-                        res.aType = TokenType.Token_LessThan_Equality;
+                        res.Type = TokenType.Token_LessThan_Equality;
                         okFlag = true;
                         break;
                     case "<>":
-                        res.aType = TokenType.Token_LessThan_GreaterThan;
+                        res.Type = TokenType.Token_LessThan_GreaterThan;
                         okFlag = true;
                         break;
                     case "&&":
-                        res.aType = TokenType.Token_And_And;
+                        res.Type = TokenType.Token_And_And;
                         okFlag = true;
                         break;
                     case "||":
-                        res.aType = TokenType.Token_Or_Or;
+                        res.Type = TokenType.Token_Or_Or;
                         okFlag = true;
                         break;
                     default:
@@ -328,7 +328,7 @@ namespace Yuri.YuriInterpreter
                 // 如果命中了符号就返回
                 if (okFlag)
                 {
-                    res.detail = str;
+                    res.OriginalCodeStr = str;
                     this.Jump(2);
                     return true;
                 }
@@ -342,15 +342,15 @@ namespace Yuri.YuriInterpreter
                 switch (str)
                 {
                     case ">":
-                        res.aType = TokenType.Token_GreaterThan;
+                        res.Type = TokenType.Token_GreaterThan;
                         okFlag = true;
                         break;
                     case "<":
-                        res.aType = TokenType.Token_LessThan;
+                        res.Type = TokenType.Token_LessThan;
                         okFlag = true;
                         break;
                     case "=":
-                        res.aType = TokenType.Token_Equality;
+                        res.Type = TokenType.Token_Equality;
                         okFlag = true;
                         break;
                     // 遇到&符号就跳转到变量处理路径上
@@ -363,7 +363,7 @@ namespace Yuri.YuriInterpreter
                 // 如果命中了符号就返回
                 if (okFlag)
                 {
-                    res.detail = str;
+                    res.OriginalCodeStr = str;
                     this.Jump(1);
                     return true;
                 }
@@ -432,12 +432,12 @@ namespace Yuri.YuriInterpreter
                         // 参数
                         if (matchStr[0] == '*')
                         {
-                            res.aType = (TokenType)Enum.Parse(typeof(TokenType), String.Format("Token_p_{0}", pureMatch));
+                            res.Type = (TokenType)Enum.Parse(typeof(TokenType), String.Format("Token_p_{0}", pureMatch));
                         }
                         // 动作
                         else
                         {
-                            res.aType = (TokenType)Enum.Parse(typeof(TokenType), String.Format("Token_o_{0}", pureMatch));
+                            res.Type = (TokenType)Enum.Parse(typeof(TokenType), String.Format("Token_o_{0}", pureMatch));
                         }
                         okFlag = true;
                         break;
@@ -446,7 +446,7 @@ namespace Yuri.YuriInterpreter
                 // 如果命中了符号就返回
                 if (okFlag)
                 {
-                    res.detail = str;
+                    res.OriginalCodeStr = str;
                     this.Jump(maxLen);
                     return true;
                 }
@@ -462,7 +462,7 @@ namespace Yuri.YuriInterpreter
         private bool GetIdentifierCalculator(Token res)
         {
             // 跳过变量引用符号$或&
-            res.isGlobal = this.GetCharType(this.sourceCode[this.nextCharPointer]) == CharacterType.And;
+            res.IsGlobal = this.GetCharType(this.sourceCode[this.nextCharPointer]) == CharacterType.And;
             this.Jump(1);
             // 构造标识符
             StringBuilder sb = new StringBuilder();
@@ -481,9 +481,9 @@ namespace Yuri.YuriInterpreter
                 }
             }
             // 修改token的标签
-            res.isVar = true;
-            res.aType = TokenType.identifier;
-            res.detail = sb.ToString();
+            res.IsVar = true;
+            res.Type = TokenType.identifier;
+            res.OriginalCodeStr = sb.ToString();
             return true;
         }
 
@@ -533,8 +533,8 @@ namespace Yuri.YuriInterpreter
                 }
             }
             // 如果成功封闭
-            res.aType = TokenType.scenecluster;
-            res.aTag = res.detail = sb.ToString();
+            res.Type = TokenType.scenecluster;
+            res.Tag = res.OriginalCodeStr = sb.ToString();
             return entityFlag;
         }
 
@@ -548,8 +548,8 @@ namespace Yuri.YuriInterpreter
             // 跳过游程
             this.Jump(1);
             // 修改token信息
-            res.aType = TokenType.sceneterminator;
-            res.detail = "]";
+            res.Type = TokenType.sceneterminator;
+            res.OriginalCodeStr = "]";
             return true;
         }
 
@@ -585,10 +585,10 @@ namespace Yuri.YuriInterpreter
             }
             // 如果成功封闭
             //res.aType = TokenType.cluster;
-            res.aType = TokenType.identifier;
-            res.aTag = (string)sb.ToString();
-            res.detail = sb.ToString();
-            res.errorBit = lattice == false;
+            res.Type = TokenType.identifier;
+            res.Tag = (string)sb.ToString();
+            res.OriginalCodeStr = sb.ToString();
+            res.ErrorBit = lattice == false;
             return true;
         }
 
@@ -620,9 +620,9 @@ namespace Yuri.YuriInterpreter
             // 成功得到数字token
             if (successFlag)
             {
-                res.aType = TokenType.number;
-                res.detail = sb.ToString();
-                res.aTag = Convert.ToInt32(sb.ToString());
+                res.Type = TokenType.number;
+                res.OriginalCodeStr = sb.ToString();
+                res.Tag = Convert.ToInt32(sb.ToString());
                 return true;
             }
             return false;
@@ -663,9 +663,9 @@ namespace Yuri.YuriInterpreter
         private bool GetUnknown(Token res)
         {
             // 生成错误的token
-            res.aType = TokenType.unknown;
-            res.detail = Convert.ToString(this.sourceCode[this.nextCharPointer]);
-            res.aTag = "错误：不能匹配为token的字符：" + res.detail;
+            res.Type = TokenType.unknown;
+            res.OriginalCodeStr = Convert.ToString(this.sourceCode[this.nextCharPointer]);
+            res.Tag = "错误：不能匹配为token的字符：" + res.OriginalCodeStr;
             // 跳游程
             this.Jump(1);
             return true;

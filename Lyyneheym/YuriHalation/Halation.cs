@@ -186,7 +186,7 @@ namespace Yuri
             // 编译
             Interpreter ip = new Interpreter(Halation.projectName, Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO);
             ip.Dash(InterpreterType.RELEASE_WITH_IL, 1);
-            ip.GetILFile(Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO + @"\main.sil");
+            ip.GenerateIL(Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO + @"\main.sil");
         }
 
         /// <summary>

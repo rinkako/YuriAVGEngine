@@ -15,20 +15,21 @@ namespace Yuri.YuriInterpreter.ILPackage
         /// </summary>
         public SceneFunction(string callname, string parent, SceneAction sa = null)
         {
-            this.parentSceneName = parent;
-            this.callname = callname;
-            this.sa = sa;
+            this.ParentSceneName = parent;
+            this.Callname = callname;
+            this.Param = null;
+            this.Sa = sa;
         }
 
         /// <summary>
         /// 字符串化方法
         /// </summary>
-        /// <returns>该函数的C风格签名</returns>
+        /// <returns>该函数的签名</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             string paraStr = "";
-            foreach (string arg in this.param)
+            foreach (string arg in this.Param)
             {
                 sb.Append(arg + ", ");
             }
@@ -36,27 +37,27 @@ namespace Yuri.YuriInterpreter.ILPackage
             {
                 paraStr = sb.ToString().Substring(0, sb.Length - 2);
             }
-            return String.Format("SlyviaFunction: {0}({1})", this.callname, paraStr);
+            return String.Format("SlyviaFunction: {0}({1})", this.Callname, paraStr);
         }
 
         /// <summary>
         /// 绑定动作序列
         /// </summary>
-        public SceneAction sa = null;
+        public SceneAction Sa { get; set; }
 
         /// <summary>
         /// 函数名
         /// </summary>
-        public string callname = null;
+        public string Callname { get; set; }
 
         /// <summary>
         /// 参数列表
         /// </summary>
-        public List<string> param = null;
+        public List<string> Param { get; set; }
 
         /// <summary>
         /// 场景名称
         /// </summary>
-        public string parentSceneName = null;
+        public string ParentSceneName { get; set; }
     }
 }

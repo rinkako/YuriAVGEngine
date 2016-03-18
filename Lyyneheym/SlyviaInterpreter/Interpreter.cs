@@ -31,7 +31,7 @@ namespace Yuri.YuriInterpreter
         public void Dash(InterpreterType itype, int threadNum = 1)
         {
             this.isMultiThread = (this.threadNum = (threadNum > 8 ? 8 : threadNum)) > 1;
-            this.iType = itype;
+            this.compileType = itype;
             this.threadPool = new List<Thread>();
             this.LoadAndSplit();
         }
@@ -40,7 +40,7 @@ namespace Yuri.YuriInterpreter
         /// 将IL储存为文件
         /// </summary>
         /// <param name="storeFile">含文件名的储存文件路径</param>
-        public void GetILFile(string storeFile)
+        public void GenerateIL(string storeFile)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace Yuri.YuriInterpreter
         private void LoadAndSplit()
         {
             // 加载合法脚本文件到队列
-            if (this.iType == InterpreterType.DEBUG)
+            if (this.compileType == InterpreterType.DEBUG)
             {
                 this.SceneVector = new List<KeyValuePair<string, PackageScene>>();
             }
@@ -154,13 +154,13 @@ namespace Yuri.YuriInterpreter
                     {
                         Console.WriteLine(String.Format("Compiling \"{0}\" At thread {1}", fi.Name, tid));
                     }
-                    if (this.iType == InterpreterType.DEBUG)
+                    if (this.compileType == InterpreterType.DEBUG)
                     {
                         lock (this.SceneVector)
                         {
                             Pile pile = new Pile();
                             this.SceneVector.Add(new KeyValuePair<string, PackageScene>(
-                                fi.Name.Split('.')[0], (PackageScene)pile.StartDash(resVec, fi.Name.Split('.')[0], this.iType)));
+                                fi.Name.Split('.')[0], (PackageScene)pile.StartDash(resVec, fi.Name.Split('.')[0], this.compileType)));
                         }
                     }
                     else
@@ -169,7 +169,7 @@ namespace Yuri.YuriInterpreter
                         {
                             Pile pile = new Pile();
                             this.ILVector.Add(new KeyValuePair<string, string>(
-                                fi.Name.Split('.')[0], (string)pile.StartDash(resVec, fi.Name.Split('.')[0], this.iType)));
+                                fi.Name.Split('.')[0], (string)pile.StartDash(resVec, fi.Name.Split('.')[0], this.compileType)));
                         }
                     }
                 }
@@ -229,7 +229,7 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 编译类型
         /// </summary>
-        private InterpreterType iType = InterpreterType.DEBUG;
+        private InterpreterType compileType = InterpreterType.DEBUG;
 
         /// <summary>
         /// 是否多线程编译

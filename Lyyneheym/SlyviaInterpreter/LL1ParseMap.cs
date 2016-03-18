@@ -19,9 +19,9 @@ namespace Yuri.YuriInterpreter
         /// <param name="col">最大列数</param>
         public LL1ParseMap(int row, int col)
         {
-            this.iRowCount = row;
-            this.iColCount = col;
-            this.iParserMap = new CandidateFunction[row, col];
+            this.rowCount = row;
+            this.colCount = col;
+            this.parserMap = new CandidateFunction[row, col];
         }
 
         /// <summary>
@@ -31,9 +31,9 @@ namespace Yuri.YuriInterpreter
         /// <param name="st">syntax类型</param>
         public void SetRow(int rowid, SyntaxType st)
         {
-            if (0 <= rowid && rowid < this.iRowCount)
+            if (0 <= rowid && rowid < this.rowCount)
             {
-                iLeftNodes.Add(st, rowid);
+                leftNodesDict.Add(st, rowid);
             }
         }
 
@@ -44,9 +44,9 @@ namespace Yuri.YuriInterpreter
         /// <param name="st">token类型</param>
         public void SetCol(int colid, TokenType st)
         {
-            if (0 <= colid && colid < this.iColCount)
+            if (0 <= colid && colid < this.colCount)
             {
-                iNextLeaves.Add(st, colid);
+                nextLeavesDict.Add(st, colid);
             }
         }
 
@@ -58,10 +58,10 @@ namespace Yuri.YuriInterpreter
         /// <param name="proc">产生式</param>
         public void SetCellular(int row, int col, CandidateFunction proc)
         {
-            if (0 <= row && row < this.iRowCount &&
-              0 <= col && col < this.iColCount)
+            if (0 <= row && row < this.rowCount &&
+              0 <= col && col < this.colCount)
             {
-                this.iParserMap[row, col] = proc;
+                this.parserMap[row, col] = proc;
             }
         }
 
@@ -73,7 +73,7 @@ namespace Yuri.YuriInterpreter
         /// <param name="proc">产生式</param>
         public void SetCellular(SyntaxType left, TokenType leave, CandidateFunction proc)
         {
-            this.SetCellular(this.iLeftNodes[left], this.iNextLeaves[leave], proc);
+            this.SetCellular(this.leftNodesDict[left], this.nextLeavesDict[leave], proc);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Yuri.YuriInterpreter
         /// <returns>此节点的处理函数</returns>
         public CandidateFunction GetCFunciton(int row, int col)
         {
-            return this.iParserMap[row, col];
+            return this.parserMap[row, col];
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Yuri.YuriInterpreter
                 {
                     return new CandidateFunction(nilserver, CFunctionType.umi_epsilon);
                 }
-                CandidateFunction candidator = this.GetCFunciton(this.iLeftNodes[left], this.iNextLeaves[leave]);
+                CandidateFunction candidator = this.GetCFunciton(this.leftNodesDict[left], this.nextLeavesDict[leave]);
                 return candidator == null ? new CandidateFunction(null, CFunctionType.umi_errorEnd) : candidator;
             }
             catch (Exception ex)
@@ -116,26 +116,26 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 行游标
         /// </summary>
-        private int iRowCount = 0;
+        private int rowCount = 0;
 
         /// <summary>
         /// 列游标
         /// </summary>
-        private int iColCount = 0;
+        private int colCount = 0;
 
         /// <summary>
         /// 产生式左字典
         /// </summary>
-        private Dictionary<SyntaxType, int> iLeftNodes = new Dictionary<SyntaxType,int>();
+        private Dictionary<SyntaxType, int> leftNodesDict = new Dictionary<SyntaxType,int>();
         
         /// <summary>
         /// 产生式右字典
         /// </summary>
-        private Dictionary<TokenType, int> iNextLeaves = new Dictionary<TokenType,int>();
+        private Dictionary<TokenType, int> nextLeavesDict = new Dictionary<TokenType,int>();
         
         /// <summary>
         /// LL1预测表
         /// </summary>
-        private CandidateFunction[,] iParserMap = null;
+        private CandidateFunction[,] parserMap = null;
     }
 }

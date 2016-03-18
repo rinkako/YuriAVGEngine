@@ -14,57 +14,57 @@ namespace Yuri.YuriInterpreter.ILPackage
         /// <summary>
         /// 节点名称
         /// </summary>
-        public string saNodeName = null;
+        public string NodeName = null;
 
         /// <summary>
         /// 节点动作类型
         /// </summary>
-        public SActionType aType = SActionType.NOP;
+        public SActionType Type = SActionType.NOP;
 
         /// <summary>
         /// 参数字典
         /// </summary>
-        public Dictionary<string, string> argsDict = new Dictionary<string, string>();
+        public Dictionary<string, string> ArgsDict = new Dictionary<string, string>();
 
         /// <summary>
         /// 条件从句逆波兰表达
         /// </summary>
-        public string condPolish = null;
+        public string CondPolish = null;
 
         /// <summary>
         /// 下一节点
         /// </summary>
-        public SceneAction next = null;
+        public SceneAction Next = null;
 
         /// <summary>
         /// 下一真节点向量
         /// </summary>
-        public List<SceneAction> trueRouting = null;
+        public List<SceneAction> TrueRouting = null;
 
         /// <summary>
         /// 下一假节点向量
         /// </summary>
-        public List<SceneAction> falseRouting = null;
+        public List<SceneAction> FalseRouting = null;
 
         /// <summary>
         /// 是否依存函数
         /// </summary>
-        public bool isBelongFunc = false;
+        public bool IsBelongFunc = false;
 
         /// <summary>
         /// 依存函数名
         /// </summary>
-        public string funcName = null;
+        public string FuncName = null;
 
         /// <summary>
         /// 附加值
         /// </summary>
-        public string aTag = null;
+        public string Tag = null;
 
         /// <summary>
         /// 对话合并脏位
         /// </summary>
-        public bool dialogDirtyBit = false;
+        public bool DialogDirtyBit = false;
 
         /// <summary>
         /// 将动作转化为可序列化字符串
@@ -79,40 +79,40 @@ namespace Yuri.YuriInterpreter.ILPackage
             else
             {
                 StringBuilder sb = new StringBuilder();
-                sb.Append(this.saNodeName + "^");
-                string args = this.argsDict.Aggregate("", (x, y) => x + ":#:" + y.Key + ":@:" + y.Value);
+                sb.Append(this.NodeName + "^");
+                string args = this.ArgsDict.Aggregate("", (x, y) => x + ":#:" + y.Key + ":@:" + y.Value);
                 sb.Append(args.Length > 0 ? args.Substring(3) + "^" : "^");
-                if (this.aType != SActionType.act_else && this.aType != SActionType.act_endif && this.aType != SActionType.act_endfor
-                    && this.aType != SActionType.act_function && this.aType != SActionType.act_endfunction && this.aType != SActionType.act_label)
+                if (this.Type != SActionType.act_else && this.Type != SActionType.act_endif && this.Type != SActionType.act_endfor
+                    && this.Type != SActionType.act_function && this.Type != SActionType.act_endfunction && this.Type != SActionType.act_label)
                 {
-                    sb.Append(this.condPolish + "^");
+                    sb.Append(this.CondPolish + "^");
                 }
                 else
                 {
                     sb.Append("^");
                 }
-                sb.Append(this.next != null ? this.next.saNodeName + "^" : "^");
-                if (this.trueRouting != null)
+                sb.Append(this.Next != null ? this.Next.NodeName + "^" : "^");
+                if (this.TrueRouting != null)
                 {
-                    string trues = this.trueRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
+                    string trues = this.TrueRouting.Aggregate("", (x, y) => x + "#" + y.NodeName);
                     sb.Append(trues.Substring(1) + "^");
                 }
                 else
                 {
                     sb.Append("^");
                 }
-                if (this.falseRouting != null)
+                if (this.FalseRouting != null)
                 {
-                    string falses = this.trueRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
+                    string falses = this.TrueRouting.Aggregate("", (x, y) => x + "#" + y.NodeName);
                     sb.Append(falses.Substring(1) + "^");
                 }
                 else
                 {
                     sb.Append("^");
                 }
-                sb.Append(this.isBelongFunc ? "1^" : "0^");
-                sb.Append(this.funcName + "^");
-                sb.Append(this.aTag != null ? this.aTag.Replace(@"\", @"\\").Replace(@",", @"\,").Replace(@"^", @"\^").Replace("\r\n", @"\$") : "");
+                sb.Append(this.IsBelongFunc ? "1^" : "0^");
+                sb.Append(this.FuncName + "^");
+                sb.Append(this.Tag != null ? this.Tag.Replace(@"\", @"\\").Replace(@",", @"\,").Replace(@"^", @"\^").Replace("\r\n", @"\$") : "");
                 return sb.ToString();
             }
         }
@@ -124,32 +124,32 @@ namespace Yuri.YuriInterpreter.ILPackage
         private string ToEncodeIL()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(this.saNodeName + "^");
-            string args = this.argsDict.Aggregate("", (x, y) => x + "#" + y.Key + "@" + this.EncodeString(y.Value));
+            sb.Append(this.NodeName + "^");
+            string args = this.ArgsDict.Aggregate("", (x, y) => x + "#" + y.Key + "@" + this.EncodeString(y.Value));
             sb.Append(args.Length > 0 ? args.Substring(1) + "^" : "^");
-            sb.Append(this.EncodeString(this.condPolish) + "^");
-            sb.Append(this.next != null ? this.next.saNodeName + "^" : "^");
-            if (this.trueRouting != null)
+            sb.Append(this.EncodeString(this.CondPolish) + "^");
+            sb.Append(this.Next != null ? this.Next.NodeName + "^" : "^");
+            if (this.TrueRouting != null)
             {
-                string trues = this.trueRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
+                string trues = this.TrueRouting.Aggregate("", (x, y) => x + "#" + y.NodeName);
                 sb.Append(trues.Length > 0 ? trues.Substring(1) + "^" : "^");
             }
             else
             {
                 sb.Append("^");
             }
-            if (this.falseRouting != null)
+            if (this.FalseRouting != null)
             {
-                string falses = this.falseRouting.Aggregate("", (x, y) => x + "#" + y.saNodeName);
+                string falses = this.FalseRouting.Aggregate("", (x, y) => x + "#" + y.NodeName);
                 sb.Append(falses.Length > 0 ? falses.Substring(1) + "^" : "^");
             }
             else
             {
                 sb.Append("^");
             }
-            sb.Append(this.isBelongFunc ? "1^" : "0^");
-            sb.Append(this.funcName + "^");
-            sb.Append(this.EncodeString((string)this.aTag));
+            sb.Append(this.IsBelongFunc ? "1^" : "0^");
+            sb.Append(this.FuncName + "^");
+            sb.Append(this.EncodeString((string)this.Tag));
             return sb.ToString();
         }
 
@@ -187,31 +187,31 @@ namespace Yuri.YuriInterpreter.ILPackage
         public SceneAction Clone(bool pureClone)
         {
             SceneAction resSa = new SceneAction();
-            resSa.argsDict = new Dictionary<string, string>();
-            foreach (var kv in this.argsDict)
+            resSa.ArgsDict = new Dictionary<string, string>();
+            foreach (var kv in this.ArgsDict)
             {
-                resSa.argsDict.Add(kv.Key, kv.Value);
+                resSa.ArgsDict.Add(kv.Key, kv.Value);
             }
-            resSa.aTag = this.aTag;
-            resSa.aType = this.aType;
-            resSa.funcName = this.funcName;
-            resSa.isBelongFunc = this.isBelongFunc;
-            resSa.saNodeName = this.saNodeName;
+            resSa.Tag = this.Tag;
+            resSa.Type = this.Type;
+            resSa.FuncName = this.FuncName;
+            resSa.IsBelongFunc = this.IsBelongFunc;
+            resSa.NodeName = this.NodeName;
             if (pureClone == false)
             {
-                resSa.condPolish = this.condPolish;
-                resSa.dialogDirtyBit = this.dialogDirtyBit;
-                resSa.next = this.next;
-                resSa.saNodeName = this.saNodeName;
-                resSa.trueRouting = new List<SceneAction>();
-                foreach (var tr in this.trueRouting)
+                resSa.CondPolish = this.CondPolish;
+                resSa.DialogDirtyBit = this.DialogDirtyBit;
+                resSa.Next = this.Next;
+                resSa.NodeName = this.NodeName;
+                resSa.TrueRouting = new List<SceneAction>();
+                foreach (var tr in this.TrueRouting)
                 {
-                    resSa.trueRouting.Add(tr);
+                    resSa.TrueRouting.Add(tr);
                 }
-                resSa.falseRouting = new List<SceneAction>();
-                foreach (var fr in this.falseRouting)
+                resSa.FalseRouting = new List<SceneAction>();
+                foreach (var fr in this.FalseRouting)
                 {
-                    resSa.falseRouting.Add(fr);
+                    resSa.FalseRouting.Add(fr);
                 }
             }
             return resSa;
@@ -223,7 +223,7 @@ namespace Yuri.YuriInterpreter.ILPackage
         /// <returns>该动作的名字</returns>
         public override string ToString()
         {
-            return this.saNodeName;
+            return this.NodeName;
         }
     }
 

@@ -17,90 +17,85 @@ namespace Yuri.YuriInterpreter
         /// <param name="parent">节点的双亲</param>
         public SyntaxTreeNode(SyntaxType type = SyntaxType.Unknown, SyntaxTreeNode parent = null)
         {
-            this.nodeName = type.ToString();
-            this.nodeSyntaxType = type;
-            this.parent = parent;
+            this.NodeName = type.ToString();
+            this.NodeSyntaxType = type;
+            this.Parent = parent;
         }
-        
-        /// <summary>
-        /// 绑定处理函数
-        /// </summary>
-        public CandidateFunction candidateFunction = null;
 
         /// <summary>
-        /// 子树向量
+        /// 节点名字
         /// </summary>
-        public List<SyntaxTreeNode> children = null;
+        public string NodeName { get; set; }
 
         /// <summary>
         /// 双亲指针
         /// </summary>
-        public SyntaxTreeNode parent = null;
+        public SyntaxTreeNode Parent { get; set; }
+
+        /// <summary>
+        /// 绑定处理函数
+        /// </summary>
+        public CandidateFunction CandidateFunction = null;
+
+        /// <summary>
+        /// 子树向量
+        /// </summary>
+        public List<SyntaxTreeNode> Children = null;
 
         /// <summary>
         /// 命中token附加值
         /// </summary>
-        public string nodeValue = null;
+        public string NodeValue = null;
 
         /// <summary>
         /// 命中产生式类型
         /// </summary>
-        public CFunctionType nodeType = CFunctionType.None;
+        public CFunctionType NodeType = CFunctionType.None;
 
         /// <summary>
         /// 命中的Token在源代码的行号
         /// </summary> 
-        public int line = 0;
+        public int Line = 0;
         
         /// <summary>
         /// 命中的Token在源代码的列号
         /// </summary>
-        public int col = 0;
-        
-        /// <summary>
-        /// 节点名字
-        /// </summary>
-        public string nodeName = "";
+        public int Column = 0;
         
         /// <summary>
         /// 附加值
         /// </summary>
-        public object aTag = null;
+        public object Tag = null;
         
         /// <summary>
         /// 逆波兰表达
         /// </summary>
-        public string polish = null;
+        public string Polish = null;
 
         /// <summary>
         /// 错误位
         /// </summary>
-        public bool errorBit = false;
+        public bool ErrorBit = false;
 
         /// <summary>
         /// 不推导节点参数孩子字典
         /// </summary>
-        public Dictionary<string, SyntaxTreeNode> paramDict = null;
+        public Dictionary<string, SyntaxTreeNode> ParamDict = null;
 
         /// <summary>
         /// 不推导节点参数Token子流
         /// </summary>
-        internal List<Token> paramTokenStream = null;
+        public List<Token> ParamTokenStream = null;
 
         /// <summary>
         /// 节点变量类型
         /// </summary>
-        public VarScopeType nodeVarType = VarScopeType.NOTVAR;
+        public VarScopeType NodeVarType = VarScopeType.NOTVAR;
 
         /// <summary>
         /// 命中语法结构类型
         /// </summary>
-        private SyntaxType nodeSyntaxTyper = SyntaxType.Unknown;
-
-        /// <summary>
-        /// 命中语法结构类型
-        /// </summary>
-        public SyntaxType nodeSyntaxType
+        public SyntaxType NodeSyntaxType
         {
             get
             {
@@ -109,9 +104,14 @@ namespace Yuri.YuriInterpreter
             set
             {
                 nodeSyntaxTyper = value;
-                this.nodeName = value.ToString();
+                this.NodeName = value.ToString();
             }
         }
+
+        /// <summary>
+        /// 命中语法结构类型
+        /// </summary>
+        private SyntaxType nodeSyntaxTyper = SyntaxType.Unknown;
 
         /// <summary>
         /// 树的递归遍历文本化
@@ -121,7 +121,7 @@ namespace Yuri.YuriInterpreter
         {
             StringBuilder builder = new StringBuilder();
             builder.Append("> SyntaxTreeNode String Format: ");
-            builder.AppendLine(this.nodeName + ", Type:" + this.nodeSyntaxType.ToString() + ", Func:" + this.nodeType.ToString() + "");
+            builder.AppendLine(this.NodeName + ", Type:" + this.NodeSyntaxType.ToString() + ", Func:" + this.NodeType.ToString() + "");
             int identation = 0;
             this.GetTree(builder, this, ref identation, false);
             return builder.ToString();
@@ -146,33 +146,33 @@ namespace Yuri.YuriInterpreter
             {
                 builder.Append("[d]");
             }
-            builder.Append(myNode.nodeName.ToString());
-            if (myNode.nodeSyntaxType >= SyntaxType.Unknown
-              && myNode.nodeSyntaxType != SyntaxType.epsilonLeave
-              && myNode.nodeSyntaxType != SyntaxType.tail_startEndLeave)
+            builder.Append(myNode.NodeName.ToString());
+            if (myNode.NodeSyntaxType >= SyntaxType.Unknown
+              && myNode.NodeSyntaxType != SyntaxType.epsilonLeave
+              && myNode.NodeSyntaxType != SyntaxType.tail_startEndLeave)
             {
-                builder.Append(" (" + myNode.nodeValue + ")");
+                builder.Append(" (" + myNode.NodeValue + ")");
             }
-            else if (myNode.nodeSyntaxType == SyntaxType.synr_dialog)
+            else if (myNode.NodeSyntaxType == SyntaxType.synr_dialog)
             {
-                string sub = myNode.nodeValue.Replace("\r", "").Replace("\n", "");
+                string sub = myNode.NodeValue.Replace("\r", "").Replace("\n", "");
                 builder.Append(" (" + (sub.Length < 12 ? sub : sub.Substring(0, 11) + " ...") + ")");
             }
             builder.Append(Environment.NewLine);
             // 缩进并打印结果
             identation++;
-            if (myNode.nodeSyntaxType.ToString().StartsWith("synr_") && myNode.paramDict != null)
+            if (myNode.NodeSyntaxType.ToString().StartsWith("synr_") && myNode.ParamDict != null)
             {
-                foreach (KeyValuePair<string, SyntaxTreeNode> kvp in myNode.paramDict)
+                foreach (KeyValuePair<string, SyntaxTreeNode> kvp in myNode.ParamDict)
                 {
                     GetTree(builder, kvp.Value, ref identation, true);
                 }
             }
-            if (myNode.children != null)
+            if (myNode.Children != null)
             {
-                for (int i = 0; i < myNode.children.Count; i++)
+                for (int i = 0; i < myNode.Children.Count; i++)
                 {
-                    GetTree(builder, myNode.children[i], ref identation, false);
+                    GetTree(builder, myNode.Children[i], ref identation, false);
                 }
             }
             // 回归缩进
@@ -192,7 +192,7 @@ namespace Yuri.YuriInterpreter
                 return "";
             }
             // 取父母节点，若空就不需要画线了
-            SyntaxTreeNode parent = myNode.parent;
+            SyntaxTreeNode parent = myNode.Parent;
             if (parent == null)
             {
                 return "";
@@ -201,13 +201,13 @@ namespace Yuri.YuriInterpreter
             List<bool> lstline = new List<bool>();
             while (parent != null)
             {
-                SyntaxTreeNode pp = parent.parent;
+                SyntaxTreeNode pp = parent.Parent;
                 int indexOfParent = 0;
                 if (pp != null)
                 {
-                    if (pp.nodeSyntaxType.ToString().StartsWith("synr_") && pp.paramDict != null)
+                    if (pp.NodeSyntaxType.ToString().StartsWith("synr_") && pp.ParamDict != null)
                     {
-                        foreach (KeyValuePair<string, SyntaxTreeNode> kvp in pp.paramDict)
+                        foreach (KeyValuePair<string, SyntaxTreeNode> kvp in pp.ParamDict)
                         {
                            if (kvp.Value == parent)
                            {
@@ -219,22 +219,22 @@ namespace Yuri.YuriInterpreter
                            }
                         }
                         int nocCount = 0;
-                        if (pp.children != null)
+                        if (pp.Children != null)
                         {
-                            nocCount += pp.children.Count;
+                            nocCount += pp.Children.Count;
                         }
-                        lstline.Add(indexOfParent < pp.paramDict.Count + nocCount - 1);
+                        lstline.Add(indexOfParent < pp.ParamDict.Count + nocCount - 1);
                     }
-                    else if (pp.children != null)
+                    else if (pp.Children != null)
                     {
-                        for (; indexOfParent < pp.children.Count; indexOfParent++)
+                        for (; indexOfParent < pp.Children.Count; indexOfParent++)
                         {
-                            if (parent == pp.children[indexOfParent])
+                            if (parent == pp.Children[indexOfParent])
                             {
                                 break;
                             }
                         }
-                        lstline.Add(indexOfParent < pp.children.Count - 1);
+                        lstline.Add(indexOfParent < pp.Children.Count - 1);
                     }
                 }
                 parent = pp;
@@ -246,9 +246,9 @@ namespace Yuri.YuriInterpreter
                 builder += lstline[i] ? "│  " : "    ";
             }
             // 获得自己在兄弟姐妹中的排行
-            parent = myNode.parent;
+            parent = myNode.Parent;
             int indexOfParent2 = 0;
-            if (parent.nodeSyntaxType.ToString().StartsWith("synr_") && parent.paramDict != null)
+            if (parent.NodeSyntaxType.ToString().StartsWith("synr_") && parent.ParamDict != null)
             {
                 //foreach (KeyValuePair<string, SyntaxTreeNode> kvp in parent.paramDict)
                 //{
@@ -272,17 +272,17 @@ namespace Yuri.YuriInterpreter
                 //}
                 builder += "└─";
             }
-            else if (parent.children != null)
+            else if (parent.Children != null)
             {
-                for (; indexOfParent2 < parent.children.Count; indexOfParent2++)
+                for (; indexOfParent2 < parent.Children.Count; indexOfParent2++)
                 {
-                    if (myNode == parent.children[indexOfParent2])
+                    if (myNode == parent.Children[indexOfParent2])
                     {
                         break;
                     }
                 }
                 // 如果是最后一个就不要出头了
-                if (indexOfParent2 < parent.children.Count - 1)
+                if (indexOfParent2 < parent.Children.Count - 1)
                 {
                     builder += "├─";
                 }

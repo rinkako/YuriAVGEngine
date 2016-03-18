@@ -19,7 +19,7 @@ namespace Yuri.YuriInterpreter
         {
             this.Reset(0);
             this.Init();
-            this.iBlockStack = new Stack<SyntaxTreeNode>();
+            this.BlockStack = new Stack<SyntaxTreeNode>();
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Yuri.YuriInterpreter
         /// </summary>
         public void ClearBlockStack()
         {
-            this.iBlockStack.Clear();
+            this.BlockStack.Clear();
         }
 
         /// <summary>
@@ -65,118 +65,118 @@ namespace Yuri.YuriInterpreter
             SyntaxTreeNode parsePtr;
             SyntaxTreeNode currentPtr;
             // 如果语句块嵌套栈顶端是可以推出语句块的类型就直接把她作为双亲节点
-            if (this.iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori)
+            if (this.BlockStack.Peek().NodeSyntaxType == SyntaxType.case_kotori)
             {
-                parsePtr = currentPtr = this.iBlockStack.Peek();
+                parsePtr = currentPtr = this.BlockStack.Peek();
             }
             // 否则处理这个节点的语句块的从属关系
             else
             {
                 parsePtr = new SyntaxTreeNode(SyntaxType.case_kotori);
                 currentPtr = parsePtr;
-                currentPtr.parent = this.iBlockStack.Peek();
-                currentPtr.children = new List<SyntaxTreeNode>();
-                if (this.iBlockStack.Peek().children == null)
+                currentPtr.Parent = this.BlockStack.Peek();
+                currentPtr.Children = new List<SyntaxTreeNode>();
+                if (this.BlockStack.Peek().Children == null)
                 {
-                    this.iBlockStack.Peek().children = new List<SyntaxTreeNode>();
+                    this.BlockStack.Peek().Children = new List<SyntaxTreeNode>();
                 }
-                this.iBlockStack.Peek().children.Add(currentPtr);
+                this.BlockStack.Peek().Children.Add(currentPtr);
             }
             // 自顶向下，语法分析
             bool fromKaguya = false;
-            while (this.iParseStack.Count != 0 || this.iQueue.Count != 0)
+            while (this.parseStack.Count != 0 || this.commandDerivatorQueue.Count != 0)
             {
                 // 语句根节点，就调用命令推导函数去处理，随后立即迭代掉本次循环
-                if (this.iParseStack.Count > 0 && this.iParseStack.Peek() == SyntaxType.case_kotori)
+                if (this.parseStack.Count > 0 && this.parseStack.Peek() == SyntaxType.case_kotori)
                 {
                     SyntaxTreeNode stn = this.Chitanda();
-                    stn.line = line;
+                    stn.Line = line;
                     // 如果这个节点是if、for、function子句，那就要为她增加一个kotori节点
-                    if (stn.nodeSyntaxType == SyntaxType.synr_if ||
-                        stn.nodeSyntaxType == SyntaxType.synr_for ||
-                        stn.nodeSyntaxType == SyntaxType.synr_function)
+                    if (stn.NodeSyntaxType == SyntaxType.synr_if ||
+                        stn.NodeSyntaxType == SyntaxType.synr_for ||
+                        stn.NodeSyntaxType == SyntaxType.synr_function)
                     {
                         // 把原来的子句节点加到原来的匹配树上
-                        stn.parent = currentPtr;
-                        if (currentPtr.children == null)
+                        stn.Parent = currentPtr;
+                        if (currentPtr.Children == null)
                         {
-                            currentPtr.children = new List<SyntaxTreeNode>();
+                            currentPtr.Children = new List<SyntaxTreeNode>();
                         }
-                        currentPtr.children.Add(stn);
+                        currentPtr.Children.Add(stn);
                         currentPtr = stn;
-                        currentPtr.line = line;
+                        currentPtr.Line = line;
                         // 为子句节点加上一个真分支
-                        currentPtr.children = new List<SyntaxTreeNode>();
+                        currentPtr.Children = new List<SyntaxTreeNode>();
                         SyntaxTreeNode trueBranch = new SyntaxTreeNode(SyntaxType.case_kotori);
-                        trueBranch.line = line;
-                        trueBranch.children = new List<SyntaxTreeNode>();
-                        trueBranch.nodeName = trueBranch.nodeSyntaxType.ToString() + 
-                            (stn.nodeSyntaxType == SyntaxType.synr_if ? "_trueBranch" :
-                            stn.nodeSyntaxType == SyntaxType.synr_for ? "_forBranch" : "_funDeclaration");
-                        trueBranch.parent = currentPtr;
-                        stn.children.Add(trueBranch);
+                        trueBranch.Line = line;
+                        trueBranch.Children = new List<SyntaxTreeNode>();
+                        trueBranch.NodeName = trueBranch.NodeSyntaxType.ToString() + 
+                            (stn.NodeSyntaxType == SyntaxType.synr_if ? "_trueBranch" :
+                            stn.NodeSyntaxType == SyntaxType.synr_for ? "_forBranch" : "_funDeclaration");
+                        trueBranch.Parent = currentPtr;
+                        stn.Children.Add(trueBranch);
                         // 追加到语句块栈
-                        iBlockStack.Push(trueBranch);
+                        BlockStack.Push(trueBranch);
                         currentPtr = trueBranch;
                     }
                     // 如果这个节点是else子句，那就直接用kotori节点换掉她
-                    else if (stn.nodeSyntaxType == SyntaxType.synr_else)
+                    else if (stn.NodeSyntaxType == SyntaxType.synr_else)
                     {
-                        currentPtr = currentPtr.parent;
+                        currentPtr = currentPtr.Parent;
                         SyntaxTreeNode falseBranch = new SyntaxTreeNode(SyntaxType.case_kotori);
-                        falseBranch.line = line;
-                        falseBranch.children = new List<SyntaxTreeNode>();
-                        falseBranch.nodeName = falseBranch.nodeSyntaxType.ToString() + "_falseBranch";
-                        falseBranch.parent = currentPtr;
-                        currentPtr.children.Add(falseBranch);
+                        falseBranch.Line = line;
+                        falseBranch.Children = new List<SyntaxTreeNode>();
+                        falseBranch.NodeName = falseBranch.NodeSyntaxType.ToString() + "_falseBranch";
+                        falseBranch.Parent = currentPtr;
+                        currentPtr.Children.Add(falseBranch);
                         // 追加到语句块栈
-                        iBlockStack.Push(falseBranch);
+                        BlockStack.Push(falseBranch);
                         currentPtr = falseBranch;
                     }
                     // 如果这个节点是endif子句，那就直接用她换掉kotori节点
-                    else if (stn.nodeSyntaxType == SyntaxType.synr_endif)
+                    else if (stn.NodeSyntaxType == SyntaxType.synr_endif)
                     {
-                        SyntaxTreeNode originTop = parsePtr.parent;
-                        originTop.children.Add(stn);
-                        stn.parent = originTop;
+                        SyntaxTreeNode originTop = parsePtr.Parent;
+                        originTop.Children.Add(stn);
+                        stn.Parent = originTop;
                         currentPtr = parsePtr = stn;
                     }
                     // 其余情况就把该节点作为当前展开节点的孩子节点
                     else
                     {
-                        stn.parent = currentPtr;
-                        if (currentPtr.children == null)
+                        stn.Parent = currentPtr;
+                        if (currentPtr.Children == null)
                         {
-                            currentPtr.children = new List<SyntaxTreeNode>();
+                            currentPtr.Children = new List<SyntaxTreeNode>();
                         }
-                        currentPtr.children.Add(stn);
+                        currentPtr.Children.Add(stn);
                         currentPtr = stn;
                     }
                     fromKaguya = true;
                     continue;
                 }
                 // 如果栈中只有startend，队列中没有元素，那就意味着不需要继续推导了
-                if (this.iParseStack.Count > 0 && this.iParseStack.Peek() == SyntaxType.tail_startEndLeave
-                    && this.iQueue.Count == 0)
+                if (this.parseStack.Count > 0 && this.parseStack.Peek() == SyntaxType.tail_startEndLeave
+                    && this.commandDerivatorQueue.Count == 0)
                 {
                     break;
                 }
                 // 如果栈中不空，说明在做LL1文法的推导
-                if (this.iParseStack.Count != 0 && fromKaguya == false)
+                if (this.parseStack.Count != 0 && fromKaguya == false)
                 {
                     // 查预测表，获得产生式处理函数
-                    SyntaxType nodeType = this.iParseStack.Peek();
+                    SyntaxType nodeType = this.parseStack.Peek();
                     Token iToken = this.istream[this.nextTokenPointer];
-                    TokenType tokenType = iToken.aType;
-                    CandidateFunction func = this.iMap.GetCFunciton(nodeType, tokenType, this.Derivator);
+                    TokenType tokenType = iToken.Type;
+                    CandidateFunction func = this.iMap.GetCFunciton(nodeType, tokenType, this.Derivate);
                     // 语法出错时
                     if (func.GetCFType() == CFunctionType.umi_errorEnd)
                     {
                         throw new InterpreterException()
                         {
                             Message = "语法匹配错误",
-                            HitLine = iToken.aLine,
-                            HitColumn = iToken.aColumn,
+                            HitLine = iToken.Line,
+                            HitColumn = iToken.Column,
                             HitPhase = InterpreterException.InterpreterPhase.Parser,
                             SceneFileName = this.dealingFile
                         };
@@ -184,22 +184,22 @@ namespace Yuri.YuriInterpreter
                     // 如果处于非终结符，就设置她的候选式
                     if (currentPtr != null)
                     {
-                        currentPtr.candidateFunction = func;
+                        currentPtr.CandidateFunction = func;
                     }
                     // 调用产生式，下降
                     if (func != null)
                     {
                         if (currentPtr != null)
                         {
-                            currentPtr = currentPtr.candidateFunction.Call(currentPtr, nodeType, iToken);
+                            currentPtr = currentPtr.CandidateFunction.Call(currentPtr, nodeType, iToken);
                         }
                         else
                         {
-                            currentPtr = this.Derivator(currentPtr, func.GetCFType(), nodeType, iToken);
+                            currentPtr = this.Derivate(currentPtr, func.GetCFType(), nodeType, iToken);
                         }
                         if (currentPtr != null)
                         {
-                            currentPtr.line = line;
+                            currentPtr.Line = line;
                         }
                     }
                     // 没有对应的候选式时
@@ -207,35 +207,35 @@ namespace Yuri.YuriInterpreter
                     {
                         if (currentPtr != null)
                         {
-                            currentPtr.errorBit = true;
+                            currentPtr.ErrorBit = true;
                         }
                         break;
                     }
                 }
                 // 最后看命令推导队列
-                else if (this.iQueue.Count != 0)
+                else if (this.commandDerivatorQueue.Count != 0)
                 {
-                    SyntaxTreeNode reroot = this.iQueue.Dequeue();
+                    SyntaxTreeNode reroot = this.commandDerivatorQueue.Dequeue();
                     // 析取范式时
-                    if (reroot.nodeSyntaxType == SyntaxType.case_disjunct)
+                    if (reroot.NodeSyntaxType == SyntaxType.case_disjunct)
                     {
-                        this.iParseStack.Push(SyntaxType.case_disjunct);
+                        this.parseStack.Push(SyntaxType.case_disjunct);
                     }
                     // 值表达式时
                     else
                     {
-                        this.iParseStack.Push(reroot.nodeSyntaxType);
+                        this.parseStack.Push(reroot.NodeSyntaxType);
                     }
                     // 把token流改为私有的token流
-                    this.istream = reroot.paramTokenStream;
+                    this.istream = reroot.ParamTokenStream;
                     // 在流的末尾，放置结束标记
                     Token ccToken = new Token();
-                    ccToken.length = 1;
-                    ccToken.detail = "#";
-                    ccToken.errorBit = false;
-                    ccToken.aType = TokenType.startend;
-                    ccToken.aLine = this.dealingLine;
-                    ccToken.aColumn = this.istream.Count > 0 ? this.istream[Math.Min(this.nextTokenPointer, this.istream.Count - 1)].aColumn : -1;
+                    ccToken.Length = 1;
+                    ccToken.OriginalCodeStr = "#";
+                    ccToken.ErrorBit = false;
+                    ccToken.Type = TokenType.startend;
+                    ccToken.Line = this.dealingLine;
+                    ccToken.Column = this.istream.Count > 0 ? this.istream[Math.Min(this.nextTokenPointer, this.istream.Count - 1)].Column : -1;
                     this.istream.Add(ccToken);
                     // 复位游程
                     this.nextTokenPointer = 0;
@@ -255,92 +255,92 @@ namespace Yuri.YuriInterpreter
             // 初始化链接向量
             for (int i = 0; i < 64; i++)
             {
-                this.iDict.Add(new List<SyntaxType>());
+                this.derivatorTypeDict.Add(new List<SyntaxType>());
             }
             // <disjunct> -> <conjunct> <disjunct_pi>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___disjunct__conjunct__disjunct_pi_35)].Add(SyntaxType.case_conjunct);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___disjunct__conjunct__disjunct_pi_35)].Add(SyntaxType.case_disjunct_pi);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___disjunct__conjunct__disjunct_pi_35)].Add(SyntaxType.case_conjunct);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___disjunct__conjunct__disjunct_pi_35)].Add(SyntaxType.case_disjunct_pi);
             // <disjunct_pi> -> "||" <conjunct> <disjunct_pi>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___disjunct_pi__conjunct__disjunct_pi_36)].Add(SyntaxType.tail_or_Or_Leave);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___disjunct_pi__conjunct__disjunct_pi_36)].Add(SyntaxType.case_conjunct);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___disjunct_pi__conjunct__disjunct_pi_36)].Add(SyntaxType.case_disjunct_pi);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___disjunct_pi__conjunct__disjunct_pi_36)].Add(SyntaxType.tail_or_Or_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___disjunct_pi__conjunct__disjunct_pi_36)].Add(SyntaxType.case_conjunct);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___disjunct_pi__conjunct__disjunct_pi_36)].Add(SyntaxType.case_disjunct_pi);
             // <disjunct_pi> -> epsilon
-            this.iDict[Convert.ToInt32(CFunctionType.deri___disjunct_pi__epsilon_37)].Add(SyntaxType.epsilonLeave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___disjunct_pi__epsilon_37)].Add(SyntaxType.epsilonLeave);
             // <conjunct> -> <bool> <conjunct_pi>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___conjunct__bool__conjunct_pi_38)].Add(SyntaxType.case_bool);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___conjunct__bool__conjunct_pi_38)].Add(SyntaxType.case_conjunct_pi);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___conjunct__bool__conjunct_pi_38)].Add(SyntaxType.case_bool);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___conjunct__bool__conjunct_pi_38)].Add(SyntaxType.case_conjunct_pi);
             // <conjunct_pi> -> "&&" <bool> <conjunct_pi>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___conjunct_pi__bool__conjunct_pi_39)].Add(SyntaxType.tail_and_And_Leave);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___conjunct_pi__bool__conjunct_pi_39)].Add(SyntaxType.case_bool);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___conjunct_pi__bool__conjunct_pi_39)].Add(SyntaxType.case_conjunct_pi);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___conjunct_pi__bool__conjunct_pi_39)].Add(SyntaxType.tail_and_And_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___conjunct_pi__bool__conjunct_pi_39)].Add(SyntaxType.case_bool);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___conjunct_pi__bool__conjunct_pi_39)].Add(SyntaxType.case_conjunct_pi);
             // <conjunct_pi> -> epsilon
-            this.iDict[Convert.ToInt32(CFunctionType.deri___conjunct_pi__epsilon_40)].Add(SyntaxType.epsilonLeave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___conjunct_pi__epsilon_40)].Add(SyntaxType.epsilonLeave);
             // <bool> -> "!" <bool>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___bool__not_bool_42)].Add(SyntaxType.tail_not_Leave);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___bool__not_bool_42)].Add(SyntaxType.case_bool);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___bool__not_bool_42)].Add(SyntaxType.tail_not_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___bool__not_bool_42)].Add(SyntaxType.case_bool);
             // <bool> -> <comp>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___bool__comp_43)].Add(SyntaxType.case_comp);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___bool__comp_43)].Add(SyntaxType.case_comp);
             // <comp> -> <wexpr> <rop> <wexpr>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___comp__wexpr__rop__wexpr_44)].Add(SyntaxType.case_wexpr);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___comp__wexpr__rop__wexpr_44)].Add(SyntaxType.case_rop);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___comp__wexpr__rop__wexpr_44)].Add(SyntaxType.case_wexpr);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___comp__wexpr__rop__wexpr_44)].Add(SyntaxType.case_wexpr);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___comp__wexpr__rop__wexpr_44)].Add(SyntaxType.case_rop);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___comp__wexpr__rop__wexpr_44)].Add(SyntaxType.case_wexpr);
             // <rop> -> "<>"
-            this.iDict[Convert.ToInt32(CFunctionType.deri___rop__lessgreater_58)].Add(SyntaxType.tail_lessThan_GreaterThan_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___rop__lessgreater_58)].Add(SyntaxType.tail_lessThan_GreaterThan_Leave);
             // <rop> -> "=="
-            this.iDict[Convert.ToInt32(CFunctionType.deri___rop__equalequal_59)].Add(SyntaxType.tail_equality_Equality_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___rop__equalequal_59)].Add(SyntaxType.tail_equality_Equality_Leave);
             // <rop> -> ">"
-            this.iDict[Convert.ToInt32(CFunctionType.deri___rop__greater_60)].Add(SyntaxType.tail_greaterThan_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___rop__greater_60)].Add(SyntaxType.tail_greaterThan_Leave);
             // <rop> -> "<"
-            this.iDict[Convert.ToInt32(CFunctionType.deri___rop__less_61)].Add(SyntaxType.tail_lessThan_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___rop__less_61)].Add(SyntaxType.tail_lessThan_Leave);
             // <rop> -> ">="
-            this.iDict[Convert.ToInt32(CFunctionType.deri___rop__greaterequal_62)].Add(SyntaxType.tail_greaterThan_Equality_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___rop__greaterequal_62)].Add(SyntaxType.tail_greaterThan_Equality_Leave);
             // <rop> -> "<="
-            this.iDict[Convert.ToInt32(CFunctionType.deri___rop__lessequal_63)].Add(SyntaxType.tail_lessThan_Equality_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___rop__lessequal_63)].Add(SyntaxType.tail_lessThan_Equality_Leave);
             // <rop> -> epsilon
-            this.iDict[Convert.ToInt32(CFunctionType.deri___rop__epsilon_80)].Add(SyntaxType.epsilonLeave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___rop__epsilon_80)].Add(SyntaxType.epsilonLeave);
             // <wexpr> -> <wmulti> <wexpr_pi>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wexpr__wmulti__wexpr_pi_45)].Add(SyntaxType.case_wmulti);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wexpr__wmulti__wexpr_pi_45)].Add(SyntaxType.case_wexpr_pi);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wexpr__wmulti__wexpr_pi_45)].Add(SyntaxType.case_wmulti);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wexpr__wmulti__wexpr_pi_45)].Add(SyntaxType.case_wexpr_pi);
             // <wexpr> -> epsilon
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wexpr__epsilon_81)].Add(SyntaxType.epsilonLeave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wexpr__epsilon_81)].Add(SyntaxType.epsilonLeave);
             // <wplus> -> "+" <wmulti>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wplus__plus_wmulti_46)].Add(SyntaxType.tail_plus_Leave);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wplus__plus_wmulti_46)].Add(SyntaxType.case_wmulti);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wplus__plus_wmulti_46)].Add(SyntaxType.tail_plus_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wplus__plus_wmulti_46)].Add(SyntaxType.case_wmulti);
             // <wplus> -> "-" <wmulti>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wplus__minus_wmulti_47)].Add(SyntaxType.tail_minus_Leave);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wplus__minus_wmulti_47)].Add(SyntaxType.case_wmulti);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wplus__minus_wmulti_47)].Add(SyntaxType.tail_minus_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wplus__minus_wmulti_47)].Add(SyntaxType.case_wmulti);
             // <wexpr_pi> -> <wplus> <wexpr_pi>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wexpr_pi__wplus__wexpr_pi_72)].Add(SyntaxType.case_wplus);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wexpr_pi__wplus__wexpr_pi_72)].Add(SyntaxType.case_wexpr_pi);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wexpr_pi__wplus__wexpr_pi_72)].Add(SyntaxType.case_wplus);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wexpr_pi__wplus__wexpr_pi_72)].Add(SyntaxType.case_wexpr_pi);
             // <wexpr_pi> -> epsilon
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wexpr_pi__epsilon_73)].Add(SyntaxType.epsilonLeave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wexpr_pi__epsilon_73)].Add(SyntaxType.epsilonLeave);
             // <wmulti> -> <wunit> <wmultiOpt>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wmulti__wunit__wmultiOpt_49)].Add(SyntaxType.case_wunit);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wmulti__wunit__wmultiOpt_49)].Add(SyntaxType.case_wmultiOpt);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wmulti__wunit__wmultiOpt_49)].Add(SyntaxType.case_wunit);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wmulti__wunit__wmultiOpt_49)].Add(SyntaxType.case_wmultiOpt);
             // <wmultiOpt> -> "*" <wunit>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wmultiOpt__multi_wunit__wmultiOpt_50)].Add(SyntaxType.tail_multiply_Leave);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wmultiOpt__multi_wunit__wmultiOpt_50)].Add(SyntaxType.case_wunit);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wmultiOpt__multi_wunit__wmultiOpt_50)].Add(SyntaxType.case_wmultiOpt);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wmultiOpt__multi_wunit__wmultiOpt_50)].Add(SyntaxType.tail_multiply_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wmultiOpt__multi_wunit__wmultiOpt_50)].Add(SyntaxType.case_wunit);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wmultiOpt__multi_wunit__wmultiOpt_50)].Add(SyntaxType.case_wmultiOpt);
             // <wmultiOpt> -> "/" <wunit>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wmultiOpt__div_wunit__wmultiOpt_51)].Add(SyntaxType.tail_divide_Leave);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wmultiOpt__div_wunit__wmultiOpt_51)].Add(SyntaxType.case_wunit);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wmultiOpt__div_wunit__wmultiOpt_51)].Add(SyntaxType.case_wmultiOpt);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wmultiOpt__div_wunit__wmultiOpt_51)].Add(SyntaxType.tail_divide_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wmultiOpt__div_wunit__wmultiOpt_51)].Add(SyntaxType.case_wunit);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wmultiOpt__div_wunit__wmultiOpt_51)].Add(SyntaxType.case_wmultiOpt);
             // <wmultiOpt> -> epsilon
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wmultiOpt__epsilon_52)].Add(SyntaxType.epsilonLeave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wmultiOpt__epsilon_52)].Add(SyntaxType.epsilonLeave);
             // <wunit> -> number
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wunit__number_53)].Add(SyntaxType.numberLeave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wunit__number_53)].Add(SyntaxType.numberLeave);
             // <wunit> -> iden
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wunit__iden_54)].Add(SyntaxType.tail_idenLeave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wunit__iden_54)].Add(SyntaxType.tail_idenLeave);
             // <wunit> -> "-" <wunit>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wunit__minus_wunit_55)].Add(SyntaxType.tail_minus_Leave);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wunit__minus_wunit_55)].Add(SyntaxType.case_wunit);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wunit__minus_wunit_55)].Add(SyntaxType.tail_minus_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wunit__minus_wunit_55)].Add(SyntaxType.case_wunit);
             // <wunit> -> "+" <wunit>
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wunit__plus_wunit_56)].Add(SyntaxType.tail_plus_Leave);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wunit__plus_wunit_56)].Add(SyntaxType.case_wunit);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wunit__plus_wunit_56)].Add(SyntaxType.tail_plus_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wunit__plus_wunit_56)].Add(SyntaxType.case_wunit);
             // <wunit> -> "(" <disjunct> ")"
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wunit__brucket_disjunct_57)].Add(SyntaxType.tail_leftParentheses_Leave);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wunit__brucket_disjunct_57)].Add(SyntaxType.case_disjunct);
-            this.iDict[Convert.ToInt32(CFunctionType.deri___wunit__brucket_disjunct_57)].Add(SyntaxType.tail_rightParentheses_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wunit__brucket_disjunct_57)].Add(SyntaxType.tail_leftParentheses_Leave);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wunit__brucket_disjunct_57)].Add(SyntaxType.case_disjunct);
+            this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wunit__brucket_disjunct_57)].Add(SyntaxType.tail_rightParentheses_Leave);
 
             // 初始化预测分析表的表头
             // 设置行属性：非终结符
@@ -401,11 +401,11 @@ namespace Yuri.YuriInterpreter
 
             // 初始化LL1-上下文无关文法
             // iProco都指向通用展开式函数Homura
-            iHandle iProco = this.Derivator;
+            iHandle iProco = this.Derivate;
             // 错误的情况下，没有考虑短语层次的错误恢复，因此错误处理器都指向null
-            for (int i = 0; i < LL1PARSERMAPROW; i++)
+            for (int i = 0; i < LL1ParserMapRowCount; i++)
             {
-                for (int j = 0; j < LL1PARSERMAPCOL; j++)
+                for (int j = 0; j < LL1ParserMapColCount; j++)
                 {
                     this.iMap.SetCellular(i, j, new CandidateFunction(null, CFunctionType.umi_errorEnd));
                 }
@@ -828,19 +828,19 @@ namespace Yuri.YuriInterpreter
         {
             // 变数初期化
             this.nextTokenPointer = 0;
-            this.iParseStack.Clear();
-            this.iQueue.Clear();
+            this.parseStack.Clear();
+            this.commandDerivatorQueue.Clear();
             // 放置初始节点
-            this.iParseStack.Push(SyntaxType.tail_startEndLeave);
-            this.iParseStack.Push(startNodeType);
+            this.parseStack.Push(SyntaxType.tail_startEndLeave);
+            this.parseStack.Push(startNodeType);
             // 在流的末尾，放置结束标记
             Token ccToken = new Token();
-            ccToken.length = 1;
-            ccToken.detail = "#";
-            ccToken.errorBit = false;
-            ccToken.aType = TokenType.startend;
-            ccToken.aLine = this.dealingLine;
-            ccToken.aColumn = this.istream.Count > 0 ? this.istream.Last().aColumn + 1 : -1;
+            ccToken.Length = 1;
+            ccToken.OriginalCodeStr = "#";
+            ccToken.ErrorBit = false;
+            ccToken.Type = TokenType.startend;
+            ccToken.Line = this.dealingLine;
+            ccToken.Column = this.istream.Count > 0 ? this.istream.Last().Column + 1 : -1;
             this.istream.Add(ccToken);
         }
 
@@ -857,20 +857,20 @@ namespace Yuri.YuriInterpreter
                 return null;
             }
             // 否则取她的母亲节点来取得自己的姐妹
-            SyntaxTreeNode parent = res.parent;
+            SyntaxTreeNode parent = res.Parent;
             // 如果没有母亲，就说明已经回退到了树的最上层
-            if (parent == null || parent.children == null)
+            if (parent == null || parent.Children == null)
             {
                 return null;
             }
             int i = 0;
             // 遍历寻找自己在姐妹中的排位
-            for (; i < parent.children.Count
-                && parent.children[i] != res; i++);
+            for (; i < parent.Children.Count
+                && parent.Children[i] != res; i++);
             // 跳过自己，找最大的妹妹
-            if (i + 1 < parent.children.Count)
+            if (i + 1 < parent.Children.Count)
             {
-                return parent.children[i + 1];
+                return parent.Children[i + 1];
             }
             // 如果自己没有妹妹，那就递归去找母亲的妹妹
             SyntaxTreeNode obac = this.RecursiveDescent(parent);
@@ -889,10 +889,10 @@ namespace Yuri.YuriInterpreter
         /// <param name="argv">参数列表</param>
         private void ConstructArgumentDict(SyntaxTreeNode statementNode, SyntaxType sType, params string[] argv)
         {
-            statementNode.nodeSyntaxType = sType;
+            statementNode.NodeSyntaxType = sType;
             foreach (string arg in argv)
             {
-                statementNode.paramDict[arg] = new SyntaxTreeNode(
+                statementNode.ParamDict[arg] = new SyntaxTreeNode(
                     (SyntaxType)Enum.Parse(typeof(SyntaxType), String.Format("para_{0}", arg)), statementNode);
             }
         }
@@ -904,19 +904,19 @@ namespace Yuri.YuriInterpreter
         /// <param name="derivator">LL1文法推导起始类型</param>
         private void ProcessArgumentDerivator(SyntaxTreeNode statementNode, ref int prescanPointer, string arg, SyntaxType derivator)
         {
-            statementNode.paramDict[arg].children = new List<SyntaxTreeNode>();
-            SyntaxTreeNode derivationNode = new SyntaxTreeNode(derivator, statementNode.paramDict[arg]);
-            derivationNode.paramTokenStream = new List<Token>();
+            statementNode.ParamDict[arg].Children = new List<SyntaxTreeNode>();
+            SyntaxTreeNode derivationNode = new SyntaxTreeNode(derivator, statementNode.ParamDict[arg]);
+            derivationNode.ParamTokenStream = new List<Token>();
             prescanPointer += 2;
             while (prescanPointer < this.istream.Count
-                && !this.istream[prescanPointer].aType.ToString().StartsWith("Token_p")
-                && this.istream[prescanPointer].aType != TokenType.startend)
+                && !this.istream[prescanPointer].Type.ToString().StartsWith("Token_p")
+                && this.istream[prescanPointer].Type != TokenType.startend)
             {
-                derivationNode.paramTokenStream.Add(this.istream[prescanPointer++]);
+                derivationNode.ParamTokenStream.Add(this.istream[prescanPointer++]);
             }
-            statementNode.paramDict[arg].children.Add(derivationNode);
+            statementNode.ParamDict[arg].Children.Add(derivationNode);
             // 加入命令推导队列
-            this.iQueue.Enqueue(derivationNode);
+            this.commandDerivatorQueue.Enqueue(derivationNode);
         }
         
         /// <summary>
@@ -926,18 +926,18 @@ namespace Yuri.YuriInterpreter
         private SyntaxTreeNode Chitanda()
         {
             // 匹配栈出栈
-            this.iParseStack.Pop();
+            this.parseStack.Pop();
             int prescanPointer = this.nextTokenPointer;
             // 扫描token流，命中的第一个关键字token决定了节点类型
-            if (this.istream[prescanPointer].aType == TokenType.Token_At)
+            if (this.istream[prescanPointer].Type == TokenType.Token_At)
             {
                 // 跳过At符号，读下一个token
                 prescanPointer++;
                 Token mainToken = this.istream[prescanPointer];
                 // 从下一token的类型决定构造的语法树根节点类型，构造参数字典
                 SyntaxTreeNode statementNode = new SyntaxTreeNode();
-                statementNode.paramDict = new Dictionary<string, SyntaxTreeNode>();
-                switch (mainToken.aType)
+                statementNode.ParamDict = new Dictionary<string, SyntaxTreeNode>();
+                switch (mainToken.Type)
                 {
                     case TokenType.Token_o_a:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_a, "name", "vid", "face", "loc");
@@ -1018,52 +1018,52 @@ namespace Yuri.YuriInterpreter
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_load, "filename");
                         break;
                     case TokenType.Token_o_stopbgm:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_stopbgm;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_stopbgm;
                         break;
                     case TokenType.Token_o_stopbgs:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_stopbgs;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_stopbgs;
                         break;
                     case TokenType.Token_o_titlepoint:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_titlepoint;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_titlepoint;
                         break;
                     case TokenType.Token_o_stopvocal:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_stopvocal;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_stopvocal;
                         break;
                     case TokenType.Token_o_title:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_title;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_title;
                         break;
                     case TokenType.Token_o_menu:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_menu;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_menu;
                         break;
                     case TokenType.Token_o_waitani:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_waitani;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_waitani;
                         break;
                     case TokenType.Token_o_break:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_break;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_break;
                         break;
                     case TokenType.Token_o_waituser:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_waituser;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_waituser;
                         break;
                     case TokenType.Token_o_freeze:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_freeze;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_freeze;
                         break;
                     case TokenType.Token_o_shutdown:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_shutdown;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_shutdown;
                         break;
                     case TokenType.Token_o_return:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_return;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_return;
                         break;
                     case TokenType.Token_o_for:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_for;
-                        statementNode.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);
+                        statementNode.NodeSyntaxType = SyntaxType.synr_for;
+                        statementNode.ParamDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);
                         // 这里不追加语句块，因为它将在Parse中处理
                         break;
                     case TokenType.Token_o_endfor:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_endfor;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_endfor;
                         // 消除语句块栈
-                        if (iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori && iBlockStack.Peek().nodeName.EndsWith("_forBranch"))
+                        if (BlockStack.Peek().NodeSyntaxType == SyntaxType.case_kotori && BlockStack.Peek().NodeName.EndsWith("_forBranch"))
                         {
-                            iBlockStack.Pop();
+                            BlockStack.Pop();
                         }
                         else
                         {
@@ -1071,31 +1071,31 @@ namespace Yuri.YuriInterpreter
                             {
                                 Message = "for语句块匹配不成立，是否多余/残缺了endfor？",
                                 HitLine = this.dealingLine,
-                                HitColumn = mainToken.aColumn,
+                                HitColumn = mainToken.Column,
                                 HitPhase = InterpreterException.InterpreterPhase.Parser,
                                 SceneFileName = this.dealingFile
                             };
                         }
                         break;
                     case TokenType.Token_o_if:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_if;
-                        statementNode.paramDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);
+                        statementNode.NodeSyntaxType = SyntaxType.synr_if;
+                        statementNode.ParamDict["cond"] = new SyntaxTreeNode(SyntaxType.para_cond, statementNode);
                         // 这里不追加语句块，因为它将在Parse中处理
                         break;
                     case TokenType.Token_o_else:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_else;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_else;
                         // 这里不追加语句块，因为它将在Parse中处理
                         break;
                     case TokenType.Token_o_endif:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_endif;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_endif;
                         // 消除语句块栈
-                        if (iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori && iBlockStack.Peek().nodeName.EndsWith("_falseBranch"))
+                        if (BlockStack.Peek().NodeSyntaxType == SyntaxType.case_kotori && BlockStack.Peek().NodeName.EndsWith("_falseBranch"))
                         {
-                            iBlockStack.Pop();
+                            BlockStack.Pop();
                         }
-                        if (iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori && iBlockStack.Peek().nodeName.EndsWith("_trueBranch"))
+                        if (BlockStack.Peek().NodeSyntaxType == SyntaxType.case_kotori && BlockStack.Peek().NodeName.EndsWith("_trueBranch"))
                         {
-                            iBlockStack.Pop();
+                            BlockStack.Pop();
                         }
                         else
                         {
@@ -1103,23 +1103,23 @@ namespace Yuri.YuriInterpreter
                             {
                                 Message = "if语句块匹配不成立，是否多余/残缺了endif？",
                                 HitLine = this.dealingLine,
-                                HitColumn = mainToken.aColumn,
+                                HitColumn = mainToken.Column,
                                 HitPhase = InterpreterException.InterpreterPhase.Parser,
                                 SceneFileName = this.dealingFile
                             };
                         }
                         break;
                     case TokenType.Token_o_function:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_function;
-                        statementNode.paramDict["sign"] = new SyntaxTreeNode(SyntaxType.para_sign, statementNode);
+                        statementNode.NodeSyntaxType = SyntaxType.synr_function;
+                        statementNode.ParamDict["sign"] = new SyntaxTreeNode(SyntaxType.para_sign, statementNode);
                         // 这里不追加语句块，因为它将在Parse中处理
                         break;
                     case TokenType.Token_o_endfunction:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_endfunction;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_endfunction;
                         // 消除语句块栈
-                        if (iBlockStack.Peek().nodeSyntaxType == SyntaxType.case_kotori && iBlockStack.Peek().nodeName.EndsWith("_funDeclaration"))
+                        if (BlockStack.Peek().NodeSyntaxType == SyntaxType.case_kotori && BlockStack.Peek().NodeName.EndsWith("_funDeclaration"))
                         {
-                            iBlockStack.Pop();
+                            BlockStack.Pop();
                         }
                         else
                         {
@@ -1127,7 +1127,7 @@ namespace Yuri.YuriInterpreter
                             {
                                 Message = "函数定义匹配不成立，是否多余/残缺了endfunction？",
                                 HitLine = this.dealingLine,
-                                HitColumn = mainToken.aColumn,
+                                HitColumn = mainToken.Column,
                                 HitPhase = InterpreterException.InterpreterPhase.Parser,
                                 SceneFileName = this.dealingFile
                             };
@@ -1136,14 +1136,14 @@ namespace Yuri.YuriInterpreter
                     case TokenType.scenecluster:
                         throw new InterpreterException()
                         {
-                            Message = "未识别的语句：" + mainToken.detail,
+                            Message = "未识别的语句：" + mainToken.OriginalCodeStr,
                             HitLine = this.dealingLine,
-                            HitColumn = mainToken.aColumn,
+                            HitColumn = mainToken.Column,
                             HitPhase = InterpreterException.InterpreterPhase.Parser,
                             SceneFileName = this.dealingFile
                         };
                     case TokenType.sceneterminator:
-                        statementNode.nodeSyntaxType = SyntaxType.synr_dialogTerminator;
+                        statementNode.NodeSyntaxType = SyntaxType.synr_dialogTerminator;
                         break;
                     default:
                         break;
@@ -1155,7 +1155,7 @@ namespace Yuri.YuriInterpreter
                 while (prescanPointer < this.istream.Count)
                 {
                     // 解析参数列表
-                    switch (this.istream[prescanPointer].aType)
+                    switch (this.istream[prescanPointer].Type)
                     {
                         case TokenType.Token_p_name:
                             this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "name", SyntaxType.tail_idenLeave);
@@ -1240,15 +1240,15 @@ namespace Yuri.YuriInterpreter
                         default:
                             throw new InterpreterException()
                             {
-                                Message = "未识别的语句参数：" + this.istream[prescanPointer].detail,
+                                Message = "未识别的语句参数：" + this.istream[prescanPointer].OriginalCodeStr,
                                 HitLine = this.dealingLine,
-                                HitColumn = this.istream[prescanPointer].aColumn,
+                                HitColumn = this.istream[prescanPointer].Column,
                                 HitPhase = InterpreterException.InterpreterPhase.Parser,
                                 SceneFileName = this.dealingFile
                             };
                     }
                     // 如果遇到startend就结束
-                    if (this.istream[prescanPointer].aType == TokenType.startend)
+                    if (this.istream[prescanPointer].Type == TokenType.startend)
                     {
                         latticeFlag = true;
                         break;
@@ -1266,35 +1266,35 @@ namespace Yuri.YuriInterpreter
                 }
             }
             // 如果是剧情文本的情况下
-            else if (this.istream[prescanPointer].aType == TokenType.scenecluster)
+            else if (this.istream[prescanPointer].Type == TokenType.scenecluster)
             {
                 // 把所有的剧情文本聚合成篇章
                 SyntaxTreeNode statementNode = new SyntaxTreeNode();
                 Token sc = new Token();
-                sc.aType = TokenType.scenecluster;
-                sc.aColumn = this.istream[prescanPointer].aColumn;
-                sc.aLine = this.istream[prescanPointer].aLine;
+                sc.Type = TokenType.scenecluster;
+                sc.Column = this.istream[prescanPointer].Column;
+                sc.Line = this.istream[prescanPointer].Line;
                 while (prescanPointer < this.istream.Count - 1 // 减1是要消掉startend的影响
-                    && this.istream[prescanPointer].aType != TokenType.sceneterminator)
+                    && this.istream[prescanPointer].Type != TokenType.sceneterminator)
                 {
                     // 如果匹配错误，就直接向上层抛错误
-                    if (!this.istream[prescanPointer].aType.ToString().StartsWith("scene"))
+                    if (!this.istream[prescanPointer].Type.ToString().StartsWith("scene"))
                     {
                         return null;
                     }
-                    sc.aTag = (sc.detail += this.istream[prescanPointer++].detail);
+                    sc.Tag = (sc.OriginalCodeStr += this.istream[prescanPointer++].OriginalCodeStr);
                 }
                 // 把这个唯一token加到语法树上
-                statementNode.nodeSyntaxType = SyntaxType.synr_dialog;
-                statementNode.nodeValue = (string)sc.aTag;
-                statementNode.paramTokenStream = new List<Token>();
-                statementNode.paramTokenStream.Add(sc);
+                statementNode.NodeSyntaxType = SyntaxType.synr_dialog;
+                statementNode.NodeValue = (string)sc.Tag;
+                statementNode.ParamTokenStream = new List<Token>();
+                statementNode.ParamTokenStream.Add(sc);
                 return statementNode;
             }
-            else if (this.istream[prescanPointer].aType == TokenType.sceneterminator)
+            else if (this.istream[prescanPointer].Type == TokenType.sceneterminator)
             {
                 SyntaxTreeNode statementNode = new SyntaxTreeNode();
-                statementNode.nodeSyntaxType = SyntaxType.synr_dialogTerminator;
+                statementNode.NodeSyntaxType = SyntaxType.synr_dialogTerminator;
                 return statementNode;
             }
             // 除此以外，直接抛错误给上层
@@ -1309,43 +1309,43 @@ namespace Yuri.YuriInterpreter
         /// <param name="mySyntax">节点语法类型</param>
         /// <param name="myToken">命中单词</param>
         /// <returns>下一个展开节点的指针</returns>
-        private SyntaxTreeNode Derivator(SyntaxTreeNode myNode, CFunctionType myType, SyntaxType mySyntax, Token myToken)
+        private SyntaxTreeNode Derivate(SyntaxTreeNode myNode, CFunctionType myType, SyntaxType mySyntax, Token myToken)
         {
             // 更新节点信息
             if (myNode != null)
             {
-                myNode.nodeType = myType;
-                myNode.nodeValue = myToken.detail;
-                myNode.nodeSyntaxType = mySyntax;
-                myNode.nodeName = mySyntax.ToString();
-                myNode.line = myToken.aLine;
-                myNode.col = myToken.aColumn;
-                if (myToken.isVar)
+                myNode.NodeType = myType;
+                myNode.NodeValue = myToken.OriginalCodeStr;
+                myNode.NodeSyntaxType = mySyntax;
+                myNode.NodeName = mySyntax.ToString();
+                myNode.Line = myToken.Line;
+                myNode.Column = myToken.Column;
+                if (myToken.IsVar)
                 {
-                    myNode.nodeVarType = myToken.isGlobal ? VarScopeType.GLOBAL : VarScopeType.LOCAL;
+                    myNode.NodeVarType = myToken.IsGlobal ? VarScopeType.GLOBAL : VarScopeType.LOCAL;
                 }
             }
             // 取候选向量
-            List<SyntaxType> iSvec = this.iDict[Convert.ToInt32(myType)];
+            List<SyntaxType> iSvec = this.derivatorTypeDict[Convert.ToInt32(myType)];
             // 左边出栈
-            this.iParseStack.Pop();
+            this.parseStack.Pop();
             // 如果她是一个非终结符
             if (myType < CFunctionType.DERI_UMI_BOUNDARY)
             {
                 // 自右向左压匹配栈
                 for (int i = iSvec.Count - 1; i >= 0; i--)
                 {
-                    this.iParseStack.Push(iSvec[i]);
+                    this.parseStack.Push(iSvec[i]);
                 }
                 // 自左向右构造子节点
                 bool flag = false;
                 SyntaxTreeNode successor = null;
-                myNode.children = new List<SyntaxTreeNode>();
+                myNode.Children = new List<SyntaxTreeNode>();
                 for (int i = 0; i < iSvec.Count; i++)
                 {
                     SyntaxTreeNode newNode = new SyntaxTreeNode();
-                    newNode.parent = myNode;
-                    myNode.children.Add(newNode);
+                    newNode.Parent = myNode;
+                    myNode.Children.Add(newNode);
                     if (flag == false)
                     {
                         successor = newNode;
@@ -1371,7 +1371,7 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 语句块嵌套栈
         /// </summary>
-        internal Stack<SyntaxTreeNode> iBlockStack = null;
+        public Stack<SyntaxTreeNode> BlockStack = null;
 
         /// <summary>
         /// 下一Token指针
@@ -1396,31 +1396,31 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 匹配栈
         /// </summary>
-        private Stack<SyntaxType> iParseStack = new Stack<SyntaxType>();
+        private Stack<SyntaxType> parseStack = new Stack<SyntaxType>();
         
         /// <summary>
         /// 候选式类型的向量
         /// </summary>
-        private List<List<SyntaxType>> iDict = new List<List<SyntaxType>>();
+        private List<List<SyntaxType>> derivatorTypeDict = new List<List<SyntaxType>>();
         
         /// <summary>
         /// 非LL1推导候选节点队列
         /// </summary>
-        private Queue<SyntaxTreeNode> iQueue = new Queue<SyntaxTreeNode>();
+        private Queue<SyntaxTreeNode> commandDerivatorQueue = new Queue<SyntaxTreeNode>();
         
         /// <summary>
         /// LL1预测分析表
         /// </summary>
-        private LL1ParseMap iMap = new LL1ParseMap(LL1PARSERMAPROW, LL1PARSERMAPCOL);
+        private LL1ParseMap iMap = new LL1ParseMap(LL1ParserMapRowCount, LL1ParserMapColCount);
         
         /// <summary>
         /// LL1分析预测表行数
         /// </summary>
-        private static readonly int LL1PARSERMAPROW = 33;
+        private static readonly int LL1ParserMapRowCount = 33;
 
         /// <summary>
         /// LL1分析预测表列数
         /// </summary>
-        private static readonly int LL1PARSERMAPCOL = 19;
+        private static readonly int LL1ParserMapColCount = 19;
     }
 }
