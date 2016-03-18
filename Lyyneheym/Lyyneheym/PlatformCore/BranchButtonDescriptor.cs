@@ -9,7 +9,7 @@ namespace Yuri.PlatformCore
     /// 选择项按钮描述类
     /// </summary>
     [Serializable]
-    public class BranchButtonDescriptor
+    internal class BranchButtonDescriptor
     {
         /// <summary>
         /// 获取或设置选择项按钮id号
@@ -44,16 +44,16 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置选择项按钮正常态描述子
         /// </summary>
-        public SpriteDescriptor normalDescriptor { get; set; }
+        public SpriteDescriptor NormalDescriptor { get; set; }
 
         /// <summary>
         /// 获取或设置选择项按钮悬停态描述子
         /// </summary>
-        public SpriteDescriptor overDescriptor { get; set; }
+        public SpriteDescriptor OverDescriptor { get; set; }
 
         /// <summary>
         /// 获取或设置选择项按钮按下态描述子
         /// </summary>
-        public SpriteDescriptor onDescriptor { get; set; }
+        public SpriteDescriptor OnDescriptor { get; set; }
     }
 }

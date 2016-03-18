@@ -9,15 +9,15 @@ namespace Yuri.PlatformCore
     /// 精灵按钮描述类
     /// </summary>
     [Serializable]
-    public class SpriteButtonDescriptor
+    internal class SpriteButtonDescriptor
     {
         /// <summary>
         /// 构造一个按钮描述子
         /// </summary>
         public SpriteButtonDescriptor()
         {
-            this.normalDescriptor = this.overDescriptor = this.onDescriptor = null;
-            this.jumpLabel = String.Empty;
+            this.NormalDescriptor = this.OverDescriptor = this.OnDescriptor = null;
+            this.JumpLabel = String.Empty;
             this.X = this.Y = 0;
             this.Z = GlobalDataContainer.GAME_Z_BUTTON;
             this.Opacity = 1;
@@ -27,27 +27,27 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置按钮正常态精灵描述子
         /// </summary>
-        public SpriteDescriptor normalDescriptor { get; set; }
+        public SpriteDescriptor NormalDescriptor { get; set; }
 
         /// <summary>
         /// 获取或设置按钮悬停态精灵描述子
         /// </summary>
-        public SpriteDescriptor overDescriptor { get; set; }
+        public SpriteDescriptor OverDescriptor { get; set; }
 
         /// <summary>
         /// 获取或设置按钮按下态精灵描述子
         /// </summary>
-        public SpriteDescriptor onDescriptor { get; set; }
+        public SpriteDescriptor OnDescriptor { get; set; }
         
         /// <summary>
         /// 获取或设置按钮跳转标签
         /// </summary>
-        public string jumpLabel { get; set; }
+        public string JumpLabel { get; set; }
 
         /// <summary>
         /// 获取或设置按钮终端调用函数
         /// </summary>
-        public string interruptFuncSign { get; set; }
+        public string InterruptFuncSign { get; set; }
 
         /// <summary>
         /// 获取或设置按钮X坐标

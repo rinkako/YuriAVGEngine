@@ -10,7 +10,7 @@ namespace Yuri.PlatformCore
     /// <para>她是一个单例类，只有唯一实例</para>
     /// </summary>
     [Serializable]
-    public sealed class SymbolTable
+    internal sealed class SymbolTable
     {
         /// <summary>
         /// 重置符号表
@@ -32,7 +32,7 @@ namespace Yuri.PlatformCore
         /// <returns>变量在运行时环境的引用</returns>
         public object Fetch(Scene sceneObject, string varName)
         {
-            Dictionary<string, object> table = this.FindSymbolTable(sceneObject.scenario);
+            Dictionary<string, object> table = this.FindSymbolTable(sceneObject.Scenario);
             // 如果查无此键
             if (table.ContainsKey(varName) == false)
             {
@@ -165,11 +165,11 @@ namespace Yuri.PlatformCore
         /// <returns>操作成功与否</returns>
         public bool AddSymbolTable(Scene scene)
         {
-            if (this.userSymbolTableContainer.ContainsKey(scene.scenario))
+            if (this.userSymbolTableContainer.ContainsKey(scene.Scenario))
             {
                 return false;
             }
-            this.userSymbolTableContainer.Add(scene.scenario, new Dictionary<string, object>());
+            this.userSymbolTableContainer.Add(scene.Scenario, new Dictionary<string, object>());
             return true;
         }
 

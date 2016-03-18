@@ -12,7 +12,7 @@ namespace Yuri.Utils
     /// <para>包管理类：负责资源包的封装、解封、寻址和维护的类</para>
     /// <para>她是一个静态类</para>
     /// </summary>
-    public static class PackageUtils
+    internal static class PackageUtils
     {
         /// <summary>
         /// 把指定资源封装为一个包
@@ -21,7 +21,7 @@ namespace Yuri.Utils
         /// <param name="fileList">一个装有待打包数据路径的向量</param>
         /// <param name="saveFile">打包文件的保存路径</param>
         /// <returns>操作成功与否</returns>
-        public static bool pack(List<string> fileList, string saveFile)
+        public static bool Pack(List<string> fileList, string saveFile)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace Yuri.Utils
         /// <param name="getFile">资源名称</param>
         /// <param name="saveFile">解压目标路径</param>
         /// <returns>操作成功与否</returns>
-        public static bool unpack(string packFile, string getFile, string saveFile)
+        public static bool Unpack(string packFile, string getFile, string saveFile)
         {
             try
             {
@@ -137,14 +137,14 @@ namespace Yuri.Utils
         }
 
         /// <summary>
-        /// 获得一个封包对象的字节序列
+        /// 将一个封包资源读取成字节序列并返回它的托管句柄对象
         /// </summary>
         /// <param name="packFile">包路径</param>
         /// <param name="resourceName">资源名称</param>
         /// <param name="offset">资源在包中的偏移量</param>
         /// <param name="length">资源字节数</param>
         /// <returns>资源的字节序列</returns>
-        public static GCHandle getObjectIntPtr(string packFile, string resourceName, long offset, long length)
+        public static GCHandle GetObjectManagedHandle(string packFile, string resourceName, long offset, long length)
         {
             FileStream pakFs = new FileStream(packFile, FileMode.Open);
             BinaryReader pakBr = new BinaryReader(pakFs);
@@ -169,7 +169,7 @@ namespace Yuri.Utils
         /// <param name="offset">资源在包中的偏移量</param>
         /// <param name="length">资源字节数</param>
         /// <returns>资源的字节序列</returns>
-        public static byte[] getObjectBytes(string packFile, string resourceName, long offset, long length)
+        public static byte[] GetObjectBytes(string packFile, string resourceName, long offset, long length)
         {
             FileStream pakFs = new FileStream(packFile, FileMode.Open);
             BinaryReader pakBr = new BinaryReader(pakFs);
@@ -190,7 +190,7 @@ namespace Yuri.Utils
         /// </summary>
         /// <param name="packFile">包路径</param>
         /// <returns>包含了包里所有文件名称的向量</returns>
-        public static List<string> getPackList(string packFile)
+        public static List<string> GetPackList(string packFile)
         {
             List<string> outList = new List<string>();
             try

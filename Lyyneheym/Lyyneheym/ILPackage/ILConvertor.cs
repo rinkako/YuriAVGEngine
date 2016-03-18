@@ -12,7 +12,7 @@ namespace Yuri.ILPackage
     /// <para>中间语言转换类：将SIL语言转换为场景动作序列</para>
     /// <para>她是一个单例类，只有唯一实例</para>
     /// </summary>
-    public class ILConvertor
+    internal class ILConvertor
     {
         /// <summary>
         /// 进行编译，返回IL对应的场景实例向量
@@ -132,7 +132,7 @@ namespace Yuri.ILPackage
                 }
             }
             SceneFunction nsf = new SceneFunction(signItem[0].Trim(), sceneName, funcSa);
-            nsf.param = funcParas;
+            nsf.Param = funcParas;
             return nsf;
         }
 
@@ -344,7 +344,7 @@ namespace Yuri.ILPackage
         /// <summary>
         /// 剧本文件的目录
         /// </summary>
-        public string sceneDirectory = "";
+        public string sceneDirectory = String.Empty;
 
         /// <summary>
         /// IL分割行的容器

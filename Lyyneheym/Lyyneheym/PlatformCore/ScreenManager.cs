@@ -11,7 +11,7 @@ namespace Yuri.PlatformCore
     /// <para>她是一个单例类，只有唯一实例</para>
     /// </summary>
     [Serializable]
-    public class ScreenManager
+    internal class ScreenManager
     {
         /// <summary>
         /// 为屏幕增加一个背景精灵描述子
@@ -29,9 +29,9 @@ namespace Yuri.PlatformCore
         {
             SpriteDescriptor sd = new SpriteDescriptor()
             {
-                id = id,
-                resType = ResourceType.Background,
-                resourceName = source,
+                Id = id,
+                ResourceType = ResourceType.Background,
+                ResourceName = source,
                 X = X,
                 Y = Y,
                 Z = Z + GlobalDataContainer.GAME_Z_BACKGROUND,
@@ -39,10 +39,10 @@ namespace Yuri.PlatformCore
                 ScaleY = ScaleY,
                 Angle = Angle,
                 Opacity = Opacity,
-                anchorType = anchor,
-                cutRect = cut
+                AnchorType = anchor,
+                CutRect = cut
             };
-            this.BackgroundDescVec[id] = sd;
+            this.backgroundDescVec[id] = sd;
         }
 
         /// <summary>
@@ -61,18 +61,18 @@ namespace Yuri.PlatformCore
         {
             SpriteDescriptor sd = new SpriteDescriptor()
             {
-                id = id,
-                resType = ResourceType.Stand,
-                resourceName = source,
+                Id = id,
+                ResourceType = ResourceType.Stand,
+                ResourceName = source,
                 X = X,
                 Y = Y,
                 Z = Z + GlobalDataContainer.GAME_Z_CHARACTERSTAND,
                 Angle = Angle,
                 Opacity = Opacity,
-                anchorType = anchor,
-                cutRect = cut
+                AnchorType = anchor,
+                CutRect = cut
             };
-            this.CharacterDescVec[id] = sd;
+            this.characterDescVec[id] = sd;
         }
 
         /// <summary>
@@ -94,80 +94,80 @@ namespace Yuri.PlatformCore
                 case CharacterStandType.Left:
                     sd = new SpriteDescriptor()
                     {
-                        id = id,
-                        resType = ResourceType.Stand,
-                        resourceName = source,
+                        Id = id,
+                        ResourceType = ResourceType.Stand,
+                        ResourceName = source,
                         X = GlobalDataContainer.GAME_CHARACTERSTAND_LEFT_X,
                         Y = GlobalDataContainer.GAME_CHARACTERSTAND_LEFT_Y,
                         Z = Z + GlobalDataContainer.GAME_Z_CHARACTERSTAND,
                         Angle = Angle,
                         Opacity = Opacity,
-                        anchorType = anchor,
-                        cutRect = cut
+                        AnchorType = anchor,
+                        CutRect = cut
                     };
                     break;
                 case CharacterStandType.MidLeft:
                     sd = new SpriteDescriptor()
                     {
-                        id = id,
-                        resType = ResourceType.Stand,
-                        resourceName = source,
+                        Id = id,
+                        ResourceType = ResourceType.Stand,
+                        ResourceName = source,
                         X = GlobalDataContainer.GAME_CHARACTERSTAND_MIDLEFT_X,
                         Y = GlobalDataContainer.GAME_CHARACTERSTAND_MIDLEFT_Y,
                         Z = Z,
                         Angle = Angle,
                         Opacity = Opacity,
-                        anchorType = anchor,
-                        cutRect = cut
+                        AnchorType = anchor,
+                        CutRect = cut
                     };
                     break;
                 case CharacterStandType.Mid:
                     sd = new SpriteDescriptor()
                     {
-                        id = id,
-                        resType = ResourceType.Stand,
-                        resourceName = source,
+                        Id = id,
+                        ResourceType = ResourceType.Stand,
+                        ResourceName = source,
                         X = GlobalDataContainer.GAME_CHARACTERSTAND_MID_X,
                         Y = GlobalDataContainer.GAME_CHARACTERSTAND_MID_Y,
                         Z = Z,
                         Angle = Angle,
                         Opacity = Opacity,
-                        anchorType = anchor,
-                        cutRect = cut
+                        AnchorType = anchor,
+                        CutRect = cut
                     };
                     break;
                 case CharacterStandType.MidRight:
                     sd = new SpriteDescriptor()
                     {
-                        id = id,
-                        resType = ResourceType.Stand,
-                        resourceName = source,
+                        Id = id,
+                        ResourceType = ResourceType.Stand,
+                        ResourceName = source,
                         X = GlobalDataContainer.GAME_CHARACTERSTAND_MIDRIGHT_X,
                         Y = GlobalDataContainer.GAME_CHARACTERSTAND_MIDRIGHT_Y,
                         Z = Z,
                         Angle = Angle,
                         Opacity = Opacity,
-                        anchorType = anchor,
-                        cutRect = cut
+                        AnchorType = anchor,
+                        CutRect = cut
                     };
                     break;
                 case CharacterStandType.Right:
                     sd = new SpriteDescriptor()
                     {
-                        id = id,
-                        resType = ResourceType.Stand,
-                        resourceName = source,
+                        Id = id,
+                        ResourceType = ResourceType.Stand,
+                        ResourceName = source,
                         X = GlobalDataContainer.GAME_CHARACTERSTAND_RIGHT_X,
                         Y = GlobalDataContainer.GAME_CHARACTERSTAND_RIGHT_Y,
                         Z = Z,
                         Angle = Angle,
                         Opacity = Opacity,
-                        anchorType = anchor,
-                        cutRect = cut
+                        AnchorType = anchor,
+                        CutRect = cut
                     };
                     break;
             }
-            this.CharacterDescVec[id] = sd;
+            this.characterDescVec[id] = sd;
         }
 
         /// <summary>
@@ -186,9 +186,9 @@ namespace Yuri.PlatformCore
         {
             SpriteDescriptor sd = new SpriteDescriptor()
             {
-                id = id,
-                resType = ResourceType.Pictures,
-                resourceName = source,
+                Id = id,
+                ResourceType = ResourceType.Pictures,
+                ResourceName = source,
                 X = X,
                 Y = Y,
                 Z = Z + GlobalDataContainer.GAME_Z_PICTURES,
@@ -196,10 +196,10 @@ namespace Yuri.PlatformCore
                 ScaleY = ScaleY,
                 Angle = Angle,
                 Opacity = Opacity,
-                anchorType = anchor,
-                cutRect = cut
+                AnchorType = anchor,
+                CutRect = cut
             };
-            this.PictureDescVec[id] = sd;
+            this.pictureDescVec[id] = sd;
         }
 
         /// <summary>
@@ -223,15 +223,15 @@ namespace Yuri.PlatformCore
                 X = X,
                 Y = Y,
                 Z = GlobalDataContainer.GAME_Z_BUTTON + id,
-                jumpLabel = jumpTarget,
-                interruptFuncSign = funcCallSign,
-                normalDescriptor = normalDesc,
-                overDescriptor = overDesc,
-                onDescriptor = onDesc,
+                JumpLabel = jumpTarget,
+                InterruptFuncSign = funcCallSign,
+                NormalDescriptor = normalDesc,
+                OverDescriptor = overDesc,
+                OnDescriptor = onDesc,
                 Opacity = 1.0,
                 Eternal = type == "once" ? false : true
             };
-            this.ButtonDescVec[id] = sbd;
+            this.buttonDescVec[id] = sbd;
         }
 
         /// <summary>
@@ -255,11 +255,11 @@ namespace Yuri.PlatformCore
                 Y = Y,
                 Z = GlobalDataContainer.GAME_Z_BRANCHBUTTON + id,
                 Text = text,
-                normalDescriptor = normalDesc,
-                overDescriptor = overDesc,
-                onDescriptor = onDesc
+                NormalDescriptor = normalDesc,
+                OverDescriptor = overDesc,
+                OnDescriptor = onDesc
             };
-            this.BranchDescVec[id] = bbd;
+            this.branchDescVec[id] = bbd;
         }
 
         /// <summary>
@@ -305,7 +305,7 @@ namespace Yuri.PlatformCore
                 FontShadow = shadow,
                 Text = ""
             };
-            this.MsgLayerDescVec[id] = mld;
+            this.msgLayerDescVec[id] = mld;
         }
 
         /// <summary>
@@ -318,13 +318,13 @@ namespace Yuri.PlatformCore
             switch (rType)
             {
                 case ResourceType.Background:
-                    this.BackgroundDescVec[spriteId] = null;
+                    this.backgroundDescVec[spriteId] = null;
                     break;
                 case ResourceType.Stand:
-                    this.CharacterDescVec[spriteId] = null;
+                    this.characterDescVec[spriteId] = null;
                     break;
                 case ResourceType.Pictures:
-                    this.PictureDescVec[spriteId] = null;
+                    this.pictureDescVec[spriteId] = null;
                     break;
             }
         }
@@ -335,7 +335,7 @@ namespace Yuri.PlatformCore
         /// <param name="layerId">文字层id</param>
         public void RemoveMsgLayer(int layerId)
         {
-            this.MsgLayerDescVec[layerId] = null;
+            this.msgLayerDescVec[layerId] = null;
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace Yuri.PlatformCore
         /// <param name="id">按钮id</param>
         public void RemoveButton(int id)
         {
-            this.ButtonDescVec[id] = null;
+            this.buttonDescVec[id] = null;
         }
 
         /// <summary>
@@ -353,7 +353,7 @@ namespace Yuri.PlatformCore
         /// <param name="id">选择支id</param>
         public void RemoveBranchButton(int id)
         {
-            this.BranchDescVec[id] = null;
+            this.branchDescVec[id] = null;
         }
 
         /// <summary>
@@ -369,11 +369,11 @@ namespace Yuri.PlatformCore
                 switch (rType)
                 {
                     case ResourceType.Background:
-                        return this.BackgroundDescVec[id];
+                        return this.backgroundDescVec[id];
                     case ResourceType.Stand:
-                        return this.CharacterDescVec[id];
+                        return this.characterDescVec[id];
                     case ResourceType.Pictures:
-                        return this.PictureDescVec[id];
+                        return this.pictureDescVec[id];
                     default:
                         return null;
                 }
@@ -392,7 +392,7 @@ namespace Yuri.PlatformCore
         /// <returns>描述子实例</returns>
         public MessageLayerDescriptor GetMsgLayerDescriptor(int id)
         {
-            return this.MsgLayerDescVec[id];
+            return this.msgLayerDescVec[id];
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace Yuri.PlatformCore
         /// <returns>描述子实例</returns>
         public SpriteButtonDescriptor GetButtonDescriptor(int id)
         {
-            return this.ButtonDescVec[id];
+            return this.buttonDescVec[id];
         }
 
         /// <summary>
@@ -412,7 +412,7 @@ namespace Yuri.PlatformCore
         /// <returns描述子实例></returns>
         public BranchButtonDescriptor GetBranchButtonDescriptor(int id)
         {
-            return this.BranchDescVec[id];
+            return this.branchDescVec[id];
         }
 
         /// <summary>
@@ -420,38 +420,8 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void Backlay()
         {
-            CommonUtils.Swap<SpriteDescriptor>(this.BackgroundDescVec, 0, 1);
+            CommonUtils.Swap<SpriteDescriptor>(this.backgroundDescVec, 0, 1);
         }
-
-        /// <summary>
-        /// 背景描述向量
-        /// </summary>
-        private List<SpriteDescriptor> BackgroundDescVec;
-
-        /// <summary>
-        /// 立绘描述向量
-        /// </summary>
-        private List<SpriteDescriptor> CharacterDescVec;
-
-        /// <summary>
-        /// 图片描述向量
-        /// </summary>
-        private List<SpriteDescriptor> PictureDescVec;
-
-        /// <summary>
-        /// 选择项描述向量
-        /// </summary>
-        private List<BranchButtonDescriptor> BranchDescVec;
-
-        /// <summary>
-        /// 文字层描述向量
-        /// </summary>
-        private List<MessageLayerDescriptor> MsgLayerDescVec;
-
-        /// <summary>
-        /// 按钮层描述向量
-        /// </summary>
-        private List<SpriteButtonDescriptor> ButtonDescVec;
 
         /// <summary>
         /// 初始化文字层描述子
@@ -482,7 +452,7 @@ namespace Yuri.PlatformCore
                 Visible = false,
                 Text = ""
             };
-            this.MsgLayerDescVec.Add(mainMsgLayer);
+            this.msgLayerDescVec.Add(mainMsgLayer);
             // 初始化附加文本层
             for (int i = 1; i < GlobalDataContainer.GAME_MESSAGELAYER_COUNT; i++)
             {
@@ -509,7 +479,7 @@ namespace Yuri.PlatformCore
                     Visible = false,
                     Text = ""
                 };
-                this.MsgLayerDescVec.Add(mld);
+                this.msgLayerDescVec.Add(mld);
             }
         }
 
@@ -518,31 +488,31 @@ namespace Yuri.PlatformCore
         /// </summary>
         private ScreenManager()
         {
-            this.BackgroundDescVec = new List<SpriteDescriptor>();
-            this.CharacterDescVec = new List<SpriteDescriptor>();
-            this.PictureDescVec = new List<SpriteDescriptor>();
-            this.BranchDescVec = new List<BranchButtonDescriptor>();
-            this.ButtonDescVec = new List<SpriteButtonDescriptor>();
-            this.MsgLayerDescVec = new List<MessageLayerDescriptor>();
+            this.backgroundDescVec = new List<SpriteDescriptor>();
+            this.characterDescVec = new List<SpriteDescriptor>();
+            this.pictureDescVec = new List<SpriteDescriptor>();
+            this.branchDescVec = new List<BranchButtonDescriptor>();
+            this.buttonDescVec = new List<SpriteButtonDescriptor>();
+            this.msgLayerDescVec = new List<MessageLayerDescriptor>();
             for (int i = 0; i < GlobalDataContainer.GAME_BACKGROUND_COUNT; i++)
             {
-                this.BackgroundDescVec.Add(null);
+                this.backgroundDescVec.Add(null);
             }
             for (int i = 0; i < GlobalDataContainer.GAME_CHARACTERSTAND_COUNT; i++)
             {
-                this.CharacterDescVec.Add(null);
+                this.characterDescVec.Add(null);
             }
             for (int i = 0; i < GlobalDataContainer.GAME_IMAGELAYER_COUNT; i++)
             {
-                this.PictureDescVec.Add(null);
+                this.pictureDescVec.Add(null);
             }
             for (int i = 0; i < GlobalDataContainer.GAME_BRANCH_COUNT; i++)
             {
-                this.BranchDescVec.Add(null);
+                this.branchDescVec.Add(null);
             }
             for (int i = 0; i < GlobalDataContainer.GAME_BUTTON_COUNT; i++)
             {
-                this.ButtonDescVec.Add(null);
+                this.buttonDescVec.Add(null);
             }
             this.InitMessageLayerDescriptors();
         }
@@ -569,12 +539,42 @@ namespace Yuri.PlatformCore
         /// 唯一实例
         /// </summary>
         private static ScreenManager synObject = null;
+
+        /// <summary>
+        /// 背景描述向量
+        /// </summary>
+        private List<SpriteDescriptor> backgroundDescVec;
+
+        /// <summary>
+        /// 立绘描述向量
+        /// </summary>
+        private List<SpriteDescriptor> characterDescVec;
+
+        /// <summary>
+        /// 图片描述向量
+        /// </summary>
+        private List<SpriteDescriptor> pictureDescVec;
+
+        /// <summary>
+        /// 选择项描述向量
+        /// </summary>
+        private List<BranchButtonDescriptor> branchDescVec;
+
+        /// <summary>
+        /// 文字层描述向量
+        /// </summary>
+        private List<MessageLayerDescriptor> msgLayerDescVec;
+
+        /// <summary>
+        /// 按钮层描述向量
+        /// </summary>
+        private List<SpriteButtonDescriptor> buttonDescVec;
     }
 
     /// <summary>
     /// 枚举：立绘位置
     /// </summary>
-    public enum CharacterStandType
+    internal enum CharacterStandType
     {
         Left,
         MidLeft,

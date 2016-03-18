@@ -13,7 +13,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置Polish项的类型
         /// </summary>
-        public PolishItemType itemType
+        public PolishItemType ItemType
         {
             get;
             set;
@@ -22,7 +22,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置Polish项的数值
         /// </summary>
-        public double number
+        public double Number
         {
             get;
             set;
@@ -31,7 +31,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置Polish项的字符串
         /// </summary>
-        public string cluster
+        public string Cluster
         {
             get;
             set;
@@ -40,7 +40,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置Polish项在运行时环境的变量引用
         /// </summary>
-        public object reference
+        public object Reference
         {
             get;
             set;
@@ -54,15 +54,15 @@ namespace Yuri.PlatformCore
         /// <returns>是否可以作为操作符的双目</returns>
         public static bool isOperatable(PolishItem p1, PolishItem p2)
         {
-            if (p1.reference != null && p2.reference != null && p1.reference.GetType() == p2.reference.GetType()) { return true; }
-            if (p1.itemType == PolishItemType.CONSTANT && p2.itemType == PolishItemType.CONSTANT)     { return true; }
-            if (p1.itemType == PolishItemType.CONSTANT && p2.itemType == PolishItemType.VAR_NUM)      { return true; }
-            if (p1.itemType == PolishItemType.VAR_NUM && p2.itemType == PolishItemType.VAR_NUM)       { return true; }
-            if (p1.itemType == PolishItemType.VAR_NUM && p2.itemType == PolishItemType.CONSTANT)      { return true; }
-            if (p1.itemType == PolishItemType.STRING && p2.itemType == PolishItemType.STRING)         { return true; }
-            if (p1.itemType == PolishItemType.STRING && p2.itemType == PolishItemType.VAR_STRING)     { return true; }
-            if (p1.itemType == PolishItemType.VAR_STRING && p2.itemType == PolishItemType.VAR_STRING) { return true; }
-            if (p1.itemType == PolishItemType.VAR_STRING && p2.itemType == PolishItemType.STRING)     { return true; }
+            if (p1.Reference != null && p2.Reference != null && p1.Reference.GetType() == p2.Reference.GetType()) { return true; }
+            if (p1.ItemType == PolishItemType.CONSTANT && p2.ItemType == PolishItemType.CONSTANT)     { return true; }
+            if (p1.ItemType == PolishItemType.CONSTANT && p2.ItemType == PolishItemType.VAR_NUM)      { return true; }
+            if (p1.ItemType == PolishItemType.VAR_NUM && p2.ItemType == PolishItemType.VAR_NUM)       { return true; }
+            if (p1.ItemType == PolishItemType.VAR_NUM && p2.ItemType == PolishItemType.CONSTANT)      { return true; }
+            if (p1.ItemType == PolishItemType.STRING && p2.ItemType == PolishItemType.STRING)         { return true; }
+            if (p1.ItemType == PolishItemType.STRING && p2.ItemType == PolishItemType.VAR_STRING)     { return true; }
+            if (p1.ItemType == PolishItemType.VAR_STRING && p2.ItemType == PolishItemType.VAR_STRING) { return true; }
+            if (p1.ItemType == PolishItemType.VAR_STRING && p2.ItemType == PolishItemType.STRING)     { return true; }
             return false;
         }
     }

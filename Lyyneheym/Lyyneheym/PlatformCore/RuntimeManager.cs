@@ -10,7 +10,7 @@ namespace Yuri.PlatformCore
     /// <para>游戏保存的本质就是保存本实例</para>
     /// </summary>
     [Serializable]
-    public class RuntimeManager
+    internal class RuntimeManager
     {
         /// <summary>
         /// 获取当前调用堆栈顶部状态
@@ -24,18 +24,18 @@ namespace Yuri.PlatformCore
             }
             else
             {
-                return this.CallStack.ESP.state;
+                return this.CallStack.ESP.State;
             }
         }
 
         /// <summary>
-        /// 取下一动作指令
+        /// 取下一动作指令并暂存当前执行的动作
         /// </summary>
         /// <returns>动作实例</returns>
         public SceneAction MoveNext()
         {
             SceneAction fetched = this.FetchNextInstruction();
-            if (fetched != null && this.CallStack.ESP.state == StackMachineState.Interpreting)
+            if (fetched != null && this.CallStack.ESP.State == StackMachineState.Interpreting)
             {
                 this.DashingPureSa = fetched.Clone(true);
             }
@@ -43,7 +43,7 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 寻找下一动作指令
+        /// 递归寻指
         /// </summary>
         /// <returns>动作实例</returns>
         private SceneAction FetchNextInstruction()
@@ -54,8 +54,8 @@ namespace Yuri.PlatformCore
                 return null;
             }
             // 取出当前要执行的指令
-            if (this.CallStack.ESP.state != StackMachineState.Interpreting &&
-                this.CallStack.ESP.state != StackMachineState.FunctionCalling)
+            if (this.CallStack.ESP.State != StackMachineState.Interpreting &&
+                this.CallStack.ESP.State != StackMachineState.FunctionCalling)
             {
                 return null;
             }
@@ -229,7 +229,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void ExitUserWait()
         {
-            while (this.CallStack.Count() > 0 && this.CallStack.ESP.state == StackMachineState.WaitUser)
+            while (this.CallStack.Count() > 0 && this.CallStack.ESP.State == StackMachineState.WaitUser)
             {
                 this.CallStack.Consume();
             }
@@ -265,10 +265,10 @@ namespace Yuri.PlatformCore
         {
             this.CallStack.Submit(function, args);
             // 处理参数传递
-            var funcSymbols = function.symbols;
+            var funcSymbols = function.Symbols;
             for (int i = 0; i < args.Count; i++)
             {
-                funcSymbols[function.param[i].Substring(1)] = args[i];
+                funcSymbols[function.Param[i].Substring(1)] = args[i];
             }
         }
 
@@ -285,13 +285,13 @@ namespace Yuri.PlatformCore
                 // 非函数调用
                 if (this.GameState() != StackMachineState.FunctionCalling)
                 {
-                    this.Symbols.Assign(this.CallStack.EBP.scriptName, varname.Replace("$", ""), this.CalculatePolish(valuePolish));
+                    this.Symbols.Assign(this.CallStack.EBP.ScriptName, varname.Replace("$", ""), this.CalculatePolish(valuePolish));
                 }
                 // 函数调用
                 else
                 {
-                    var functionFrame = ResourceManager.GetInstance().GetScene(this.CallStack.ESP.bindingSceneName).funcContainer.Find((x) => x.callname == this.CallStack.ESP.scriptName);
-                    functionFrame.symbols[varname.Replace("$", "")] = this.CalculatePolish(valuePolish);
+                    var functionFrame = ResourceManager.GetInstance().GetScene(this.CallStack.ESP.BindingSceneName).FuncContainer.Find((x) => x.Callname == this.CallStack.ESP.ScriptName);
+                    functionFrame.Symbols[varname.Replace("$", "")] = this.CalculatePolish(valuePolish);
                 }
             }
             // 处理全局变量
@@ -314,13 +314,13 @@ namespace Yuri.PlatformCore
                 // 非函数调用
                 if (this.GameState() != StackMachineState.FunctionCalling)
                 {
-                    return this.Symbols.Fetch(ResourceManager.GetInstance().GetScene(this.CallStack.EBP.scriptName), varName.Replace("$", ""));
+                    return this.Symbols.Fetch(ResourceManager.GetInstance().GetScene(this.CallStack.EBP.ScriptName), varName.Replace("$", ""));
                 }
                 // 函数调用
                 else
                 {
-                    var functionFrame = ResourceManager.GetInstance().GetScene(this.CallStack.ESP.bindingSceneName).funcContainer.Find((x) => x.callname == this.CallStack.ESP.scriptName);
-                    return functionFrame.symbols[varName.Replace("$", "")];
+                    var functionFrame = ResourceManager.GetInstance().GetScene(this.CallStack.ESP.BindingSceneName).FuncContainer.Find((x) => x.Callname == this.CallStack.ESP.ScriptName);
+                    return functionFrame.Symbols[varName.Replace("$", "")];
                 }
             }
             // 处理全局变量
@@ -388,36 +388,36 @@ namespace Yuri.PlatformCore
             foreach (PolishItem poi in calcList)
             {
                 // 操作数压栈
-                if (poi.itemType < PolishItemType.CAL_PLUS)
+                if (poi.ItemType < PolishItemType.CAL_PLUS)
                 {
                     calcStack.Push(poi);
                     continue;
                 }
                 // 下面开始是运算符
-                if (poi.itemType == PolishItemType.CAL_NOT && calcStack.Count >= 1)
+                if (poi.ItemType == PolishItemType.CAL_NOT && calcStack.Count >= 1)
                 {
                     PolishItem peeker = calcStack.Peek();
-                    if (peeker.itemType == PolishItemType.CONSTANT || peeker.itemType == PolishItemType.VAR_NUM)
+                    if (peeker.ItemType == PolishItemType.CONSTANT || peeker.ItemType == PolishItemType.VAR_NUM)
                     {
                         calcStack.Pop();
-                        double notres = Math.Abs(peeker.number) < 1e-15 ? 1.0 : 0.0;
+                        double notres = Math.Abs(peeker.Number) < 1e-15 ? 1.0 : 0.0;
                         PolishItem np = new PolishItem()
                         {
-                            number = notres,
-                            reference = notres
+                            Number = notres,
+                            Reference = notres
                         };
                         calcStack.Push(np);
                         continue;
                     }
-                    else if (peeker.itemType == PolishItemType.STRING || peeker.itemType == PolishItemType.VAR_STRING)
+                    else if (peeker.ItemType == PolishItemType.STRING || peeker.ItemType == PolishItemType.VAR_STRING)
                     {
                         calcStack.Pop();
-                        double notres = peeker.cluster == "" ? 1.0 : 0.0;
+                        double notres = peeker.Cluster == "" ? 1.0 : 0.0;
 
                         PolishItem np = new PolishItem()
                         {
-                            number = notres,
-                            reference = notres
+                            Number = notres,
+                            Reference = notres
                         };
                         calcStack.Push(np);
                         continue;
@@ -432,38 +432,38 @@ namespace Yuri.PlatformCore
                         PolishItem newPoi = null;
                         double tempDouble = 0;
                         string tempString = "";
-                        switch (poi.itemType)
+                        switch (poi.ItemType)
                         {
                             case PolishItemType.CAL_PLUS:
-                                if (operand1.reference is string)
+                                if (operand1.Reference is string)
                                 {
-                                    tempString = (string)operand1.reference + (string)operand2.reference;
+                                    tempString = (string)operand1.Reference + (string)operand2.Reference;
                                     newPoi = new PolishItem()
                                     {
-                                        cluster = tempString,
-                                        reference = tempString
+                                        Cluster = tempString,
+                                        Reference = tempString
                                     };
                                     calcStack.Push(newPoi);
                                 }
                                 else
                                 {
-                                    tempDouble = (double)operand1.reference + (double)operand2.reference;
+                                    tempDouble = (double)operand1.Reference + (double)operand2.Reference;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
                                 break;
                             case PolishItemType.CAL_MINUS:
-                                if (operand1.reference is double)
+                                if (operand1.Reference is double)
                                 {
-                                    tempDouble = (double)operand1.reference - (double)operand2.reference;
+                                    tempDouble = (double)operand1.Reference - (double)operand2.Reference;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
@@ -473,13 +473,13 @@ namespace Yuri.PlatformCore
                                 }
                                 break;
                             case PolishItemType.CAL_MULTI:
-                                if (operand1.reference is double)
+                                if (operand1.Reference is double)
                                 {
-                                    tempDouble = (double)operand1.reference * (double)operand2.reference;
+                                    tempDouble = (double)operand1.Reference * (double)operand2.Reference;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
@@ -489,17 +489,17 @@ namespace Yuri.PlatformCore
                                 }
                                 break;
                             case PolishItemType.CAL_DIV:
-                                if (operand1.reference is double)
+                                if (operand1.Reference is double)
                                 {
-                                    if (Math.Abs((double)operand2.reference) < 0)
+                                    if (Math.Abs((double)operand2.Reference) < 0)
                                     {
                                         throw new Exception("除零错误");
                                     }
-                                    tempDouble = (double)operand1.reference / (double)operand2.reference;
+                                    tempDouble = (double)operand1.Reference / (double)operand2.Reference;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
@@ -509,13 +509,13 @@ namespace Yuri.PlatformCore
                                 }
                                 break;
                             case PolishItemType.CAL_ANDAND:
-                                if (operand1.reference is double)
+                                if (operand1.Reference is double)
                                 {
-                                    tempDouble = (Math.Abs((double)operand1.reference) > 0 && Math.Abs((double)operand2.reference) > 0) ? 1 : 0;
+                                    tempDouble = (Math.Abs((double)operand1.Reference) > 0 && Math.Abs((double)operand2.Reference) > 0) ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
@@ -525,13 +525,13 @@ namespace Yuri.PlatformCore
                                 }
                                 break;
                             case PolishItemType.CAL_OROR:
-                                if (operand1.reference is double)
+                                if (operand1.Reference is double)
                                 {
-                                    tempDouble = (Math.Abs((double)operand1.reference) > 0 || Math.Abs((double)operand2.reference) > 0) ? 1 : 0;
+                                    tempDouble = (Math.Abs((double)operand1.Reference) > 0 || Math.Abs((double)operand2.Reference) > 0) ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
@@ -541,133 +541,133 @@ namespace Yuri.PlatformCore
                                 }
                                 break;
                             case PolishItemType.CAL_EQUAL:
-                                if (operand1.reference is double)
+                                if (operand1.Reference is double)
                                 {
-                                    tempDouble = (double)operand1.reference == (double)operand2.reference ? 1 : 0;
+                                    tempDouble = (double)operand1.Reference == (double)operand2.Reference ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
                                 else
                                 {
-                                    tempDouble = (string)operand1.reference == (string)operand2.reference ? 1 : 0;
+                                    tempDouble = (string)operand1.Reference == (string)operand2.Reference ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
                                 break;
                             case PolishItemType.CAL_NOTEQUAL:
-                                if (operand1.reference is double)
+                                if (operand1.Reference is double)
                                 {
-                                    tempDouble = (double)operand1.reference != (double)operand2.reference ? 1 : 0;
+                                    tempDouble = (double)operand1.Reference != (double)operand2.Reference ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
                                 else
                                 {
-                                    tempDouble = (string)operand1.reference != (string)operand2.reference ? 1 : 0;
+                                    tempDouble = (string)operand1.Reference != (string)operand2.Reference ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
                                 break;
                             case PolishItemType.CAL_BIG:
-                                if (operand1.reference is double)
+                                if (operand1.Reference is double)
                                 {
-                                    tempDouble = (double)operand1.reference > (double)operand2.reference ? 1 : 0;
+                                    tempDouble = (double)operand1.Reference > (double)operand2.Reference ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
                                 else
                                 {
-                                    tempDouble = String.Compare((string)operand1.reference, (string)operand2.reference) > 0 ? 1 : 0;
+                                    tempDouble = String.Compare((string)operand1.Reference, (string)operand2.Reference) > 0 ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
                                 break;
                             case PolishItemType.CAL_BIGEQUAL:
-                                if (operand1.reference is double)
+                                if (operand1.Reference is double)
                                 {
-                                    tempDouble = (double)operand1.reference >= (double)operand2.reference ? 1 : 0;
+                                    tempDouble = (double)operand1.Reference >= (double)operand2.Reference ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
                                 else
                                 {
-                                    tempDouble = String.Compare((string)operand1.reference, (string)operand2.reference) >= 0 ? 1 : 0;
+                                    tempDouble = String.Compare((string)operand1.Reference, (string)operand2.Reference) >= 0 ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
                                 break;
                             case PolishItemType.CAL_SMALL:
-                                if (operand1.reference is double)
+                                if (operand1.Reference is double)
                                 {
-                                    tempDouble = (double)operand1.reference < (double)operand2.reference ? 1 : 0;
+                                    tempDouble = (double)operand1.Reference < (double)operand2.Reference ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
                                 else
                                 {
-                                    tempDouble = String.Compare((string)operand1.reference, (string)operand2.reference) < 0 ? 1 : 0;
+                                    tempDouble = String.Compare((string)operand1.Reference, (string)operand2.Reference) < 0 ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
                                 break;
                             case PolishItemType.CAL_SMALLEQUAL:
-                                if (operand1.reference is double)
+                                if (operand1.Reference is double)
                                 {
-                                    tempDouble = (double)operand1.reference <= (double)operand2.reference ? 1 : 0;
+                                    tempDouble = (double)operand1.Reference <= (double)operand2.Reference ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
                                 else
                                 {
-                                    tempDouble = String.Compare((string)operand1.reference, (string)operand2.reference) <= 0 ? 1 : 0;
+                                    tempDouble = String.Compare((string)operand1.Reference, (string)operand2.Reference) <= 0 ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
-                                        number = tempDouble,
-                                        reference = tempDouble
+                                        Number = tempDouble,
+                                        Reference = tempDouble
                                     };
                                     calcStack.Push(newPoi);
                                 }
@@ -682,7 +682,7 @@ namespace Yuri.PlatformCore
             {
                 throw new Exception("表达式有错误");
             }
-            return calcStack.Peek().reference;
+            return calcStack.Peek().Reference;
         }
 
         /// <summary>
@@ -705,10 +705,10 @@ namespace Yuri.PlatformCore
                     double numitem = Convert.ToDouble(item);
                     poi = new PolishItem()
                     {
-                        number = numitem,
-                        cluster = null,
-                        itemType = PolishItemType.CONSTANT,
-                        reference = numitem
+                        Number = numitem,
+                        Cluster = null,
+                        ItemType = PolishItemType.CONSTANT,
+                        Reference = numitem
                     };
                 }
                 // 字符串
@@ -717,10 +717,10 @@ namespace Yuri.PlatformCore
                     string trimItem = item.Substring(1, item.Length - 2);
                     poi = new PolishItem()
                     {
-                        number = 0.0f,
-                        cluster = trimItem,
-                        itemType = PolishItemType.STRING,
-                        reference = trimItem
+                        Number = 0.0f,
+                        Cluster = trimItem,
+                        ItemType = PolishItemType.STRING,
+                        Reference = trimItem
                     };
                 }
                 // 变量时
@@ -731,20 +731,20 @@ namespace Yuri.PlatformCore
                     {
                         poi = new PolishItem()
                         {
-                            number = (double)varRef,
-                            cluster = null,
-                            itemType = PolishItemType.VAR_NUM,
-                            reference = varRef
+                            Number = (double)varRef,
+                            Cluster = null,
+                            ItemType = PolishItemType.VAR_NUM,
+                            Reference = varRef
                         };
                     }
                     else
                     {
                         poi = new PolishItem()
                         {
-                            number = 0.0f,
-                            cluster = Convert.ToString(varRef),
-                            itemType = PolishItemType.VAR_STRING,
-                            reference = varRef
+                            Number = 0.0f,
+                            Cluster = Convert.ToString(varRef),
+                            ItemType = PolishItemType.VAR_STRING,
+                            Reference = varRef
                         };
                     }
                 }
@@ -752,130 +752,130 @@ namespace Yuri.PlatformCore
                 {
                     poi = new PolishItem()
                     {
-                        number = 0.0f,
-                        cluster = null,
-                        itemType = PolishItemType.CAL_PLUS,
-                        reference = null
+                        Number = 0.0f,
+                        Cluster = null,
+                        ItemType = PolishItemType.CAL_PLUS,
+                        Reference = null
                     };
                 }
                 else if (item == "-")
                 {
                     poi = new PolishItem()
                     {
-                        number = 0.0f,
-                        cluster = null,
-                        itemType = PolishItemType.CAL_MINUS,
-                        reference = null
+                        Number = 0.0f,
+                        Cluster = null,
+                        ItemType = PolishItemType.CAL_MINUS,
+                        Reference = null
                     };
                 }
                 else if (item == "*")
                 {
                     poi = new PolishItem()
                     {
-                        number = 0.0f,
-                        cluster = null,
-                        itemType = PolishItemType.CAL_MULTI,
-                        reference = null
+                        Number = 0.0f,
+                        Cluster = null,
+                        ItemType = PolishItemType.CAL_MULTI,
+                        Reference = null
                     };
                 }
                 else if (item == "/")
                 {
                     poi = new PolishItem()
                     {
-                        number = 0.0f,
-                        cluster = null,
-                        itemType = PolishItemType.CAL_DIV,
-                        reference = null
+                        Number = 0.0f,
+                        Cluster = null,
+                        ItemType = PolishItemType.CAL_DIV,
+                        Reference = null
                     };
                 }
                 else if (item == "!")
                 {
                     poi = new PolishItem()
                     {
-                        number = 0.0f,
-                        cluster = null,
-                        itemType = PolishItemType.CAL_NOT,
-                        reference = null
+                        Number = 0.0f,
+                        Cluster = null,
+                        ItemType = PolishItemType.CAL_NOT,
+                        Reference = null
                     };
                 }
                 else if (item == "&&")
                 {
                     poi = new PolishItem()
                     {
-                        number = 0.0f,
-                        cluster = null,
-                        itemType = PolishItemType.CAL_ANDAND,
-                        reference = null
+                        Number = 0.0f,
+                        Cluster = null,
+                        ItemType = PolishItemType.CAL_ANDAND,
+                        Reference = null
                     };
                 }
                 else if (item == "||")
                 {
                     poi = new PolishItem()
                     {
-                        number = 0.0f,
-                        cluster = null,
-                        itemType = PolishItemType.CAL_OROR,
-                        reference = null
+                        Number = 0.0f,
+                        Cluster = null,
+                        ItemType = PolishItemType.CAL_OROR,
+                        Reference = null
                     };
                 }
                 else if (item == "<>")
                 {
                     poi = new PolishItem()
                     {
-                        number = 0.0f,
-                        cluster = null,
-                        itemType = PolishItemType.CAL_NOTEQUAL,
-                        reference = null
+                        Number = 0.0f,
+                        Cluster = null,
+                        ItemType = PolishItemType.CAL_NOTEQUAL,
+                        Reference = null
                     };
                 }
                 else if (item == "==")
                 {
                     poi = new PolishItem()
                     {
-                        number = 0.0f,
-                        cluster = null,
-                        itemType = PolishItemType.CAL_EQUAL,
-                        reference = null
+                        Number = 0.0f,
+                        Cluster = null,
+                        ItemType = PolishItemType.CAL_EQUAL,
+                        Reference = null
                     };
                 }
                 else if (item == ">")
                 {
                     poi = new PolishItem()
                     {
-                        number = 0.0f,
-                        cluster = null,
-                        itemType = PolishItemType.CAL_BIG,
-                        reference = null
+                        Number = 0.0f,
+                        Cluster = null,
+                        ItemType = PolishItemType.CAL_BIG,
+                        Reference = null
                     };
                 }
                 else if (item == "<")
                 {
                     poi = new PolishItem()
                     {
-                        number = 0.0f,
-                        cluster = null,
-                        itemType = PolishItemType.CAL_SMALL,
-                        reference = null
+                        Number = 0.0f,
+                        Cluster = null,
+                        ItemType = PolishItemType.CAL_SMALL,
+                        Reference = null
                     };
                 }
                 else if (item == ">=")
                 {
                     poi = new PolishItem()
                     {
-                        number = 0.0f,
-                        cluster = null,
-                        itemType = PolishItemType.CAL_BIGEQUAL,
-                        reference = null
+                        Number = 0.0f,
+                        Cluster = null,
+                        ItemType = PolishItemType.CAL_BIGEQUAL,
+                        Reference = null
                     };
                 }
                 else if (item == "<=")
                 {
                     poi = new PolishItem()
                     {
-                        number = 0.0f,
-                        cluster = null,
-                        itemType = PolishItemType.CAL_SMALLEQUAL,
-                        reference = null
+                        Number = 0.0f,
+                        Cluster = null,
+                        ItemType = PolishItemType.CAL_SMALLEQUAL,
+                        Reference = null
                     };
                 }
                 if (poi != null)
@@ -960,7 +960,7 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 游戏的总体状态
     /// </summary>
-    public enum GameState
+    internal enum GameState
     {
         // 游戏剧情进行时
         Performing,
@@ -974,18 +974,5 @@ namespace Yuri.PlatformCore
         WaitAni,
         // 准备退出程序
         Exit
-    }
-
-    /// <summary>
-    /// 游戏的稳态
-    /// </summary>
-    public enum GameStableState
-    {
-        // 等待用户操作的稳态
-        Stable,
-        // 用户等待系统的不稳态
-        Unstable,
-        // 当前状态不明确
-        Unknown
     }
 }

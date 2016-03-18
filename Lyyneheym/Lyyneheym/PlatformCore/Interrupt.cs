@@ -10,7 +10,7 @@ namespace Yuri.PlatformCore
     /// 系统中断类
     /// </summary>
     [Serializable]
-    public class Interrupt
+    internal class Interrupt
     {
         /// <summary>
         /// 中断类型

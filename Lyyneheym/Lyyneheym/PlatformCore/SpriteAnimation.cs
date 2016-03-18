@@ -30,8 +30,8 @@ namespace Yuri.PlatformCore
             DoubleAnimation doubleAniTop = new DoubleAnimation(fromY, toY, duration);
             doubleAniLeft.AccelerationRatio = accX;
             doubleAniTop.AccelerationRatio = accY;
-            Storyboard.SetTarget(doubleAniLeft, sprite.displayBinding);
-            Storyboard.SetTarget(doubleAniTop, sprite.displayBinding);
+            Storyboard.SetTarget(doubleAniLeft, sprite.DisplayBinding);
+            Storyboard.SetTarget(doubleAniTop, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAniLeft, new PropertyPath(Canvas.LeftProperty));
             Storyboard.SetTargetProperty(doubleAniTop, new PropertyPath(Canvas.TopProperty));
             story.Children.Add(doubleAniLeft);
@@ -57,7 +57,7 @@ namespace Yuri.PlatformCore
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniZ = new DoubleAnimation(fromZ, toZ, duration);
             doubleAniZ.AccelerationRatio = accZ;
-            Storyboard.SetTarget(doubleAniZ, sprite.displayBinding);
+            Storyboard.SetTarget(doubleAniZ, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAniZ, new PropertyPath(Canvas.ZIndexProperty));
             story.Children.Add(doubleAniZ);
             story.Duration = duration;
@@ -85,8 +85,8 @@ namespace Yuri.PlatformCore
             DoubleAnimation doubleAniScaleY = new DoubleAnimation(fromScaleY, toScaleY, duration);
             doubleAniScaleX.AccelerationRatio = accX;
             doubleAniScaleY.AccelerationRatio = accY;
-            Storyboard.SetTarget(doubleAniScaleX, sprite.displayBinding);
-            Storyboard.SetTarget(doubleAniScaleY, sprite.displayBinding);
+            Storyboard.SetTarget(doubleAniScaleX, sprite.DisplayBinding);
+            Storyboard.SetTarget(doubleAniScaleY, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAniScaleX, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
             Storyboard.SetTargetProperty(doubleAniScaleY, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
             story.Children.Add(doubleAniScaleX);
@@ -111,7 +111,7 @@ namespace Yuri.PlatformCore
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniOpacity = new DoubleAnimation(fromOpacity, toOpacity, duration);
             doubleAniOpacity.AccelerationRatio = acc;
-            Storyboard.SetTarget(doubleAniOpacity, sprite.displayBinding);
+            Storyboard.SetTarget(doubleAniOpacity, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAniOpacity, new PropertyPath(Image.OpacityProperty));
             story.Children.Add(doubleAniOpacity);
             story.Duration = duration;
@@ -134,7 +134,7 @@ namespace Yuri.PlatformCore
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniRotate = new DoubleAnimation(fromTheta, toTheta, duration);
             doubleAniRotate.AccelerationRatio = acc;
-            Storyboard.SetTarget(doubleAniRotate, sprite.displayBinding);
+            Storyboard.SetTarget(doubleAniRotate, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAniRotate, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)"));
             story.Children.Add(doubleAniRotate);
             story.Duration = duration;
@@ -155,8 +155,8 @@ namespace Yuri.PlatformCore
         /// <param name="accY">加速度Y</param>
         public static void XYMoveAnimation(YuriSprite sprite, Duration duration, double deltaX, double deltaY, double accX = 0, double accY = 0)
         {
-            if (sprite.displayBinding == null) { return; }
-            SpriteAnimation.XYMoveAnimation(sprite, duration, sprite.displayX, sprite.displayX + deltaX, sprite.displayY, sprite.displayY + deltaY, accX, accY);
+            if (sprite.DisplayBinding == null) { return; }
+            SpriteAnimation.XYMoveAnimation(sprite, duration, sprite.DisplayX, sprite.DisplayX + deltaX, sprite.DisplayY, sprite.DisplayY + deltaY, accX, accY);
         }
 
         /// <summary>
@@ -168,8 +168,8 @@ namespace Yuri.PlatformCore
         /// <param name="accZ">加速度Z</param>
         public static void ZMoveAnimation(YuriSprite sprite, Duration duration, int deltaZ, double accZ = 0)
         {
-            if (sprite.displayBinding == null) { return; }
-            SpriteAnimation.ZMoveAnimation(sprite, duration, sprite.displayZ, sprite.displayZ + deltaZ, accZ);
+            if (sprite.DisplayBinding == null) { return; }
+            SpriteAnimation.ZMoveAnimation(sprite, duration, sprite.DisplayZ, sprite.DisplayZ + deltaZ, accZ);
         }
 
         /// <summary>
@@ -183,8 +183,8 @@ namespace Yuri.PlatformCore
         /// <param name="accY">纵向加速度</param>
         public static void ScaleAnimation(YuriSprite sprite, Duration duration, double deltaScaleX, double deltaScaleY, double accX = 0, double accY = 0)
         {
-            if (sprite.displayBinding == null) { return; }
-            ScaleTransform scaler = ((TransformGroup)(sprite.displayBinding.RenderTransform)).Children[1] as ScaleTransform;
+            if (sprite.DisplayBinding == null) { return; }
+            ScaleTransform scaler = ((TransformGroup)(sprite.DisplayBinding.RenderTransform)).Children[1] as ScaleTransform;
             double curScaleX = scaler.ScaleX;
             double curScaleY = scaler.ScaleY;
             SpriteAnimation.ScaleAnimation(sprite, duration, curScaleX, curScaleX + deltaScaleX, curScaleY, curScaleY + deltaScaleY, accX, accY);
@@ -199,8 +199,8 @@ namespace Yuri.PlatformCore
         /// <param name="acc">加速度</param>
         public static void OpacityAnimation(YuriSprite sprite, Duration duration, double deltaOpacity, double acc = 0)
         {
-            if (sprite.displayBinding == null) { return; }
-            SpriteAnimation.OpacityAnimation(sprite, duration, sprite.displayOpacity, sprite.displayOpacity + deltaOpacity, acc);
+            if (sprite.DisplayBinding == null) { return; }
+            SpriteAnimation.OpacityAnimation(sprite, duration, sprite.DisplayOpacity, sprite.DisplayOpacity + deltaOpacity, acc);
         }
 
         /// <summary>
@@ -212,8 +212,8 @@ namespace Yuri.PlatformCore
         /// <param name="acc">加速度</param>
         public static void RotateAnimation(YuriSprite sprite, Duration duration, double deltaTheta, double acc = 0)
         {
-            if (sprite.displayBinding == null) { return; }
-            RotateTransform rotater = ((TransformGroup)(sprite.displayBinding.RenderTransform)).Children[2] as RotateTransform;
+            if (sprite.DisplayBinding == null) { return; }
+            RotateTransform rotater = ((TransformGroup)(sprite.DisplayBinding.RenderTransform)).Children[2] as RotateTransform;
             double curAngle = rotater.Angle;
             SpriteAnimation.RotateAnimation(sprite, duration, curAngle, curAngle + deltaTheta, acc);
         }
@@ -229,8 +229,8 @@ namespace Yuri.PlatformCore
         /// <param name="accY">加速度Y</param>
         public static void XYMoveToAnimation(YuriSprite sprite, Duration duration, double toX, double toY, double accX = 0, double accY = 0)
         {
-            if (sprite.displayBinding == null) { return; }
-            SpriteAnimation.XYMoveAnimation(sprite, duration, sprite.displayX, toX, sprite.displayY, toY, accX, accY);
+            if (sprite.DisplayBinding == null) { return; }
+            SpriteAnimation.XYMoveAnimation(sprite, duration, sprite.DisplayX, toX, sprite.DisplayY, toY, accX, accY);
         }
 
         /// <summary>
@@ -242,8 +242,8 @@ namespace Yuri.PlatformCore
         /// <param name="accZ">加速度Z</param>
         public static void ZMoveToAnimation(YuriSprite sprite, Duration duration, int toZ, double accZ = 0)
         {
-            if (sprite.displayBinding == null) { return; }
-            SpriteAnimation.ZMoveAnimation(sprite, duration, sprite.displayZ, toZ, accZ);
+            if (sprite.DisplayBinding == null) { return; }
+            SpriteAnimation.ZMoveAnimation(sprite, duration, sprite.DisplayZ, toZ, accZ);
         }
 
         /// <summary>
@@ -257,8 +257,8 @@ namespace Yuri.PlatformCore
         /// <param name="accY">纵向加速度</param>
         public static void ScaleToAnimation(YuriSprite sprite, Duration duration, double toScaleX, double toScaleY, double accX = 0, double accY = 0)
         {
-            if (sprite.displayBinding == null) { return; }
-            ScaleTransform scaler = ((TransformGroup)(sprite.displayBinding.RenderTransform)).Children[1] as ScaleTransform;
+            if (sprite.DisplayBinding == null) { return; }
+            ScaleTransform scaler = ((TransformGroup)(sprite.DisplayBinding.RenderTransform)).Children[1] as ScaleTransform;
             SpriteAnimation.ScaleAnimation(sprite, duration, scaler.ScaleX, toScaleX, scaler.ScaleY, toScaleY, accX, accY);
         }
 
@@ -271,8 +271,8 @@ namespace Yuri.PlatformCore
         /// <param name="acc">加速度</param>
         public static void OpacityToAnimation(YuriSprite sprite, Duration duration, double toOpacity, double acc = 0)
         {
-            if (sprite.displayBinding == null) { return; }
-            SpriteAnimation.OpacityAnimation(sprite, duration, sprite.displayOpacity, toOpacity, acc);
+            if (sprite.DisplayBinding == null) { return; }
+            SpriteAnimation.OpacityAnimation(sprite, duration, sprite.DisplayOpacity, toOpacity, acc);
         }
 
         /// <summary>
@@ -284,8 +284,8 @@ namespace Yuri.PlatformCore
         /// <param name="acc">加速度</param>
         public static void RotateToAnimation(YuriSprite sprite, Duration duration, double toTheta, double acc = 0)
         {
-            if (sprite.displayBinding == null) { return; }
-            RotateTransform rotater = ((TransformGroup)(sprite.displayBinding.RenderTransform)).Children[2] as RotateTransform;
+            if (sprite.DisplayBinding == null) { return; }
+            RotateTransform rotater = ((TransformGroup)(sprite.DisplayBinding.RenderTransform)).Children[2] as RotateTransform;
             SpriteAnimation.RotateAnimation(sprite, duration, rotater.Angle, toTheta, acc);
         }
 
@@ -300,11 +300,11 @@ namespace Yuri.PlatformCore
         /// <param name="propath">依赖链</param>
         public static void PropertyAnimation(YuriSprite sprite, Duration duration, double fromValue, double toValue, double acc, PropertyPath propath)
         {
-            if (sprite.displayBinding == null) { return; }
+            if (sprite.DisplayBinding == null) { return; }
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAni = new DoubleAnimation(fromValue, toValue, duration);
             doubleAni.AccelerationRatio = acc;
-            Storyboard.SetTarget(doubleAni, sprite.displayBinding);
+            Storyboard.SetTarget(doubleAni, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAni, propath);
             story.Children.Add(doubleAni);
             story.Begin();
@@ -324,7 +324,7 @@ namespace Yuri.PlatformCore
             da.RepeatBehavior = RepeatBehavior.Forever;
             da.AutoReverse = true;
             da.AccelerationRatio = acc;
-            Storyboard.SetTarget(da, sprite.displayBinding);
+            Storyboard.SetTarget(da, sprite.DisplayBinding);
             DependencyProperty[] propertyChain = new DependencyProperty[]
             {
                 Image.RenderTransformProperty,
@@ -333,26 +333,6 @@ namespace Yuri.PlatformCore
             Storyboard.SetTargetProperty(da, new PropertyPath("(0).(1)", propertyChain));
             sb.Children.Add(da);
             sb.Begin();
-        }
-
-        /// <summary>
-        /// 精灵动画完成回调
-        /// </summary>
-        private static void story_Completed(object sender, EventArgs e)
-        {
-            Queue<Storyboard> removeQueue = new Queue<Storyboard>();
-            foreach (var ani in SpriteAnimation.aniDict)
-            {
-                if (ani.Key.GetCurrentTime() == ani.Key.Duration)
-                {
-                    ani.Value.AnimateCount--;
-                    removeQueue.Enqueue(ani.Key);
-                }
-            }
-            while (removeQueue.Count != 0)
-            {
-                SpriteAnimation.aniDict.Remove(removeQueue.Dequeue());
-            }
         }
 
         /// <summary>
@@ -388,7 +368,7 @@ namespace Yuri.PlatformCore
         /// 返回当前是否有精灵动画正在进行
         /// </summary>
         /// <returns>是否正在播放动画</returns>
-        public static bool isAnyAnimation()
+        public static bool IsAnyAnimation()
         {
             return SpriteAnimation.aniDict.Count > 0;
         }
@@ -397,7 +377,7 @@ namespace Yuri.PlatformCore
         /// 获取当前动画队列里最大的时间间隔值
         /// </summary>
         /// <returns>时间间隔</returns>
-        public static TimeSpan findMaxTimeSpan()
+        public static TimeSpan FindMaxTimeSpan()
         {
             TimeSpan maxt = TimeSpan.FromMilliseconds(0);
             foreach (var st in SpriteAnimation.aniDict)
@@ -408,6 +388,26 @@ namespace Yuri.PlatformCore
                 }
             }
             return maxt;
+        }
+
+        /// <summary>
+        /// 精灵动画完成回调
+        /// </summary>
+        private static void story_Completed(object sender, EventArgs e)
+        {
+            Queue<Storyboard> removeQueue = new Queue<Storyboard>();
+            foreach (var ani in SpriteAnimation.aniDict)
+            {
+                if (ani.Key.GetCurrentTime() == ani.Key.Duration)
+                {
+                    ani.Value.AnimateCount--;
+                    removeQueue.Enqueue(ani.Key);
+                }
+            }
+            while (removeQueue.Count != 0)
+            {
+                SpriteAnimation.aniDict.Remove(removeQueue.Dequeue());
+            }
         }
 
         /// <summary>

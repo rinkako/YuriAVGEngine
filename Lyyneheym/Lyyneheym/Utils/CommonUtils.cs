@@ -9,7 +9,7 @@ namespace Yuri.Utils
     /// <summary>
     /// 开发辅助相关的静态方法
     /// </summary>
-    public static class CommonUtils
+    internal static class CommonUtils
     {
         /// <summary>
         /// 提供将运行时环境信息输出到控制台的方法
@@ -106,7 +106,7 @@ namespace Yuri.Utils
     /// <summary>
     /// 枚举：信息显示风格
     /// </summary>
-    public enum OutputStyle
+    internal enum OutputStyle
     {
         /// <summary>
         /// 正常输出

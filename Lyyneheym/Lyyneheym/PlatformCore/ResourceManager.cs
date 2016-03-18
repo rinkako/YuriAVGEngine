@@ -12,7 +12,7 @@ namespace Yuri.PlatformCore
     /// <para>资源管理器类：负责维护游戏的资源</para>
     /// <para>她是一个单例类，只有唯一实例</para>
     /// </summary>
-    public class ResourceManager
+    internal class ResourceManager
     {
         /// <summary>
         /// 获得一张指定背景图的精灵
@@ -162,7 +162,7 @@ namespace Yuri.PlatformCore
                 this.resourceTable[DevURI].ContainsKey(sourceName))
             {
                 KeyValuePair<long, long> sourceLocation = this.resourceTable[DevURI][sourceName];
-                byte[] ob = PackageUtils.getObjectBytes(IOUtils.ParseURItoURL(PackURI + GlobalDataContainer.PackPostfix),
+                byte[] ob = PackageUtils.GetObjectBytes(IOUtils.ParseURItoURL(PackURI + GlobalDataContainer.PackPostfix),
                     sourceName, sourceLocation.Key, sourceLocation.Value);
                 MemoryStream ms = new MemoryStream(ob);
                 sprite.Init(sourceName, rtype, ms, cutRect);
@@ -221,7 +221,7 @@ namespace Yuri.PlatformCore
                 this.resourceTable[DevURI].ContainsKey(sourceName))
             {
                 KeyValuePair<long, long> sourceLocation = this.resourceTable[DevURI][sourceName];
-                GCHandle ptr = PackageUtils.getObjectIntPtr(IOUtils.ParseURItoURL(PackURI + GlobalDataContainer.PackPostfix),
+                GCHandle ptr = PackageUtils.GetObjectManagedHandle(IOUtils.ParseURItoURL(PackURI + GlobalDataContainer.PackPostfix),
                     sourceName, sourceLocation.Key, sourceLocation.Value);
                 return new KeyValuePair<GCHandle?, long>(ptr, sourceLocation.Value);
             }
@@ -434,12 +434,12 @@ namespace Yuri.PlatformCore
             List<Scene> sceneList = Yuri.ILPackage.ILConvertor.GetInstance().Dash(IOUtils.ParseURItoURL(GlobalDataContainer.DevURI_RT_SCENARIO));
             foreach (Scene sc in sceneList)
             {
-                if (this.sceneTable.ContainsKey(sc.scenario))
+                if (this.sceneTable.ContainsKey(sc.Scenario))
                 {
-                    CommonUtils.ConsoleLine(String.Format("Scene already exist: {0}, new one will replace the elder one", sc.scenario),
+                    CommonUtils.ConsoleLine(String.Format("Scene already exist: {0}, new one will replace the elder one", sc.Scenario),
                         "ResourceManager", OutputStyle.Warning);
                 }
-                this.sceneTable[sc.scenario] = sc;
+                this.sceneTable[sc.Scenario] = sc;
             }
             CommonUtils.ConsoleLine(String.Format("Finish Load Scenario, Total: {0}", sceneList.Count), "ResourceManager", OutputStyle.Normal);
         }
@@ -498,7 +498,7 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 枚举：资源类型
     /// </summary>
-    public enum ResourceType
+    internal enum ResourceType
     {
         Unknown,
         Pictures,

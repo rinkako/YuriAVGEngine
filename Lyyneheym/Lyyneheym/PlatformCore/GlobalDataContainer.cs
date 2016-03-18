@@ -10,7 +10,7 @@ namespace Yuri.PlatformCore
     /// <para>常量类：维护整个游戏环境中的系统级变量</para>
     /// <para>她是一个静态类</para>
     /// </summary>
-    public static class GlobalDataContainer
+    internal static class GlobalDataContainer
     {
         #region 游戏工程数据
         // 工程名称

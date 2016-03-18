@@ -8,7 +8,7 @@ namespace Yuri.PlatformCore
     /// 栈机类：负责游戏流程的调度
     /// </summary>
     [Serializable]
-    public class StackMachine
+    internal class StackMachine
     {
         /// <summary>
         /// 构造函数：建立一个新的栈机
@@ -35,15 +35,15 @@ namespace Yuri.PlatformCore
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
-                state = StackMachineState.Interpreting,
-                scriptName = sc.scenario,
+                State = StackMachineState.Interpreting,
+                ScriptName = sc.Scenario,
                 PC = 0,
-                IP = offset == null ? sc.mainSa : offset,
-                argv = null,
-                bindingSceneName = sc.scenario,
-                bindingFunctionName = null,
-                delay = TimeSpan.FromMilliseconds(0),
-                aTag = ""
+                IP = offset == null ? sc.Ctor : offset,
+                Argv = null,
+                BindingSceneName = sc.Scenario,
+                BindingFunctionName = null,
+                Delay = TimeSpan.FromMilliseconds(0),
+                Tag = ""
             };
             this.coreStack.Push(smf);
             this.EBP = this.SAVEP = this.coreStack.Peek();
@@ -59,15 +59,15 @@ namespace Yuri.PlatformCore
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
-                state = StackMachineState.FunctionCalling,
-                scriptName = sf.callname,
+                State = StackMachineState.FunctionCalling,
+                ScriptName = sf.Callname,
                 PC = offset,
-                IP = sf.sa,
-                argv = args,
-                bindingFunctionName = String.Format("{0}?{1}", sf.globalName, this.coreStack.Count.ToString()),
-                bindingSceneName = sf.parentSceneName,
-                delay = TimeSpan.FromMilliseconds(0),
-                aTag = ""
+                IP = sf.Sa,
+                Argv = args,
+                BindingFunctionName = String.Format("{0}?{1}", sf.GlobalName, this.coreStack.Count.ToString()),
+                BindingSceneName = sf.ParentSceneName,
+                Delay = TimeSpan.FromMilliseconds(0),
+                Tag = ""
             };
             this.coreStack.Push(smf);
             this.EBP = this.coreStack.Peek();
@@ -81,16 +81,16 @@ namespace Yuri.PlatformCore
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
-                state = StackMachineState.Interrupt,
-                scriptName = null,
+                State = StackMachineState.Interrupt,
+                ScriptName = null,
                 PC = 0,
                 IP = ntr.interruptSA,
-                argv = null,
-                bindingFunctionName = null,
-                bindingSceneName = null,
-                delay = TimeSpan.FromMilliseconds(0),
-                aTag = ntr.returnTarget,
-                bindingInterrupt = ntr
+                Argv = null,
+                BindingFunctionName = null,
+                BindingSceneName = null,
+                Delay = TimeSpan.FromMilliseconds(0),
+                Tag = ntr.returnTarget,
+                BindingInterrupt = ntr
             };
             this.coreStack.Push(smf);
         }
@@ -105,16 +105,16 @@ namespace Yuri.PlatformCore
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
-                state = StackMachineState.Await,
-                scriptName = null,
+                State = StackMachineState.Await,
+                ScriptName = null,
                 PC = 0,
                 IP = null,
-                argv = null,
-                bindingFunctionName = null,
-                bindingSceneName = null,
-                timeStamp = begin,
-                delay = sleepTimeSpan,
-                aTag = String.Format("ThreadSleepCausedBy:{0}({1} ms)", causeBy, sleepTimeSpan.Milliseconds)
+                Argv = null,
+                BindingFunctionName = null,
+                BindingSceneName = null,
+                TimeStamp = begin,
+                Delay = sleepTimeSpan,
+                Tag = String.Format("ThreadSleepCausedBy:{0}({1} ms)", causeBy, sleepTimeSpan.Milliseconds)
             };
             this.coreStack.Push(smf);
         }
@@ -128,15 +128,15 @@ namespace Yuri.PlatformCore
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
-                state = StackMachineState.WaitUser,
-                scriptName = null,
+                State = StackMachineState.WaitUser,
+                ScriptName = null,
                 PC = 0,
                 IP = null,
-                argv = null,
-                bindingFunctionName = null,
-                bindingSceneName = null,
-                delay = TimeSpan.FromMilliseconds(0),
-                aTag = String.Format("WaitingFor:{0}#Detail:{1}", causeBy, detail)
+                Argv = null,
+                BindingFunctionName = null,
+                BindingSceneName = null,
+                Delay = TimeSpan.FromMilliseconds(0),
+                Tag = String.Format("WaitingFor:{0}#Detail:{1}", causeBy, detail)
             };
             this.coreStack.Push(smf);
         }
@@ -149,15 +149,15 @@ namespace Yuri.PlatformCore
         {
             StackMachineFrame smf = new StackMachineFrame()
             {
-                state = StackMachineState.WaitAnimation,
-                scriptName = null,
+                State = StackMachineState.WaitAnimation,
+                ScriptName = null,
                 PC = 0,
                 IP = null,
-                argv = null,
-                bindingFunctionName = null,
-                bindingSceneName = null,
-                delay = TimeSpan.FromMilliseconds(0),
-                aTag = String.Format("WaitingAnimationFor:{0}", causeBy)
+                Argv = null,
+                BindingFunctionName = null,
+                BindingSceneName = null,
+                Delay = TimeSpan.FromMilliseconds(0),
+                Tag = String.Format("WaitingAnimationFor:{0}", causeBy)
             };
             this.coreStack.Push(smf);
         }
@@ -177,7 +177,7 @@ namespace Yuri.PlatformCore
         /// <returns>调用栈帧</returns>
         public StackMachineFrame Consume()
         {
-            if (this.ESP.state == StackMachineState.Interpreting)
+            if (this.ESP.State == StackMachineState.Interpreting)
             {
                 this.SAVEP = null;
             }
@@ -216,13 +216,13 @@ namespace Yuri.PlatformCore
             get
             {
                 if (this.ebp != null && this.coreStack.Contains(this.ebp) &&
-                    (this.ebp.state == StackMachineState.Interpreting || this.ebp.state == StackMachineState.FunctionCalling))
+                    (this.ebp.State == StackMachineState.Interpreting || this.ebp.State == StackMachineState.FunctionCalling))
                 {
                     return this.ebp;
                 }
                 Stack<StackMachineFrame> ebpSerachStack = new Stack<StackMachineFrame>();
                 StackMachineFrame xebp = this.ESP;
-                while (xebp.state != StackMachineState.Interpreting && xebp.state != StackMachineState.FunctionCalling)
+                while (xebp.State != StackMachineState.Interpreting && xebp.State != StackMachineState.FunctionCalling)
                 {
                     ebpSerachStack.Push(this.coreStack.Pop());
                     xebp = this.coreStack.Peek();
@@ -252,11 +252,11 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 当前jump指令是否有效
         /// </summary>
-        public bool isAbleJMP
+        public bool IsAbleJMP
         {
             get
             {
-                return this.ESP.state != StackMachineState.FunctionCalling;
+                return this.ESP.State != StackMachineState.FunctionCalling;
             }
         }
 

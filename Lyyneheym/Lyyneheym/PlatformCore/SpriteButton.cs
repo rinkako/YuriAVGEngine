@@ -13,7 +13,7 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 精灵按钮类
     /// </summary>
-    public class SpriteButton
+    internal class SpriteButton
     {
         /// <summary>
         /// 构造精灵按钮
@@ -21,30 +21,30 @@ namespace Yuri.PlatformCore
         /// <param name="bid"></param>
         public SpriteButton(int bid)
         {
-            this.id = bid;
-            this.ntr = null;
-            this.displayBinding = null;
+            this.Id = bid;
+            this.Ntr = null;
+            this.DisplayBinding = null;
             this.Enable = true;
             this.Eternal = false;
             this.X = this.Y = 0;
             this.Z = GlobalDataContainer.GAME_Z_BUTTON;
-            this.isMouseOn = this.isMouseOver = false;
+            this.IsMouseOn = this.IsMouseOver = false;
         }
 
         /// <summary>
         /// 按钮编号
         /// </summary>
-        public int id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// 按下时的中断
         /// </summary>
-        public Interrupt ntr { get; set; }
+        public Interrupt Ntr { get; set; }
 
         /// <summary>
         /// 获取或设置绑定前端显示控件
         /// </summary>
-        public Image displayBinding { get; set; }
+        public Image DisplayBinding { get; set; }
 
         /// <summary>
         /// 获取或设置按钮是否有效
@@ -63,14 +63,14 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                if (this.displayBinding == null) { return 0; }
-                return Canvas.GetLeft(this.displayBinding);
+                if (this.DisplayBinding == null) { return 0; }
+                return Canvas.GetLeft(this.DisplayBinding);
             }
             set
             {
-                if (this.displayBinding != null)
+                if (this.DisplayBinding != null)
                 {
-                    Canvas.SetLeft(this.displayBinding, value);
+                    Canvas.SetLeft(this.DisplayBinding, value);
                 }
             }
         }
@@ -82,14 +82,14 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                if (this.displayBinding == null) { return 0; }
-                return Canvas.GetTop(this.displayBinding);
+                if (this.DisplayBinding == null) { return 0; }
+                return Canvas.GetTop(this.DisplayBinding);
             }
             set
             {
-                if (this.displayBinding != null)
+                if (this.DisplayBinding != null)
                 {
-                    Canvas.SetTop(this.displayBinding, value);
+                    Canvas.SetTop(this.DisplayBinding, value);
                 }
             }
         }
@@ -101,14 +101,14 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                if (this.displayBinding == null) { return 0; }
-                return Canvas.GetZIndex(this.displayBinding);
+                if (this.DisplayBinding == null) { return 0; }
+                return Canvas.GetZIndex(this.DisplayBinding);
             }
             set
             {
-                if (this.displayBinding != null)
+                if (this.DisplayBinding != null)
                 {
-                    Canvas.SetZIndex(this.displayBinding, value);
+                    Canvas.SetZIndex(this.DisplayBinding, value);
                 }
             }
         }
@@ -131,17 +131,17 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取鼠标是否悬停在按钮上
         /// </summary>
-        public bool isMouseOver { get; private set; }
+        public bool IsMouseOver { get; private set; }
 
         /// <summary>
         /// 获取鼠标是否按下按钮
         /// </summary>
-        public bool isMouseOn { get; private set; }
+        public bool IsMouseOn { get; private set; }
 
         /// <summary>
         /// 获取或设置精灵动画锚点
         /// </summary>
-        public SpriteAnchorType anchor
+        public SpriteAnchorType Anchor
         {
             get
             {
@@ -155,37 +155,32 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 动画锚点类型
-        /// </summary>
-        private SpriteAnchorType anchorType = SpriteAnchorType.Center;
-
-        /// <summary>
         /// 获取精灵锚点相对精灵左上角的X坐标
         /// </summary>
-        public double anchorX
+        public double AnchorX
         {
             get
             {
-                if (this.displayBinding == null)
+                if (this.DisplayBinding == null)
                 {
                     return 0;
                 }
-                return this.anchor == SpriteAnchorType.Center ? this.displayBinding.Width / 2 : 0;
+                return this.Anchor == SpriteAnchorType.Center ? this.DisplayBinding.Width / 2 : 0;
             }
         }
 
         /// <summary>
         /// 获取精灵锚点相对精灵左上角的Y坐标
         /// </summary>
-        public double anchorY
+        public double AnchorY
         {
             get
             {
-                if (this.displayBinding == null)
+                if (this.DisplayBinding == null)
                 {
                     return 0;
                 }
-                return this.anchor == SpriteAnchorType.Center ? this.displayBinding.Height / 2 : 0;
+                return this.Anchor == SpriteAnchorType.Center ? this.DisplayBinding.Height / 2 : 0;
             }
         }
 
@@ -197,15 +192,15 @@ namespace Yuri.PlatformCore
             TransformGroup aniGroup = new TransformGroup();
             TranslateTransform XYTransformer = new TranslateTransform();
             ScaleTransform ScaleTransformer = new ScaleTransform();
-            ScaleTransformer.CenterX = this.anchorX;
-            ScaleTransformer.CenterY = this.anchorY;
+            ScaleTransformer.CenterX = this.AnchorX;
+            ScaleTransformer.CenterY = this.AnchorY;
             RotateTransform RotateTransformer = new RotateTransform();
-            RotateTransformer.CenterX = this.anchorX;
-            RotateTransformer.CenterY = this.anchorY;
+            RotateTransformer.CenterX = this.AnchorX;
+            RotateTransformer.CenterY = this.AnchorY;
             aniGroup.Children.Add(XYTransformer);
             aniGroup.Children.Add(ScaleTransformer);
             aniGroup.Children.Add(RotateTransformer);
-            this.displayBinding.RenderTransform = aniGroup;
+            this.DisplayBinding.RenderTransform = aniGroup;
         }
 
         /// <summary>
@@ -217,14 +212,14 @@ namespace Yuri.PlatformCore
         {
             if (this.Enable)
             {
-                this.isMouseOver = this.isMouseOn = false;
-                if (this.displayBinding != null && (this.ImageMouseOver != null || this.ImageMouseOn != null))
+                this.IsMouseOver = this.IsMouseOn = false;
+                if (this.DisplayBinding != null && (this.ImageMouseOver != null || this.ImageMouseOn != null))
                 {
-                    BitmapImage myBitmapImage = this.ImageNormal.myImage;
-                    this.ImageNormal.displayBinding = this.displayBinding;
-                    this.displayBinding.Width = myBitmapImage.PixelWidth;
-                    this.displayBinding.Height = myBitmapImage.PixelHeight;
-                    this.displayBinding.Source = myBitmapImage;
+                    BitmapImage myBitmapImage = this.ImageNormal.SpriteBitmapImage;
+                    this.ImageNormal.DisplayBinding = this.DisplayBinding;
+                    this.DisplayBinding.Width = myBitmapImage.PixelWidth;
+                    this.DisplayBinding.Height = myBitmapImage.PixelHeight;
+                    this.DisplayBinding.Source = myBitmapImage;
                 }
             }
         }
@@ -238,16 +233,16 @@ namespace Yuri.PlatformCore
         {
             if (this.Enable)
             {
-                this.isMouseOver = true;
-                if (this.displayBinding != null && this.ImageMouseOver != null)
+                this.IsMouseOver = true;
+                if (this.DisplayBinding != null && this.ImageMouseOver != null)
                 {
-                    BitmapImage myBitmapImage = this.ImageMouseOver.myImage;
-                    this.ImageNormal.displayBinding = null;
-                    this.ImageMouseOn.displayBinding = null;
-                    this.ImageMouseOver.displayBinding = this.displayBinding;
-                    this.displayBinding.Width = myBitmapImage.PixelWidth;
-                    this.displayBinding.Height = myBitmapImage.PixelHeight;
-                    this.displayBinding.Source = myBitmapImage;
+                    BitmapImage myBitmapImage = this.ImageMouseOver.SpriteBitmapImage;
+                    this.ImageNormal.DisplayBinding = null;
+                    this.ImageMouseOn.DisplayBinding = null;
+                    this.ImageMouseOver.DisplayBinding = this.DisplayBinding;
+                    this.DisplayBinding.Width = myBitmapImage.PixelWidth;
+                    this.DisplayBinding.Height = myBitmapImage.PixelHeight;
+                    this.DisplayBinding.Source = myBitmapImage;
                 }
             }
         }
@@ -259,19 +254,19 @@ namespace Yuri.PlatformCore
         /// <param name="e">鼠标参数</param>
         public void MouseOnHandler(object sender, MouseEventArgs e)
         {
-            Director.buttonClickingFlag = true;
+            Director.ButtonClickingFlag = true;
             if (this.Enable)
             {
-                this.isMouseOn = true;
-                if (this.displayBinding != null && this.ImageMouseOn != null)
+                this.IsMouseOn = true;
+                if (this.DisplayBinding != null && this.ImageMouseOn != null)
                 {
-                    BitmapImage myBitmapImage = this.ImageMouseOn.myImage;
-                    this.ImageNormal.displayBinding = null;
-                    this.ImageMouseOn.displayBinding = this.displayBinding;
-                    this.ImageMouseOver.displayBinding = null;
-                    this.displayBinding.Width = myBitmapImage.PixelWidth;
-                    this.displayBinding.Height = myBitmapImage.PixelHeight;
-                    this.displayBinding.Source = myBitmapImage;
+                    BitmapImage myBitmapImage = this.ImageMouseOn.SpriteBitmapImage;
+                    this.ImageNormal.DisplayBinding = null;
+                    this.ImageMouseOn.DisplayBinding = this.DisplayBinding;
+                    this.ImageMouseOver.DisplayBinding = null;
+                    this.DisplayBinding.Width = myBitmapImage.PixelWidth;
+                    this.DisplayBinding.Height = myBitmapImage.PixelHeight;
+                    this.DisplayBinding.Source = myBitmapImage;
                 }
             }
         }
@@ -284,48 +279,53 @@ namespace Yuri.PlatformCore
         public void MouseUpHandler(object sender, MouseEventArgs e)
         {
 
-            Director.buttonClickingFlag = false;
+            Director.ButtonClickingFlag = false;
             if (this.Enable)
             {
-                if (this.isMouseOn)
+                if (this.IsMouseOn)
                 {
-                    if (this.displayBinding != null && this.isMouseOver && this.ImageMouseOver != null)
+                    if (this.DisplayBinding != null && this.IsMouseOver && this.ImageMouseOver != null)
                     {
-                        BitmapImage myBitmapImage2 = this.ImageMouseOver.myImage;
-                        this.ImageNormal.displayBinding = null;
-                        this.ImageMouseOn.displayBinding = null;
-                        this.ImageMouseOver.displayBinding = this.displayBinding;
-                        this.displayBinding.Width = myBitmapImage2.PixelWidth;
-                        this.displayBinding.Height = myBitmapImage2.PixelHeight;
-                        this.displayBinding.Source = myBitmapImage2;
+                        BitmapImage myBitmapImage2 = this.ImageMouseOver.SpriteBitmapImage;
+                        this.ImageNormal.DisplayBinding = null;
+                        this.ImageMouseOn.DisplayBinding = null;
+                        this.ImageMouseOver.DisplayBinding = this.DisplayBinding;
+                        this.DisplayBinding.Width = myBitmapImage2.PixelWidth;
+                        this.DisplayBinding.Height = myBitmapImage2.PixelHeight;
+                        this.DisplayBinding.Source = myBitmapImage2;
                         // 向运行时环境提交中断
-                        Director.GetInstance().SubmitInterrupt(this.ntr);
+                        Director.GetInstance().SubmitInterrupt(this.Ntr);
                         // 移除按钮
                         if (!this.Eternal)
                         {
                             this.Enable = false;
-                            Director.GetInstance().RemoveButton(this.id);
+                            Director.GetInstance().RemoveButton(this.Id);
                         }
                         return;
                     }
-                    BitmapImage myBitmapImage = this.ImageNormal.myImage;
-                    this.ImageNormal.displayBinding = this.displayBinding;
-                    this.ImageMouseOn.displayBinding = null;
-                    this.ImageMouseOver.displayBinding = null;
-                    this.displayBinding.Width = myBitmapImage.PixelWidth;
-                    this.displayBinding.Height = myBitmapImage.PixelHeight;
-                    this.displayBinding.Source = myBitmapImage;
+                    BitmapImage myBitmapImage = this.ImageNormal.SpriteBitmapImage;
+                    this.ImageNormal.DisplayBinding = this.DisplayBinding;
+                    this.ImageMouseOn.DisplayBinding = null;
+                    this.ImageMouseOver.DisplayBinding = null;
+                    this.DisplayBinding.Width = myBitmapImage.PixelWidth;
+                    this.DisplayBinding.Height = myBitmapImage.PixelHeight;
+                    this.DisplayBinding.Source = myBitmapImage;
                     // 向运行时环境提交中断
-                    Director.GetInstance().SubmitInterrupt(this.ntr);
+                    Director.GetInstance().SubmitInterrupt(this.Ntr);
                     // 移除按钮
                     if (!this.Eternal)
                     {
                         this.Enable = false;
-                        Director.GetInstance().RemoveButton(this.id);
+                        Director.GetInstance().RemoveButton(this.Id);
                     }
                 }
-                this.isMouseOn = false;
+                this.IsMouseOn = false;
             }
         }
+
+        /// <summary>
+        /// 动画锚点类型
+        /// </summary>
+        private SpriteAnchorType anchorType = SpriteAnchorType.Center;
     }
 }

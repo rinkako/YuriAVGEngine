@@ -18,7 +18,7 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 渲染类：负责将场景动作转化为前端事物的类
     /// </summary>
-    public class UpdateRender
+    internal class UpdateRender
     {
         #region 辅助函数
         /// <summary>
@@ -169,7 +169,7 @@ namespace Yuri.PlatformCore
                 if (this.MouseLeftUpFlag == true)
                 {
                     // 正在显示对话
-                    if (this.isShowingDialog && Director.buttonClickingFlag == false)
+                    if (this.isShowingDialog && Director.ButtonClickingFlag == false)
                     {
                         // 如果还在播放打字动画就跳跃
                         if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() != 1.0)
@@ -197,7 +197,7 @@ namespace Yuri.PlatformCore
                         // 正在显示对话则向前推进一个趟
                         else
                         {
-                            this.viewMana.GetMessageLayer(0).displayBinding.Visibility = Visibility.Visible;
+                            this.viewMana.GetMessageLayer(0).DisplayBinding.Visibility = Visibility.Visible;
                             this.DrawDialogRunQueue();
                         }
                     }
@@ -224,7 +224,7 @@ namespace Yuri.PlatformCore
                     // 正在显示对话则隐藏对话
                     if (this.isShowingDialog)
                     {
-                        var mainMsgLayer = this.viewMana.GetMessageLayer(0).displayBinding;
+                        var mainMsgLayer = this.viewMana.GetMessageLayer(0).DisplayBinding;
                         if (mainMsgLayer.Visibility == Visibility.Hidden)
                         {
                             mainMsgLayer.Visibility = Visibility.Visible;
@@ -312,7 +312,7 @@ namespace Yuri.PlatformCore
                         currentRun += this.pendingDialogQueue.Dequeue();
                     }
                 }
-                this.TypeWriter(0, this.dialogPreStr, currentRun, this.viewMana.GetMessageLayer(0).displayBinding, wordDelay ? GlobalDataContainer.GAME_MSG_TYPING_DELAY : 0);
+                this.TypeWriter(0, this.dialogPreStr, currentRun, this.viewMana.GetMessageLayer(0).DisplayBinding, wordDelay ? GlobalDataContainer.GAME_MSG_TYPING_DELAY : 0);
                 this.dialogPreStr += currentRun;
             }
         }
@@ -324,7 +324,7 @@ namespace Yuri.PlatformCore
         /// <param name="text">要描绘的字符串</param>
         private void DrawTextDirectly(int id, string text)
         {
-            TextBlock t = this.viewMana.GetMessageLayer(id).displayBinding;
+            TextBlock t = this.viewMana.GetMessageLayer(id).DisplayBinding;
             t.Text = text;
         }
 
@@ -414,8 +414,8 @@ namespace Yuri.PlatformCore
         {
             this.MainMsgTriangleSprite = ResourceManager.GetInstance().GetPicture(GlobalDataContainer.GAME_MESSAGELAYER_TRIA_FILENAME, new Int32Rect(-1, 0, 0, 0));
             Image TriaView = new Image();
-            BitmapImage bmp = MainMsgTriangleSprite.myImage;
-            this.MainMsgTriangleSprite.displayBinding = TriaView;
+            BitmapImage bmp = MainMsgTriangleSprite.SpriteBitmapImage;
+            this.MainMsgTriangleSprite.DisplayBinding = TriaView;
             TriaView.Width = bmp.PixelWidth;
             TriaView.Height = bmp.PixelHeight;
             TriaView.Source = bmp;
@@ -424,7 +424,7 @@ namespace Yuri.PlatformCore
             Canvas.SetLeft(TriaView, GlobalDataContainer.GAME_MESSAGELAYER_TRIA_X);
             Canvas.SetTop(TriaView, GlobalDataContainer.GAME_MESSAGELAYER_TRIA_Y);
             Canvas.SetZIndex(TriaView, GlobalDataContainer.GAME_Z_PICTURES - 1);
-            this.view.BO_MainGrid.Children.Add(this.MainMsgTriangleSprite.displayBinding);
+            this.view.BO_MainGrid.Children.Add(this.MainMsgTriangleSprite.DisplayBinding);
         }
 
         /// <summary>
@@ -435,7 +435,7 @@ namespace Yuri.PlatformCore
             // 只有主文字层需要作用小三角
             if (this.currentMsgLayer == 0)
             {
-                this.MainMsgTriangleSprite.displayBinding.Visibility = Visibility.Hidden;
+                this.MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Hidden;
             }
         }
 
@@ -445,8 +445,8 @@ namespace Yuri.PlatformCore
         /// <param name="opacity">透明度</param>
         private void ShowMessageTria(double opacity = 1.0f)
         {
-            this.MainMsgTriangleSprite.displayOpacity = opacity;
-            this.MainMsgTriangleSprite.displayBinding.Visibility = Visibility.Visible;
+            this.MainMsgTriangleSprite.DisplayOpacity = opacity;
+            this.MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -874,20 +874,20 @@ namespace Yuri.PlatformCore
         {
             SpriteDescriptor normalDesc = new SpriteDescriptor()
             {
-                resourceName = normal
+                ResourceName = normal
             }, overDesc = null, onDesc = null;
             if (over != "")
             {
                 overDesc = new SpriteDescriptor()
                 {
-                    resourceName = over
+                    ResourceName = over
                 };
             }
             if (on != "")
             {
                 onDesc = new SpriteDescriptor()
                 {
-                    resourceName = on
+                    ResourceName = on
                 };
             }
             Director.ScrMana.AddButton(id, enable, x, y, target, funcsign, type, normalDesc, overDesc, onDesc);
@@ -970,11 +970,11 @@ namespace Yuri.PlatformCore
             switch (property)
             {
                 case "x":
-                    SpriteAnimation.XYMoveToAnimation(actionSprite, duration, toValue, actionSprite.displayY, acc, 0);
+                    SpriteAnimation.XYMoveToAnimation(actionSprite, duration, toValue, actionSprite.DisplayY, acc, 0);
                     descriptor.X = toValue;
                     break;
                 case "y":
-                    SpriteAnimation.XYMoveToAnimation(actionSprite, duration, actionSprite.displayX, toValue, 0, acc);
+                    SpriteAnimation.XYMoveToAnimation(actionSprite, duration, actionSprite.DisplayX, toValue, 0, acc);
                     descriptor.Y = toValue;
                     break;
                 case "o":
@@ -1221,7 +1221,7 @@ namespace Yuri.PlatformCore
                 this.DrawDialogRunQueue(this.pendingDialogQueue.Count, false);
             }
             Director.RunMana.PreviewSave();
-            IOUtils.serialization(Director.RunMana, GlobalDataContainer.GAME_SAVE_DIR + "\\" + saveFileName + GlobalDataContainer.GAME_SAVE_POSTFIX);
+            IOUtils.Serialization(Director.RunMana, GlobalDataContainer.GAME_SAVE_DIR + "\\" + saveFileName + GlobalDataContainer.GAME_SAVE_POSTFIX);
             Director.RunMana.FinishedSave();
         }
 
@@ -1232,7 +1232,7 @@ namespace Yuri.PlatformCore
         private void Load(string loadFileName)
         {
             SpriteAnimation.SkipAllAnimation();
-            var rm = (RuntimeManager)IOUtils.unserialization(GlobalDataContainer.GAME_SAVE_DIR + "\\" + loadFileName + GlobalDataContainer.GAME_SAVE_POSTFIX);
+            var rm = (RuntimeManager)IOUtils.Unserialization(GlobalDataContainer.GAME_SAVE_DIR + "\\" + loadFileName + GlobalDataContainer.GAME_SAVE_POSTFIX);
             Director.ResumeFromSaveData(rm);
         }
 
@@ -1291,15 +1291,15 @@ namespace Yuri.PlatformCore
             {
                 SpriteDescriptor normalDesc = new SpriteDescriptor()
                 {
-                    resourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUNDNORMAL
+                    ResourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUNDNORMAL
                 },
                 overDesc = new SpriteDescriptor()
                 {
-                    resourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUNDSELECT
+                    ResourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUNDSELECT
                 },
                 onDesc = new SpriteDescriptor()
                 {
-                    resourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUNDSELECT
+                    ResourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUNDSELECT
                 };
                 Director.ScrMana.AddBranchButton(i, GroupX, BeginY + DeltaY * 2 * i, tagList[i].Value, tagList[i].Key, normalDesc, overDesc, onDesc);
                 this.viewMana.Draw(i, ResourceType.BranchButton);
@@ -1322,7 +1322,7 @@ namespace Yuri.PlatformCore
         private void Titlepoint()
         {
             this.titlePointContainer = new KeyValuePair<Scene, SceneAction>(
-                this.resMana.GetScene(Director.RunMana.CallStack.ESP.bindingSceneName),
+                this.resMana.GetScene(Director.RunMana.CallStack.ESP.BindingSceneName),
                 Director.RunMana.CallStack.ESP.IP);
         }
 

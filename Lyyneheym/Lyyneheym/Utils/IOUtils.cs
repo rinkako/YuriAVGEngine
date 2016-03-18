@@ -10,7 +10,7 @@ namespace Yuri.Utils
     /// <summary>
     /// 输入输出类：管理整个游戏环境的IO动作
     /// </summary>
-    public static class IOUtils
+    internal static class IOUtils
     {
         /// <summary>
         /// 把一个相对URI转化为绝对路径
@@ -63,7 +63,7 @@ namespace Yuri.Utils
         /// <param name="instance">类的实例</param>
         /// <param name="savePath">保存路径</param>
         /// <returns>操作成功与否</returns>
-        public static bool serialization(object instance, string savePath)
+        public static bool Serialization(object instance, string savePath)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace Yuri.Utils
         /// </summary>
         /// <param name="loadPath">二进制文件路径</param>
         /// <returns>类的实例</returns>
-        public static object unserialization(string loadPath)
+        public static object Unserialization(string loadPath)
         {
             try
             {

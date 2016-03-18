@@ -530,7 +530,7 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// Bass播放器
     /// </summary>
-    public class BassPlayer : IDisposable
+    internal class BassPlayer : IDisposable
     {
         #region 类自身方法
         /// <summary>

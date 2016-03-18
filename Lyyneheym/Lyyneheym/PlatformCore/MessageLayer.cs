@@ -8,7 +8,7 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 文字层类：为游戏提供在某个区域描绘文字的服务
     /// </summary>
-    public class MessageLayer
+    internal class MessageLayer
     {
         /// <summary>
         /// 将文字层恢复初始状态
@@ -51,11 +51,11 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return this.displayBinding.Text;
+                return this.DisplayBinding.Text;
             }
             set
             {
-                this.displayBinding.Text = value;
+                this.DisplayBinding.Text = value;
             }
         }
 
@@ -66,11 +66,11 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return this.displayBinding.Visibility;
+                return this.DisplayBinding.Visibility;
             }
             set
             {
-                this.displayBinding.Visibility = value;
+                this.DisplayBinding.Visibility = value;
             }
         }
 
@@ -81,7 +81,7 @@ namespace Yuri.PlatformCore
         {
             set
             {
-                this.displayBinding.FontFamily = new FontFamily(value);
+                this.DisplayBinding.FontFamily = new FontFamily(value);
             }
         }
 
@@ -92,12 +92,12 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                this.displayBinding.FontStyle = new FontStyle();
-                return this.displayBinding.FontSize;
+                this.DisplayBinding.FontStyle = new FontStyle();
+                return this.DisplayBinding.FontSize;
             }
             set
             {
-                this.displayBinding.FontSize = value;
+                this.DisplayBinding.FontSize = value;
             }
         }
 
@@ -108,11 +108,11 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return ((SolidColorBrush)this.displayBinding.Foreground).Color;
+                return ((SolidColorBrush)this.DisplayBinding.Foreground).Color;
             }
             set
             {
-                this.displayBinding.Foreground = new SolidColorBrush(value);
+                this.DisplayBinding.Foreground = new SolidColorBrush(value);
             }
         }
 
@@ -123,11 +123,11 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return this.displayBinding.LineHeight;
+                return this.DisplayBinding.LineHeight;
             }
             set
             {
-                this.displayBinding.LineHeight = value;
+                this.DisplayBinding.LineHeight = value;
             }
         }
 
@@ -138,11 +138,11 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return this.displayBinding.Opacity;
+                return this.DisplayBinding.Opacity;
             }
             set
             {
-                this.displayBinding.Opacity = value;
+                this.DisplayBinding.Opacity = value;
             }
         }
 
@@ -153,11 +153,11 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return Canvas.GetLeft(this.displayBinding);
+                return Canvas.GetLeft(this.DisplayBinding);
             }
             set
             {
-                Canvas.SetLeft(this.displayBinding, value);
+                Canvas.SetLeft(this.DisplayBinding, value);
             }
         }
 
@@ -168,11 +168,11 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return Canvas.GetTop(this.displayBinding);
+                return Canvas.GetTop(this.DisplayBinding);
             }
             set
             {
-                Canvas.SetTop(this.displayBinding, value);
+                Canvas.SetTop(this.DisplayBinding, value);
             }
         }
 
@@ -183,11 +183,11 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return Panel.GetZIndex(this.displayBinding);
+                return Panel.GetZIndex(this.DisplayBinding);
             }
             set
             {
-                Panel.SetZIndex(this.displayBinding, value);
+                Panel.SetZIndex(this.DisplayBinding, value);
             }
         }
 
@@ -198,11 +198,11 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return this.displayBinding.Height;
+                return this.DisplayBinding.Height;
             }
             set
             {
-                this.displayBinding.Height = value;
+                this.DisplayBinding.Height = value;
             }
         }
 
@@ -213,11 +213,11 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return this.displayBinding.Width;
+                return this.DisplayBinding.Width;
             }
             set
             {
-                this.displayBinding.Width = value;
+                this.DisplayBinding.Width = value;
             }
         }
 
@@ -228,11 +228,11 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return this.displayBinding.Padding;
+                return this.DisplayBinding.Padding;
             }
             set
             {
-                this.displayBinding.Padding = value;
+                this.DisplayBinding.Padding = value;
             }
         }
 
@@ -243,11 +243,11 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return this.displayBinding.HorizontalAlignment;
+                return this.DisplayBinding.HorizontalAlignment;
             }
             set
             {
-                this.displayBinding.HorizontalAlignment = value;
+                this.DisplayBinding.HorizontalAlignment = value;
             }
         }
 
@@ -258,11 +258,11 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return this.displayBinding.VerticalAlignment;
+                return this.DisplayBinding.VerticalAlignment;
             }
             set
             {
-                this.displayBinding.VerticalAlignment = value;
+                this.DisplayBinding.VerticalAlignment = value;
             }
         }
 
@@ -278,7 +278,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置文字层的主文本块
         /// </summary>
-        public TextBlock displayBinding
+        public TextBlock DisplayBinding
         {
             get;
             set;
@@ -287,7 +287,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置文字层的背景精灵
         /// </summary>
-        public YuriSprite backgroundSprite
+        public YuriSprite BackgroundSprite
         {
             get
             {

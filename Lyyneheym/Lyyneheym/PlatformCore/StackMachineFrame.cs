@@ -8,12 +8,12 @@ namespace Yuri.PlatformCore
     /// 游戏栈机中的栈帧
     /// </summary>
     [Serializable]
-    public class StackMachineFrame
+    internal class StackMachineFrame
     {
         /// <summary>
         /// 获取或设置栈帧状态
         /// </summary>
-        public StackMachineState state = StackMachineState.NOP;
+        public StackMachineState State = StackMachineState.NOP;
 
         /// <summary>
         /// 获取或设置指令计数器
@@ -28,56 +28,56 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置正在执行的脚本名（场景名、函数名）
         /// </summary>
-        public string scriptName = null;
+        public string ScriptName = null;
 
         /// <summary>
         /// 获取或设置绑定的场景名称
         /// </summary>
-        public string bindingSceneName = null;
+        public string BindingSceneName = null;
 
         /// <summary>
         /// 获取或设置绑定的函数调用名称
         /// </summary>
-        public string bindingFunctionName = null;
+        public string BindingFunctionName = null;
 
         /// <summary>
         /// 获取或设置实参数列表
         /// </summary>
-        public List<object> argv = null;
+        public List<object> Argv = null;
 
         /// <summary>
         /// 获取或设置执行栈帧前的延迟
         /// </summary>
-        public TimeSpan delay = TimeSpan.Zero;
+        public TimeSpan Delay = TimeSpan.Zero;
 
         /// <summary>
         /// 获取或设置时间戳
         /// </summary>
-        public DateTime timeStamp = DateTime.Now;
+        public DateTime TimeStamp = DateTime.Now;
 
         /// <summary>
         /// 获取或设置绑定的中断动作
         /// </summary>
-        public Interrupt bindingInterrupt = null;
+        public Interrupt BindingInterrupt = null;
 
         /// <summary>
         /// 获取或设置该栈帧的备注信息
         /// </summary>
-        public string aTag = null;
+        public string Tag = null;
 
         /// <summary>
         /// 字符串化方法
         /// </summary>
         public override string ToString()
         {
-            return String.Format("StackFrame:{0} -> {1}", this.state.ToString(), this.IP == null ? "" : this.IP.ToString());
+            return String.Format("StackFrame:{0} -> {1}", this.State.ToString(), this.IP == null ? "" : this.IP.ToString());
         }
     }
 
     /// <summary>
     /// 枚举：游戏栈机的状态
     /// </summary>
-    public enum StackMachineState
+    internal enum StackMachineState
     {
         // 无动作
         NOP,

@@ -11,20 +11,20 @@ namespace Yuri.PlatformCore
     /// <para>通常，一个场景拥有一个动作序列和生命在它上面的函数</para>
     /// <para>演绎剧本的过程就是遍历这个序列的过程</para>
     /// </summary>
-    public class Scene
+    internal class Scene
     {
         /// <summary>
         /// 构造器
         /// </summary>
         /// <param name="scenario">场景名称</param>
-        /// <param name="mainSa">主动作序列</param>
+        /// <param name="mainSa">构造序列</param>
         /// <param name="funcVec">函数向量</param>
         public Scene(string scenario, SceneAction mainSa, List<SceneFunction> funcVec, Dictionary<string, SceneAction> labelDict)
         {
-            this.scenario = scenario;
-            this.mainSa = mainSa;
-            this.funcContainer = funcVec;
-            this.labelDictionary = labelDict;
+            this.Scenario = scenario;
+            this.Ctor = mainSa;
+            this.FuncContainer = funcVec;
+            this.LabelDictionary = labelDict;
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Yuri.PlatformCore
         /// <returns>IL文件头字符串</returns>
         public string GetILSign()
         {
-            return String.Format(">>>YuriIL?{0}", this.scenario);
+            return String.Format(">>>YuriIL?{0}", this.Scenario);
         }
 
         /// <summary>
@@ -43,27 +43,27 @@ namespace Yuri.PlatformCore
         /// <returns>IL文件头字符串</returns>
         public static string GetILSign(Scene scene)
         {
-            return String.Format(">>>YuriIL?{0}", scene.scenario);
+            return String.Format(">>>YuriIL?{0}", scene.Scenario);
         }
 
         /// <summary>
         /// 场景名称
         /// </summary>
-        public string scenario;
+        public string Scenario { get; set; }
 
         /// <summary>
-        /// 场景的主动作序列
+        /// 场景的构造序列
         /// </summary>
-        public SceneAction mainSa;
+        public SceneAction Ctor { get; set; }
 
         /// <summary>
         /// 场景的函数向量
         /// </summary>
-        public List<SceneFunction> funcContainer;
+        public List<SceneFunction> FuncContainer { get; set; }
 
         /// <summary>
         /// 场景标签字典
         /// </summary>
-        public Dictionary<string, SceneAction> labelDictionary;
+        public Dictionary<string, SceneAction> LabelDictionary { get; set; }
     }
 }

@@ -9,27 +9,27 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 函数调用类：处理场景里的函数
     /// </summary>
-    public class SceneFunction
+    internal class SceneFunction
     {
         /// <summary>
         /// 构造器
         /// </summary>
         public SceneFunction(string callname, string parent, SceneAction sa = null)
         {
-            this.parentSceneName = parent;
-            this.callname = callname;
-            this.sa = sa;
+            this.ParentSceneName = parent;
+            this.Callname = callname;
+            this.Sa = sa;
         }
 
         /// <summary>
         /// 字符串化方法
         /// </summary>
-        /// <returns>该函数的C风格签名</returns>
+        /// <returns>该函数的签名</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             string paraStr = "";
-            foreach (string arg in this.param)
+            foreach (string arg in this.Param)
             {
                 sb.Append(arg + ", ");
             }
@@ -37,43 +37,43 @@ namespace Yuri.PlatformCore
             {
                 paraStr = sb.ToString().Substring(0, sb.Length - 2);
             }
-            return String.Format("Function: {0}({1})", this.callname, paraStr);
+            return String.Format("Function: {0}({1})", this.Callname, paraStr);
         }
 
         /// <summary>
         /// 获取或设置函数的全局名称
         /// </summary>
-        public string globalName
+        public string GlobalName
         {
             get
             {
-                return String.Format("__YuriFunc@{0}?{1}", this.callname, this.parentSceneName);
+                return String.Format("__YuriFunc@{0}?{1}", this.Callname, this.ParentSceneName);
             }
         }
 
         /// <summary>
         /// 绑定动作序列
         /// </summary>
-        public SceneAction sa = null;
+        public SceneAction Sa = null;
 
         /// <summary>
         /// 函数名
         /// </summary>
-        public string callname = null;
+        public string Callname = null;
 
         /// <summary>
         /// 参数列表
         /// </summary>
-        public List<string> param = null;
+        public List<string> Param = null;
 
         /// <summary>
         /// 场景名称
         /// </summary>
-        public string parentSceneName = null;
+        public string ParentSceneName = null;
 
         /// <summary>
         /// 绑定符号表
         /// </summary>
-        public Dictionary<string, object> symbols = new Dictionary<string,object>();
+        public Dictionary<string, object> Symbols = new Dictionary<string,object>();
     }
 }

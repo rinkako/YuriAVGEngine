@@ -16,7 +16,7 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 精灵类：为图形资源提供展示、用户互动和动画效果的类
     /// </summary>
-    public class YuriSprite
+    internal class YuriSprite
     {
         /// <summary>
         /// 初始化精灵对象，它只能被执行一次
@@ -27,17 +27,17 @@ namespace Yuri.PlatformCore
         {
             if (!this.IsInit)
             {
-                this.resourceName = resName;
-                this.resourceType = resType;
-                this.myImage = new BitmapImage();
-                this.myImage.BeginInit();
-                this.myImage.StreamSource = ms;
+                this.ResourceName = resName;
+                this.ResourceType = resType;
+                this.SpriteBitmapImage = new BitmapImage();
+                this.SpriteBitmapImage.BeginInit();
+                this.SpriteBitmapImage.StreamSource = ms;
                 if (cutrect != null)
                 {
-                    this.cutRect = (Int32Rect)cutrect;
-                    this.myImage.SourceRect = this.cutRect;
+                    this.CutRect = (Int32Rect)cutrect;
+                    this.SpriteBitmapImage.SourceRect = this.CutRect;
                 }
-                this.myImage.EndInit();
+                this.SpriteBitmapImage.EndInit();
                 this.IsInit = true;
             }
             else
@@ -55,17 +55,17 @@ namespace Yuri.PlatformCore
         {
             if (!this.IsInit)
             {
-                this.resourceName = resName;
-                this.resourceType = resType;
-                this.myImage = new BitmapImage();
-                this.myImage.BeginInit();
-                this.myImage.UriSource = uri;
+                this.ResourceName = resName;
+                this.ResourceType = resType;
+                this.SpriteBitmapImage = new BitmapImage();
+                this.SpriteBitmapImage.BeginInit();
+                this.SpriteBitmapImage.UriSource = uri;
                 if (cutrect != null)
                 {
-                    this.cutRect = (Int32Rect)cutrect;
-                    this.myImage.SourceRect = this.cutRect;
+                    this.CutRect = (Int32Rect)cutrect;
+                    this.SpriteBitmapImage.SourceRect = this.CutRect;
                 }
-                this.myImage.EndInit();
+                this.SpriteBitmapImage.EndInit();
                 this.IsInit = true;
             }
             else
@@ -83,11 +83,11 @@ namespace Yuri.PlatformCore
         public Color GetPixelColor(double X, double Y)
         {
             Color c = Color.FromArgb(Byte.MaxValue, 0, 0, 0);
-            if (this.myImage != null)
+            if (this.SpriteBitmapImage != null)
             {
                 try
                 {
-                    CroppedBitmap cb = new CroppedBitmap(this.myImage, new Int32Rect((int)X, (int)Y, 1, 1));
+                    CroppedBitmap cb = new CroppedBitmap(this.SpriteBitmapImage, new Int32Rect((int)X, (int)Y, 1, 1));
                     byte[] pixels = new byte[4];
                     cb.CopyPixels(pixels, 4, 0);
                     c = Color.FromArgb(pixels[3], pixels[2], pixels[1], pixels[0]);
@@ -117,21 +117,21 @@ namespace Yuri.PlatformCore
             TransformGroup aniGroup = new TransformGroup();
             TranslateTransform XYTransformer = new TranslateTransform();
             ScaleTransform ScaleTransformer = new ScaleTransform();
-            ScaleTransformer.CenterX = this.anchorX;
-            ScaleTransformer.CenterY = this.anchorY;
+            ScaleTransformer.CenterX = this.AnchorX;
+            ScaleTransformer.CenterY = this.AnchorY;
             RotateTransform RotateTransformer = new RotateTransform();
-            RotateTransformer.CenterX = this.anchorX;
-            RotateTransformer.CenterY = this.anchorY;
+            RotateTransformer.CenterX = this.AnchorX;
+            RotateTransformer.CenterY = this.AnchorY;
             aniGroup.Children.Add(XYTransformer);
             aniGroup.Children.Add(ScaleTransformer);
             aniGroup.Children.Add(RotateTransformer);
-            this.displayBinding.RenderTransform = aniGroup;
+            this.DisplayBinding.RenderTransform = aniGroup;
         }
 
         /// <summary>
         /// 获取或设置精灵动画锚点
         /// </summary>
-        public SpriteAnchorType anchor
+        public SpriteAnchorType Anchor
         {
             get
             {
@@ -147,47 +147,47 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取精灵锚点相对精灵左上角的X坐标
         /// </summary>
-        public double anchorX
+        public double AnchorX
         {
             get
             {
-                if (this.displayBinding == null)
+                if (this.DisplayBinding == null)
                 {
                     return 0;
                 }
-                return this.anchor == SpriteAnchorType.Center ? this.displayBinding.Width / 2 : 0;
+                return this.Anchor == SpriteAnchorType.Center ? this.DisplayBinding.Width / 2 : 0;
             }
         }
 
         /// <summary>
         /// 获取精灵锚点相对精灵左上角的Y坐标
         /// </summary>
-        public double anchorY
+        public double AnchorY
         {
             get
             {
-                if (this.displayBinding == null)
+                if (this.DisplayBinding == null)
                 {
                     return 0;
                 }
-                return this.anchor == SpriteAnchorType.Center ? this.displayBinding.Height / 2 : 0;
+                return this.Anchor == SpriteAnchorType.Center ? this.DisplayBinding.Height / 2 : 0;
             }
         }
 
         /// <summary>
         /// 获取或设置纹理切割矩形
         /// </summary>
-        public Int32Rect cutRect { get; set; }
+        public Int32Rect CutRect { get; set; }
 
         /// <summary>
         /// 获取或设置纹理源
         /// </summary>
-        public BitmapImage myImage { get; set; }
+        public BitmapImage SpriteBitmapImage { get; set; }
 
         /// <summary>
         /// 获取或设置前端显示控件
         /// </summary>
-        public Image displayBinding
+        public Image DisplayBinding
         {
             get
             {
@@ -202,17 +202,17 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置前端显示控件的X值
         /// </summary>
-        public double displayX
+        public double DisplayX
         {
             get
             {
-                return Canvas.GetLeft(this.displayBinding);
+                return Canvas.GetLeft(this.DisplayBinding);
             }
             set
             {
-                if (this.displayBinding != null)
+                if (this.DisplayBinding != null)
                 {
-                    Canvas.SetLeft(this.displayBinding, value);
+                    Canvas.SetLeft(this.DisplayBinding, value);
                 }
             }
         }
@@ -220,115 +220,115 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置前端显示控件的Y值
         /// </summary>
-        public double displayY
+        public double DisplayY
         {
             get
             {
-                return Canvas.GetTop(this.displayBinding);
+                return Canvas.GetTop(this.DisplayBinding);
             }
             set
             {
-                Canvas.SetTop(this.displayBinding, value);
+                Canvas.SetTop(this.DisplayBinding, value);
             }
         }
 
         /// <summary>
         /// 获取或设置前端显示控件的Z值
         /// </summary>
-        public int displayZ
+        public int DisplayZ
         {
             get
             {
-                return Canvas.GetZIndex(this.displayBinding);
+                return Canvas.GetZIndex(this.DisplayBinding);
             }
             set
             {
-                Canvas.SetZIndex(this.displayBinding, value);
+                Canvas.SetZIndex(this.DisplayBinding, value);
             }
         }
 
         /// <summary>
         /// 获取或设置前端显示控件的透明度
         /// </summary>
-        public double displayOpacity
+        public double DisplayOpacity
         {
             get
             {
-                return this.displayBinding.Opacity;
+                return this.DisplayBinding.Opacity;
             }
             set
             {
-                this.displayBinding.Opacity = value;
+                this.DisplayBinding.Opacity = value;
             }
         }
 
         /// <summary>
         /// 获取或设置前端显示控件的宽度
         /// </summary>
-        public double displayWidth
+        public double DisplayWidth
         {
             get
             {
-                return this.displayBinding.Width;
+                return this.DisplayBinding.Width;
             }
             set
             {
-                this.displayBinding.Width = value;
+                this.DisplayBinding.Width = value;
             }
         }
 
         /// <summary>
         /// 获取或设置前端显示控件的高度
         /// </summary>
-        public double displayHeight
+        public double DisplayHeight
         {
             get
             {
-                return this.displayBinding.Height;
+                return this.DisplayBinding.Height;
             }
             set
             {
-                this.displayBinding.Height = value;
+                this.DisplayBinding.Height = value;
             }
         }
 
         /// <summary>
         /// 获取源图片的宽度
         /// </summary>
-        public double imageWidth
+        public double ImageWidth
         {
             get
             {
-                return this.myImage.Width;
+                return this.SpriteBitmapImage.Width;
             }
         }
 
         /// <summary>
         /// 获取源图片的高度
         /// </summary>
-        public double imageHeight
+        public double ImageHeight
         {
             get
             {
-                return this.myImage.Height;
+                return this.SpriteBitmapImage.Height;
             }
         }
 
         /// <summary>
         /// 获取当前精灵是否被绑定到Image前端对象上
         /// </summary>
-        public bool isDisplaying
+        public bool IsDisplaying
         {
             get
             {
-                return this.displayBinding != null;
+                return this.DisplayBinding != null;
             }
         }
 
         /// <summary>
         /// 获取精灵的资源类型
         /// </summary>
-        public ResourceType resourceType
+        public ResourceType ResourceType
         {
             get;
             private set;
@@ -337,7 +337,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取精灵的资源名
         /// </summary>
-        public string resourceName
+        public string ResourceName
         {
             get;
             private set;
@@ -350,11 +350,11 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return this.AnimateCounter;
+                return this.animateCounter;
             }
             set
             {
-                this.AnimateCounter = Math.Max(0, value);
+                this.animateCounter = Math.Max(0, value);
             }
         }
 
@@ -370,7 +370,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 精灵动画状态
         /// </summary>
-        private int AnimateCounter = 0;
+        private int animateCounter = 0;
 
         /// <summary>
         /// 精灵动画锚点类型
@@ -386,7 +386,7 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 枚举：精灵的动画锚点
     /// </summary>
-    public enum SpriteAnchorType
+    internal enum SpriteAnchorType
     {
         LeftTop,
         Center

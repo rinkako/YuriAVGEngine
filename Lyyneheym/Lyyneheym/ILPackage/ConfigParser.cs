@@ -12,7 +12,7 @@ namespace Yuri.ILPackage
     /// <summary>
     /// 设置信息语法分析器类
     /// </summary>
-    class ConfigParser
+    internal static class ConfigParser
     {
         /// <summary>
         /// 构造函数
