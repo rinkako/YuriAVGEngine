@@ -81,8 +81,8 @@ namespace Yuri.YuriInterpreter
             this.removeQueueDict = new Dictionary<SceneAction, Queue<SceneAction>>();
             this.blockDict = new Dictionary<string, SceneAction>();
             this.AST(this.parseTree, ref resSa, funcSaVec);
-            this.OptimizeProcedure(resSa, resSa, false);
-            funcSaVec.ForEach((x) => funcVec.Add(this.OptimizeProcedure(x, x, true)));
+            this.BackpatchOptimizer(resSa, resSa, false);
+            funcSaVec.ForEach((x) => funcVec.Add(this.BackpatchOptimizer(x, x, true)));
             resSa.Tag = this.scenario;
             return new KeyValuePair<SceneAction, List<SceneFunction>>(resSa, funcVec);
         }
@@ -466,13 +466,13 @@ namespace Yuri.YuriInterpreter
         }
 
         /// <summary>
-        /// 递归遍历动作序列，处理控制流程
+        /// 递归遍历动作序列，回填控制流程，进行代码优化
         /// </summary>
         /// <param name="saNode">要处理的动作序列头部</param>
         /// <param name="parent">当前序列头部的双亲</param>
         /// <param name="funcFlag">函数序列标记</param>
         /// <returns>函数实例</returns>
-        private SceneFunction OptimizeProcedure(SceneAction saNode, SceneAction parent, bool funcFlag)
+        private SceneFunction BackpatchOptimizer(SceneAction saNode, SceneAction parent, bool funcFlag)
         {
             switch (saNode.Type)
             {    
@@ -485,7 +485,7 @@ namespace Yuri.YuriInterpreter
                     // 递归访问子节点
                     for (int i = 0; i < saNode.TrueRouting.Count - 1; i++)
                     {
-                        this.OptimizeProcedure(saNode.TrueRouting[i], saNode, false);
+                        this.BackpatchOptimizer(saNode.TrueRouting[i], saNode, false);
                     }
                     // 清理要移除的节点
                     while (this.removeQueueDict.ContainsKey(saNode) && this.removeQueueDict[saNode].Count != 0)
@@ -496,12 +496,12 @@ namespace Yuri.YuriInterpreter
                     SceneAction lastNop = saNode.TrueRouting[saNode.TrueRouting.Count - 1];
                     if (lastNop.Type != SActionType.act_break && lastNop.Type != SActionType.act_endfor)
                     {
-                        this.OptimizeProcedure(lastNop, saNode, false);
+                        this.BackpatchOptimizer(lastNop, saNode, false);
                         lastNop.Next = saNode.Next;
                     }
                     else
                     {
-                        this.OptimizeProcedure(lastNop, saNode, false);
+                        this.BackpatchOptimizer(lastNop, saNode, false);
                     }
                     break;
                 case SActionType.act_dialog:
@@ -563,7 +563,7 @@ namespace Yuri.YuriInterpreter
                     // 递归访问子节点
                     for (int i = 0; i < saNode.TrueRouting.Count - 1; i++)
                     {
-                        this.OptimizeProcedure(saNode.TrueRouting[i], saNode, false);
+                        this.BackpatchOptimizer(saNode.TrueRouting[i], saNode, false);
                     }
                     // 清理要移除的节点
                     while (this.removeQueueDict.ContainsKey(saNode) && this.removeQueueDict[saNode].Count != 0)
@@ -578,7 +578,7 @@ namespace Yuri.YuriInterpreter
                     }
                     else
                     {
-                        this.OptimizeProcedure(lastFor, saNode, false);
+                        this.BackpatchOptimizer(lastFor, saNode, false);
                     }
                     break;
                 case SActionType.act_endfor:
@@ -611,7 +611,7 @@ namespace Yuri.YuriInterpreter
                     // 递归访问子节点
                     for (int i = 0; i < saNode.TrueRouting.Count - 1; i++)
                     {
-                        this.OptimizeProcedure(saNode.TrueRouting[i], saNode, false);
+                        this.BackpatchOptimizer(saNode.TrueRouting[i], saNode, false);
                     }
                     // 清理要移除的节点
                     while (this.removeQueueDict.ContainsKey(saNode) && this.removeQueueDict[saNode].Count != 0)
@@ -629,7 +629,7 @@ namespace Yuri.YuriInterpreter
                     }
                     else
                     {
-                        this.OptimizeProcedure(lastIfTrue, saNode, false);
+                        this.BackpatchOptimizer(lastIfTrue, saNode, false);
                     }
                     // 处理假分支
                     if (saNode.FalseRouting == null || saNode.FalseRouting.Count == 0)
@@ -639,7 +639,7 @@ namespace Yuri.YuriInterpreter
                     // 递归访问子节点
                     for (int i = 0; i < saNode.FalseRouting.Count - 1; i++)
                     {
-                        this.OptimizeProcedure(saNode.FalseRouting[i], saNode, false);
+                        this.BackpatchOptimizer(saNode.FalseRouting[i], saNode, false);
                     }
                     // 清理要移除的节点
                     while (this.removeQueueDict.ContainsKey(saNode) && this.removeQueueDict[saNode].Count != 0)
@@ -657,7 +657,7 @@ namespace Yuri.YuriInterpreter
                     }
                     else
                     {
-                        this.OptimizeProcedure(lastIfFalse, saNode, false);
+                        this.BackpatchOptimizer(lastIfFalse, saNode, false);
                     }
                     break;
                 default:
