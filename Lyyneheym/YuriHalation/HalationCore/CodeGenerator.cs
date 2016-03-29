@@ -148,6 +148,12 @@ namespace Yuri.YuriHalation.HalationCore
                         }
                         codeBuilder.AppendLine(varCode);
                         break;
+                    case ActionPackageType.act_switch:
+                        string swCode = "@switch ";
+                        swCode += String.Format("id=\"{0}\" ", act.argsDict["id"].valueExp);
+                        swCode += String.Format("state=\"{0}\" ", act.argsDict["dash"].valueExp);
+                        codeBuilder.AppendLine(swCode);
+                        break;
                     case ActionPackageType.act_if:
                         string ifCode = "@if cond=";
                         if (act.argsDict["expr"].valueExp == "")

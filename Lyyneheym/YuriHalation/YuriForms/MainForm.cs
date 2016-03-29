@@ -152,6 +152,17 @@ namespace YuriHalation.YuriForms
                         case "角色状态":
                             FontBrush = Brushes.Brown;
                             break;
+                        case "播放音乐":
+                        case "播放声效":
+                            FontBrush = Brushes.MediumTurquoise;
+                            break;
+                        case "显示图片":
+                        case "移动图片":
+                        case "显示背景":
+                        case "显示立绘":
+                        case "执行过渡":
+                            FontBrush = Brushes.Orchid;
+                            break;
                         case "开关操作":
                         case "变量操作":
                             FontBrush = Brushes.Red;
@@ -175,6 +186,7 @@ namespace YuriHalation.YuriForms
                             FontBrush = Brushes.Gray;
                             break;
                         case "函数调用":
+                        case "退出当前场景":
                             FontBrush = Brushes.Purple;
                             break;
                         default:
