@@ -82,7 +82,7 @@ namespace Yuri.YuriInterpreter
         /// <param name="row">行号</param>
         /// <param name="col">列号</param>
         /// <returns>此节点的处理函数</returns>
-        public CandidateFunction GetCFunciton(int row, int col)
+        public CandidateFunction GetCFunction(int row, int col)
         {
             return this.parserMap[row, col];
         }
@@ -94,7 +94,7 @@ namespace Yuri.YuriInterpreter
         /// <param name="leave">Token类型</param>
         /// <param name="nilserver">空节点展开式处理函数</param>
         /// <returns>候选式实例</returns>
-        public CandidateFunction GetCFunciton(SyntaxType left, TokenType leave, iHandle nilserver)
+        public CandidateFunction GetCFunction(SyntaxType left, TokenType leave, iHandle nilserver)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace Yuri.YuriInterpreter
                 {
                     return new CandidateFunction(nilserver, CFunctionType.umi_epsilon);
                 }
-                CandidateFunction candidator = this.GetCFunciton(this.leftNodesDict[left], this.nextLeavesDict[leave]);
+                CandidateFunction candidator = this.GetCFunction(this.leftNodesDict[left], this.nextLeavesDict[leave]);
                 return candidator == null ? new CandidateFunction(null, CFunctionType.umi_errorEnd) : candidator;
             }
             catch (Exception ex)

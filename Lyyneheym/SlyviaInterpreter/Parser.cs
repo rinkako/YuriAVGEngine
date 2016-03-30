@@ -168,7 +168,7 @@ namespace Yuri.YuriInterpreter
                     SyntaxType nodeType = this.parseStack.Peek();
                     Token iToken = this.istream[this.nextTokenPointer];
                     TokenType tokenType = iToken.Type;
-                    CandidateFunction func = this.iMap.GetCFunciton(nodeType, tokenType, this.Derivate);
+                    CandidateFunction func = this.iMap.GetCFunction(nodeType, tokenType, this.Derivate);
                     // 语法出错时
                     if (func.GetCFType() == CFunctionType.umi_errorEnd)
                     {
