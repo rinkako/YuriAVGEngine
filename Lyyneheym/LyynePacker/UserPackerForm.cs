@@ -81,7 +81,7 @@ namespace Yuri.YuriPacker
                     flist = flist,
                     savefile = fwindow.FileName,
                     pak = this.comboBox1.SelectedItem.ToString(),
-                    sign = "testkey?0"
+                    sign = ""
                 };
                 this.progressBar1.Style = ProgressBarStyle.Marquee;
                 this.tabControl1.Enabled = false;
@@ -129,7 +129,7 @@ namespace Yuri.YuriPacker
                 flist = flist,
                 savefile = savePath,
                 pakFile = this.exPakName,
-                sign = "testkey?0"
+                sign = ""
             };
             this.progressBar1.Style = ProgressBarStyle.Marquee;
             this.tabControl1.Enabled = false;
