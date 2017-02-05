@@ -793,10 +793,14 @@ namespace Yuri.PlatformCore
         /// <param name="dialogStr">要显示的文本</param>
         private void Dialog(string dialogStr, bool continous)
         {
+            // 清除上一次的显示缓存
+            this.viewMana.GetMessageLayer(0).Text = String.Empty;
+            this.dialogPreStr = String.Empty;
+            // 刷新
             this.pendingDialog = dialogStr;
             this.viewMana.GetMessageLayer(0).Visibility = Visibility.Visible;
             this.DrawStringToMsgLayer(0, this.pendingDialog);
-            this.pendingDialog = string.Empty;
+            this.pendingDialog = String.Empty;
         }
 
         /// <summary>
@@ -970,11 +974,11 @@ namespace Yuri.PlatformCore
             switch (property)
             {
                 case "x":
-                    SpriteAnimation.XYMoveToAnimation(actionSprite, duration, toValue, actionSprite.DisplayY, acc, 0);
+                    SpriteAnimation.XMoveToAnimation(actionSprite, duration, toValue, acc);
                     descriptor.X = toValue;
                     break;
                 case "y":
-                    SpriteAnimation.XYMoveToAnimation(actionSprite, duration, actionSprite.DisplayX, toValue, 0, acc);
+                    SpriteAnimation.YMoveToAnimation(actionSprite, duration, toValue, acc);
                     descriptor.Y = toValue;
                     break;
                 case "o":

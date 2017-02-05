@@ -45,6 +45,54 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 在笛卡尔平面上水平方向移动精灵
+        /// </summary>
+        /// <param name="sprite">精灵实例</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="fromX">起始X</param>
+        /// <param name="toX">目标X</param>
+        /// <param name="accX">加速度X</param>
+        public static void XMoveAnimation(YuriSprite sprite, Duration duration, double fromX, double toX, double accX)
+        {
+            Storyboard story = new Storyboard();
+            DoubleAnimation doubleAniLeft = new DoubleAnimation(fromX, toX, duration);
+            doubleAniLeft.AccelerationRatio = accX;
+            Storyboard.SetTarget(doubleAniLeft, sprite.DisplayBinding);
+            Storyboard.SetTargetProperty(doubleAniLeft, new PropertyPath(Canvas.LeftProperty));
+            story.Children.Add(doubleAniLeft);
+            story.Duration = duration;
+            story.Completed += story_Completed;
+            sprite.AnimateCount++;
+            int tt = story.GetHashCode();
+            SpriteAnimation.aniDict[story] = sprite;
+            story.Begin();
+        }
+
+        /// <summary>
+        /// 在笛卡尔平面上竖直移动精灵
+        /// </summary>
+        /// <param name="sprite">精灵实例</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="fromY">起始Y</param>
+        /// <param name="toY">目标Y</param>
+        /// <param name="accY">加速度Y</param>
+        public static void YMoveAnimation(YuriSprite sprite, Duration duration, double fromY, double toY, double accY)
+        {
+            Storyboard story = new Storyboard();
+            DoubleAnimation doubleAniTop = new DoubleAnimation(fromY, toY, duration);
+            doubleAniTop.AccelerationRatio = accY;
+            Storyboard.SetTarget(doubleAniTop, sprite.DisplayBinding);
+            Storyboard.SetTargetProperty(doubleAniTop, new PropertyPath(Canvas.TopProperty));
+            story.Children.Add(doubleAniTop);
+            story.Duration = duration;
+            story.Completed += story_Completed;
+            sprite.AnimateCount++;
+            int tt = story.GetHashCode();
+            SpriteAnimation.aniDict[story] = sprite;
+            story.Begin();
+        }
+
+        /// <summary>
         /// 在层次深度上移动精灵
         /// </summary>
         /// <param name="sprite">精灵实例</param>
@@ -231,6 +279,32 @@ namespace Yuri.PlatformCore
         {
             if (sprite.DisplayBinding == null) { return; }
             SpriteAnimation.XYMoveAnimation(sprite, duration, sprite.DisplayX, toX, sprite.DisplayY, toY, accX, accY);
+        }
+
+        /// <summary>
+        /// 笛卡尔平面上水平移动精灵到目标点
+        /// </summary>
+        /// <param name="sprite">精灵实例</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="toX">目标X</param>
+        /// <param name="accX">加速度X</param>
+        public static void XMoveToAnimation(YuriSprite sprite, Duration duration, double toX, double accX = 0)
+        {
+            if (sprite.DisplayBinding == null) { return; }
+            SpriteAnimation.XMoveAnimation(sprite, duration, sprite.DisplayX, toX, accX);
+        }
+
+        /// <summary>
+        /// 笛卡尔平面上竖直移动精灵到目标点
+        /// </summary>
+        /// <param name="sprite">精灵实例</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="toY">目标X</param>
+        /// <param name="accY">加速度X</param>
+        public static void YMoveToAnimation(YuriSprite sprite, Duration duration, double toY, double accY = 0)
+        {
+            if (sprite.DisplayBinding == null) { return; }
+            SpriteAnimation.YMoveAnimation(sprite, duration, sprite.DisplayY, toY, accY);
         }
 
         /// <summary>

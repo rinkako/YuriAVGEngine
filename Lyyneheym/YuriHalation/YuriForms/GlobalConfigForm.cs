@@ -37,7 +37,7 @@ namespace YuriHalation.YuriForms
             this.textBox4.Text = config.GameProjKey;
             // 可视页
             this.numericUpDown1.Value = config.GameViewWindowWidth;
-            this.numericUpDown2.Value = config.GameViewWindowWidth;
+            this.numericUpDown2.Value = config.GameViewWindowHeight;
             this.checkBox1.Checked = config.GameViewWindowResizeable;
             this.numericUpDown3.Value = config.GameViewCStandLeftX;
             this.numericUpDown4.Value = config.GameViewCStandLeftY;
