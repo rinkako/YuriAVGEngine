@@ -737,7 +737,7 @@ namespace Yuri.PlatformCore
                         ID = bASS_DEVICEINFO.id
                     });
                 }
-
+                // TODO: 32位和64位系统需要采用不同的DLL不然会导致CLR20r3错误
                 Bass.LoadMe();
             }
             catch (Exception exp)
