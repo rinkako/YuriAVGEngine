@@ -414,16 +414,18 @@ namespace Yuri.PlatformCore
             }
             this.pendingPst = this.SearchPST();
             // 开始线程处理
-            List<Thread> threadPool = new List<Thread>();
-            this.threadFinishCounter = 0;
-            for (int t = 0; t < threadNum; t++)
-            {
-                threadPool.Add(new Thread(new ParameterizedThreadStart(this.InitDictionaryByPST)));
-                threadPool[t].IsBackground = true;
-                threadPool[t].Start(t);
-            }
-            // 等待线程回调
-            while (this.threadFinishCounter < threadNum);
+            //List<Thread> threadPool = new List<Thread>();
+            //this.threadFinishCounter = 0;
+            //for (int t = 0; t < threadNum; t++)
+            //{
+            //    threadPool.Add(new Thread(new ParameterizedThreadStart(this.InitDictionaryByPST)));
+            //    threadPool[t].IsBackground = true;
+            //    threadPool[t].Start(t);
+            //}
+            //// 等待线程回调
+            //while (this.threadFinishCounter < threadNum);
+
+            this.InitDictionaryByPST(0);
         }
 
         /// <summary>
