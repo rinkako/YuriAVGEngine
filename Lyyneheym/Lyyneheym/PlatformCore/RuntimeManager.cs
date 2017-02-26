@@ -292,7 +292,7 @@ namespace Yuri.PlatformCore
                 // 函数调用
                 else
                 {
-                    var functionFrame = ResourceManager.GetInstance().GetScene(this.CallStack.ESP.BindingSceneName).FuncContainer.Find((x) => x.Callname == this.CallStack.ESP.ScriptName);
+                    var functionFrame = this.CallStack.ESP.BindingFunction; //ResourceManager.GetInstance().GetScene(this.CallStack.ESP.BindingSceneName).FuncContainer.Find((x) => x.Callname == this.CallStack.ESP.ScriptName);
                     functionFrame.Symbols[varname.Replace("$", "")] = this.CalculatePolish(valuePolish);
                 }
             }
