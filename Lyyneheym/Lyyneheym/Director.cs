@@ -97,17 +97,21 @@ namespace Yuri
             Musician.GetInstance().StopAndReleaseBGM();
             // 变更运行时环境
             Director.RunMana = rm;
+            Director.RunMana.ParallelHandler = Director.GetInstance().ParallelUpdateContext;
             CommonUtils.ConsoleLine("RuntimeManager is replaced", "Director", OutputStyle.Important);
             // 变更屏幕管理器
             ScreenManager.ResetSynObject(Director.RunMana.Screen);
             CommonUtils.ConsoleLine("ScreenManager is replaced", "Director", OutputStyle.Important);
             // 重绘整个画面
             ViewManager.GetInstance().ReDraw();
+            // 重新绑定渲染器的作用堆栈
+            UpdateRender render = Director.GetInstance().updateRender;
+            render.VsmReference = Director.RunMana.CallStack;
             // 恢复背景音乐
-            Director.GetInstance().updateRender.Bgm(Director.RunMana.PlayingBGM, GlobalDataContainer.GAME_SOUND_BGMVOL);
+            render.Bgm(Director.RunMana.PlayingBGM, GlobalDataContainer.GAME_SOUND_BGMVOL);
             // 清空字符串缓冲
-            Director.GetInstance().updateRender.dialogPreStr = String.Empty;
-            Director.GetInstance().updateRender.pendingDialogQueue.Clear();
+            render.dialogPreStr = String.Empty;
+            render.pendingDialogQueue.Clear();
             // 弹空全部等待，复现保存最后一个动作
             Director.RunMana.ExitUserWait();
             Interrupt reactionNtr = new Interrupt()
@@ -166,7 +170,7 @@ namespace Yuri
         private void UpdateContext(object sender, EventArgs e)
         {
             // 取得调用堆栈顶部状态
-            StackMachineState stackState = Director.RunMana.GameState();
+            StackMachineState stackState = Director.RunMana.GameState(Director.RunMana.CallStack);
             switch (stackState)
             {
                 case StackMachineState.Interpreting:
@@ -257,13 +261,13 @@ namespace Yuri
                         var ifcItems = interruptFuncCalling.Split('(');
                         var funPureName = ifcItems[0];
                         var funParas = "(" + ifcItems[1];
-                        FunctionCalling(funPureName, funParas);
+                        this.FunctionCalling(funPureName, funParas, Director.RunMana.CallStack);
                     }
                     break;
                 // 演绎脚本
                 case GameState.Performing:
                     // 取下一动作
-                    var nextInstruct = Director.RunMana.MoveNext();
+                    var nextInstruct = Director.RunMana.MoveNext(Director.RunMana.CallStack);
                     // 如果指令空了就立即迭代本次消息循环
                     if (nextInstruct == null)
                     {
@@ -273,7 +277,7 @@ namespace Yuri
                     if (nextInstruct.aType == SActionType.act_wait)
                     {
                         double waitMs = nextInstruct.argsDict.ContainsKey("time") ?
-                                (double)Director.RunMana.CalculatePolish(nextInstruct.argsDict["time"]) : 0;
+                                (double)Director.RunMana.CalculatePolish(nextInstruct.argsDict["time"], Director.RunMana.CallStack) : 0;
                         Director.RunMana.Delay(nextInstruct.saNodeName, DateTime.Now, TimeSpan.FromMilliseconds(waitMs));
                         break;
                     }
@@ -328,7 +332,7 @@ namespace Yuri
                     {
                         var callFunc = nextInstruct.argsDict["name"];
                         var signFunc = nextInstruct.argsDict["sign"];
-                        FunctionCalling(callFunc, signFunc);
+                        this.FunctionCalling(callFunc, signFunc, Director.RunMana.CallStack);
                         break;
                     }
                     // 处理常规动作
@@ -342,16 +346,141 @@ namespace Yuri
             // 处理IO
             this.updateRender.UpdateForMouseState();
             this.updateRender.UpdateForKeyboardState();
-            // 处理并行调用
-            this.updateRender.ParallelProcessor();
         }
 
+        /// <summary>
+        /// 处理并行调用的消息循环
+        /// </summary>
+        private void ParallelUpdateContext(object sender, EventArgs e)
+        {
+            // 获取绑定的调用堆栈
+            ParallelDispatcherArgsPackage pdap = (sender as DispatcherTimer).Tag as ParallelDispatcherArgsPackage;
+            StackMachine paraVM = Director.RunMana.ParallelVMList[pdap.Index];
+            // 取得调用堆栈顶部状态
+            StackMachineState stackState = Director.RunMana.GameState(paraVM);
+            GameState paraGameState = GameState.Exit;
+            switch (stackState)
+            {
+                case StackMachineState.Interpreting:
+                case StackMachineState.FunctionCalling:
+                    paraGameState = GameState.Performing;
+                    break;
+                case StackMachineState.WaitUser:
+                    // 并行器里不应该出现等待用户IO，立即结束本次迭代
+                    return;
+                case StackMachineState.WaitAnimation:
+                    // 并行器里不应该出现等待动画结束，立即结束本次迭代
+                    return;
+                case StackMachineState.Await:
+                    paraGameState = GameState.Waiting;
+                    break;
+                case StackMachineState.Interrupt:
+                    // 并行器里不应该出现系统中断，立即结束本次迭代
+                    CommonUtils.ConsoleLine("There is a interrupt in parallel function, which may cause system pause",
+                        "Director", OutputStyle.Warning);
+                    return;
+                case StackMachineState.NOP:
+                    paraGameState = GameState.Exit;
+                    break;
+            }
+            // 根据调用堆栈顶部更新系统
+            switch (paraGameState)
+            {
+                // 等待状态
+                case GameState.Waiting:
+                    // 计算已经等待的时间
+                    if (DateTime.Now - paraVM.ESP.TimeStamp > paraVM.ESP.Delay)
+                    {
+                        paraVM.Consume();
+                    }
+                    break;
+                // 等待动画
+                case GameState.WaitAni:
+                    if (SpriteAnimation.IsAnyAnimation() == false)
+                    {
+                        paraVM.Consume();
+                    }
+                    break;
+                // 演绎脚本
+                case GameState.Performing:
+                    // 取下一动作
+                    var nextInstruct = Director.RunMana.MoveNext(paraVM);
+                    // 如果指令空了就立即迭代本次消息循环
+                    if (nextInstruct == null)
+                    {
+                        return;
+                    }
+                    // 处理影响调用堆栈的动作
+                    if (nextInstruct.aType == SActionType.act_wait)
+                    {
+                        double waitMs = nextInstruct.argsDict.ContainsKey("time") ?
+                                (double)Director.RunMana.CalculatePolish(nextInstruct.argsDict["time"], paraVM) : 0;
+                        paraVM.Submit("Parallel Time Waiting", DateTime.Now, TimeSpan.FromMilliseconds(waitMs));
+                        break;
+                    }
+                    else if (nextInstruct.aType == SActionType.act_waitani)
+                    {
+                        // 并行器里不应该出现等待动画结束，立即结束本次迭代
+                        CommonUtils.ConsoleLine("There is a animation wait in parallel function, which may cause system pause",
+                            "Director", OutputStyle.Warning);
+                        break;
+                    }
+                    else if (nextInstruct.aType == SActionType.act_waituser)
+                    {
+                        CommonUtils.ConsoleLine("There is a user wait in parallel function, which may cause system pause",
+                            "Director", OutputStyle.Warning);
+                        break;
+                    }
+                    else if (nextInstruct.aType == SActionType.act_jump)
+                    {
+                        var jumpToScene = nextInstruct.argsDict["filename"];
+                        var jumpToTarget = nextInstruct.argsDict["target"];
+                        // 场景内跳转
+                        if (jumpToScene == String.Empty)
+                        {
+                            // TODO 区分场景和函数
+                            var currentScene = this.resMana.GetScene(Director.RunMana.CallStack.ESP.BindingSceneName);
+                            if (!currentScene.LabelDictionary.ContainsKey(jumpToTarget))
+                            {
+                                CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
+                                    "Director", OutputStyle.Error);
+                                break;
+                            }
+                            paraVM.ESP.IP = currentScene.LabelDictionary[jumpToTarget];
+                        }
+                        // 跨场景跳转
+                        else
+                        {
+                            CommonUtils.ConsoleLine("There is a jump across scene in parallel function, it will be ignored",
+                                "Director", OutputStyle.Warning);
+                            break;
+                        }
+                        break;
+                    }
+                    else if (nextInstruct.aType == SActionType.act_call)
+                    {
+                        var callFunc = nextInstruct.argsDict["name"];
+                        var signFunc = nextInstruct.argsDict["sign"];
+                        this.FunctionCalling(callFunc, signFunc, paraVM);
+                        break;
+                    }
+                    // 处理常规动作
+                    pdap.Render.Accept(nextInstruct);
+                    break;
+                // 退出（其实就是执行完毕了一轮，应该重新开始）
+                case GameState.Exit:
+                    paraVM.Submit(pdap.BindingSF, new List<object>());
+                    break;
+            }
+        }
+        
         /// <summary>
         /// 处理函数调用
         /// </summary>
         /// <param name="callFunc">函数名</param>
         /// <param name="signFunc">参数签名</param>
-        private void FunctionCalling(string callFunc, string signFunc)
+        /// <param name="vsm">关于哪个虚拟机做动作</param>
+        private void FunctionCalling(string callFunc, string signFunc, StackMachine vsm)
         {
             if (signFunc != "" && (!signFunc.StartsWith("(") || !signFunc.EndsWith(")")))
             {
@@ -396,7 +525,7 @@ namespace Yuri
                 object varref = null;
                 if (trimedPara.StartsWith("$") || trimedPara.StartsWith("&"))
                 {
-                    varref = Director.RunMana.Fetch(trimedPara);
+                    varref = Director.RunMana.Fetch(trimedPara, vsm);
                 }
                 else if (trimedPara.StartsWith("\"") && trimedPara.EndsWith("\""))
                 {
@@ -408,7 +537,7 @@ namespace Yuri
                 }
                 argsVec.Add(varref);
             }
-            Director.RunMana.CallFunction(sceneFunc, argsVec);
+            Director.RunMana.CallFunction(sceneFunc, argsVec, vsm);
         }
 
         /// <summary>
@@ -461,8 +590,9 @@ namespace Yuri
             this.InitConfig();
             this.resMana = ResourceManager.GetInstance();
             Director.RunMana = new RuntimeManager();
-            this.updateRender = new UpdateRender();
+            this.updateRender = new UpdateRender(Director.RunMana.CallStack);
             Director.RunMana.SetScreenManager(ScreenManager.GetInstance());
+            Director.RunMana.ParallelHandler = this.ParallelUpdateContext;
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromMilliseconds(GlobalDataContainer.DirectorTimerInterval);
             this.timer.Tick += UpdateContext;
@@ -497,7 +627,7 @@ namespace Yuri
                 Director.RunMana.Screen = value;
             }
         }
-
+        
         /// <summary>
         /// 消息循环计时器
         /// </summary>

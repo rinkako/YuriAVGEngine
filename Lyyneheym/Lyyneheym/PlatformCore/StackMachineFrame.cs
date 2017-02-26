@@ -24,6 +24,11 @@ namespace Yuri.PlatformCore
         /// 获取或设置下一指令指针
         /// </summary>
         public SceneAction IP = null;
+
+        /// <summary>
+        /// 获取或设置入口指针
+        /// </summary>
+        public SceneAction BP = null;
         
         /// <summary>
         /// 获取或设置正在执行的脚本名（场景名、函数名）
@@ -84,19 +89,33 @@ namespace Yuri.PlatformCore
     /// </summary>
     internal enum StackMachineState
     {
-        // 无动作
+        /// <summary>
+        /// 无动作
+        /// </summary>
         NOP,
-        // 执行场景脚本
+        /// <summary>
+        /// 执行场景脚本
+        /// </summary>
         Interpreting,
-        // 等待用户操作
+        /// <summary>
+        /// 等待用户操作
+        /// </summary>
         WaitUser,
-        // 等待指令
+        /// <summary>
+        /// 等待指令
+        /// </summary>
         Await,
-        // 等待动画指令
+        /// <summary>
+        /// 等待动画指令
+        /// </summary>
         WaitAnimation,
-        // 函数调用
+        /// <summary>
+        /// 函数调用
+        /// </summary>
         FunctionCalling,
-        // 系统中断
+        /// <summary>
+        /// 系统中断
+        /// </summary>
         Interrupt
     }
 }

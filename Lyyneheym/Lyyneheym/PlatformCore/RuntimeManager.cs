@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Yuri.ILPackage;
@@ -15,27 +16,29 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取当前调用堆栈顶部状态
         /// </summary>
+        /// <param name="vsm">关于哪个虚拟机做动作</param>
         /// <returns>栈顶状态</returns>
-        public StackMachineState GameState()
+        public StackMachineState GameState(StackMachine vsm)
         {
-            if (this.CallStack.ESP == null)
+            if (vsm.ESP == null)
             {
                 return StackMachineState.NOP;
             }
             else
             {
-                return this.CallStack.ESP.State;
+                return vsm.ESP.State;
             }
         }
 
         /// <summary>
         /// 取下一动作指令并暂存当前执行的动作
         /// </summary>
+        /// <param name="vsm">关于哪个虚拟机做动作</param>
         /// <returns>动作实例</returns>
-        public SceneAction MoveNext()
+        public SceneAction MoveNext(StackMachine vsm)
         {
-            SceneAction fetched = this.FetchNextInstruction();
-            if (fetched != null && this.CallStack.ESP.State == StackMachineState.Interpreting)
+            SceneAction fetched = this.FetchNextInstruction(vsm);
+            if (fetched != null && vsm.ESP.State == StackMachineState.Interpreting)
             {
                 this.DashingPureSa = fetched.Clone(true);
             }
@@ -45,27 +48,28 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 递归寻指
         /// </summary>
+        /// <param name="vsm">关于哪个虚拟机做动作</param>
         /// <returns>动作实例</returns>
-        private SceneAction FetchNextInstruction()
+        private SceneAction FetchNextInstruction(StackMachine vsm)
         {
             // 调用栈已经为空时预备退出
-            if (this.CallStack.Count() == 0)
+            if (vsm.Count() == 0)
             {
                 return null;
             }
             // 取出当前要执行的指令
-            if (this.CallStack.ESP.State != StackMachineState.Interpreting &&
-                this.CallStack.ESP.State != StackMachineState.FunctionCalling)
+            if (vsm.ESP.State != StackMachineState.Interpreting &&
+                vsm.ESP.State != StackMachineState.FunctionCalling)
             {
                 return null;
             }
-            SceneAction ret = this.CallStack.ESP.IP;
+            SceneAction ret = vsm.ESP.IP;
             // 如果没有下一指令就弹栈
             if (ret == null)
             {
-                this.CallStack.Consume();
+                vsm.Consume();
                 // 递归寻指
-                return this.FetchNextInstruction();
+                return this.FetchNextInstruction(vsm);
             }
             // 如果没有条件子句
             if (ret.condPolish == "")
@@ -79,35 +83,35 @@ namespace Yuri.PlatformCore
                         // 优先进入trueRouting
                         if (ret.trueRouting != null && ret.trueRouting.Count > 0)
                         {
-                            this.CallStack.ESP.PC++;
-                            ret = this.CallStack.ESP.IP = ret.trueRouting[0];
+                            vsm.ESP.PC++;
+                            ret = vsm.ESP.IP = ret.trueRouting[0];
                             break;
                         }
                         // falseRouting
                         else if (ret.falseRouting != null && ret.falseRouting.Count > 0)
                         {
-                            this.CallStack.ESP.PC++;
-                            ret = this.CallStack.ESP.IP = ret.falseRouting[0];
+                            vsm.ESP.PC++;
+                            ret = vsm.ESP.IP = ret.falseRouting[0];
                             break;
                         }
                         // next
                         else
                         {
-                            this.CallStack.ESP.PC++;
-                            ret = this.CallStack.ESP.IP = ret.next;
+                            vsm.ESP.PC++;
+                            ret = vsm.ESP.IP = ret.next;
                             break;
                         }
                     case SActionType.act_endfor:
                         // endfor直接跳过
-                        this.CallStack.ESP.PC++;
-                        ret = this.CallStack.ESP.IP = ret.next;
+                        vsm.ESP.PC++;
+                        ret = vsm.ESP.IP = ret.next;
                         break;
                 }
                 // 移动下一指令指针，为下次处理做准备
                 if (ret.aType != SActionType.act_for)
                 {
-                    this.CallStack.ESP.PC++;
-                    this.CallStack.ESP.IP = ret.next;
+                    vsm.ESP.PC++;
+                    vsm.ESP.IP = ret.next;
                 }
                 // 返回当前要执行的指令实例
                 return ret;
@@ -116,7 +120,7 @@ namespace Yuri.PlatformCore
             else
             {
                 // 计算条件真值
-                bool condBoolean = this.CalculateBooleanPolish(ret.condPolish);
+                bool condBoolean = this.CalculateBooleanPolish(ret.condPolish, vsm);
                 // 处理控制流程
                 switch (ret.aType)
                 {
@@ -126,26 +130,26 @@ namespace Yuri.PlatformCore
                         if (condBoolean == true && ret.trueRouting != null && ret.trueRouting.Count > 0)
                         {
                             // 移动下一指令指针，进入trueRouting
-                            this.CallStack.ESP.PC++;
-                            ret = this.CallStack.ESP.IP = ret.trueRouting[0];
+                            vsm.ESP.PC++;
+                            ret = vsm.ESP.IP = ret.trueRouting[0];
                         }
                         // 条件为假且有假分支
                         else if (condBoolean == false && ret.falseRouting != null && ret.falseRouting.Count > 0)
                         {
                             // 移动下一指令指针，进入falseRouting
-                            this.CallStack.ESP.PC++;
-                            ret = this.CallStack.ESP.IP = ret.falseRouting[0];
+                            vsm.ESP.PC++;
+                            ret = vsm.ESP.IP = ret.falseRouting[0];
                         }
                         // 没有执行的语句时，移动指令指针到next节点
                         else
                         {
                             // 跳过if语句
-                            this.CallStack.ESP.PC++;
-                            ret = this.CallStack.ESP.IP = ret.next;
+                            vsm.ESP.PC++;
+                            ret = vsm.ESP.IP = ret.next;
                         }
                         // 再移动一次指针，为下次处理做准备
-                        this.CallStack.ESP.PC++;
-                        this.CallStack.ESP.IP = ret.next;
+                        vsm.ESP.PC++;
+                        vsm.ESP.IP = ret.next;
                         // 返回当前要执行的指令实例
                         return ret;
                     // FOR语句
@@ -154,19 +158,19 @@ namespace Yuri.PlatformCore
                         if (condBoolean == true && ret.trueRouting != null && ret.trueRouting.Count > 0)
                         {
                             // 移动下一指令指针，进入trueRouting
-                            this.CallStack.ESP.PC++;
-                            ret = this.CallStack.ESP.IP = ret.trueRouting[0];
+                            vsm.ESP.PC++;
+                            ret = vsm.ESP.IP = ret.trueRouting[0];
                         }
                         // 如果条件为假直接跳过for语句
                         else
                         {
                             // 跳过if语句
-                            this.CallStack.ESP.PC++;
-                            ret = this.CallStack.ESP.IP = ret.next;
+                            vsm.ESP.PC++;
+                            ret = vsm.ESP.IP = ret.next;
                         }
                         // 再移动一次指针，为下次处理做准备
-                        this.CallStack.ESP.PC++;
-                        this.CallStack.ESP.IP = ret.next;
+                        vsm.ESP.PC++;
+                        vsm.ESP.IP = ret.next;
                         // 返回当前要执行的指令实例
                         return ret;
                     // 除此以外，带了cond的语句，为真才执行
@@ -174,12 +178,12 @@ namespace Yuri.PlatformCore
                         if (condBoolean == false)
                         {
                             // 跳过当前语句
-                            this.CallStack.ESP.PC++;
-                            ret = this.CallStack.ESP.IP = ret.next;
+                            vsm.ESP.PC++;
+                            ret = vsm.ESP.IP = ret.next;
                         }
                         // 移动下一指令指针，为下次处理做准备
-                        this.CallStack.ESP.PC++;
-                        this.CallStack.ESP.IP = ret.next;
+                        vsm.ESP.PC++;
+                        vsm.ESP.IP = ret.next;
                         // 返回当前要执行的指令实例
                         return ret;
                 }
@@ -221,7 +225,31 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void ExitCall()
         {
-            this.CallStack.Consume();
+            // 弹调用堆栈
+            var consumed = this.CallStack.Consume();
+            // 如果弹出的是场景，就要结束所有正在进行的并行
+            if (consumed.State == StackMachineState.Interpreting)
+            {
+                if (this.ParallelDispatcherList != null)
+                {
+                    // 强制并行堆栈里的弹空所有调用
+                    foreach (var vm in this.ParallelVMList)
+                    {
+                        while (vm.Count() != 0)
+                        {
+                            vm.Consume();
+                        }
+                    }
+                    // 关闭计时器
+                    foreach (var pdt in this.ParallelDispatcherList)
+                    {
+                        pdt.Stop();
+                    }
+                    // 收拾残局
+                    this.ParallelVMList = null;
+                    this.ParallelDispatcherList = null;
+                }
+            }
         }
 
         /// <summary>
@@ -253,7 +281,33 @@ namespace Yuri.PlatformCore
         /// <param name="target">目标标签</param>
         public void CallScene(Scene scene, SceneAction target = null)
         {
+            // 基础调用
             this.CallStack.Submit(scene, target);
+            // 处理场景的并行函数
+            if (scene.ParallellerContainer.Count > 0)
+            {
+                this.ParallelDispatcherList = new List<DispatcherTimer>();
+                this.ParallelVMList = new List<StackMachine>();
+                int counter = 0;
+                foreach (var psf in scene.ParallellerContainer)
+                {
+                    DispatcherTimer dt = new DispatcherTimer();
+                    dt.Interval = TimeSpan.FromMilliseconds(GlobalDataContainer.DirectorTimerInterval);
+                    dt.Tick += this.ParallelHandler;
+                    this.ParallelDispatcherList.Add(dt);
+                    var pvm = new StackMachine(psf.GlobalName);
+                    pvm.Submit(psf, new List<object>());
+                    this.ParallelVMList.Add(pvm);
+                    ParallelDispatcherArgsPackage pdap = new ParallelDispatcherArgsPackage()
+                    {
+                        Index = counter++,
+                        Render = new UpdateRender(pvm),
+                        BindingSF = psf
+                    };
+                    dt.Tag = pdap;
+                    dt.Start();
+                }
+            }
         }
 
         /// <summary>
@@ -261,11 +315,12 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="function">函数模板实例</param>
         /// <param name="args">参数列表</param>
-        public void CallFunction(SceneFunction function, List<object> args)
+        /// <param name="vsm">关于哪个虚拟机做动作</param>
+        public void CallFunction(SceneFunction function, List<object> args, StackMachine vsm)
         {
             // 为模板创建一个分支实例
             var callForker = function.Fork(true);
-            this.CallStack.Submit(callForker, args);
+            vsm.Submit(callForker, args);
             // 处理参数传递
             var funcSymbols = callForker.Symbols;
             for (int i = 0; i < args.Count; i++)
@@ -279,27 +334,28 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="varname">变量名</param>
         /// <param name="value">右值逆波兰式</param>
-        public void Assignment(string varname, string valuePolish)
+        /// <param name="vsm">关于哪个虚拟机做动作</param>
+        public void Assignment(string varname, string valuePolish, StackMachine vsm)
         {
             // 处理局部变量
             if (varname.StartsWith("$"))
             {
                 // 非函数调用
-                if (this.GameState() != StackMachineState.FunctionCalling)
+                if (this.GameState(vsm) != StackMachineState.FunctionCalling)
                 {
-                    this.Symbols.Assign(this.CallStack.EBP.ScriptName, varname.Replace("$", ""), this.CalculatePolish(valuePolish));
+                    this.Symbols.Assign(vsm.EBP.ScriptName, varname.Replace("$", ""), this.CalculatePolish(valuePolish, vsm));
                 }
                 // 函数调用
                 else
                 {
-                    var functionFrame = this.CallStack.ESP.BindingFunction; //ResourceManager.GetInstance().GetScene(this.CallStack.ESP.BindingSceneName).FuncContainer.Find((x) => x.Callname == this.CallStack.ESP.ScriptName);
-                    functionFrame.Symbols[varname.Replace("$", "")] = this.CalculatePolish(valuePolish);
+                    var functionFrame = vsm.ESP.BindingFunction; //ResourceManager.GetInstance().GetScene(this.CallStack.ESP.BindingSceneName).FuncContainer.Find((x) => x.Callname == this.CallStack.ESP.ScriptName);
+                    functionFrame.Symbols[varname.Replace("$", "")] = this.CalculatePolish(valuePolish, vsm);
                 }
             }
             // 处理全局变量
             else if (varname.StartsWith("&"))
             {
-                this.Symbols.GlobalAssign(varname.Replace("&", ""), this.CalculatePolish(valuePolish));
+                this.Symbols.GlobalAssign(varname.Replace("&", ""), this.CalculatePolish(valuePolish, vsm));
             }
         }
 
@@ -307,21 +363,22 @@ namespace Yuri.PlatformCore
         /// 取一个变量作右值
         /// </summary>
         /// <param name="varName">变量名</param>
+        /// <param name="vsm">关于哪个虚拟机做动作</param>
         /// <returns>变量的引用</returns>
-        public object Fetch(string varName)
+        public object Fetch(string varName, StackMachine vsm)
         {
             // 处理局部变量
             if (varName.StartsWith("$"))
             {
                 // 非函数调用
-                if (this.GameState() != StackMachineState.FunctionCalling)
+                if (this.GameState(vsm) != StackMachineState.FunctionCalling)
                 {
-                    return this.Symbols.Fetch(ResourceManager.GetInstance().GetScene(this.CallStack.EBP.ScriptName), varName.Replace("$", ""));
+                    return this.Symbols.Fetch(ResourceManager.GetInstance().GetScene(vsm.EBP.ScriptName), varName.Replace("$", ""));
                 }
                 // 函数调用
                 else
                 {
-                    var funFrame = this.CallStack.ESP.BindingFunction;
+                    var funFrame = vsm.ESP.BindingFunction;
                     return funFrame.Symbols[varName.Replace("$", "")];
                 }
             }
@@ -346,7 +403,7 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 完成存档动作
+        /// 完成存档
         /// </summary>
         public void FinishedSave()
         {
@@ -368,20 +425,22 @@ namespace Yuri.PlatformCore
         /// 计算表达式的真值
         /// </summary>
         /// <param name="polish">表达式的逆波兰式</param>
+        /// <param name="vsm">关于哪个虚拟机做动作</param>
         /// <returns>表达式的真值</returns>
-        public bool CalculateBooleanPolish(string polish)
+        public bool CalculateBooleanPolish(string polish, StackMachine vsm)
         {
-            return Convert.ToBoolean(this.CalculatePolish(polish));
+            return Convert.ToBoolean(this.CalculatePolish(polish, vsm));
         }
 
         /// <summary>
         /// 计算表达式
         /// </summary>
         /// <param name="polish">表达式的逆波兰式</param>
+        /// <param name="vsm">关于哪个虚拟机做动作</param>
         /// <returns>计算结果的值（Double/字符串）</returns>
-        public object CalculatePolish(string polish)
+        public object CalculatePolish(string polish, StackMachine vsm)
         {
-            List<PolishItem> calcList = this.GetPolishItemList(polish);
+            List<PolishItem> calcList = this.GetPolishItemList(polish, vsm);
             if (calcList.Count == 0)
             {
                 return null;
@@ -691,8 +750,9 @@ namespace Yuri.PlatformCore
         /// 将逆波兰式转化为可计算的项
         /// </summary>
         /// <param name="polish">逆波兰式字符串</param>
+        /// <param name="vsm">关于哪个虚拟机做动作</param>
         /// <returns>可计算项目向量</returns>
-        private List<PolishItem> GetPolishItemList(string polish)
+        private List<PolishItem> GetPolishItemList(string polish, StackMachine vsm)
         {
             List<PolishItem> resVec = new List<PolishItem>();
             string[] polishItem = polish.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -728,7 +788,7 @@ namespace Yuri.PlatformCore
                 // 变量时
                 else if ((item.StartsWith("&") || item.StartsWith("$")) && item.Length > 1)
                 {
-                    object varRef = this.Fetch(item);
+                    object varRef = this.Fetch(item, vsm);
                     if (varRef is double)
                     {
                         poi = new PolishItem()
@@ -893,11 +953,10 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void Reset()
         {
-            this.CallStack = new StackMachine();
+            this.CallStack = new StackMachine("YURI");
             this.Symbols = SymbolTable.GetInstance();
             this.Screen = null;
             this.PlayingBGM = null;
-            //this.TitlePoint = new KeyValuePair<string, SceneAction>(null, null);
         }
 
         /// <summary>
@@ -909,7 +968,7 @@ namespace Yuri.PlatformCore
         }
         
         /// <summary>
-        /// 获取调用堆栈
+        /// 获取主调用堆栈
         /// </summary>
         public StackMachine CallStack
         {
@@ -924,6 +983,33 @@ namespace Yuri.PlatformCore
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 获取并行计时器向量
+        /// </summary>
+        public List<DispatcherTimer> ParallelDispatcherList
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取并行堆栈向量
+        /// </summary>
+        public List<StackMachine> ParallelVMList
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取或设置并行堆栈的处理函数
+        /// </summary>
+        public EventHandler ParallelHandler
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -957,6 +1043,25 @@ namespace Yuri.PlatformCore
         /// 存档状态保存栈
         /// </summary>
         private Stack<StackMachineFrame> saveTraceBackStack;
+    }
+
+    [Serializable]
+    internal sealed class ParallelDispatcherArgsPackage
+    {
+        /// <summary>
+        /// 获取或设置在并行向量里的下标
+        /// </summary>
+        public int Index { get; set; }
+
+        /// <summary>
+        /// 获取或设置绑定的渲染器
+        /// </summary>
+        public UpdateRender Render { get; set; }
+
+        /// <summary>
+        /// 获取或设置绑定的函数入口
+        /// </summary>
+        public SceneFunction BindingSF { get; set; }
     }
 
     /// <summary>

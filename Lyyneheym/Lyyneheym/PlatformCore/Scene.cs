@@ -25,6 +25,14 @@ namespace Yuri.PlatformCore
             this.Ctor = mainSa;
             this.FuncContainer = funcVec;
             this.LabelDictionary = labelDict;
+            this.ParallellerContainer = new List<SceneFunction>();
+            foreach (var sf in this.FuncContainer)
+            {
+                if (sf.Callname.StartsWith("sync_", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    this.ParallellerContainer.Add(sf);
+                }
+            }
         }
 
         /// <summary>
@@ -47,6 +55,16 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 字符串化方法
+        /// </summary>
+        /// <returns>场景的描述字符串</returns>
+        public override string ToString()
+        {
+            return String.Format("Scene: {0} (func:{1} with para:{2})",
+                this.Scenario, this.FuncContainer.Count, this.ParallellerContainer.Count);
+        }
+
+        /// <summary>
         /// 场景名称
         /// </summary>
         public string Scenario { get; set; }
@@ -60,6 +78,11 @@ namespace Yuri.PlatformCore
         /// 场景的函数向量
         /// </summary>
         public List<SceneFunction> FuncContainer { get; set; }
+
+        /// <summary>
+        /// 场景内的并行处理器向量
+        /// </summary>
+        public List<SceneFunction> ParallellerContainer { get; set; }
 
         /// <summary>
         /// 场景标签字典

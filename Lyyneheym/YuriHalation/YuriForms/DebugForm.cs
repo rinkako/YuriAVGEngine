@@ -174,7 +174,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void DebugForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!debugGameProcess.HasExited)
+            if (debugGameProcess!= null && !debugGameProcess.HasExited)
             {
                 debugGameProcess.Kill();
             }

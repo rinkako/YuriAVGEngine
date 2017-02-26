@@ -210,7 +210,7 @@ namespace Yuri.PlatformCore
         // 脚本入口
         public static readonly string Script_Main = "main";
         // 刷新频率
-        public static readonly double DirectorTimerInterval = 1000.0 / 120.0;
+        public static readonly double DirectorTimerInterval = 1000.0 / 300.0;
         #endregion
 
         #region 枚举类型

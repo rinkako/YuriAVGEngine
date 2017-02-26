@@ -34,7 +34,7 @@ namespace Yuri.PlatformCore
             {
                 return nullValue;
             }
-            return Convert.ToDouble(Director.RunMana.CalculatePolish(polish));
+            return Convert.ToDouble(Director.RunMana.CalculatePolish(polish, this.VsmReference));
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Yuri.PlatformCore
             {
                 return nullValue;
             }
-            return (int)(Convert.ToDouble(Director.RunMana.CalculatePolish(polish)));
+            return (int)(Convert.ToDouble(Director.RunMana.CalculatePolish(polish, this.VsmReference)));
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Yuri.PlatformCore
             {
                 return nullValue;
             }
-            return Director.RunMana.CalculatePolish(polish).ToString();
+            return Director.RunMana.CalculatePolish(polish, this.VsmReference).ToString();
         }
 
         /// <summary>
@@ -106,6 +106,7 @@ namespace Yuri.PlatformCore
         public void SetKeyboardState(Key key, KeyStates state)
         {
             UpdateRender.KS_KEY_Dict[key] = state;
+            Director.RunMana.Assignment("&kb_" + key.ToString(), "1", this.VsmReference);
         }
 
         /// <summary>
@@ -228,10 +229,12 @@ namespace Yuri.PlatformCore
                         if (mainMsgLayer.Visibility == Visibility.Hidden)
                         {
                             mainMsgLayer.Visibility = Visibility.Visible;
+                            MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Visible;
                         }
                         else
                         {
                             mainMsgLayer.Visibility = Visibility.Hidden;
+                            MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Hidden;
                         }
                     }
                 }
@@ -255,14 +258,6 @@ namespace Yuri.PlatformCore
         public void UpdateForKeyboardState()
         {
             
-        }
-
-        /// <summary>
-        /// 更新函数：并行处理器，每帧被调用一次
-        /// </summary>
-        public void ParallelProcessor()
-        {
-
         }
         
         /// <summary>
@@ -344,7 +339,7 @@ namespace Yuri.PlatformCore
                     {
                         int varPtr = i + 3;
                         while (varPtr < dialogStr.Length && dialogStr[varPtr++] != '}');
-                        string varStr = Director.RunMana.Fetch("$" + dialogStr.Substring(i + 3, varPtr - i - 4)).ToString();
+                        string varStr = Director.RunMana.Fetch("$" + dialogStr.Substring(i + 3, varPtr - i - 4), this.VsmReference).ToString();
                         dialogStr = dialogStr.Remove(i, varPtr - i);
                         dialogStr = dialogStr.Insert(i, varStr);
                     }
@@ -352,7 +347,7 @@ namespace Yuri.PlatformCore
                     {
                         int varPtr = i + 3;
                         while (varPtr < dialogStr.Length && dialogStr[varPtr++] != '}') ;
-                        string varStr = Director.RunMana.Fetch("&" + dialogStr.Substring(i + 3, varPtr - i - 4)).ToString();
+                        string varStr = Director.RunMana.Fetch("&" + dialogStr.Substring(i + 3, varPtr - i - 4), this.VsmReference).ToString();
                         dialogStr = dialogStr.Remove(i, varPtr - i);
                         dialogStr = dialogStr.Insert(i, varStr);
                     }
@@ -538,13 +533,29 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 渲染类构造器
         /// </summary>
-        public UpdateRender()
+        /// <param name="vsm">关于哪个虚拟机做动作</param>
+        public UpdateRender(StackMachine vsm)
         {
-            // 初始化鼠标键位
-            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Left, MouseButtonState.Released);
-            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Middle, MouseButtonState.Released);
-            UpdateRender.KS_MOUSE_Dict.Add(MouseButton.Right, MouseButtonState.Released);
+            // 绑定调用堆栈
+            this.VsmReference = vsm;
+            // 初始化鼠标和键盘变量
+            if (UpdateRender.KS_MOUSE_Dict.ContainsKey(MouseButton.Left) == false)
+            {
+                UpdateRender.KS_MOUSE_Dict[MouseButton.Left] = MouseButtonState.Released;
+                UpdateRender.KS_MOUSE_Dict[MouseButton.Middle] = MouseButtonState.Released;
+                UpdateRender.KS_MOUSE_Dict[MouseButton.Right] = MouseButtonState.Released;
+                foreach (var t in Enum.GetNames(typeof(Key)))
+                {
+                    UpdateRender.KS_KEY_Dict[(Key)Enum.Parse(typeof(Key), t)] = KeyStates.None;
+                    Director.RunMana.Assignment("&kb_" + t, "0", vsm);
+                }
+            }
         }
+
+        /// <summary>
+        /// 作用堆栈的引用
+        /// </summary>
+        public StackMachine VsmReference = null;
 
         /// <summary>
         /// 主窗体引用
@@ -746,7 +757,7 @@ namespace Yuri.PlatformCore
                         );
                     break;
                 case SActionType.act_msglayeropt:
-                    var dashMsgoptItem = Director.RunMana.CalculatePolish(action.argsDict["dash"]);
+                    var dashMsgoptItem = Director.RunMana.CalculatePolish(action.argsDict["dash"], this.VsmReference);
                     this.MsgLayerOpt(
                         this.ParseInt(action.argsDict["id"], 0),
                         this.ParseDirectString(action.argsDict["target"], ""),
@@ -1247,7 +1258,7 @@ namespace Yuri.PlatformCore
         /// <param name="dashPolish">表达式的等价逆波兰式</param>
         private void Var(string varname, string dashPolish)
         {
-            Director.RunMana.Assignment(varname, dashPolish);
+            Director.RunMana.Assignment(varname, dashPolish, this.VsmReference);
         }
 
         /// <summary>
