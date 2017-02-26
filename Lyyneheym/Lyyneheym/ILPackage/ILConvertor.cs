@@ -38,9 +38,10 @@ namespace Yuri.ILPackage
                 string sceneName = sapKvp.Key;
                 Dictionary<string, SceneActionPackage> sapPool = sapKvp.Value;
                 List<SceneAction> saHeaderList = new List<SceneAction>();
-                Dictionary<string, SceneAction> labelDict = new Dictionary<string, SceneAction>();
+                List<Dictionary<string, SceneAction>> labelDictList = new List<Dictionary<string, SceneAction>>();
                 foreach (KeyValuePair<string, SceneActionPackage> SAPPair in sapPool)
                 {
+                    Dictionary<string, SceneAction> labelDict = new Dictionary<string, SceneAction>();
                     string nodename = SAPPair.Key;
                     SceneActionPackage sap = SAPPair.Value;
                     // 不脏的项目才入队展开
@@ -89,6 +90,8 @@ namespace Yuri.ILPackage
                                 }
                             }
                         }
+                        // 处理标签字典
+                        labelDictList.Add(labelDict);
                     }
                 }
                 CommonUtils.ConsoleLine(String.Format("Finished SAP Relation Recovery: {0}", sceneName), "YuriIL Convertor", OutputStyle.Normal);
@@ -100,9 +103,11 @@ namespace Yuri.ILPackage
                     for (int fc = 1; fc < saHeaderList.Count; fc++)
                     {
                         SceneAction fsa = saHeaderList[fc];
-                        funcVec.Add(this.ParseSaToSF(fsa, sceneName));
+                        var rsf = this.ParseSaToSF(fsa, sceneName);
+                        rsf.LabelDictionary = labelDictList[fc];
+                        funcVec.Add(rsf);
                     }
-                    parseScene = new Scene(sceneName, mainSa, funcVec, labelDict);
+                    parseScene = new Scene(sceneName, mainSa, funcVec, labelDictList[0]);
                 }
                 resList.Add(parseScene);
                 CommonUtils.ConsoleLine(String.Format("Finished SAP Function Recovery: {0}", sceneName), "YuriIL Convertor", OutputStyle.Normal);

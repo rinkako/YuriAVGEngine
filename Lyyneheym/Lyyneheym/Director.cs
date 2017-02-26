@@ -239,7 +239,7 @@ namespace Yuri
                         break;
                     }
                     // 跳出所有用户等待
-                    if (needExitWait || interruptExitPoint != "")
+                    if (needExitWait || interruptExitPoint != String.Empty)
                     {
                         Director.RunMana.ExitUserWait();
                     }
@@ -256,7 +256,7 @@ namespace Yuri
                         Director.RunMana.CallStack.EBP.IP = curScene.LabelDictionary[interruptExitPoint];
                     }
                     // 处理中断函数调用
-                    else if (interruptFuncCalling != "")
+                    else if (interruptFuncCalling != String.Empty)
                     {
                         var ifcItems = interruptFuncCalling.Split('(');
                         var funPureName = ifcItems[0];
@@ -296,16 +296,30 @@ namespace Yuri
                         var jumpToScene = nextInstruct.argsDict["filename"];
                         var jumpToTarget = nextInstruct.argsDict["target"];
                         // 场景内跳转
-                        if (jumpToScene == "")
+                        if (jumpToScene == String.Empty)
                         {
-                            var currentScene = this.resMana.GetScene(Director.RunMana.CallStack.ESP.BindingSceneName);
-                            if (!currentScene.LabelDictionary.ContainsKey(jumpToTarget))
+                            if (stackState == StackMachineState.Interpreting)
                             {
-                                CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
-                                    "Director", OutputStyle.Error);
-                                break;
+                                var currentScene = this.resMana.GetScene(Director.RunMana.CallStack.ESP.BindingSceneName);
+                                if (!currentScene.LabelDictionary.ContainsKey(jumpToTarget))
+                                {
+                                    CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
+                                        "Director", OutputStyle.Error);
+                                    break;
+                                }
+                                Director.RunMana.CallStack.ESP.IP = currentScene.LabelDictionary[jumpToTarget];
                             }
-                            Director.RunMana.CallStack.ESP.IP = currentScene.LabelDictionary[jumpToTarget];
+                            else if (stackState == StackMachineState.FunctionCalling)
+                            {
+                                var currentFunc = Director.RunMana.CallStack.ESP.BindingFunction;
+                                if (!currentFunc.LabelDictionary.ContainsKey(jumpToTarget))
+                                {
+                                    CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
+                                        "Director", OutputStyle.Error);
+                                    break;
+                                }
+                                Director.RunMana.CallStack.ESP.IP = currentFunc.LabelDictionary[jumpToTarget];
+                            }
                         }
                         // 跨场景跳转
                         else
@@ -317,7 +331,7 @@ namespace Yuri
                                     "Director", OutputStyle.Error);
                                 break;
                             }
-                            if (jumpToTarget != "" && !jumpScene.LabelDictionary.ContainsKey(jumpToTarget))
+                            if (jumpToTarget != String.Empty && !jumpScene.LabelDictionary.ContainsKey(jumpToTarget))
                             {
                                 CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0} -> {1}", jumpToScene, jumpToTarget),
                                     "Director", OutputStyle.Error);
@@ -438,15 +452,28 @@ namespace Yuri
                         // 场景内跳转
                         if (jumpToScene == String.Empty)
                         {
-                            // TODO 区分场景和函数
-                            var currentScene = this.resMana.GetScene(Director.RunMana.CallStack.ESP.BindingSceneName);
-                            if (!currentScene.LabelDictionary.ContainsKey(jumpToTarget))
+                            if (stackState == StackMachineState.Interpreting)
                             {
-                                CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
-                                    "Director", OutputStyle.Error);
-                                break;
+                                var currentScene = this.resMana.GetScene(paraVM.ESP.BindingSceneName);
+                                if (!currentScene.LabelDictionary.ContainsKey(jumpToTarget))
+                                {
+                                    CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
+                                        "Director", OutputStyle.Error);
+                                    break;
+                                }
+                                paraVM.ESP.IP = currentScene.LabelDictionary[jumpToTarget];
                             }
-                            paraVM.ESP.IP = currentScene.LabelDictionary[jumpToTarget];
+                            else if (stackState == StackMachineState.FunctionCalling)
+                            {
+                                var currentFunc = paraVM.ESP.BindingFunction;
+                                if (!currentFunc.LabelDictionary.ContainsKey(jumpToTarget))
+                                {
+                                    CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
+                                        "Director", OutputStyle.Error);
+                                    break;
+                                }
+                                paraVM.ESP.IP = currentFunc.LabelDictionary[jumpToTarget];
+                            }
                         }
                         // 跨场景跳转
                         else
