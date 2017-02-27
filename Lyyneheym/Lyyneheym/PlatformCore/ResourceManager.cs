@@ -192,7 +192,7 @@ namespace Yuri.PlatformCore
         /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
         private KeyValuePair<GCHandle?, long> GetMusicGCHandleLengthKVP(string sourceName, ResourceType rtype)
         {
-            if (sourceName == "") { return new KeyValuePair<GCHandle?,long>(null, 0); }
+            if (sourceName == String.Empty) { return new KeyValuePair<GCHandle?,long>(null, 0); }
             string DevURI = null, PackURI = null;
             // 处理路径
             switch (rtype)

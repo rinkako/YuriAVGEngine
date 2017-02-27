@@ -77,7 +77,7 @@ namespace Yuri.PlatformCore
                 return this.FetchNextInstruction(vsm);
             }
             // 如果没有条件子句
-            if (ret.condPolish == "")
+            if (ret.condPolish == String.Empty)
             {
                 // 处理控制流程
                 switch (ret.aType)
@@ -989,7 +989,7 @@ namespace Yuri.PlatformCore
             this.CallStack.SetMachineName("Yuri");
             this.Symbols = SymbolTable.GetInstance();
             this.Screen = null;
-            this.PlayingBGM = null;
+            this.PlayingBGM = String.Empty;
         }
 
         /// <summary>

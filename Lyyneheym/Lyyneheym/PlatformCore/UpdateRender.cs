@@ -1157,18 +1157,18 @@ namespace Yuri.PlatformCore
         /// <param name="volume">音量</param>
         public void Bgm(string resourceName, double volume)
         {
+            // 空即为停止
+            if (resourceName == null || resourceName == String.Empty)
+            {
+                Director.RunMana.PlayingBGM = String.Empty;
+                this.musician.StopAndReleaseBGM();
+            }
             // 如果当前BGM就是此BGM就只调整音量
-            if (this.musician.currentBGM != resourceName)
+            else if (this.musician.currentBGM != resourceName)
             {
                 var bgmKVP = this.resMana.GetBGM(resourceName);
                 Director.RunMana.PlayingBGM = resourceName;
                 this.musician.PlayBGM(resourceName, bgmKVP.Key, bgmKVP.Value, (float)volume);
-            }
-            // 空即为停止
-            else if (resourceName == "")
-            {
-                Director.RunMana.PlayingBGM = "";
-                this.musician.StopAndReleaseBGM();
             }
             else
             {
