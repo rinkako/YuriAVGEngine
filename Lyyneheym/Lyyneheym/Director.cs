@@ -128,6 +128,14 @@ namespace Yuri
         }
 
         /// <summary>
+        /// 刷新主渲染器的调用堆栈绑定
+        /// </summary>
+        public void RefreshMainRenderVMReference()
+        {
+            this.updateRender.VsmReference = Director.RunMana.CallStack;
+        }
+
+        /// <summary>
         /// 向运行时环境发出中断
         /// </summary>
         /// <param name="ntr">中断</param>
@@ -668,7 +676,7 @@ namespace Yuri
         /// <summary>
         /// 画面刷新器
         /// </summary>
-        private UpdateRender updateRender;
+        public UpdateRender updateRender;
 
         /// <summary>
         /// 主窗体引用

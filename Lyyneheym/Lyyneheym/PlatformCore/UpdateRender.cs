@@ -1228,23 +1228,23 @@ namespace Yuri.PlatformCore
         /// 演绎函数：保存游戏
         /// </summary>
         /// <param name="saveFileName">文件名</param>
-        private void Save(string saveFileName)
+        public void Save(string saveFileName)
         {
             SpriteAnimation.SkipAllAnimation();
             if (this.pendingDialogQueue.Count > 0)
             {
                 this.DrawDialogRunQueue(this.pendingDialogQueue.Count, false);
             }
-            Director.RunMana.PreviewSave();
+            var sp = Director.RunMana.PreviewSave();
             IOUtils.Serialization(Director.RunMana, GlobalDataContainer.GAME_SAVE_DIR + "\\" + saveFileName + GlobalDataContainer.GAME_SAVE_POSTFIX);
-            Director.RunMana.FinishedSave();
+            Director.RunMana.FinishedSave(sp);
         }
 
         /// <summary>
         /// 演绎函数：载入游戏
         /// </summary>
         /// <param name="loadFileName">文件名</param>
-        private void Load(string loadFileName)
+        public void Load(string loadFileName)
         {
             SpriteAnimation.SkipAllAnimation();
             var rm = (RuntimeManager)IOUtils.Unserialization(GlobalDataContainer.GAME_SAVE_DIR + "\\" + loadFileName + GlobalDataContainer.GAME_SAVE_POSTFIX);

@@ -9,7 +9,7 @@ namespace Yuri.PlatformCore
     /// 选择项按钮描述类
     /// </summary>
     [Serializable]
-    internal class BranchButtonDescriptor
+    internal class BranchButtonDescriptor : CloneableState
     {
         /// <summary>
         /// 获取或设置选择项按钮id号

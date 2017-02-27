@@ -393,24 +393,41 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 预备存档
         /// </summary>
-        public void PreviewSave()
+        /// <returns>不要保存到稳定储存器上的内容的打包</returns>
+        public PreviewSaveDataStoringPackage PreviewSave()
         {
-            this.saveTraceBackStack = new Stack<StackMachineFrame>();
+            // 处理主调用堆栈上的栈帧
+            PreviewSaveDataStoringPackage savePak = new PreviewSaveDataStoringPackage();
+            savePak.saveTraceBackStack = new Stack<StackMachineFrame>();
             while (this.CallStack.ESP != this.CallStack.SAVEP)
             {
-                this.saveTraceBackStack.Push(this.CallStack.Consume());
+                savePak.saveTraceBackStack.Push(this.CallStack.Consume());
             }
+            // 处理并行句柄引用
+            savePak.ParallelHandlerStore = this.ParallelHandler;
+            this.ParallelHandler = null;
+            // 处理并行器向量的引用
+            savePak.ParallelDispatcherListStore = this.ParallelDispatcherList;
+            this.ParallelDispatcherList = null;
+            // 返回封装包
+            return savePak;
         }
 
         /// <summary>
         /// 完成存档
         /// </summary>
-        public void FinishedSave()
+        /// <param name="savePack">调用PreviewSave时的返回值</param>
+        public void FinishedSave(PreviewSaveDataStoringPackage savePack)
         {
-            while (this.saveTraceBackStack.Count > 0)
+            // 恢复主调用堆栈上的栈帧
+            while (savePack.saveTraceBackStack.Count > 0)
             {
-                this.CallStack.Submit(this.saveTraceBackStack.Pop());
+                this.CallStack.Submit(savePack.saveTraceBackStack.Pop());
             }
+            // 恢复并行句柄引用
+            this.ParallelHandler = savePack.ParallelHandlerStore;
+            // 恢复并行器向量的引用
+            this.ParallelDispatcherList = savePack.ParallelDispatcherListStore;
         }
 
         /// <summary>
@@ -747,6 +764,15 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 修改主调用堆栈的引用
+        /// </summary>
+        /// <param name="vm">新的主调用堆栈</param>
+        public void ResetCallstackObject(StackMachine vm)
+        {
+            this.CallStack = vm;
+        }
+
+        /// <summary>
         /// 将逆波兰式转化为可计算的项
         /// </summary>
         /// <param name="polish">逆波兰式字符串</param>
@@ -986,15 +1012,6 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 获取并行计时器向量
-        /// </summary>
-        public List<DispatcherTimer> ParallelDispatcherList
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// 获取并行堆栈向量
         /// </summary>
         public List<StackMachine> ParallelVMList
@@ -1004,8 +1021,19 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 获取并行计时器向量
+        /// </summary>
+        /// <remarks>在序列化RuntimeManager时务必保证该字段为null值</remarks>
+        public List<DispatcherTimer> ParallelDispatcherList
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// 获取或设置并行堆栈的处理函数
         /// </summary>
+        /// <remarks>在序列化RuntimeManager时务必保证该字段为null值</remarks>
         public EventHandler ParallelHandler
         {
             get;
@@ -1038,14 +1066,11 @@ namespace Yuri.PlatformCore
             get;
             private set;
         }
-
-        /// <summary>
-        /// 存档状态保存栈
-        /// </summary>
-        private Stack<StackMachineFrame> saveTraceBackStack;
     }
 
-    [Serializable]
+    /// <summary>
+    /// 并行参数包装类
+    /// </summary>
     internal sealed class ParallelDispatcherArgsPackage
     {
         /// <summary>
@@ -1065,21 +1090,66 @@ namespace Yuri.PlatformCore
     }
 
     /// <summary>
+    /// 打包暂存不要保存到磁盘的临时包装类
+    /// </summary>
+    internal sealed class PreviewSaveDataStoringPackage
+    {
+        /// <summary>
+        /// 并行处理器句柄
+        /// </summary>
+        public EventHandler ParallelHandlerStore
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 并行计时器向量
+        /// </summary>
+        public List<DispatcherTimer> ParallelDispatcherListStore
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 存档状态保存栈
+        /// </summary>
+        public Stack<StackMachineFrame> saveTraceBackStack
+        {
+            get;
+            set;
+        }
+    }
+
+    /// <summary>
     /// 游戏的总体状态
     /// </summary>
     internal enum GameState
     {
-        // 游戏剧情进行时
+        /// <summary>
+        /// 游戏剧情进行时
+        /// </summary>
         Performing,
-        // 等待用户操作
+        /// <summary>
+        /// 等待用户操作
+        /// </summary>
         WaitForUserInput,
-        // 中断
+        /// <summary>
+        /// 中断
+        /// </summary>
         Interrupt,
-        // 系统执行中
+        /// <summary>
+        /// 系统执行中
+        /// </summary>
         Waiting,
-        // 等待动画中
+        /// <summary>
+        /// 等待动画中
+        /// </summary>
         WaitAni,
-        // 准备退出程序
+        /// <summary>
+        /// 准备退出程序
+        /// </summary>
         Exit
     }
 }

@@ -8,7 +8,7 @@ namespace Yuri.PlatformCore
     /// 栈机类：负责游戏流程的调度
     /// </summary>
     [Serializable]
-    internal class StackMachine
+    internal class StackMachine : CloneableState
     {
         /// <summary>
         /// 构造函数：建立一个新的栈机

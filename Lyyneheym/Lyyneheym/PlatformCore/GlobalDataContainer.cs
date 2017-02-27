@@ -211,6 +211,8 @@ namespace Yuri.PlatformCore
         public static readonly string Script_Main = "main";
         // 刷新频率
         public static readonly double DirectorTimerInterval = 1000.0 / 300.0;
+        // 最大回滚尺度
+        public static readonly int MaxRollbackStep = 100;
         #endregion
 
         #region 枚举类型

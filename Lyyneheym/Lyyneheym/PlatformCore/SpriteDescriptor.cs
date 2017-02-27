@@ -8,7 +8,7 @@ namespace Yuri.PlatformCore
     /// 精灵描述类：用于画面管理和保存
     /// </summary>
     [Serializable]
-    internal class SpriteDescriptor
+    internal class SpriteDescriptor : CloneableState
     {
         /// <summary>
         /// 构造一个精灵

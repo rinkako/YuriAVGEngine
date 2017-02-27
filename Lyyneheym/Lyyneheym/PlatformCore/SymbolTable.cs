@@ -10,7 +10,7 @@ namespace Yuri.PlatformCore
     /// <para>她是一个单例类，只有唯一实例</para>
     /// </summary>
     [Serializable]
-    internal sealed class SymbolTable
+    internal sealed class SymbolTable : CloneableState
     {
         /// <summary>
         /// 重置符号表
@@ -182,6 +182,15 @@ namespace Yuri.PlatformCore
         {
             Regex regex = new Regex(@"^switches{\d+}$");
             return regex.IsMatch(parStr);
+        }
+
+        /// <summary>
+        /// 为符号表重新设置唯一实例的引用
+        /// </summary>
+        /// <param name="st">新符号表</param>
+        public static void ResetSynObject(SymbolTable st)
+        {
+            SymbolTable.synObject = st;
         }
 
         /// <summary>

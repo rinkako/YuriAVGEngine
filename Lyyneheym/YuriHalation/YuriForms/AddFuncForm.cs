@@ -36,6 +36,16 @@ namespace YuriHalation.YuriForms
                 MessageBox.Show("请使用字母正确填写函数名", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            // 提示并行处理
+            if (this.textBox1.Text.Trim().StartsWith("sync_", StringComparison.CurrentCultureIgnoreCase))
+            {
+                var dr = MessageBox.Show("Halation发现该函数名以 sync_ 开头，这将使引擎以并行处理的方式执行该函数，你确定要这么做吗？", "并行提示",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+                if (dr == DialogResult.No)
+                {
+                    return;
+                }
+            }
             // 处理参数列表
             List<string> argvList = new List<string>();
             int nrows = this.argsGridDataView.Rows.Count - 1;
@@ -56,7 +66,7 @@ namespace YuriHalation.YuriForms
                 }
                 argvList.Add(varname);
             }
-            core.DashAddFunction(this.textBox1.Text, argvList);
+            core.DashAddFunction(this.textBox1.Text.Trim(), argvList);
             this.Close();
         }
     }

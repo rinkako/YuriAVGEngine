@@ -11,7 +11,7 @@ namespace Yuri.PlatformCore
     /// 文字层描述类：用于画面管理和保存
     /// </summary>
     [Serializable]
-    internal class MessageLayerDescriptor
+    internal class MessageLayerDescriptor : CloneableState
     {
         /// <summary>
         /// 获取或设置文本层id

@@ -581,6 +581,14 @@ namespace YuriHalation.YuriForms
         }
 
         /// <summary>
+        /// 菜单：编辑
+        /// </summary>
+        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("还没做……");
+        }
+
+        /// <summary>
         /// 菜单：复制
         /// </summary>
         private void 复制ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -848,6 +856,5 @@ namespace YuriHalation.YuriForms
             upf.ShowDialog(this);
         }
         #endregion
-
     }
 }

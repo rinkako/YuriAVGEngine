@@ -11,7 +11,7 @@ namespace Yuri.PlatformCore
     /// <para>她是一个单例类，只有唯一实例</para>
     /// </summary>
     [Serializable]
-    internal class ScreenManager
+    internal class ScreenManager : CloneableState
     {
         /// <summary>
         /// 为屏幕增加一个背景精灵描述子
