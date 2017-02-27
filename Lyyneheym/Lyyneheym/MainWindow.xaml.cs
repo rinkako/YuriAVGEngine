@@ -24,10 +24,19 @@ namespace Yuri
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// 导演类
+        /// </summary>
         private Director core = Director.GetInstance();
 
+        /// <summary>
+        /// 过渡效果的数据包装
+        /// </summary>
         public ObjectDataProvider TransitionDS = new ObjectDataProvider();
 
+        /// <summary>
+        /// 构造器
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -40,28 +49,17 @@ namespace Yuri
             this.TransitionBox.DataContext = this.TransitionDS;
         }
 
-
-        public void DoEvent()
-        {
-            Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.Background);
-        }
-
-
         private void testFontEffect(TextBlock label)
         {
             //LinearGradientBrush brush = new LinearGradientBrush();
-
             //GradientStop gradientStop1 = new GradientStop();
             //gradientStop1.Offset = 0;
             //gradientStop1.Color = Color.FromArgb(255, 251, 100, 17);
             //brush.GradientStops.Add(gradientStop1);
-
             //GradientStop gradientStop2 = new GradientStop();
             //gradientStop2.Offset = 1;
             //gradientStop2.Color = Color.FromArgb(255, 247, 238, 52);
             //brush.GradientStops.Add(gradientStop2);
-
-            
             //brush.StartPoint = new Point(0.5, 0);
             //brush.EndPoint = new Point(0.5, 1);
             //label.Foreground = brush;
@@ -71,17 +69,7 @@ namespace Yuri
             label.Effect = ds;
         }
 
-        private void Button_Click_7(object sender, RoutedEventArgs e)
-        {
-            Interpreter ip = new Interpreter("TestProj", @"C:\Users\Kako\Desktop\testDir");
-            ip.Dash(InterpreterType.RELEASE_WITH_IL, 8);
-            ip.GenerateIL(@"Scenario\main.sil");
-
-            ILConvertor ilc = ILConvertor.GetInstance();
-            List<Scene> rS = ilc.Dash(@"Scenario");
-        }
-
-
+        #region 窗体监听事件
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             core.DisposeResource();
@@ -111,11 +99,11 @@ namespace Yuri
         {
             this.core.UpdateMouseWheel(e.Delta);
         }
-        
+        #endregion
+
         // DEBUG
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            
             this.core.GetMainRender().Save("mysave");
         }
 
@@ -123,6 +111,16 @@ namespace Yuri
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             this.core.GetMainRender().Load("mysave");
+        }
+
+        // DEBUG
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            Interpreter ip = new Interpreter("TestProj", @"C:\Users\Kako\Desktop\testDir");
+            ip.Dash(InterpreterType.RELEASE_WITH_IL, 8);
+            ip.GenerateIL(@"Scenario\main.sil");
+            ILConvertor ilc = ILConvertor.GetInstance();
+            List<Scene> rS = ilc.Dash(@"Scenario");
         }
     }
 }

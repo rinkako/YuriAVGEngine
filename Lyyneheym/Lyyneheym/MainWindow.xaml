@@ -4,7 +4,7 @@
         xmlns:transitionalsControls="clr-namespace:Transitionals.Controls;assembly=Transitionals"
         Title="MainWindow" Height="608" Width="1024" MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" Closing="Window_Closing" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" MouseWheel="Window_MouseWheel">
     <Viewbox x:Name="viewbox" Stretch="Fill">
-        <Canvas Name="BO_MainGrid" Width="1024" Height="576" Background="Black">
+        <Canvas Name="BO_MainGrid" Width="1024" Height="576" Background="White">
 						<transitionalsControls:TransitionElement x:Name="TransitionBox" Transition="{Binding}" Width="{Binding ActualWidth, ElementName=BO_MainGrid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=BO_MainGrid, Mode=OneWay}">
 						</transitionalsControls:TransitionElement>
 						<Button Visibility="Hidden" Panel.ZIndex="9999" Content="Button" HorizontalAlignment="Left" Margin="594,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>

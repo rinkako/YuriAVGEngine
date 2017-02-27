@@ -266,18 +266,24 @@ namespace Yuri.PlatformCore
             {
                 case ResourceType.Background:
                     removeOne = this.backgroundSpriteVec[id];
-                    this.backgroundSpriteVec[id] = null;
+                    //this.backgroundSpriteVec[id] = null;
+                    //if (removeOne.DisplayBinding == this.view.TransitionBox.Content)
+                    //{
+                    ScreenManager.GetInstance().Backlay();
+                    this.ApplyTransition("FadeTransition");
+                    //}
                     break;
                 case ResourceType.Stand:
                     removeOne = this.characterStandSpriteVec[id];
                     this.characterStandSpriteVec[id] = null;
+                    this.RemoveSprite(removeOne);
                     break;
                 case ResourceType.Pictures:
                     removeOne = this.pictureSpriteVec[id];
                     this.pictureSpriteVec[id] = null;
+                    this.RemoveSprite(removeOne);
                     break;
             }
-            this.RemoveSprite(removeOne);
         }
 
         /// <summary>
@@ -309,6 +315,17 @@ namespace Yuri.PlatformCore
         /// <param name="transTypeName">过渡类型的名字</param>
         public void ApplyTransition(string transTypeName)
         {
+            // 刷新精灵
+            var backDesc = Director.ScrMana.GetSpriteDescriptor(0, ResourceType.Background);
+            var foreDesc = Director.ScrMana.GetSpriteDescriptor(1, ResourceType.Background);
+            if (backDesc == null)
+            {
+                this.backgroundSpriteVec[0] = null;
+            }
+            if (foreDesc == null)
+            {
+                this.backgroundSpriteVec[1] = null;
+            }
             Type transType = this.transitionTypes[0];
             foreach (var t in this.transitionTypes)
             {
@@ -320,7 +337,6 @@ namespace Yuri.PlatformCore
                 }
             }
             Transition transition = (Transition)Activator.CreateInstance(transType);
-
             CommonUtils.Swap<YuriSprite>(this.backgroundSpriteVec, (int)BackgroundPage.Fore, (int)BackgroundPage.Back);
             if (this.backgroundSpriteVec[(int)BackgroundPage.Fore] != null)
             {
@@ -331,7 +347,6 @@ namespace Yuri.PlatformCore
                 this.backgroundSpriteVec[(int)BackgroundPage.Back].DisplayZ = (int)BackgroundPage.Back + GlobalDataContainer.GAME_Z_BACKGROUND;
             }
             Director.ScrMana.Backlay();
-
             this.view.TransitionDS.ObjectInstance = transition;
             var viewBinder = this.backgroundSpriteVec[(int)BackgroundPage.Fore] == null ?
                 null : this.backgroundSpriteVec[(int)BackgroundPage.Fore].DisplayBinding;

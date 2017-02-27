@@ -60,6 +60,13 @@ namespace Yuri.PlatformCore
             // 还有得回滚时才滚
             if (RollbackManager.forwardStack.Count > 0)
             {
+                // 如果还未回滚过就要将自己先移除
+                if (RollbackManager.IsRollingBack == false && RollbackManager.forwardStack.Count > 1)
+                {
+                    var selfStep = RollbackManager.forwardStack.Last();
+                    RollbackManager.forwardStack.RemoveAt(RollbackManager.forwardStack.Count - 1);
+                    RollbackManager.backwardStack.Add(selfStep);
+                }
                 // 取上一状态
                 var lastStep = RollbackManager.forwardStack.Last();
                 RollbackManager.forwardStack.RemoveAt(RollbackManager.forwardStack.Count - 1);

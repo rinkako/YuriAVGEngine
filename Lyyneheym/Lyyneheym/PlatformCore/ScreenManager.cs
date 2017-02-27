@@ -409,7 +409,7 @@ namespace Yuri.PlatformCore
         /// 获取一个选择支描述子
         /// </summary>
         /// <param name="bbId">选择支id</param>
-        /// <returns描述子实例></returns>
+        /// <returns>描述子实例</returns>
         public BranchButtonDescriptor GetBranchButtonDescriptor(int id)
         {
             return this.branchDescVec[id];
