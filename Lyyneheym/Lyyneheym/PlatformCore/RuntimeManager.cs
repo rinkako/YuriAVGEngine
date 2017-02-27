@@ -41,6 +41,11 @@ namespace Yuri.PlatformCore
             if (fetched != null && vsm.ESP.State == StackMachineState.Interpreting)
             {
                 this.DashingPureSa = fetched.Clone(true);
+                if (this.DashingPureSa.aType == SActionType.act_dialog ||
+                    this.DashingPureSa.aType == SActionType.act_branch)
+                {
+                    RollbackManager.SteadyForward(false, this.DashingPureSa, this.PlayingBGM);
+                }
             }
             return fetched;
         }
@@ -295,7 +300,8 @@ namespace Yuri.PlatformCore
                     dt.Interval = TimeSpan.FromMilliseconds(GlobalDataContainer.DirectorTimerInterval);
                     dt.Tick += this.ParallelHandler;
                     this.ParallelDispatcherList.Add(dt);
-                    var pvm = new StackMachine(psf.GlobalName);
+                    var pvm = new StackMachine();
+                    pvm.SetMachineName("VM#" + psf.GlobalName);
                     pvm.Submit(psf, new List<object>());
                     this.ParallelVMList.Add(pvm);
                     ParallelDispatcherArgsPackage pdap = new ParallelDispatcherArgsPackage()
@@ -979,7 +985,8 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void Reset()
         {
-            this.CallStack = new StackMachine("YURI");
+            this.CallStack = new StackMachine();
+            this.CallStack.SetMachineName("Yuri");
             this.Symbols = SymbolTable.GetInstance();
             this.Screen = null;
             this.PlayingBGM = null;
@@ -1064,7 +1071,7 @@ namespace Yuri.PlatformCore
         public SceneAction DashingPureSa
         {
             get;
-            private set;
+            set;
         }
     }
 

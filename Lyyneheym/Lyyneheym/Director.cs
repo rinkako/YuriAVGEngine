@@ -179,6 +179,7 @@ namespace Yuri
         {
             // 取得调用堆栈顶部状态
             StackMachineState stackState = Director.RunMana.GameState(Director.RunMana.CallStack);
+            var vw = ViewManager.GetInstance();
             switch (stackState)
             {
                 case StackMachineState.Interpreting:
@@ -575,6 +576,16 @@ namespace Yuri
             Director.RunMana.CallFunction(sceneFunc, argsVec, vsm);
         }
 
+        public static void PauseUpdateContext()
+        {
+            Director.GetInstance().timer.Stop();
+        }
+
+        public static void ResumeUpdateContext()
+        {
+            Director.GetInstance().timer.Start();
+        }
+
         /// <summary>
         /// 设置当前是否正在点击按钮
         /// </summary>
@@ -657,10 +668,19 @@ namespace Yuri
             {
                 return Director.RunMana.Screen;
             }
-            private set
+            set
             {
                 Director.RunMana.Screen = value;
             }
+        }
+
+        /// <summary>
+        /// 获取主渲染器
+        /// </summary>
+        /// <returns>与主调用堆栈绑定的渲染器</returns>
+        public UpdateRender GetMainRender()
+        {
+            return this.updateRender;
         }
         
         /// <summary>
@@ -676,7 +696,7 @@ namespace Yuri
         /// <summary>
         /// 画面刷新器
         /// </summary>
-        public UpdateRender updateRender;
+        private UpdateRender updateRender;
 
         /// <summary>
         /// 主窗体引用

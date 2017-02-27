@@ -8,18 +8,26 @@ namespace Yuri.PlatformCore
     /// 栈机类：负责游戏流程的调度
     /// </summary>
     [Serializable]
-    internal class StackMachine : CloneableState
+    internal class StackMachine : ForkableState
     {
         /// <summary>
         /// 构造函数：建立一个新的栈机
         /// </summary>
-        /// <param name="vmName">堆栈的名称</param>
-        public StackMachine(string vmName)
+        /// 
+        public StackMachine()
         {
             this.Reset();
-            this.StackName = vmName;
         }
 
+        /// <summary>
+        /// 为堆栈机指定一个名称
+        /// </summary>
+        /// <param name="vmName">堆栈的名称</param>
+        public void SetMachineName(string vmName)
+        {
+            this.StackName = vmName;
+        }
+        
         /// <summary>
         /// 将栈机恢复到初始状态
         /// </summary>

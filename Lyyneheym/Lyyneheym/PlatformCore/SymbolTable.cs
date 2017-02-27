@@ -10,7 +10,7 @@ namespace Yuri.PlatformCore
     /// <para>她是一个单例类，只有唯一实例</para>
     /// </summary>
     [Serializable]
-    internal sealed class SymbolTable : CloneableState
+    internal sealed class SymbolTable : ForkableState
     {
         /// <summary>
         /// 重置符号表

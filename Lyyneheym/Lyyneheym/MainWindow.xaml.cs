@@ -116,13 +116,13 @@ namespace Yuri
         private void button_Click(object sender, RoutedEventArgs e)
         {
             
-            this.core.updateRender.Save("mysave.dat");
+            this.core.GetMainRender().Save("mysave");
         }
 
         // DEBUG
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            this.core.updateRender.Load("mysave.dat");
+            this.core.GetMainRender().Load("mysave");
         }
     }
 }

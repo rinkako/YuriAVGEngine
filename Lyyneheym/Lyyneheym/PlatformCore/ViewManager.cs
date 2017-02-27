@@ -363,7 +363,25 @@ namespace Yuri.PlatformCore
         private void ReDrawSprite(int id, List<YuriSprite> vector, ResourceType rType, SpriteDescriptor descriptor, bool forceReload)
         {
             // 不需要重绘的情况
-            if (descriptor == null) { return; }
+            if (descriptor == null)
+            {
+                if (vector[id] != null)
+                {
+                    switch (rType)
+                    {
+                        case ResourceType.Background:
+                            this.RemoveSprite(id, ResourceType.Background);
+                            break;
+                        case ResourceType.Stand:
+                            this.RemoveSprite(id, ResourceType.Stand);
+                            break;
+                        case ResourceType.Pictures:
+                            this.RemoveSprite(id, ResourceType.Pictures);
+                            break;
+                    }
+                }
+                return;
+            }
             YuriSprite sprite = vector[id], newSprite = null;
             // 强制重新载入或资源名称不同时重新加载资源文件
             if (sprite == null ||
@@ -383,6 +401,10 @@ namespace Yuri.PlatformCore
                         break;
                 }
             }
+            else
+            {
+                newSprite = sprite;
+            }
             // 重绘精灵
             this.RemoveSprite(sprite);
             this.DrawSprite(newSprite, descriptor);
@@ -400,7 +422,7 @@ namespace Yuri.PlatformCore
             if (descriptor == null) { return; }
             MessageLayer msglay = this.messageLayerVec[id];
             if (msglay == null ||
-                msglay.BackgroundSprite.ResourceName != descriptor.BackgroundResourceName ||
+                (msglay.BackgroundSprite != null && msglay.BackgroundSprite.ResourceName != descriptor.BackgroundResourceName) ||
                 forceReload)
             {
                 YuriSprite bgSprite = ResourceManager.GetInstance().GetPicture(descriptor.BackgroundResourceName, new Int32Rect(-1, 0, 0, 0));

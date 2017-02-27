@@ -138,7 +138,18 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void SetMouseWheelDelta(int delta)
         {
+            // 更新变量
             UpdateRender.KS_MOUSE_WHEEL_DELTA = delta;
+            // 上滚
+            if (delta > 0)
+            {
+                RollbackManager.SteadyBackward();
+            }
+            // 下滚
+            else
+            {
+                //RollbackManager.SteadyForward(true, null, null);
+            }
         }
 
         /// <summary>
@@ -194,11 +205,14 @@ namespace Yuri.PlatformCore
                             }
                             // 截断语音
                             this.Stopvocal();
+                            // 标记为非回滚
+                            RollbackManager.IsRollingBack = false;
+
                         }
                         // 正在显示对话则向前推进一个趟
                         else
                         {
-                            this.viewMana.GetMessageLayer(0).DisplayBinding.Visibility = Visibility.Visible;
+                            this.viewMana.GetMessageLayer(0).Visibility = Visibility.Visible;
                             this.DrawDialogRunQueue();
                         }
                     }
@@ -299,7 +313,7 @@ namespace Yuri.PlatformCore
         {
             if (this.pendingDialogQueue.Count != 0)
             {
-                string currentRun = "";
+                string currentRun = String.Empty;
                 for (int i = 0; i < runCount; i++)
                 {
                     if (this.pendingDialogQueue.Count != 0)
@@ -307,6 +321,12 @@ namespace Yuri.PlatformCore
                         currentRun += this.pendingDialogQueue.Dequeue();
                     }
                 }
+                // 回滚时不打字而是直接显示
+                //if (RollbackManager.IsRollingBack)
+                //{
+                //    wordDelay = false;
+                //}
+                // 打字动画
                 this.TypeWriter(0, this.dialogPreStr, currentRun, this.viewMana.GetMessageLayer(0).DisplayBinding, wordDelay ? GlobalDataContainer.GAME_MSG_TYPING_DELAY : 0);
                 this.dialogPreStr += currentRun;
             }

@@ -9,7 +9,7 @@ namespace Yuri.PlatformCore
     /// 精灵按钮描述类
     /// </summary>
     [Serializable]
-    internal class SpriteButtonDescriptor : CloneableState
+    internal class SpriteButtonDescriptor : CloneableDescriptor
     {
         /// <summary>
         /// 构造一个按钮描述子

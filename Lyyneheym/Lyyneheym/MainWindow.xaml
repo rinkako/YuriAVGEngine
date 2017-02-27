@@ -10,6 +10,6 @@
 						<Button Visibility="Hidden" Panel.ZIndex="9999" Content="Button" HorizontalAlignment="Left" Margin="594,5,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
 					  <Button x:Name="button1" Content="LOAD" Width="75" Canvas.Left="171" Canvas.Top="58" Click="button1_Click"/>
 						<Button x:Name="button" Content="SAVE" HorizontalAlignment="Left" Margin="70,58,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
-    </Canvas>
+				</Canvas>
     </Viewbox>
 </Window>

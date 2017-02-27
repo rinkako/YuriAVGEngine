@@ -15,10 +15,10 @@ namespace Yuri.PlatformCore
         /// 系统向前进一个状态
         /// 她只有在对话推进和选择项出现时才被触发
         /// </summary>
-        public static void SteadyForward(SceneAction saPtr, string playingBGM)
+        public static void SteadyForward(bool fromWheel, SceneAction saPtr, string playingBGM)
         {
             // 回滚后返回，移栈并演绎
-            if (RollbackManager.IsRollingBack)
+            if (fromWheel == true && RollbackManager.IsRollingBack)
             {
                 // 取上一状态
                 var recentStep = RollbackManager.backwardStack.Last();
@@ -28,16 +28,19 @@ namespace Yuri.PlatformCore
                 RollbackManager.GotoSteadyState(recentStep);
             }
             // 非回滚状态时才重新构造
-            else
+            else if (fromWheel == false)
             {
                 // 构造当前状态的拷贝
+                var vm = Director.RunMana.CallStack.Fork() as StackMachine;
+                vm.SetMachineName("YuriForked_" + DateTime.Now.Ticks.ToString());
                 StepStatePackage ssp = new StepStatePackage()
                 {
                     TimeStamp = DateTime.Now,
                     MusicRef = playingBGM,
-                    VMRef = Director.RunMana.CallStack.Clone() as StackMachine,
-                    SymbolRef = SymbolTable.GetInstance().Clone() as SymbolTable,
-                    ScreenStateRef = ScreenManager.GetInstance().Clone() as ScreenManager
+                    ReactionRef = saPtr,
+                    VMRef = vm,
+                    SymbolRef = SymbolTable.GetInstance().Fork() as SymbolTable,
+                    ScreenStateRef = ScreenManager.GetInstance().Fork() as ScreenManager
                 };
                 // 如果栈中容量溢出就剔掉最早进入的那个
                 if (RollbackManager.forwardStack.Count >= GlobalDataContainer.MaxRollbackStep)
@@ -52,8 +55,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 把系统回滚到上一个状态并演绎
         /// </summary>
-        /// <param name="rm">要作用的运行时环境</param>
-        public static void SteadyBackward(RuntimeManager rm)
+        public static void SteadyBackward()
         {
             // 还有得回滚时才滚
             if (RollbackManager.forwardStack.Count > 0)
@@ -64,6 +66,7 @@ namespace Yuri.PlatformCore
                 RollbackManager.backwardStack.Add(lastStep);
                 // 重演绎
                 RollbackManager.GotoSteadyState(lastStep);
+                RollbackManager.IsRollingBack = true;
             }
         }
         
@@ -73,16 +76,19 @@ namespace Yuri.PlatformCore
         /// <param name="ssp">要演绎的状态包装</param>
         public static void GotoSteadyState(StepStatePackage ssp)
         {
-            SymbolTable.ResetSynObject(ssp.SymbolRef);
-            ScreenManager.ResetSynObject(ssp.ScreenStateRef);
-            Director.RunMana.ResetCallstackObject(ssp.VMRef);
+            Director.PauseUpdateContext();
+            SymbolTable.ResetSynObject(ssp.SymbolRef.Fork() as SymbolTable);
+            ScreenManager.ResetSynObject(ssp.ScreenStateRef.Fork() as ScreenManager);
+            Director.RunMana.ResetCallstackObject(ssp.VMRef.Fork() as StackMachine);
             Director.RunMana.PlayingBGM = ssp.MusicRef;
+            Director.RunMana.DashingPureSa = ssp.ReactionRef.Clone(true);
+            Director.ScrMana = ScreenManager.GetInstance();
             // 重新演绎
             Director.GetInstance().RefreshMainRenderVMReference();
             // 重绘整个画面
             ViewManager.GetInstance().ReDraw();
             // 恢复背景音乐
-            UpdateRender render = Director.GetInstance().updateRender;
+            UpdateRender render = Director.GetInstance().GetMainRender();
             render.Bgm(Director.RunMana.PlayingBGM, GlobalDataContainer.GAME_SOUND_BGMVOL);
             // 清空字符串缓冲
             render.dialogPreStr = String.Empty;
@@ -92,14 +98,15 @@ namespace Yuri.PlatformCore
             Interrupt reactionNtr = new Interrupt()
             {
                 type = InterruptType.LoadReaction,
-                detail = "Reaction for load data",
-                interruptSA = Director.RunMana.DashingPureSa,
-                interruptFuncSign = "",
+                detail = "Reaction for rollback",
+                interruptSA = ssp.ReactionRef,
+                interruptFuncSign = String.Empty,
                 returnTarget = null,
                 pureInterrupt = true
             };
             // 提交中断到主调用堆栈
             Director.RunMana.CallStack.Submit(reactionNtr);
+            Director.ResumeUpdateContext();
         }
 
         /// <summary>
@@ -118,11 +125,31 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static bool IsRollingBack
         {
+            //get
+            //{
+            //    //return RollbackManager.backwardStack.Count != 0;
+            //    return false;
+            //}
             get
             {
-                return RollbackManager.backwardStack.Count > 0;
+                return RollbackManager.rollingFlag;
+            }
+            set
+            {
+                rollingFlag = value;
+                if (value == false)
+                {
+                    if (RollbackManager.backwardStack.Count > 0)
+                    {
+                        var b = RollbackManager.backwardStack.Last();
+                        RollbackManager.forwardStack.Add(b);
+                        RollbackManager.backwardStack.Clear();
+                    }
+                }
             }
         }
+
+        private static bool rollingFlag = false;
 
         /// <summary>
         /// 前进状态栈
@@ -140,6 +167,11 @@ namespace Yuri.PlatformCore
     /// </summary>
     internal sealed class StepStatePackage
     {
+        public override string ToString()
+        {
+            return this.VMRef.StackName;
+        }
+
         /// <summary>
         /// 调用堆栈的拷贝
         /// </summary>
@@ -162,6 +194,15 @@ namespace Yuri.PlatformCore
         /// 符号表的拷贝
         /// </summary>
         public SymbolTable SymbolRef
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 重现动作的拷贝
+        /// </summary>
+        public SceneAction ReactionRef
         {
             get;
             set;
