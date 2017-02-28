@@ -40,7 +40,8 @@ namespace Yuri.PlatformCore
                     ReactionRef = saPtr,
                     VMRef = vm,
                     SymbolRef = SymbolTable.GetInstance().Fork() as SymbolTable,
-                    ScreenStateRef = ScreenManager.GetInstance().Fork() as ScreenManager
+                    ScreenStateRef = ScreenManager.GetInstance().Fork() as ScreenManager,
+                    ParallelStateStackRef = ForkableState.DeepCopyBySerialization<Stack<Dictionary<string, bool>>>(Director.RunMana.ParallelStack)
                 };
                 // 如果栈中容量溢出就剔掉最早进入的那个
                 if (RollbackManager.forwardStack.Count >= GlobalDataContainer.MaxRollbackStep)
@@ -95,6 +96,7 @@ namespace Yuri.PlatformCore
             ScreenManager.ResetSynObject(ssp.ScreenStateRef.Fork() as ScreenManager);
             Director.RunMana.ResetCallstackObject(ssp.VMRef.Fork() as StackMachine);
             Director.RunMana.PlayingBGM = ssp.MusicRef;
+            Director.RunMana.ParallelStack = ForkableState.DeepCopyBySerialization<Stack<Dictionary<string, bool>>>(ssp.ParallelStateStackRef);
             Director.RunMana.DashingPureSa = ssp.ReactionRef.Clone(true);
             Director.ScrMana = ScreenManager.GetInstance();
             // 刷新主渲染器上的堆栈绑定
@@ -220,6 +222,15 @@ namespace Yuri.PlatformCore
         /// 重现动作的拷贝
         /// </summary>
         public SceneAction ReactionRef
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 并行栈的拷贝
+        /// </summary>
+        public Stack<Dictionary<string, bool>> ParallelStateStackRef
         {
             get;
             set;

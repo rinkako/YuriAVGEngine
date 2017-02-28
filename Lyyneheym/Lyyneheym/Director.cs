@@ -210,14 +210,14 @@ namespace Yuri
                     // 计算已经等待的时间（这里，不考虑并行处理）
                     if (DateTime.Now - Director.RunMana.CallStack.ESP.TimeStamp > Director.RunMana.CallStack.ESP.Delay)
                     {
-                        Director.RunMana.ExitCall();
+                        Director.RunMana.ExitCall(Director.RunMana.CallStack);
                     }
                     break;
                 // 等待动画
                 case GameState.WaitAni:
                     if (SpriteAnimation.IsAnyAnimation() == false)
                     {
-                        Director.RunMana.ExitCall();
+                        Director.RunMana.ExitCall(Director.RunMana.CallStack);
                     }
                     break;
                 // 等待用户操作
@@ -231,7 +231,7 @@ namespace Yuri
                     var pureInt = Director.RunMana.CallStack.ESP.BindingInterrupt.pureInterrupt;
                     var interruptFuncCalling = Director.RunMana.CallStack.ESP.BindingInterrupt.interruptFuncSign;
                     var needExitWait = Director.RunMana.CallStack.ESP.BindingInterrupt.exitWait;
-                    Director.RunMana.ExitCall();
+                    Director.RunMana.ExitCall(Director.RunMana.CallStack);
                     // 处理中断优先动作
                     if (interruptSa != null)
                     {
@@ -346,7 +346,7 @@ namespace Yuri
                                     "Director", OutputStyle.Error);
                                 break;
                             }
-                            Director.RunMana.ExitCall();
+                            Director.RunMana.ExitCall(Director.RunMana.CallStack);
                             Director.RunMana.CallScene(jumpScene, jumpToTarget == "" ? jumpScene.Ctor : jumpScene.LabelDictionary[jumpToTarget]);
                         }
                         break;
@@ -576,11 +576,17 @@ namespace Yuri
             Director.RunMana.CallFunction(sceneFunc, argsVec, vsm);
         }
 
+        /// <summary>
+        /// 暂停消息循环
+        /// </summary>
         public static void PauseUpdateContext()
         {
             Director.GetInstance().timer.Stop();
         }
 
+        /// <summary>
+        /// 恢复消息循环
+        /// </summary>
         public static void ResumeUpdateContext()
         {
             Director.GetInstance().timer.Start();

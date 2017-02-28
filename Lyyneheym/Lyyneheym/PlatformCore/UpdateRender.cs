@@ -194,7 +194,7 @@ namespace Yuri.PlatformCore
                         else if (this.pendingDialogQueue.Count == 0)
                         {
                             // 弹掉用户等待状态
-                            Director.RunMana.ExitCall();
+                            Director.RunMana.ExitCall(Director.RunMana.CallStack);
                             this.isShowingDialog = false;
                             this.dialogPreStr = String.Empty;
                             // 非连续对话时消除对话框

@@ -212,6 +212,17 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 弹空堆栈
+        /// </summary>
+        public void Clear()
+        {
+            while (this.coreStack.Count != 0)
+            {
+                this.Consume();
+            }
+        }
+
+        /// <summary>
         /// 返回调用栈中的项目计数
         /// </summary>
         /// <returns>调用栈计数</returns>
