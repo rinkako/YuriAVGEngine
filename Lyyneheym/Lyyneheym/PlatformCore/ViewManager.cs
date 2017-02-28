@@ -1,18 +1,12 @@
 ﻿using System;
-using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Media.Animation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using Transitionals;
-
 using Yuri.Utils;
 
 namespace Yuri.PlatformCore
@@ -266,12 +260,10 @@ namespace Yuri.PlatformCore
             {
                 case ResourceType.Background:
                     removeOne = this.backgroundSpriteVec[id];
-                    //this.backgroundSpriteVec[id] = null;
-                    //if (removeOne.DisplayBinding == this.view.TransitionBox.Content)
-                    //{
+                    // 交换前景和背景，为消除背景做准备
                     ScreenManager.GetInstance().Backlay();
+                    // 执行过渡，消除背景
                     this.ApplyTransition("FadeTransition");
-                    //}
                     break;
                 case ResourceType.Stand:
                     removeOne = this.characterStandSpriteVec[id];
@@ -326,6 +318,7 @@ namespace Yuri.PlatformCore
             {
                 this.backgroundSpriteVec[1] = null;
             }
+            // 获取过渡的类型
             Type transType = this.transitionTypes[0];
             foreach (var t in this.transitionTypes)
             {
@@ -346,6 +339,7 @@ namespace Yuri.PlatformCore
             {
                 this.backgroundSpriteVec[(int)BackgroundPage.Back].DisplayZ = (int)BackgroundPage.Back + GlobalDataContainer.GAME_Z_BACKGROUND;
             }
+            // 交换前景和背景
             Director.ScrMana.Backlay();
             this.view.TransitionDS.ObjectInstance = transition;
             var viewBinder = this.backgroundSpriteVec[(int)BackgroundPage.Fore] == null ?
@@ -355,6 +349,7 @@ namespace Yuri.PlatformCore
                 this.view.BO_MainGrid.Children.Remove(viewBinder);
                 Canvas.SetZIndex(this.view.TransitionBox, Canvas.GetZIndex(viewBinder));
             }
+            // 执行过渡
             this.view.TransitionBox.Content = viewBinder;
         }
 

@@ -32,7 +32,7 @@ namespace Yuri.PlatformCore
             {
                 // 构造当前状态的拷贝
                 var vm = Director.RunMana.CallStack.Fork() as StackMachine;
-                vm.SetMachineName("YuriForked_" + DateTime.Now.Ticks.ToString());
+                vm.SetMachineName("Yuri#Forked_" + DateTime.Now.Ticks.ToString());
                 StepStatePackage ssp = new StepStatePackage()
                 {
                     TimeStamp = DateTime.Now,
@@ -83,14 +83,21 @@ namespace Yuri.PlatformCore
         /// <param name="ssp">要演绎的状态包装</param>
         public static void GotoSteadyState(StepStatePackage ssp)
         {
+            // 停止消息循环
             Director.PauseUpdateContext();
+            // 检查是否需要停下当前的并行处理
+            if (ssp.VMRef.ESP.BindingSceneName != Director.RunMana.CallStack.ESP.BindingSceneName)
+            {
+                Director.RunMana.StopParallel();
+            }
+            // 退到SSP所描述的状态
             SymbolTable.ResetSynObject(ssp.SymbolRef.Fork() as SymbolTable);
             ScreenManager.ResetSynObject(ssp.ScreenStateRef.Fork() as ScreenManager);
             Director.RunMana.ResetCallstackObject(ssp.VMRef.Fork() as StackMachine);
             Director.RunMana.PlayingBGM = ssp.MusicRef;
             Director.RunMana.DashingPureSa = ssp.ReactionRef.Clone(true);
             Director.ScrMana = ScreenManager.GetInstance();
-            // 重新演绎
+            // 刷新主渲染器上的堆栈绑定
             Director.GetInstance().RefreshMainRenderVMReference();
             // 重绘整个画面
             ViewManager.GetInstance().ReDraw();
@@ -113,6 +120,7 @@ namespace Yuri.PlatformCore
             };
             // 提交中断到主调用堆栈
             Director.RunMana.CallStack.Submit(reactionNtr);
+            // 重启消息循环
             Director.ResumeUpdateContext();
         }
 
@@ -132,11 +140,6 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static bool IsRollingBack
         {
-            //get
-            //{
-            //    //return RollbackManager.backwardStack.Count != 0;
-            //    return false;
-            //}
             get
             {
                 return RollbackManager.rollingFlag;
@@ -156,6 +159,9 @@ namespace Yuri.PlatformCore
             }
         }
 
+        /// <summary>
+        /// 回滚标志变量
+        /// </summary>
         private static bool rollingFlag = false;
 
         /// <summary>
@@ -174,6 +180,10 @@ namespace Yuri.PlatformCore
     /// </summary>
     internal sealed class StepStatePackage
     {
+        /// <summary>
+        /// 字符串化方法
+        /// </summary>
+        /// <returns>该状态的唯一标识符</returns>
         public override string ToString()
         {
             return this.VMRef.StackName;

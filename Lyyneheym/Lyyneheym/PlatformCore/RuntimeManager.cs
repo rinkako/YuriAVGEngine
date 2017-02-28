@@ -235,25 +235,33 @@ namespace Yuri.PlatformCore
             // 如果弹出的是场景，就要结束所有正在进行的并行
             if (consumed.State == StackMachineState.Interpreting)
             {
-                if (this.ParallelDispatcherList != null)
+                this.StopParallel();
+            }
+        }
+
+        /// <summary>
+        /// 停止所有的并行处理
+        /// </summary>
+        public void StopParallel()
+        {
+            if (this.ParallelDispatcherList != null)
+            {
+                // 强制并行堆栈里的弹空所有调用
+                foreach (var vm in this.ParallelVMList)
                 {
-                    // 强制并行堆栈里的弹空所有调用
-                    foreach (var vm in this.ParallelVMList)
+                    while (vm.Count() != 0)
                     {
-                        while (vm.Count() != 0)
-                        {
-                            vm.Consume();
-                        }
+                        vm.Consume();
                     }
-                    // 关闭计时器
-                    foreach (var pdt in this.ParallelDispatcherList)
-                    {
-                        pdt.Stop();
-                    }
-                    // 收拾残局
-                    this.ParallelVMList = null;
-                    this.ParallelDispatcherList = null;
                 }
+                // 关闭计时器
+                foreach (var pdt in this.ParallelDispatcherList)
+                {
+                    pdt.Stop();
+                }
+                // 收拾残局
+                this.ParallelVMList = null;
+                this.ParallelDispatcherList = null;
             }
         }
 
