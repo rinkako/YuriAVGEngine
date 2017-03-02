@@ -14,7 +14,7 @@ namespace YuriHalation.YuriForms
     /// <summary>
     /// 窗体：全局设定
     /// </summary>
-    public partial class GlobalConfigForm : Form
+    public partial class  GlobalConfigForm : Form
     {
         /// <summary>
         /// 构造器
@@ -121,7 +121,7 @@ namespace YuriHalation.YuriForms
             config.GameProjKey = this.textBox4.Text;
             // 可视页
             config.GameViewWindowWidth = (int)this.numericUpDown1.Value;
-            config.GameViewWindowWidth = (int)this.numericUpDown2.Value;
+            config.GameViewWindowHeight = (int)this.numericUpDown2.Value;
             config.GameViewWindowResizeable = this.checkBox1.Checked;
             config.GameViewCStandLeftX = (int)this.numericUpDown3.Value;
             config.GameViewCStandLeftY = (int)this.numericUpDown4.Value;

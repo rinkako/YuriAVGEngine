@@ -206,13 +206,29 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return Canvas.GetLeft(this.DisplayBinding);
+                //if (this.IsScaling)
+                //{
+                //    double deltaX = (double)this.ImageWidth / 2.0 - ((double)this.ImageWidth * this.Descriptor.ScaleX / 2.0);
+                //    return Canvas.GetLeft(this.DisplayBinding) + deltaX;
+                //}
+                //else
+                //{
+                    return Canvas.GetLeft(this.DisplayBinding);
+                //}
             }
             set
             {
                 if (this.DisplayBinding != null)
                 {
-                    Canvas.SetLeft(this.DisplayBinding, value);
+                    //if (this.IsScaling)
+                    //{
+                    //    double deltaX = (double)this.ImageWidth / 2.0 - ((double)this.ImageWidth * this.Descriptor.ScaleX / 2.0);
+                    //    Canvas.SetLeft(this.DisplayBinding, value - deltaX);
+                    //}
+                    //else
+                    //{
+                        Canvas.SetLeft(this.DisplayBinding, value);
+                    //}
                 }
             }
         }
@@ -224,11 +240,30 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return Canvas.GetTop(this.DisplayBinding);
+                //if (this.IsScaling)
+                //{
+                //    double deltaY = (double)this.ImageHeight / 2.0 - ((double)this.ImageHeight * this.Descriptor.ScaleY / 2.0);
+                //    return Canvas.GetTop(this.DisplayBinding) + deltaY;
+                //}
+                //else
+                //{
+                    return Canvas.GetTop(this.DisplayBinding);
+                //}
             }
             set
             {
-                Canvas.SetTop(this.DisplayBinding, value);
+                if (this.DisplayBinding != null)
+                {
+                    //if (this.IsScaling)
+                    //{
+                    //    double deltaY = (double)this.ImageHeight / 2.0 - ((double)this.ImageHeight * this.Descriptor.ScaleY / 2.0);
+                    //    Canvas.SetTop(this.DisplayBinding, value - deltaY);
+                    //}
+                    //else
+                    //{
+                        Canvas.SetTop(this.DisplayBinding, value);
+                    //}
+                }
             }
         }
 
@@ -326,6 +361,17 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 获取精灵是否被缩放
+        /// </summary>
+        public bool IsScaling
+        {
+            get
+            {
+                return this.Descriptor.ScaleX != 1 || this.Descriptor.ScaleY != 1;
+            }
+        }
+
+        /// <summary>
         /// 获取精灵的资源类型
         /// </summary>
         public ResourceType ResourceType
@@ -365,6 +411,15 @@ namespace Yuri.PlatformCore
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 获取或设置精灵的描述子
+        /// </summary>
+        public SpriteDescriptor Descriptor
+        {
+            get;
+            set;
         }
 
         /// <summary>

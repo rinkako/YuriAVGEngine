@@ -503,6 +503,7 @@ namespace Yuri.PlatformCore
             sprite.CutRect = descriptor.CutRect;
             sprite.DisplayBinding = spriteImage;
             sprite.Anchor = descriptor.AnchorType;
+            sprite.Descriptor = descriptor;
             Canvas.SetLeft(spriteImage, descriptor.X);
             Canvas.SetTop(spriteImage, descriptor.Y);
             Canvas.SetZIndex(spriteImage, descriptor.Z);
@@ -511,6 +512,17 @@ namespace Yuri.PlatformCore
             sprite.InitAnimationRenderTransform();
             SpriteAnimation.RotateToAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.Angle, 0);
             SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.ScaleX, descriptor.ScaleY, 0, 0);
+            // 修正缩放导致的坐标变化
+            double deltaX = (double)bmp.PixelWidth / 2.0 - ((double)bmp.PixelWidth * descriptor.ScaleX / 2.0);
+            double deltaY = (double)bmp.PixelHeight / 2.0 - ((double)bmp.PixelHeight * descriptor.ScaleY / 2.0);
+            if (deltaX != 0)
+            {
+                Canvas.SetLeft(spriteImage, descriptor.X - deltaX);
+            }
+            if (deltaY != 0)
+            {
+                Canvas.SetTop(spriteImage, descriptor.Y - deltaY);
+            }
         }
 
         /// <summary>
@@ -525,11 +537,14 @@ namespace Yuri.PlatformCore
             if (msglay.BackgroundSprite != null && msglay.BackgroundSprite.SpriteBitmapImage != null)
             {
                 ImageBrush ib = new ImageBrush(msglay.BackgroundSprite.SpriteBitmapImage);
+                BitmapImage t = ib.ImageSource as BitmapImage;
                 ib.Stretch = Stretch.None;
+                ib.TileMode = TileMode.None;
                 ib.AlignmentX = AlignmentX.Left;
                 ib.AlignmentY = AlignmentY.Top;
                 msgBlock.Background = ib;
             }
+            
             msglay.Width = descriptor.Width;
             msglay.Height = descriptor.Height;
             msglay.Opacity = descriptor.Opacity;
@@ -541,7 +556,7 @@ namespace Yuri.PlatformCore
             msglay.FontSize = descriptor.FontSize;
             msglay.FontName = descriptor.FontName;
             msglay.FontShadow = descriptor.FontShadow;
-            msglay.DisplayBinding.TextWrapping = TextWrapping.Wrap;
+            msglay.DisplayBinding.TextWrapping = TextWrapping.NoWrap;
             msglay.DisplayBinding.TextAlignment = TextAlignment.Left;
             Canvas.SetLeft(msgBlock, descriptor.X);
             Canvas.SetTop(msgBlock, descriptor.Y);

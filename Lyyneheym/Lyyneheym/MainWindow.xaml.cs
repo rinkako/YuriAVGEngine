@@ -99,6 +99,15 @@ namespace Yuri
         {
             this.core.UpdateMouseWheel(e.Delta);
         }
+
+        /// <summary>
+        /// 事件：窗体大小改变时，保持比例
+        /// </summary>
+        private void window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.Width = e.NewSize.Width;
+            this.Height = (double)GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT * this.Width / (double)GlobalDataContainer.GAME_WINDOW_WIDTH;
+        }
         #endregion
 
         // DEBUG

@@ -73,7 +73,7 @@ namespace Yuri.PlatformCore
         /// 获取或设置精灵的资源类型
         /// </summary>
         public ResourceType ResourceType { get; set; }
-
+        
         /// <summary>
         /// 获取或设置精灵的资源名
         /// </summary>
