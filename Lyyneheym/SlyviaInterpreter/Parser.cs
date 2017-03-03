@@ -952,7 +952,7 @@ namespace Yuri.YuriInterpreter
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_move, "name", "id", "time", "target", "dash", "acc");
                         break;
                     case TokenType.Token_o_deletepicture:
-                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_deletecstand, "id");
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_deletepicture, "id");
                         break;
                     case TokenType.Token_o_cstand:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_cstand, "id", "name", "face", "x", "y");

@@ -86,6 +86,8 @@ namespace Yuri.PlatformCore
         {
             // 停止消息循环
             Director.PauseUpdateContext();
+            // 结束全部动画
+            SpriteAnimation.ClearAnimateWaitingDict();
             // 检查是否需要停下当前的并行处理
             if (ssp.VMRef.ESP.BindingSceneName != Director.RunMana.CallStack.ESP.BindingSceneName)
             {

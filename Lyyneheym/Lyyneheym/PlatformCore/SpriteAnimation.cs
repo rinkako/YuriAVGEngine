@@ -37,9 +37,12 @@ namespace Yuri.PlatformCore
             story.Children.Add(doubleAniLeft);
             story.Children.Add(doubleAniTop);
             story.Duration = duration;
-            story.Completed += story_Completed;
-            sprite.AnimateCount++;
-            SpriteAnimation.aniDict[story] = sprite;
+            if (duration.TimeSpan.Milliseconds != 0)
+            {
+                story.Completed += story_Completed;
+                sprite.AnimateCount++;
+                SpriteAnimation.aniDict[story] = sprite;
+            }
             story.Begin();
         }
 
@@ -67,9 +70,12 @@ namespace Yuri.PlatformCore
             Storyboard.SetTargetProperty(doubleAniLeft, new PropertyPath(Canvas.LeftProperty));
             story.Children.Add(doubleAniLeft);
             story.Duration = duration;
-            story.Completed += story_Completed;
-            sprite.AnimateCount++;
-            SpriteAnimation.aniDict[story] = sprite;
+            if (duration.TimeSpan.Milliseconds != 0)
+            {
+                story.Completed += story_Completed;
+                sprite.AnimateCount++;
+                SpriteAnimation.aniDict[story] = sprite;
+            }
             story.Begin();
         }
 
@@ -97,9 +103,12 @@ namespace Yuri.PlatformCore
             Storyboard.SetTargetProperty(doubleAniTop, new PropertyPath(Canvas.TopProperty));
             story.Children.Add(doubleAniTop);
             story.Duration = duration;
-            story.Completed += story_Completed;
-            sprite.AnimateCount++;
-            SpriteAnimation.aniDict[story] = sprite;
+            if (duration.TimeSpan.Milliseconds != 0)
+            {
+                story.Completed += story_Completed;
+                sprite.AnimateCount++;
+                SpriteAnimation.aniDict[story] = sprite;
+            }
             story.Begin();
         }
 
@@ -127,9 +136,12 @@ namespace Yuri.PlatformCore
             Storyboard.SetTargetProperty(doubleAniZ, new PropertyPath(Canvas.ZIndexProperty));
             story.Children.Add(doubleAniZ);
             story.Duration = duration;
-            story.Completed += story_Completed;
-            sprite.AnimateCount++;
-            SpriteAnimation.aniDict[story] = sprite;
+            if (duration.TimeSpan.Milliseconds != 0)
+            {
+                story.Completed += story_Completed;
+                sprite.AnimateCount++;
+                SpriteAnimation.aniDict[story] = sprite;
+            }
             story.Begin();
         }
 
@@ -172,9 +184,12 @@ namespace Yuri.PlatformCore
             story.Children.Add(doubleAniScaleX);
             story.Children.Add(doubleAniScaleY);
             story.Duration = duration;
-            story.Completed += story_Completed;
-            sprite.AnimateCount++;
-            SpriteAnimation.aniDict[story] = sprite;
+            if (duration.TimeSpan.Milliseconds != 0)
+            {
+                story.Completed += story_Completed;
+                sprite.AnimateCount++;
+                SpriteAnimation.aniDict[story] = sprite;
+            }
             story.Begin();
         }
 
@@ -202,9 +217,12 @@ namespace Yuri.PlatformCore
             Storyboard.SetTargetProperty(doubleAniOpacity, new PropertyPath(Image.OpacityProperty));
             story.Children.Add(doubleAniOpacity);
             story.Duration = duration;
-            story.Completed += story_Completed;
-            sprite.AnimateCount++;
-            SpriteAnimation.aniDict[story] = sprite;
+            if (duration.TimeSpan.Milliseconds != 0)
+            {
+                story.Completed += story_Completed;
+                sprite.AnimateCount++;
+                SpriteAnimation.aniDict[story] = sprite;
+            }
             story.Begin();
         }
 
@@ -232,9 +250,12 @@ namespace Yuri.PlatformCore
             Storyboard.SetTargetProperty(doubleAniRotate, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)"));
             story.Children.Add(doubleAniRotate);
             story.Duration = duration;
-            story.Completed += story_Completed;
-            sprite.AnimateCount++;
-            SpriteAnimation.aniDict[story] = sprite;
+            if (duration.TimeSpan.Milliseconds != 0)
+            {
+                story.Completed += story_Completed;
+                sprite.AnimateCount++;
+                SpriteAnimation.aniDict[story] = sprite;
+            }
             story.Begin();
         }
 
@@ -522,6 +543,18 @@ namespace Yuri.PlatformCore
                 }
             }
             return maxt;
+        }
+
+        /// <summary>
+        /// 结束全部动画并清空字典
+        /// </summary>
+        public static void ClearAnimateWaitingDict()
+        {
+            foreach (var a in SpriteAnimation.aniDict)
+            {
+                a.Key.SkipToFill();
+            }
+            SpriteAnimation.aniDict.Clear();
         }
 
         /// <summary>
