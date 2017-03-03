@@ -598,6 +598,11 @@ namespace Yuri
         public static bool ButtonClickingFlag = false;
 
         /// <summary>
+        /// 当前是否处于全屏态
+        /// </summary>
+        public static bool FullScreen = false;
+
+        /// <summary>
         /// 当前游戏的状态
         /// </summary>
         private GameState curState;

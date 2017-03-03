@@ -107,6 +107,11 @@ namespace Yuri.PlatformCore
         {
             UpdateRender.KS_KEY_Dict[key] = state;
             Director.RunMana.Assignment("&kb_" + key.ToString(), "1", this.VsmReference);
+            if ((UpdateRender.KS_KEY_Dict[Key.LeftAlt] == KeyStates.Down || UpdateRender.KS_KEY_Dict[Key.RightAlt] == KeyStates.Down)
+                && UpdateRender.KS_KEY_Dict[Key.F4] == KeyStates.Down)
+            {
+                this.Shutdown();
+            }
         }
 
         /// <summary>

@@ -39,7 +39,6 @@ namespace Yuri.PlatformCore
             story.Duration = duration;
             story.Completed += story_Completed;
             sprite.AnimateCount++;
-            int tt = story.GetHashCode();
             SpriteAnimation.aniDict[story] = sprite;
             story.Begin();
         }
@@ -63,7 +62,6 @@ namespace Yuri.PlatformCore
             story.Duration = duration;
             story.Completed += story_Completed;
             sprite.AnimateCount++;
-            int tt = story.GetHashCode();
             SpriteAnimation.aniDict[story] = sprite;
             story.Begin();
         }
@@ -87,7 +85,6 @@ namespace Yuri.PlatformCore
             story.Duration = duration;
             story.Completed += story_Completed;
             sprite.AnimateCount++;
-            int tt = story.GetHashCode();
             SpriteAnimation.aniDict[story] = sprite;
             story.Begin();
         }

@@ -43,7 +43,7 @@ namespace Yuri
             this.Width = this.BO_MainGrid.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
             this.Height = GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT;
             this.BO_MainGrid.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
-            this.Title = GlobalDataContainer.GAME_PROJECT_NAME;
+            this.Title = GlobalDataContainer.GAME_TITLE_NAME;
             this.ResizeMode = GlobalDataContainer.GAME_WINDOW_RESIZEABLE ? System.Windows.ResizeMode.CanResize : System.Windows.ResizeMode.NoResize;
             core.SetMainWindow(this);
             this.TransitionBox.DataContext = this.TransitionDS;
@@ -130,6 +130,72 @@ namespace Yuri
             ip.GenerateIL(@"Scenario\main.sil");
             ILConvertor ilc = ILConvertor.GetInstance();
             List<Scene> rS = ilc.Dash(@"Scenario");
+        }
+
+        private void window_StateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.FullScreenTransform();
+            }
+        }
+
+        private void FullScreenTransform()
+        {
+            this.WindowState = System.Windows.WindowState.Normal;
+            this.WindowStyle = System.Windows.WindowStyle.None;
+            this.ResizeMode = System.Windows.ResizeMode.NoResize;
+            this.Topmost = true;
+            this.Left = 0.0;
+            this.Top = 0.0;
+            this.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
+            this.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
+        }
+
+        private void OriginScreenTransform()
+        {
+            this.WindowState = System.Windows.WindowState.Normal;
+            this.WindowStyle = System.Windows.WindowStyle.SingleBorderWindow;
+            this.ResizeMode = System.Windows.ResizeMode.CanResize;
+            this.Topmost = false;
+            this.Left = 0.0;
+            this.Top = 0.0;
+            this.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
+            this.Height = GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT;
+        }
+
+        private bool AltDown = false;
+
+        private void window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
+            {
+                AltDown = true;
+            }
+            else if (e.SystemKey == Key.F4 && AltDown)
+            {
+                this.core.GetMainRender().Shutdown();
+            }
+            else if (e.SystemKey == Key.Enter && AltDown)
+            {
+                if (Director.FullScreen == true)
+                {
+                    this.OriginScreenTransform();
+                }
+                else
+                {
+                    this.FullScreenTransform();
+                }
+                Director.FullScreen = !Director.FullScreen;
+            }
+        }
+
+        private void window_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
+            {
+                AltDown = false;
+            }
         }
     }
 }

@@ -171,8 +171,8 @@ namespace Yuri.ILPackage
                     else if (mycommand.StartsWith("YuriAEIL"))
                     {
                         string[] commandItem = mycommand.Split('?');
-                        GlobalDataContainer.GAME_PROJECT_NAME = commandItem[1];
-                        GlobalDataContainer.GAME_TITLE_NAME = commandItem[1];
+                        //GlobalDataContainer.GAME_PROJECT_NAME = commandItem[1];
+                        //GlobalDataContainer.GAME_TITLE_NAME = commandItem[1];
                     }
                 }
                 else
