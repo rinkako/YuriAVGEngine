@@ -277,7 +277,21 @@ namespace Yuri.YuriHalation.HalationCore
                                 case "opacity":
                                 case "xscale":
                                 case "yscale":
+                                case "scale":
                                     singleCode += String.Format("{0}=\"{1}\" ", arkv.Key, (Convert.ToDouble(arkv.Value.valueExp) / 100.0));
+                                    break;
+                                case "dash":
+                                    if (act.nodeType == ActionPackageType.act_move && (
+                                        act.argsDict["target"].valueExp == "xscale" ||
+                                        act.argsDict["target"].valueExp == "yscale" ||
+                                        act.argsDict["target"].valueExp == "scale"))
+                                    {
+                                        singleCode += String.Format("{0}=\"{1}\" ", arkv.Key, (Convert.ToDouble(arkv.Value.valueExp) / 100.0));
+                                    }
+                                    else
+                                    {
+                                        singleCode += String.Format("{0}=\"{1}\" ", arkv.Key, arkv.Value.valueExp);
+                                    }
                                     break;
                                 default:
                                     singleCode += String.Format("{0}=\"{1}\" ", arkv.Key, arkv.Value.valueExp);

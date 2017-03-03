@@ -504,8 +504,8 @@ namespace Yuri.PlatformCore
             sprite.DisplayBinding = spriteImage;
             sprite.Anchor = descriptor.AnchorType;
             sprite.Descriptor = descriptor;
-            Canvas.SetLeft(spriteImage, descriptor.X);
-            Canvas.SetTop(spriteImage, descriptor.Y);
+            Canvas.SetLeft(spriteImage, descriptor.X - bmp.PixelWidth / 2.0);
+            Canvas.SetTop(spriteImage, descriptor.Y - bmp.PixelHeight / 2.0);
             Canvas.SetZIndex(spriteImage, descriptor.Z);
             spriteImage.Visibility = Visibility.Visible;
             this.view.BO_MainGrid.Children.Add(spriteImage);
@@ -513,16 +513,16 @@ namespace Yuri.PlatformCore
             SpriteAnimation.RotateToAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.Angle, 0);
             SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.ScaleX, descriptor.ScaleY, 0, 0);
             // 修正缩放导致的坐标变化
-            double deltaX = (double)bmp.PixelWidth / 2.0 - ((double)bmp.PixelWidth * descriptor.ScaleX / 2.0);
-            double deltaY = (double)bmp.PixelHeight / 2.0 - ((double)bmp.PixelHeight * descriptor.ScaleY / 2.0);
-            if (deltaX != 0)
-            {
-                Canvas.SetLeft(spriteImage, descriptor.X - deltaX);
-            }
-            if (deltaY != 0)
-            {
-                Canvas.SetTop(spriteImage, descriptor.Y - deltaY);
-            }
+            //double deltaX = (double)bmp.PixelWidth / 2.0 - ((double)bmp.PixelWidth * descriptor.ScaleX / 2.0);
+            //double deltaY = (double)bmp.PixelHeight / 2.0 - ((double)bmp.PixelHeight * descriptor.ScaleY / 2.0);
+            //if (deltaX != 0)
+            //{
+            //    Canvas.SetLeft(spriteImage, descriptor.X - deltaX);
+            //}
+            //if (deltaY != 0)
+            //{
+            //    Canvas.SetTop(spriteImage, descriptor.Y - deltaY);
+            //}
         }
 
         /// <summary>

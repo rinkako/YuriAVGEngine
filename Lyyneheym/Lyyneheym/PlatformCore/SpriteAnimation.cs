@@ -26,8 +26,8 @@ namespace Yuri.PlatformCore
         public static void XYMoveAnimation(YuriSprite sprite, Duration duration, double fromX, double toX, double fromY, double toY, double accX, double accY)
         {
             Storyboard story = new Storyboard();
-            DoubleAnimation doubleAniLeft = new DoubleAnimation(fromX, toX, duration);
-            DoubleAnimation doubleAniTop = new DoubleAnimation(fromY, toY, duration);
+            DoubleAnimation doubleAniLeft = new DoubleAnimation(fromX, toX - sprite.DisplayWidth / 2.0, duration);
+            DoubleAnimation doubleAniTop = new DoubleAnimation(fromY, toY - sprite.DisplayHeight / 2.0, duration);
             doubleAniLeft.AccelerationRatio = accX;
             doubleAniTop.AccelerationRatio = accY;
             Storyboard.SetTarget(doubleAniLeft, sprite.DisplayBinding);
@@ -55,7 +55,7 @@ namespace Yuri.PlatformCore
         public static void XMoveAnimation(YuriSprite sprite, Duration duration, double fromX, double toX, double accX)
         {
             Storyboard story = new Storyboard();
-            DoubleAnimation doubleAniLeft = new DoubleAnimation(fromX, toX, duration);
+            DoubleAnimation doubleAniLeft = new DoubleAnimation(fromX, toX - sprite.DisplayWidth / 2.0, duration);
             doubleAniLeft.AccelerationRatio = accX;
             Storyboard.SetTarget(doubleAniLeft, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAniLeft, new PropertyPath(Canvas.LeftProperty));
@@ -79,7 +79,7 @@ namespace Yuri.PlatformCore
         public static void YMoveAnimation(YuriSprite sprite, Duration duration, double fromY, double toY, double accY)
         {
             Storyboard story = new Storyboard();
-            DoubleAnimation doubleAniTop = new DoubleAnimation(fromY, toY, duration);
+            DoubleAnimation doubleAniTop = new DoubleAnimation(fromY, toY - sprite.DisplayHeight / 2.0, duration);
             doubleAniTop.AccelerationRatio = accY;
             Storyboard.SetTarget(doubleAniTop, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAniTop, new PropertyPath(Canvas.TopProperty));
