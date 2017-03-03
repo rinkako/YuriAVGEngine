@@ -278,6 +278,7 @@ namespace Yuri.YuriHalation.HalationCore
                                 case "xscale":
                                 case "yscale":
                                 case "scale":
+                                case "acc":
                                     singleCode += String.Format("{0}=\"{1}\" ", arkv.Key, (Convert.ToDouble(arkv.Value.valueExp) / 100.0));
                                     break;
                                 case "dash":

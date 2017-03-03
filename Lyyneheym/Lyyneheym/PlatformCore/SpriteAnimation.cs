@@ -55,7 +55,14 @@ namespace Yuri.PlatformCore
         {
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniLeft = new DoubleAnimation(fromX, toX - sprite.DisplayWidth / 2.0, duration);
-            doubleAniLeft.AccelerationRatio = accX;
+            if (accX >= 0)
+            {
+                doubleAniLeft.AccelerationRatio = accX;
+            }
+            else
+            {
+                doubleAniLeft.DecelerationRatio = -accX;
+            }
             Storyboard.SetTarget(doubleAniLeft, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAniLeft, new PropertyPath(Canvas.LeftProperty));
             story.Children.Add(doubleAniLeft);
@@ -78,7 +85,14 @@ namespace Yuri.PlatformCore
         {
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniTop = new DoubleAnimation(fromY, toY - sprite.DisplayHeight / 2.0, duration);
-            doubleAniTop.AccelerationRatio = accY;
+            if (accY >= 0)
+            {
+                doubleAniTop.AccelerationRatio = accY;
+            }
+            else
+            {
+                doubleAniTop.DecelerationRatio = -accY;
+            }
             Storyboard.SetTarget(doubleAniTop, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAniTop, new PropertyPath(Canvas.TopProperty));
             story.Children.Add(doubleAniTop);
@@ -101,7 +115,14 @@ namespace Yuri.PlatformCore
         {
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniZ = new DoubleAnimation(fromZ, toZ, duration);
-            doubleAniZ.AccelerationRatio = accZ;
+            if (accZ >= 0)
+            {
+                doubleAniZ.AccelerationRatio = accZ;
+            }
+            else
+            {
+                doubleAniZ.DecelerationRatio = -accZ;
+            }
             Storyboard.SetTarget(doubleAniZ, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAniZ, new PropertyPath(Canvas.ZIndexProperty));
             story.Children.Add(doubleAniZ);
@@ -128,8 +149,22 @@ namespace Yuri.PlatformCore
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniScaleX = new DoubleAnimation(fromScaleX, toScaleX, duration);
             DoubleAnimation doubleAniScaleY = new DoubleAnimation(fromScaleY, toScaleY, duration);
-            doubleAniScaleX.AccelerationRatio = accX;
-            doubleAniScaleY.AccelerationRatio = accY;
+            if (accX >= 0)
+            {
+                doubleAniScaleX.AccelerationRatio = accX;
+            }
+            else
+            {
+                doubleAniScaleX.DecelerationRatio = -accX;
+            }
+            if (accY >= 0)
+            {
+                doubleAniScaleY.AccelerationRatio = accY;
+            }
+            else
+            {
+                doubleAniScaleY.DecelerationRatio = -accY;
+            }
             Storyboard.SetTarget(doubleAniScaleX, sprite.DisplayBinding);
             Storyboard.SetTarget(doubleAniScaleY, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAniScaleX, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
@@ -155,7 +190,14 @@ namespace Yuri.PlatformCore
         {
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniOpacity = new DoubleAnimation(fromOpacity, toOpacity, duration);
-            doubleAniOpacity.AccelerationRatio = acc;
+            if (acc >= 0)
+            {
+                doubleAniOpacity.AccelerationRatio = acc;
+            }
+            else
+            {
+                doubleAniOpacity.DecelerationRatio = -acc;
+            }
             Storyboard.SetTarget(doubleAniOpacity, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAniOpacity, new PropertyPath(Image.OpacityProperty));
             story.Children.Add(doubleAniOpacity);
@@ -178,7 +220,14 @@ namespace Yuri.PlatformCore
         {
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAniRotate = new DoubleAnimation(fromTheta, toTheta, duration);
-            doubleAniRotate.AccelerationRatio = acc;
+            if (acc >= 0)
+            {
+                doubleAniRotate.AccelerationRatio = acc;
+            }
+            else
+            {
+                doubleAniRotate.DecelerationRatio = -acc;
+            }
             Storyboard.SetTarget(doubleAniRotate, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAniRotate, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)"));
             story.Children.Add(doubleAniRotate);
@@ -374,7 +423,14 @@ namespace Yuri.PlatformCore
             if (sprite.DisplayBinding == null) { return; }
             Storyboard story = new Storyboard();
             DoubleAnimation doubleAni = new DoubleAnimation(fromValue, toValue, duration);
-            doubleAni.AccelerationRatio = acc;
+            if (acc >= 0)
+            {
+                doubleAni.AccelerationRatio = acc;
+            }
+            else
+            {
+                doubleAni.DecelerationRatio = -acc;
+            }
             Storyboard.SetTarget(doubleAni, sprite.DisplayBinding);
             Storyboard.SetTargetProperty(doubleAni, propath);
             story.Children.Add(doubleAni);
@@ -394,7 +450,14 @@ namespace Yuri.PlatformCore
             DoubleAnimation da = new DoubleAnimation(0, jumpDelta, duration);
             da.RepeatBehavior = RepeatBehavior.Forever;
             da.AutoReverse = true;
-            da.AccelerationRatio = acc;
+            if (acc >= 0)
+            {
+                da.AccelerationRatio = acc;
+            }
+            else
+            {
+                da.DecelerationRatio = -acc;
+            }
             Storyboard.SetTarget(da, sprite.DisplayBinding);
             DependencyProperty[] propertyChain = new DependencyProperty[]
             {

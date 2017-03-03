@@ -866,7 +866,7 @@ namespace Yuri.PlatformCore
             foreach (string item in polishItem)
             {
                 PolishItem poi = null;
-                Regex floatRegEx = new Regex("^(\\d*\\.)?\\d+$");
+                Regex floatRegEx = new Regex(@"^(\-|\+)?\d+(\.\d+)?$");
                 // 常数项
                 //if (item.All((x) => x >= '0' && x <= '9'))
                 if (floatRegEx.IsMatch(item))
