@@ -69,6 +69,8 @@
     <Compile Include="ILPackage\ConfigParser.cs" />
     <Compile Include="PlatformCore\CloneableDescriptor.cs" />
     <Compile Include="PlatformCore\RollbackManager.cs" />
+    <Compile Include="PlatformCore\SCamera.cs" />
+    <Compile Include="PlatformCore\StepStatePackage.cs" />
     <Compile Include="Utils\CommonUtils.cs" />
     <Compile Include="Utils\IOUtils.cs" />
     <Compile Include="Utils\PackageUtils.cs" />
