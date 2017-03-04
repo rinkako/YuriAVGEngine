@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Yuri.YuriInterpreter
 {
     using iHandle = Func<SyntaxTreeNode, CFunctionType, SyntaxType, Token, SyntaxTreeNode>;
-    
+
     /// <summary>
     /// 候选式类：指导编译路径的最小单元
     /// </summary>

@@ -1,16 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows.Media;
-using System.Media;
 using System.Timers;
 using System.Runtime.InteropServices;
 
 using Un4seen.Bass;
-using Un4seen.Bass.AddOn;
-using Un4seen.Bass.AddOn.Tags;
 
 namespace Yuri.PlatformCore
 {

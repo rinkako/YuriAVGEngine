@@ -2,10 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using System.Windows.Threading;
-using System.Windows.Media.Imaging;
 using Yuri.Utils;
 using Yuri.PlatformCore;
 using Yuri.ILPackage;

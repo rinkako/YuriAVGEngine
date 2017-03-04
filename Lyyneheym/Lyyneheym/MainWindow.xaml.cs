@@ -4,14 +4,6 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
-using System.IO;
-using System.Diagnostics;
-
-using Transitionals;
-
-using Yuri;
-using Yuri.Utils;
 using Yuri.PlatformCore;
 using Yuri.ILPackage;
 using Yuri.YuriInterpreter;

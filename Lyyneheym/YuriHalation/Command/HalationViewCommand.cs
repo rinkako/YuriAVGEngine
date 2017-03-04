@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Yuri;
-using Yuri.YuriHalation;
-using YuriHalation;
-using YuriHalation.YuriForms;
+﻿using System.Text;
 
 namespace Yuri.YuriHalation.Command
 {

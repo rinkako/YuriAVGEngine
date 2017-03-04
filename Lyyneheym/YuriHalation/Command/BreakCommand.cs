@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Yuri.YuriHalation.ScriptPackage;
 
 namespace Yuri.YuriHalation.Command
