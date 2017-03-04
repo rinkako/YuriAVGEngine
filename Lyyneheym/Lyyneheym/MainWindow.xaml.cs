@@ -27,6 +27,11 @@ namespace Yuri
         public ObjectDataProvider TransitionDS = new ObjectDataProvider();
 
         /// <summary>
+        /// Alt键正在被按下的标记
+        /// </summary>
+        private bool AltDown = false;
+
+        /// <summary>
         /// 构造器
         /// </summary>
         public MainWindow()
@@ -40,65 +45,144 @@ namespace Yuri
             core.SetMainWindow(this);
             this.TransitionBox.DataContext = this.TransitionDS;
         }
-
-        private void testFontEffect(TextBlock label)
-        {
-            //LinearGradientBrush brush = new LinearGradientBrush();
-            //GradientStop gradientStop1 = new GradientStop();
-            //gradientStop1.Offset = 0;
-            //gradientStop1.Color = Color.FromArgb(255, 251, 100, 17);
-            //brush.GradientStops.Add(gradientStop1);
-            //GradientStop gradientStop2 = new GradientStop();
-            //gradientStop2.Offset = 1;
-            //gradientStop2.Color = Color.FromArgb(255, 247, 238, 52);
-            //brush.GradientStops.Add(gradientStop2);
-            //brush.StartPoint = new Point(0.5, 0);
-            //brush.EndPoint = new Point(0.5, 1);
-            //label.Foreground = brush;
-            System.Windows.Media.Effects.DropShadowEffect ds = new System.Windows.Media.Effects.DropShadowEffect();
-            ds.ShadowDepth = 2;
-            ds.Opacity = 0.5;
-            label.Effect = ds;
-        }
-
+        
         #region 窗体监听事件
+        /// <summary>
+        /// 事件：窗体关闭
+        /// </summary>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             core.DisposeResource();
         }
 
+        /// <summary>
+        /// 事件：键盘按下按钮
+        /// </summary>
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             this.core.UpdateKeyboard(e);
         }
 
+        /// <summary>
+        /// 事件：键盘松开按钮
+        /// </summary>
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
             this.core.UpdateKeyboard(e);
         }
 
+        /// <summary>
+        /// 事件：键盘即将按下按钮
+        /// </summary>
+        private void window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
+            {
+                AltDown = true;
+            }
+            else if (e.SystemKey == Key.F4 && AltDown)
+            {
+                this.core.GetMainRender().Shutdown();
+            }
+            else if (e.SystemKey == Key.Enter && AltDown)
+            {
+                if (Director.FullScreen == true)
+                {
+                    this.WindowScreenTransform();
+                }
+                else
+                {
+                    this.FullScreenTransform();
+                }
+                Director.FullScreen = !Director.FullScreen;
+            }
+        }
+
+        /// <summary>
+        /// 事件：键盘即将松开按钮
+        /// </summary>
+        private void window_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
+            {
+                AltDown = false;
+            }
+        }
+
+        /// <summary>
+        /// 事件：鼠标按下按钮
+        /// </summary>
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.core.UpdateMouse(e);
         }
 
+        /// <summary>
+        /// 事件：鼠标松开按钮
+        /// </summary>
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
             this.core.UpdateMouse(e);
         }
 
+        /// <summary>
+        /// 事件：鼠标滚轮滑动
+        /// </summary>
         private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             this.core.UpdateMouseWheel(e.Delta);
         }
 
         /// <summary>
-        /// 事件：窗体大小改变时，保持比例
+        /// 事件：窗体大小改变
         /// </summary>
         private void window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.Width = e.NewSize.Width;
             this.Height = (double)GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT * this.Width / (double)GlobalDataContainer.GAME_WINDOW_WIDTH;
+        }
+
+        /// <summary>
+        /// 事件：窗口尺寸模式改变
+        /// </summary>
+        private void window_StateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.FullScreenTransform();
+            }
+        }
+        #endregion
+
+        #region 辅助函数
+        /// <summary>
+        /// 切换到全屏模式
+        /// </summary>
+        public void FullScreenTransform()
+        {
+            this.WindowState = System.Windows.WindowState.Normal;
+            this.WindowStyle = System.Windows.WindowStyle.None;
+            this.ResizeMode = System.Windows.ResizeMode.NoResize;
+            this.Topmost = true;
+            this.Left = 0.0;
+            this.Top = 0.0;
+            this.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
+            this.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
+        }
+
+        /// <summary>
+        /// 切换到窗口模式
+        /// </summary>
+        public void WindowScreenTransform()
+        {
+            this.WindowState = System.Windows.WindowState.Normal;
+            this.WindowStyle = System.Windows.WindowStyle.SingleBorderWindow;
+            this.ResizeMode = System.Windows.ResizeMode.CanResize;
+            this.Topmost = false;
+            this.Left = 0.0;
+            this.Top = 0.0;
+            this.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
+            this.Height = GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT;
         }
         #endregion
 
@@ -123,71 +207,6 @@ namespace Yuri
             ILConvertor ilc = ILConvertor.GetInstance();
             List<Scene> rS = ilc.Dash(@"Scenario");
         }
-
-        private void window_StateChanged(object sender, EventArgs e)
-        {
-            if (this.WindowState == WindowState.Maximized)
-            {
-                this.FullScreenTransform();
-            }
-        }
-
-        private void FullScreenTransform()
-        {
-            this.WindowState = System.Windows.WindowState.Normal;
-            this.WindowStyle = System.Windows.WindowStyle.None;
-            this.ResizeMode = System.Windows.ResizeMode.NoResize;
-            this.Topmost = true;
-            this.Left = 0.0;
-            this.Top = 0.0;
-            this.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
-            this.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
-        }
-
-        private void OriginScreenTransform()
-        {
-            this.WindowState = System.Windows.WindowState.Normal;
-            this.WindowStyle = System.Windows.WindowStyle.SingleBorderWindow;
-            this.ResizeMode = System.Windows.ResizeMode.CanResize;
-            this.Topmost = false;
-            this.Left = 0.0;
-            this.Top = 0.0;
-            this.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
-            this.Height = GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT;
-        }
-
-        private bool AltDown = false;
-
-        private void window_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
-            {
-                AltDown = true;
-            }
-            else if (e.SystemKey == Key.F4 && AltDown)
-            {
-                this.core.GetMainRender().Shutdown();
-            }
-            else if (e.SystemKey == Key.Enter && AltDown)
-            {
-                if (Director.FullScreen == true)
-                {
-                    this.OriginScreenTransform();
-                }
-                else
-                {
-                    this.FullScreenTransform();
-                }
-                Director.FullScreen = !Director.FullScreen;
-            }
-        }
-
-        private void window_PreviewKeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
-            {
-                AltDown = false;
-            }
-        }
+        
     }
 }
