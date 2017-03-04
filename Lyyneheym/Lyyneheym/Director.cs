@@ -580,6 +580,7 @@ namespace Yuri
         public static void PauseUpdateContext()
         {
             Director.GetInstance().timer.Stop();
+            CommonUtils.ConsoleLine("Context Update Dispatcher is stopped", "Director", OutputStyle.Important);
         }
 
         /// <summary>
@@ -588,6 +589,7 @@ namespace Yuri
         public static void ResumeUpdateContext()
         {
             Director.GetInstance().timer.Start();
+            CommonUtils.ConsoleLine("Context Update Dispatcher is resumed", "Director", OutputStyle.Important);
         }
 
         /// <summary>
@@ -640,9 +642,12 @@ namespace Yuri
         /// </summary>
         private Director()
         {
-            CommonUtils.ConsoleLine("CurrentDirectory is: " + System.Environment.CurrentDirectory, "Director", OutputStyle.Normal);
-            CommonUtils.ConsoleLine("BaseDirectory is: " + System.AppDomain.CurrentDomain.BaseDirectory, "Director", OutputStyle.Normal);
+            CommonUtils.ConsoleLine("======================", "Director", OutputStyle.Simple);
+            CommonUtils.ConsoleLine("Game is launched", "Director", OutputStyle.Normal);
+            CommonUtils.ConsoleLine("CurrentDirectory is: " + System.Environment.CurrentDirectory, "Director", OutputStyle.Simple);
+            CommonUtils.ConsoleLine("BaseDirectory is: " + System.AppDomain.CurrentDomain.BaseDirectory, "Director", OutputStyle.Simple);
             this.InitConfig();
+            SCamera.Init();
             this.resMana = ResourceManager.GetInstance();
             Director.RunMana = new RuntimeManager();
             this.updateRender = new UpdateRender(Director.RunMana.CallStack);
@@ -654,6 +659,7 @@ namespace Yuri
 #if NOTIME
 #else
             this.timer.Start();
+            CommonUtils.ConsoleLine("Context Update Dispatcher is begun", "Director", OutputStyle.Important);
             this.InitRuntime();
 #endif
         }

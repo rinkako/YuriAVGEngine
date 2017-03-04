@@ -3,6 +3,7 @@ using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Yuri.ILPackage;
+using Yuri.Utils;
 
 namespace Yuri.PlatformCore
 {
@@ -340,6 +341,8 @@ namespace Yuri.PlatformCore
         /// <param name="target">目标标签</param>
         public void CallScene(Scene scene, SceneAction target = null)
         {
+            CommonUtils.ConsoleLine(String.Format("Call Scene: {0} , with target: {1}", scene.Scenario, target == null ? "null" : target.saNodeName),
+                    "RuntimeManager", OutputStyle.Important);
             // 基础调用
             this.CallStack.Submit(scene, target);
             // 如果当前有并行，而又调用了带有并行的场景，那么就要暂停现在的并行
@@ -399,6 +402,8 @@ namespace Yuri.PlatformCore
         /// <param name="vsm">关于哪个虚拟机做动作</param>
         public void CallFunction(SceneFunction function, List<object> args, StackMachine vsm)
         {
+            CommonUtils.ConsoleLine(String.Format("Call Function: {0}", function.GlobalName),
+                    "RuntimeManager", OutputStyle.Important);
             // 为模板创建一个分支实例
             var callForker = function.Fork(true);
             vsm.Submit(callForker, args);

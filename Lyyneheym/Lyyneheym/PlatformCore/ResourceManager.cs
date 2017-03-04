@@ -354,7 +354,7 @@ namespace Yuri.PlatformCore
                     resContainer.Enqueue(file.FullName);
                 }
             }
-            CommonUtils.ConsoleLine("Total PST: " + resContainer.Count, "ResMana", OutputStyle.Important);
+            CommonUtils.ConsoleLine("Total PST: " + resContainer.Count, "ResourceManager", OutputStyle.Important);
             return resContainer;
         }
 
