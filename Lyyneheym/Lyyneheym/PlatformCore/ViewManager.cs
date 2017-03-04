@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using Transitionals;
+using Transitionals.Controls;
 using Yuri.Utils;
 
 namespace Yuri.PlatformCore
@@ -30,15 +32,28 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void ReDraw()
         {
-            // 重绘精灵
+            // 重绘背景
             for (int i = 0; i < this.backgroundSpriteVec.Count; i++)
             {
                 this.ReDrawSprite(i, this.backgroundSpriteVec, ResourceType.Background, Director.ScrMana.GetSpriteDescriptor(i, ResourceType.Background), false);
             }
+            // 还原过渡器位置
+            if (this.backgroundSpriteVec[(int)BackgroundPage.Fore] != null && this.backgroundSpriteVec[(int)BackgroundPage.Fore].DisplayBinding != null)
+            {
+                var box = this.GetTransitionBox();
+                var foreDesc = Director.ScrMana.GetSpriteDescriptor((int)BackgroundPage.Fore, ResourceType.Background);
+                SpriteAnimation.XMoveAnimation(this.backgroundSpriteVec[(int)BackgroundPage.Fore], TimeSpan.FromMilliseconds(0),
+                    Canvas.GetLeft(box), foreDesc.X, 0);
+                SpriteAnimation.YMoveAnimation(this.backgroundSpriteVec[(int)BackgroundPage.Fore], TimeSpan.FromMilliseconds(0),
+                    Canvas.GetTop(box), foreDesc.Y, 0);
+                Canvas.SetZIndex(box, this.backgroundSpriteVec[(int)BackgroundPage.Fore].DisplayZ);
+            }
+            // 重绘立绘
             for (int i = 0; i < this.characterStandSpriteVec.Count; i++)
             {
                 this.ReDrawSprite(i, this.characterStandSpriteVec, ResourceType.Stand, Director.ScrMana.GetSpriteDescriptor(i, ResourceType.Stand), false);
             }
+            // 重绘图片
             for (int i = 0; i < this.pictureSpriteVec.Count; i++)
             {
                 this.ReDrawSprite(i, this.pictureSpriteVec, ResourceType.Pictures, Director.ScrMana.GetSpriteDescriptor(i, ResourceType.Pictures), false);
@@ -308,8 +323,8 @@ namespace Yuri.PlatformCore
         public void ApplyTransition(string transTypeName)
         {
             // 刷新精灵
-            var backDesc = Director.ScrMana.GetSpriteDescriptor(0, ResourceType.Background);
-            var foreDesc = Director.ScrMana.GetSpriteDescriptor(1, ResourceType.Background);
+            var backDesc = Director.ScrMana.GetSpriteDescriptor((int)BackgroundPage.Back, ResourceType.Background);
+            var foreDesc = Director.ScrMana.GetSpriteDescriptor((int)BackgroundPage.Fore, ResourceType.Background);
             if (backDesc == null)
             {
                 this.backgroundSpriteVec[0] = null;
@@ -330,6 +345,12 @@ namespace Yuri.PlatformCore
                 }
             }
             Transition transition = (Transition)Activator.CreateInstance(transType);
+            // 处理真实的Backlay动作
+            if (this.backgroundSpriteVec[(int)BackgroundPage.Back] != null &&
+                this.backgroundSpriteVec[(int)BackgroundPage.Back].DisplayBinding != null)
+            {
+                this.backgroundSpriteVec[(int)BackgroundPage.Back].DisplayBinding.Visibility = Visibility.Visible;
+            }
             CommonUtils.Swap<YuriSprite>(this.backgroundSpriteVec, (int)BackgroundPage.Fore, (int)BackgroundPage.Back);
             if (this.backgroundSpriteVec[(int)BackgroundPage.Fore] != null)
             {
@@ -350,7 +371,21 @@ namespace Yuri.PlatformCore
                 Canvas.SetZIndex(this.view.TransitionBox, Canvas.GetZIndex(viewBinder));
             }
             // 执行过渡
+            this.view.TransitionBox.TransitionEnded += TransitionEnded;
             this.view.TransitionBox.Content = viewBinder;
+        }
+        
+        /// <summary>
+        /// 在过渡效果完成时触发
+        /// </summary>
+        private void TransitionEnded(object sender, TransitionEventArgs e)
+        {
+            // 恢复back层不可见
+            if (this.backgroundSpriteVec[(int)BackgroundPage.Back] != null &&
+                this.backgroundSpriteVec[(int)BackgroundPage.Back].DisplayBinding != null)
+            {
+                this.backgroundSpriteVec[(int)BackgroundPage.Back].DisplayBinding.Visibility = Visibility.Hidden;
+            }
         }
 
         /// <summary>
@@ -360,6 +395,15 @@ namespace Yuri.PlatformCore
         public void SetMainWndReference(MainWindow mw)
         {
             this.view = mw;
+        }
+
+        /// <summary>
+        /// 获取主视窗上的过渡容器
+        /// </summary>
+        /// <returns>过渡容器引用</returns>
+        public TransitionElement GetTransitionBox()
+        {
+            return this.view.TransitionBox;
         }
 
         /// <summary>
@@ -417,7 +461,7 @@ namespace Yuri.PlatformCore
             }
             // 重绘精灵
             this.RemoveSprite(sprite);
-            this.DrawSprite(newSprite, descriptor);
+            this.DrawSprite(newSprite, descriptor, rType == ResourceType.Background);
         }
 
         /// <summary>
@@ -491,7 +535,8 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="sprite">精灵</param>
         /// <param name="descriptor">精灵描述子</param>
-        private void DrawSprite(YuriSprite sprite, SpriteDescriptor descriptor)
+        /// <param name="isBackground">是否在处理背景</param>
+        private void DrawSprite(YuriSprite sprite, SpriteDescriptor descriptor, bool isBackground)
         {
             if (sprite == null) { return; }
             Image spriteImage = new Image();
@@ -507,22 +552,14 @@ namespace Yuri.PlatformCore
             Canvas.SetLeft(spriteImage, descriptor.X - bmp.PixelWidth / 2.0);
             Canvas.SetTop(spriteImage, descriptor.Y - bmp.PixelHeight / 2.0);
             Canvas.SetZIndex(spriteImage, descriptor.Z);
-            spriteImage.Visibility = Visibility.Visible;
+            spriteImage.Visibility = (isBackground && descriptor.Id == 0) ? Visibility.Hidden : Visibility.Visible;
             this.view.BO_MainGrid.Children.Add(spriteImage);
             sprite.InitAnimationRenderTransform();
-            SpriteAnimation.RotateToAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.Angle, 0);
-            SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.ScaleX, descriptor.ScaleY, 0, 0);
-            // 修正缩放导致的坐标变化
-            //double deltaX = (double)bmp.PixelWidth / 2.0 - ((double)bmp.PixelWidth * descriptor.ScaleX / 2.0);
-            //double deltaY = (double)bmp.PixelHeight / 2.0 - ((double)bmp.PixelHeight * descriptor.ScaleY / 2.0);
-            //if (deltaX != 0)
-            //{
-            //    Canvas.SetLeft(spriteImage, descriptor.X - deltaX);
-            //}
-            //if (deltaY != 0)
-            //{
-            //    Canvas.SetTop(spriteImage, descriptor.Y - deltaY);
-            //}
+            if (isBackground == false)
+            {
+                SpriteAnimation.RotateToAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.Angle, 0);
+                SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.ScaleX, descriptor.ScaleY, 0, 0);
+            }
         }
 
         /// <summary>

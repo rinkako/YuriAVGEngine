@@ -1,4 +1,9 @@
 ﻿using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Collections.Generic;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace Yuri.PlatformCore
 {
@@ -23,7 +28,7 @@ namespace Yuri.PlatformCore
         /// 在镜头即将对准的区块上调整焦距
         /// 即将对准的意思是：当前全部带平移的动作都完成之后的镜头中心所对准的位置
         /// </summary>
-        /// <param name="ratio">缩放的倍率，值域[0.0, +∞]，原始尺寸是1.0</param>
+        /// <param name="ratio">缩放的倍率，值域[0.0, +∞]，原始尺寸对应于1.0</param>
         public static void Focus(double ratio)
         {
 
@@ -55,5 +60,63 @@ namespace Yuri.PlatformCore
         {
 
         }
+
+        /// <summary>
+        /// 获取屏幕分区的中心坐标
+        /// </summary>
+        /// <param name="r">区块的横向编号，值域[0, 4]，其中2是屏幕纵向正中</param>
+        /// <param name="c">区块的纵向编号，值域[0, 16]，其中0是屏幕横向正中</param>
+        /// <returns>块的中心坐标</returns>
+        public static Point GetScreenCoordination(int r, int c)
+        {
+            return SCamera.ScreenPointMap[r, c];
+        }
+
+        /// <summary>
+        /// 获取角色分区的中心坐标
+        /// </summary>
+        /// <param name="r">区块的横向编号，值域[0, 11]</param>
+        /// <returns>块的中心坐标</returns>
+        public static Point GetCharacterCoordination(int r)
+        {
+            return SCamera.CharacterPointMap[r];
+        }
+
+        /// <summary>
+        /// 初始化镜头系统，必须在使用场景镜头系统前调用它
+        /// </summary>
+        public static void Init()
+        {
+            // 提前计算所有中心点坐标，避免每次调用的重复计算
+            SCamera.ScreenPointMap = new Point[GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT, GlobalDataContainer.GAME_SCAMERA_SCR_COLCOUNT];
+            var ScrBlockWidth = (double)GlobalDataContainer.GAME_WINDOW_WIDTH / GlobalDataContainer.GAME_SCAMERA_SCR_COLCOUNT;
+            var ScrBlockHeight = (double)GlobalDataContainer.GAME_WINDOW_HEIGHT / GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT;
+            var beginX = 0.0 - GlobalDataContainer.GAME_SCAMERA_SCR_SINGLEBLOODCOLCOUNT * ScrBlockWidth + ScrBlockWidth / 2.0;
+            var beginY = ScrBlockHeight / 2.0;
+            for (int i = 0; i < GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT; i++)
+            {
+                for (int j = 0; j < GlobalDataContainer.GAME_SCAMERA_SCR_COLCOUNT; j++)
+                {
+                    SCamera.ScreenPointMap[i, j] = new Point(beginX + j * ScrBlockWidth, beginY + i * ScrBlockHeight);
+                }
+            }
+            SCamera.CharacterPointMap = new Point[GlobalDataContainer.GAME_SCAMERA_CSTAND_ROWCOUNT];
+            var CstBlockHeight = (double)GlobalDataContainer.GAME_SCAMERA_CSTAND_HEIGHT / GlobalDataContainer.GAME_SCAMERA_CSTAND_ROWCOUNT;
+            var beginCstY = 0.0 - ((double)GlobalDataContainer.GAME_SCAMERA_CSTAND_HEIGHT / 2.0) + CstBlockHeight / 2.0;
+            for (int i = 0; i < GlobalDataContainer.GAME_SCAMERA_CSTAND_ROWCOUNT; i++)
+            {
+                SCamera.CharacterPointMap[i] = new Point(0, beginCstY + i * CstBlockHeight);
+            }
+        }
+        
+        /// <summary>
+        /// 屏幕分块中心绝对坐标字典
+        /// </summary>
+        private static Point[,] ScreenPointMap;
+
+        /// <summary>
+        /// 立绘分块中心相对坐标字典
+        /// </summary>
+        private static Point[] CharacterPointMap;
     }
 }

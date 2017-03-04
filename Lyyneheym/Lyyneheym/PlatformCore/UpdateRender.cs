@@ -955,8 +955,8 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="id">图片ID</param>
         /// <param name="filename">资源名称</param>
-        /// <param name="x">图片X坐标</param>
-        /// <param name="y">图片Y坐标</param>
+        /// <param name="x">[废弃的] 图片X坐标</param>
+        /// <param name="y">[废弃的] 图片Y坐标</param>
         /// <param name="opacity">不透明度</param>
         /// <param name="xscale">X缩放比</param>
         /// <param name="yscale">Y缩放比</param>
@@ -965,7 +965,8 @@ namespace Yuri.PlatformCore
         /// <param name="cut">纹理切割矩</param>
         private void Background(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
-            Director.ScrMana.AddBackground(id, filename, x, y, id, ro, opacity, xscale, yscale, anchor, cut);
+            Director.ScrMana.AddBackground(id, filename, GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0, GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0,
+                id, ro, opacity, xscale, yscale, anchor, cut);
             this.viewMana.Draw(id, ResourceType.Background);
         }
 
