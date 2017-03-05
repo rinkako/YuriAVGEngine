@@ -107,10 +107,10 @@ namespace Yuri.PlatformCore
         public static double GAME_CHARACTERSTAND_RIGHT_X = 525;
         // 图像层：右立绘Y
         public static double GAME_CHARACTERSTAND_RIGHT_Y = 60;
-        // 场景镜头：屏幕横向划分块数
-        public static int GAME_SCAMERA_SCR_ROWCOUNT = 16;
         // 场景镜头：屏幕纵向划分块数
-        public static int GAME_SCAMERA_SCR_COLCOUNT = 5;
+        public static int GAME_SCAMERA_SCR_ROWCOUNT = 5;
+        // 场景镜头：屏幕横向划分块数
+        public static int GAME_SCAMERA_SCR_COLCOUNT = 16;
         // 场景镜头：屏幕横向单侧出血块数
         public static int GAME_SCAMERA_SCR_SINGLEBLOODCOLCOUNT = 3;
         // 场景镜头：立绘纵向划分块数

@@ -295,6 +295,10 @@ namespace Yuri.PlatformCore
         /// <param name="str">要描绘的字符串</param>
         public void DrawStringToMsgLayer(int msglayId, string str)
         {
+            // 清除上一次的显示缓存
+            this.viewMana.GetMessageLayer(0).Text = String.Empty;
+            this.dialogPreStr = String.Empty;
+            // 标记显示
             this.isShowingDialog = true;
             string[] strRuns = this.DialogToRuns(str);
             foreach (string run in strRuns)
@@ -440,7 +444,7 @@ namespace Yuri.PlatformCore
             TriaView.RenderTransform = new TranslateTransform();
             Canvas.SetLeft(TriaView, GlobalDataContainer.GAME_MESSAGELAYER_TRIA_X);
             Canvas.SetTop(TriaView, GlobalDataContainer.GAME_MESSAGELAYER_TRIA_Y);
-            Canvas.SetZIndex(TriaView, GlobalDataContainer.GAME_Z_PICTURES - 1);
+            Canvas.SetZIndex(TriaView, GlobalDataContainer.GAME_Z_MESSAGELAYER + 100);
             this.view.BO_MainGrid.Children.Add(this.MainMsgTriangleSprite.DisplayBinding);
         }
 
@@ -824,7 +828,7 @@ namespace Yuri.PlatformCore
         /// 演绎函数：显示文本
         /// </summary>
         /// <param name="dialogStr">要显示的文本</param>
-        private void Dialog(string dialogStr, bool continous)
+        public void Dialog(string dialogStr, bool continous)
         {
             // 清除上一次的显示缓存
             this.viewMana.GetMessageLayer(0).Text = String.Empty;

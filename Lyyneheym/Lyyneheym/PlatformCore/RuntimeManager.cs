@@ -8,7 +8,7 @@ using Yuri.Utils;
 namespace Yuri.PlatformCore
 {
     /// <summary>
-    /// <para>运行时管理器：维护运行时的所有信息</para>
+    /// <para>环境管理器：维护运行时环境的所有信息</para>
     /// <para>游戏保存的本质就是保存本实例</para>
     /// </summary>
     [Serializable]
@@ -17,7 +17,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取当前调用堆栈顶部状态
         /// </summary>
-        /// <param name="vsm">关于哪个虚拟机做动作</param>
+        /// <param name="vsm">关于哪个调用堆栈做动作</param>
         /// <returns>栈顶状态</returns>
         public StackMachineState GameState(StackMachine vsm)
         {
@@ -34,7 +34,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 取下一动作指令并暂存当前执行的动作
         /// </summary>
-        /// <param name="vsm">关于哪个虚拟机做动作</param>
+        /// <param name="vsm">关于哪个调用堆栈做动作</param>
         /// <returns>动作实例</returns>
         public SceneAction MoveNext(StackMachine vsm)
         {
@@ -52,9 +52,9 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 递归寻指
+        /// 在指定的调用堆栈上做递归寻指
         /// </summary>
-        /// <param name="vsm">关于哪个虚拟机做动作</param>
+        /// <param name="vsm">关于哪个调用堆栈做动作</param>
         /// <returns>动作实例</returns>
         private SceneAction FetchNextInstruction(StackMachine vsm)
         {
@@ -197,58 +197,7 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 等待用户操作
-        /// </summary>
-        /// <param name="causedBy">触发者</param>
-        /// <param name="detail">触发的原因</param>
-        public void UserWait(string causedBy, string detail = null)
-        {
-            this.CallStack.Submit(causedBy, detail);
-        }
-
-        /// <summary>
-        /// 延时
-        /// </summary>
-        /// <param name="causedBy">触发的原因</param>
-        /// <param name="begin">开始计时的时刻</param>
-        /// <param name="timespan">等待时间间隔</param>
-        public void Delay(string causedBy, DateTime begin, TimeSpan timespan)
-        {
-            this.CallStack.Submit(causedBy, begin, timespan);
-        }
-
-        /// <summary>
-        /// 等待动画完成
-        /// </summary>
-        /// <param name="causedBy">触发的原因</param>
-        public void AnimateWait(string causedBy)
-        {
-            this.CallStack.Submit(causedBy);
-        }
-
-        /// <summary>
-        /// 立即结束本次调用
-        /// </summary>
-        /// <param name="svm">要作用的调用堆栈</param>
-        public void ExitCall(StackMachine svm)
-        {
-            // 弹调用堆栈
-            var consumed = svm.Consume();
-            // 如果弹出的是主堆栈上的场景，就要恢复到上一个并行栈帧的状态
-            if (svm == this.CallStack && consumed.State == StackMachineState.Interpreting)
-            {
-                var fromParallelState = this.ParallelStack.Pop();
-                Dictionary<string, bool> toParallelState = null;
-                if (this.ParallelStack.Count != 0)
-                {
-                    toParallelState = this.ParallelStack.Peek();
-                }
-                this.BackTraceParallelState(fromParallelState, toParallelState);
-            }
-        }
-
-        /// <summary>
-        /// 停止所有的并行处理，该操作将导致并行堆栈全部停止，只能在对话回滚时使用
+        /// 停止所有的并行处理，该操作将导致所有并行调用堆栈强制弹空，只能在对话回滚时使用
         /// </summary>
         public void StopParallel()
         {
@@ -271,7 +220,7 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 从一个并行状态变化到另一个并行状态
+        /// 从一个并行状态变换到另一个并行状态
         /// </summary>
         /// <param name="fromState">变化前的状态描述子</param>
         /// <param name="toState">目标状态描述子</param>
@@ -309,28 +258,6 @@ namespace Yuri.PlatformCore
                         this.ParallelDispatcherList[activeIdx].Start();
                     }
                 }
-            }
-        }
-
-        /// <summary>
-        /// 弹空栈顶的所有用户等待
-        /// </summary>
-        public void ExitUserWait()
-        {
-            while (this.CallStack.Count() > 0 && this.CallStack.ESP.State == StackMachineState.WaitUser)
-            {
-                this.ExitCall(this.CallStack);
-            }
-        }
-
-        /// <summary>
-        /// 弹空整个调用堆栈
-        /// </summary>
-        public void ExitAll()
-        {
-            while (this.CallStack.Count() != 0)
-            {
-                this.ExitCall(this.CallStack);
             }
         }
 
@@ -399,7 +326,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="function">函数模板实例</param>
         /// <param name="args">参数列表</param>
-        /// <param name="vsm">关于哪个虚拟机做动作</param>
+        /// <param name="vsm">关于哪个调用堆栈做动作</param>
         public void CallFunction(SceneFunction function, List<object> args, StackMachine vsm)
         {
             CommonUtils.ConsoleLine(String.Format("Call Function: {0}", function.GlobalName),
@@ -416,11 +343,84 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 弹空栈顶的所有用户等待
+        /// </summary>
+        public void ExitUserWait()
+        {
+            while (this.CallStack.Count() > 0 && this.CallStack.ESP.State == StackMachineState.WaitUser)
+            {
+                this.ExitCall(this.CallStack);
+            }
+        }
+
+        /// <summary>
+        /// 弹空整个调用堆栈
+        /// </summary>
+        public void ExitAll()
+        {
+            while (this.CallStack.Count() != 0)
+            {
+                this.ExitCall(this.CallStack);
+            }
+        }
+
+        /// <summary>
+        /// 等待用户操作
+        /// </summary>
+        /// <param name="causedBy">触发者</param>
+        /// <param name="detail">触发的原因</param>
+        public void UserWait(string causedBy, string detail = null)
+        {
+            this.CallStack.Submit(causedBy, detail);
+        }
+
+        /// <summary>
+        /// 延时
+        /// </summary>
+        /// <param name="causedBy">触发的原因</param>
+        /// <param name="begin">开始计时的时刻</param>
+        /// <param name="timespan">等待时间间隔</param>
+        public void Delay(string causedBy, DateTime begin, TimeSpan timespan)
+        {
+            this.CallStack.Submit(causedBy, begin, timespan);
+        }
+
+        /// <summary>
+        /// 等待动画完成
+        /// </summary>
+        /// <param name="causedBy">触发的原因</param>
+        public void AnimateWait(string causedBy)
+        {
+            this.CallStack.Submit(causedBy);
+        }
+
+        /// <summary>
+        /// 立即结束本次调用
+        /// </summary>
+        /// <param name="svm">要作用的调用堆栈</param>
+        public void ExitCall(StackMachine svm)
+        {
+            // 弹调用堆栈
+            var consumed = svm.Consume();
+            // 如果弹出的是主堆栈上的场景，就要恢复到上一个并行栈帧的状态
+            if (svm == this.CallStack && consumed.State == StackMachineState.Interpreting)
+            {
+                var fromParallelState = this.ParallelStack.Pop();
+                Dictionary<string, bool> toParallelState = null;
+                if (this.ParallelStack.Count != 0)
+                {
+                    toParallelState = this.ParallelStack.Peek();
+                }
+                this.BackTraceParallelState(fromParallelState, toParallelState);
+            }
+        }
+
+        /// <summary>
         /// 左值运算一个变量
         /// </summary>
         /// <param name="varname">变量名</param>
         /// <param name="value">右值逆波兰式</param>
-        /// <param name="vsm">关于哪个虚拟机做动作</param>
+        /// <param name="vsm">关于哪个调用堆栈做动作</param>
         public void Assignment(string varname, string valuePolish, StackMachine vsm)
         {
             // 处理局部变量
@@ -449,7 +449,7 @@ namespace Yuri.PlatformCore
         /// 取一个变量作右值
         /// </summary>
         /// <param name="varName">变量名</param>
-        /// <param name="vsm">关于哪个虚拟机做动作</param>
+        /// <param name="vsm">关于哪个调用堆栈做动作</param>
         /// <returns>变量的引用</returns>
         public object Fetch(string varName, StackMachine vsm)
         {
@@ -528,7 +528,7 @@ namespace Yuri.PlatformCore
         /// 计算表达式的真值
         /// </summary>
         /// <param name="polish">表达式的逆波兰式</param>
-        /// <param name="vsm">关于哪个虚拟机做动作</param>
+        /// <param name="vsm">关于哪个调用堆栈做动作</param>
         /// <returns>表达式的真值</returns>
         public bool CalculateBooleanPolish(string polish, StackMachine vsm)
         {
@@ -539,7 +539,7 @@ namespace Yuri.PlatformCore
         /// 计算表达式
         /// </summary>
         /// <param name="polish">表达式的逆波兰式</param>
-        /// <param name="vsm">关于哪个虚拟机做动作</param>
+        /// <param name="vsm">关于哪个调用堆栈做动作</param>
         /// <returns>计算结果的值（Double/字符串）</returns>
         public object CalculatePolish(string polish, StackMachine vsm)
         {
@@ -862,7 +862,7 @@ namespace Yuri.PlatformCore
         /// 将逆波兰式转化为可计算的项
         /// </summary>
         /// <param name="polish">逆波兰式字符串</param>
-        /// <param name="vsm">关于哪个虚拟机做动作</param>
+        /// <param name="vsm">关于哪个调用堆栈做动作</param>
         /// <returns>可计算项目向量</returns>
         private List<PolishItem> GetPolishItemList(string polish, StackMachine vsm)
         {

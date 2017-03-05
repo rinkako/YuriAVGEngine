@@ -6,8 +6,8 @@ namespace Yuri.PlatformCore
 {
     /// <summary>
     /// <para>场景类：控制一个剧本章节的演出</para>
-    /// <para>通常，一个场景拥有一个动作序列和生命在它上面的函数</para>
-    /// <para>演绎剧本的过程就是遍历这个序列的过程</para>
+    /// <para>通常，一个场景拥有一个动作序列和依存她的函数</para>
+    /// <para>演绎剧本就是在调用堆栈上遍历这个序列的过程</para>
     /// </summary>
     internal class Scene
     {
