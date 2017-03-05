@@ -46,14 +46,12 @@ namespace Yuri
             this.ResizeMode = GlobalDataContainer.GAME_WINDOW_RESIZEABLE ? System.Windows.ResizeMode.CanResize : System.Windows.ResizeMode.NoResize;
             core.SetMainWindow(this);
             this.TransitionBox.DataContext = this.TransitionDS;
-            Canvas.SetLeft(this.BO_Bg_Viewbox, 0);
-            Canvas.SetLeft(this.BO_Cstand_Viewbox, 0);
-            Canvas.SetTop(this.BO_Bg_Viewbox, 0);
-            Canvas.SetTop(this.BO_Cstand_Viewbox, 0);
-            this.BO_Cstand_Canvas.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
-            this.BO_Cstand_Canvas.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
             this.BO_Bg_Canvas.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
             this.BO_Bg_Canvas.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
+            this.BO_Cstand_Canvas.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
+            this.BO_Cstand_Canvas.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
+            this.BO_Pics_Canvas.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
+            this.BO_Pics_Canvas.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
         }
         
         #region 窗体监听事件
@@ -536,6 +534,19 @@ namespace Yuri
             {
                 testcount = 0;
             }
+        }
+
+        private void button4_Click(object sender, RoutedEventArgs e)
+        {
+            Storyboard story3 = new Storyboard();
+            double BgfromX = Canvas.GetLeft(this.BO_Cstand_Viewbox);
+            DoubleAnimation doubleAniLeft = new DoubleAnimation(BgfromX, 1000, TimeSpan.FromMilliseconds(0));
+            doubleAniLeft.DecelerationRatio = 0.75;
+            Storyboard.SetTarget(doubleAniLeft, this.BO_Cstand_Viewbox);
+            Storyboard.SetTargetProperty(doubleAniLeft, new PropertyPath(Canvas.LeftProperty));
+            story3.Children.Add(doubleAniLeft);
+            story3.Duration = TimeSpan.FromMilliseconds(0);
+            story3.Begin();
         }
     }
 }

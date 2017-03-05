@@ -357,6 +357,16 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 获取一个视窗的描述子
+        /// </summary>
+        /// <param name="vt">视窗类型</param>
+        /// <returns>描述子实例</returns>
+        public ViewportDescriptor GetViewboxDescriptor(ViewportType vt)
+        {
+            return this.viewboxDescVec[(int)vt];
+        }
+
+        /// <summary>
         /// 获取一个精灵的描述子
         /// </summary>
         /// <param name="id">精灵id</param>
@@ -424,6 +434,34 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 初始化视窗向量
+        /// </summary>
+        public void InitViewboxes()
+        {
+            ViewportDescriptor vdTemplate = new ViewportDescriptor()
+            {
+                Left = 0,
+                Top = 0,
+                ScaleX = 1.0,
+                ScaleY = 1.0,
+                Angle = 0.0,
+                AnchorX = (double)GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0,
+                AnchorY = (double)GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0
+            };
+            var vtBg = vdTemplate.Clone() as ViewportDescriptor;
+            vtBg.Type = ViewportType.VTBackground;
+            vtBg.ZIndex = GlobalDataContainer.GAME_Z_BACKGROUND;
+            this.viewboxDescVec[(int)ViewportType.VTBackground] = vtBg;
+            var vtCs = vdTemplate.Clone() as ViewportDescriptor;
+            vtCs.Type = ViewportType.VTCharacterStand;
+            vtCs.ZIndex = GlobalDataContainer.GAME_Z_CHARACTERSTAND;
+            this.viewboxDescVec[(int)ViewportType.VTCharacterStand] = vtCs;
+            vdTemplate.Type = ViewportType.VTPictures;
+            vdTemplate.ZIndex = GlobalDataContainer.GAME_Z_PICTURES;
+            this.viewboxDescVec[(int)ViewportType.VTPictures] = vdTemplate;
+        }
+
+        /// <summary>
         /// 初始化文字层描述子
         /// </summary>
         private void InitMessageLayerDescriptors()
@@ -488,12 +526,17 @@ namespace Yuri.PlatformCore
         /// </summary>
         private ScreenManager()
         {
-            this.backgroundDescVec = new List<SpriteDescriptor>();
-            this.characterDescVec = new List<SpriteDescriptor>();
-            this.pictureDescVec = new List<SpriteDescriptor>();
+            this.msgLayerDescVec = new List<MessageLayerDescriptor>();
             this.branchDescVec = new List<BranchButtonDescriptor>();
             this.buttonDescVec = new List<SpriteButtonDescriptor>();
-            this.msgLayerDescVec = new List<MessageLayerDescriptor>();
+            this.backgroundDescVec = new List<SpriteDescriptor>();
+            this.characterDescVec = new List<SpriteDescriptor>();
+            this.viewboxDescVec = new List<ViewportDescriptor>();
+            this.pictureDescVec = new List<SpriteDescriptor>();
+            for (int i = 0; i < 3; i++)
+            {
+                this.viewboxDescVec.Add(null);
+            }
             for (int i = 0; i < GlobalDataContainer.GAME_BACKGROUND_COUNT; i++)
             {
                 this.backgroundDescVec.Add(null);
@@ -514,6 +557,7 @@ namespace Yuri.PlatformCore
             {
                 this.buttonDescVec.Add(null);
             }
+            this.InitViewboxes();
             this.InitMessageLayerDescriptors();
         }
 
@@ -539,6 +583,11 @@ namespace Yuri.PlatformCore
         /// 唯一实例
         /// </summary>
         private static ScreenManager synObject = null;
+
+        /// <summary>
+        /// 视窗描述向量
+        /// </summary>
+        private List<ViewportDescriptor> viewboxDescVec;
 
         /// <summary>
         /// 背景描述向量

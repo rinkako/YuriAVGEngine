@@ -559,7 +559,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 渲染类构造器
         /// </summary>
-        /// <param name="vsm">关于哪个虚拟机做动作</param>
+        /// <param name="vsm">关于哪个调用堆栈做动作</param>
         public UpdateRender(StackMachine vsm)
         {
             // 绑定调用堆栈
@@ -827,8 +827,9 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 演绎函数：显示文本
         /// </summary>
+        /// <remarks>若要强行修改对话框中的内容，请使用DrawStringToMsgLayer方法</remarks>
         /// <param name="dialogStr">要显示的文本</param>
-        public void Dialog(string dialogStr, bool continous)
+        private void Dialog(string dialogStr, bool continous)
         {
             // 清除上一次的显示缓存
             this.viewMana.GetMessageLayer(0).Text = String.Empty;

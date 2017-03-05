@@ -72,6 +72,8 @@
     <Compile Include="PlatformCore\RollbackManager.cs" />
     <Compile Include="PlatformCore\SCamera.cs" />
     <Compile Include="PlatformCore\StepStatePackage.cs" />
+    <Compile Include="PlatformCore\ViewportDescriptor.cs" />
+    <Compile Include="PlatformCore\YuriViewport.cs" />
     <Compile Include="Utils\CommonUtils.cs" />
     <Compile Include="Utils\IOUtils.cs" />
     <Compile Include="Utils\PackageUtils.cs" />
