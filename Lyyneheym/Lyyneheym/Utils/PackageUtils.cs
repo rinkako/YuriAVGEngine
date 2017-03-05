@@ -146,17 +146,24 @@ namespace Yuri.Utils
         public static GCHandle GetObjectManagedHandle(string packFile, string resourceName, long offset, long length)
         {
             FileStream pakFs = new FileStream(packFile, FileMode.Open);
-            BinaryReader pakBr = new BinaryReader(pakFs);
             pakFs.Seek(offset, SeekOrigin.Begin);
             byte[] buffer = new byte[length];
-            for (int i = 0; i < length; i++)
+            if (length >= Int32.MaxValue)
             {
-                buffer[i] = pakBr.ReadByte();
+                BinaryReader pakBr = new BinaryReader(pakFs);
+                for (long i = 0; i < length; i++)
+                {
+                    buffer[i] = pakBr.ReadByte();
+                }
+                pakBr.Close();
             }
-            pakBr.Close();
+            else
+            {
+                pakFs.Read(buffer, 0, (int)length); 
+            }
+            
             pakFs.Close();
             GCHandle hObject = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            //IntPtr resPtr = hObject.AddrOfPinnedObject();
             return hObject;
         }
 
@@ -171,14 +178,21 @@ namespace Yuri.Utils
         public static byte[] GetObjectBytes(string packFile, string resourceName, long offset, long length)
         {
             FileStream pakFs = new FileStream(packFile, FileMode.Open);
-            BinaryReader pakBr = new BinaryReader(pakFs);
             pakFs.Seek(offset, SeekOrigin.Begin);
             byte[] buffer = new byte[length];
-            for (int i = 0; i < length; i++)
+            if (length >= Int32.MaxValue)
             {
-                buffer[i] = pakBr.ReadByte();
+                BinaryReader pakBr = new BinaryReader(pakFs);
+                for (long i = 0; i < length; i++)
+                {
+                    buffer[i] = pakBr.ReadByte();
+                }
+                pakBr.Close();
             }
-            pakBr.Close();
+            else
+            {
+                pakFs.Read(buffer, 0, (int)length);
+            }
             pakFs.Close();
             return buffer;
         }

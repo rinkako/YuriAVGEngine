@@ -58,6 +58,32 @@ namespace Yuri.Utils
         }
 
         /// <summary>
+        /// 获得一个文件的字节序列
+        /// </summary>
+        /// <param name="resourceURL">资源的URL</param>
+        /// <returns>资源的字节序列</returns>
+        public static byte[] GetObjectBytes(Uri resourceURL)
+        {
+            FileStream pakFs = new FileStream(resourceURL.LocalPath, FileMode.Open);
+            byte[] buffer = new byte[pakFs.Length];
+            if (pakFs.Length >= Int32.MaxValue)
+            {
+                BinaryReader pakBr = new BinaryReader(pakFs);
+                for (long i = 0; i < pakFs.Length; i++)
+                {
+                    buffer[i] = pakBr.ReadByte();
+                }
+                pakBr.Close();
+            }
+            else
+            {
+                pakFs.Read(buffer, 0, (int)pakFs.Length);
+            }
+            pakFs.Close();
+            return buffer;
+        }
+
+        /// <summary>
         /// 把一个实例序列化
         /// </summary>
         /// <param name="instance">类的实例</param>

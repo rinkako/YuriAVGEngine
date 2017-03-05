@@ -68,6 +68,7 @@
     <Compile Include="Director.cs" />
     <Compile Include="ILPackage\ConfigParser.cs" />
     <Compile Include="PlatformCore\CloneableDescriptor.cs" />
+    <Compile Include="PlatformCore\ResourceCachePool.cs" />
     <Compile Include="PlatformCore\RollbackManager.cs" />
     <Compile Include="PlatformCore\SCamera.cs" />
     <Compile Include="PlatformCore\StepStatePackage.cs" />
