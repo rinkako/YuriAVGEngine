@@ -654,7 +654,7 @@ namespace Yuri
             Director.RunMana.SetScreenManager(ScreenManager.GetInstance());
             Director.RunMana.ParallelHandler = this.ParallelUpdateContext;
             this.timer = new DispatcherTimer();
-            this.timer.Interval = TimeSpan.FromMilliseconds(GlobalDataContainer.DirectorTimerInterval);
+            this.timer.Interval = TimeSpan.FromTicks((long)GlobalDataContainer.DirectorTimerInterval);
             this.timer.Tick += UpdateContext;
 #if NOTIME
 #else

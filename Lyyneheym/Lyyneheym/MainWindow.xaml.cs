@@ -30,7 +30,7 @@ namespace Yuri
         /// <summary>
         /// Alt键正在被按下的标记
         /// </summary>
-        private bool AltDown = false;
+        private static bool AltDown = false;
 
         /// <summary>
         /// 构造器
@@ -86,13 +86,13 @@ namespace Yuri
         {
             if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
             {
-                AltDown = true;
+                MainWindow.AltDown = true;
             }
-            else if (e.SystemKey == Key.F4 && AltDown)
+            else if (e.SystemKey == Key.F4 && MainWindow.AltDown)
             {
                 this.core.GetMainRender().Shutdown();
             }
-            else if (e.SystemKey == Key.Enter && AltDown)
+            else if (e.SystemKey == Key.Enter && MainWindow.AltDown)
             {
                 if (Director.FullScreen == true)
                 {
@@ -113,7 +113,7 @@ namespace Yuri
         {
             if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
             {
-                AltDown = false;
+                MainWindow.AltDown = false;
             }
         }
 
