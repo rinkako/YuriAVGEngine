@@ -647,12 +647,12 @@ namespace Yuri
             CommonUtils.ConsoleLine("CurrentDirectory is: " + System.Environment.CurrentDirectory, "Director", OutputStyle.Simple);
             CommonUtils.ConsoleLine("BaseDirectory is: " + System.AppDomain.CurrentDomain.BaseDirectory, "Director", OutputStyle.Simple);
             this.InitConfig();
-            SCamera.Init();
             this.resMana = ResourceManager.GetInstance();
             Director.RunMana = new RuntimeManager();
             this.updateRender = new UpdateRender(Director.RunMana.CallStack);
             Director.RunMana.SetScreenManager(ScreenManager.GetInstance());
             Director.RunMana.ParallelHandler = this.ParallelUpdateContext;
+            SCamera.Init();
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromTicks((long)GlobalDataContainer.DirectorTimerInterval);
             this.timer.Tick += UpdateContext;

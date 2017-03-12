@@ -578,11 +578,38 @@ namespace Yuri.PlatformCore
         {
             return ScreenManager.synObject == null ? ScreenManager.synObject = new ScreenManager() : ScreenManager.synObject;
         }
-
+        
         /// <summary>
         /// 唯一实例
         /// </summary>
         private static ScreenManager synObject = null;
+
+        /// <summary>
+        /// 获取或设置场景镜头当期相对于立绘层的缩放比
+        /// </summary>
+        public double SCameraScale
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 获取或设置场景镜头聚焦的屏幕分块行号
+        /// </summary>
+        public int SCameraFocusRow
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 获取或设置场景镜头聚焦的屏幕分块列号
+        /// </summary>
+        public int SCameraFocusCol
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// 视窗描述向量

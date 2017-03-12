@@ -281,6 +281,8 @@ namespace Yuri
             this.BO_Bg_Canvas.Children.Add(img3);
             bgg.InitAnimationRenderTransform();
 
+            var scalePoint = SCamera.GetScreenCoordination(0, 1);
+
             TransformGroup aniGroup = new TransformGroup();
             TranslateTransform XYTransformer = new TranslateTransform();
             ScaleTransform ScaleTransformer = new ScaleTransform();
@@ -308,12 +310,18 @@ namespace Yuri
             aniGroup2.Children.Add(ScaleTransformer2);
             aniGroup2.Children.Add(RotateTransformer2);
             this.BO_Bg_Viewbox.RenderTransform = aniGroup2;
+            BgTG = aniGroup2;
+            CsTG = aniGroup;
         }
 
         ScaleTransform BgScaleT;
         ScaleTransform CsScaleT;
 
-        
+        TransformGroup BgTG;
+        TransformGroup CsTG;
+
+        double bgNowX;
+        double csNowX;
 
         int testcount = 0;
 
@@ -381,10 +389,9 @@ namespace Yuri
                 story2.Children.Add(doubleAniScaleX2);
                 story2.Children.Add(doubleAniScaleY2);
                 story2.Duration = duration;
-                
                 story.Begin();
                 story2.Begin();
-
+                
                 core.GetMainRender().DrawStringToMsgLayer(0, "【伊泽塔】" + Environment.NewLine + "公主公主，你看那边有个画风和我们不一样的人！");
 
             }
@@ -393,6 +400,7 @@ namespace Yuri
                 Storyboard story = new Storyboard();
                 double BgfromX = Canvas.GetLeft(this.BO_Bg_Viewbox);
                 double BgtoX = SCamera.GetScreenCoordination(0, 9).X * Math.Abs(1 - bgtoScale) - modelX * bgtoScale;
+                bgNowX = -BgtoX;
                 DoubleAnimation doubleAniLeft = new DoubleAnimation(BgfromX, -BgtoX, duration);
                 if (StandaccX >= 0)
                 {
@@ -411,6 +419,7 @@ namespace Yuri
                 Storyboard story2 = new Storyboard();
                 double CsfromX = Canvas.GetLeft(this.BO_Cstand_Viewbox);
                 double CstoX = SCamera.GetScreenCoordination(0, 9).X * StandToScale;
+                csNowX = -CstoX;
                 DoubleAnimation doubleAniLeft2 = new DoubleAnimation(CsfromX, -CstoX, duration);
                 if (StandaccX >= 0)
                 {
@@ -424,14 +433,20 @@ namespace Yuri
                 Storyboard.SetTargetProperty(doubleAniLeft2, new PropertyPath(Canvas.LeftProperty));
                 story2.Children.Add(doubleAniLeft2);
                 story2.Duration = duration;
+
+                story.FillBehavior = FillBehavior.Stop;
+                story2.FillBehavior = FillBehavior.Stop;
+
+                story.Completed += Story_1_Bg_Completed;
+                story2.Completed += Story2_Cs_Completed;
+
                 story.Begin();
                 story2.Begin();
 
                 core.GetMainRender().DrawStringToMsgLayer(0, "【佐茜】" + Environment.NewLine + "……我只是一个路过的人。");
             }
-            else
+            else if (testcount == 2)
             {
-                
                 Storyboard story = new Storyboard();
                 Storyboard story2 = new Storyboard();
                 DoubleAnimation doubleAniScaleX = new DoubleAnimation(StandToScale, 1, duration);
@@ -489,6 +504,7 @@ namespace Yuri
 
                 Storyboard story3 = new Storyboard();
                 double BgfromX = Canvas.GetLeft(this.BO_Bg_Viewbox);
+                bgNowX = 0;
                 DoubleAnimation doubleAniLeft = new DoubleAnimation(BgfromX, 0, duration);
                 if (StandaccX >= 0)
                 {
@@ -506,6 +522,7 @@ namespace Yuri
 
                 Storyboard story4 = new Storyboard();
                 double CsfromX = Canvas.GetLeft(this.BO_Cstand_Viewbox);
+                csNowX = 0;
                 DoubleAnimation doubleAniLeft2 = new DoubleAnimation(CsfromX, 0, duration);
                 if (StandaccX >= 0)
                 {
@@ -520,20 +537,103 @@ namespace Yuri
                 story4.Children.Add(doubleAniLeft2);
                 story4.Duration = duration;
 
+                var t = Canvas.GetLeft(this.BO_Cstand_Viewbox);
+
+                story3.FillBehavior = FillBehavior.Stop;
+                story4.FillBehavior = FillBehavior.Stop;
+                story3.Completed += Story_1_Bg_Completed;
+                story4.Completed += Story2_Cs_Completed;
 
                 story3.Begin();
                 story4.Begin();
+
+
 
                 story.Begin();
                 story2.Begin();
                 core.GetMainRender().DrawStringToMsgLayer(0, "【公主】" + Environment.NewLine + "看上去场景镜头系统做好了呢！");
 
             }
+            else if (testcount == 3)
+            {
+                BgScaleT.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 4.0 * 3;
+                BgScaleT.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 4.0;
+                CsScaleT.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 16.0 * 15;
+                CsScaleT.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 16.0;
+
+                Storyboard story = new Storyboard();
+                Storyboard story2 = new Storyboard();
+                DoubleAnimation doubleAniScaleX = new DoubleAnimation(1, StandToScale, duration);
+                DoubleAnimation doubleAniScaleY = new DoubleAnimation(1, StandToScale, duration);
+                if (StandaccX >= 0)
+                {
+                    doubleAniScaleX.AccelerationRatio = StandaccX;
+                }
+                else
+                {
+                    doubleAniScaleX.DecelerationRatio = -StandaccX;
+                }
+                if (StandaccY >= 0)
+                {
+                    doubleAniScaleY.AccelerationRatio = StandaccY;
+                }
+                else
+                {
+                    doubleAniScaleY.DecelerationRatio = -StandaccY;
+                }
+                Storyboard.SetTarget(doubleAniScaleX, this.BO_Cstand_Viewbox);
+                Storyboard.SetTarget(doubleAniScaleY, this.BO_Cstand_Viewbox);
+                Storyboard.SetTargetProperty(doubleAniScaleX, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
+                Storyboard.SetTargetProperty(doubleAniScaleY, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
+                story.Children.Add(doubleAniScaleX);
+                story.Children.Add(doubleAniScaleY);
+                story.Duration = duration;
+
+                DoubleAnimation doubleAniScaleX2 = new DoubleAnimation(1, bgtoScale, duration);
+                DoubleAnimation doubleAniScaleY2 = new DoubleAnimation(1, bgtoScale, duration);
+                if (StandaccX >= 0)
+                {
+                    doubleAniScaleX2.AccelerationRatio = StandaccX;
+                }
+                else
+                {
+                    doubleAniScaleX2.DecelerationRatio = -StandaccX;
+                }
+                if (StandaccY >= 0)
+                {
+                    doubleAniScaleY2.AccelerationRatio = StandaccY;
+                }
+                else
+                {
+                    doubleAniScaleY2.DecelerationRatio = -StandaccY;
+                }
+                Storyboard.SetTarget(doubleAniScaleX2, this.BO_Bg_Viewbox);
+                Storyboard.SetTarget(doubleAniScaleY2, this.BO_Bg_Viewbox);
+                Storyboard.SetTargetProperty(doubleAniScaleX2, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
+                Storyboard.SetTargetProperty(doubleAniScaleY2, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
+                story2.Children.Add(doubleAniScaleX2);
+                story2.Children.Add(doubleAniScaleY2);
+                story2.Duration = duration;
+
+                story.Begin();
+                story2.Begin();
+                core.GetMainRender().DrawStringToMsgLayer(0, "【佐茜】" + Environment.NewLine + "这回聚焦我了吧……");
+            }
             testcount++;
-            if (testcount == 3)
+            if (testcount == 4)
             {
                 testcount = 0;
             }
+        }
+
+        private void Story2_Cs_Completed(object sender, EventArgs e)
+        {
+            Canvas.SetLeft(this.BO_Cstand_Viewbox, csNowX);
+        }
+
+        private void Story_1_Bg_Completed(object sender, EventArgs e)
+        {
+            Canvas.SetLeft(this.BO_Bg_Viewbox, bgNowX);
         }
 
         private void button4_Click(object sender, RoutedEventArgs e)

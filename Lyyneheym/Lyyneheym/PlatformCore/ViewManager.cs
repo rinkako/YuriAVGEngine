@@ -160,6 +160,16 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 获取画面上的视窗
+        /// </summary>
+        /// <param name="vt"></param>
+        /// <returns>视窗实例</returns>
+        public YuriViewport GetViewport(ViewportType vt)
+        {
+            return this.viewboxVec[(int)vt];
+        }
+
+        /// <summary>
         /// 将指定类型的所有项目从画面移除
         /// </summary>
         public void RemoveView(ResourceType rType)
