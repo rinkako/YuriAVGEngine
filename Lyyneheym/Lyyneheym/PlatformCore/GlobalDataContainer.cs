@@ -220,8 +220,8 @@ namespace Yuri.PlatformCore
         #region 系统信息
         // 脚本入口
         public static readonly string Script_Main = "main";
-        // 刷新频率
-        public static readonly double DirectorTimerInterval = 100;
+        // 刷新频率（万分之一毫秒）
+        public static readonly double DirectorTimerInterval = 10000;
         // 最大回滚尺度
         public static readonly int MaxRollbackStep = 100;
         #endregion
