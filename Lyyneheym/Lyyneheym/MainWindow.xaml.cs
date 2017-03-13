@@ -52,6 +52,8 @@ namespace Yuri
             this.BO_Cstand_Canvas.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
             this.BO_Pics_Canvas.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
             this.BO_Pics_Canvas.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
+
+            SCamera.Init();
         }
         
         #region 窗体监听事件
@@ -223,9 +225,9 @@ namespace Yuri
                 ResourceType = ResourceType.Pictures
             };
 
-            var izettaPoint = SCamera.GetScreenCoordination(4, 1);
-            var finePoint = SCamera.GetScreenCoordination(4, 0);
-            var zoiPoint = SCamera.GetScreenCoordination(4, 16);
+            var izettaPoint = SCamera.GetScreenCoordination(4, 5);
+            var finePoint = SCamera.GetScreenCoordination(4, 7);
+            var zoiPoint = SCamera.GetScreenCoordination(4, 12);
 
 
             var xxx = this.BO_Cstand_Canvas;
@@ -297,8 +299,8 @@ namespace Yuri
             TransformGroup aniGroup = new TransformGroup();
             TranslateTransform XYTransformer = new TranslateTransform();
             ScaleTransform ScaleTransformer = new ScaleTransform();
-            ScaleTransformer.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 16.0;
-            ScaleTransformer.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 16.0;
+            ScaleTransformer.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0;
+            ScaleTransformer.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0;
             RotateTransform RotateTransformer = new RotateTransform();
             RotateTransformer.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0;
             RotateTransformer.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0;
@@ -311,8 +313,8 @@ namespace Yuri
             TransformGroup aniGroup2 = new TransformGroup();
             TranslateTransform XYTransformer2 = new TranslateTransform();
             ScaleTransform ScaleTransformer2 = new ScaleTransform();
-            ScaleTransformer2.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 4.0;
-            ScaleTransformer2.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 4.0;
+            ScaleTransformer2.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0;
+            ScaleTransformer2.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0;
             RotateTransform RotateTransformer2 = new RotateTransform();
             RotateTransformer2.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0;
             RotateTransformer2.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0;
@@ -323,6 +325,8 @@ namespace Yuri
             this.BO_Bg_Viewbox.RenderTransform = aniGroup2;
             BgTG = aniGroup2;
             CsTG = aniGroup;
+
+            
         }
 
         ScaleTransform BgScaleT;
@@ -345,8 +349,6 @@ namespace Yuri
             double bgtoScale = 1.2;
             if (testcount == 0)
             {
-                SCamera.Init();
-
                 Storyboard story = new Storyboard();
                 Storyboard story2 = new Storyboard();
                 DoubleAnimation doubleAniScaleX = new DoubleAnimation(1, StandToScale, duration);
@@ -668,7 +670,12 @@ namespace Yuri
 
         private void button4_Click(object sender, RoutedEventArgs e)
         {
-            if (bt4 == 0)
+            if (bt4 == -1)
+            {
+                SCamera.PreviewEnterScene();
+                SCamera.PostEnterScene();
+            }
+            else if (bt4 == 0)
             {
                 SCamera.FocusOn(0, 4, 2);
             }
@@ -688,16 +695,44 @@ namespace Yuri
             //{
             //    SCamera.Translate(2, 0);
             //}
+            else if (bt4 == 1)
+            {
+                SCamera.Translate(2, 5);
+            }
+            else if (bt4 == 2)
+            {
+                SCamera.Translate(2, 12);
+            }
+            else if (bt4 == 3)
+            {
+                SCamera.Translate(2, 5);
+            }
+            else if (bt4 == 4)
+            {
+                SCamera.Translate(2, 7);
+            }
+            else if (bt4 == 5)
+            {
+                SCamera.Translate(2, 12);
+            }
+            else if (bt4 == 6)
+            {
+                SCamera.Translate(2, 7);
+            }
+            else if (bt4 == 7)
+            {
+                SCamera.ResetFocus(false);
+            }
             else if (bt4 <= 16)
             {
-                SCamera.Translate(bt4 % 4, bt4);
+                SCamera.Translate(2, bt4);
             }
             else if (bt4 == 17)
             {
                 if (MessageBox.Show("reset?", "i", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    SCamera.ResetFocus();
-                    bt4 = -1;
+                    SCamera.ResetFocus(false);
+                    bt4 = -2;
                 }
             }
 
@@ -720,6 +755,6 @@ namespace Yuri
             bt4++;
         }
 
-        int bt4 = 0;
+        int bt4 = -1;
     }
 }
