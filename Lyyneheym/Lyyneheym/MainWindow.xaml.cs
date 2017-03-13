@@ -222,6 +222,12 @@ namespace Yuri
             {
                 ResourceType = ResourceType.Pictures
             };
+
+            var izettaPoint = SCamera.GetScreenCoordination(4, 5);
+            var finePoint = SCamera.GetScreenCoordination(4, 7);
+            var zoiPoint = SCamera.GetScreenCoordination(4, 12);
+
+
             var xxx = this.BO_Cstand_Canvas;
             var xxxx = this.BO_Cstand_Viewbox;
             var rm = ResourceManager.GetInstance();
@@ -232,8 +238,10 @@ namespace Yuri
             img1.Height = izetta.SpriteBitmapImage.PixelHeight;
             izetta.DisplayBinding = img1;
             izetta.Descriptor = sd;
-            Canvas.SetLeft(img1, 150 - izetta.SpriteBitmapImage.PixelWidth / 2.0);
-            Canvas.SetTop(img1, 630 - izetta.SpriteBitmapImage.PixelHeight / 2.0);
+            //Canvas.SetLeft(img1, 150 - izetta.SpriteBitmapImage.PixelWidth / 2.0);
+            Canvas.SetLeft(img1, izettaPoint.X - izetta.SpriteBitmapImage.PixelWidth / 2.0);
+            Canvas.SetTop(img1, izettaPoint.Y - izetta.SpriteBitmapImage.PixelHeight / 2.0);
+            //Canvas.SetTop(img1, 630 - izetta.SpriteBitmapImage.PixelHeight / 2.0);
             Canvas.SetZIndex(img1, 50);
             this.BO_Cstand_Canvas.Children.Add(img1);
             izetta.InitAnimationRenderTransform();
@@ -246,8 +254,10 @@ namespace Yuri
             img2.Height = fine.SpriteBitmapImage.PixelHeight;
             fine.DisplayBinding = img2;
             fine.Descriptor = sd;
-            Canvas.SetLeft(img2, 400 - fine.SpriteBitmapImage.PixelWidth / 2.0);
-            Canvas.SetTop(img2, 730 - fine.SpriteBitmapImage.PixelHeight / 2.0);
+            //Canvas.SetLeft(img2, 400 - fine.SpriteBitmapImage.PixelWidth / 2.0);
+            //Canvas.SetTop(img2, 730 - fine.SpriteBitmapImage.PixelHeight / 2.0);
+            Canvas.SetLeft(img2, finePoint.X - fine.SpriteBitmapImage.PixelWidth / 2.0);
+            Canvas.SetTop(img2, finePoint.Y + 100 - fine.SpriteBitmapImage.PixelHeight / 2.0);
             Canvas.SetZIndex(img2, 50);
             this.BO_Cstand_Canvas.Children.Add(img2);
             fine.InitAnimationRenderTransform();
@@ -261,8 +271,10 @@ namespace Yuri
             mt.DisplayBinding = img4;
             mt.Descriptor = sd;
             modelX = 1000 - fine.SpriteBitmapImage.PixelWidth / 2.0;
-            Canvas.SetLeft(img4, modelX);
-            Canvas.SetTop(img4, 630 - fine.SpriteBitmapImage.PixelHeight / 2.0);
+            //Canvas.SetLeft(img4, modelX);
+            //Canvas.SetTop(img4, 630 - fine.SpriteBitmapImage.PixelHeight / 2.0);
+            Canvas.SetLeft(img4, zoiPoint.X - mt.SpriteBitmapImage.PixelWidth / 2.0);
+            Canvas.SetTop(img4, zoiPoint.Y - mt.SpriteBitmapImage.PixelHeight / 2.0);
             Canvas.SetZIndex(img4, 50);
             this.BO_Cstand_Canvas.Children.Add(img4);
             mt.InitAnimationRenderTransform();
@@ -281,7 +293,6 @@ namespace Yuri
             this.BO_Bg_Canvas.Children.Add(img3);
             bgg.InitAnimationRenderTransform();
 
-            var scalePoint = SCamera.GetScreenCoordination(0, 1);
 
             TransformGroup aniGroup = new TransformGroup();
             TranslateTransform XYTransformer = new TranslateTransform();
@@ -389,6 +400,13 @@ namespace Yuri
                 story2.Children.Add(doubleAniScaleX2);
                 story2.Children.Add(doubleAniScaleY2);
                 story2.Duration = duration;
+
+                story.FillBehavior = FillBehavior.Stop;
+                story2.FillBehavior = FillBehavior.Stop;
+
+                story.Completed += Story_Completed;
+                story2.Completed += Story2_Completed;
+
                 story.Begin();
                 story2.Begin();
                 
@@ -626,6 +644,18 @@ namespace Yuri
             }
         }
 
+        private void Story2_Completed(object sender, EventArgs e)
+        {
+            BgScaleT.ScaleX = 1.2;
+            BgScaleT.ScaleY = 1.2;
+        }
+
+        private void Story_Completed(object sender, EventArgs e)
+        {
+            CsScaleT.ScaleX = 2.0;
+            CsScaleT.ScaleY = 2.0;
+        }
+
         private void Story2_Cs_Completed(object sender, EventArgs e)
         {
             Canvas.SetLeft(this.BO_Cstand_Viewbox, csNowX);
@@ -638,15 +668,17 @@ namespace Yuri
 
         private void button4_Click(object sender, RoutedEventArgs e)
         {
-            Storyboard story3 = new Storyboard();
-            double BgfromX = Canvas.GetLeft(this.BO_Cstand_Viewbox);
-            DoubleAnimation doubleAniLeft = new DoubleAnimation(BgfromX, 1000, TimeSpan.FromMilliseconds(0));
-            doubleAniLeft.DecelerationRatio = 0.75;
-            Storyboard.SetTarget(doubleAniLeft, this.BO_Cstand_Viewbox);
-            Storyboard.SetTargetProperty(doubleAniLeft, new PropertyPath(Canvas.LeftProperty));
-            story3.Children.Add(doubleAniLeft);
-            story3.Duration = TimeSpan.FromMilliseconds(0);
-            story3.Begin();
+            if (bt4 == 0)
+            {
+                SCamera.FocusOn(0, 4, 2.0);
+            }
+            else if (bt4 == 1)
+            {
+                SCamera.Translate(2, 12);
+            }
+            bt4++;
         }
+
+        int bt4 = 0;
     }
 }

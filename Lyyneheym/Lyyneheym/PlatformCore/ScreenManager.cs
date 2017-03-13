@@ -594,6 +594,24 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 获取或设置场景镜头中央的屏幕分块行号
+        /// </summary>
+        public int SCameraCenterRow
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 获取或设置场景镜头中央的屏幕分块列号
+        /// </summary>
+        public int SCameraCenterCol
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// 获取或设置场景镜头聚焦的屏幕分块行号
         /// </summary>
         public int SCameraFocusRow

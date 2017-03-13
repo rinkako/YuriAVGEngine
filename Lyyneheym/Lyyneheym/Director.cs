@@ -688,7 +688,7 @@ namespace Yuri
                 Director.RunMana.Screen = value;
             }
         }
-
+        
         /// <summary>
         /// 获取主渲染器
         /// </summary>
