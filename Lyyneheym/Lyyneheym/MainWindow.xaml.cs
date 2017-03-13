@@ -223,9 +223,9 @@ namespace Yuri
                 ResourceType = ResourceType.Pictures
             };
 
-            var izettaPoint = SCamera.GetScreenCoordination(4, 5);
-            var finePoint = SCamera.GetScreenCoordination(4, 7);
-            var zoiPoint = SCamera.GetScreenCoordination(4, 12);
+            var izettaPoint = SCamera.GetScreenCoordination(4, 1);
+            var finePoint = SCamera.GetScreenCoordination(4, 0);
+            var zoiPoint = SCamera.GetScreenCoordination(4, 16);
 
 
             var xxx = this.BO_Cstand_Canvas;
@@ -670,12 +670,53 @@ namespace Yuri
         {
             if (bt4 == 0)
             {
-                SCamera.FocusOn(0, 4, 2.0);
+                SCamera.FocusOn(0, 4, 2);
             }
-            else if (bt4 == 1)
+            //else if (bt4 == 1)
+            //{
+            //    SCamera.Translate(2, 4);
+            //}
+            //else if (bt4 == 2)
+            //{
+            //    SCamera.Translate(2, 2);
+            //}
+            //else if (bt4 == 3)
+            //{
+            //    SCamera.Translate(2, 14);
+            //}
+            //else if (bt4 == 4)
+            //{
+            //    SCamera.Translate(2, 0);
+            //}
+            else if (bt4 <= 16)
             {
-                SCamera.Translate(2, 12);
+                SCamera.Translate(bt4 % 4, bt4);
             }
+            else if (bt4 == 17)
+            {
+                if (MessageBox.Show("reset?", "i", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    SCamera.ResetFocus();
+                    bt4 = -1;
+                }
+            }
+
+            //else if (bt4 == 1)
+            //{
+            //    SCamera.Translate(2, 2);
+            //}
+            //else if (bt4 == 2)
+            //{
+            //    SCamera.Translate(2, 3);
+            //}
+            //else if (bt4 == 3)
+            //{
+            //    SCamera.Translate(2, 7);
+            //}
+            //else if (bt4 == 4)
+            //{
+            //    SCamera.Translate(2, 4);
+            //}
             bt4++;
         }
 

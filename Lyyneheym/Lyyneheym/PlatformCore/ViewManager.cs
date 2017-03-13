@@ -922,8 +922,8 @@ namespace Yuri.PlatformCore
                 TransformGroup aniGroup = new TransformGroup();
                 TranslateTransform XYTransformer = new TranslateTransform();
                 ScaleTransform ScaleTransformer = new ScaleTransform();
-                ScaleTransformer.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 16.0;
-                ScaleTransformer.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 16.0;
+                ScaleTransformer.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0;
+                ScaleTransformer.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0;
                 RotateTransform RotateTransformer = new RotateTransform();
                 RotateTransformer.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0;
                 RotateTransformer.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0;

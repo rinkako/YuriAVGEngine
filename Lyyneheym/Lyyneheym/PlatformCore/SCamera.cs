@@ -31,10 +31,23 @@ namespace Yuri.PlatformCore
                 leftFlag = true;
                 // background
                 storyLeftBg = new Storyboard();
-                Point deltaPBg = SCamera.GetScreenDistance(Director.ScrMana.SCameraCenterRow, Director.ScrMana.SCameraCenterCol, r, c,
-                    Director.ScrMana.SCameraScale * Math.Pow(SCamera.BackgroundDeepRatio, 3));
+                double bgRatio = Director.ScrMana.SCameraScale * Math.Pow(SCamera.BackgroundDeepRatio, 3);
                 double BgfromX = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground).Left;
-                double BgToX = BgfromX + deltaPBg.X;
+                double BgBeginX = BgfromX;
+                if (lastFromScaling)
+                {
+                    double actualX = Canvas.GetLeft(viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding);
+                    if (actualX != BgBeginX)
+                    {
+                        BgBeginX = actualX;
+                    }
+                }
+                Point normalPointBg = SCamera.GetNormalPoint(bgRatio);
+                Point destinationPointBg = SCamera.GetScreenCoordination(r, c);
+                Point originalPointBg = SCamera.GetScreenCoordination(Director.ScrMana.SCameraCenterRow, Director.ScrMana.SCameraCenterCol);
+                double destinationToNormalLineXBg = SCamera.GetManhattanDistance(destinationPointBg, normalPointBg, 1).X;
+                double originalToNormalLineXBg = SCamera.GetManhattanDistance(originalPointBg, normalPointBg, 1).X;
+                double BgToX = BgfromX - (destinationToNormalLineXBg - originalToNormalLineXBg) * bgRatio;
                 DoubleAnimation doubleAniLeftBg = new DoubleAnimation(BgfromX, BgToX, SCamera.AnimationDuration);
                 doubleAniLeftBg.DecelerationRatio = SCamera.DecelerateRatio;
                 Storyboard.SetTarget(doubleAniLeftBg, viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding);
@@ -46,11 +59,23 @@ namespace Yuri.PlatformCore
                 Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground).Left = BgToX;
                 // character
                 storyLeftCs = new Storyboard();
-                Point deltaPCs = SCamera.GetScreenDistance(Director.ScrMana.SCameraCenterRow, Director.ScrMana.SCameraCenterCol, r, c,
-                    Director.ScrMana.SCameraScale);
                 double CsfromX = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Left;
-                double CsToX = CsfromX + deltaPCs.X;
-                DoubleAnimation doubleAniLeftCs = new DoubleAnimation(CsfromX, CsToX, SCamera.AnimationDuration);
+                double CsBeginX = CsfromX;
+                if (lastFromScaling)
+                {
+                    double actualX = Canvas.GetLeft(viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
+                    if (actualX != CsBeginX)
+                    {
+                        CsBeginX = actualX;
+                    }
+                }
+                Point normalPointCs = SCamera.GetNormalPoint(Director.ScrMana.SCameraScale);
+                Point destinationPointCs = SCamera.GetScreenCoordination(r, c);
+                Point originalPointCs = SCamera.GetScreenCoordination(Director.ScrMana.SCameraCenterRow, Director.ScrMana.SCameraCenterCol);
+                double destinationToNormalLineXCs = SCamera.GetManhattanDistance(destinationPointCs, normalPointCs, 1).X;
+                double originalToNormalLineXCs = SCamera.GetManhattanDistance(originalPointCs, normalPointCs, 1).X;
+                double CsToX = CsfromX - (destinationToNormalLineXCs - originalToNormalLineXCs) * Director.ScrMana.SCameraScale;
+                DoubleAnimation doubleAniLeftCs = new DoubleAnimation(CsBeginX, CsToX, SCamera.AnimationDuration);
                 doubleAniLeftCs.DecelerationRatio = SCamera.DecelerateRatio;
                 Storyboard.SetTarget(doubleAniLeftCs, viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
                 Storyboard.SetTargetProperty(doubleAniLeftCs, new PropertyPath(Canvas.LeftProperty));
@@ -61,10 +86,23 @@ namespace Yuri.PlatformCore
                 Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Left = CsToX;
                 // picture
                 storyLeftPic = new Storyboard();
-                Point deltaPPic = SCamera.GetScreenDistance(Director.ScrMana.SCameraCenterRow, Director.ScrMana.SCameraCenterCol, r, c,
-                    Director.ScrMana.SCameraScale * SCamera.PictureDeepRatio);
+                double picRatio = Director.ScrMana.SCameraScale * Math.Pow(SCamera.PictureDeepRatio, 2);
                 double PicfromX = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures).Left;
-                double PicToX = PicfromX + deltaPPic.X;
+                double PicBeginX = PicfromX;
+                if (lastFromScaling)
+                {
+                    double actualX = Canvas.GetLeft(viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding);
+                    if (actualX != PicBeginX)
+                    {
+                        PicBeginX = actualX;
+                    }
+                }
+                Point normalPointPic = SCamera.GetNormalPoint(picRatio);
+                Point destinationPointPic = SCamera.GetScreenCoordination(r, c);
+                Point originalPointPic = SCamera.GetScreenCoordination(Director.ScrMana.SCameraCenterRow, Director.ScrMana.SCameraCenterCol);
+                double destinationToNormalLineXPic = SCamera.GetManhattanDistance(destinationPointPic, normalPointPic, 1).X;
+                double originalToNormalLineXPic = SCamera.GetManhattanDistance(originalPointPic, normalPointPic, 1).X;
+                double PicToX = PicfromX - (destinationToNormalLineXPic - originalToNormalLineXPic) * picRatio;
                 DoubleAnimation doubleAniLeftPic = new DoubleAnimation(PicfromX, PicToX, SCamera.AnimationDuration);
                 doubleAniLeftPic.DecelerationRatio = SCamera.DecelerateRatio;
                 Storyboard.SetTarget(doubleAniLeftPic, viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding);
@@ -81,10 +119,23 @@ namespace Yuri.PlatformCore
                 topFlag = true;
                 // background
                 storyTopBg = new Storyboard();
-                Point deltaPBg = SCamera.GetScreenDistance(Director.ScrMana.SCameraCenterRow, Director.ScrMana.SCameraCenterCol, r, c,
-                    Director.ScrMana.SCameraScale * SCamera.BackgroundDeepRatio);
+                double bgRatio = Director.ScrMana.SCameraScale * SCamera.BackgroundDeepRatio;
                 double BgfromY = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground).Top;
-                double BgToY = BgfromY + deltaPBg.Y;
+                double BgBeginY = BgfromY;
+                if (lastFromScaling)
+                {
+                    double actualY = Canvas.GetTop(viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding);
+                    if (actualY != BgBeginY)
+                    {
+                        BgBeginY = actualY;
+                    }
+                }
+                Point normalPointBg = SCamera.GetNormalPoint(bgRatio);
+                Point destinationPointBg = SCamera.GetScreenCoordination(r, c);
+                Point originalPointBg = SCamera.GetScreenCoordination(Director.ScrMana.SCameraCenterRow, Director.ScrMana.SCameraCenterCol);
+                double destinationToNormalLineYBg = SCamera.GetManhattanDistance(destinationPointBg, normalPointBg, 1).Y;
+                double originalToNormalLineYBg = SCamera.GetManhattanDistance(originalPointBg, normalPointBg, 1).Y;
+                double BgToY = BgfromY - (destinationToNormalLineYBg - originalToNormalLineYBg) * bgRatio;
                 DoubleAnimation doubleAniTopBg = new DoubleAnimation(BgfromY, BgToY, SCamera.AnimationDuration);
                 doubleAniTopBg.DecelerationRatio = SCamera.DecelerateRatio;
                 Storyboard.SetTarget(doubleAniTopBg, viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding);
@@ -96,10 +147,22 @@ namespace Yuri.PlatformCore
                 Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground).Top = BgToY;
                 // character
                 storyTopCs = new Storyboard();
-                Point deltaPCs = SCamera.GetScreenDistance(Director.ScrMana.SCameraCenterRow, Director.ScrMana.SCameraCenterCol, r, c,
-                    Director.ScrMana.SCameraScale);
                 double CsfromY = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Top;
-                double CsToY = CsfromY + deltaPCs.Y;
+                double CsBeginY = CsfromY;
+                if (lastFromScaling)
+                {
+                    double actualY = Canvas.GetTop(viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
+                    if (actualY != CsBeginY)
+                    {
+                        CsBeginY = actualY;
+                    }
+                }
+                Point normalPointCs = SCamera.GetNormalPoint(Director.ScrMana.SCameraScale);
+                Point destinationPointCs = SCamera.GetScreenCoordination(r, c);
+                Point originalPointCs = SCamera.GetScreenCoordination(Director.ScrMana.SCameraCenterRow, Director.ScrMana.SCameraCenterCol);
+                double destinationToNormalLineYCs = SCamera.GetManhattanDistance(destinationPointCs, normalPointCs, 1).Y;
+                double originalToNormalLineYCs = SCamera.GetManhattanDistance(originalPointCs, normalPointCs, 1).Y;
+                double CsToY = CsfromY - (destinationToNormalLineYCs - originalToNormalLineYCs) * Director.ScrMana.SCameraScale;
                 DoubleAnimation doubleAniTopCs = new DoubleAnimation(CsfromY, CsToY, SCamera.AnimationDuration);
                 doubleAniTopCs.DecelerationRatio = SCamera.DecelerateRatio;
                 Storyboard.SetTarget(doubleAniTopCs, viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
@@ -111,10 +174,23 @@ namespace Yuri.PlatformCore
                 Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Top = CsToY;
                 // picture
                 storyTopPic = new Storyboard();
-                Point deltaPPic = SCamera.GetScreenDistance(Director.ScrMana.SCameraCenterRow, Director.ScrMana.SCameraCenterCol, r, c,
-                    Director.ScrMana.SCameraScale * SCamera.PictureDeepRatio);
+                double picRatio = Director.ScrMana.SCameraScale * SCamera.PictureDeepRatio;
                 double PicfromY = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures).Top;
-                double PicToY = PicfromY + deltaPPic.Y;
+                double PicBeginY = PicfromY;
+                if (lastFromScaling)
+                {
+                    double actualY = Canvas.GetTop(viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding);
+                    if (actualY != PicBeginY)
+                    {
+                        PicBeginY = actualY;
+                    }
+                }
+                Point normalPointPic = SCamera.GetNormalPoint(picRatio);
+                Point destinationPointPic = SCamera.GetScreenCoordination(r, c);
+                Point originalPointPic = SCamera.GetScreenCoordination(Director.ScrMana.SCameraCenterRow, Director.ScrMana.SCameraCenterCol);
+                double destinationToNormalLineYPic = SCamera.GetManhattanDistance(destinationPointPic, normalPointPic, 1).Y;
+                double originalToNormalLineYPic = SCamera.GetManhattanDistance(originalPointPic, normalPointPic, 1).Y;
+                double PicToY = PicfromY - (destinationToNormalLineYPic - originalToNormalLineYPic) * picRatio;
                 DoubleAnimation doubleAniTopPic = new DoubleAnimation(PicfromY, PicToY, SCamera.AnimationDuration);
                 doubleAniTopPic.DecelerationRatio = SCamera.DecelerateRatio;
                 Storyboard.SetTarget(doubleAniTopPic, viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding);
@@ -142,6 +218,7 @@ namespace Yuri.PlatformCore
                 storyTopCs.Begin();
                 storyTopPic.Begin();
             }
+            lastFromScaling = false;
         }
 
         /// <summary>
@@ -267,6 +344,17 @@ namespace Yuri.PlatformCore
             storyScaleCs.Completed += StoryScaleCs_Completed;
             Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).ScaleX =
                 Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).ScaleY = ratio;
+            // 初步只支持1和2两个缩放倍率
+            if (ratio <= 1)
+            {
+                Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Left = 0;
+                Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Top = 0;
+            }
+            else if (ratio > 1 && ratio <= 2.5)
+            {
+                Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Left = -GlobalDataContainer.GAME_WINDOW_WIDTH / ratio;
+                Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Top = -GlobalDataContainer.GAME_WINDOW_HEIGHT / ratio;
+            }
             // picture
             Storyboard storyScalePic = new Storyboard();
             DoubleAnimation doubleAniScaleXPic = new DoubleAnimation(1, ratio * SCamera.PictureDeepRatio, SCamera.AnimationDuration);
@@ -288,6 +376,7 @@ namespace Yuri.PlatformCore
             storyScaleCs.Begin();
             storyScaleBg.Begin();
             storyScalePic.Begin();
+            lastFromScaling = true;
         }
 
         /// <summary>
@@ -295,7 +384,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static void ResetFocus()
         {
-            SCamera.Translate(2, 0);
+            //SCamera.Translate(2, 0);
             SCamera.Focus(1.0);
         }
 
@@ -451,6 +540,30 @@ namespace Yuri.PlatformCore
                     }
                 }
             }
+            // 计算法向量
+            var centerPoint = SCamera.GetScreenCoordination(GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT / 2, 0);
+            SCamera.NormalVector = new Vector(centerPoint.X, centerPoint.Y);
+        }
+
+        /// <summary>
+        /// 获得法向量
+        /// </summary>
+        /// <param name="ratio">当前画布的倍率，-1为当前倍率</param>
+        /// <returns>指定倍率下的法线向量</returns>
+        public static Vector GetNormalVector(double ratio = -1)
+        {
+            return ratio != -1 ? SCamera.NormalVector * ratio : SCamera.NormalVector * Director.ScrMana.SCameraScale;
+        }
+        
+        /// <summary>
+        /// 获得法向量点
+        /// </summary>
+        /// <param name="ratio">当前画布的倍率，-1为当前倍率</param>
+        /// <returns>指定倍率下的法线向量点</returns>
+        public static Point GetNormalPoint(double ratio = -1)
+        {
+            var nv = SCamera.GetNormalVector(ratio);
+            return new Point(nv.X, nv.Y);
         }
 
         /// <summary>
@@ -541,6 +654,15 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 获取法向量
+        /// </summary>
+        public static Vector NormalVector
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// 获取或设置背景变化率
         /// </summary>
         public static double BackgroundDeepRatio
@@ -582,6 +704,11 @@ namespace Yuri.PlatformCore
             }
         }
         
+        /// <summary>
+        /// 上一动作是否为缩放
+        /// </summary>
+        private static bool lastFromScaling = false;
+
         /// <summary>
         /// 场景镜头动画时间间隔
         /// </summary>

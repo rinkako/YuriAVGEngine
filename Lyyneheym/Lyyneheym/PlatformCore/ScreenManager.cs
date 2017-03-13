@@ -452,13 +452,23 @@ namespace Yuri.PlatformCore
             vtBg.Type = ViewportType.VTBackground;
             vtBg.ZIndex = GlobalDataContainer.GAME_Z_BACKGROUND;
             this.viewboxDescVec[(int)ViewportType.VTBackground] = vtBg;
-            var vtCs = vdTemplate.Clone() as ViewportDescriptor;
-            vtCs.Type = ViewportType.VTCharacterStand;
-            vtCs.ZIndex = GlobalDataContainer.GAME_Z_CHARACTERSTAND;
-            this.viewboxDescVec[(int)ViewportType.VTCharacterStand] = vtCs;
+            var vtPics = vdTemplate.Clone() as ViewportDescriptor;
             vdTemplate.Type = ViewportType.VTPictures;
             vdTemplate.ZIndex = GlobalDataContainer.GAME_Z_PICTURES;
-            this.viewboxDescVec[(int)ViewportType.VTPictures] = vdTemplate;
+            this.viewboxDescVec[(int)ViewportType.VTPictures] = vtPics;
+            //vdTemplate = new ViewportDescriptor()
+            //{
+            //    Left = -(double)GlobalDataContainer.GAME_WINDOW_WIDTH / 2,
+            //    Top = -(double)GlobalDataContainer.GAME_WINDOW_HEIGHT / 2,
+            //    ScaleX = 1.0,
+            //    ScaleY = 1.0,
+            //    Angle = 0.0,
+            //    AnchorX = (double)GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0,
+            //    AnchorY = (double)GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0
+            //};
+            vdTemplate.Type = ViewportType.VTCharacterStand;
+            vdTemplate.ZIndex = GlobalDataContainer.GAME_Z_CHARACTERSTAND;
+            this.viewboxDescVec[(int)ViewportType.VTCharacterStand] = vdTemplate;
         }
 
         /// <summary>
