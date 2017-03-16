@@ -245,7 +245,7 @@ namespace Yuri.PlatformCore
                 var aniGroupBg = (TransformGroup)ViewManager.GetInstance().GetViewport(ViewportType.VTBackground).ViewboxBinding.RenderTransform;
                 var scaleTransformerBg = (ScaleTransform)aniGroupBg.Children[1];
                 // 聚焦点在左边
-                if (c <= 8)
+                if (c <= GlobalDataContainer.GAME_SCAMERA_SCR_COLCOUNT / 2)
                 {
                     scaleTransformerBg.CenterX = SCamera.GetScreenCoordination(0, c + (8 - c) / 2).X;
                 }
@@ -260,12 +260,12 @@ namespace Yuri.PlatformCore
                     scaleTransformerBg.CenterX = SCamera.GetScreenCoordination(0, 9 + (c - 9) / 2).X;
                 }
                 // 聚焦点在上边
-                if (r < 2)
+                if (r < GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT / 2)
                 {
                     scaleTransformerBg.CenterY = SCamera.GetScreenCoordination(r + (2 - r) / 2, 0).Y;
                 }
                 // 聚焦点在竖直中央
-                else if (r == 2)
+                else if (r == GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT / 2)
                 {
                     scaleTransformerBg.CenterY = sPoint.Y;
                 }
@@ -283,7 +283,7 @@ namespace Yuri.PlatformCore
                 var aniGroupPic = (TransformGroup)ViewManager.GetInstance().GetViewport(ViewportType.VTPictures).ViewboxBinding.RenderTransform;
                 var scaleTransformerPic = (ScaleTransform)aniGroupPic.Children[1];
                 // 聚焦点在左边
-                if (c <= 8)
+                if (c <= GlobalDataContainer.GAME_SCAMERA_SCR_COLCOUNT / 2)
                 {
                     scaleTransformerPic.CenterX = SCamera.GetScreenCoordination(0, Math.Max(1, c - (8 - c) / 2)).X;
                 }
@@ -298,12 +298,12 @@ namespace Yuri.PlatformCore
                     scaleTransformerPic.CenterX = SCamera.GetScreenCoordination(0, Math.Min(GlobalDataContainer.GAME_SCAMERA_SCR_COLCOUNT, c + (c - 9) / 2)).X;
                 }
                 // 聚焦点在上边
-                if (r < 2)
+                if (r < GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT / 2)
                 {
                     scaleTransformerPic.CenterY = SCamera.GetScreenCoordination(Math.Max(0, r - (2 - r) / 2), 0).Y;
                 }
                 // 聚焦点在竖直中央
-                else if (r == 2)
+                else if (r == GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT / 2)
                 {
                     scaleTransformerPic.CenterY = sPoint.Y;
                 }
