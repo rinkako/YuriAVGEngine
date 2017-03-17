@@ -531,14 +531,14 @@ namespace Yuri.PlatformCore
 
         #region 渲染器类自身相关方法和引用
         /// <summary>
-        /// 为更新器设置作用窗体
+        /// 为更新器设置主舞台引用
         /// </summary>
-        /// <param name="mw">窗体引用</param>
-        public void SetMainWindow(MainWindow mw)
+        /// <param name="sp">主舞台引用</param>
+        public void SetMainWindow(PageView.StagePage sp)
         {
-            if (mw != null)
+            if (sp != null)
             {
-                this.view = mw;
+                this.view = sp;
                 this.ViewLoadedInit();
             }
         }
@@ -549,7 +549,7 @@ namespace Yuri.PlatformCore
         private void ViewLoadedInit()
         {
             // 为视窗管理设置引用
-            this.viewMana.SetMainWndReference(this.view);
+            this.viewMana.SetStagePageReference(this.view);
             // 初始化小三角
             this.InitMsgLayerTria();
             // 初始化文本层
@@ -584,9 +584,9 @@ namespace Yuri.PlatformCore
         public StackMachine VsmReference = null;
 
         /// <summary>
-        /// 主窗体引用
+        /// 主舞台的引用
         /// </summary>
-        private MainWindow view = null;
+        private PageView.StagePage view = null;
 
         /// <summary>
         /// 音乐引擎
@@ -813,7 +813,7 @@ namespace Yuri.PlatformCore
         public void Shutdown()
         {
             CommonUtils.ConsoleLine("Shutdown is called", "UpdateRender", OutputStyle.Important);
-            this.view.Close();
+            ViewManager.GetWindowReference().Close();
         }
 
         /// <summary>

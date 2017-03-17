@@ -403,17 +403,7 @@ namespace Yuri.PlatformCore
                 this.backgroundSpriteVec[(int)BackgroundPage.Back].DisplayBinding.Visibility = Visibility.Hidden;
             }
         }
-
-        /// <summary>
-        /// 为视窗管理器设置主窗体的引用并更新视窗向量
-        /// </summary>
-        /// <param name="mw">主窗体</param>
-        public void SetMainWndReference(MainWindow mw)
-        {
-            this.view = mw;
-            this.InitViewbox();
-        }
-
+        
         /// <summary>
         /// 获取主视窗上的过渡容器
         /// </summary>
@@ -938,6 +928,58 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 将窗体控件转化为JPEG图片
+        /// </summary>
+        /// <param name="ui">控件的引用</param>
+        /// <param name="filename">要保存的图片文件名</param>
+        public static void RenderFrameworkElementToJPEG(FrameworkElement ui, string filename)
+        {
+            try
+            {
+                System.IO.FileStream ms = new System.IO.FileStream(filename, System.IO.FileMode.Create);
+                RenderTargetBitmap bmp = new RenderTargetBitmap((int)ui.ActualWidth, (int)ui.ActualHeight, 96d, 96d, PixelFormats.Pbgra32);
+                bmp.Render(ui);
+                JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bmp));
+                encoder.Save(ms);
+                ms.Close();
+            }
+            catch (Exception ex)
+            {
+                CommonUtils.ConsoleLine(String.Format("Saving Snapshot Failed. path: {0} with CLR Error: {1}", filename, ex.ToString())
+                    , "ViewManager", OutputStyle.Error);
+            }
+        }
+
+        /// <summary>
+        /// 为视窗管理器设置主舞台页的引用并更新视窗向量
+        /// </summary>
+        /// <param name="mw">主舞台页</param>
+        public void SetStagePageReference(PageView.StagePage mw)
+        {
+            this.view = mw;
+            this.InitViewbox();
+        }
+
+        /// <summary>
+        /// 为视窗管理器设置窗体的引用并更新视窗向量
+        /// </summary>
+        /// <param name="wnd">主窗体的引用</param>
+        public static void SetWindowReference(MainWindow wnd)
+        {
+            ViewManager.mWnd = wnd;
+        }
+
+        /// <summary>
+        /// 获取应用程序主窗体
+        /// </summary>
+        /// <returns>主窗体的引用</returns>
+        public static MainWindow GetWindowReference()
+        {
+            return ViewManager.mWnd;
+        }
+
+        /// <summary>
         /// 视窗向量
         /// </summary>
         private List<YuriViewport> viewboxVec;
@@ -1021,9 +1063,14 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 主窗体引用
+        /// 主舞台页面的引用
         /// </summary>
-        private MainWindow view = null;
+        private PageView.StagePage view = null;
+
+        /// <summary>
+        /// 主窗体的引用
+        /// </summary>
+        private static MainWindow mWnd = null;
 
         /// <summary>
         /// 唯一实例

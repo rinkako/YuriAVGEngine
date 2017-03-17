@@ -21,10 +21,10 @@ namespace Yuri.PlatformCore
         #endregion
 
         #region 个性化设置信息
-        // 窗体分辨率：宽度 1024
-        public static int GAME_WINDOW_WIDTH = 1024;
-        // 窗体分辨率：高度 576
-        public static int GAME_WINDOW_HEIGHT = 576;
+        // 窗体分辨率：宽度 1280
+        public static int GAME_WINDOW_WIDTH = 1280;
+        // 窗体分辨率：高度 720
+        public static int GAME_WINDOW_HEIGHT = 720;
         // 窗体分辨率：实际高度（标题栏含）
         public static int GAME_WINDOW_ACTUALHEIGHT { get { return GlobalDataContainer.GAME_WINDOW_HEIGHT + 32; } }
         // 窗体分辨率：是否自由调节

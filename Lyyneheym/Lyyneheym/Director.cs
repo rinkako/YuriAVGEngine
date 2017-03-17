@@ -610,12 +610,12 @@ namespace Yuri
 
         #region 导演类自身资源相关
         /// <summary>
-        /// 设置主窗体引用
+        /// 设置主舞台页面的引用
         /// </summary>
-        /// <param name="mw">主窗体</param>
-        public void SetMainWindow(MainWindow mw)
+        /// <param name="sp">主窗体</param>
+        public void SetStagePageReference(PageView.StagePage sp)
         {
-            this.updateRender.SetMainWindow(this.mwReference = mw);
+            this.updateRender.SetMainWindow(this.mwReference = sp);
         }
 
         /// <summary>
@@ -714,9 +714,9 @@ namespace Yuri
         private UpdateRender updateRender;
 
         /// <summary>
-        /// 主窗体引用
+        /// 主舞台页面的引用
         /// </summary>
-        private MainWindow mwReference;
+        private PageView.StagePage mwReference;
 
         /// <summary>
         /// 唯一实例
