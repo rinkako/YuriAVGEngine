@@ -16,6 +16,7 @@
       <Viewbox x:Name="BO_Pics_Viewbox" Stretch="UniformToFill" Width="{Binding ElementName=window, Mode=OneWay}" Height="{Binding ElementName=window, Mode=OneWay}" Canvas.Left="0" Canvas.Top="0">
         <Canvas x:Name="BO_Pics_Canvas"/>
       </Viewbox>
+      <Button x:Name="buttonNext" Content="GoNext" Width="75" Canvas.Left="450" Canvas.Top="10" Click="buttonNext_Click"/>
       <Button x:Name="button4" Content="TEST XX" Width="75" Canvas.Left="150" Canvas.Top="10" Click="button4_Click"/>
       <Button x:Name="button3" Content="TEST" Width="75" Canvas.Left="90" Canvas.Top="10" Click="button3_Click"	/>
       <Button x:Name="button2" Content="TEST" Width="75" Canvas.Left="10" Canvas.Top="10" Click="button2_Click"	/>

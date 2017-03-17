@@ -756,5 +756,10 @@ namespace Yuri
         }
 
         int bt4 = -1;
+
+        private void buttonNext_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
