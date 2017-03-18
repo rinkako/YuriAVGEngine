@@ -10,6 +10,8 @@
     <Canvas x:Name="mainCanvas" Width="{Binding ElementName=viewbox, Mode=OneWay}" Height="{Binding ElementName=viewbox, Mode=OneWay}">
       <Frame Name="mainFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" NavigationUIVisibility="Hidden">
       </Frame>
+      <Frame Name="upperFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" NavigationUIVisibility="Hidden" Visibility="Hidden">
+      </Frame>
     </Canvas>
   </Viewbox>
 </Window>

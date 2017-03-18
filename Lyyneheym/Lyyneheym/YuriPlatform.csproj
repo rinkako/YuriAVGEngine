@@ -67,6 +67,9 @@
     </ApplicationDefinition>
     <Compile Include="Director.cs" />
     <Compile Include="ILPackage\ConfigParser.cs" />
+    <Compile Include="PageView\SLPage.xaml.cs">
+      <DependentUpon>SLPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PlatformCore\NotificationManager.cs" />
     <Compile Include="PlatformCore\CloneableDescriptor.cs" />
     <Compile Include="PlatformCore\ResourceCachePool.cs" />
@@ -96,6 +99,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PageView\SLPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PageView\StagePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -13,7 +13,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 构造选择项按钮
         /// </summary>
-        /// <param name="bid"></param>
+        /// <param name="bid">按钮的编号</param>
         public BranchButton(int bid)
         {
             this.Id = bid;

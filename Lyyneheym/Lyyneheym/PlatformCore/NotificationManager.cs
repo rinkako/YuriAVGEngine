@@ -59,6 +59,9 @@ namespace Yuri.PlatformCore
             NotificationManager.BoxUI.Background = new ImageBrush(sp.SpriteBitmapImage);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private static void ApplyNotificationAnimation()
         {
             Storyboard story = new Storyboard();

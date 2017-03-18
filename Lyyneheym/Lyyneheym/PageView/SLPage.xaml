@@ -1,0 +1,53 @@
+﻿<Page x:Class="Yuri.PageView.SLPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Yuri.PageView"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1280"
+      Title="SLPage">
+  <Grid x:Name="SL_MainGrid" Background="Black">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="100*"/>
+      <RowDefinition Height="900*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250*"/>
+      <ColumnDefinition Width="750*"/>
+    </Grid.ColumnDefinitions>
+    <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="2">
+      <Button x:Name="button_1" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位1 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_2" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位2 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_3" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位3 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_4" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位4 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_5" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位5 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_6" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位6 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_7" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位7 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_8" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位8 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_9" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位9 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_10" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位10 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_11" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位11 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_12" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位12 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_13" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位13 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_14" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位14 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_15" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位15 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+      <Button x:Name="button_16" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位16 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
+    </StackPanel>
+    <Grid Grid.Row="1" Grid.Column="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*"/>
+        <ColumnDefinition Width="18*"/>
+        <ColumnDefinition Width="1*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="1*"/>
+        <RowDefinition Height="18*"/>
+        <RowDefinition Height="1*"/>
+      </Grid.RowDefinitions>
+      <Image Name="SL_SnapshotImage" Grid.Row="1" Grid.Column="1" Width="800" Height="450" Margin="64,0,0,133"/>
+      <TextBlock x:Name="SL_TimeStampTextBlock" Visibility="Hidden" Text="TimeStamp" FontSize="20" Foreground="White" Grid.Column="1" Grid.Row="1" Margin="0,0,0,70" TextWrapping="Wrap" Height="30" VerticalAlignment="Bottom" TextAlignment="Right"/>
+
+    </Grid>
+  </Grid>
+</Page>

@@ -34,7 +34,9 @@ namespace Yuri
             this.mainCanvas.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
             this.ResizeMode = GlobalDataContainer.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
             this.core.SetStagePageReference(new PageView.StagePage());
-            this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContainer.FirstViewPage);
+            //this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContainer.FirstViewPage);
+            this.upperFrame.Content = new PageView.SLPage();
+            this.mainFrame.Content = new PageView.StagePage();
         }
         
         #region 窗体监听事件
