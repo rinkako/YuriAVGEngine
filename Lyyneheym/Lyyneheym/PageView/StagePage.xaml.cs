@@ -46,6 +46,7 @@ namespace Yuri.PageView
             this.BO_Pics_Canvas.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
             this.BO_Pics_Canvas.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
             SCamera.Init();
+            NotificationManager.Init();
         }
 
         #region 窗体监听事件
@@ -638,6 +639,16 @@ namespace Yuri.PageView
         private void buttonNext_Click(object sender, RoutedEventArgs e)
         {
             ViewManager.RenderFrameworkElementToJPEG(this.BO_MainGrid, "snapshot_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-fff") + ".jpg");
+        }
+
+        private void noti_Click(object sender, RoutedEventArgs e)
+        {
+            //var sp = ResourceManager.GetInstance().GetPicture("NotificationBox.png", new Int32Rect(-1, 0, 0, 0));
+            //var ico = ResourceManager.GetInstance().GetPicture("Info_Silver.png", new Int32Rect(-1, 0, 0, 0));
+            //this.BO_Information.Background = new ImageBrush(sp.SpriteBitmapImage);
+            //this.BO_Information_Image.Source = ico.SpriteBitmapImage;
+
+            NotificationManager.Notify("菲涅的伊泽塔", "恭喜全部通关！鉴赏模式已经开放了。", "Info_Silver.png");
         }
     }
 }

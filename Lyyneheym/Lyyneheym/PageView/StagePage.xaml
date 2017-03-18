@@ -11,6 +11,7 @@
       Title="StagePage" ShowsNavigationUI="False"
 			MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" MouseWheel="Window_MouseWheel" Background="White">
   <Canvas Name="BO_MainGrid" Background="Black">
+    <!-- Background, Character, Pictures -->
     <Viewbox x:Name="BO_Bg_Viewbox" Stretch="UniformToFill" Width="{Binding ElementName=mainStagePage, Mode=OneWay}" Height="{Binding ElementName=mainStagePage, Mode=OneWay}" Canvas.Left="0" Canvas.Top="0">
       <Canvas x:Name="BO_Bg_Canvas">
         <transitionalsControls:TransitionElement x:Name="TransitionBox" Transition="{Binding}" Width="{Binding ActualWidth, ElementName=BO_MainGrid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=BO_MainGrid, Mode=OneWay}" Canvas.Left="0" Canvas.Top="0" Panel.ZIndex="1"/>
@@ -22,6 +23,25 @@
     <Viewbox x:Name="BO_Pics_Viewbox" Stretch="UniformToFill" Width="{Binding ElementName=mainStagePage, Mode=OneWay}" Height="{Binding ElementName=mainStagePage, Mode=OneWay}" Canvas.Left="0" Canvas.Top="0">
       <Canvas x:Name="BO_Pics_Canvas"/>
     </Viewbox>
+    <!-- Information -->
+    <Grid Name="BO_Information" VerticalAlignment="Top" HorizontalAlignment="Right" Canvas.Top="40" Canvas.Right="-400" Width="264" Height="71" Opacity="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="3*"/>
+        <ColumnDefinition Width="7*"/>
+      </Grid.ColumnDefinitions>
+      <Image Name="BO_Information_Image" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="5"></Image>
+      <Grid Grid.Row="0" Grid.Column="1">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="50*"/>
+          <RowDefinition Height="5*"/>
+          <RowDefinition Height="45*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Name="BO_Information_Name" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" FontSize="18"></TextBlock>
+        <TextBlock Name="BO_Information_Detail" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="11" TextWrapping="Wrap"></TextBlock>
+      </Grid>
+    </Grid>
+    <!-- Debug Button -->
+    <Button x:Name="noti" Content="noti" Width="75" Canvas.Left="550" Canvas.Top="10" Click="noti_Click"/>
     <Button x:Name="buttonNext" Content="GoNext" Width="75" Canvas.Left="450" Canvas.Top="10" Click="buttonNext_Click"/>
     <Button x:Name="button4" Content="TEST XX" Width="75" Canvas.Left="150" Canvas.Top="10" Click="button4_Click"/>
     <Button x:Name="button3" Content="TEST" Width="75" Canvas.Left="90" Canvas.Top="10" Click="button3_Click"	/>
