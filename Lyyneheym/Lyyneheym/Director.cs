@@ -615,7 +615,8 @@ namespace Yuri
         /// <param name="sp">主窗体</param>
         public void SetStagePageReference(PageView.StagePage sp)
         {
-            this.updateRender.SetMainWindow(this.mwReference = sp);
+            ViewPageManager.RegisterPage(GlobalDataContainer.FirstViewPage, sp);
+            this.updateRender.ViewLoaded();
         }
 
         /// <summary>
@@ -716,7 +717,13 @@ namespace Yuri
         /// <summary>
         /// 主舞台页面的引用
         /// </summary>
-        private PageView.StagePage mwReference;
+        private PageView.StagePage mwReference
+        {
+            get
+            {
+                return (PageView.StagePage)ViewPageManager.RetrievePage(GlobalDataContainer.FirstViewPage);
+            }
+        }
 
         /// <summary>
         /// 唯一实例

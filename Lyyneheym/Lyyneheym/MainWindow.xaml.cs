@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Data;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Yuri.PlatformCore;
-using Yuri.ILPackage;
-using Yuri.YuriInterpreter;
-using System.Windows.Media.Animation;
-using System.Windows.Media;
 
 namespace Yuri
 {
@@ -26,9 +19,7 @@ namespace Yuri
         /// Alt键正在被按下的标记
         /// </summary>
         private static bool AltDown = false;
-
-        private static PageView.StagePage stagePage = new PageView.StagePage();
-
+        
         /// <summary>
         /// 构造器
         /// </summary>
@@ -37,12 +28,13 @@ namespace Yuri
             InitializeComponent();
             ViewManager.SetWindowReference(this);
             this.Title = GlobalDataContainer.GAME_TITLE_NAME;
-            this.Width = 1280;
-            this.Height = 720 + 32;
-            this.mainCanvas.Width = 1280;
-            this.mainCanvas.Height = 720;
+            this.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
+            this.Height = GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT;
+            this.mainCanvas.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
+            this.mainCanvas.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
             this.ResizeMode = GlobalDataContainer.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
-            this.mainFrame.Content = MainWindow.stagePage;
+            this.core.SetStagePageReference(new PageView.StagePage());
+            this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContainer.FirstViewPage);
         }
         
         #region 窗体监听事件

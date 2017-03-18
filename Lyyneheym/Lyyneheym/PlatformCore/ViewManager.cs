@@ -952,12 +952,10 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 为视窗管理器设置主舞台页的引用并更新视窗向量
+        /// 更新视窗向量
         /// </summary>
-        /// <param name="mw">主舞台页</param>
-        public void SetStagePageReference(PageView.StagePage mw)
+        public void InitViewports()
         {
-            this.view = mw;
             this.InitViewbox();
         }
 
@@ -1065,7 +1063,13 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 主舞台页面的引用
         /// </summary>
-        private PageView.StagePage view = null;
+        private PageView.StagePage view
+        {
+            get
+            {
+                return (PageView.StagePage)ViewPageManager.RetrievePage(GlobalDataContainer.FirstViewPage);
+            }
+        }
 
         /// <summary>
         /// 主窗体的引用

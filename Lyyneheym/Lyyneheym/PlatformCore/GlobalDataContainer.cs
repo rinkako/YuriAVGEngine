@@ -224,6 +224,8 @@ namespace Yuri.PlatformCore
         public static readonly double DirectorTimerInterval = 10000;
         // 最大回滚尺度
         public static readonly int MaxRollbackStep = 100;
+        // 入口前端页面名称
+        public static readonly string FirstViewPage = "stagePage";
         #endregion
 
         #region 枚举类型
