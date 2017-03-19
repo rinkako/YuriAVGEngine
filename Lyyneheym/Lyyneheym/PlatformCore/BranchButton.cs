@@ -22,7 +22,7 @@ namespace Yuri.PlatformCore
             this.Enable = true;
             this.Eternal = false;
             this.X = this.Y = 0;
-            this.Z = GlobalDataContainer.GAME_Z_BUTTON;
+            this.Z = GlobalDataContext.GAME_Z_BUTTON;
             this.IsMouseOn = this.IsMouseOver = false;
         }
 

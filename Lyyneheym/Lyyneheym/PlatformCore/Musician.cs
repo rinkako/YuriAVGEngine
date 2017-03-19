@@ -116,7 +116,7 @@ namespace Yuri.PlatformCore
         /// <param name="track">播放的轨道</param>
         public void PlayBGS(string filename, float vol, int track = 0)
         {
-            if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM)
+            if (track >= 0 && track < GlobalDataContext.GAME_MUSIC_BGSTRACKNUM)
             {
                 this.BgsHandleContainer[track] = new KeyValuePair<int, float>(this.BassEngine.LoadFromFile(filename), vol);
                 this.BassEngine.SetVolume(this.BgsHandleContainer[track].Key, this.bgsVolume);
@@ -135,7 +135,7 @@ namespace Yuri.PlatformCore
         /// <param name="track">播放的轨道</param>
         public void PlayBGS(GCHandle? gch, long len, float vol, int track = 0)
         {
-            if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM && gch != null)
+            if (track >= 0 && track < GlobalDataContext.GAME_MUSIC_BGSTRACKNUM && gch != null)
             {
                 this.BgsHandleContainer[track] = new KeyValuePair<int, float>(this.BassEngine.LoadFromMemory((GCHandle)gch, len), vol);
                 this.BassEngine.SetVolume(this.BgsHandleContainer[track].Key, this.bgsVolume);
@@ -150,7 +150,7 @@ namespace Yuri.PlatformCore
         /// <param name="track">要停止的BGS轨道，缺省值-1表示全部停止</param>
         public void StopBGS(int track = -1)
         {
-            if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM && this.BgsHandleContainer[track].Key != 0)
+            if (track >= 0 && track < GlobalDataContext.GAME_MUSIC_BGSTRACKNUM && this.BgsHandleContainer[track].Key != 0)
             {
                 this.BassEngine.Stop(this.BgsHandleContainer[track].Key);
             }
@@ -188,7 +188,7 @@ namespace Yuri.PlatformCore
         /// <param name="track">轨道（-1为全部变更）</param>
         public void SetBGSVolume(int vol, int track = 0)
         {
-            if (track >= 0 && track < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM)
+            if (track >= 0 && track < GlobalDataContext.GAME_MUSIC_BGSTRACKNUM)
             {
                 this.BassEngine.SetVolume(this.BgsHandleContainer[0].Key, vol);
             }
@@ -306,7 +306,7 @@ namespace Yuri.PlatformCore
             {
                 this.BgsHandleContainer.Clear();
             }
-            for (int i = 0; i < GlobalDataContainer.GAME_MUSIC_BGSTRACKNUM; i++)
+            for (int i = 0; i < GlobalDataContext.GAME_MUSIC_BGSTRACKNUM; i++)
             {
                 this.BgsHandleContainer.Add(new KeyValuePair<int, float>(0, this.BGSDefaultVolume));
             }
@@ -463,22 +463,22 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// BGM音量值
         /// </summary>
-        private float bgmVolume = GlobalDataContainer.GAME_SOUND_BGMVOL;
+        private float bgmVolume = GlobalDataContext.GAME_SOUND_BGMVOL;
 
         /// <summary>
         /// BGS音量值
         /// </summary>
-        private float bgsVolume = GlobalDataContainer.GAME_SOUND_BGSVOL;
+        private float bgsVolume = GlobalDataContext.GAME_SOUND_BGSVOL;
 
         /// <summary>
         /// SE音量值
         /// </summary>
-        private float seVolume = GlobalDataContainer.GAME_SOUND_SEVOL;
+        private float seVolume = GlobalDataContext.GAME_SOUND_SEVOL;
 
         /// <summary>
         /// Vocal音量值
         /// </summary>
-        private float vocalVolume = GlobalDataContainer.GAME_SOUND_VOCALVOL;
+        private float vocalVolume = GlobalDataContext.GAME_SOUND_VOCALVOL;
 
         /// <summary>
         /// 唯一实例

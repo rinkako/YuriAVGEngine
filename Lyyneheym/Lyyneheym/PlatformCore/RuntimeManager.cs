@@ -299,7 +299,7 @@ namespace Yuri.PlatformCore
                 foreach (var psf in scene.ParallellerContainer)
                 {
                     DispatcherTimer dt = new DispatcherTimer();
-                    dt.Interval = TimeSpan.FromTicks((long)GlobalDataContainer.DirectorTimerInterval);
+                    dt.Interval = TimeSpan.FromTicks((long)GlobalDataContext.DirectorTimerInterval);
                     dt.Tick += this.ParallelHandler;
                     this.ParallelDispatcherList.Add(dt);
                     var pvm = new StackMachine();

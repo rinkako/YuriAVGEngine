@@ -46,7 +46,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static void Init()
         {
-            var view = ViewPageManager.RetrievePage(GlobalDataContainer.FirstViewPage) as PageView.StagePage;
+            var view = ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage) as PageView.StagePage;
             NotificationManager.BoxUI = view.BO_Information;
             NotificationManager.IcoUI = view.BO_Information_Image;
             NotificationManager.labelUI = view.BO_Information_Name;

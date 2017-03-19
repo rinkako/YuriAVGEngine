@@ -35,17 +35,17 @@ namespace Yuri.PageView
         {
             InitializeComponent();
             core.SetStagePageReference(this);
-            this.Width = this.BO_MainGrid.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
-            this.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
-            this.BO_MainGrid.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
-            this.Title = GlobalDataContainer.GAME_TITLE_NAME;
+            this.Width = this.BO_MainGrid.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
+            this.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
+            this.BO_MainGrid.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
+            this.Title = GlobalDataContext.GAME_TITLE_NAME;
             this.TransitionBox.DataContext = this.TransitionDS;
-            this.BO_Bg_Canvas.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
-            this.BO_Bg_Canvas.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
-            this.BO_Cstand_Canvas.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
-            this.BO_Cstand_Canvas.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
-            this.BO_Pics_Canvas.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
-            this.BO_Pics_Canvas.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
+            this.BO_Bg_Canvas.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
+            this.BO_Bg_Canvas.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
+            this.BO_Cstand_Canvas.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
+            this.BO_Cstand_Canvas.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
+            this.BO_Pics_Canvas.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
+            this.BO_Pics_Canvas.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
             SCamera.Init();
             NotificationManager.Init();
         }
@@ -97,7 +97,7 @@ namespace Yuri.PageView
         private void button_Click(object sender, RoutedEventArgs e)
         {
             //this.core.GetMainRender().Save("mysave");
-            ViewManager.RenderFrameworkElementToJPEG(this.BO_MainGrid, GlobalDataContainer.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
+            ViewManager.RenderFrameworkElementToJPEG(this.BO_MainGrid, GlobalDataContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
             SLPage p = (SLPage)ViewPageManager.RetrievePage("SavePage");
             p.ReLoadFileInfo();
             NavigationService.GetNavigationService(this).Navigate(p);
@@ -203,11 +203,11 @@ namespace Yuri.PageView
             TransformGroup aniGroup = new TransformGroup();
             TranslateTransform XYTransformer = new TranslateTransform();
             ScaleTransform ScaleTransformer = new ScaleTransform();
-            ScaleTransformer.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0;
-            ScaleTransformer.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0;
+            ScaleTransformer.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
+            ScaleTransformer.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
             RotateTransform RotateTransformer = new RotateTransform();
-            RotateTransformer.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0;
-            RotateTransformer.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0;
+            RotateTransformer.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
+            RotateTransformer.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
             CsScaleT = ScaleTransformer;
             aniGroup.Children.Add(XYTransformer);
             aniGroup.Children.Add(ScaleTransformer);
@@ -217,11 +217,11 @@ namespace Yuri.PageView
             TransformGroup aniGroup2 = new TransformGroup();
             TranslateTransform XYTransformer2 = new TranslateTransform();
             ScaleTransform ScaleTransformer2 = new ScaleTransform();
-            ScaleTransformer2.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0;
-            ScaleTransformer2.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0;
+            ScaleTransformer2.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
+            ScaleTransformer2.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
             RotateTransform RotateTransformer2 = new RotateTransform();
-            RotateTransformer2.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0;
-            RotateTransformer2.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0;
+            RotateTransformer2.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
+            RotateTransformer2.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
             BgScaleT = ScaleTransformer2;
             aniGroup2.Children.Add(XYTransformer2);
             aniGroup2.Children.Add(ScaleTransformer2);
@@ -480,10 +480,10 @@ namespace Yuri.PageView
             }
             else if (testcount == 3)
             {
-                BgScaleT.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 4.0 * 3;
-                BgScaleT.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 4.0;
-                CsScaleT.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 16.0 * 15;
-                CsScaleT.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 16.0;
+                BgScaleT.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 4.0 * 3;
+                BgScaleT.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 4.0;
+                CsScaleT.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 16.0 * 15;
+                CsScaleT.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 16.0;
 
                 Storyboard story = new Storyboard();
                 Storyboard story2 = new Storyboard();
@@ -646,7 +646,7 @@ namespace Yuri.PageView
 
         private void buttonNext_Click(object sender, RoutedEventArgs e)
         {
-            ViewManager.RenderFrameworkElementToJPEG(this.BO_MainGrid, GlobalDataContainer.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
+            ViewManager.RenderFrameworkElementToJPEG(this.BO_MainGrid, GlobalDataContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
             NavigationService.GetNavigationService(this).Navigate(ViewPageManager.RetrievePage("SavePage"));
         }
 

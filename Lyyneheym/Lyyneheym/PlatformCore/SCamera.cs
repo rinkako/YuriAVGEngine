@@ -245,7 +245,7 @@ namespace Yuri.PlatformCore
                 var aniGroupBg = (TransformGroup)ViewManager.GetInstance().GetViewport(ViewportType.VTBackground).ViewboxBinding.RenderTransform;
                 var scaleTransformerBg = (ScaleTransform)aniGroupBg.Children[1];
                 // 聚焦点在左边
-                if (c <= GlobalDataContainer.GAME_SCAMERA_SCR_COLCOUNT / 2)
+                if (c <= GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT / 2)
                 {
                     scaleTransformerBg.CenterX = SCamera.GetScreenCoordination(0, c + (8 - c) / 2).X;
                 }
@@ -260,12 +260,12 @@ namespace Yuri.PlatformCore
                     scaleTransformerBg.CenterX = SCamera.GetScreenCoordination(0, 9 + (c - 9) / 2).X;
                 }
                 // 聚焦点在上边
-                if (r < GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT / 2)
+                if (r < GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2)
                 {
                     scaleTransformerBg.CenterY = SCamera.GetScreenCoordination(r + (2 - r) / 2, 0).Y;
                 }
                 // 聚焦点在竖直中央
-                else if (r == GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT / 2)
+                else if (r == GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2)
                 {
                     scaleTransformerBg.CenterY = sPoint.Y;
                 }
@@ -283,7 +283,7 @@ namespace Yuri.PlatformCore
                 var aniGroupPic = (TransformGroup)ViewManager.GetInstance().GetViewport(ViewportType.VTPictures).ViewboxBinding.RenderTransform;
                 var scaleTransformerPic = (ScaleTransform)aniGroupPic.Children[1];
                 // 聚焦点在左边
-                if (c <= GlobalDataContainer.GAME_SCAMERA_SCR_COLCOUNT / 2)
+                if (c <= GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT / 2)
                 {
                     scaleTransformerPic.CenterX = SCamera.GetScreenCoordination(0, Math.Max(1, c - (8 - c) / 2)).X;
                 }
@@ -295,22 +295,22 @@ namespace Yuri.PlatformCore
                 // 聚焦点在右边
                 else
                 {
-                    scaleTransformerPic.CenterX = SCamera.GetScreenCoordination(0, Math.Min(GlobalDataContainer.GAME_SCAMERA_SCR_COLCOUNT, c + (c - 9) / 2)).X;
+                    scaleTransformerPic.CenterX = SCamera.GetScreenCoordination(0, Math.Min(GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT, c + (c - 9) / 2)).X;
                 }
                 // 聚焦点在上边
-                if (r < GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT / 2)
+                if (r < GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2)
                 {
                     scaleTransformerPic.CenterY = SCamera.GetScreenCoordination(Math.Max(0, r - (2 - r) / 2), 0).Y;
                 }
                 // 聚焦点在竖直中央
-                else if (r == GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT / 2)
+                else if (r == GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2)
                 {
                     scaleTransformerPic.CenterY = sPoint.Y;
                 }
                 // 聚焦点在下边
                 else
                 {
-                    scaleTransformerPic.CenterY = SCamera.GetScreenCoordination(Math.Min(GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT - 1, r + (r - 2) / 2), 0).Y;
+                    scaleTransformerPic.CenterY = SCamera.GetScreenCoordination(Math.Min(GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT - 1, r + (r - 2) / 2), 0).Y;
                 }
             }
             // background
@@ -355,8 +355,8 @@ namespace Yuri.PlatformCore
             }
             else if (ratio > 1 && ratio <= 2.5)
             {
-                Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Left = -GlobalDataContainer.GAME_WINDOW_WIDTH / ratio;
-                Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Top = -GlobalDataContainer.GAME_WINDOW_HEIGHT / ratio;
+                Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Left = -GlobalDataContext.GAME_WINDOW_WIDTH / ratio;
+                Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Top = -GlobalDataContext.GAME_WINDOW_HEIGHT / ratio;
             }
             // picture
             Storyboard storyScalePic = new Storyboard();
@@ -529,7 +529,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static void PreviewEnterScene()
         {
-            FocusOn(GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT / 2, 0, 3, true);
+            FocusOn(GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2, 0, 3, true);
         }
 
         /// <summary>
@@ -619,44 +619,44 @@ namespace Yuri.PlatformCore
             Director.ScrMana.SCameraFocusCol = 0;
             Director.ScrMana.SCameraFocusRow = 2;
             // 提前计算所有中心点坐标，避免每次调用的重复计算
-            SCamera.screenPointMap = new Point[GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT, GlobalDataContainer.GAME_SCAMERA_SCR_COLCOUNT + 1];
-            var ScrBlockWidth = (double)GlobalDataContainer.GAME_WINDOW_WIDTH / (GlobalDataContainer.GAME_SCAMERA_SCR_COLCOUNT - GlobalDataContainer.GAME_SCAMERA_SCR_SINGLEBLOODCOLCOUNT * 2);
-            var ScrBlockHeight = (double)GlobalDataContainer.GAME_WINDOW_HEIGHT / GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT;
-            var beginX = 0.0 - GlobalDataContainer.GAME_SCAMERA_SCR_SINGLEBLOODCOLCOUNT * ScrBlockWidth + ScrBlockWidth / 2.0;
+            SCamera.screenPointMap = new Point[GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT, GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT + 1];
+            var ScrBlockWidth = (double)GlobalDataContext.GAME_WINDOW_WIDTH / (GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT - GlobalDataContext.GAME_SCAMERA_SCR_SINGLEBLOODCOLCOUNT * 2);
+            var ScrBlockHeight = (double)GlobalDataContext.GAME_WINDOW_HEIGHT / GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT;
+            var beginX = 0.0 - GlobalDataContext.GAME_SCAMERA_SCR_SINGLEBLOODCOLCOUNT * ScrBlockWidth + ScrBlockWidth / 2.0;
             var beginY = ScrBlockHeight / 2.0;
-            for (int i = 0; i < GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT; i++)
+            for (int i = 0; i < GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT; i++)
             {
                 // 变量j从1开始，为0预留位置，0是预留给屏幕横向的中央
-                for (int j = 1; j <= GlobalDataContainer.GAME_SCAMERA_SCR_COLCOUNT; j++)
+                for (int j = 1; j <= GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT; j++)
                 {
                     SCamera.screenPointMap[i, j] = new Point(beginX + (j - 1) * ScrBlockWidth, beginY + i * ScrBlockHeight);
                 }
             }
-            for (int i = 0; i < GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT; i++)
+            for (int i = 0; i < GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT; i++)
             {
-                SCamera.screenPointMap[i, 0] = new Point(GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0, beginY + i * ScrBlockHeight);
+                SCamera.screenPointMap[i, 0] = new Point(GlobalDataContext.GAME_WINDOW_WIDTH / 2.0, beginY + i * ScrBlockHeight);
             }
-            SCamera.characterPointMap = new Point[GlobalDataContainer.GAME_SCAMERA_CSTAND_ROWCOUNT];
-            var CstBlockHeight = (double)GlobalDataContainer.GAME_SCAMERA_CSTAND_HEIGHT / GlobalDataContainer.GAME_SCAMERA_CSTAND_ROWCOUNT;
-            var beginCstY = 0.0 - ((double)GlobalDataContainer.GAME_SCAMERA_CSTAND_HEIGHT / 2.0) + CstBlockHeight / 2.0;
-            for (int i = 0; i < GlobalDataContainer.GAME_SCAMERA_CSTAND_ROWCOUNT; i++)
+            SCamera.characterPointMap = new Point[GlobalDataContext.GAME_SCAMERA_CSTAND_ROWCOUNT];
+            var CstBlockHeight = (double)GlobalDataContext.GAME_SCAMERA_CSTAND_HEIGHT / GlobalDataContext.GAME_SCAMERA_CSTAND_ROWCOUNT;
+            var beginCstY = 0.0 - ((double)GlobalDataContext.GAME_SCAMERA_CSTAND_HEIGHT / 2.0) + CstBlockHeight / 2.0;
+            for (int i = 0; i < GlobalDataContext.GAME_SCAMERA_CSTAND_ROWCOUNT; i++)
             {
                 SCamera.characterPointMap[i] = new Point(0, beginCstY + i * CstBlockHeight);
             }
             // 计算标准距离字典
             SCamera.manhattanDistanceMap = new Dictionary<Point, Dictionary<Point, Point>>();
-            for (int i = 0; i < GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT; i++)
+            for (int i = 0; i < GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT; i++)
             {
-                for (int j = 0; j <= GlobalDataContainer.GAME_SCAMERA_SCR_COLCOUNT; j++)
+                for (int j = 0; j <= GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT; j++)
                 {
                     var pt = SCamera.screenPointMap[i, j];
                     if (SCamera.manhattanDistanceMap.ContainsKey(pt) == false)
                     {
                         SCamera.manhattanDistanceMap[pt] = new Dictionary<Point, Point>();
                     }
-                    for (int m = 0; m < GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT; m++)
+                    for (int m = 0; m < GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT; m++)
                     {
-                        for (int n = 0; n <= GlobalDataContainer.GAME_SCAMERA_SCR_COLCOUNT; n++)
+                        for (int n = 0; n <= GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT; n++)
                         {
                             var rhsPt = SCamera.screenPointMap[m, n];
                             SCamera.manhattanDistanceMap[pt][rhsPt] = SCamera.GetManhattanDistance(pt, rhsPt, 1.0);
@@ -665,7 +665,7 @@ namespace Yuri.PlatformCore
                 }
             }
             // 计算法向量
-            var centerPoint = SCamera.GetScreenCoordination(GlobalDataContainer.GAME_SCAMERA_SCR_ROWCOUNT / 2, 0);
+            var centerPoint = SCamera.GetScreenCoordination(GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2, 0);
             SCamera.NormalVector = new Vector(centerPoint.X, centerPoint.Y);
         }
 
@@ -786,8 +786,8 @@ namespace Yuri.PlatformCore
             var scaleTransformer = (ScaleTransform)aniGroup.Children[1];
             scaleTransformer.ScaleX = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures).ScaleX = 1.0;
             scaleTransformer.ScaleY = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures).ScaleY = 1.0;
-            scaleTransformer.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0;
-            scaleTransformer.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0;
+            scaleTransformer.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
+            scaleTransformer.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
         }
 
         /// <summary>
@@ -799,8 +799,8 @@ namespace Yuri.PlatformCore
             var scaleTransformer = (ScaleTransform)aniGroup.Children[1];
             scaleTransformer.ScaleX = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).ScaleX = 1.0;
             scaleTransformer.ScaleY = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).ScaleY = 1.0;
-            scaleTransformer.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0;
-            scaleTransformer.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0;
+            scaleTransformer.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
+            scaleTransformer.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
         }
 
         /// <summary>
@@ -812,8 +812,8 @@ namespace Yuri.PlatformCore
             var scaleTransformer = (ScaleTransform)aniGroup.Children[1];
             scaleTransformer.ScaleX = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground).ScaleX = 1.0;
             scaleTransformer.ScaleY = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground).ScaleY = 1.0;
-            scaleTransformer.CenterX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0;
-            scaleTransformer.CenterY = GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0;
+            scaleTransformer.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
+            scaleTransformer.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
         }
 
         /// <summary>

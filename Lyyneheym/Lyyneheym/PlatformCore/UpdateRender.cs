@@ -333,7 +333,7 @@ namespace Yuri.PlatformCore
                 //    wordDelay = false;
                 //}
                 // 打字动画
-                this.TypeWriter(0, this.dialogPreStr, currentRun, this.viewMana.GetMessageLayer(0).DisplayBinding, wordDelay ? GlobalDataContainer.GAME_MSG_TYPING_DELAY : 0);
+                this.TypeWriter(0, this.dialogPreStr, currentRun, this.viewMana.GetMessageLayer(0).DisplayBinding, wordDelay ? GlobalDataContext.GAME_MSG_TYPING_DELAY : 0);
                 this.dialogPreStr += currentRun;
             }
         }
@@ -433,7 +433,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private void InitMsgLayerTria()
         {
-            this.MainMsgTriangleSprite = ResourceManager.GetInstance().GetPicture(GlobalDataContainer.GAME_MESSAGELAYER_TRIA_FILENAME, new Int32Rect(-1, 0, 0, 0));
+            this.MainMsgTriangleSprite = ResourceManager.GetInstance().GetPicture(GlobalDataContext.GAME_MESSAGELAYER_TRIA_FILENAME, new Int32Rect(-1, 0, 0, 0));
             Image TriaView = new Image();
             BitmapImage bmp = MainMsgTriangleSprite.SpriteBitmapImage;
             this.MainMsgTriangleSprite.DisplayBinding = TriaView;
@@ -443,9 +443,9 @@ namespace Yuri.PlatformCore
             TriaView.Source = bmp;
             TriaView.Visibility = Visibility.Hidden;
             TriaView.RenderTransform = new TranslateTransform();
-            Canvas.SetLeft(TriaView, GlobalDataContainer.GAME_MESSAGELAYER_TRIA_X);
-            Canvas.SetTop(TriaView, GlobalDataContainer.GAME_MESSAGELAYER_TRIA_Y);
-            Canvas.SetZIndex(TriaView, GlobalDataContainer.GAME_Z_MESSAGELAYER + 100);
+            Canvas.SetLeft(TriaView, GlobalDataContext.GAME_MESSAGELAYER_TRIA_X);
+            Canvas.SetTop(TriaView, GlobalDataContext.GAME_MESSAGELAYER_TRIA_Y);
+            Canvas.SetZIndex(TriaView, GlobalDataContext.GAME_Z_MESSAGELAYER + 100);
             this.view.BO_MainGrid.Children.Add(this.MainMsgTriangleSprite.DisplayBinding);
         }
 
@@ -586,7 +586,7 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return (PageView.StagePage)ViewPageManager.RetrievePage(GlobalDataContainer.FirstViewPage);
+                return (PageView.StagePage)ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
             }
         }
 
@@ -969,7 +969,7 @@ namespace Yuri.PlatformCore
         /// <param name="cut">纹理切割矩</param>
         private void Background(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
-            Director.ScrMana.AddBackground(id, filename, GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0, GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0,
+            Director.ScrMana.AddBackground(id, filename, GlobalDataContext.GAME_WINDOW_WIDTH / 2.0, GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0,
                 id, ro, opacity, xscale, yscale, anchor, cut);
             this.viewMana.Draw(id, ResourceType.Background);
         }
@@ -1203,7 +1203,7 @@ namespace Yuri.PlatformCore
         private void Vocal(string name, int vid, double volume)
         {
             if (vid == -1) { return; }
-            this.Vocal(String.Format("{0}_{1}{2}", name, vid, GlobalDataContainer.GAME_VOCAL_POSTFIX), (float)volume);
+            this.Vocal(String.Format("{0}_{1}{2}", name, vid, GlobalDataContext.GAME_VOCAL_POSTFIX), (float)volume);
         }
 
         /// <summary>
@@ -1237,10 +1237,10 @@ namespace Yuri.PlatformCore
             // 没有标志回归点就从程序入口重新开始
             if (this.titlePointContainer.Key == null || this.titlePointContainer.Value == null)
             {
-                var mainScene = this.resMana.GetScene(GlobalDataContainer.Script_Main);
+                var mainScene = this.resMana.GetScene(GlobalDataContext.Script_Main);
                 if (mainScene == null)
                 {
-                    CommonUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalDataContainer.Script_Main),
+                    CommonUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalDataContext.Script_Main),
                         "Director", OutputStyle.Error);
                     Environment.Exit(0);
                 }
@@ -1266,7 +1266,7 @@ namespace Yuri.PlatformCore
                 this.DrawDialogRunQueue(this.pendingDialogQueue.Count, false);
             }
             var sp = Director.RunMana.PreviewSave();
-            IOUtils.Serialization(Director.RunMana, GlobalDataContainer.GAME_SAVE_DIR + "\\" + saveFileName + GlobalDataContainer.GAME_SAVE_POSTFIX);
+            IOUtils.Serialization(Director.RunMana, GlobalDataContext.GAME_SAVE_DIR + "\\" + saveFileName + GlobalDataContext.GAME_SAVE_POSTFIX);
             Director.RunMana.FinishedSave(sp);
         }
 
@@ -1277,7 +1277,7 @@ namespace Yuri.PlatformCore
         public void Load(string loadFileName)
         {
             SpriteAnimation.SkipAllAnimation();
-            var rm = (RuntimeManager)IOUtils.Unserialization(GlobalDataContainer.GAME_SAVE_DIR + "\\" + loadFileName + GlobalDataContainer.GAME_SAVE_POSTFIX);
+            var rm = (RuntimeManager)IOUtils.Unserialization(GlobalDataContext.GAME_SAVE_DIR + "\\" + loadFileName + GlobalDataContext.GAME_SAVE_POSTFIX);
             Director.ResumeFromSaveData(rm);
         }
 
@@ -1328,23 +1328,23 @@ namespace Yuri.PlatformCore
                 return;
             }
             // 处理按钮显示参数
-            double GroupX = GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0 - GlobalDataContainer.GAME_BRANCH_WIDTH / 2.0;
-            double BeginY = GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT / 2.0 - (GlobalDataContainer.GAME_BRANCH_HEIGHT * 2.0) * (tagList.Count / 2.0);
-            double DeltaY = GlobalDataContainer.GAME_BRANCH_HEIGHT;
+            double GroupX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0 - GlobalDataContext.GAME_BRANCH_WIDTH / 2.0;
+            double BeginY = GlobalDataContext.GAME_WINDOW_ACTUALHEIGHT / 2.0 - (GlobalDataContext.GAME_BRANCH_HEIGHT * 2.0) * (tagList.Count / 2.0);
+            double DeltaY = GlobalDataContext.GAME_BRANCH_HEIGHT;
             // 描绘按钮
             for (int i = 0; i < tagList.Count; i++)
             {
                 SpriteDescriptor normalDesc = new SpriteDescriptor()
                 {
-                    ResourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUNDNORMAL
+                    ResourceName = GlobalDataContext.GAME_BRANCH_BACKGROUNDNORMAL
                 },
                 overDesc = new SpriteDescriptor()
                 {
-                    ResourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUNDSELECT
+                    ResourceName = GlobalDataContext.GAME_BRANCH_BACKGROUNDSELECT
                 },
                 onDesc = new SpriteDescriptor()
                 {
-                    ResourceName = GlobalDataContainer.GAME_BRANCH_BACKGROUNDSELECT
+                    ResourceName = GlobalDataContext.GAME_BRANCH_BACKGROUNDSELECT
                 };
                 Director.ScrMana.AddBranchButton(i, GroupX, BeginY + DeltaY * 2 * i, tagList[i].Value, tagList[i].Key, normalDesc, overDesc, onDesc);
                 this.viewMana.Draw(i, ResourceType.BranchButton);
@@ -1393,7 +1393,7 @@ namespace Yuri.PlatformCore
         /// <param name="valueStr">值字符串</param>
         private void MsgLayerOpt(int msglayId, string property, string valueStr)
         {
-            if (msglayId >= 0 && msglayId < GlobalDataContainer.GAME_MESSAGELAYER_COUNT)
+            if (msglayId >= 0 && msglayId < GlobalDataContext.GAME_MESSAGELAYER_COUNT)
             {
                 MessageLayer ml = this.viewMana.GetMessageLayer(msglayId);
                 MessageLayerDescriptor mld = Director.ScrMana.GetMsgLayerDescriptor(msglayId);

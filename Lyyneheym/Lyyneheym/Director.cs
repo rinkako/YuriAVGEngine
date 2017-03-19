@@ -37,10 +37,10 @@ namespace Yuri
         /// </summary>
         private void InitRuntime()
         {
-            var mainScene = this.resMana.GetScene(GlobalDataContainer.Script_Main);
+            var mainScene = this.resMana.GetScene(GlobalDataContext.Script_Main);
             if (mainScene == null)
             {
-                CommonUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalDataContainer.Script_Main),
+                CommonUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalDataContext.Script_Main),
                     "Director", OutputStyle.Error);
                 Environment.Exit(0);
             }
@@ -92,6 +92,8 @@ namespace Yuri
         {
             // 停止消息循环
             Director.PauseUpdateContext();
+            // 清空回滚器
+            RollbackManager.Clear();
             // 清空画面并停下BGM
             ViewManager.GetInstance().RemoveView(ResourceType.Unknown);
             Musician.GetInstance().StopAndReleaseBGM();
@@ -108,7 +110,7 @@ namespace Yuri
             UpdateRender render = Director.GetInstance().updateRender;
             render.VsmReference = Director.RunMana.CallStack;
             // 恢复背景音乐
-            render.Bgm(Director.RunMana.PlayingBGM, GlobalDataContainer.GAME_SOUND_BGMVOL);
+            render.Bgm(Director.RunMana.PlayingBGM, GlobalDataContext.GAME_SOUND_BGMVOL);
             // 清空字符串缓冲
             render.dialogPreStr = String.Empty;
             render.pendingDialogQueue.Clear();
@@ -619,7 +621,7 @@ namespace Yuri
         /// <param name="sp">主窗体</param>
         public void SetStagePageReference(PageView.StagePage sp)
         {
-            ViewPageManager.RegisterPage(GlobalDataContainer.FirstViewPage, sp);
+            ViewPageManager.RegisterPage(GlobalDataContext.FirstViewPage, sp);
             this.updateRender.ViewLoaded();
         }
 
@@ -660,7 +662,7 @@ namespace Yuri
             Director.RunMana.PerformingChapter = String.Empty;
             SCamera.Init();
             this.timer = new DispatcherTimer();
-            this.timer.Interval = TimeSpan.FromTicks((long)GlobalDataContainer.DirectorTimerInterval);
+            this.timer.Interval = TimeSpan.FromTicks((long)GlobalDataContext.DirectorTimerInterval);
             this.timer.Tick += UpdateContext;
 #if NOTIME
 #else
@@ -726,7 +728,7 @@ namespace Yuri
         {
             get
             {
-                return (PageView.StagePage)ViewPageManager.RetrievePage(GlobalDataContainer.FirstViewPage);
+                return (PageView.StagePage)ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
             }
         }
 

@@ -4,10 +4,10 @@ using System.Windows.Media;
 namespace Yuri.PlatformCore
 {
     /// <summary>
-    /// <para>常量类：维护整个游戏环境中的系统级变量</para>
+    /// <para>全局上下文类：维护整个游戏环境中的系统上下文</para>
     /// <para>她是一个静态类</para>
     /// </summary>
-    internal static class GlobalDataContainer
+    internal static class GlobalDataContext
     {
         #region 游戏工程数据
         // 工程名称
@@ -26,7 +26,7 @@ namespace Yuri.PlatformCore
         // 窗体分辨率：高度 720
         public static int GAME_WINDOW_HEIGHT = 720;
         // 窗体分辨率：实际高度（标题栏含）
-        public static int GAME_WINDOW_ACTUALHEIGHT { get { return GlobalDataContainer.GAME_WINDOW_HEIGHT + 32; } }
+        public static int GAME_WINDOW_ACTUALHEIGHT { get { return GlobalDataContext.GAME_WINDOW_HEIGHT + 32; } }
         // 窗体分辨率：是否自由调节
         public static bool GAME_WINDOW_RESIZEABLE = true;
         // 文本展示：模式

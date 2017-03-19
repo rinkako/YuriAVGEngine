@@ -43,7 +43,7 @@ namespace Yuri.PlatformCore
                     ParallelStateStackRef = ForkableState.DeepCopyBySerialization<Stack<Dictionary<string, bool>>>(Director.RunMana.ParallelStack)
                 };
                 // 如果栈中容量溢出就剔掉最早进入的那个
-                if (RollbackManager.forwardStack.Count >= GlobalDataContainer.MaxRollbackStep)
+                if (RollbackManager.forwardStack.Count >= GlobalDataContext.MaxRollbackStep)
                 {
                     RollbackManager.forwardStack.RemoveAt(0);
                 }
@@ -66,19 +66,22 @@ namespace Yuri.PlatformCore
                     var selfStep = RollbackManager.forwardStack.Last();
                     RollbackManager.forwardStack.RemoveAt(RollbackManager.forwardStack.Count - 1);
                     RollbackManager.backwardStack.Add(selfStep);
+                    RollbackManager.IsRollingBack = true;
                 }
                 // 取上一状态
-                var lastStep = RollbackManager.forwardStack.Last();
-                RollbackManager.forwardStack.RemoveAt(RollbackManager.forwardStack.Count - 1);
-                RollbackManager.backwardStack.Add(lastStep);
-                // 重演绎
-                RollbackManager.GotoSteadyState(lastStep);
-                RollbackManager.IsRollingBack = true;
+                if (RollbackManager.IsRollingBack == true && RollbackManager.forwardStack.Count > 0)
+                {
+                    var lastStep = RollbackManager.forwardStack.Last();
+                    RollbackManager.forwardStack.RemoveAt(RollbackManager.forwardStack.Count - 1);
+                    RollbackManager.backwardStack.Add(lastStep);
+                    // 重演绎
+                    RollbackManager.GotoSteadyState(lastStep);
+                }
             }
         }
         
         /// <summary>
-        /// 重演绎稳定状态
+        /// 将系统跳转到指定的稳定状态
         /// </summary>
         /// <param name="ssp">要演绎的状态包装</param>
         public static void GotoSteadyState(StepStatePackage ssp)
@@ -106,7 +109,7 @@ namespace Yuri.PlatformCore
             ViewManager.GetInstance().ReDraw();
             // 恢复背景音乐
             UpdateRender render = Director.GetInstance().GetMainRender();
-            render.Bgm(Director.RunMana.PlayingBGM, GlobalDataContainer.GAME_SOUND_BGMVOL);
+            render.Bgm(Director.RunMana.PlayingBGM, GlobalDataContext.GAME_SOUND_BGMVOL);
             // 清空字符串缓冲
             render.dialogPreStr = String.Empty;
             render.pendingDialogQueue.Clear();

@@ -28,14 +28,14 @@ namespace Yuri
         {
             InitializeComponent();
             ViewManager.SetWindowReference(this);
-            this.Title = GlobalDataContainer.GAME_TITLE_NAME;
-            this.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
-            this.Height = GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT;
-            this.mainCanvas.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
-            this.mainCanvas.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
-            this.ResizeMode = GlobalDataContainer.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
+            this.Title = GlobalDataContext.GAME_TITLE_NAME;
+            this.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
+            this.Height = GlobalDataContext.GAME_WINDOW_ACTUALHEIGHT;
+            this.mainCanvas.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
+            this.mainCanvas.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
+            this.ResizeMode = GlobalDataContext.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
             this.core.SetStagePageReference(new PageView.StagePage());
-            this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContainer.FirstViewPage);
+            this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
             //this.upperFrame.Content = new PageView.SLPage(false);
             // 预注册保存和读取页面
             ViewPageManager.RegisterPage("SavePage", new PageView.SLPage(isSave: true));
@@ -95,7 +95,7 @@ namespace Yuri
         private void window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.Width = e.NewSize.Width;
-            this.Height = (double)GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT * this.Width / (double)GlobalDataContainer.GAME_WINDOW_WIDTH;
+            this.Height = (double)GlobalDataContext.GAME_WINDOW_ACTUALHEIGHT * this.Width / (double)GlobalDataContext.GAME_WINDOW_WIDTH;
         }
 
         /// <summary>
@@ -137,8 +137,8 @@ namespace Yuri
             this.Topmost = false;
             this.Left = 0.0;
             this.Top = 0.0;
-            this.Width = GlobalDataContainer.GAME_WINDOW_WIDTH;
-            this.Height = GlobalDataContainer.GAME_WINDOW_ACTUALHEIGHT;
+            this.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
+            this.Height = GlobalDataContext.GAME_WINDOW_ACTUALHEIGHT;
         }
         #endregion
     }

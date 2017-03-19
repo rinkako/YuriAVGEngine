@@ -34,7 +34,7 @@ namespace Yuri.PlatformCore
                 ResourceName = source,
                 X = X,
                 Y = Y,
-                Z = Z + GlobalDataContainer.GAME_Z_BACKGROUND,
+                Z = Z + GlobalDataContext.GAME_Z_BACKGROUND,
                 ScaleX = ScaleX,
                 ScaleY = ScaleY,
                 Angle = Angle,
@@ -66,7 +66,7 @@ namespace Yuri.PlatformCore
                 ResourceName = source,
                 X = X,
                 Y = Y,
-                Z = Z + GlobalDataContainer.GAME_Z_CHARACTERSTAND,
+                Z = Z + GlobalDataContext.GAME_Z_CHARACTERSTAND,
                 Angle = Angle,
                 Opacity = Opacity,
                 AnchorType = anchor,
@@ -97,9 +97,9 @@ namespace Yuri.PlatformCore
                         Id = id,
                         ResourceType = ResourceType.Stand,
                         ResourceName = source,
-                        X = GlobalDataContainer.GAME_CHARACTERSTAND_LEFT_X,
-                        Y = GlobalDataContainer.GAME_CHARACTERSTAND_LEFT_Y,
-                        Z = Z + GlobalDataContainer.GAME_Z_CHARACTERSTAND,
+                        X = GlobalDataContext.GAME_CHARACTERSTAND_LEFT_X,
+                        Y = GlobalDataContext.GAME_CHARACTERSTAND_LEFT_Y,
+                        Z = Z + GlobalDataContext.GAME_Z_CHARACTERSTAND,
                         Angle = Angle,
                         Opacity = Opacity,
                         AnchorType = anchor,
@@ -112,8 +112,8 @@ namespace Yuri.PlatformCore
                         Id = id,
                         ResourceType = ResourceType.Stand,
                         ResourceName = source,
-                        X = GlobalDataContainer.GAME_CHARACTERSTAND_MIDLEFT_X,
-                        Y = GlobalDataContainer.GAME_CHARACTERSTAND_MIDLEFT_Y,
+                        X = GlobalDataContext.GAME_CHARACTERSTAND_MIDLEFT_X,
+                        Y = GlobalDataContext.GAME_CHARACTERSTAND_MIDLEFT_Y,
                         Z = Z,
                         Angle = Angle,
                         Opacity = Opacity,
@@ -127,8 +127,8 @@ namespace Yuri.PlatformCore
                         Id = id,
                         ResourceType = ResourceType.Stand,
                         ResourceName = source,
-                        X = GlobalDataContainer.GAME_CHARACTERSTAND_MID_X,
-                        Y = GlobalDataContainer.GAME_CHARACTERSTAND_MID_Y,
+                        X = GlobalDataContext.GAME_CHARACTERSTAND_MID_X,
+                        Y = GlobalDataContext.GAME_CHARACTERSTAND_MID_Y,
                         Z = Z,
                         Angle = Angle,
                         Opacity = Opacity,
@@ -142,8 +142,8 @@ namespace Yuri.PlatformCore
                         Id = id,
                         ResourceType = ResourceType.Stand,
                         ResourceName = source,
-                        X = GlobalDataContainer.GAME_CHARACTERSTAND_MIDRIGHT_X,
-                        Y = GlobalDataContainer.GAME_CHARACTERSTAND_MIDRIGHT_Y,
+                        X = GlobalDataContext.GAME_CHARACTERSTAND_MIDRIGHT_X,
+                        Y = GlobalDataContext.GAME_CHARACTERSTAND_MIDRIGHT_Y,
                         Z = Z,
                         Angle = Angle,
                         Opacity = Opacity,
@@ -157,8 +157,8 @@ namespace Yuri.PlatformCore
                         Id = id,
                         ResourceType = ResourceType.Stand,
                         ResourceName = source,
-                        X = GlobalDataContainer.GAME_CHARACTERSTAND_RIGHT_X,
-                        Y = GlobalDataContainer.GAME_CHARACTERSTAND_RIGHT_Y,
+                        X = GlobalDataContext.GAME_CHARACTERSTAND_RIGHT_X,
+                        Y = GlobalDataContext.GAME_CHARACTERSTAND_RIGHT_Y,
                         Z = Z,
                         Angle = Angle,
                         Opacity = Opacity,
@@ -191,7 +191,7 @@ namespace Yuri.PlatformCore
                 ResourceName = source,
                 X = X,
                 Y = Y,
-                Z = Z + GlobalDataContainer.GAME_Z_PICTURES,
+                Z = Z + GlobalDataContext.GAME_Z_PICTURES,
                 ScaleX = ScaleX,
                 ScaleY = ScaleY,
                 Angle = Angle,
@@ -222,7 +222,7 @@ namespace Yuri.PlatformCore
                 Enable = enable,
                 X = X,
                 Y = Y,
-                Z = GlobalDataContainer.GAME_Z_BUTTON + id,
+                Z = GlobalDataContext.GAME_Z_BUTTON + id,
                 JumpLabel = jumpTarget,
                 InterruptFuncSign = funcCallSign,
                 NormalDescriptor = normalDesc,
@@ -253,7 +253,7 @@ namespace Yuri.PlatformCore
                 JumpTarget = jumpTarget,
                 X = X,
                 Y = Y,
-                Z = GlobalDataContainer.GAME_Z_BRANCHBUTTON + id,
+                Z = GlobalDataContext.GAME_Z_BRANCHBUTTON + id,
                 Text = text,
                 NormalDescriptor = normalDesc,
                 OverDescriptor = overDesc,
@@ -289,7 +289,7 @@ namespace Yuri.PlatformCore
                 Visible = Visible,
                 X = X,
                 Y = Y,
-                Z = Z + GlobalDataContainer.GAME_Z_MESSAGELAYER,
+                Z = Z + GlobalDataContext.GAME_Z_MESSAGELAYER,
                 Opacity = Opacity,
                 Padding = new MyThickness(Padding),
                 Width = W,
@@ -445,19 +445,19 @@ namespace Yuri.PlatformCore
                 ScaleX = 1.0,
                 ScaleY = 1.0,
                 Angle = 0.0,
-                AnchorX = (double)GlobalDataContainer.GAME_WINDOW_WIDTH / 2.0,
-                AnchorY = (double)GlobalDataContainer.GAME_WINDOW_HEIGHT / 2.0
+                AnchorX = (double)GlobalDataContext.GAME_WINDOW_WIDTH / 2.0,
+                AnchorY = (double)GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0
             };
             var vtBg = vdTemplate.Clone() as ViewportDescriptor;
             vtBg.Type = ViewportType.VTBackground;
-            vtBg.ZIndex = GlobalDataContainer.GAME_Z_BACKGROUND;
+            vtBg.ZIndex = GlobalDataContext.GAME_Z_BACKGROUND;
             this.viewboxDescVec[(int)ViewportType.VTBackground] = vtBg;
             var vtPics = vdTemplate.Clone() as ViewportDescriptor;
             vdTemplate.Type = ViewportType.VTPictures;
-            vdTemplate.ZIndex = GlobalDataContainer.GAME_Z_PICTURES;
+            vdTemplate.ZIndex = GlobalDataContext.GAME_Z_PICTURES;
             this.viewboxDescVec[(int)ViewportType.VTPictures] = vtPics;
             vdTemplate.Type = ViewportType.VTCharacterStand;
-            vdTemplate.ZIndex = GlobalDataContainer.GAME_Z_CHARACTERSTAND;
+            vdTemplate.ZIndex = GlobalDataContext.GAME_Z_CHARACTERSTAND;
             this.viewboxDescVec[(int)ViewportType.VTCharacterStand] = vdTemplate;
         }
 
@@ -470,49 +470,49 @@ namespace Yuri.PlatformCore
             MessageLayerDescriptor mainMsgLayer = new MessageLayerDescriptor()
             {
                 Id = 0,
-                BackgroundResourceName = GlobalDataContainer.GAME_MESSAGELAYER_BACKGROUNDFILENAME,
-                FontColorR = GlobalDataContainer.GAME_FONT_COLOR.R,
-                FontColorG = GlobalDataContainer.GAME_FONT_COLOR.G,
-                FontColorB = GlobalDataContainer.GAME_FONT_COLOR.B,
-                FontName = GlobalDataContainer.GAME_FONT_NAME,
-                FontSize = GlobalDataContainer.GAME_FONT_FONTSIZE,
-                FontShadow = GlobalDataContainer.GAME_MESSAGELAYER_SHADOW,
-                LineHeight = GlobalDataContainer.GAME_FONT_LINEHEIGHT,
+                BackgroundResourceName = GlobalDataContext.GAME_MESSAGELAYER_BACKGROUNDFILENAME,
+                FontColorR = GlobalDataContext.GAME_FONT_COLOR.R,
+                FontColorG = GlobalDataContext.GAME_FONT_COLOR.G,
+                FontColorB = GlobalDataContext.GAME_FONT_COLOR.B,
+                FontName = GlobalDataContext.GAME_FONT_NAME,
+                FontSize = GlobalDataContext.GAME_FONT_FONTSIZE,
+                FontShadow = GlobalDataContext.GAME_MESSAGELAYER_SHADOW,
+                LineHeight = GlobalDataContext.GAME_FONT_LINEHEIGHT,
                 HorizonAlign = HorizontalAlignment.Left,
                 VertiAlign = VerticalAlignment.Bottom,
-                X = GlobalDataContainer.GAME_MESSAGELAYER_X,
-                Y = GlobalDataContainer.GAME_MESSAGELAYER_Y,
-                Z = GlobalDataContainer.GAME_Z_MESSAGELAYER,
-                Height = GlobalDataContainer.GAME_MESSAGELAYER_H,
-                Width = GlobalDataContainer.GAME_MESSAGELAYER_W,
-                Padding = new MyThickness(GlobalDataContainer.GAME_MESSAGELAYER_PADDING),
+                X = GlobalDataContext.GAME_MESSAGELAYER_X,
+                Y = GlobalDataContext.GAME_MESSAGELAYER_Y,
+                Z = GlobalDataContext.GAME_Z_MESSAGELAYER,
+                Height = GlobalDataContext.GAME_MESSAGELAYER_H,
+                Width = GlobalDataContext.GAME_MESSAGELAYER_W,
+                Padding = new MyThickness(GlobalDataContext.GAME_MESSAGELAYER_PADDING),
                 Opacity = 1.0,
                 Visible = false,
                 Text = ""
             };
             this.msgLayerDescVec.Add(mainMsgLayer);
             // 初始化附加文本层
-            for (int i = 1; i < GlobalDataContainer.GAME_MESSAGELAYER_COUNT; i++)
+            for (int i = 1; i < GlobalDataContext.GAME_MESSAGELAYER_COUNT; i++)
             {
                 MessageLayerDescriptor mld = new MessageLayerDescriptor()
                 {
                     Id = i,
                     BackgroundResourceName = "",
-                    FontColorR = GlobalDataContainer.GAME_FONT_COLOR.R,
-                    FontColorG = GlobalDataContainer.GAME_FONT_COLOR.G,
-                    FontColorB = GlobalDataContainer.GAME_FONT_COLOR.B,
-                    FontName = GlobalDataContainer.GAME_FONT_NAME,
-                    FontSize = GlobalDataContainer.GAME_FONT_FONTSIZE,
-                    FontShadow = GlobalDataContainer.GAME_MESSAGELAYER_SHADOW,
-                    LineHeight = GlobalDataContainer.GAME_FONT_LINEHEIGHT,
+                    FontColorR = GlobalDataContext.GAME_FONT_COLOR.R,
+                    FontColorG = GlobalDataContext.GAME_FONT_COLOR.G,
+                    FontColorB = GlobalDataContext.GAME_FONT_COLOR.B,
+                    FontName = GlobalDataContext.GAME_FONT_NAME,
+                    FontSize = GlobalDataContext.GAME_FONT_FONTSIZE,
+                    FontShadow = GlobalDataContext.GAME_MESSAGELAYER_SHADOW,
+                    LineHeight = GlobalDataContext.GAME_FONT_LINEHEIGHT,
                     HorizonAlign = HorizontalAlignment.Left,
                     VertiAlign = VerticalAlignment.Top,
-                    X = GlobalDataContainer.GAME_MESSAGELAYER_X,
-                    Y = GlobalDataContainer.GAME_MESSAGELAYER_Y,
-                    Z = GlobalDataContainer.GAME_Z_MESSAGELAYER + i,
-                    Height = GlobalDataContainer.GAME_MESSAGELAYER_H,
-                    Width = GlobalDataContainer.GAME_MESSAGELAYER_W,
-                    Padding = new MyThickness(GlobalDataContainer.GAME_MESSAGELAYER_PADDING),
+                    X = GlobalDataContext.GAME_MESSAGELAYER_X,
+                    Y = GlobalDataContext.GAME_MESSAGELAYER_Y,
+                    Z = GlobalDataContext.GAME_Z_MESSAGELAYER + i,
+                    Height = GlobalDataContext.GAME_MESSAGELAYER_H,
+                    Width = GlobalDataContext.GAME_MESSAGELAYER_W,
+                    Padding = new MyThickness(GlobalDataContext.GAME_MESSAGELAYER_PADDING),
                     Opacity = 1.0,
                     Visible = false,
                     Text = ""
@@ -537,23 +537,23 @@ namespace Yuri.PlatformCore
             {
                 this.viewboxDescVec.Add(null);
             }
-            for (int i = 0; i < GlobalDataContainer.GAME_BACKGROUND_COUNT; i++)
+            for (int i = 0; i < GlobalDataContext.GAME_BACKGROUND_COUNT; i++)
             {
                 this.backgroundDescVec.Add(null);
             }
-            for (int i = 0; i < GlobalDataContainer.GAME_CHARACTERSTAND_COUNT; i++)
+            for (int i = 0; i < GlobalDataContext.GAME_CHARACTERSTAND_COUNT; i++)
             {
                 this.characterDescVec.Add(null);
             }
-            for (int i = 0; i < GlobalDataContainer.GAME_IMAGELAYER_COUNT; i++)
+            for (int i = 0; i < GlobalDataContext.GAME_IMAGELAYER_COUNT; i++)
             {
                 this.pictureDescVec.Add(null);
             }
-            for (int i = 0; i < GlobalDataContainer.GAME_BRANCH_COUNT; i++)
+            for (int i = 0; i < GlobalDataContext.GAME_BRANCH_COUNT; i++)
             {
                 this.branchDescVec.Add(null);
             }
-            for (int i = 0; i < GlobalDataContainer.GAME_BUTTON_COUNT; i++)
+            for (int i = 0; i < GlobalDataContext.GAME_BUTTON_COUNT; i++)
             {
                 this.buttonDescVec.Add(null);
             }

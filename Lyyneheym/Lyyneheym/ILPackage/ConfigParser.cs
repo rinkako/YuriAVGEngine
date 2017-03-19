@@ -6,7 +6,7 @@ using Yuri.PlatformCore;
 
 namespace Yuri.ILPackage
 {
-    using GDC = GlobalDataContainer;
+    using GDC = GlobalDataContext;
     /// <summary>
     /// 设置信息语法分析器类
     /// </summary>
