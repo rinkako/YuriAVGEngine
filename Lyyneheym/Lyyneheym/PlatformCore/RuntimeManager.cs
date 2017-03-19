@@ -1158,6 +1158,16 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 获取或设置正在演出的章节名
+        /// 该字段仅用在存档标记，和调用堆栈无关
+        /// </summary>
+        public string PerformingChapter
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// 当前正在执行的动作的无关系副本
         /// </summary>
         public SceneAction DashingPureSa

@@ -64,6 +64,41 @@ namespace Yuri.PlatformCore
         public double ScaleY { get; set; }
 
         /// <summary>
+        /// 获取或设置精灵在动画结束后的X坐标
+        /// </summary>
+        public double ToX { get; set; }
+
+        /// <summary>
+        /// 获取或设置精灵在动画结束后的Y坐标
+        /// </summary>
+        public double ToY { get; set; }
+
+        /// <summary>
+        /// 获取或设置精灵在动画结束后的Z坐标
+        /// </summary>
+        public int ToZ { get; set; }
+
+        /// <summary>
+        /// 获取或设置精灵在动画结束后的角度
+        /// </summary>
+        public double ToAngle { get; set; }
+
+        /// <summary>
+        /// 获取或设置精灵在动画结束后的不透明度
+        /// </summary>
+        public double ToOpacity { get; set; }
+
+        /// <summary>
+        /// 获取或设置精灵在动画结束后的X缩放
+        /// </summary>
+        public double ToScaleX { get; set; }
+
+        /// <summary>
+        /// 获取或设置精灵在动画结束后的Y缩放
+        /// </summary>
+        public double ToScaleY { get; set; }
+
+        /// <summary>
         /// 获取或设置精灵锚点方式
         /// </summary>
         public SpriteAnchorType AnchorType { get; set; }

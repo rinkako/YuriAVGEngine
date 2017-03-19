@@ -128,8 +128,9 @@ namespace Yuri.Utils
                 s.Close();
                 return ob;
             }
-            catch
+            catch (Exception ex)
             {
+                CommonUtils.ConsoleLine("Unserialization failed. " + ex.ToString(), "IOUtils", OutputStyle.Error);
                 return null;
             }
         }

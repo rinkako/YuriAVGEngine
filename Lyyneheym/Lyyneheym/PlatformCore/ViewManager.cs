@@ -47,10 +47,12 @@ namespace Yuri.PlatformCore
             {
                 var box = this.GetTransitionBox();
                 var foreDesc = Director.ScrMana.GetSpriteDescriptor((int)BackgroundPage.Fore, ResourceType.Background);
-                SpriteAnimation.XMoveAnimation(this.backgroundSpriteVec[(int)BackgroundPage.Fore], TimeSpan.FromMilliseconds(0),
-                    Canvas.GetLeft(box), foreDesc.X, 0);
-                SpriteAnimation.YMoveAnimation(this.backgroundSpriteVec[(int)BackgroundPage.Fore], TimeSpan.FromMilliseconds(0),
-                    Canvas.GetTop(box), foreDesc.Y, 0);
+                Canvas.SetLeft(this.backgroundSpriteVec[(int)BackgroundPage.Fore].DisplayBinding, foreDesc.X);
+                Canvas.SetTop(this.backgroundSpriteVec[(int)BackgroundPage.Fore].DisplayBinding, foreDesc.Y);
+                //SpriteAnimation.XMoveAnimation(this.backgroundSpriteVec[(int)BackgroundPage.Fore], TimeSpan.FromMilliseconds(0),
+                //    Canvas.GetLeft(box), foreDesc.X, 0);
+                //SpriteAnimation.YMoveAnimation(this.backgroundSpriteVec[(int)BackgroundPage.Fore], TimeSpan.FromMilliseconds(0),
+                //    Canvas.GetTop(box), foreDesc.Y, 0);
                 Canvas.SetZIndex(box, this.backgroundSpriteVec[(int)BackgroundPage.Fore].DisplayZ);
             }
             // 重绘立绘
@@ -421,37 +423,42 @@ namespace Yuri.PlatformCore
         {
             // 取得前端对象
             Viewbox vb = this.viewboxVec[(int)vt].ViewboxBinding;
+            // 重置
+            Canvas.SetLeft(vb, descriptor.Left);
+            Canvas.SetTop(vb, descriptor.Top);
+            this.viewboxVec[(int)vt].ScaleTransformer.ScaleX = descriptor.ScaleX;
+            this.viewboxVec[(int)vt].ScaleTransformer.ScaleY = descriptor.ScaleY;
             // 重定位Left
-            Storyboard storyLeft = new Storyboard();
-            double BgfromX = Canvas.GetLeft(vb);
-            DoubleAnimation doubleAniLeft = new DoubleAnimation(BgfromX, descriptor.Left, TimeSpan.FromMilliseconds(0));
-            Storyboard.SetTarget(doubleAniLeft, vb);
-            Storyboard.SetTargetProperty(doubleAniLeft, new PropertyPath(Canvas.LeftProperty));
-            storyLeft.Children.Add(doubleAniLeft);
-            storyLeft.Duration = TimeSpan.FromMilliseconds(0);
-            // 重定位Top
-            Storyboard storyTop = new Storyboard();
-            double BgfromY = Canvas.GetTop(vb);
-            DoubleAnimation doubleAniTop = new DoubleAnimation(BgfromY, descriptor.Top, TimeSpan.FromMilliseconds(0));
-            Storyboard.SetTarget(doubleAniTop, vb);
-            Storyboard.SetTargetProperty(doubleAniTop, new PropertyPath(Canvas.TopProperty));
-            storyTop.Children.Add(doubleAniTop);
-            storyTop.Duration = TimeSpan.FromMilliseconds(0);
-            // 重定位Scale
-            Storyboard storyScale = new Storyboard();
-            DoubleAnimation doubleAniScaleX = new DoubleAnimation(1, descriptor.ScaleX, TimeSpan.FromMilliseconds(0));
-            DoubleAnimation doubleAniScaleY = new DoubleAnimation(1, descriptor.ScaleY, TimeSpan.FromMilliseconds(0));
-            Storyboard.SetTarget(doubleAniScaleX, vb);
-            Storyboard.SetTarget(doubleAniScaleY, vb);
-            Storyboard.SetTargetProperty(doubleAniScaleX, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
-            Storyboard.SetTargetProperty(doubleAniScaleY, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
-            storyScale.Children.Add(doubleAniScaleX);
-            storyScale.Children.Add(doubleAniScaleY);
-            storyScale.Duration = TimeSpan.FromMilliseconds(0);
-            // 执行变换
-            storyScale.Begin();
-            storyLeft.Begin();
-            storyTop.Begin();
+            //Storyboard storyLeft = new Storyboard();
+            //double BgfromX = Canvas.GetLeft(vb);
+            //DoubleAnimation doubleAniLeft = new DoubleAnimation(BgfromX, descriptor.Left, TimeSpan.FromMilliseconds(0));
+            //Storyboard.SetTarget(doubleAniLeft, vb);
+            //Storyboard.SetTargetProperty(doubleAniLeft, new PropertyPath(Canvas.LeftProperty));
+            //storyLeft.Children.Add(doubleAniLeft);
+            //storyLeft.Duration = TimeSpan.FromMilliseconds(0);
+            //// 重定位Top
+            //Storyboard storyTop = new Storyboard();
+            //double BgfromY = Canvas.GetTop(vb);
+            //DoubleAnimation doubleAniTop = new DoubleAnimation(BgfromY, descriptor.Top, TimeSpan.FromMilliseconds(0));
+            //Storyboard.SetTarget(doubleAniTop, vb);
+            //Storyboard.SetTargetProperty(doubleAniTop, new PropertyPath(Canvas.TopProperty));
+            //storyTop.Children.Add(doubleAniTop);
+            //storyTop.Duration = TimeSpan.FromMilliseconds(0);
+            //// 重定位Scale
+            //Storyboard storyScale = new Storyboard();
+            //DoubleAnimation doubleAniScaleX = new DoubleAnimation(1, descriptor.ScaleX, TimeSpan.FromMilliseconds(0));
+            //DoubleAnimation doubleAniScaleY = new DoubleAnimation(1, descriptor.ScaleY, TimeSpan.FromMilliseconds(0));
+            //Storyboard.SetTarget(doubleAniScaleX, vb);
+            //Storyboard.SetTarget(doubleAniScaleY, vb);
+            //Storyboard.SetTargetProperty(doubleAniScaleX, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
+            //Storyboard.SetTargetProperty(doubleAniScaleY, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
+            //storyScale.Children.Add(doubleAniScaleX);
+            //storyScale.Children.Add(doubleAniScaleY);
+            //storyScale.Duration = TimeSpan.FromMilliseconds(0);
+            //// 执行变换
+            //storyScale.Begin();
+            //storyLeft.Begin();
+            //storyTop.Begin();
         }
 
         /// <summary>
@@ -625,8 +632,15 @@ namespace Yuri.PlatformCore
             sprite.InitAnimationRenderTransform();
             if (rType != ResourceType.Background)
             {
+                sprite.AnimationElement = sprite.DisplayBinding;
+                descriptor.ToScaleX = descriptor.ScaleX;
+                descriptor.ToScaleY = descriptor.ScaleY;
                 SpriteAnimation.RotateToAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.Angle, 0);
                 SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.ScaleX, descriptor.ScaleY, 0, 0);
+            }
+            else
+            {
+                sprite.AnimationElement = this.viewboxVec[(int)ViewportType.VTBackground].ViewboxBinding;
             }
         }
         

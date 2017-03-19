@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Navigation;
 using Yuri.PlatformCore;
 using Yuri.ILPackage;
 using Yuri.YuriInterpreter;
@@ -13,7 +14,7 @@ using System.Windows.Media.Animation;
 namespace Yuri.PageView
 {
     /// <summary>
-    /// StagePage.xaml 的交互逻辑
+    /// StagePage.xaml 的交互逻辑：主舞台页面
     /// </summary>
     public partial class StagePage : Page
     {
@@ -21,7 +22,7 @@ namespace Yuri.PageView
         /// 导演类
         /// </summary>
         private Director core = Director.GetInstance();
-
+        
         /// <summary>
         /// 过渡效果的数据包装
         /// </summary>
@@ -95,13 +96,20 @@ namespace Yuri.PageView
         // DEBUG
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            this.core.GetMainRender().Save("mysave");
+            //this.core.GetMainRender().Save("mysave");
+            ViewManager.RenderFrameworkElementToJPEG(this.BO_MainGrid, GlobalDataContainer.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
+            SLPage p = (SLPage)ViewPageManager.RetrievePage("SavePage");
+            p.ReLoadFileInfo();
+            NavigationService.GetNavigationService(this).Navigate(p);
         }
 
         // DEBUG
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            this.core.GetMainRender().Load("mysave");
+            //this.core.GetMainRender().Load("mysave");
+            SLPage p = (SLPage)ViewPageManager.RetrievePage("LoadPage");
+            p.ReLoadFileInfo();
+            NavigationService.GetNavigationService(this).Navigate(p);
         }
 
         // DEBUG
@@ -121,9 +129,9 @@ namespace Yuri.PageView
                 ResourceType = ResourceType.Pictures
             };
 
-            var izettaPoint = SCamera.GetScreenCoordination(4, 5);
-            var finePoint = SCamera.GetScreenCoordination(4, 7);
-            var zoiPoint = SCamera.GetScreenCoordination(4, 12);
+            var izettaPoint = SCamera.GetScreenCoordination(4, 8);
+            var finePoint = SCamera.GetScreenCoordination(4, 11);
+            var zoiPoint = SCamera.GetScreenCoordination(4, 24);
 
 
             var xxx = this.BO_Cstand_Canvas;
@@ -591,39 +599,39 @@ namespace Yuri.PageView
             //{
             //    SCamera.Translate(2, 0);
             //}
-            else if (bt4 == 1)
-            {
-                SCamera.Translate(2, 5);
-            }
-            else if (bt4 == 2)
-            {
-                SCamera.Translate(2, 12);
-            }
-            else if (bt4 == 3)
-            {
-                SCamera.Translate(2, 5);
-            }
-            else if (bt4 == 4)
-            {
-                SCamera.Translate(2, 7);
-            }
-            else if (bt4 == 5)
-            {
-                SCamera.Translate(2, 12);
-            }
-            else if (bt4 == 6)
-            {
-                SCamera.Translate(2, 7);
-            }
-            else if (bt4 == 7)
-            {
-                SCamera.ResetFocus(false);
-            }
-            else if (bt4 <= 16)
+            //else if (bt4 == 1)
+            //{
+            //    SCamera.Translate(2, 5);
+            //}
+            //else if (bt4 == 2)
+            //{
+            //    SCamera.Translate(2, 12);
+            //}
+            //else if (bt4 == 3)
+            //{
+            //    SCamera.Translate(2, 5);
+            //}
+            //else if (bt4 == 4)
+            //{
+            //    SCamera.Translate(2, 7);
+            //}
+            //else if (bt4 == 5)
+            //{
+            //    SCamera.Translate(2, 12);
+            //}
+            //else if (bt4 == 6)
+            //{
+            //    SCamera.Translate(2, 7);
+            //}
+            //else if (bt4 == 7)
+            //{
+            //    SCamera.ResetFocus(false);
+            //}
+            else if (bt4 <= 32)
             {
                 SCamera.Translate(2, bt4);
             }
-            else if (bt4 == 17)
+            else if (bt4 == 33)
             {
                 if (MessageBox.Show("reset?", "i", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
@@ -638,16 +646,12 @@ namespace Yuri.PageView
 
         private void buttonNext_Click(object sender, RoutedEventArgs e)
         {
-            ViewManager.RenderFrameworkElementToJPEG(this.BO_MainGrid, "snapshot_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-fff") + ".jpg");
+            ViewManager.RenderFrameworkElementToJPEG(this.BO_MainGrid, GlobalDataContainer.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
+            NavigationService.GetNavigationService(this).Navigate(ViewPageManager.RetrievePage("SavePage"));
         }
 
         private void noti_Click(object sender, RoutedEventArgs e)
         {
-            //var sp = ResourceManager.GetInstance().GetPicture("NotificationBox.png", new Int32Rect(-1, 0, 0, 0));
-            //var ico = ResourceManager.GetInstance().GetPicture("Info_Silver.png", new Int32Rect(-1, 0, 0, 0));
-            //this.BO_Information.Background = new ImageBrush(sp.SpriteBitmapImage);
-            //this.BO_Information_Image.Source = ico.SpriteBitmapImage;
-
             NotificationManager.Notify("菲涅的伊泽塔", "恭喜全部通关！鉴赏模式已经开放了。", "Info_Silver.png");
         }
     }

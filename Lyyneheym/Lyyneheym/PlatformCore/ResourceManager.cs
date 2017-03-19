@@ -58,7 +58,7 @@ namespace Yuri.PlatformCore
             }
             return this.GetGraphicSprite(sourceName, ResourceType.Pictures, cutRect);
         }
-
+        
         /// <summary>
         /// 获得一个指定BGM音频资源的内存数组
         /// </summary>
@@ -136,7 +136,7 @@ namespace Yuri.PlatformCore
         /// <returns>该资源的精灵</returns>
         private YuriSprite GetGraphicSprite(string sourceName, ResourceType rtype, Int32Rect? cutRect)
         {
-            if (sourceName == "") { return null; }
+            if (sourceName == String.Empty) { return null; }
             YuriSprite sprite = new YuriSprite();
             string DevURI = null, PackURI = null;
             // 处理路径
@@ -195,6 +195,27 @@ namespace Yuri.PlatformCore
                 }
                 MemoryStream ms = new MemoryStream(ob);
                 sprite.Init(sourceName, rtype, ms, cutRect);
+            }
+            return sprite;
+        }
+
+        /// <summary>
+        /// 获取存档屏幕截图的精灵
+        /// </summary>
+        /// <param name="sourceName">文件路径</param>
+        /// <returns>精灵实例</returns>
+        public YuriSprite GetSaveSnapshot(string sourceName)
+        {
+            YuriSprite sprite = new YuriSprite();
+            if (File.Exists(IOUtils.ParseURItoURL(sourceName)))
+            {
+                Uri bg = new Uri(IOUtils.ParseURItoURL(sourceName), UriKind.RelativeOrAbsolute);
+                sprite.Init(sourceName, ResourceType.SaveSnapshot, bg, null);
+            }
+            else
+            {
+                MessageBox.Show("[错误] 资源文件不存在：" + sourceName);
+                Director.GetInstance().GetMainRender().Shutdown();
             }
             return sprite;
         }
@@ -484,6 +505,11 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 全图切割矩
+        /// </summary>
+        public static readonly Int32Rect FullImageRect = new Int32Rect(-1, 0, 0, 0);
+
+        /// <summary>
         /// 唯一实例量
         /// </summary>
         private static ResourceManager synObject = null;
@@ -529,6 +555,7 @@ namespace Yuri.PlatformCore
         VOCAL,
         MessageLayerBackground,
         Button,
-        BranchButton
+        BranchButton,
+        SaveSnapshot
     }
 }

@@ -121,6 +121,9 @@ namespace Yuri.PlatformCore
             aniGroup.Children.Add(ScaleTransformer);
             aniGroup.Children.Add(RotateTransformer);
             this.DisplayBinding.RenderTransform = aniGroup;
+            this.TranslateTransformer = XYTransformer;
+            this.RotateTransformer = RotateTransformer;
+            this.ScaleTransformer = ScaleTransformer;
         }
 
         /// <summary>
@@ -182,7 +185,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置前端显示控件
         /// </summary>
-        public Image DisplayBinding
+        public FrameworkElement DisplayBinding
         {
             get
             {
@@ -201,29 +204,13 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                //if (this.IsScaling)
-                //{
-                //    double deltaX = (double)this.ImageWidth / 2.0 - ((double)this.ImageWidth * this.Descriptor.ScaleX / 2.0);
-                //    return Canvas.GetLeft(this.DisplayBinding) + deltaX;
-                //}
-                //else
-                //{
-                    return Canvas.GetLeft(this.DisplayBinding);
-                //}
+                return Canvas.GetLeft(this.DisplayBinding);
             }
             set
             {
                 if (this.DisplayBinding != null)
                 {
-                    //if (this.IsScaling)
-                    //{
-                    //    double deltaX = (double)this.ImageWidth / 2.0 - ((double)this.ImageWidth * this.Descriptor.ScaleX / 2.0);
-                    //    Canvas.SetLeft(this.DisplayBinding, value - deltaX);
-                    //}
-                    //else
-                    //{
-                        Canvas.SetLeft(this.DisplayBinding, value);
-                    //}
+                    Canvas.SetLeft(this.DisplayBinding, value);
                 }
             }
         }
@@ -235,29 +222,13 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                //if (this.IsScaling)
-                //{
-                //    double deltaY = (double)this.ImageHeight / 2.0 - ((double)this.ImageHeight * this.Descriptor.ScaleY / 2.0);
-                //    return Canvas.GetTop(this.DisplayBinding) + deltaY;
-                //}
-                //else
-                //{
-                    return Canvas.GetTop(this.DisplayBinding);
-                //}
+                return Canvas.GetTop(this.DisplayBinding);
             }
             set
             {
                 if (this.DisplayBinding != null)
                 {
-                    //if (this.IsScaling)
-                    //{
-                    //    double deltaY = (double)this.ImageHeight / 2.0 - ((double)this.ImageHeight * this.Descriptor.ScaleY / 2.0);
-                    //    Canvas.SetTop(this.DisplayBinding, value - deltaY);
-                    //}
-                    //else
-                    //{
-                        Canvas.SetTop(this.DisplayBinding, value);
-                    //}
+                    Canvas.SetTop(this.DisplayBinding, value);
                 }
             }
         }
@@ -418,6 +389,42 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 获取或设置绑定的平移变换器
+        /// </summary>
+        public TranslateTransform TranslateTransformer
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 获取或设置绑定的缩放变换器
+        /// </summary>
+        public ScaleTransform ScaleTransformer
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 获取或设置绑定的旋转变换器
+        /// </summary>
+        public RotateTransform RotateTransformer
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 获取或设置背景层实际显示控件的引用
+        /// </summary>
+        public FrameworkElement AnimationElement
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// 精灵动画状态
         /// </summary>
         private int animateCounter = 0;
@@ -430,7 +437,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 前端控件绑定
         /// </summary>
-        private Image viewBinding = null;
+        private FrameworkElement viewBinding = null;
     }
 
     /// <summary>

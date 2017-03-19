@@ -110,9 +110,9 @@ namespace Yuri.PlatformCore
         // 场景镜头：屏幕纵向划分块数
         public static int GAME_SCAMERA_SCR_ROWCOUNT = 5;
         // 场景镜头：屏幕横向划分块数
-        public static int GAME_SCAMERA_SCR_COLCOUNT = 16;
+        public static int GAME_SCAMERA_SCR_COLCOUNT = 16 * 2;
         // 场景镜头：屏幕横向单侧出血块数
-        public static int GAME_SCAMERA_SCR_SINGLEBLOODCOLCOUNT = 3;
+        public static int GAME_SCAMERA_SCR_SINGLEBLOODCOLCOUNT = 3 * 2;
         // 场景镜头：立绘纵向划分块数
         public static int GAME_SCAMERA_CSTAND_ROWCOUNT = 12;
         // 场景镜头：立绘横向尺寸
@@ -149,6 +149,16 @@ namespace Yuri.PlatformCore
         public static int GAME_SAVE_MAX = 99;
         // 存档：存档目录名
         public static string GAME_SAVE_DIR = "Save";
+        // 存档：存档描述子前缀名
+        public static string GAME_SAVE_DESCRIPTOR_PREFIX = "sdesc";
+        // 存档：存档描述子后缀名
+        public static string GAME_SAVE_DESCRIPTOR_POSTFIX = ".md";
+        // 存档：存档截图前缀名
+        public static string GAME_SAVE_SNAPSHOT_PREFIX = "ssnap";
+        // 存档：存档截图后缀名
+        public static string GAME_SAVE_SNAPSHOT_POSTFIX = ".jpg";
+        // 存档：存档前缀名
+        public static string GAME_SAVE_PREFIX = "save";
         // 存档：存档后缀名
         public static string GAME_SAVE_POSTFIX = ".dat";
         // 字体：字体名称

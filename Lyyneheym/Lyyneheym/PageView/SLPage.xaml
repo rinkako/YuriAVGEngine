@@ -16,24 +16,11 @@
       <ColumnDefinition Width="250*"/>
       <ColumnDefinition Width="750*"/>
     </Grid.ColumnDefinitions>
-    <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="2">
-      <Button x:Name="button_1" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位1 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_2" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位2 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_3" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位3 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_4" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位4 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_5" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位5 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_6" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位6 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_7" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位7 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_8" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位8 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_9" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位9 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_10" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位10 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_11" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位11 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_12" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位12 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_13" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位13 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_14" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位14 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_15" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位15 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-      <Button x:Name="button_16" Background="Transparent" BorderBrush="Transparent" Content="&lt; 存档位16 &gt;" FontSize="18" Foreground="White" Height="40" MouseEnter="button_MouseEnter" MouseLeave="button_MouseLeave"/>
-    </StackPanel>
+    <ScrollViewer x:Name="scrolls" Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Margin="0,0,1,0">
+      <ScrollViewer.Content>
+        <StackPanel x:Name="SL_FileslotStackPanel" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2"></StackPanel>
+      </ScrollViewer.Content>
+    </ScrollViewer>
     <Grid Grid.Row="1" Grid.Column="1">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="1*"/>
@@ -46,8 +33,14 @@
         <RowDefinition Height="1*"/>
       </Grid.RowDefinitions>
       <Image Name="SL_SnapshotImage" Grid.Row="1" Grid.Column="1" Width="800" Height="450" Margin="64,0,0,133"/>
-      <TextBlock x:Name="SL_TimeStampTextBlock" Visibility="Hidden" Text="TimeStamp" FontSize="20" Foreground="White" Grid.Column="1" Grid.Row="1" Margin="0,0,0,70" TextWrapping="Wrap" Height="30" VerticalAlignment="Bottom" TextAlignment="Right"/>
-
+      <TextBlock x:Name="SL_NameTextBlock" Text="" FontSize="20" Foreground="White" Grid.Row="0" Grid.Column="1" TextWrapping="Wrap" Height="32" VerticalAlignment="Bottom" TextAlignment="Left"/>
+      <Image Name="SL_Button_SorL" Visibility="Hidden" Opacity="0.7" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Width="148" Height="39" Margin="0,544,0,0" MouseEnter="SL_Button_MouseEnter" MouseLeave="SL_Button_MouseLeave" MouseDown="SL_Button_SorL_MouseDown"/>
+      <Image Name="SL_Button_Delete" Visibility="Hidden" Opacity="0.7" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Width="148" Height="39" Margin="0,544,180,0" MouseEnter="SL_Button_MouseEnter" MouseLeave="SL_Button_MouseLeave" MouseDown="SL_Button_Delete_MouseDown"/>
+      <Image Name="SL_Button_Back" Opacity="0.7" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Width="148" Height="39" Margin="0,544,716,0" MouseEnter="SL_Button_MouseEnter" MouseLeave="SL_Button_MouseLeave" MouseDown="SL_Button_Back_MouseDown"/>
+      <Image Name="SL_DescriptorBox" Visibility="Hidden" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Width="738" Height="43" Margin="0,0,0,51" VerticalAlignment="Bottom"/>
+      <TextBlock x:Name="SL_Descriptor_TextBlock" Visibility="Hidden" Text="" FontSize="16" Foreground="White" Grid.Row="1" Margin="271,0,10,53" TextWrapping="NoWrap" Height="30" VerticalAlignment="Bottom" TextAlignment="Right" Grid.Column="1"/>
+      <TextBlock x:Name="SL_TimeStampTextBlock" Visibility="Hidden" Text="TimeStamp" FontSize="20" Foreground="White" Grid.Row="1" Margin="0,0,10,93" TextWrapping="Wrap" Height="30" VerticalAlignment="Bottom" TextAlignment="Right" Grid.Column="1"/>
+      <TextBox x:Name="SL_Descriptor_TextBox" Visibility="Hidden" FontSize="16" Background="Transparent" BorderBrush="Transparent" Foreground="White" Grid.Row="1" Margin="229,0,6,56" TextWrapping="NoWrap" Height="32" VerticalAlignment="Bottom" TextAlignment="Right" Grid.Column="1"/>
     </Grid>
   </Grid>
 </Page>

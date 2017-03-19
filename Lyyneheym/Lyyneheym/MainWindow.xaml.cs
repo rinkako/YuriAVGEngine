@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using Yuri.PlatformCore;
 
 namespace Yuri
@@ -34,9 +35,11 @@ namespace Yuri
             this.mainCanvas.Height = GlobalDataContainer.GAME_WINDOW_HEIGHT;
             this.ResizeMode = GlobalDataContainer.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
             this.core.SetStagePageReference(new PageView.StagePage());
-            //this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContainer.FirstViewPage);
-            this.upperFrame.Content = new PageView.SLPage();
-            this.mainFrame.Content = new PageView.StagePage();
+            this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContainer.FirstViewPage);
+            //this.upperFrame.Content = new PageView.SLPage(false);
+            // 预注册保存和读取页面
+            ViewPageManager.RegisterPage("SavePage", new PageView.SLPage(isSave: true));
+            ViewPageManager.RegisterPage("LoadPage", new PageView.SLPage(isSave: false));
         }
         
         #region 窗体监听事件

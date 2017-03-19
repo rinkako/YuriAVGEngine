@@ -437,6 +437,7 @@ namespace Yuri.PlatformCore
             Image TriaView = new Image();
             BitmapImage bmp = MainMsgTriangleSprite.SpriteBitmapImage;
             this.MainMsgTriangleSprite.DisplayBinding = TriaView;
+            this.MainMsgTriangleSprite.AnimationElement = TriaView;
             TriaView.Width = bmp.PixelWidth;
             TriaView.Height = bmp.PixelHeight;
             TriaView.Source = bmp;
@@ -1014,37 +1015,37 @@ namespace Yuri.PlatformCore
             switch (property)
             {
                 case "x":
+                    descriptor.ToX = toValue;
                     SpriteAnimation.XMoveToAnimation(actionSprite, duration, toValue, acc);
-                    descriptor.X = toValue;
                     break;
                 case "y":
+                    descriptor.ToY = toValue;
                     SpriteAnimation.YMoveToAnimation(actionSprite, duration, toValue, acc);
-                    descriptor.Y = toValue;
                     break;
                 case "o":
                 case "opacity":
+                    descriptor.ToOpacity = toValue;
                     SpriteAnimation.OpacityToAnimation(actionSprite, duration, toValue, acc);
-                    descriptor.Opacity = toValue;
                     break;
                 case "a":
                 case "angle":
+                    descriptor.ToAngle = toValue;
                     SpriteAnimation.RotateToAnimation(actionSprite, duration, toValue, acc);
-                    descriptor.Angle = toValue;
                     break;
                 case "s":
                 case "scale":
+                    descriptor.ToScaleX = descriptor.ToScaleY = toValue;
                     SpriteAnimation.ScaleToAnimation(actionSprite, duration, toValue, toValue, acc, acc);
-                    descriptor.ScaleX = descriptor.ScaleY = toValue;
                     break;
                 case "sx":
                 case "scalex":
+                    descriptor.ToScaleX = toValue;
                     SpriteAnimation.ScaleToAnimation(actionSprite, duration, toValue, descriptor.ScaleY, acc, 0);
-                    descriptor.ScaleX = toValue;
                     break;
                 case "sy":
                 case "scaley":
+                    descriptor.ToScaleY = toValue;
                     SpriteAnimation.ScaleToAnimation(actionSprite, duration, descriptor.ScaleX, toValue, 0, acc);
-                    descriptor.ScaleY = toValue;
                     break;
                 default:
                     CommonUtils.ConsoleLine(String.Format("Move instruction without valid parameters: {0}", property),

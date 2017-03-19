@@ -90,6 +90,8 @@ namespace Yuri
         /// <param name="rm">反序列化后的RM实例</param>
         public static void ResumeFromSaveData(RuntimeManager rm)
         {
+            // 停止消息循环
+            Director.PauseUpdateContext();
             // 清空画面并停下BGM
             ViewManager.GetInstance().RemoveView(ResourceType.Unknown);
             Musician.GetInstance().StopAndReleaseBGM();
@@ -123,6 +125,8 @@ namespace Yuri
             };
             // 提交中断
             Director.RunMana.CallStack.Submit(reactionNtr);
+            // 重启消息循环
+            Director.ResumeUpdateContext();
         }
 
         /// <summary>
@@ -653,6 +657,7 @@ namespace Yuri
             this.updateRender = new UpdateRender(Director.RunMana.CallStack);
             Director.RunMana.SetScreenManager(ScreenManager.GetInstance());
             Director.RunMana.ParallelHandler = this.ParallelUpdateContext;
+            Director.RunMana.PerformingChapter = String.Empty;
             SCamera.Init();
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromTicks((long)GlobalDataContainer.DirectorTimerInterval);
