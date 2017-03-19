@@ -1008,7 +1008,7 @@ namespace Yuri.PlatformCore
             SpriteDescriptor descriptor = Director.ScrMana.GetSpriteDescriptor(id, rType);
             if (actionSprite == null)
             {
-                CommonUtils.ConsoleLine(String.Format("Ignored move (sprite is null): {0}, {1}", rType.ToString(), id),
+                CommonUtils.ConsoleLine(String.Format("Ignored move (target sprite is null): {0}, {1}", rType.ToString(), id),
                     "UpdateRender", OutputStyle.Warning);
                 return;
             }
