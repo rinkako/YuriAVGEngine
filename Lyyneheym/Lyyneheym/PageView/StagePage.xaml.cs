@@ -143,7 +143,10 @@ namespace Yuri.PageView
             img1.Width = izetta.SpriteBitmapImage.PixelWidth;
             img1.Height = izetta.SpriteBitmapImage.PixelHeight;
             izetta.DisplayBinding = img1;
-            izetta.Descriptor = sd;
+            izetta.AnimationElement = img1;
+            var izettad = (SpriteDescriptor)sd.Clone();
+            izettad.ToScaleX = izettad.ToScaleY = 0.4;
+            izetta.Descriptor = izettad;
             //Canvas.SetLeft(img1, 150 - izetta.SpriteBitmapImage.PixelWidth / 2.0);
             Canvas.SetLeft(img1, izettaPoint.X - izetta.SpriteBitmapImage.PixelWidth / 2.0);
             Canvas.SetTop(img1, izettaPoint.Y - izetta.SpriteBitmapImage.PixelHeight / 2.0);
@@ -159,7 +162,10 @@ namespace Yuri.PageView
             img2.Width = fine.SpriteBitmapImage.PixelWidth;
             img2.Height = fine.SpriteBitmapImage.PixelHeight;
             fine.DisplayBinding = img2;
-            fine.Descriptor = sd;
+            fine.AnimationElement = img2;
+            var fined = (SpriteDescriptor)sd.Clone();
+            fined.ToScaleX = fined.ToScaleY = 0.5;
+            fine.Descriptor = fined;
             //Canvas.SetLeft(img2, 400 - fine.SpriteBitmapImage.PixelWidth / 2.0);
             //Canvas.SetTop(img2, 730 - fine.SpriteBitmapImage.PixelHeight / 2.0);
             Canvas.SetLeft(img2, finePoint.X - fine.SpriteBitmapImage.PixelWidth / 2.0);
@@ -175,7 +181,10 @@ namespace Yuri.PageView
             img4.Width = mt.SpriteBitmapImage.PixelWidth;
             img4.Height = mt.SpriteBitmapImage.PixelHeight;
             mt.DisplayBinding = img4;
-            mt.Descriptor = sd;
+            mt.AnimationElement = img4;
+            var zoid = (SpriteDescriptor)sd.Clone();
+            zoid.ToScaleX = zoid.ToScaleY = 0.43;
+            mt.Descriptor = zoid;
             modelX = 1000 - fine.SpriteBitmapImage.PixelWidth / 2.0;
             //Canvas.SetLeft(img4, modelX);
             //Canvas.SetTop(img4, 630 - fine.SpriteBitmapImage.PixelHeight / 2.0);
@@ -192,6 +201,7 @@ namespace Yuri.PageView
             img3.Width = bgg.SpriteBitmapImage.PixelWidth;
             img3.Height = bgg.SpriteBitmapImage.PixelHeight;
             bgg.DisplayBinding = img3;
+            bgg.AnimationElement = img3;
             bgg.Descriptor = sd;
             Canvas.SetLeft(img3, 0);
             Canvas.SetTop(img3, 0);

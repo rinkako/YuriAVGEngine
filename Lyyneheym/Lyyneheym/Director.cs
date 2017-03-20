@@ -659,7 +659,7 @@ namespace Yuri
             this.updateRender = new UpdateRender(Director.RunMana.CallStack);
             Director.RunMana.SetScreenManager(ScreenManager.GetInstance());
             Director.RunMana.ParallelHandler = this.ParallelUpdateContext;
-            Director.RunMana.PerformingChapter = String.Empty;
+            Director.RunMana.PerformingChapter = "Prelogue";
             SCamera.Init();
             this.timer = new DispatcherTimer();
             this.timer.Interval = TimeSpan.FromTicks((long)GlobalDataContext.DirectorTimerInterval);

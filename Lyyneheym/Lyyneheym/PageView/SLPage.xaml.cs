@@ -148,10 +148,12 @@ namespace Yuri.PageView
                     var descName = GlobalDataContext.GAME_SAVE_DIR + @"\" + GlobalDataContext.GAME_SAVE_DESCRIPTOR_PREFIX +
                         saveList[pointId].Name.Substring(GlobalDataContext.GAME_SAVE_PREFIX.Length).Replace(GlobalDataContext.GAME_SAVE_POSTFIX,
                         GlobalDataContext.GAME_SAVE_DESCRIPTOR_POSTFIX);
+                    var chapterStr = String.Empty;
                     if (File.Exists(descName))
                     {
                         FileStream fs = new FileStream(descName, FileMode.Open);
                         StreamReader sr = new StreamReader(fs);
+                        chapterStr = sr.ReadLine();
                         if (this.isSave)
                         {
                             this.SL_Descriptor_TextBox.Text = sr.ReadToEnd();
@@ -178,7 +180,8 @@ namespace Yuri.PageView
                     var timeItems = saveList[pointId].Name.Split('-');
                     var timeStr = String.Format("{0}-{1}-{2} {3}:{4}:{5}",
                         timeItems[2], timeItems[3], timeItems[4], timeItems[5], timeItems[6], timeItems[7]);
-                    this.SL_TimeStampTextBlock.Text = timeStr;
+                    this.SL_TimeStampTextBlock.Text = String.Format("{0}{1}  Time:{2}",
+                        chapterStr == String.Empty ? String.Empty : "Chapter:", chapterStr, timeStr);
                     this.SL_NameTextBlock.Text = String.Format("< 存档{0} >", pointId + 1);
                     this.SL_Button_SorL.Visibility = this.SL_Button_Delete.Visibility = 
                         this.SL_TimeStampTextBlock.Visibility = this.SL_DescriptorBox.Visibility = Visibility.Visible;
@@ -194,6 +197,7 @@ namespace Yuri.PageView
                 // 该存档位是空存档
                 else
                 {
+                    this.SL_Button_Delete.Visibility = Visibility.Hidden;
                     this.SL_NameTextBlock.Text = String.Format("< 空存档{0} >", pointId + 1);
                     this.SL_SnapshotImage.Source = null;
                     // 保存
@@ -207,7 +211,7 @@ namespace Yuri.PageView
                     // 读取
                     else
                     {
-                        this.SL_Button_SorL.Visibility = this.SL_Button_Delete.Visibility = this.SL_TimeStampTextBlock.Visibility =
+                        this.SL_Button_SorL.Visibility = this.SL_TimeStampTextBlock.Visibility =
                             this.SL_DescriptorBox.Visibility = this.SL_Descriptor_TextBlock.Visibility = 
                             this.SL_Descriptor_TextBox.Visibility = Visibility.Hidden;
                     }
@@ -360,21 +364,19 @@ namespace Yuri.PageView
                     // 保存截图文件
                     if (File.Exists(GlobalDataContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg"))
                     {
-                        File.Copy(GlobalDataContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg", String.Format("{0}\\{1}{2}{3}", 
+                        File.Copy(GlobalDataContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg", String.Format("{0}\\{1}{2}{3}",
                             GlobalDataContext.GAME_SAVE_DIR, GlobalDataContext.GAME_SAVE_SNAPSHOT_PREFIX,
                             saveIdentity, GlobalDataContext.GAME_SAVE_SNAPSHOT_POSTFIX));
                     }
                     // 保存描述子
-                    if (this.SL_Descriptor_TextBox.Text.Trim() != String.Empty)
-                    {
-                        var descFname = String.Format("{0}\\{1}{2}{3}", GlobalDataContext.GAME_SAVE_DIR,
-                            GlobalDataContext.GAME_SAVE_DESCRIPTOR_PREFIX, saveIdentity, GlobalDataContext.GAME_SAVE_DESCRIPTOR_POSTFIX);
-                        FileStream fs = new FileStream(descFname, FileMode.Create);
-                        StreamWriter sw = new StreamWriter(fs);
-                        sw.WriteLine(this.SL_Descriptor_TextBox.Text.Trim());
-                        sw.Close();
-                        fs.Close();
-                    }
+                    var descFname = String.Format("{0}\\{1}{2}{3}", GlobalDataContext.GAME_SAVE_DIR,
+                        GlobalDataContext.GAME_SAVE_DESCRIPTOR_PREFIX, saveIdentity, GlobalDataContext.GAME_SAVE_DESCRIPTOR_POSTFIX);
+                    FileStream fs = new FileStream(descFname, FileMode.Create);
+                    StreamWriter sw = new StreamWriter(fs);
+                    sw.WriteLine(Director.RunMana.PerformingChapter.Trim());
+                    sw.WriteLine(this.SL_Descriptor_TextBox.Text.Trim());
+                    sw.Close();
+                    fs.Close();
                 }
                 catch (Exception ex)
                 {
