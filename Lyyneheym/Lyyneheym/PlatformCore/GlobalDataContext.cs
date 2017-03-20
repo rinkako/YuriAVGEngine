@@ -236,6 +236,8 @@ namespace Yuri.PlatformCore
         public static readonly int MaxRollbackStep = 100;
         // 入口前端页面名称
         public static readonly string FirstViewPage = "stagePage";
+        // 入口前端页面名称
+        public static readonly string PersistenceFileName = "YuriScore.dat";
         #endregion
 
         #region 枚举类型
