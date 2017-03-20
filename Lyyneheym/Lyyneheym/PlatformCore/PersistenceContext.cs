@@ -25,7 +25,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="varName">变量名</param>
         /// <returns>变量的引用</returns>
-        public static object Fetch(string varName) => PersistenceContext.symbols?[varName];
+        public static object Fetch(string varName) => PersistenceContext.symbols.ContainsKey(varName) ? PersistenceContext.symbols[varName] : null;
 
         /// <summary>
         /// 将一个变量放入持久容器中，如果指定变量名已存在，就覆盖原来的对象

@@ -34,7 +34,7 @@ namespace Yuri.PageView
         public StagePage()
         {
             InitializeComponent();
-            core.SetStagePageReference(this);
+            this.core.SetStagePageReference(this);
             this.Width = this.BO_MainGrid.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
             this.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
             this.BO_MainGrid.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;

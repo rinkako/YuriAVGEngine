@@ -191,6 +191,7 @@ namespace Yuri.PlatformCore
                     {
                         MessageBox.Show("[错误] 资源文件不存在：" + sourceName);
                         Director.GetInstance().GetMainRender().Shutdown();
+                        return null;
                     }
                 }
                 MemoryStream ms = new MemoryStream(ob);

@@ -1,0 +1,36 @@
+﻿<Page x:Class="Yuri.PageView.Stage3D"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Yuri.PageView"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1280"
+      Title="Stage3D">
+  <Grid>
+    
+    <Viewport3D Margin="0" Name="viewCube">
+
+      <Viewport3D.Camera>
+        <PerspectiveCamera x:Name="perspectiveCam" FieldOfView="59" Position="0.5,0.5,2" LookDirection="0,0,-1" UpDirection="0, 1, 0">
+          <PerspectiveCamera.Transform>
+            <RotateTransform3D x:Name="rot" CenterY="0.5" CenterX="0.5" CenterZ="-0.5">
+              <RotateTransform3D.Rotation>
+                <AxisAngleRotation3D x:Name="AxisAngleRot" Axis="0,1,0" Angle="0"/>
+              </RotateTransform3D.Rotation>
+            </RotateTransform3D>
+          </PerspectiveCamera.Transform>
+        </PerspectiveCamera>
+      </Viewport3D.Camera>
+      
+			<Viewport2DVisual3D>
+        <Image x:Name="imger" Visibility="Visible">
+					
+				</Image>
+			</Viewport2DVisual3D>
+		</Viewport3D>
+
+    <Button Content="233" Width="150" Height="50" Margin="10,10,1120,660" Click="Button_Click"/>
+
+  </Grid>
+</Page>

@@ -18,17 +18,28 @@ namespace Yuri
     {
         #region 初次进入时的初始化相关函数
         /// <summary>
-        /// 初始化游戏设置
+        /// 初始化游戏设置并载入持久化数据
         /// </summary>
         private void InitConfig()
         {
             try
             {
+                // 读取游戏设置
                 ConfigParser.ConfigParse();
+                // 第一次打开游戏就创建持久性上下文
+                if (System.IO.File.Exists(GlobalDataContext.PersistenceFileName) == false)
+                {
+                    PersistenceContext.SaveToSteadyMemory();
+                }
+                // 非第一次打开游戏就读取持久性上下文
+                else
+                {
+                    PersistenceContext.LoadFromSteadyMemory();
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("No config file is detected, use defualt value.", "Director", OutputStyle.Error);
+                CommonUtils.ConsoleLine("No config file is detected, use defualt value." + ex.ToString(), "Director", OutputStyle.Error);
             }
         }
 

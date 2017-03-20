@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Media.Animation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
@@ -16,7 +15,7 @@ namespace Yuri.PlatformCore
     /// <summary>
     /// 视窗管理器：负责将画面管理器的内容渲染为前端视图
     /// </summary>
-    internal class ViewManager
+    internal sealed class ViewManager
     {
         /// <summary>
         /// 工厂方法：获得唯一实例
@@ -904,12 +903,16 @@ namespace Yuri.PlatformCore
             {
                 TransformGroup aniGroup = new TransformGroup();
                 TranslateTransform XYTransformer = new TranslateTransform();
-                ScaleTransform ScaleTransformer = new ScaleTransform();
-                ScaleTransformer.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
-                ScaleTransformer.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
-                RotateTransform RotateTransformer = new RotateTransform();
-                RotateTransformer.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
-                RotateTransformer.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
+                ScaleTransform ScaleTransformer = new ScaleTransform
+                {
+                    CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0,
+                    CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0
+                };
+                RotateTransform RotateTransformer = new RotateTransform
+                {
+                    CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0,
+                    CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0
+                };
                 aniGroup.Children.Add(XYTransformer);
                 aniGroup.Children.Add(ScaleTransformer);
                 aniGroup.Children.Add(RotateTransformer);

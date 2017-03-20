@@ -70,6 +70,9 @@
     <Compile Include="PageView\SLPage.xaml.cs">
       <DependentUpon>SLPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PageView\Stage3D.xaml.cs">
+      <DependentUpon>Stage3D.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PlatformCore\NotificationManager.cs" />
     <Compile Include="PlatformCore\CloneableDescriptor.cs" />
     <Compile Include="PlatformCore\PersistenceContext.cs" />
@@ -101,6 +104,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PageView\SLPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageView\Stage3D.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

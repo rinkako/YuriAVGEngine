@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using Yuri.PlatformCore;
+using Yuri.PageView;
 
 namespace Yuri
 {
@@ -34,12 +35,13 @@ namespace Yuri
             this.mainCanvas.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
             this.mainCanvas.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
             this.ResizeMode = GlobalDataContext.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
-            this.core.SetStagePageReference(new PageView.StagePage());
+            this.core.SetStagePageReference(new StagePage());
+            //this.mainFrame.Content = new PageView.Stage3D();
             this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
             //this.upperFrame.Content = new PageView.SLPage(false);
             // 预注册保存和读取页面
-            ViewPageManager.RegisterPage("SavePage", new PageView.SLPage(isSave: true));
-            ViewPageManager.RegisterPage("LoadPage", new PageView.SLPage(isSave: false));
+            ViewPageManager.RegisterPage("SavePage", new SLPage(isSave: true));
+            ViewPageManager.RegisterPage("LoadPage", new SLPage(isSave: false));
         }
         
         #region 窗体监听事件
@@ -48,7 +50,8 @@ namespace Yuri
         /// </summary>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            core.DisposeResource();
+            PersistenceContext.SaveToSteadyMemory();
+            this.core.DisposeResource();
         }
 
         /// <summary>
