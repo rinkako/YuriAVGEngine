@@ -34,7 +34,6 @@ namespace Yuri.PageView
         public StagePage()
         {
             InitializeComponent();
-            this.core.SetStagePageReference(this);
             this.Width = this.BO_MainGrid.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
             this.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
             this.BO_MainGrid.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
@@ -46,6 +45,14 @@ namespace Yuri.PageView
             this.BO_Cstand_Canvas.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
             this.BO_Pics_Canvas.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
             this.BO_Pics_Canvas.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
+        }
+
+        /// <summary>
+        /// 事件：页面加载完毕
+        /// </summary>
+        private void StagePage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            this.core.GetMainRender().ViewLoaded();
             SCamera.Init();
             NotificationManager.Init();
         }

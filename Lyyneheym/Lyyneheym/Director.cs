@@ -132,7 +132,7 @@ namespace Yuri
                 type = InterruptType.LoadReaction,
                 detail = "Reaction for load data",
                 interruptSA = Director.RunMana.DashingPureSa,
-                interruptFuncSign = "",
+                interruptFuncSign = String.Empty,
                 returnTarget = null,
                 pureInterrupt = true
             };
@@ -192,7 +192,6 @@ namespace Yuri
         /// </summary>
         private void UpdateContext(object sender, EventArgs e)
         {
-            CommonUtils.ConsoleLine("update context...", "Director", OutputStyle.Important);
             // 取得调用堆栈顶部状态
             StackMachineState stackState = Director.RunMana.GameState(Director.RunMana.CallStack);
             var vw = ViewManager.GetInstance();
@@ -555,7 +554,7 @@ namespace Yuri
                 CommonUtils.ConsoleLine(String.Format("Function calling for current Scene (Scene not explicit): {0}", callFunc),
                     "Director", OutputStyle.Warning);
             }
-            if (sceneFuncList.Count() == 0)
+            if (!sceneFuncList.Any())
             {
                 CommonUtils.ConsoleLine(String.Format("Ignored Function calling (function not exist): {0}", callFunc),
                     "Director", OutputStyle.Error);
@@ -634,17 +633,16 @@ namespace Yuri
         public void SetStagePageReference(PageView.StagePage sp)
         {
             ViewPageManager.RegisterPage(GlobalDataContext.FirstViewPage, sp);
-            this.updateRender.ViewLoaded();
         }
-
+        
         /// <summary>
         /// 在游戏结束时释放所有资源
         /// </summary>
         public void DisposeResource()
         {
-            CommonUtils.ConsoleLine(String.Format("Begin dispose resource"), "Director", OutputStyle.Important);
+            CommonUtils.ConsoleLine("Begin dispose resource", "Director", OutputStyle.Important);
             Musician.GetInstance().Dispose();
-            CommonUtils.ConsoleLine(String.Format("Finished dispose resource, program will shutdown"), "Director", OutputStyle.Important);
+            CommonUtils.ConsoleLine("Finished dispose resource, program will shutdown", "Director", OutputStyle.Important);
         }
 
         /// <summary>
@@ -663,8 +661,8 @@ namespace Yuri
         {
             CommonUtils.ConsoleLine("======================", "Director", OutputStyle.Simple);
             CommonUtils.ConsoleLine("Game is launched", "Director", OutputStyle.Normal);
-            CommonUtils.ConsoleLine("CurrentDirectory is: " + System.Environment.CurrentDirectory, "Director", OutputStyle.Simple);
-            CommonUtils.ConsoleLine("BaseDirectory is: " + System.AppDomain.CurrentDomain.BaseDirectory, "Director", OutputStyle.Simple);
+            CommonUtils.ConsoleLine("CurrentDirectory is: " + Environment.CurrentDirectory, "Director", OutputStyle.Simple);
+            CommonUtils.ConsoleLine("BaseDirectory is: " + AppDomain.CurrentDomain.BaseDirectory, "Director", OutputStyle.Simple);
             this.InitConfig();
             this.resMana = ResourceManager.GetInstance();
             Director.RunMana = new RuntimeManager();
@@ -689,7 +687,7 @@ namespace Yuri
         /// <summary>
         /// 程序启动时的根目录
         /// </summary>
-        public static string BasePath = System.AppDomain.CurrentDomain.BaseDirectory;
+        public static string BasePath = AppDomain.CurrentDomain.BaseDirectory;
 
         /// <summary>
         /// 运行时环境
@@ -723,17 +721,17 @@ namespace Yuri
         /// <summary>
         /// 消息循环计时器
         /// </summary>
-        private DispatcherTimer timer;
+        private readonly DispatcherTimer timer;
 
         /// <summary>
         /// 资源管理器
         /// </summary>
-        private ResourceManager resMana;
+        private readonly ResourceManager resMana;
 
         /// <summary>
-        /// 画面刷新器
+        /// 画音渲染器
         /// </summary>
-        private UpdateRender updateRender;
+        private readonly UpdateRender updateRender;
         
         /// <summary>
         /// 唯一实例

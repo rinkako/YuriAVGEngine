@@ -1059,13 +1059,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 主舞台页面的引用
         /// </summary>
-        private PageView.StagePage view
-        {
-            get
-            {
-                return (PageView.StagePage)ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
-            }
-        }
+        private PageView.StagePage view => (PageView.StagePage)ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
 
         /// <summary>
         /// 主窗体的引用

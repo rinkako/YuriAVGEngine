@@ -28,7 +28,7 @@ namespace Yuri
         /// </summary>
         public MainWindow()
         {
-            CommonUtils.ConsoleLine("MWnd Initialization begin", "MainWindow", OutputStyle.Important);
+            CommonUtils.ConsoleLine("MWnd Initialization stage 1", "MainWindow", OutputStyle.Important);
             InitializeComponent();
             ViewManager.SetWindowReference(this);
             this.Title = GlobalDataContext.GAME_TITLE_NAME;
@@ -37,13 +37,14 @@ namespace Yuri
             this.mainCanvas.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
             this.mainCanvas.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
             this.ResizeMode = GlobalDataContext.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
+            // 加载主页面
+            CommonUtils.ConsoleLine("MWnd Initialization stage 2", "MainWindow", OutputStyle.Important);
             this.core.SetStagePageReference(new StagePage());
-            //this.mainFrame.Content = new PageView.Stage3D();
             this.mainFrame.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
             this.mainFrame.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
             this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
-            //this.upperFrame.Content = new PageView.SLPage(false);
             // 预注册保存和读取页面
+            CommonUtils.ConsoleLine("MWnd Initialization stage 3", "MainWindow", OutputStyle.Important);
             ViewPageManager.RegisterPage("SavePage", new SLPage(isSave: true));
             ViewPageManager.RegisterPage("LoadPage", new SLPage(isSave: false));
             CommonUtils.ConsoleLine("MWnd Initialization finish", "MainWindow", OutputStyle.Important);

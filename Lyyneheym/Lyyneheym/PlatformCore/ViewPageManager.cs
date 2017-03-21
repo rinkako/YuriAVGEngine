@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Controls;
+using Yuri.Utils;
 
 namespace Yuri.PlatformCore
 {
@@ -27,6 +28,7 @@ namespace Yuri.PlatformCore
         /// <returns>是否发生了覆盖</returns>
         public static bool RegisterPage(string pageId, Page pageRef)
         {
+            CommonUtils.ConsoleLine("Register Page: " + pageId, "ViewPage Manager", OutputStyle.Important);
             bool rFlag = ViewPageManager.pageDict.ContainsKey(pageId);
             ViewPageManager.pageDict[pageId] = pageRef;
             return rFlag;

@@ -55,7 +55,7 @@ namespace YuriHalation.YuriForms
                 this.button1.Enabled = false;
                 this.ControlBox = false;
                 debugGameProcess = new Process();
-                debugGameProcess.StartInfo.FileName = @"D:\解决方案与项目\Slyvia\Lyyneheym\Lyyneheym\bin\Debug\Yuri.exe"; //rootPath + @"\Yuri.exe";
+                debugGameProcess.StartInfo.FileName = rootPath + @"\Yuri.exe";
                 debugGameProcess.StartInfo.Arguments = "";
                 debugGameProcess.StartInfo.UseShellExecute = false;
                 debugGameProcess.StartInfo.RedirectStandardOutput = true;
