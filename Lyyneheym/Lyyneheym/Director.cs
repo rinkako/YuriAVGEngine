@@ -192,6 +192,7 @@ namespace Yuri
         /// </summary>
         private void UpdateContext(object sender, EventArgs e)
         {
+            CommonUtils.ConsoleLine("update context...", "Director", OutputStyle.Important);
             // 取得调用堆栈顶部状态
             StackMachineState stackState = Director.RunMana.GameState(Director.RunMana.CallStack);
             var vw = ViewManager.GetInstance();
@@ -642,7 +643,7 @@ namespace Yuri
         public void DisposeResource()
         {
             CommonUtils.ConsoleLine(String.Format("Begin dispose resource"), "Director", OutputStyle.Important);
-            BassPlayer.GetInstance().Dispose();
+            Musician.GetInstance().Dispose();
             CommonUtils.ConsoleLine(String.Format("Finished dispose resource, program will shutdown"), "Director", OutputStyle.Important);
         }
 
@@ -672,14 +673,16 @@ namespace Yuri
             Director.RunMana.ParallelHandler = this.ParallelUpdateContext;
             Director.RunMana.PerformingChapter = "Prelogue";
             SCamera.Init();
-            this.timer = new DispatcherTimer();
-            this.timer.Interval = TimeSpan.FromTicks((long)GlobalDataContext.DirectorTimerInterval);
+            this.timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromTicks((long) GlobalDataContext.DirectorTimerInterval)
+            };
             this.timer.Tick += UpdateContext;
 #if NOTIME
 #else
+            this.InitRuntime();
             this.timer.Start();
             CommonUtils.ConsoleLine("Context Update Dispatcher is begun", "Director", OutputStyle.Important);
-            this.InitRuntime();
 #endif
         }
 
@@ -731,18 +734,7 @@ namespace Yuri
         /// 画面刷新器
         /// </summary>
         private UpdateRender updateRender;
-
-        /// <summary>
-        /// 主舞台页面的引用
-        /// </summary>
-        private PageView.StagePage mwReference
-        {
-            get
-            {
-                return (PageView.StagePage)ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
-            }
-        }
-
+        
         /// <summary>
         /// 唯一实例
         /// </summary>

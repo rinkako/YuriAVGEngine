@@ -18,7 +18,7 @@ namespace Yuri.ILPackage
         public static void ConfigParse()
         {
             // 读入数据
-            FileStream fs = new FileStream(Director.BasePath + "game.yuriconfig", FileMode.Open);
+            FileStream fs = new FileStream(Director.BasePath + "YuriConfig.dat", FileMode.Open);
             StreamReader sr = new StreamReader(fs);
             Dictionary<string, string> configDict = new Dictionary<string, string>();
             while (sr.EndOfStream == false)

@@ -1156,8 +1156,8 @@ namespace Yuri.PlatformCore
         /// <param name="volume">音量</param>
         private void Se(string resourceName, double volume)
         {
-            var seKVP = this.resMana.GetSE(resourceName);
-            this.musician.PlaySE(seKVP.Key, seKVP.Value, (float)volume);
+            var ms = this.resMana.GetSE(resourceName);
+            this.musician.PlaySE(ms, (float)volume);
         }
 
         /// <summary>
@@ -1168,17 +1168,17 @@ namespace Yuri.PlatformCore
         public void Bgm(string resourceName, double volume)
         {
             // 空即为停止
-            if (resourceName == null || resourceName == String.Empty)
+            if (String.IsNullOrEmpty(resourceName))
             {
                 Director.RunMana.PlayingBGM = String.Empty;
                 this.musician.StopAndReleaseBGM();
             }
             // 如果当前BGM就是此BGM就只调整音量
-            else if (this.musician.currentBGM != resourceName)
+            else if (this.musician.CurrentBgm != resourceName)
             {
-                var bgmKVP = this.resMana.GetBGM(resourceName);
+                var ms = this.resMana.GetBGM(resourceName);
                 Director.RunMana.PlayingBGM = resourceName;
-                this.musician.PlayBGM(resourceName, bgmKVP.Key, bgmKVP.Value, (float)volume);
+                this.musician.PlayBGM(resourceName, ms, (float)volume);
             }
             else
             {
@@ -1213,10 +1213,10 @@ namespace Yuri.PlatformCore
         /// <param name="volume">音量</param>
         private void Vocal(string resourceName, double volume)
         {
-            if (resourceName != "")
+            if (resourceName != String.Empty)
             {
-                var vocalKVP = this.resMana.GetVocal(resourceName);
-                this.musician.PlayVocal(vocalKVP.Key, vocalKVP.Value, (float)volume);
+                var ms = this.resMana.GetVocal(resourceName);
+                this.musician.PlayVocal(ms, (float)volume);
             }
         }
 

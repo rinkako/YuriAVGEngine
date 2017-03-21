@@ -58,45 +58,45 @@ namespace Yuri.PlatformCore
             }
             return this.GetGraphicSprite(sourceName, ResourceType.Pictures, cutRect);
         }
-        
+
         /// <summary>
         /// 获得一个指定BGM音频资源的内存数组
         /// </summary>
         /// <param name="sourceName">资源名称</param>
-        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
-        public KeyValuePair<GCHandle?, long> GetBGM(string sourceName)
+        /// <returns>该音频的托管内存流</returns>
+        public MemoryStream GetBGM(string sourceName)
         {
-            return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.BGM);
+            return this.GetMusicMemoryStream(sourceName, ResourceType.BGM);
         }
 
         /// <summary>
         /// 获得一个指定BGS音频资源的内存数组
         /// </summary>
         /// <param name="sourceName">资源名称</param>
-        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
-        public KeyValuePair<GCHandle?, long> GetBGS(string sourceName)
+        /// <returns>该音频的托管内存流</returns>
+        public MemoryStream GetBGS(string sourceName)
         {
-            return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.BGS);
+            return this.GetMusicMemoryStream(sourceName, ResourceType.BGS);
         }
 
         /// <summary>
         /// 获得一个指定SE音频资源的内存数组
         /// </summary>
         /// <param name="sourceName">资源名称</param>
-        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
-        public KeyValuePair<GCHandle?, long> GetSE(string sourceName)
+        /// <returns>该音频的托管内存流</returns>
+        public MemoryStream GetSE(string sourceName)
         {
-            return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.SE);
+            return this.GetMusicMemoryStream(sourceName, ResourceType.SE);
         }
 
         /// <summary>
         /// 获得一个指定Vocal音频资源的内存数组
         /// </summary>
         /// <param name="sourceName">资源名称</param>
-        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
-        public KeyValuePair<GCHandle?, long> GetVocal(string sourceName)
+        /// <returns>该音频的托管内存流</returns>
+        public MemoryStream GetVocal(string sourceName)
         {
-            return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.VOCAL);
+            return this.GetMusicMemoryStream(sourceName, ResourceType.VOCAL);
         }
 
         /// <summary>
@@ -226,10 +226,13 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="sourceName">资源名称</param>
         /// <param name="rtype">资源类型</param>
-        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
-        private KeyValuePair<GCHandle?, long> GetMusicGCHandleLengthKVP(string sourceName, ResourceType rtype)
+        /// <returns>该音频的托管内存流</returns>
+        private MemoryStream GetMusicMemoryStream(string sourceName, ResourceType rtype)
         {
-            if (sourceName == String.Empty) { return new KeyValuePair<GCHandle?,long>(null, 0); }
+            if (sourceName == String.Empty)
+            {
+                return null;
+            }
             string DevURI = null, PackURI = null;
             // 处理路径
             switch (rtype)
@@ -258,9 +261,9 @@ namespace Yuri.PlatformCore
                 this.resourceTable[DevURI].ContainsKey(sourceName))
             {
                 KeyValuePair<long, long> sourceLocation = this.resourceTable[DevURI][sourceName];
-                GCHandle ptr = PackageUtils.GetObjectManagedHandle(IOUtils.ParseURItoURL(PackURI + GlobalDataContext.PackPostfix),
+                var ptr = PackageUtils.GetObjectBytes(IOUtils.ParseURItoURL(PackURI + GlobalDataContext.PackPostfix),
                     sourceName, sourceLocation.Key, sourceLocation.Value);
-                return new KeyValuePair<GCHandle?, long>(ptr, sourceLocation.Value);
+                return new MemoryStream(ptr);
             }
             // 没有封包数据再搜索开发目录
             else
@@ -268,8 +271,8 @@ namespace Yuri.PlatformCore
                 string furi = IOUtils.JoinPath(GlobalDataContext.DevURI_RT_SOUND, DevURI, sourceName);
                 if (File.Exists(IOUtils.ParseURItoURL(furi)))
                 {
-                    byte[] bytes = File.ReadAllBytes(IOUtils.ParseURItoURL(furi));
-                    return new KeyValuePair<GCHandle?, long>(GCHandle.Alloc(bytes, GCHandleType.Pinned), bytes.Length);
+                    byte[] ptr = File.ReadAllBytes(IOUtils.ParseURItoURL(furi));
+                    return new MemoryStream(ptr);
                 }
                 else
                 {

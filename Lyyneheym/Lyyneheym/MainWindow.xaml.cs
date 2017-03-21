@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using Yuri.PlatformCore;
 using Yuri.PageView;
+using Yuri.Utils;
 
 namespace Yuri
 {
@@ -15,18 +16,19 @@ namespace Yuri
         /// <summary>
         /// 导演类的引用
         /// </summary>
-        private Director core = Director.GetInstance();
+        private readonly Director core = Director.GetInstance();
 
         /// <summary>
         /// Alt键正在被按下的标记
         /// </summary>
-        private static bool AltDown = false;
+        private static bool altDown = false;
         
         /// <summary>
         /// 构造器
         /// </summary>
         public MainWindow()
         {
+            CommonUtils.ConsoleLine("MWnd Initialization begin", "MainWindow", OutputStyle.Important);
             InitializeComponent();
             ViewManager.SetWindowReference(this);
             this.Title = GlobalDataContext.GAME_TITLE_NAME;
@@ -37,11 +39,14 @@ namespace Yuri
             this.ResizeMode = GlobalDataContext.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
             this.core.SetStagePageReference(new StagePage());
             //this.mainFrame.Content = new PageView.Stage3D();
+            this.mainFrame.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
+            this.mainFrame.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
             this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
             //this.upperFrame.Content = new PageView.SLPage(false);
             // 预注册保存和读取页面
             ViewPageManager.RegisterPage("SavePage", new SLPage(isSave: true));
             ViewPageManager.RegisterPage("LoadPage", new SLPage(isSave: false));
+            CommonUtils.ConsoleLine("MWnd Initialization finish", "MainWindow", OutputStyle.Important);
         }
         
         #region 窗体监听事件
@@ -61,13 +66,13 @@ namespace Yuri
         {
             if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
             {
-                MainWindow.AltDown = true;
+                MainWindow.altDown = true;
             }
-            else if (e.SystemKey == Key.F4 && MainWindow.AltDown)
+            else if (e.SystemKey == Key.F4 && MainWindow.altDown)
             {
                 this.core.GetMainRender().Shutdown();
             }
-            else if (e.SystemKey == Key.Enter && MainWindow.AltDown)
+            else if (e.SystemKey == Key.Enter && MainWindow.altDown)
             {
                 if (Director.FullScreen == true)
                 {
@@ -88,7 +93,7 @@ namespace Yuri
         {
             if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
             {
-                MainWindow.AltDown = false;
+                MainWindow.altDown = false;
             }
         }
         

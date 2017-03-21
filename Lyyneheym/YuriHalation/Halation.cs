@@ -175,7 +175,7 @@ namespace Yuri
         public void DashParse()
         {
             // 保存全局配置
-            FileManager.SaveConfigData(Halation.projectFolder + "\\game.yuriconfig",
+            FileManager.SaveConfigData(Halation.projectFolder + "\\YuriConfig.dat",
                 Halation.GetNameAndValue<ConfigPackage>(Halation.project.Config));
             // 翻译可视化事件到脚本
             var scripts = CodeGenerator.GetInstance().Generate();

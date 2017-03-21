@@ -136,7 +136,7 @@ namespace Yuri.PlatformCore
         // 音频：语音文件后缀
         public static string GAME_VOCAL_POSTFIX = ".mp3";
         // 音频：BGM默认音量
-        public static float GAME_SOUND_BGMVOL = 800;
+        public static float GAME_SOUND_BGMVOL = 1000;
         // 音频：BGS默认音量
         public static float GAME_SOUND_BGSVOL = 800;
         // 音频：SE默认音量

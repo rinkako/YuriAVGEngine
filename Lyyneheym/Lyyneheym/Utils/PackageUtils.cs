@@ -177,12 +177,12 @@ namespace Yuri.Utils
         /// <returns>资源的字节序列</returns>
         public static byte[] GetObjectBytes(string packFile, string resourceName, long offset, long length)
         {
-            FileStream pakFs = new FileStream(packFile, FileMode.Open);
+            var pakFs = new FileStream(packFile, FileMode.Open);
             pakFs.Seek(offset, SeekOrigin.Begin);
-            byte[] buffer = new byte[length];
+            var buffer = new byte[length];
             if (length >= Int32.MaxValue)
             {
-                BinaryReader pakBr = new BinaryReader(pakFs);
+                var pakBr = new BinaryReader(pakFs);
                 for (long i = 0; i < length; i++)
                 {
                     buffer[i] = pakBr.ReadByte();

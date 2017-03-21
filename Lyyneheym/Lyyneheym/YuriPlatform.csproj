@@ -40,9 +40,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bass.Net, Version=2.4.11.1, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
+    <Reference Include="NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Bass.Net.dll</HintPath>
+      <HintPath>.\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -73,6 +73,7 @@
     <Compile Include="PageView\Stage3D.xaml.cs">
       <DependentUpon>Stage3D.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PlatformCore\NAudioPlayer.cs" />
     <Compile Include="PlatformCore\NotificationManager.cs" />
     <Compile Include="PlatformCore\CloneableDescriptor.cs" />
     <Compile Include="PlatformCore\PersistenceContext.cs" />

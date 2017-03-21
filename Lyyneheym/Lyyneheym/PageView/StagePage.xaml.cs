@@ -100,7 +100,7 @@ namespace Yuri.PageView
             ViewManager.RenderFrameworkElementToJPEG(this.BO_MainGrid, GlobalDataContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
             SLPage p = (SLPage)ViewPageManager.RetrievePage("SavePage");
             p.ReLoadFileInfo();
-            NavigationService.GetNavigationService(this).Navigate(p);
+            NavigationService.GetNavigationService(this)?.Navigate(p);
         }
 
         // DEBUG
@@ -109,7 +109,7 @@ namespace Yuri.PageView
             //this.core.GetMainRender().Load("mysave");
             SLPage p = (SLPage)ViewPageManager.RetrievePage("LoadPage");
             p.ReLoadFileInfo();
-            NavigationService.GetNavigationService(this).Navigate(p);
+            NavigationService.GetNavigationService(this)?.Navigate(p);
         }
 
         // DEBUG

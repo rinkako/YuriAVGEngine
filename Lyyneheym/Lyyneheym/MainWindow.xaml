@@ -5,12 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Yuri"
         mc:Ignorable="d"
-        Title="MainWindow" Height="752" Width="1280" Closing="Window_Closing" SizeChanged="window_SizeChanged" StateChanged="window_StateChanged" PreviewKeyDown="window_PreviewKeyDown" PreviewKeyUp="window_PreviewKeyUp" Background="White">
+        Title="MainWindow" Height="752" Width="1280" Closing="Window_Closing" SizeChanged="window_SizeChanged" StateChanged="window_StateChanged" PreviewKeyDown="window_PreviewKeyDown" PreviewKeyUp="window_PreviewKeyUp" Background="White" WindowStartupLocation="CenterScreen">
   <Viewbox x:Name="viewbox" Stretch="UniformToFill" Width="{Binding ElementName=nvWindow, Mode=OneWay}" Height="{Binding ElementName=nvWindow, Mode=OneWay}">
     <Canvas x:Name="mainCanvas" Width="{Binding ElementName=viewbox, Mode=OneWay}" Height="{Binding ElementName=viewbox, Mode=OneWay}">
-      <Frame Name="mainFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" NavigationUIVisibility="Hidden">
-      </Frame>
-      <Frame Name="upperFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" NavigationUIVisibility="Hidden">
+      <Frame x:Name="mainFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="Blue">
       </Frame>
     </Canvas>
   </Viewbox>
