@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using Yuri.PlatformCore;
 using Yuri.PageView;
 using Yuri.Utils;
@@ -28,8 +27,9 @@ namespace Yuri
         /// </summary>
         public MainWindow()
         {
-            CommonUtils.ConsoleLine("MWnd Initialization stage 1", "MainWindow", OutputStyle.Important);
+            CommonUtils.ConsoleLine("MWnd Initialization stage 1", "MainWindow", OutputStyle.Normal);
             InitializeComponent();
+            CommonUtils.ConsoleLine("MWnd Initialization stage 2", "MainWindow", OutputStyle.Normal);
             ViewManager.SetWindowReference(this);
             this.Title = GlobalDataContext.GAME_TITLE_NAME;
             this.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
@@ -38,13 +38,13 @@ namespace Yuri
             this.mainCanvas.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
             this.ResizeMode = GlobalDataContext.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
             // 加载主页面
-            CommonUtils.ConsoleLine("MWnd Initialization stage 2", "MainWindow", OutputStyle.Important);
+            CommonUtils.ConsoleLine("MWnd Initialization stage 3", "MainWindow", OutputStyle.Normal);
             this.core.SetStagePageReference(new StagePage());
             this.mainFrame.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
             this.mainFrame.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
             this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
             // 预注册保存和读取页面
-            CommonUtils.ConsoleLine("MWnd Initialization stage 3", "MainWindow", OutputStyle.Important);
+            CommonUtils.ConsoleLine("MWnd Initialization stage 4", "MainWindow", OutputStyle.Normal);
             ViewPageManager.RegisterPage("SavePage", new SLPage(isSave: true));
             ViewPageManager.RegisterPage("LoadPage", new SLPage(isSave: false));
             CommonUtils.ConsoleLine("MWnd Initialization finish", "MainWindow", OutputStyle.Important);
@@ -75,7 +75,7 @@ namespace Yuri
             }
             else if (e.SystemKey == Key.Enter && MainWindow.altDown)
             {
-                if (Director.FullScreen == true)
+                if (Director.FullScreen)
                 {
                     this.WindowScreenTransform();
                 }
@@ -104,7 +104,7 @@ namespace Yuri
         private void window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.Width = e.NewSize.Width;
-            this.Height = (double)GlobalDataContext.GAME_WINDOW_ACTUALHEIGHT * this.Width / (double)GlobalDataContext.GAME_WINDOW_WIDTH;
+            this.Height = GlobalDataContext.GAME_WINDOW_ACTUALHEIGHT * this.Width / GlobalDataContext.GAME_WINDOW_WIDTH;
         }
 
         /// <summary>

@@ -2,7 +2,6 @@
 using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Windows;
 using Yuri.ILPackage;
 using Yuri.Utils;
 
@@ -430,19 +429,24 @@ namespace Yuri.PlatformCore
                 // 非函数调用
                 if (this.GameState(vsm) != StackMachineState.FunctionCalling)
                 {
-                    this.Symbols.Assign(vsm.EBP.ScriptName, varname.Replace("$", ""), this.CalculatePolish(valuePolish, vsm));
+                    this.Symbols.Assign(vsm.EBP.ScriptName, varname.Replace("$", String.Empty), this.CalculatePolish(valuePolish, vsm));
                 }
                 // 函数调用
                 else
                 {
-                    var functionFrame = vsm.ESP.BindingFunction; //ResourceManager.GetInstance().GetScene(this.CallStack.ESP.BindingSceneName).FuncContainer.Find((x) => x.Callname == this.CallStack.ESP.ScriptName);
-                    functionFrame.Symbols[varname.Replace("$", "")] = this.CalculatePolish(valuePolish, vsm);
+                    var functionFrame = vsm.ESP.BindingFunction;
+                    functionFrame.Symbols[varname.Replace("$", String.Empty)] = this.CalculatePolish(valuePolish, vsm);
                 }
             }
             // 处理全局变量
             else if (varname.StartsWith("&"))
             {
-                this.Symbols.GlobalAssign(varname.Replace("&", ""), this.CalculatePolish(valuePolish, vsm));
+                this.Symbols.GlobalAssign(varname.Replace("&", String.Empty), this.CalculatePolish(valuePolish, vsm));
+            }
+            // 处理持久化变量
+            else if (varname.StartsWith("%"))
+            {
+                PersistenceContext.Assign(varname.Replace("%", String.Empty), this.CalculatePolish(valuePolish, vsm));
             }
         }
 
@@ -466,13 +470,18 @@ namespace Yuri.PlatformCore
                 else
                 {
                     var funFrame = vsm.ESP.BindingFunction;
-                    return funFrame.Symbols[varName.Replace("$", "")];
+                    return funFrame.Symbols[varName.Replace("$", String.Empty)];
                 }
             }
             // 处理全局变量
-            else if (varName.StartsWith("&"))
+            if (varName.StartsWith("&"))
             {
-                return this.Symbols.GlobalFetch(varName.Replace("&", ""));
+                return this.Symbols.GlobalFetch(varName.Replace("&", String.Empty));
+            }
+            // 处理持久化变量
+            if (varName.StartsWith("%"))
+            {
+                return PersistenceContext.Fetch(varName.Replace("%", String.Empty));
             }
             return null;
         }

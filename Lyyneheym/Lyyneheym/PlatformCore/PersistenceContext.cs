@@ -21,19 +21,26 @@ namespace Yuri.PlatformCore
             IOUtils.Unserialization(GlobalDataContext.PersistenceFileName) as Dictionary<string, object>;
 
         /// <summary>
-        /// 从持久容器中取一个变量
-        /// </summary>
-        /// <param name="varName">变量名</param>
-        /// <returns>变量的引用</returns>
-        public static object Fetch(string varName) => PersistenceContext.symbols.ContainsKey(varName) ? PersistenceContext.symbols[varName] : null;
-
-        /// <summary>
         /// 将一个变量放入持久容器中，如果指定变量名已存在，就覆盖原来的对象
         /// </summary>
         /// <param name="varName">变量名</param>
         /// <param name="varObj">要存入的对象</param>
         public static void Assign(string varName, object varObj) => PersistenceContext.symbols[varName] = varObj;
-        
+
+        /// <summary>
+        /// 从持久容器中取一个变量
+        /// </summary>
+        /// <param name="varName">变量名</param>
+        /// <returns>变量的引用</returns>
+        public static object Fetch(string varName)
+        {
+            if (PersistenceContext.symbols.ContainsKey(varName))
+            {
+                return PersistenceContext.symbols[varName];
+            }
+            throw new NullReferenceException("持久化变量 " + varName + " 在作为左值之前被引用");
+        }
+
         /// <summary>
         /// 持久符号表
         /// </summary>

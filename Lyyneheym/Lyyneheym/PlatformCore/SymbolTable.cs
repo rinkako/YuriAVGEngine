@@ -32,11 +32,11 @@ namespace Yuri.PlatformCore
         /// <returns>变量在运行时环境的引用</returns>
         public object Fetch(Scene sceneObject, string varName)
         {
-            Dictionary<string, object> table = this.FindSymbolTable(sceneObject.Scenario);
+            var table = this.FindSymbolTable(sceneObject.Scenario);
             // 如果查无此键
             if (table.ContainsKey(varName) == false)
             {
-                throw new Exception("变量 " + varName + " 在作为左值之前被引用");
+                throw new NullReferenceException("变量 " + varName + " 在作为左值之前被引用");
             }
             return table[varName];
         }
@@ -49,7 +49,7 @@ namespace Yuri.PlatformCore
         /// <param name="value">变量的值</param>
         public void Assign(string sceneName, string varName, object value)
         {
-            Dictionary<string, object> table = this.FindSymbolTable(sceneName);
+            var table = this.FindSymbolTable(sceneName);
             // 为变量赋值
             table[varName] = value;
         }

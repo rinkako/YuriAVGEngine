@@ -117,11 +117,12 @@ namespace Yuri.YuriInterpreter
         private bool DFA(out Token nextToken)
         {
             // 定义结果实例并初始化
-            Token res = new Token();
-            res.Line = this.currentLine;
-            res.Column = this.currentColumn;
-            res.IndexOfCode = this.nextCharPointer;
-            int alen = this.sourceCode.Length;
+            Token res = new Token
+            {
+                Line = this.currentLine,
+                Column = this.currentColumn,
+                IndexOfCode = this.nextCharPointer
+            };
             // 获取下一个字符来判断自动机路径
             bool successFlag = false;
             // 如果finFlag还没有成立，直接进入剧本自动机路径
@@ -161,8 +162,9 @@ namespace Yuri.YuriInterpreter
                     case CharacterType.Letter:
                         successFlag = this.GetReservedCalculator(res);
                         break;
-                    // 标识符
+                    // 标识符（$、&、%，其中&在&&路径中处理）
                     case CharacterType.Dollar:
+                    case CharacterType.Percent:
                         successFlag = this.GetIdentifierCalculator(res);
                         break;
                     // 字符串
@@ -367,7 +369,7 @@ namespace Yuri.YuriInterpreter
                     return true;
                 }
             }
-            return (idFlag || false);
+            return idFlag;
         }
 
         /// <summary>
@@ -603,8 +605,7 @@ namespace Yuri.YuriInterpreter
             // 扫描数字序列
             while (this.nextCharPointer < this.sourceCode.Length)
             {
-                char c;
-                c = this.sourceCode[this.nextCharPointer];
+                var c = this.sourceCode[this.nextCharPointer];
                 if (this.GetCharType(c) == CharacterType.Number)
                 {
                     sb.Append(c);
@@ -718,45 +719,83 @@ namespace Yuri.YuriInterpreter
         /// <returns>字符的类型</returns>
         private CharacterType GetCharType(char c)
         {
-            if (c <= 0x9fbb && c >= 0x4e00) { return CharacterType.Chinese; }
+            if (0x4e00 <= c && c <= 0x9fbb) { return CharacterType.Chinese; }
             if ('a' <= c && c <= 'z') { return CharacterType.Letter; }
             if ('A' <= c && c <= 'Z') { return CharacterType.Letter; }
             if ('0' <= c && c <= '9') { return CharacterType.Number; }
-            if (c == ' ') { return CharacterType.Space; }
-            if (c == '_') { return CharacterType.UnderLine; }
-            if (c == '.') { return CharacterType.Dot; }
-            if (c == ',') { return CharacterType.Comma; }
-            if (c == '+') { return CharacterType.Plus; }
-            if (c == '-') { return CharacterType.Minus; }
-            if (c == '*') { return CharacterType.Multiply; }
-            if (c == '/') { return CharacterType.Divide; }
-            if (c == '%') { return CharacterType.Percent; }
-            if (c == '^') { return CharacterType.Xor; }
-            if (c == '&') { return CharacterType.And; }
-            if (c == '|') { return CharacterType.Or; }
-            if (c == '~') { return CharacterType.Reverse; }
-            if (c == '$') { return CharacterType.Dollar; }
-            if (c == '<') { return CharacterType.LessThan; }
-            if (c == '>') { return CharacterType.GreaterThan; }
-            if (c == '(') { return CharacterType.LeftParentheses; }
-            if (c == ')') { return CharacterType.RightParentheses; }
-            if (c == '[') { return CharacterType.LeftBracket; }
-            if (c == ']') { return CharacterType.RightBracket; }
-            if (c == '{') { return CharacterType.LeftBrace; }
-            if (c == '}') { return CharacterType.RightBrace; }
-            if (c == '!') { return CharacterType.Not; }
-            if (c == '#') { return CharacterType.Pound; }
-            if (c == '?') { return CharacterType.Question; }
-            if (c == '"') { return CharacterType.DoubleQuotation; }
-            if (c == ':') { return CharacterType.Colon; }
-            if (c == ';') { return CharacterType.Semicolon; }
-            if (c == '=') { return CharacterType.Equality; }
-            if (c == '@') { return CharacterType.At; }
-            if (c == '\\') { return CharacterType.Slash; }
-            if (c == '\'') { return CharacterType.Quotation; }
-            if (c == '\t') { return CharacterType.Space; }
-            if (c == '\r') { return CharacterType.Space; }
-            if (c == '\n') { return CharacterType.Space; }
+            switch (c)
+            {
+                case ' ':
+                    return CharacterType.Space;
+                case '_':
+                    return CharacterType.UnderLine;
+                case '.':
+                    return CharacterType.Dot;
+                case ',':
+                    return CharacterType.Comma;
+                case '+':
+                    return CharacterType.Plus;
+                case '-':
+                    return CharacterType.Minus;
+                case '*':
+                    return CharacterType.Multiply;
+                case '/':
+                    return CharacterType.Divide;
+                case '%':
+                    return CharacterType.Percent;
+                case '^':
+                    return CharacterType.Xor;
+                case '&':
+                    return CharacterType.And;
+                case '|':
+                    return CharacterType.Or;
+                case '~':
+                    return CharacterType.Reverse;
+                case '$':
+                    return CharacterType.Dollar;
+                case '<':
+                    return CharacterType.LessThan;
+                case '>':
+                    return CharacterType.GreaterThan;
+                case '(':
+                    return CharacterType.LeftParentheses;
+                case ')':
+                    return CharacterType.RightParentheses;
+                case '[':
+                    return CharacterType.LeftBracket;
+                case ']':
+                    return CharacterType.RightBracket;
+                case '{':
+                    return CharacterType.LeftBrace;
+                case '}':
+                    return CharacterType.RightBrace;
+                case '!':
+                    return CharacterType.Not;
+                case '#':
+                    return CharacterType.Pound;
+                case '?':
+                    return CharacterType.Question;
+                case '"':
+                    return CharacterType.DoubleQuotation;
+                case ':':
+                    return CharacterType.Colon;
+                case ';':
+                    return CharacterType.Semicolon;
+                case '=':
+                    return CharacterType.Equality;
+                case '@':
+                    return CharacterType.At;
+                case '\\':
+                    return CharacterType.Slash;
+                case '\'':
+                    return CharacterType.Quotation;
+                case '\t':
+                    return CharacterType.Space;
+                case '\r':
+                    return CharacterType.Space;
+                case '\n':
+                    return CharacterType.Space;
+            }
             return CharacterType.cUnknown;
         }
 
@@ -803,17 +842,17 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 列初始值
         /// </summary>
-        private static readonly int ColStartNum = 0;
+        private const int ColStartNum = 0;
 
         /// <summary>
         /// 行初始值
         /// </summary>
-        private static readonly int RowStartNum = 0;
+        private const int RowStartNum = 0;
 
         /// <summary>
         /// 换行符
         /// </summary>
-        private static readonly char LineTerminator = '\n';
+        private const char LineTerminator = '\n';
     }
 
     /// <summary>

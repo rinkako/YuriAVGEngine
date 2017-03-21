@@ -3,6 +3,9 @@ using System.Text;
 
 namespace Yuri.YuriInterpreter
 {
+    /// <summary>
+    /// 异常类：编译异常
+    /// </summary>
     [Serializable]
     internal class InterpreterException : Exception
     {
