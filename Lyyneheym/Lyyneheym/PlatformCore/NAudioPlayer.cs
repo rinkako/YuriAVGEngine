@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 using NAudio.Wave;
 using Yuri.Utils;
 
@@ -29,19 +30,27 @@ namespace Yuri.PlatformCore
         /// <returns>该通道在播放器中的句柄</returns>
         public int InvokeChannel()
         {
-            NAudioChannelPlayer ncp = new NAudioChannelPlayer();
-            int reHandle = this.handleGenerator.Next(Int32.MinValue, Int32.MaxValue);
-            int encounter = 0;
-            while (this.channelDict.ContainsKey(reHandle) || reHandle == 0)
+            try
             {
-                reHandle = this.handleGenerator.Next(Int32.MinValue, Int32.MaxValue);
-                if (encounter++ >= 10000)
+                NAudioChannelPlayer ncp = new NAudioChannelPlayer();
+                int reHandle = this.handleGenerator.Next(Int32.MinValue, Int32.MaxValue);
+                int encounter = 0;
+                while (this.channelDict.ContainsKey(reHandle) || reHandle == 0)
                 {
-                    throw new OutOfMemoryException();
+                    reHandle = this.handleGenerator.Next(Int32.MinValue, Int32.MaxValue);
+                    if (encounter++ >= 10000)
+                    {
+                        throw new OutOfMemoryException();
+                    }
                 }
+                this.channelDict[reHandle] = ncp;
+                return reHandle;
             }
-            this.channelDict[reHandle] = ncp;
-            return reHandle;
+            catch (Exception ex)
+            {
+                MessageBox.Show("Inovke Channel Failed" + ex.ToString());
+                return 0;
+            }
         }
 
         /// <summary>
@@ -67,6 +76,7 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Play audio failed" + ex.ToString());
                 CommonUtils.ConsoleLine("Play audio failed." + ex.ToString(), "NAudioPlayer", OutputStyle.Error);
                 return false;
             }
@@ -91,6 +101,7 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Stop and dispose audio failed" + ex.ToString());
                 CommonUtils.ConsoleLine("Stop and dispose audio failed." + ex.ToString(), "NAudioPlayer", OutputStyle.Error);
                 return false;
             }
@@ -115,6 +126,7 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Pause audio failed" + ex.ToString());
                 CommonUtils.ConsoleLine("Pause audio failed." + ex.ToString(), "NAudioPlayer", OutputStyle.Error);
                 return false;
             }
@@ -139,6 +151,7 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Resume audio failed" + ex.ToString());
                 CommonUtils.ConsoleLine("Resume play audio failed." + ex.ToString(), "NAudioPlayer", OutputStyle.Error);
                 return false;
             }
@@ -156,6 +169,7 @@ namespace Yuri.PlatformCore
             {
                 if (this.channelDict.ContainsKey(handle) == false)
                 {
+                    MessageBox.Show("Set volume state failed");
                     CommonUtils.ConsoleLine("Set volume in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
                     return false;
                 }
@@ -164,6 +178,7 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Set volume failed" + ex.ToString());
                 CommonUtils.ConsoleLine("Set volume failed." + ex.ToString(), "NAudioPlayer", OutputStyle.Error);
                 return false;
             }
@@ -180,6 +195,7 @@ namespace Yuri.PlatformCore
             {
                 if (this.channelDict.ContainsKey(handle) == false)
                 {
+                    MessageBox.Show("Set playing state failed");
                     CommonUtils.ConsoleLine("Get playing state in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
                     return false;
                 }
@@ -187,6 +203,7 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Set playing state failed" + ex.ToString());
                 CommonUtils.ConsoleLine("Get playing state failed." + ex.ToString(), "NAudioPlayer", OutputStyle.Error);
                 return false;
             }
