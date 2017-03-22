@@ -5,14 +5,14 @@ using Yuri.ILPackage;
 namespace Yuri.PlatformCore
 {
     /// <summary>
-    /// 提供系统回滚的状态包装类
+    /// 提供系统回滚的快照类
     /// </summary>
-    internal sealed class StepStatePackage
+    internal sealed class RollbackableSnapshot
     {
         /// <summary>
         /// 字符串化方法
         /// </summary>
-        /// <returns>该状态的唯一标识符</returns>
+        /// <returns>该快照的唯一标识符</returns>
         public override string ToString()
         {
             return this.VMRef.StackName;

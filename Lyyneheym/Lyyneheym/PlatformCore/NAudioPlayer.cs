@@ -70,13 +70,7 @@ namespace Yuri.PlatformCore
                     CommonUtils.ConsoleLine("Play audio in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
                     return false;
                 }
-                this.channelDict[handle].Init(ms, vol / 1000.0f, loop, () =>
-                    {
-                        if (this.channelDict.ContainsKey(handle))
-                        {
-                            this.channelDict.Remove(handle);
-                        }
-                    });
+                this.channelDict[handle].Init(ms, vol / 1000.0f, loop, () => this.channelDict.Remove(handle));
                 this.channelDict[handle].Play();
                 return true;
             }

@@ -32,7 +32,7 @@ namespace Yuri.PlatformCore
                 // 构造当前状态的拷贝
                 var vm = Director.RunMana.CallStack.Fork() as StackMachine;
                 vm.SetMachineName("Yuri#Forked_" + DateTime.Now.Ticks.ToString());
-                StepStatePackage ssp = new StepStatePackage()
+                RollbackableSnapshot ssp = new RollbackableSnapshot()
                 {
                     TimeStamp = DateTime.Now,
                     MusicRef = playingBGM,
@@ -84,7 +84,7 @@ namespace Yuri.PlatformCore
         /// 将系统跳转到指定的稳定状态
         /// </summary>
         /// <param name="ssp">要演绎的状态包装</param>
-        public static void GotoSteadyState(StepStatePackage ssp)
+        public static void GotoSteadyState(RollbackableSnapshot ssp)
         {
             // 停止消息循环
             Director.PauseUpdateContext();
@@ -100,7 +100,7 @@ namespace Yuri.PlatformCore
             ScreenManager.ResetSynObject(ssp.ScreenStateRef.Fork() as ScreenManager);
             Director.RunMana.ResetCallstackObject(ssp.VMRef.Fork() as StackMachine);
             Director.RunMana.PlayingBGM = ssp.MusicRef;
-            Director.RunMana.ParallelStack = ForkableState.DeepCopyBySerialization<Stack<Dictionary<string, bool>>>(ssp.ParallelStateStackRef);
+            Director.RunMana.ParallelStack = ForkableState.DeepCopyBySerialization(ssp.ParallelStateStackRef);
             Director.RunMana.DashingPureSa = ssp.ReactionRef.Clone(true);
             Director.ScrMana = ScreenManager.GetInstance();
             // 刷新主渲染器上的堆栈绑定
@@ -173,11 +173,11 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 前进状态栈
         /// </summary>
-        private readonly static List<StepStatePackage> forwardStack = new List<StepStatePackage>();
+        private readonly static List<RollbackableSnapshot> forwardStack = new List<RollbackableSnapshot>();
 
         /// <summary>
         /// 回滚状态栈
         /// </summary>
-        private readonly static List<StepStatePackage> backwardStack = new List<StepStatePackage>();
+        private readonly static List<RollbackableSnapshot> backwardStack = new List<RollbackableSnapshot>();
     }
 }
