@@ -70,7 +70,13 @@ namespace Yuri.PlatformCore
                     CommonUtils.ConsoleLine("Play audio in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
                     return false;
                 }
-                this.channelDict[handle].Init(ms, vol / 1000.0f, loop);
+                this.channelDict[handle].Init(ms, vol / 1000.0f, loop, () =>
+                    {
+                        if (this.channelDict.ContainsKey(handle))
+                        {
+                            this.channelDict.Remove(handle);
+                        }
+                    });
                 this.channelDict[handle].Play();
                 return true;
             }
@@ -232,12 +238,12 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 句柄生成器
         /// </summary>
-        private Random handleGenerator;
+        private readonly Random handleGenerator;
 
         /// <summary>
         /// 通道字典
         /// </summary>
-        private Dictionary<int, NAudioChannelPlayer> channelDict;
+        private readonly Dictionary<int, NAudioChannelPlayer> channelDict;
         
         /// <summary>
         /// 音频播放器的唯一实例
@@ -253,13 +259,14 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 初始化通道
         /// </summary>
-        public void Init(MemoryStream playStream, float volume, bool loop)
+        public void Init(MemoryStream playStream, float volume, bool loop, Action stopCallback)
         {
             this.wavePlayer = new WaveOut();
             this.playingStream = new StreamMediaFoundationReader(this.BindingStream = playStream);
             this.volumeProvider = new VolumeWaveProvider16(playingStream) { Volume = volume };
             this.wavePlayer.Init(this.volumeProvider);
             this.IsLoop = loop;
+            this.stopCallback = stopCallback;
             if (loop)
             {
                 this.wavePlayer.PlaybackStopped += this.PlaybackLoopCallback;
@@ -326,6 +333,7 @@ namespace Yuri.PlatformCore
                 this.wavePlayer = null;
             }
             this.IsPlaying = false;
+            this.stopCallback?.Invoke();
         }
 
         /// <summary>
@@ -352,13 +360,13 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                return volumeProvider.Volume;
+                return this.volumeProvider.Volume;
             }
             set
             {
-                if (value >= 0 && value <= 1f && this.volumeProvider != null)
+                if (this.volumeProvider != null)
                 {
-                    volumeProvider.Volume = value;
+                    this.volumeProvider.Volume = value;
                 }
             }
         }
@@ -392,6 +400,11 @@ namespace Yuri.PlatformCore
         /// 音轨播放器
         /// </summary>
         private IWavePlayer wavePlayer = null;
+
+        /// <summary>
+        /// 播放结束时触发回调
+        /// </summary>
+        private Action stopCallback = null;
 
         /// <summary>
         /// 音轨播放器的流

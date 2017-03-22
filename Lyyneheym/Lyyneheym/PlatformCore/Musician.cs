@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Timers;
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace Yuri.PlatformCore
 {
@@ -121,7 +119,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 变更BGM的音量
         /// </summary>
-        /// <param name="vol"></param>
+        /// <param name="vol">音量值，值域[0, 1000]</param>
         public void SetBGMVolume(float vol)
         {
             if (this.IsBgmLoaded)
@@ -235,7 +233,9 @@ namespace Yuri.PlatformCore
         /// <returns>音乐管理器</returns>
         public static Musician GetInstance()
         {
-            return Musician.synObject == null ? Musician.synObject = new Musician() : Musician.synObject;
+            return Musician.synObject == null
+                ? Musician.synObject = new Musician()
+                : Musician.synObject;
         }
 
         /// <summary>
