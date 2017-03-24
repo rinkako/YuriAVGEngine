@@ -32,7 +32,7 @@ namespace Yuri.PlatformCore
                 leftFlag = true;
                 // background
                 storyLeftBg = new Storyboard();
-                double bgRatio = Director.ScrMana.SCameraScale * Math.Pow(SCamera.BackgroundDeepRatio, 3);
+                double bgRatio = Director.ScrMana.SCameraScale * Math.Pow(SCamera.BackgroundDeepRatio, 2);
                 double BgfromX = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground).Left;
                 double BgBeginX = BgfromX;
                 if (lastFromScaling)
@@ -234,7 +234,8 @@ namespace Yuri.PlatformCore
             // 获取变换点绝对坐标
             var sPoint = SCamera.GetScreenCoordination(r, c);
             var viewMana = ViewManager.GetInstance();
-            var timespan = immediate ? new Duration(TimeSpan.FromMilliseconds(0)) : SCamera.animationDuration;
+            // 0毫秒不会触发回调
+            var timespan = immediate ? new Duration(TimeSpan.FromMilliseconds(1)) : SCamera.animationDuration;
             // 调整焦距和焦点
             Director.ScrMana.SCameraScale = ratio;
             if (r != Director.ScrMana.SCameraFocusRow || c != Director.ScrMana.SCameraFocusCol)
@@ -498,9 +499,9 @@ namespace Yuri.PlatformCore
             storyScalePic.Begin();
             // reset viewport
             Director.ScrMana.SCameraFocusCol = 0;
-            Director.ScrMana.SCameraFocusRow = 2;
+            Director.ScrMana.SCameraFocusRow = GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2;
             Director.ScrMana.SCameraCenterCol = 0;
-            Director.ScrMana.SCameraCenterRow = 2;
+            Director.ScrMana.SCameraCenterRow = GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2;
             Director.ScrMana.SCameraScale = 1.0;
         }
         

@@ -17,6 +17,7 @@ namespace Yuri.PlatformCore
         /// <param name="scenario">场景名称</param>
         /// <param name="mainSa">构造序列</param>
         /// <param name="funcVec">函数向量</param>
+        /// <param name="labelDict">标签指针字典</param>
         public Scene(string scenario, SceneAction mainSa, List<SceneFunction> funcVec, Dictionary<string, SceneAction> labelDict)
         {
             this.Scenario = scenario;

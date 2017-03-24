@@ -155,8 +155,7 @@ namespace Yuri.PlatformCore
                 if (ob == null)
                 {
                     var sourceSlot = this.resourceTable[DevURI][sourceName];
-                    ob = PackageUtils.GetObjectBytes(IOUtils.ParseURItoURL(PackURI + GlobalDataContext.PackPostfix),
-                        sourceName, sourceSlot.Position, sourceSlot.Length);
+                    ob = PackageUtils.GetObjectBytes(sourceSlot.BindingFile, sourceName, sourceSlot.Position, sourceSlot.Length);
                     ResourceCachePool.Register(rtype.ToString() + "->" + sourceName, ob, ResourceCacheType.Eden);
                 }
                 MemoryStream ms = new MemoryStream(ob);
