@@ -216,8 +216,9 @@ namespace Yuri.PlatformCore
         {
             foreach (var ah in this.channelDict)
             {
-                ah.Value?.Dispose();
+                ah.Value?.DisposeWithoutCallback();
             }
+            this.channelDict.Clear();
         }
 
         /// <summary>
@@ -257,7 +258,7 @@ namespace Yuri.PlatformCore
         {
             this.wavePlayer = new WaveOut();
             this.playingStream = new StreamMediaFoundationReader(this.BindingStream = playStream);
-            this.volumeProvider = new VolumeWaveProvider16(playingStream) { Volume = volume };
+            this.volumeProvider = new VolumeWaveProvider16(playingStream) {Volume = volume};
             this.wavePlayer.Init(this.volumeProvider);
             this.IsLoop = loop;
             this.stopCallback = stopCallback;
@@ -280,7 +281,7 @@ namespace Yuri.PlatformCore
             {
                 this.wavePlayer?.Play();
                 this.IsPlaying = true;
-            }   
+            }
         }
 
         /// <summary>
@@ -308,9 +309,18 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 释放通道的资源
+        /// 释放通道的资源并处理结束播放回调
         /// </summary>
         public void Dispose()
+        {
+            this.DisposeWithoutCallback();
+            this.stopCallback?.Invoke();
+        }
+
+        /// <summary>
+        /// 释放通道资源
+        /// </summary>
+        public void DisposeWithoutCallback()
         {
             if (this.IsPlaying)
             {
@@ -327,7 +337,6 @@ namespace Yuri.PlatformCore
                 this.wavePlayer = null;
             }
             this.IsPlaying = false;
-            this.stopCallback?.Invoke();
         }
 
         /// <summary>

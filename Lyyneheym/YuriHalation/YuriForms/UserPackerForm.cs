@@ -87,13 +87,13 @@ namespace YuriHalation.YuriForms
             this.progressBar1.Style = ProgressBarStyle.Marquee;
             this.listBox1.Enabled = this.button1.Enabled = false;
             this.Text = "包管理器 [正在生成封包文件]";
-            paker = new Thread(new ParameterizedThreadStart(this.packThreadHandler));
-            paker.IsBackground = true;
+            paker = new Thread(new ParameterizedThreadStart(this.packThreadHandler)) { IsBackground = true };
             paker.Start(swapData);
             while (!finishFlag)
             {
                 Application.DoEvents();
             }
+            MessageBox.Show("打包完毕");
             this.listBox1.Enabled = this.button1.Enabled = true;
             this.progressBar1.Style = ProgressBarStyle.Continuous;
             this.progressBar1.Value = 0;
@@ -106,14 +106,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void listBox1_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                e.Effect = DragDropEffects.All;
-            }
-            else
-            {
-                e.Effect = DragDropEffects.None;
-            }
+            e.Effect = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.All : DragDropEffects.None;
         }
 
         /// <summary>
@@ -197,12 +190,12 @@ namespace YuriHalation.YuriForms
         /// <summary>
         /// 图片文件夹绝对路径
         /// </summary>
-        private string PicDir = Halation.projectFolder + @"\PictureAssets";
+        private readonly string PicDir = Halation.projectFolder + @"\PictureAssets";
 
         /// <summary>
         /// 音频文件夹绝对路径
         /// </summary>
-        private string SndDir = Halation.projectFolder + @"\Sound";
+        private readonly string SndDir = Halation.projectFolder + @"\Sound";
 
         /// <summary>
         /// 处理待加入文件的容器

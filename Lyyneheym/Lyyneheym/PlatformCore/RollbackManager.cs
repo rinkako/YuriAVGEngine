@@ -137,7 +137,7 @@ namespace Yuri.PlatformCore
         {
             RollbackManager.backwardStack.Clear();
             RollbackManager.forwardStack.Clear();
-            Yuri.Utils.CommonUtils.ConsoleLine("Rollback Manager already reset",
+            Utils.CommonUtils.ConsoleLine("Rollback Manager already reset",
                 "Rollback Manager", Utils.OutputStyle.Important);
         }
 

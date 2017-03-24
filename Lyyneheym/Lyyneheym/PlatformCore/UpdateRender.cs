@@ -421,7 +421,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private void TypeWriterAnimationCompletedCallback(object sender, EventArgs e)
         {
-            if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() == 1.0)
+            if (this.MsgStoryboardDict.ContainsKey(0) && Math.Abs(this.MsgStoryboardDict[0].GetCurrentProgress() - 1.0) < 0.01)
             {
                 this.ShowMessageTria();
                 this.BeginMessageTriaUpDownAnimation();
@@ -433,7 +433,8 @@ namespace Yuri.PlatformCore
         /// </summary>
         private void InitMsgLayerTria()
         {
-            this.MainMsgTriangleSprite = ResourceManager.GetInstance().GetPicture(GlobalDataContext.GAME_MESSAGELAYER_TRIA_FILENAME, new Int32Rect(-1, 0, 0, 0));
+            this.MainMsgTriangleSprite = ResourceManager.GetInstance().GetPicture(
+                GlobalDataContext.GAME_MESSAGELAYER_TRIA_FILENAME, ResourceManager.FullImageRect);
             Image TriaView = new Image();
             BitmapImage bmp = MainMsgTriangleSprite.SpriteBitmapImage;
             this.MainMsgTriangleSprite.DisplayBinding = TriaView;

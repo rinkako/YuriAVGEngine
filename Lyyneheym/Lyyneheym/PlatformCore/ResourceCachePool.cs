@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Yuri.PlatformCore
 {
@@ -11,19 +12,34 @@ namespace Yuri.PlatformCore
         /// 通过资源标识符获取对应资源缓冲
         /// </summary>
         /// <param name="resourceId">资源id</param>
+        /// <param name="cType">资源缓存类型</param>
         /// <returns>缓冲区中的字节数组</returns>
-        public static byte[] Refer(string resourceId)
+        public static byte[] Refer(string resourceId, ResourceCacheType cType)
         {
-            var idx = ResourceCachePool.CachePriorityQueue.FindIndex((x) => x.CacheId == resourceId);
-            if (idx == -1)
+            bool inPermanentFlag = false;
+            if (cType == ResourceCacheType.Unknown)
             {
-                return null;
+                inPermanentFlag = ResourceCachePool.PermanentDictionary.ContainsKey(resourceId);
             }
-            var cBlock = ResourceCachePool.CachePriorityQueue.ElementAt(idx);
-            cBlock.Referred();
-            ResourceCachePool.CachePriorityQueue.Exchange(idx, ResourceCachePool.CachePriorityQueue.Count() - 1);
-            ResourceCachePool.CachePriorityQueue.Adjust();
-            return cBlock.AllocReference;
+            CacheBlock cBlock = null;
+            if (cType == ResourceCacheType.Eden || (inPermanentFlag == false && cType == ResourceCacheType.Unknown))
+            {
+                var edenIdx = ResourceCachePool.EdenQueue.FindIndex((x) => x.CacheId == resourceId);
+                if (edenIdx == -1)
+                {
+                    return null;
+                }
+                cBlock = ResourceCachePool.EdenQueue.ElementAt(edenIdx);
+                ResourceCachePool.EdenQueue.Exchange(edenIdx, ResourceCachePool.EdenQueue.Count() - 1);
+                ResourceCachePool.EdenQueue.Adjust();
+            }
+            else
+            {
+                cBlock = ResourceCachePool.PermanentDictionary.ContainsKey(resourceId)
+                    ? ResourceCachePool.PermanentDictionary[resourceId]
+                    : null;
+            }
+            return cBlock?.Referred().AllocReference;
         }
 
         /// <summary>
@@ -31,11 +47,20 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="resourceId">资源id</param>
         /// <param name="allocPtr">资源的字节数组</param>
+        /// <param name="cType">资源缓存类型</param>
         /// <param name="priority">初始引用计数</param>
-        public static void Register(string resourceId, byte[] allocPtr, long priority = 1)
+        public static void Register(string resourceId, byte[] allocPtr, ResourceCacheType cType, long priority = 1)
         {
             CacheBlock cb = new CacheBlock(resourceId, allocPtr, priority);
-            ResourceCachePool.CachePriorityQueue.Push(cb);
+            switch (cType)
+            {
+                case ResourceCacheType.Eden:
+                    ResourceCachePool.EdenQueue.Push(cb);
+                    break;
+                case ResourceCacheType.Permanent:
+                    ResourceCachePool.PermanentDictionary.Add(resourceId, cb);
+                    break;
+            }
         }
 
         /// <summary>
@@ -43,18 +68,24 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static void Clear()
         {
-            ResourceCachePool.CachePriorityQueue.Clear();
+            ResourceCachePool.EdenQueue.Clear();
+            ResourceCachePool.PermanentDictionary.Clear();
         }
 
         /// <summary>
-        /// 资源缓冲优先队列
+        /// 临时资源缓冲优先队列
         /// </summary>
-        private static PriorityQueue<CacheBlock> CachePriorityQueue = new PriorityQueue<CacheBlock>();
+        private static readonly PriorityQueue<CacheBlock> EdenQueue = new PriorityQueue<CacheBlock>();
 
+        /// <summary>
+        /// 常驻资源字典
+        /// </summary>
+        private static readonly Dictionary<string, CacheBlock> PermanentDictionary = new Dictionary<string, CacheBlock>();
+        
         /// <summary>
         /// 缓存块类：维持文件读入的字节流的引用和访问次数统计的块
         /// </summary>
-        private class CacheBlock : IComparable<CacheBlock>
+        private sealed class CacheBlock : IComparable<CacheBlock>
         {
             /// <summary>
             /// 构造器
@@ -66,15 +97,17 @@ namespace Yuri.PlatformCore
             {
                 this.CacheId = cacheId;
                 this.AllocReference = allocPtr;
-                this.ReferenceCount = beginCount;
+                this.referenceCount = beginCount;
             }
             
             /// <summary>
             /// 引用这个对象一次
             /// </summary>
-            public void Referred()
+            /// <returns>对象本身</returns>
+            public CacheBlock Referred()
             {
-                this.ReferenceCount++;
+                this.referenceCount++;
+                return this;
             }
 
             /// <summary>
@@ -82,7 +115,7 @@ namespace Yuri.PlatformCore
             /// </summary>
             public void Abandon()
             {
-                this.ReferenceCount = 0;
+                this.referenceCount = 0;
             }
 
             /// <summary>
@@ -106,10 +139,9 @@ namespace Yuri.PlatformCore
             /// <summary>
             /// 获取或设置引用次数
             /// </summary>
-            public long ReferenceCount
+            private long referenceCount
             {
-                get;
-                private set;
+                get; set;
             }
 
             /// <summary>
@@ -119,7 +151,7 @@ namespace Yuri.PlatformCore
             /// <returns>两个缓冲块的被引用次数的比较结果</returns>
             public int CompareTo(CacheBlock other)
             {
-                return this.ReferenceCount.CompareTo(other.ReferenceCount);
+                return this.referenceCount.CompareTo(other.referenceCount);
             }
 
             /// <summary>
@@ -128,7 +160,7 @@ namespace Yuri.PlatformCore
             /// <returns>该缓冲块的描述文本</returns>
             public override string ToString()
             {
-                return String.Format("CacheBlock: {0} (RefCount:{1}, Length:{2})", this.CacheId, this.ReferenceCount, this.AllocReference.Length);
+                return String.Format("CacheBlock: {0} (RefCount:{1}, Length:{2})", this.CacheId, this.referenceCount, this.AllocReference.Length);
             }
         }
 
@@ -136,7 +168,7 @@ namespace Yuri.PlatformCore
         /// 大者优先的优先队列
         /// </summary>
         /// <typeparam name="T">T是队列元素的可比较类型</typeparam>
-        private class PriorityQueue<T> where T : IComparable<T>
+        private sealed class PriorityQueue<T> where T : IComparable<T>
         {
             /// <summary>
             /// 构造器
@@ -396,5 +428,24 @@ namespace Yuri.PlatformCore
                 objects[b] = tmp;
             }
         }
+    }
+
+    /// <summary>
+    /// 枚举：缓存的类型
+    /// </summary>
+    internal enum ResourceCacheType
+    {
+        /// <summary>
+        /// 无法确定资源类型（只能用在获取方法，否则资源不被缓存）
+        /// </summary>
+        Unknown,
+        /// <summary>
+        /// 最近最常使用原则缓存
+        /// </summary>
+        Eden,
+        /// <summary>
+        /// 常驻内存
+        /// </summary>
+        Permanent
     }
 }

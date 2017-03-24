@@ -636,9 +636,11 @@ namespace Yuri.PlatformCore
         public static void UpDownRepeatAnimation(YuriSprite sprite, Duration duration, double jumpDelta, double acc)
         {
             Storyboard sb = new Storyboard();
-            DoubleAnimation da = new DoubleAnimation(0, jumpDelta, duration);
-            da.RepeatBehavior = RepeatBehavior.Forever;
-            da.AutoReverse = true;
+            DoubleAnimation da = new DoubleAnimation(0, jumpDelta, duration)
+            {
+                RepeatBehavior = RepeatBehavior.Forever,
+                AutoReverse = true
+            };
             if (acc >= 0)
             {
                 da.AccelerationRatio = acc;

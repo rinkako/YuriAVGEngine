@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Yuri.Utils
 {
@@ -14,6 +15,7 @@ namespace Yuri.Utils
         /// </summary>
         /// <param name="information">信息</param>
         /// <param name="causer">触发者</param>
+        /// <param name="oStyle">输出的类型</param>
         public static void ConsoleLine(string information, string causer, OutputStyle oStyle)
         {
             Console.ResetColor();
@@ -21,34 +23,35 @@ namespace Yuri.Utils
             {
                 case OutputStyle.Normal:
                     Console.WriteLine("[Information]");
-                    Console.WriteLine(String.Format("触发器：{0}", causer));
-                    Console.WriteLine(String.Format("时间戳：{0}", DateTime.Now.ToString()));
-                    Console.WriteLine(String.Format("工作集：{0:F3} MB", Environment.WorkingSet / 1048576.0));
-                    Console.WriteLine(String.Format("信  息：{0}", information));
+                    Console.WriteLine("触发器：{0}", causer);
+                    Console.WriteLine("时间戳：{0}", DateTime.Now.ToString());
+                    Console.WriteLine("工作集：{0:F3} MB", Environment.WorkingSet / 1048576.0);
+                    Console.WriteLine("信  息：{0}", information);
                     break;
                 case OutputStyle.Important:
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("[Important]");
-                    Console.WriteLine(String.Format("触发器：{0}", causer));
-                    Console.WriteLine(String.Format("时间戳：{0}", DateTime.Now.ToString()));
-                    Console.WriteLine(String.Format("工作集：{0:F3} MB", Environment.WorkingSet / 1048576.0));
-                    Console.WriteLine(String.Format("信  息：{0}", information));
+                    Console.WriteLine("触发器：{0}", causer);
+                    Console.WriteLine("时间戳：{0}", DateTime.Now.ToString());
+                    Console.WriteLine("工作集：{0:F3} MB", Environment.WorkingSet / 1048576.0);
+                    Console.WriteLine("信  息：{0}", information);
                     break;
                 case OutputStyle.Warning:
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("[Warning]");
-                    Console.WriteLine(String.Format("触发器：{0}", causer));
-                    Console.WriteLine(String.Format("时间戳：{0}", DateTime.Now.ToString()));
-                    Console.WriteLine(String.Format("工作集：{0:F3} MB", Environment.WorkingSet / 1048576.0));
-                    Console.WriteLine(String.Format("信  息：{0}", information));
+                    Console.WriteLine("触发器：{0}", causer);
+                    Console.WriteLine("时间戳：{0}", DateTime.Now.ToString());
+                    Console.WriteLine("工作集：{0:F3} MB", Environment.WorkingSet / 1048576.0);
+                    Console.WriteLine("信  息：{0}", information);
                     break;
                 case OutputStyle.Error:
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("[Error]");
-                    Console.WriteLine(String.Format("触发器：{0}", causer));
-                    Console.WriteLine(String.Format("时间戳：{0}", DateTime.Now.ToString()));
-                    Console.WriteLine(String.Format("工作集：{0:F3} MB", Environment.WorkingSet / 1048576.0));
-                    Console.WriteLine(String.Format("信  息：{0}", information));
+                    Console.WriteLine("触发器：{0}", causer);
+                    Console.WriteLine("时间戳：{0}", DateTime.Now.ToString());
+                    Console.WriteLine("工作集：{0:F3} MB", Environment.WorkingSet / 1048576.0);
+                    Console.WriteLine("信  息：{0}", information);
+                    MessageBox.Show("At: " + causer + Environment.NewLine + information);
                     break;
                 case OutputStyle.Simple:
                 default:
