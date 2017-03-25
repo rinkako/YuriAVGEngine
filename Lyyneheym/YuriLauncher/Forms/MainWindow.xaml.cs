@@ -145,6 +145,12 @@ namespace Yuri.YuriLauncher.Forms
         {
             this.groupBox_Sound_BGM.IsEnabled = this.groupBox_Sound_BGS.IsEnabled = groupBox_Sound_SE.IsEnabled
                 = this.groupBox_Sound_Vocal.IsEnabled = this.toggleSwitch_Sound_Mute.IsChecked != true;
+            if (this.toggleSwitch_Sound_Mute.IsChecked == true)
+            {
+                this.musicMana.StopBGS();
+                this.musicMana.StopAndReleaseBGM();
+                this.musicMana.StopAndReleaseVocal();
+            }
         }
         
         private Musician musicMana = Musician.GetInstance();

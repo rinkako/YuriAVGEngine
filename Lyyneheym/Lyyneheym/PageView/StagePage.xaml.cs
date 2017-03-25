@@ -671,5 +671,47 @@ namespace Yuri.PageView
         {
             NotificationManager.Notify("菲涅的伊泽塔", "恭喜全部通关！鉴赏模式已经开放了。", "Info_Silver.png");
         }
+
+        private int blurCount = -1;
+        private YuriSprite Blurbgg = null;
+        private SpriteDescriptor Blursd = null;
+        private void Blur_OnClick(object sender, RoutedEventArgs e)
+        {
+
+            if (blurCount == -1)
+            {
+                Blursd = new SpriteDescriptor()
+                {
+                    ResourceType = ResourceType.Pictures
+                };
+                var rm = ResourceManager.GetInstance();
+                Blurbgg = rm.GetPicture("UUZ.jpg", ResourceManager.FullImageRect);
+                Image img3 = new Image();
+                img3.Source = Blurbgg.SpriteBitmapImage;
+                img3.Width = Blurbgg.SpriteBitmapImage.PixelWidth;
+                img3.Height = Blurbgg.SpriteBitmapImage.PixelHeight;
+                Blurbgg.DisplayBinding = img3;
+                Blurbgg.AnimationElement = img3;
+                Blurbgg.Descriptor = Blursd;
+                Canvas.SetLeft(img3, 0);
+                Canvas.SetTop(img3, 0);
+                Canvas.SetZIndex(img3, 5);
+                this.BO_Bg_Canvas.Children.Add(img3);
+                Blurbgg.InitAnimationRenderTransform();
+                Blursd.BlurRadius = 0;
+                Blursd.ToBlurRadius = 20;
+            }
+            else if (blurCount % 2 == 0)
+            {
+                Blursd.ToBlurRadius = 50;
+                SpriteAnimation.BlurMutexAnimation(Blurbgg, TimeSpan.FromMilliseconds(1000), Blursd.BlurRadius, Blursd.ToBlurRadius);
+            }
+            else
+            {
+                Blursd.ToBlurRadius = 0;
+                SpriteAnimation.BlurMutexAnimation(Blurbgg, TimeSpan.FromMilliseconds(1000), Blursd.BlurRadius, Blursd.ToBlurRadius);
+            }
+            blurCount++;
+        }
     }
 }

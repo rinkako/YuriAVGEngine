@@ -2,8 +2,10 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 
 namespace Yuri.PlatformCore
 {
@@ -25,7 +27,8 @@ namespace Yuri.PlatformCore
         /// <param name="accY">加速度Y</param>
         public static void XYMoveAnimation(YuriSprite sprite, Duration duration, double fromX, double toX, double fromY, double toY, double accX, double accY)
         {
-            if (duration.TimeSpan.TotalMilliseconds == 0)
+            if (duration.TimeSpan.TotalMilliseconds == 0
+                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
             {
                 sprite.Descriptor.X = sprite.Descriptor.ToX;
                 sprite.Descriptor.Y = sprite.Descriptor.ToY;
@@ -83,7 +86,8 @@ namespace Yuri.PlatformCore
         /// <param name="accX">加速度X</param>
         public static void XMoveAnimation(YuriSprite sprite, Duration duration, double fromX, double toX, double accX)
         {
-            if (duration.TimeSpan.TotalMilliseconds == 0)
+            if (duration.TimeSpan.TotalMilliseconds == 0
+                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
             {
                 sprite.Descriptor.X = sprite.Descriptor.ToX;
                 Canvas.SetLeft(sprite.AnimationElement, sprite.Descriptor.ToX - sprite.AnchorX);
@@ -139,7 +143,8 @@ namespace Yuri.PlatformCore
         /// <param name="accY">加速度Y</param>
         public static void YMoveAnimation(YuriSprite sprite, Duration duration, double fromY, double toY, double accY)
         {
-            if (duration.TimeSpan.TotalMilliseconds == 0)
+            if (duration.TimeSpan.TotalMilliseconds == 0
+                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
             {
                 sprite.Descriptor.Y = sprite.Descriptor.ToY;
                 Canvas.SetTop(sprite.AnimationElement, sprite.Descriptor.ToY - sprite.AnchorY);
@@ -194,7 +199,8 @@ namespace Yuri.PlatformCore
         /// <param name="accZ">加速度Z</param>
         public static void ZMoveAnimation(YuriSprite sprite, Duration duration, int fromZ, int toZ, double accZ)
         {
-            if (duration.TimeSpan.TotalMilliseconds == 0)
+            if (duration.TimeSpan.TotalMilliseconds == 0
+                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
             {
                 sprite.Descriptor.Z = sprite.Descriptor.ToZ;
                 Canvas.SetZIndex(sprite.AnimationElement, sprite.Descriptor.ToZ);
@@ -252,7 +258,8 @@ namespace Yuri.PlatformCore
         /// <param name="accY">纵向加速度</param>
         public static void ScaleAnimation(YuriSprite sprite, Duration duration, double fromScaleX, double toScaleX, double fromScaleY, double toScaleY, double accX, double accY)
         {
-            if (duration.TimeSpan.TotalMilliseconds == 0)
+            if (duration.TimeSpan.TotalMilliseconds == 0
+                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
             {
                 sprite.Descriptor.ScaleX = sprite.Descriptor.ToScaleX;
                 sprite.Descriptor.ScaleY = sprite.Descriptor.ToScaleY;
@@ -327,7 +334,8 @@ namespace Yuri.PlatformCore
         /// <param name="acc">加速度</param>
         public static void OpacityAnimation(YuriSprite sprite, Duration duration, double fromOpacity, double toOpacity, double acc)
         {
-            if (duration.TimeSpan.TotalMilliseconds == 0)
+            if (duration.TimeSpan.TotalMilliseconds == 0
+                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
             {
                 sprite.Descriptor.Opacity = sprite.Descriptor.ToOpacity;
                 sprite.AnimationElement.Opacity = sprite.Descriptor.ToOpacity;
@@ -382,7 +390,8 @@ namespace Yuri.PlatformCore
         /// <param name="acc">加速度</param>
         public static void RotateAnimation(YuriSprite sprite, Duration duration, double fromTheta, double toTheta, double acc)
         {
-            if (duration.TimeSpan.TotalMilliseconds == 0)
+            if (duration.TimeSpan.TotalMilliseconds == 0
+                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
             {
                 sprite.Descriptor.Angle = sprite.Descriptor.ToAngle;
                 sprite.RotateTransformer.Angle = sprite.Descriptor.ToAngle;
@@ -424,6 +433,106 @@ namespace Yuri.PlatformCore
                     SpriteAnimation.aniDict.Remove(story);
                 };
                 story.Begin();
+            }
+        }
+
+        /// <summary>
+        /// 变更精灵的模糊度动画
+        /// <para>这是一个特效互斥动画，多个特效互斥动画之间不叠加</para>
+        /// </summary>
+        /// <param name="sprite">精灵对象</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="fromRadius">起始模糊半径</param>
+        /// <param name="toRadius">目标模糊半径</param>
+        public static void BlurMutexAnimation(YuriSprite sprite, Duration duration, double fromRadius, double toRadius)
+        {
+            if (duration.TimeSpan.TotalMilliseconds == 0
+                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
+            {
+                BlurEffect m_BlurEffect = new BlurEffect();
+                sprite.AnimationElement.Effect = m_BlurEffect;
+                m_BlurEffect.RenderingBias = GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.HighQuality
+                    ? RenderingBias.Quality : RenderingBias.Performance;
+                m_BlurEffect.Radius = toRadius;
+                sprite.Descriptor.BlurRadius = toRadius;
+            }
+            else
+            {
+                BlurEffect m_BlurEffect = new BlurEffect();
+                sprite.AnimationElement.Effect = m_BlurEffect;
+                m_BlurEffect.RenderingBias = GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.HighQuality
+                    ? RenderingBias.Quality : RenderingBias.Performance;
+                DoubleAnimation m_DA = new DoubleAnimation
+                {
+                    From = fromRadius,
+                    To = toRadius,
+                    Duration = duration,
+                    EasingFunction = new CubicEase(),
+                };
+                sprite.AnimateCount++;
+                var flagSb = new Storyboard { Name = "FlagSb_" + DateTime.Now.Ticks };
+                SpriteAnimation.aniDict[flagSb] = sprite;
+                m_DA.Completed += (sender, args) =>
+                {
+                    sprite.Descriptor.BlurRadius = sprite.Descriptor.ToBlurRadius;
+                    m_BlurEffect.Radius = toRadius;
+                    sprite.AnimateCount--;
+                    aniDict.Remove(flagSb);
+                };
+                m_BlurEffect.BeginAnimation(BlurEffect.RadiusProperty, m_DA);
+            }
+        }
+
+        /// <summary>
+        /// 变更精灵的投影效果动画
+        /// <para>这是一个特效互斥动画，多个特效互斥动画之间不叠加</para>
+        /// </summary>
+        /// <param name="sprite">精灵对象</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="shadColor">投影颜色</param>
+        /// <param name="shadOpacity">投影不透明度</param>
+        /// <param name="fromRadius">起始模糊半径</param>
+        /// <param name="toRadius">目标模糊半径</param>
+        public static void ShadowingMutexAnimation(YuriSprite sprite, Duration duration, Color shadColor, double shadOpacity, double fromRadius, double toRadius)
+        {
+            if (duration.TimeSpan.TotalMilliseconds == 0 
+                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
+            {
+                DropShadowEffect m_DSEffect = new DropShadowEffect();
+                sprite.AnimationElement.Effect = m_DSEffect;
+                m_DSEffect.RenderingBias = GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.HighQuality
+                    ? RenderingBias.Quality : RenderingBias.Performance;
+                m_DSEffect.BlurRadius = toRadius;
+                m_DSEffect.Color = shadColor;
+                m_DSEffect.Opacity = shadOpacity;
+                sprite.Descriptor.ShadowRadius = toRadius;
+            }
+            else
+            {
+                DropShadowEffect m_DSEffect = new DropShadowEffect();
+                sprite.AnimationElement.Effect = m_DSEffect;
+                m_DSEffect.RenderingBias = GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.HighQuality
+                    ? RenderingBias.Quality : RenderingBias.Performance;
+                m_DSEffect.Color = shadColor;
+                m_DSEffect.Opacity = shadOpacity;
+                DoubleAnimation m_DA = new DoubleAnimation
+                {
+                    From = fromRadius,
+                    To = toRadius,
+                    Duration = duration,
+                    EasingFunction = new CubicEase(),
+                };
+                sprite.AnimateCount++;
+                var flagSb = new Storyboard { Name = "FlagSb_" + DateTime.Now.Ticks };
+                SpriteAnimation.aniDict[flagSb] = sprite;
+                m_DA.Completed += (sender, args) =>
+                {
+                    sprite.Descriptor.BlurRadius = sprite.Descriptor.ToBlurRadius;
+                    m_DSEffect.BlurRadius = toRadius;
+                    sprite.AnimateCount--;
+                    aniDict.Remove(flagSb);
+                };
+                m_DSEffect.BeginAnimation(BlurEffect.RadiusProperty, m_DA);
             }
         }
 

@@ -26,9 +26,11 @@ namespace Yuri.PlatformCore
         // 窗体分辨率：高度 720
         public static int GAME_WINDOW_HEIGHT = 720;
         // 窗体分辨率：实际高度（标题栏含）
-        public static int GAME_WINDOW_ACTUALHEIGHT { get { return GlobalDataContext.GAME_WINDOW_HEIGHT + 32; } }
+        public static int GAME_WINDOW_ACTUALHEIGHT => GlobalDataContext.GAME_WINDOW_HEIGHT + 32;
         // 窗体分辨率：是否自由调节
         public static bool GAME_WINDOW_RESIZEABLE = true;
+        // 特效水平
+        public static PerformanceType GAME_PERFORMANCE_TYPE = PerformanceType.HighQuality;
         // 文本展示：模式
         public static MessageLayerType GAME_MESSAGE_MODE = MessageLayerType.Dialog;
         // 文本层：文本层数量
@@ -241,19 +243,50 @@ namespace Yuri.PlatformCore
         #endregion
 
         #region 枚举类型
-        // 文本展示类型
-        public enum MessageLayerType
+        /// <summary>
+        /// 文本展示类型
+        /// </summary>
+        internal enum MessageLayerType
         {
-            // 隐藏
+            /// <summary>
+            /// 隐藏
+            /// </summary>
             Disposed,
-            // 对话框
+            /// <summary>
+            /// 对话框
+            /// </summary>
             Dialog,
-            // 全屏文本
+            /// <summary>
+            /// 全屏文本
+            /// </summary>
             Novel,
-            // 对话气泡
+            /// <summary>
+            /// 对话气泡
+            /// </summary>
             Bubble,
-            // 全透明
+            /// <summary>
+            /// 全透明
+            /// </summary>
             Transparent
+        }
+
+        /// <summary>
+        /// 枚举：特效类型
+        /// </summary>
+        internal enum PerformanceType
+        {
+            /// <summary>
+            /// 全特效
+            /// </summary>
+            HighQuality,
+            /// <summary>
+            /// 减弱特效
+            /// </summary>
+            Weaken,
+            /// <summary>
+            /// 无特效
+            /// </summary>
+            NoEffect
         }
         #endregion
     }
