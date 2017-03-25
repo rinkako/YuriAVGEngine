@@ -13,15 +13,15 @@
           <Grid.Background>
             <ImageBrush ImageSource="/Yuri.YuriLauncher;component/Resources/Sysbg.png"/>
           </Grid.Background>
-          <Button x:Name="button_System_Launch" Content="开始游戏" Foreground="DarkSlateBlue" FontSize="16" HorizontalAlignment="Left" Margin="397,201,0,0" VerticalAlignment="Top" Width="153" Height="55" FontFamily="Microsoft YaHei UI"/>
+          <Button x:Name="button_System_Launch" Content="开始游戏" Foreground="DarkSlateBlue" FontSize="16" HorizontalAlignment="Left" Margin="397,201,0,0" VerticalAlignment="Top" Width="153" Height="55" FontFamily="Microsoft YaHei UI" TabIndex="1"/>
           <TextBlock x:Name="textBlock_System" Text="游戏时长：&#13;2:23:46&#13;&#13;周目计数：&#13;3&#13;&#13;结局回收：&#13;2/4" Foreground="DarkSlateBlue" Padding="8" Background="White" FontSize="16" FontFamily="Microsoft YaHei UI" Opacity="0.85" HorizontalAlignment="Left" Margin="397,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="153" Height="180"/>
-          <ComboBox x:Name="comboBox_System" IsReadOnly="True" Background="White" Opacity="0.7" HorizontalAlignment="Left" Margin="10,230,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
+          <ComboBox x:Name="comboBox_System" IsReadOnly="True" Background="White" Opacity="0.7" HorizontalAlignment="Left" Margin="10,230,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" TabIndex="2">
             <ListBoxItem Content="Swing Girls"/>
           </ComboBox>
 
         </Grid>
       </TabItem>
-      <TabItem Header="    画面    " controls:ControlsHelper.HeaderFontSize="22">
+      <TabItem Header="    画面    " controls:ControlsHelper.HeaderFontSize="22" Loaded="Tab_Screen_OnLoaded">
         <Grid Background="#FFFFFFFF">
           <GroupBox x:Name="groupBox_Screen_Resolution" Header="画面模式" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="128" Width="170">
             <Canvas>
@@ -39,9 +39,9 @@
           </GroupBox>
           <GroupBox x:Name="groupBox_Screen_Animation" Header="动画特效" HorizontalAlignment="Left" Margin="195,10,0,0" VerticalAlignment="Top" Height="128" Width="170">
             <Canvas>
-              <RadioButton x:Name="radioButton_Screen_Animation_1" Content="全部" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True"/>
-              <RadioButton x:Name="radioButton_Screen_Animation_2" Content="减弱" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="33"/>
-              <RadioButton x:Name="radioButton_Screen_Animation_3" Content="无特效" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="66"/>
+              <RadioButton x:Name="radioButton_Screen_Animation_1" Content="全部" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True" Checked="radioButton_Screen_Animation_1_Checked"/>
+              <RadioButton x:Name="radioButton_Screen_Animation_2" Content="减弱" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="33" Checked="radioButton_Screen_Animation_2_Checked"/>
+              <RadioButton x:Name="radioButton_Screen_Animation_3" Content="无特效" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="66" Checked="radioButton_Screen_Animation_3_Checked"/>
             </Canvas>
           </GroupBox>
           <GroupBox x:Name="groupBox_Screen_SCamera" Header="动态3D镜头" HorizontalAlignment="Left" Margin="195,152,0,0" VerticalAlignment="Top" Height="80" Width="170">
@@ -52,14 +52,14 @@
           </GroupBox>
           <GroupBox x:Name="groupBox_Screen_Typing" Header="打字动画" HorizontalAlignment="Left" Margin="380,10,0,0" VerticalAlignment="Top" Height="222" Width="170">
             <Canvas>
-              <RadioButton x:Name="radioButton_Screen_Typing_1" Content="开启" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True"/>
-              <RadioButton x:Name="radioButton_Screen_Typing_2" Content="关闭" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="77"/>
+              <RadioButton x:Name="radioButton_Screen_Typing_1" Content="开启" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True" Checked="radioButton_Screen_Typing_1_Checked"/>
+              <RadioButton x:Name="radioButton_Screen_Typing_2" Content="关闭" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="77" Checked="radioButton_Screen_Typing_2_Checked"/>
               <TextBlock Name="textblock_Screen_Typing" Padding="3" Text="菲涅爱伊泽塔&#13;伊泽塔爱菲涅公主" Background="FloralWhite" LineHeight="25" Width="158" Canvas.Top="119" Height="65" FontFamily="FZXiaoBiaoSong-B05S" FontSize="18"/>
-              <Slider x:Name="slider_Screen_Typing" Canvas.Left="10" Canvas.Top="35" Width="138" Maximum="200" Value="60" LargeChange="10" SmallChange="10" TickFrequency="10"/>
+              <Slider x:Name="slider_Screen_Typing" Canvas.Left="10" Canvas.Top="35" Width="138" Maximum="200" Value="60" LargeChange="10" SmallChange="10" TickFrequency="10" ValueChanged="slider_Screen_Typing_ValueChanged" TickPlacement="BottomRight"/>
               <Label Content="快" Canvas.Top="17" Canvas.Left="-4"/>
               <Label Content="慢" Canvas.Top="17" Canvas.Left="136"/>
-              <Label Content="60" Canvas.Top="48" Width="158" HorizontalContentAlignment="Center"/>
-              <Button x:Name="Button_Screen_Typing_ChangeFont" Content="更换字体" FontSize="12" Canvas.Left="41" Canvas.Top="78" Width="75" FontFamily="Microsoft YaHei UI"/>
+              <Label x:Name="label_Screen_Typing" Content="60" Canvas.Top="48" Width="158" HorizontalContentAlignment="Center"/>
+              <Button x:Name="Button_Screen_Typing_ChangeFont" Content="更换字体" FontSize="12" Canvas.Left="41" Canvas.Top="78" Width="75" FontFamily="Microsoft YaHei UI" Click="Button_Screen_Typing_ChangeFont_Click"/>
             </Canvas>
           </GroupBox>
         </Grid>
@@ -68,35 +68,36 @@
         <Grid Background="#FFFFFFFF">
           <GroupBox x:Name="groupBox_Sound_BGM" Header="背景音乐（BGM）音量" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="110" Width="220">
             <Canvas>
-              <Slider x:Name="slider_Sound_BGM" Canvas.Left="10" Canvas.Top="26" Width="188" SmallChange="1" Value="100"/>
+              <Slider x:Name="slider_Sound_BGM" Canvas.Left="10" Canvas.Top="26" Width="188" SmallChange="1" Value="100" ValueChanged="slider_Sound_BGM_ValueChanged"/>
               <Label x:Name="label_Sound_BGM" Content="100" FontSize="16" HorizontalContentAlignment="Center" Width="208"/>
-              <Button x:Name="button_Sound_BGM_TryEnd" Width="27" Height="27" Content=" ▶" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Canvas.Left="171" Canvas.Top="45"/>
-              <Button x:Name="button_Sound_BGM_Try" Width="27" Height="27" Content="‖" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Canvas.Left="136" Canvas.Top="45"/>
+              <Button x:Name="button_Sound_BGM_Try" Width="27" Height="27" Content=" ▶" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Canvas.Left="171" Canvas.Top="45" Click="button_Sound_BGM_Try_Click"/>
+              <Button x:Name="button_Sound_BGM_TryEnd" Width="27" Height="27" Content="‖" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Canvas.Left="136" Canvas.Top="45" Click="button_Sound_BGM_TryEnd_Click"/>
             </Canvas>
           </GroupBox>
           <GroupBox x:Name="groupBox_Sound_BGS" Header="背景音效（BGS）音量" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Height="110" Width="220">
             <Canvas>
-              <Slider x:Name="slider_Sound_BGS" Canvas.Left="10" Canvas.Top="26" Width="188" SmallChange="1" Value="60"/>
+              <Slider x:Name="slider_Sound_BGS" Canvas.Left="10" Canvas.Top="26" Width="188" SmallChange="1" Value="60" ValueChanged="slider_Sound_BGS_ValueChanged"/>
               <Label x:Name="label_Sound_BGS" Content="60" FontSize="16" HorizontalContentAlignment="Center" Width="208"/>
-              <Button x:Name="button_Sound_BGS_Try" Width="27" Height="27" Content=" ▶" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Canvas.Left="171" Canvas.Top="45"/>
+              <Button x:Name="button_Sound_BGS_Try" Width="27" Height="27" Content=" ▶" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Canvas.Left="171" Canvas.Top="45" Click="button_Sound_BGS_Try_Click"/>
+              <Button x:Name="button_Sound_BGS_TryEnd" Width="27" Height="27" Content="‖" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Canvas.Left="136" Canvas.Top="45" Click="button_Sound_BGS_TryEnd_Click"/>
             </Canvas>
           </GroupBox>
           <GroupBox x:Name="groupBox_Sound_SE" Header="音效（SE）音量" HorizontalAlignment="Left" Margin="244,10,0,0" VerticalAlignment="Top" Height="110" Width="220">
             <Canvas>
-              <Slider x:Name="slider_Sound_SE" Canvas.Left="10" Canvas.Top="26" Width="188" SmallChange="1" Value="60"/>
+              <Slider x:Name="slider_Sound_SE" Canvas.Left="10" Canvas.Top="26" Width="188" SmallChange="1" Value="60" ValueChanged="slider_Sound_SE_ValueChanged"/>
               <Label x:Name="label_Sound_SE" Content="60" FontSize="16" HorizontalContentAlignment="Center" Width="208"/>
-              <Button x:Name="button_Sound_SE_Try" Width="27" Height="27" Content=" ▶" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Canvas.Left="171" Canvas.Top="45"/>
+              <Button x:Name="button_Sound_SE_Try" Width="27" Height="27" Content=" ▶" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Canvas.Left="171" Canvas.Top="45" Click="button_Sound_SE_Try_Click"/>
             </Canvas>
           </GroupBox>
           <GroupBox x:Name="groupBox_Sound_Vocal" Header="角色语音（Vocal）音量" HorizontalAlignment="Left" Margin="244,134,0,0" VerticalAlignment="Top" Height="110" Width="220">
             <Canvas>
-              <Slider x:Name="slider_Sound_Vocal" Canvas.Left="10" Canvas.Top="26" Width="188" SmallChange="1" Value="100"/>
+              <Slider x:Name="slider_Sound_Vocal" Canvas.Left="10" Canvas.Top="26" Width="188" SmallChange="1" Value="100" ValueChanged="slider_Sound_Vocal_ValueChanged"/>
               <Label x:Name="label_Sound_Vocal" Content="100" FontSize="16" HorizontalContentAlignment="Center" Width="208"/>
-              <Button x:Name="button_Sound_Vocal_Try" Width="27" Height="27" Content=" ▶" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Canvas.Left="171" Canvas.Top="45"/>
+              <Button x:Name="button_Sound_Vocal_Try" Width="27" Height="27" Content=" ▶" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Canvas.Left="171" Canvas.Top="45" Click="button_Sound_Vocal_Try_Click"/>
             </Canvas>
           </GroupBox>
           <Label x:Name="label_Sound_Mute" Content="静音模式" Foreground="CornflowerBlue" HorizontalAlignment="Left" Margin="479,199,0,0" VerticalAlignment="Top"/>
-          <controls:ToggleSwitch x:Name="toggleSwitch_Sound_Mute" FontSize="12" Foreground="CornflowerBlue" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" Margin="483,220,10,22"/>
+          <controls:ToggleSwitch x:Name="toggleSwitch_Sound_Mute" FontSize="12" Foreground="CornflowerBlue" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" Margin="483,220,10,22" IsCheckedChanged="ToggleSwitch_Sound_Mute_OnIsCheckedChanged"/>
         </Grid>
       </TabItem>
       <TabItem Header="    键位    " controls:ControlsHelper.HeaderFontSize="22">
@@ -106,11 +107,11 @@
       <TabItem Header="    关于    " controls:ControlsHelper.HeaderFontSize="22">
         <Grid Name="grid_about">
           <Grid.Background>
-            <ImageBrush Stretch="Uniform" ImageSource="/Yuri.YuriLauncher;component/Resources/About_1.png"/>
+            <ImageBrush Stretch="Uniform" ImageSource="/Yuri.YuriLauncher;component/Resources/About_1.png" />
           </Grid.Background>
-          <Button x:Name="button_about_reference" Content="版权声明" HorizontalAlignment="Left" Margin="475,229,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft YaHei UI" Foreground="DarkSlateBlue"/>
-          <Button x:Name="button_about_resources" Content="素材来源" HorizontalAlignment="Left" Margin="395,229,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft YaHei UI" Foreground="DarkSlateBlue"/>
-          <Button x:Name="button_about_nextpage" Width="27" Height="27" Content=" ▶" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Margin="523,112,10,127"/>
+          <Button x:Name="button_about_reference" Content="软件许可证" HorizontalAlignment="Left" Margin="475,229,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft YaHei UI" Foreground="DarkSlateBlue" Click="button_about_reference_Click" TabIndex="3"/>
+          <Button x:Name="button_about_resources" Content="素材版权" HorizontalAlignment="Left" Margin="395,229,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft YaHei UI" Foreground="DarkSlateBlue" TabIndex="2"/>
+          <Button x:Name="button_about_nextpage" Width="27" Height="27" Content=" ▶" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Margin="523,112,10,127" TabIndex="1"/>
         </Grid>
       </TabItem>
     </controls:MetroAnimatedSingleRowTabControl>

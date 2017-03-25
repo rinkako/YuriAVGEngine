@@ -8,7 +8,7 @@ namespace Yuri.YuriLauncher.Utils
     /// <summary>
     /// 为程序提供网络服务
     /// </summary>
-    internal static class NetworkUtil
+    internal static class NetworkUtils
     {
 
     }
