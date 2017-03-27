@@ -411,7 +411,7 @@ namespace Yuri.PageView
         /// <summary>
         /// 是否为保存模式
         /// </summary>
-        private bool isSave;
+        private readonly bool isSave;
 
         /// <summary>
         /// 最后指向的文件id

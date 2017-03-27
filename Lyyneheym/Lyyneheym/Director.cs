@@ -196,198 +196,233 @@ namespace Yuri
         /// </summary>
         private void UpdateContext(object sender, EventArgs e)
         {
-            // 取得调用堆栈顶部状态
-            StackMachineState stackState = Director.RunMana.GameState(Director.RunMana.CallStack);
-            var vw = ViewManager.GetInstance();
-            switch (stackState)
+            bool resumeFlag = true;
+            this.timer.Stop();
+            while (true)
             {
-                case StackMachineState.Interpreting:
-                case StackMachineState.FunctionCalling:
-                    this.curState = GameState.Performing;
-                    break;
-                case StackMachineState.WaitUser:
-                    this.curState = GameState.WaitForUserInput;
-                    break;
-                case StackMachineState.WaitAnimation:
-                    this.curState = GameState.WaitAni;
-                    break;
-                case StackMachineState.Await:
-                    this.curState = GameState.Waiting;
-                    break;
-                case StackMachineState.Interrupt:
-                    this.curState = GameState.Interrupt;
-                    break;
-                case StackMachineState.NOP:
-                    this.curState = GameState.Exit;
-                    break;
-            }
-            // 根据调用堆栈顶部更新系统
-            switch (this.curState)
-            {
-                // 等待状态
-                case GameState.Waiting:
-                    // 计算已经等待的时间（这里，不考虑并行处理）
-                    if (DateTime.Now - Director.RunMana.CallStack.ESP.TimeStamp > Director.RunMana.CallStack.ESP.Delay)
-                    {
-                        Director.RunMana.ExitCall(Director.RunMana.CallStack);
-                    }
-                    break;
-                // 等待动画
-                case GameState.WaitAni:
-                    if (SpriteAnimation.IsAnyAnimation() == false)
-                    {
-                        Director.RunMana.ExitCall(Director.RunMana.CallStack);
-                    }
-                    break;
-                // 等待用户操作
-                case GameState.WaitForUserInput:
-                    break;
-                // 中断
-                case GameState.Interrupt:
-                    var interruptSa = Director.RunMana.CallStack.ESP.IP;
-                    var interruptExitPoint = Director.RunMana.CallStack.ESP.Tag;
-                    // 退出中断
-                    var pureInt = Director.RunMana.CallStack.ESP.BindingInterrupt.pureInterrupt;
-                    var interruptFuncCalling = Director.RunMana.CallStack.ESP.BindingInterrupt.interruptFuncSign;
-                    var needExitWait = Director.RunMana.CallStack.ESP.BindingInterrupt.exitWait;
-                    Director.RunMana.ExitCall(Director.RunMana.CallStack);
-                    // 处理中断优先动作
-                    if (interruptSa != null)
-                    {
-                        var iterSa = interruptSa;
-                        while (iterSa != null)
-                        {
-                            this.updateRender.Accept(interruptSa);
-                            iterSa = iterSa.Next;
-                        }
-                    }
-                    // 判断中断是否需要处理后续动作
-                    if (pureInt)
-                    {
+                // 取得调用堆栈顶部状态
+                StackMachineState stackState = Director.RunMana.GameState(Director.RunMana.CallStack);
+                switch (stackState)
+                {
+                    case StackMachineState.Interpreting:
+                    case StackMachineState.FunctionCalling:
+                        this.curState = GameState.Performing;
+                        resumeFlag = false;
                         break;
-                    }
-                    // 跳出所有用户等待
-                    if (needExitWait || interruptExitPoint != String.Empty)
-                    {
-                        Director.RunMana.ExitUserWait();
-                    }
-                    // 处理跳转（与中断调用互斥）
-                    if (interruptExitPoint != "")
-                    {
-                        var curScene = this.resMana.GetScene(Director.RunMana.CallStack.EBP.BindingSceneName);
-                        if (!curScene.LabelDictionary.ContainsKey(interruptExitPoint))
+                    case StackMachineState.WaitUser:
+                        this.curState = GameState.WaitForUserInput;
+                        resumeFlag = true;
+                        break;
+                    case StackMachineState.WaitAnimation:
+                        this.curState = GameState.WaitAni;
+                        resumeFlag = true;
+                        break;
+                    case StackMachineState.Await:
+                        this.curState = GameState.Waiting;
+                        resumeFlag = true;
+                        break;
+                    case StackMachineState.Interrupt:
+                        this.curState = GameState.Interrupt;
+                        resumeFlag = false;
+                        break;
+                    case StackMachineState.NOP:
+                        this.curState = GameState.Exit;
+                        resumeFlag = true;
+                        break;
+                }
+                // 根据调用堆栈顶部更新系统
+                switch (this.curState)
+                {
+                    // 等待状态
+                    case GameState.Waiting:
+                        // 计算已经等待的时间（这里，不考虑并行处理）
+                        if (DateTime.Now - Director.RunMana.CallStack.ESP.TimeStamp >
+                            Director.RunMana.CallStack.ESP.Delay)
                         {
-                            CommonUtils.ConsoleLine(String.Format("Ignored Interrupt jump Instruction (target not exist): {0}", interruptExitPoint),
-                                        "Director", OutputStyle.Error);
+                            Director.RunMana.ExitCall(Director.RunMana.CallStack);
+                        }
+                        break;
+                    // 等待动画
+                    case GameState.WaitAni:
+                        if (SpriteAnimation.IsAnyAnimation() == false)
+                        {
+                            Director.RunMana.ExitCall(Director.RunMana.CallStack);
+                        }
+                        break;
+                    // 等待用户操作
+                    case GameState.WaitForUserInput:
+                        break;
+                    // 中断
+                    case GameState.Interrupt:
+                        var interruptSa = Director.RunMana.CallStack.ESP.IP;
+                        var interruptExitPoint = Director.RunMana.CallStack.ESP.Tag;
+                        // 退出中断
+                        var pureInt = Director.RunMana.CallStack.ESP.BindingInterrupt.pureInterrupt;
+                        var interruptFuncCalling = Director.RunMana.CallStack.ESP.BindingInterrupt.interruptFuncSign;
+                        var needExitWait = Director.RunMana.CallStack.ESP.BindingInterrupt.exitWait;
+                        Director.RunMana.ExitCall(Director.RunMana.CallStack);
+                        // 处理中断优先动作
+                        if (interruptSa != null)
+                        {
+                            var iterSa = interruptSa;
+                            while (iterSa != null)
+                            {
+                                this.updateRender.Accept(interruptSa);
+                                iterSa = iterSa.Next;
+                            }
+                        }
+                        // 判断中断是否需要处理后续动作
+                        if (pureInt)
+                        {
                             break;
                         }
-                        Director.RunMana.CallStack.EBP.MircoStep(curScene.LabelDictionary[interruptExitPoint]);
-                    }
-                    // 处理中断函数调用
-                    else if (interruptFuncCalling != String.Empty)
-                    {
-                        var ifcItems = interruptFuncCalling.Split('(');
-                        var funPureName = ifcItems[0];
-                        var funParas = "(" + ifcItems[1];
-                        this.FunctionCalling(funPureName, funParas, Director.RunMana.CallStack);
-                    }
-                    break;
-                // 演绎脚本
-                case GameState.Performing:
-                    // 取下一动作
-                    var nextInstruct = Director.RunMana.MoveNext(Director.RunMana.CallStack);
-                    // 如果指令空了就立即迭代本次消息循环
-                    if (nextInstruct == null)
-                    {
-                        return;
-                    }
-                    // 处理影响调用堆栈的动作
-                    if (nextInstruct.Type == SActionType.act_wait)
-                    {
-                        double waitMs = nextInstruct.ArgsDict.ContainsKey("time") ?
-                                (double)Director.RunMana.CalculatePolish(nextInstruct.ArgsDict["time"], Director.RunMana.CallStack) : 0;
-                        Director.RunMana.Delay(nextInstruct.NodeName, DateTime.Now, TimeSpan.FromMilliseconds(waitMs));
-                        break;
-                    }
-                    else if (nextInstruct.Type == SActionType.act_waitani)
-                    {
-                        Director.RunMana.AnimateWait(nextInstruct.NodeName);
-                        break;
-                    }
-                    else if (nextInstruct.Type == SActionType.act_waituser)
-                    {
-                        Director.RunMana.UserWait("Director", nextInstruct.NodeName);
-                        break;
-                    }
-                    else if (nextInstruct.Type == SActionType.act_jump)
-                    {
-                        var jumpToScene = nextInstruct.ArgsDict["filename"];
-                        var jumpToTarget = nextInstruct.ArgsDict["target"];
-                        // 场景内跳转
-                        if (jumpToScene == String.Empty)
+                        // 跳出所有用户等待
+                        if (needExitWait || interruptExitPoint != String.Empty)
                         {
-                            if (stackState == StackMachineState.Interpreting)
-                            {
-                                var currentScene = this.resMana.GetScene(Director.RunMana.CallStack.ESP.BindingSceneName);
-                                if (!currentScene.LabelDictionary.ContainsKey(jumpToTarget))
-                                {
-                                    CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
-                                        "Director", OutputStyle.Error);
-                                    break;
-                                }
-                                Director.RunMana.CallStack.ESP.MircoStep(currentScene.LabelDictionary[jumpToTarget]);
-                            }
-                            else if (stackState == StackMachineState.FunctionCalling)
-                            {
-                                var currentFunc = Director.RunMana.CallStack.ESP.BindingFunction;
-                                if (!currentFunc.LabelDictionary.ContainsKey(jumpToTarget))
-                                {
-                                    CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
-                                        "Director", OutputStyle.Error);
-                                    break;
-                                }
-                                Director.RunMana.CallStack.ESP.MircoStep(currentFunc.LabelDictionary[jumpToTarget]);
-                            }
+                            Director.RunMana.ExitUserWait();
                         }
-                        // 跨场景跳转
-                        else
+                        // 处理跳转（与中断调用互斥）
+                        if (interruptExitPoint != "")
                         {
-                            var jumpScene = this.resMana.GetScene(jumpToScene);
-                            if (jumpScene == null)
+                            var curScene = this.resMana.GetScene(Director.RunMana.CallStack.EBP.BindingSceneName);
+                            if (!curScene.LabelDictionary.ContainsKey(interruptExitPoint))
                             {
-                                CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (scene not exist): {0}", jumpToScene),
+                                CommonUtils.ConsoleLine(
+                                    String.Format("Ignored Interrupt jump Instruction (target not exist): {0}",
+                                        interruptExitPoint),
                                     "Director", OutputStyle.Error);
                                 break;
                             }
-                            if (jumpToTarget != String.Empty && !jumpScene.LabelDictionary.ContainsKey(jumpToTarget))
-                            {
-                                CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0} -> {1}", jumpToScene, jumpToTarget),
-                                    "Director", OutputStyle.Error);
-                                break;
-                            }
-                            Director.RunMana.ExitCall(Director.RunMana.CallStack);
-                            Director.RunMana.CallScene(jumpScene, jumpToTarget == "" ? jumpScene.Ctor : jumpScene.LabelDictionary[jumpToTarget]);
+                            Director.RunMana.CallStack.EBP.MircoStep(curScene.LabelDictionary[interruptExitPoint]);
+                        }
+                        // 处理中断函数调用
+                        else if (interruptFuncCalling != String.Empty)
+                        {
+                            var ifcItems = interruptFuncCalling.Split('(');
+                            var funPureName = ifcItems[0];
+                            var funParas = "(" + ifcItems[1];
+                            this.FunctionCalling(funPureName, funParas, Director.RunMana.CallStack);
                         }
                         break;
-                    }
-                    else if (nextInstruct.Type == SActionType.act_call)
-                    {
-                        var callFunc = nextInstruct.ArgsDict["name"];
-                        var signFunc = nextInstruct.ArgsDict["sign"];
-                        this.FunctionCalling(callFunc, signFunc, Director.RunMana.CallStack);
+                    // 演绎脚本
+                    case GameState.Performing:
+                        // 取下一动作
+                        var nextInstruct = Director.RunMana.MoveNext(Director.RunMana.CallStack);
+                        // 如果指令空了就立即迭代本次消息循环
+                        if (nextInstruct == null)
+                        {
+                            return;
+                        }
+                        // 处理影响调用堆栈的动作
+                        if (nextInstruct.Type == SActionType.act_wait)
+                        {
+                            double waitMs = nextInstruct.ArgsDict.ContainsKey("time")
+                                ? (double)
+                                Director.RunMana.CalculatePolish(nextInstruct.ArgsDict["time"],
+                                    Director.RunMana.CallStack)
+                                : 0;
+                            Director.RunMana.Delay(nextInstruct.NodeName, DateTime.Now,
+                                TimeSpan.FromMilliseconds(waitMs));
+                            break;
+                        }
+                        else if (nextInstruct.Type == SActionType.act_waitani)
+                        {
+                            Director.RunMana.AnimateWait(nextInstruct.NodeName);
+                            break;
+                        }
+                        else if (nextInstruct.Type == SActionType.act_waituser)
+                        {
+                            Director.RunMana.UserWait("Director", nextInstruct.NodeName);
+                            break;
+                        }
+                        else if (nextInstruct.Type == SActionType.act_jump)
+                        {
+                            var jumpToScene = nextInstruct.ArgsDict["filename"];
+                            var jumpToTarget = nextInstruct.ArgsDict["target"];
+                            // 场景内跳转
+                            if (jumpToScene == String.Empty)
+                            {
+                                if (stackState == StackMachineState.Interpreting)
+                                {
+                                    var currentScene =
+                                        this.resMana.GetScene(Director.RunMana.CallStack.ESP.BindingSceneName);
+                                    if (!currentScene.LabelDictionary.ContainsKey(jumpToTarget))
+                                    {
+                                        CommonUtils.ConsoleLine(
+                                            String.Format("Ignored Jump Instruction (target not exist): {0}",
+                                                jumpToTarget),
+                                            "Director", OutputStyle.Error);
+                                        break;
+                                    }
+                                    Director.RunMana.CallStack.ESP.MircoStep(currentScene.LabelDictionary[jumpToTarget]);
+                                }
+                                else if (stackState == StackMachineState.FunctionCalling)
+                                {
+                                    var currentFunc = Director.RunMana.CallStack.ESP.BindingFunction;
+                                    if (!currentFunc.LabelDictionary.ContainsKey(jumpToTarget))
+                                    {
+                                        CommonUtils.ConsoleLine(
+                                            String.Format("Ignored Jump Instruction (target not exist): {0}",
+                                                jumpToTarget),
+                                            "Director", OutputStyle.Error);
+                                        break;
+                                    }
+                                    Director.RunMana.CallStack.ESP.MircoStep(currentFunc.LabelDictionary[jumpToTarget]);
+                                }
+                            }
+                            // 跨场景跳转
+                            else
+                            {
+                                var jumpScene = this.resMana.GetScene(jumpToScene);
+                                if (jumpScene == null)
+                                {
+                                    CommonUtils.ConsoleLine(
+                                        String.Format("Ignored Jump Instruction (scene not exist): {0}", jumpToScene),
+                                        "Director", OutputStyle.Error);
+                                    break;
+                                }
+                                if (jumpToTarget != String.Empty && !jumpScene.LabelDictionary.ContainsKey(jumpToTarget))
+                                {
+                                    CommonUtils.ConsoleLine(
+                                        String.Format("Ignored Jump Instruction (target not exist): {0} -> {1}",
+                                            jumpToScene, jumpToTarget),
+                                        "Director", OutputStyle.Error);
+                                    break;
+                                }
+                                Director.RunMana.ExitCall(Director.RunMana.CallStack);
+                                Director.RunMana.CallScene(jumpScene,
+                                    jumpToTarget == "" ? jumpScene.Ctor : jumpScene.LabelDictionary[jumpToTarget]);
+                            }
+                            break;
+                        }
+                        else if (nextInstruct.Type == SActionType.act_call)
+                        {
+                            var callFunc = nextInstruct.ArgsDict["name"];
+                            var signFunc = nextInstruct.ArgsDict["sign"];
+                            this.FunctionCalling(callFunc, signFunc, Director.RunMana.CallStack);
+                            break;
+                        }
+                        // 处理常规动作
+                        this.updateRender.Accept(nextInstruct);
                         break;
-                    }
-                    // 处理常规动作
-                    this.updateRender.Accept(nextInstruct);
+                    // 退出
+                    case GameState.Exit:
+                        this.updateRender.Shutdown();
+                        break;
+                }
+                // 处理IO
+                this.updateRender.UpdateForMouseState();
+                this.updateRender.UpdateForKeyboardState();
+                // 是否恢复消息循环
+                if (resumeFlag)
+                {
                     break;
-                // 退出
-                case GameState.Exit:
-                    this.updateRender.Shutdown();
-                    break;
+                }
             }
-            // 处理IO
-            this.updateRender.UpdateForMouseState();
-            this.updateRender.UpdateForKeyboardState();
+            if (resumeFlag)
+            {
+                this.timer.Start();
+            }
         }
 
         /// <summary>
@@ -418,7 +453,8 @@ namespace Yuri
                     break;
                 case StackMachineState.Interrupt:
                     // 并行器里不应该出现系统中断，立即结束本次迭代
-                    CommonUtils.ConsoleLine("There is a interrupt in parallel function, which may cause system pause",
+                    CommonUtils.ConsoleLine(
+                        "There is a interrupt in parallel function, which may cause system pause",
                         "Director", OutputStyle.Warning);
                     return;
                 case StackMachineState.NOP:
@@ -455,21 +491,24 @@ namespace Yuri
                     // 处理影响调用堆栈的动作
                     if (nextInstruct.Type == SActionType.act_wait)
                     {
-                        double waitMs = nextInstruct.ArgsDict.ContainsKey("time") ?
-                                (double)Director.RunMana.CalculatePolish(nextInstruct.ArgsDict["time"], paraVM) : 0;
+                        double waitMs = nextInstruct.ArgsDict.ContainsKey("time")
+                            ? (double) Director.RunMana.CalculatePolish(nextInstruct.ArgsDict["time"], paraVM)
+                            : 0;
                         paraVM.Submit("Parallel Time Waiting", DateTime.Now, TimeSpan.FromMilliseconds(waitMs));
                         break;
                     }
                     else if (nextInstruct.Type == SActionType.act_waitani)
                     {
                         // 并行器里不应该出现等待动画结束，立即结束本次迭代
-                        CommonUtils.ConsoleLine("There is a animation wait in parallel function, which may cause system pause",
+                        CommonUtils.ConsoleLine(
+                            "There is a animation wait in parallel function, which may cause system pause",
                             "Director", OutputStyle.Warning);
                         break;
                     }
                     else if (nextInstruct.Type == SActionType.act_waituser)
                     {
-                        CommonUtils.ConsoleLine("There is a user wait in parallel function, which may cause system pause",
+                        CommonUtils.ConsoleLine(
+                            "There is a user wait in parallel function, which may cause system pause",
                             "Director", OutputStyle.Warning);
                         break;
                     }
@@ -485,7 +524,9 @@ namespace Yuri
                                 var currentScene = this.resMana.GetScene(paraVM.ESP.BindingSceneName);
                                 if (!currentScene.LabelDictionary.ContainsKey(jumpToTarget))
                                 {
-                                    CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
+                                    CommonUtils.ConsoleLine(
+                                        String.Format("Ignored Jump Instruction (target not exist): {0}",
+                                            jumpToTarget),
                                         "Director", OutputStyle.Error);
                                     break;
                                 }
@@ -496,7 +537,9 @@ namespace Yuri
                                 var currentFunc = paraVM.ESP.BindingFunction;
                                 if (!currentFunc.LabelDictionary.ContainsKey(jumpToTarget))
                                 {
-                                    CommonUtils.ConsoleLine(String.Format("Ignored Jump Instruction (target not exist): {0}", jumpToTarget),
+                                    CommonUtils.ConsoleLine(
+                                        String.Format("Ignored Jump Instruction (target not exist): {0}",
+                                            jumpToTarget),
                                         "Director", OutputStyle.Error);
                                     break;
                                 }
@@ -506,7 +549,8 @@ namespace Yuri
                         // 跨场景跳转
                         else
                         {
-                            CommonUtils.ConsoleLine("There is a jump across scene in parallel function, it will be ignored",
+                            CommonUtils.ConsoleLine(
+                                "There is a jump across scene in parallel function, it will be ignored",
                                 "Director", OutputStyle.Warning);
                         }
                         break;
@@ -527,7 +571,7 @@ namespace Yuri
                     break;
             }
         }
-        
+
         /// <summary>
         /// 处理函数调用
         /// </summary>
@@ -615,12 +659,12 @@ namespace Yuri
         /// <summary>
         /// 获取或设置当前是否正在点击按钮
         /// </summary>
-        public static bool IsButtonClicking { get; set; }= false;
+        public static bool IsButtonClicking { get; set; } = false;
 
         /// <summary>
         /// 获取或设置当前是否处于全屏态
         /// </summary>
-        public static bool IsFullScreen { get; set; }= false;
+        public static bool IsFullScreen { get; set; } = false;
 
         /// <summary>
         /// 当前游戏的状态
