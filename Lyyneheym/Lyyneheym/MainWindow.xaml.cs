@@ -75,7 +75,7 @@ namespace Yuri
             }
             else if (e.SystemKey == Key.Enter && MainWindow.altDown)
             {
-                if (Director.FullScreen)
+                if (Director.IsFullScreen)
                 {
                     this.WindowScreenTransform();
                 }
@@ -83,7 +83,7 @@ namespace Yuri
                 {
                     this.FullScreenTransform();
                 }
-                Director.FullScreen = !Director.FullScreen;
+                Director.IsFullScreen = !Director.IsFullScreen;
             }
         }
 

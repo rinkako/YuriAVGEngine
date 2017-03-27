@@ -42,8 +42,8 @@ namespace Yuri.PlatformCore
             if (fetched != null && vsm.ESP.State == StackMachineState.Interpreting)
             {
                 this.DashingPureSa = fetched.Clone(true);
-                if (this.DashingPureSa.aType == SActionType.act_dialog ||
-                    this.DashingPureSa.aType == SActionType.act_branch)
+                if (this.DashingPureSa.Type == SActionType.act_dialog ||
+                    this.DashingPureSa.Type == SActionType.act_branch)
                 {
                     RollbackManager.SteadyForward(false, this.DashingPureSa, this.PlayingBGM);
                 }
@@ -78,46 +78,41 @@ namespace Yuri.PlatformCore
                 return this.FetchNextInstruction(vsm);
             }
             // 如果没有条件子句
-            if (ret.condPolish == String.Empty)
+            if (ret.CondPolish == String.Empty)
             {
                 // 处理控制流程
-                switch (ret.aType)
+                switch (ret.Type)
                 {
                     case SActionType.NOP:
                     case SActionType.act_function:
                     case SActionType.act_for:
                         // 优先进入trueRouting
-                        if (ret.trueRouting != null && ret.trueRouting.Count > 0)
+                        if (ret.TrueRouting != null && ret.TrueRouting.Count > 0)
                         {
-                            vsm.ESP.PC++;
-                            ret = vsm.ESP.IP = ret.trueRouting[0];
+                            ret = vsm.ESP.MircoStep(ret.TrueRouting[0]);
                             break;
                         }
                         // falseRouting
-                        else if (ret.falseRouting != null && ret.falseRouting.Count > 0)
+                        else if (ret.FalseRouting != null && ret.FalseRouting.Count > 0)
                         {
-                            vsm.ESP.PC++;
-                            ret = vsm.ESP.IP = ret.falseRouting[0];
+                            ret = vsm.ESP.MircoStep(ret.FalseRouting[0]);
                             break;
                         }
                         // next
                         else
                         {
-                            vsm.ESP.PC++;
-                            ret = vsm.ESP.IP = ret.next;
+                            ret = vsm.ESP.MacroStep(ret);
                             break;
                         }
                     case SActionType.act_endfor:
                         // endfor直接跳过
-                        vsm.ESP.PC++;
-                        ret = vsm.ESP.IP = ret.next;
+                        ret = vsm.ESP.MacroStep(ret);
                         break;
                 }
                 // 移动下一指令指针，为下次处理做准备
-                if (ret.aType != SActionType.act_for)
+                if (ret.Type != SActionType.act_for)
                 {
-                    vsm.ESP.PC++;
-                    vsm.ESP.IP = ret.next;
+                    vsm.ESP.MacroStep(ret);
                 }
                 // 返回当前要执行的指令实例
                 return ret;
@@ -126,57 +121,50 @@ namespace Yuri.PlatformCore
             else
             {
                 // 计算条件真值
-                bool condBoolean = this.CalculateBooleanPolish(ret.condPolish, vsm);
+                bool condBoolean = this.CalculateBooleanPolish(ret.CondPolish, vsm);
                 // 处理控制流程
-                switch (ret.aType)
+                switch (ret.Type)
                 {
                     // IF语句
                     case SActionType.act_if:
                         // 条件为真且有真分支
-                        if (condBoolean == true && ret.trueRouting != null && ret.trueRouting.Count > 0)
+                        if (condBoolean == true && ret.TrueRouting != null && ret.TrueRouting.Count > 0)
                         {
                             // 移动下一指令指针，进入trueRouting
-                            vsm.ESP.PC++;
-                            ret = vsm.ESP.IP = ret.trueRouting[0];
+                            ret = vsm.ESP.MircoStep(ret.TrueRouting[0]);
                         }
                         // 条件为假且有假分支
-                        else if (condBoolean == false && ret.falseRouting != null && ret.falseRouting.Count > 0)
+                        else if (condBoolean == false && ret.FalseRouting != null && ret.FalseRouting.Count > 0)
                         {
                             // 移动下一指令指针，进入falseRouting
-                            vsm.ESP.PC++;
-                            ret = vsm.ESP.IP = ret.falseRouting[0];
+                            ret = vsm.ESP.MircoStep(ret.FalseRouting[0]);
                         }
                         // 没有执行的语句时，移动指令指针到next节点
                         else
                         {
                             // 跳过if语句
-                            vsm.ESP.PC++;
-                            ret = vsm.ESP.IP = ret.next;
+                            ret = vsm.ESP.MacroStep(ret);
                         }
                         // 再移动一次指针，为下次处理做准备
-                        vsm.ESP.PC++;
-                        vsm.ESP.IP = ret.next;
+                        vsm.ESP.MacroStep(ret);
                         // 返回当前要执行的指令实例
                         return ret;
                     // FOR语句
                     case SActionType.act_for:
                         // 如果条件为真就进入真分支
-                        if (condBoolean == true && ret.trueRouting != null && ret.trueRouting.Count > 0)
+                        if (condBoolean == true && ret.TrueRouting != null && ret.TrueRouting.Count > 0)
                         {
                             // 移动下一指令指针，进入trueRouting
-                            vsm.ESP.PC++;
-                            ret = vsm.ESP.IP = ret.trueRouting[0];
+                            ret = vsm.ESP.MircoStep(ret.TrueRouting[0]);
                         }
                         // 如果条件为假直接跳过for语句
                         else
                         {
                             // 跳过if语句
-                            vsm.ESP.PC++;
-                            ret = vsm.ESP.IP = ret.next;
+                            ret = vsm.ESP.MacroStep(ret);
                         }
                         // 再移动一次指针，为下次处理做准备
-                        vsm.ESP.PC++;
-                        vsm.ESP.IP = ret.next;
+                        vsm.ESP.MacroStep(ret);
                         // 返回当前要执行的指令实例
                         return ret;
                     // 除此以外，带了cond的语句，为真才执行
@@ -184,12 +172,10 @@ namespace Yuri.PlatformCore
                         if (condBoolean == false)
                         {
                             // 跳过当前语句
-                            vsm.ESP.PC++;
-                            ret = vsm.ESP.IP = ret.next;
+                            ret = vsm.ESP.MacroStep(ret);
                         }
                         // 移动下一指令指针，为下次处理做准备
-                        vsm.ESP.PC++;
-                        vsm.ESP.IP = ret.next;
+                        vsm.ESP.MacroStep(ret);
                         // 返回当前要执行的指令实例
                         return ret;
                 }
@@ -268,7 +254,7 @@ namespace Yuri.PlatformCore
         /// <param name="target">目标标签</param>
         public void CallScene(Scene scene, SceneAction target = null)
         {
-            CommonUtils.ConsoleLine(String.Format("Call Scene: {0} , with target: {1}", scene.Scenario, target == null ? "null" : target.saNodeName),
+            CommonUtils.ConsoleLine(String.Format("Call Scene: {0} , with target: {1}", scene.Scenario, target == null ? "null" : target.NodeName),
                     "RuntimeManager", OutputStyle.Important);
             // 基础调用
             this.CallStack.Submit(scene, target);
@@ -419,7 +405,7 @@ namespace Yuri.PlatformCore
         /// 左值运算一个变量
         /// </summary>
         /// <param name="varname">变量名</param>
-        /// <param name="value">右值逆波兰式</param>
+        /// <param name="valuePolish">右值逆波兰式</param>
         /// <param name="vsm">关于哪个调用堆栈做动作</param>
         public void Assignment(string varname, string valuePolish, StackMachine vsm)
         {
@@ -493,12 +479,18 @@ namespace Yuri.PlatformCore
         public PreviewSaveDataStoringPackage PreviewSave()
         {
             // 处理主调用堆栈上的栈帧
-            PreviewSaveDataStoringPackage savePak = new PreviewSaveDataStoringPackage();
-            savePak.saveTraceBackStack = new Stack<StackMachineFrame>();
+            PreviewSaveDataStoringPackage savePak = new PreviewSaveDataStoringPackage
+            {
+                saveTraceBackStack = new Stack<StackMachineFrame>()
+            };
             while (this.CallStack.ESP != this.CallStack.SAVEP)
             {
                 savePak.saveTraceBackStack.Push(this.CallStack.Consume());
             }
+            // 缓存指令指针
+            savePak.CacheIP = this.CallStack.ESP.IP;
+            // 这里必须直接设置而不用mircoStep，避免IR寄存器的更改
+            this.CallStack.ESP.IP = null;
             // 处理并行句柄引用
             savePak.ParallelHandlerStore = this.ParallelHandler;
             this.ParallelHandler = null;
@@ -515,6 +507,8 @@ namespace Yuri.PlatformCore
         /// <param name="savePack">调用PreviewSave时的返回值</param>
         public void FinishedSave(PreviewSaveDataStoringPackage savePack)
         {
+            // 恢复指令指针
+            this.CallStack.ESP.MircoStep(savePack.CacheIP);
             // 恢复主调用堆栈上的栈帧
             while (savePack.saveTraceBackStack.Count > 0)
             {
@@ -1213,6 +1207,14 @@ namespace Yuri.PlatformCore
     /// </summary>
     internal sealed class PreviewSaveDataStoringPackage
     {
+        /// <summary>
+        /// 指令指针缓存
+        /// </summary>
+        public SceneAction CacheIP
+        {
+            get; set;
+        }
+
         /// <summary>
         /// 并行处理器句柄
         /// </summary>

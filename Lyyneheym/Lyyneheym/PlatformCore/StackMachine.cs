@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Yuri.ILPackage;
 
 namespace Yuri.PlatformCore
@@ -48,8 +49,8 @@ namespace Yuri.PlatformCore
                 State = StackMachineState.Interpreting,
                 ScriptName = sc.Scenario,
                 PC = 0,
-                IP = offset == null ? sc.Ctor : offset,
-                BP = sc.Ctor,
+                IP = offset ?? sc.Ctor,
+                IR = sc.Ctor.NodeName,
                 Argv = null,
                 BindingSceneName = sc.Scenario,
                 BindingFunctionName = null,
@@ -69,11 +70,7 @@ namespace Yuri.PlatformCore
         public void Submit(SceneFunction sf, List<object> args, int offset = 0)
         {
             // 处理形参顺序
-            string argc = String.Empty;
-            foreach (var arg in sf.Param)
-            {
-                argc += "," + arg;
-            }
+            string argc = sf.Param.Aggregate(String.Empty, (current, arg) => current + ("," + arg));
             if (argc.Length > 0)
             {
                 argc = argc.Substring(1);
@@ -84,7 +81,7 @@ namespace Yuri.PlatformCore
                 ScriptName = sf.Callname,
                 PC = offset,
                 IP = sf.Sa,
-                BP = sf.Sa,
+                IR = sf.Sa.NodeName,
                 BindingFunction = sf,
                 Argv = args,
                 BindingFunctionName = String.Format("{0}?{1}", sf.GlobalName, this.coreStack.Count.ToString()),
@@ -108,7 +105,7 @@ namespace Yuri.PlatformCore
                 ScriptName = null,
                 PC = 0,
                 IP = ntr.interruptSA,
-                BP = ntr.interruptSA,
+                IR = ntr.interruptSA.NodeName,
                 Argv = null,
                 BindingFunctionName = null,
                 BindingSceneName = null,
@@ -133,7 +130,7 @@ namespace Yuri.PlatformCore
                 ScriptName = null,
                 PC = 0,
                 IP = null,
-                BP = null,
+                IR = String.Empty,
                 Argv = null,
                 BindingFunctionName = null,
                 BindingSceneName = null,
@@ -157,7 +154,7 @@ namespace Yuri.PlatformCore
                 ScriptName = null,
                 PC = 0,
                 IP = null,
-                BP = null,
+                IR = String.Empty,
                 Argv = null,
                 BindingFunctionName = null,
                 BindingSceneName = null,
@@ -179,7 +176,7 @@ namespace Yuri.PlatformCore
                 ScriptName = null,
                 PC = 0,
                 IP = null,
-                BP = null,
+                IR = String.Empty,
                 Argv = null,
                 BindingFunctionName = null,
                 BindingSceneName = null,

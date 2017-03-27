@@ -27,11 +27,9 @@ namespace Yuri.PlatformCore
         /// <returns>Double实例</returns>
         private double ParseDouble(string polish, double nullValue)
         {
-            if (polish == "")
-            {
-                return nullValue;
-            }
-            return Convert.ToDouble(Director.RunMana.CalculatePolish(polish, this.VsmReference));
+            return polish == String.Empty
+                ? nullValue
+                : Convert.ToDouble(Director.RunMana.CalculatePolish(polish, this.VsmReference));
         }
 
         /// <summary>
@@ -43,11 +41,9 @@ namespace Yuri.PlatformCore
         /// <returns>Int32实例</returns>
         private int ParseInt(string polish, int nullValue)
         {
-            if (polish == "")
-            {
-                return nullValue;
-            }
-            return (int)(Convert.ToDouble(Director.RunMana.CalculatePolish(polish, this.VsmReference)));
+            return polish == String.Empty
+                ? nullValue
+                : (int) (Convert.ToDouble(Director.RunMana.CalculatePolish(polish, this.VsmReference)));
         }
 
         /// <summary>
@@ -59,11 +55,9 @@ namespace Yuri.PlatformCore
         /// <returns>String实例</returns>
         private string ParseString(string polish, string nullValue)
         {
-            if (polish == "")
-            {
-                return nullValue;
-            }
-            return Director.RunMana.CalculatePolish(polish, this.VsmReference).ToString();
+            return polish == String.Empty
+                ? nullValue
+                : Director.RunMana.CalculatePolish(polish, this.VsmReference).ToString();
         }
 
         /// <summary>
@@ -75,11 +69,7 @@ namespace Yuri.PlatformCore
         /// <returns>String实例</returns>
         private string ParseDirectString(string polish, string nullValue)
         {
-            if (polish == "")
-            {
-                return nullValue;
-            }
-            return polish;
+            return polish == String.Empty? nullValue : polish;
         }
         #endregion
 
@@ -100,12 +90,12 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 设置键盘上某个按键当前状态
         /// </summary>
-        public void SetKeyboardState(Key key, KeyStates state)
+        public void SetKeyboardState(KeyEventArgs e)
         {
-            UpdateRender.KS_KEY_Dict[key] = state;
-            Director.RunMana.Assignment("&kb_" + key.ToString(), "1", this.VsmReference);
-            if ((UpdateRender.KS_KEY_Dict[Key.LeftAlt] == KeyStates.Down || UpdateRender.KS_KEY_Dict[Key.RightAlt] == KeyStates.Down)
-                && UpdateRender.KS_KEY_Dict[Key.F4] == KeyStates.Down)
+            UpdateRender.KS_KEY_Dict[e.Key] = e.KeyStates;
+            Director.RunMana.Assignment("&kb_" + e.Key.ToString(), e.IsDown ? "1" : "0", this.VsmReference);
+            if ((UpdateRender.KS_KEY_Dict[Key.LeftAlt] > 0 || UpdateRender.KS_KEY_Dict[Key.RightAlt] > 0)
+                && UpdateRender.KS_KEY_Dict[Key.F4] > 0)
             {
                 this.Shutdown();
             }
@@ -183,7 +173,7 @@ namespace Yuri.PlatformCore
                 if (this.MouseLeftUpFlag == true)
                 {
                     // 正在显示对话
-                    if (this.isShowingDialog && Director.ButtonClickingFlag == false)
+                    if (this.isShowingDialog && Director.IsButtonClicking == false)
                     {
                         // 如果还在播放打字动画就跳跃
                         if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() != 1.0)
@@ -614,90 +604,90 @@ namespace Yuri.PlatformCore
         /// <param name="action">场景动作实例</param>
         public void Accept(SceneAction action)
         {
-            switch (action.aType)
+            switch (action.Type)
             {
                 case SActionType.act_a:
                     this.A(
-                        this.ParseDirectString(action.argsDict["name"], ""),
-                        this.ParseInt(action.argsDict["vid"], -1),
-                        this.ParseDirectString(action.argsDict["face"], ""),
-                        this.ParseDirectString(action.argsDict["loc"], "")
+                        this.ParseDirectString(action.ArgsDict["name"], ""),
+                        this.ParseInt(action.ArgsDict["vid"], -1),
+                        this.ParseDirectString(action.ArgsDict["face"], ""),
+                        this.ParseDirectString(action.ArgsDict["loc"], "")
                         );
                     break;
                 case SActionType.act_bg:
                     this.Background(
-                        this.ParseInt(action.argsDict["id"], 0),
-                        this.ParseDirectString(action.argsDict["filename"], ""),
-                        this.ParseDouble(action.argsDict["x"], 0),
-                        this.ParseDouble(action.argsDict["y"], 0),
-                        this.ParseDouble(action.argsDict["opacity"], 1),
-                        this.ParseDouble(action.argsDict["xscale"], 1),
-                        this.ParseDouble(action.argsDict["yscale"], 1),
-                        this.ParseDouble(action.argsDict["ro"], 0),
+                        this.ParseInt(action.ArgsDict["id"], 0),
+                        this.ParseDirectString(action.ArgsDict["filename"], ""),
+                        this.ParseDouble(action.ArgsDict["x"], 0),
+                        this.ParseDouble(action.ArgsDict["y"], 0),
+                        this.ParseDouble(action.ArgsDict["opacity"], 1),
+                        this.ParseDouble(action.ArgsDict["xscale"], 1),
+                        this.ParseDouble(action.ArgsDict["yscale"], 1),
+                        this.ParseDouble(action.ArgsDict["ro"], 0),
                         SpriteAnchorType.Center,
                         new Int32Rect(-1, 0, 0, 0)
                         );
                     break;
                 case SActionType.act_picture:
                     this.Picture(
-                        this.ParseInt(action.argsDict["id"], 0),
-                        this.ParseDirectString(action.argsDict["filename"], ""),
-                        this.ParseDouble(action.argsDict["x"], 0),
-                        this.ParseDouble(action.argsDict["y"], 0),
-                        this.ParseDouble(action.argsDict["opacity"], 1),
-                        this.ParseDouble(action.argsDict["xscale"], 1),
-                        this.ParseDouble(action.argsDict["yscale"], 1),
-                        this.ParseDouble(action.argsDict["ro"], 0),
+                        this.ParseInt(action.ArgsDict["id"], 0),
+                        this.ParseDirectString(action.ArgsDict["filename"], ""),
+                        this.ParseDouble(action.ArgsDict["x"], 0),
+                        this.ParseDouble(action.ArgsDict["y"], 0),
+                        this.ParseDouble(action.ArgsDict["opacity"], 1),
+                        this.ParseDouble(action.ArgsDict["xscale"], 1),
+                        this.ParseDouble(action.ArgsDict["yscale"], 1),
+                        this.ParseDouble(action.ArgsDict["ro"], 0),
                         SpriteAnchorType.Center,
                         new Int32Rect(-1, 0, 0, 0)
                         );
                     break;
                 case SActionType.act_move:
-                    string moveResType = action.argsDict["name"];
+                    string moveResType = action.ArgsDict["name"];
                     this.Move(
-                        this.ParseInt(action.argsDict["id"], 0),
+                        this.ParseInt(action.ArgsDict["id"], 0),
                         moveResType == "picture" ? ResourceType.Pictures : (moveResType == "stand" ? ResourceType.Stand : ResourceType.Background),
-                        this.ParseDirectString(action.argsDict["target"], ""),
-                        this.ParseDouble(action.argsDict["dash"], 1),
-                        this.ParseDouble(action.argsDict["acc"], 0),
-                        TimeSpan.FromMilliseconds(this.ParseDouble(action.argsDict["time"], 0))
+                        this.ParseDirectString(action.ArgsDict["target"], String.Empty),
+                        this.ParseDouble(action.ArgsDict["dash"], 1),
+                        this.ParseDouble(action.ArgsDict["acc"], 0),
+                        TimeSpan.FromMilliseconds(this.ParseDouble(action.ArgsDict["time"], 0))
                         );
                     break;
                 case SActionType.act_deletepicture:
                     this.Deletepicture(
-                        this.ParseInt(action.argsDict["id"], -1),
+                        this.ParseInt(action.ArgsDict["id"], -1),
                         ResourceType.Pictures
                         );
                     break;
                 case SActionType.act_cstand:
                     this.Cstand(
-                        this.ParseInt(action.argsDict["id"], 0),
-                        String.Format("{0}_{1}.png", action.argsDict["name"], action.argsDict["face"]),
-                        this.ParseDouble(action.argsDict["x"], 0),
-                        this.ParseDouble(action.argsDict["y"], 0),
-                        this.ParseDouble(action.argsDict["opacity"], 1),
-                        this.ParseDouble(action.argsDict["xscale"], 1),
-                        this.ParseDouble(action.argsDict["yscale"], 1),
-                        this.ParseDouble(action.argsDict["ro"], 0),
-                        action.argsDict["anchor"] == "" ? (action.argsDict["anchor"] == "center" ? SpriteAnchorType.Center : SpriteAnchorType.LeftTop) : SpriteAnchorType.Center,
+                        this.ParseInt(action.ArgsDict["id"], 0),
+                        String.Format("{0}_{1}.png", action.ArgsDict["name"], action.ArgsDict["face"]),
+                        this.ParseDouble(action.ArgsDict["x"], 0),
+                        this.ParseDouble(action.ArgsDict["y"], 0),
+                        this.ParseDouble(action.ArgsDict["opacity"], 1),
+                        this.ParseDouble(action.ArgsDict["xscale"], 1),
+                        this.ParseDouble(action.ArgsDict["yscale"], 1),
+                        this.ParseDouble(action.ArgsDict["ro"], 0),
+                        action.ArgsDict["anchor"] == "" ? (action.ArgsDict["anchor"] == "center" ? SpriteAnchorType.Center : SpriteAnchorType.LeftTop) : SpriteAnchorType.Center,
                         new Int32Rect(0, 0, 0, 0)
                         );
                     break;
                 case SActionType.act_deletecstand:
                     this.Deletecstand(
-                        (CharacterStandType)this.ParseInt(action.argsDict["id"], 5)
+                        (CharacterStandType)this.ParseInt(action.ArgsDict["id"], 5)
                         );
                     break;
                 case SActionType.act_se:
                     this.Se(
-                        this.ParseDirectString(action.argsDict["filename"], ""),
-                        this.ParseDouble(action.argsDict["vol"], 1000)
+                        this.ParseDirectString(action.ArgsDict["filename"], String.Empty),
+                        this.ParseDouble(action.ArgsDict["vol"], 1000)
                         );
                     break;
                 case SActionType.act_bgm:
                     this.Bgm(
-                        this.ParseDirectString(action.argsDict["filename"], ""),
-                        this.ParseDouble(action.argsDict["vol"], 1000)
+                        this.ParseDirectString(action.ArgsDict["filename"], String.Empty),
+                        this.ParseDouble(action.ArgsDict["vol"], 1000)
                         );
                     break;
                 case SActionType.act_stopbgm:
@@ -705,8 +695,8 @@ namespace Yuri.PlatformCore
                     break;
                 case SActionType.act_vocal:
                     this.Vocal(
-                        this.ParseDirectString(action.argsDict["name"], ""),
-                        this.ParseInt(action.argsDict["vid"], -1),
+                        this.ParseDirectString(action.ArgsDict["name"], String.Empty),
+                        this.ParseInt(action.ArgsDict["vid"], -1),
                         this.musician.VocalDefaultVolume
                         );
                     break;
@@ -717,26 +707,26 @@ namespace Yuri.PlatformCore
                     break;
                 case SActionType.act_save:
                     this.Save(
-                        this.ParseString(action.argsDict["filename"], "autosave")
+                        this.ParseString(action.ArgsDict["filename"], "autosave")
                         );
                     break;
                 case SActionType.act_load:
                     this.Load(
-                        this.ParseString(action.argsDict["filename"], "autosave")
+                        this.ParseString(action.ArgsDict["filename"], "autosave")
                         );
                     break;
                 case SActionType.act_label:
                     break;
                 case SActionType.act_switch:
                     this.Switch(
-                        this.ParseInt(action.argsDict["id"], 0),
-                        this.ParseDirectString(action.argsDict["state"], "on") == "on"
+                        this.ParseInt(action.ArgsDict["id"], 0),
+                        this.ParseDirectString(action.ArgsDict["state"], "on") == "on"
                         );
                     break;
                 case SActionType.act_var:
                     this.Var(
-                        this.ParseDirectString(action.argsDict["name"], "$__LyynehermTempVar"),
-                        this.ParseDirectString(action.argsDict["dash"], "1")
+                        this.ParseDirectString(action.ArgsDict["name"], "$__LyynehermTempVar"),
+                        this.ParseDirectString(action.ArgsDict["dash"], "1")
                         );
                     break;
                 case SActionType.act_break:
@@ -749,60 +739,60 @@ namespace Yuri.PlatformCore
                     break;
                 case SActionType.act_branch:
                     this.Branch(
-                        this.ParseDirectString(action.argsDict["link"], "")
+                        this.ParseDirectString(action.ArgsDict["link"], String.Empty)
                         );
                     break;
                 case SActionType.act_titlepoint:
                     break;
                 case SActionType.act_trans:
                     this.Trans(
-                        this.ParseDirectString(action.argsDict["name"], "Fade")
+                        this.ParseDirectString(action.ArgsDict["name"], "Fade")
                         );
                     break;
                 case SActionType.act_button:
                     this.Button(
-                        this.ParseInt(action.argsDict["id"], 0),
+                        this.ParseInt(action.ArgsDict["id"], 0),
                         true,
-                        this.ParseDouble(action.argsDict["x"], 0),
-                        this.ParseDouble(action.argsDict["y"], 0),
-                        this.ParseDirectString(action.argsDict["target"], ""),
-                        this.ParseDirectString(action.argsDict["sign"], ""),
-                        this.ParseDirectString(action.argsDict["normal"], ""),
-                        this.ParseDirectString(action.argsDict["over"], ""),
-                        this.ParseDirectString(action.argsDict["on"], ""),
-                        this.ParseDirectString(action.argsDict["type"], "once")
+                        this.ParseDouble(action.ArgsDict["x"], 0),
+                        this.ParseDouble(action.ArgsDict["y"], 0),
+                        this.ParseDirectString(action.ArgsDict["target"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["sign"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["normal"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["over"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["on"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["type"], "once")
                         );
                     break;
                 case SActionType.act_deletebutton:
                     this.Deletebutton(
-                        this.ParseInt(action.argsDict["id"], -1)
+                        this.ParseInt(action.ArgsDict["id"], -1)
                         );
                     break;
                 case SActionType.act_style:
                     break;
                 case SActionType.act_msglayer:
                     this.MsgLayer(
-                        this.ParseInt(action.argsDict["id"], 0)
+                        this.ParseInt(action.ArgsDict["id"], 0)
                         );
                     break;
                 case SActionType.act_msglayeropt:
-                    var dashMsgoptItem = Director.RunMana.CalculatePolish(action.argsDict["dash"], this.VsmReference);
+                    var dashMsgoptItem = Director.RunMana.CalculatePolish(action.ArgsDict["dash"], this.VsmReference);
                     this.MsgLayerOpt(
-                        this.ParseInt(action.argsDict["id"], 0),
-                        this.ParseDirectString(action.argsDict["target"], ""),
-                        dashMsgoptItem == null ? "" : dashMsgoptItem.ToString()
+                        this.ParseInt(action.ArgsDict["id"], 0),
+                        this.ParseDirectString(action.ArgsDict["target"], String.Empty),
+                        dashMsgoptItem?.ToString() ?? String.Empty
                         );
                     break;
                 case SActionType.act_draw:
                     this.DrawCommand(
-                        this.ParseInt(action.argsDict["id"], 0),
-                        this.ParseDirectString(action.argsDict["dash"], "")
+                        this.ParseInt(action.ArgsDict["id"], 0),
+                        this.ParseDirectString(action.ArgsDict["dash"], String.Empty)
                         );
                     break;
                 case SActionType.act_dialog:
                     this.Dialog(
-                        action.aTag.Substring(0, action.aTag.Length - 2),
-                        action.aTag.Last() == '1'
+                        action.Tag.Substring(0, action.Tag.Length - 2),
+                        action.Tag.Last() == '1'
                         );
                     break;
                 default:
@@ -899,7 +889,7 @@ namespace Yuri.PlatformCore
         /// <param name="breakSa">中断循环动作实例</param>
         private void Break(SceneAction breakSa)
         {
-            Director.RunMana.CallStack.ESP.IP = breakSa.next;
+            Director.RunMana.CallStack.ESP.MircoStep(breakSa.Next);
         }
 
         /// <summary>
@@ -1251,7 +1241,7 @@ namespace Yuri.PlatformCore
             else
             {
                 Director.RunMana.CallScene(this.titlePointContainer.Key);
-                Director.RunMana.CallStack.ESP.IP = this.titlePointContainer.Value;
+                Director.RunMana.CallStack.ESP.MircoStep(this.titlePointContainer.Value);
             }
         }
 

@@ -69,7 +69,7 @@ namespace Yuri.PlatformCore
                     RollbackManager.IsRollingBack = true;
                 }
                 // 取上一状态
-                if (RollbackManager.IsRollingBack == true && RollbackManager.forwardStack.Count > 0)
+                if (RollbackManager.IsRollingBack && RollbackManager.forwardStack.Count > 0)
                 {
                     var lastStep = RollbackManager.forwardStack.Last();
                     RollbackManager.forwardStack.RemoveAt(RollbackManager.forwardStack.Count - 1);

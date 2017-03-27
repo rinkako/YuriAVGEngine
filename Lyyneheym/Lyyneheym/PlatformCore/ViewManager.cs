@@ -976,42 +976,42 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 视窗向量
         /// </summary>
-        private List<YuriViewport> viewboxVec;
+        private readonly List<YuriViewport> viewboxVec;
 
         /// <summary>
         /// 背景精灵向量
         /// </summary>
-        private List<YuriSprite> backgroundSpriteVec;
+        private readonly List<YuriSprite> backgroundSpriteVec;
         
         /// <summary>
         /// 立绘精灵向量
         /// </summary>
-        private List<YuriSprite> characterStandSpriteVec;
+        private readonly List<YuriSprite> characterStandSpriteVec;
         
         /// <summary>
         /// 图片精灵向量
         /// </summary>
-        private List<YuriSprite> pictureSpriteVec;
+        private readonly List<YuriSprite> pictureSpriteVec;
 
         /// <summary>
         /// 文字层向量
         /// </summary>
-        private List<MessageLayer> messageLayerVec;
+        private readonly List<MessageLayer> messageLayerVec;
 
         /// <summary>
         /// 按钮层向量
         /// </summary>
-        private List<SpriteButton> buttonLayerVec;
+        private readonly List<SpriteButton> buttonLayerVec;
 
         /// <summary>
         /// 选择支按钮向量
         /// </summary>
-        private List<BranchButton> branchButtonVec;
+        private readonly List<BranchButton> branchButtonVec;
 
         /// <summary>
         /// 过渡类型容器
         /// </summary>
-        private ObservableCollection<Type> transitionTypes = new ObservableCollection<Type>();
+        private readonly ObservableCollection<Type> transitionTypes = new ObservableCollection<Type>();
 
         /// <summary>
         /// 私有的构造器

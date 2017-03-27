@@ -38,30 +38,28 @@ namespace Yuri.PlatformCore
         /// 获取该场景的IL文件头
         /// </summary>
         /// <returns>IL文件头字符串</returns>
-        public string GetILSign()
-        {
-            return String.Format(">>>YuriIL?{0}", this.Scenario);
-        }
+        public string GetILSign() => String.Format(">>>YuriIL?{0}", this.Scenario);
+
+        /// <summary>
+        /// 获取该场景下的一个命令
+        /// </summary>
+        /// <param name="actName">命令的唯一名字</param>
+        /// <returns>命令的实例</returns>
+        public SceneAction RetrieveAction(string actName) => this.YuriDict.ContainsKey(actName) ? this.YuriDict[actName] : null;
 
         /// <summary>
         /// 获取指定场景的IL文件头
         /// </summary>
         /// <param name="scene">场景实例</param>
         /// <returns>IL文件头字符串</returns>
-        public static string GetILSign(Scene scene)
-        {
-            return String.Format(">>>YuriIL?{0}", scene.Scenario);
-        }
+        public static string GetILSign(Scene scene) => String.Format(">>>YuriIL?{0}", scene.Scenario);
 
         /// <summary>
         /// 字符串化方法
         /// </summary>
         /// <returns>场景的描述字符串</returns>
-        public override string ToString()
-        {
-            return String.Format("Scene: {0} (func:{1} with para:{2})",
-                this.Scenario, this.FuncContainer.Count, this.ParallellerContainer.Count);
-        }
+        public override string ToString() => String.Format("Scene: {0} (func:{1} with para:{2})",
+            this.Scenario, this.FuncContainer.Count, this.ParallellerContainer.Count);
 
         /// <summary>
         /// 场景名称
@@ -74,6 +72,11 @@ namespace Yuri.PlatformCore
         public SceneAction Ctor { get; set; }
 
         /// <summary>
+        /// 场景命令集的索引
+        /// </summary>
+        public Dictionary<string, SceneAction> YuriDict { get; set; }
+
+        /// <summary>
         /// 场景的函数向量
         /// </summary>
         public List<SceneFunction> FuncContainer { get; set; }
@@ -82,7 +85,7 @@ namespace Yuri.PlatformCore
         /// 场景内的并行处理器向量
         /// </summary>
         public List<SceneFunction> ParallellerContainer { get; set; }
-
+        
         /// <summary>
         /// 场景标签字典
         /// </summary>

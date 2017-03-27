@@ -70,7 +70,7 @@ namespace Yuri
         /// <param name="e">键盘事件</param>
         public void UpdateKeyboard(KeyEventArgs e)
         {
-            this.updateRender.SetKeyboardState(e.Key, e.KeyStates);
+            this.updateRender.SetKeyboardState(e);
             CommonUtils.ConsoleLine(String.Format("Keyboard event: {0} <- {1}", e.Key.ToString(), e.KeyStates.ToString()),
                 "Director", OutputStyle.Normal);
         }
@@ -112,6 +112,10 @@ namespace Yuri
             Director.RunMana = rm;
             Director.RunMana.ParallelHandler = Director.GetInstance().ParallelUpdateContext;
             CommonUtils.ConsoleLine("RuntimeManager is replaced", "Director", OutputStyle.Important);
+            // 缓存指令指针
+            var irname = rm.CallStack.ESP.IR;
+            var isname = rm.CallStack.ESP.BindingSceneName;
+            rm.CallStack.ESP.MircoStep(Director.GetInstance().resMana.GetScene(isname).YuriDict[irname]);
             // 变更屏幕管理器
             ScreenManager.ResetSynObject(Director.RunMana.Screen);
             CommonUtils.ConsoleLine("ScreenManager is replaced", "Director", OutputStyle.Important);
@@ -254,7 +258,7 @@ namespace Yuri
                         while (iterSa != null)
                         {
                             this.updateRender.Accept(interruptSa);
-                            iterSa = iterSa.next;
+                            iterSa = iterSa.Next;
                         }
                     }
                     // 判断中断是否需要处理后续动作
@@ -277,7 +281,7 @@ namespace Yuri
                                         "Director", OutputStyle.Error);
                             break;
                         }
-                        Director.RunMana.CallStack.EBP.IP = curScene.LabelDictionary[interruptExitPoint];
+                        Director.RunMana.CallStack.EBP.MircoStep(curScene.LabelDictionary[interruptExitPoint]);
                     }
                     // 处理中断函数调用
                     else if (interruptFuncCalling != String.Empty)
@@ -298,27 +302,27 @@ namespace Yuri
                         return;
                     }
                     // 处理影响调用堆栈的动作
-                    if (nextInstruct.aType == SActionType.act_wait)
+                    if (nextInstruct.Type == SActionType.act_wait)
                     {
-                        double waitMs = nextInstruct.argsDict.ContainsKey("time") ?
-                                (double)Director.RunMana.CalculatePolish(nextInstruct.argsDict["time"], Director.RunMana.CallStack) : 0;
-                        Director.RunMana.Delay(nextInstruct.saNodeName, DateTime.Now, TimeSpan.FromMilliseconds(waitMs));
+                        double waitMs = nextInstruct.ArgsDict.ContainsKey("time") ?
+                                (double)Director.RunMana.CalculatePolish(nextInstruct.ArgsDict["time"], Director.RunMana.CallStack) : 0;
+                        Director.RunMana.Delay(nextInstruct.NodeName, DateTime.Now, TimeSpan.FromMilliseconds(waitMs));
                         break;
                     }
-                    else if (nextInstruct.aType == SActionType.act_waitani)
+                    else if (nextInstruct.Type == SActionType.act_waitani)
                     {
-                        Director.RunMana.AnimateWait(nextInstruct.saNodeName);
+                        Director.RunMana.AnimateWait(nextInstruct.NodeName);
                         break;
                     }
-                    else if (nextInstruct.aType == SActionType.act_waituser)
+                    else if (nextInstruct.Type == SActionType.act_waituser)
                     {
-                        Director.RunMana.UserWait("Director", nextInstruct.saNodeName);
+                        Director.RunMana.UserWait("Director", nextInstruct.NodeName);
                         break;
                     }
-                    else if (nextInstruct.aType == SActionType.act_jump)
+                    else if (nextInstruct.Type == SActionType.act_jump)
                     {
-                        var jumpToScene = nextInstruct.argsDict["filename"];
-                        var jumpToTarget = nextInstruct.argsDict["target"];
+                        var jumpToScene = nextInstruct.ArgsDict["filename"];
+                        var jumpToTarget = nextInstruct.ArgsDict["target"];
                         // 场景内跳转
                         if (jumpToScene == String.Empty)
                         {
@@ -331,7 +335,7 @@ namespace Yuri
                                         "Director", OutputStyle.Error);
                                     break;
                                 }
-                                Director.RunMana.CallStack.ESP.IP = currentScene.LabelDictionary[jumpToTarget];
+                                Director.RunMana.CallStack.ESP.MircoStep(currentScene.LabelDictionary[jumpToTarget]);
                             }
                             else if (stackState == StackMachineState.FunctionCalling)
                             {
@@ -342,7 +346,7 @@ namespace Yuri
                                         "Director", OutputStyle.Error);
                                     break;
                                 }
-                                Director.RunMana.CallStack.ESP.IP = currentFunc.LabelDictionary[jumpToTarget];
+                                Director.RunMana.CallStack.ESP.MircoStep(currentFunc.LabelDictionary[jumpToTarget]);
                             }
                         }
                         // 跨场景跳转
@@ -366,10 +370,10 @@ namespace Yuri
                         }
                         break;
                     }
-                    else if (nextInstruct.aType == SActionType.act_call)
+                    else if (nextInstruct.Type == SActionType.act_call)
                     {
-                        var callFunc = nextInstruct.argsDict["name"];
-                        var signFunc = nextInstruct.argsDict["sign"];
+                        var callFunc = nextInstruct.ArgsDict["name"];
+                        var signFunc = nextInstruct.ArgsDict["sign"];
                         this.FunctionCalling(callFunc, signFunc, Director.RunMana.CallStack);
                         break;
                     }
@@ -449,30 +453,30 @@ namespace Yuri
                         return;
                     }
                     // 处理影响调用堆栈的动作
-                    if (nextInstruct.aType == SActionType.act_wait)
+                    if (nextInstruct.Type == SActionType.act_wait)
                     {
-                        double waitMs = nextInstruct.argsDict.ContainsKey("time") ?
-                                (double)Director.RunMana.CalculatePolish(nextInstruct.argsDict["time"], paraVM) : 0;
+                        double waitMs = nextInstruct.ArgsDict.ContainsKey("time") ?
+                                (double)Director.RunMana.CalculatePolish(nextInstruct.ArgsDict["time"], paraVM) : 0;
                         paraVM.Submit("Parallel Time Waiting", DateTime.Now, TimeSpan.FromMilliseconds(waitMs));
                         break;
                     }
-                    else if (nextInstruct.aType == SActionType.act_waitani)
+                    else if (nextInstruct.Type == SActionType.act_waitani)
                     {
                         // 并行器里不应该出现等待动画结束，立即结束本次迭代
                         CommonUtils.ConsoleLine("There is a animation wait in parallel function, which may cause system pause",
                             "Director", OutputStyle.Warning);
                         break;
                     }
-                    else if (nextInstruct.aType == SActionType.act_waituser)
+                    else if (nextInstruct.Type == SActionType.act_waituser)
                     {
                         CommonUtils.ConsoleLine("There is a user wait in parallel function, which may cause system pause",
                             "Director", OutputStyle.Warning);
                         break;
                     }
-                    else if (nextInstruct.aType == SActionType.act_jump)
+                    else if (nextInstruct.Type == SActionType.act_jump)
                     {
-                        var jumpToScene = nextInstruct.argsDict["filename"];
-                        var jumpToTarget = nextInstruct.argsDict["target"];
+                        var jumpToScene = nextInstruct.ArgsDict["filename"];
+                        var jumpToTarget = nextInstruct.ArgsDict["target"];
                         // 场景内跳转
                         if (jumpToScene == String.Empty)
                         {
@@ -485,7 +489,7 @@ namespace Yuri
                                         "Director", OutputStyle.Error);
                                     break;
                                 }
-                                paraVM.ESP.IP = currentScene.LabelDictionary[jumpToTarget];
+                                paraVM.ESP.MircoStep(currentScene.LabelDictionary[jumpToTarget]);
                             }
                             else if (stackState == StackMachineState.FunctionCalling)
                             {
@@ -496,7 +500,7 @@ namespace Yuri
                                         "Director", OutputStyle.Error);
                                     break;
                                 }
-                                paraVM.ESP.IP = currentFunc.LabelDictionary[jumpToTarget];
+                                paraVM.ESP.MircoStep(currentFunc.LabelDictionary[jumpToTarget]);
                             }
                         }
                         // 跨场景跳转
@@ -504,14 +508,13 @@ namespace Yuri
                         {
                             CommonUtils.ConsoleLine("There is a jump across scene in parallel function, it will be ignored",
                                 "Director", OutputStyle.Warning);
-                            break;
                         }
                         break;
                     }
-                    else if (nextInstruct.aType == SActionType.act_call)
+                    else if (nextInstruct.Type == SActionType.act_call)
                     {
-                        var callFunc = nextInstruct.argsDict["name"];
-                        var signFunc = nextInstruct.argsDict["sign"];
+                        var callFunc = nextInstruct.ArgsDict["name"];
+                        var signFunc = nextInstruct.ArgsDict["sign"];
                         this.FunctionCalling(callFunc, signFunc, paraVM);
                         break;
                     }
@@ -573,14 +576,14 @@ namespace Yuri
             foreach (var s in signItem)
             {
                 string trimedPara = s.Trim();
-                object varref = null;
+                object varref;
                 if (trimedPara.StartsWith("$") || trimedPara.StartsWith("&"))
                 {
                     varref = Director.RunMana.Fetch(trimedPara, vsm);
                 }
                 else if (trimedPara.StartsWith("\"") && trimedPara.EndsWith("\""))
                 {
-                    varref = (string)trimedPara;
+                    varref = trimedPara;
                 }
                 else
                 {
@@ -610,14 +613,14 @@ namespace Yuri
         }
 
         /// <summary>
-        /// 设置当前是否正在点击按钮
+        /// 获取或设置当前是否正在点击按钮
         /// </summary>
-        public static bool ButtonClickingFlag = false;
+        public static bool IsButtonClicking { get; set; }= false;
 
         /// <summary>
-        /// 当前是否处于全屏态
+        /// 获取或设置当前是否处于全屏态
         /// </summary>
-        public static bool FullScreen = false;
+        public static bool IsFullScreen { get; set; }= false;
 
         /// <summary>
         /// 当前游戏的状态
@@ -651,7 +654,7 @@ namespace Yuri
         /// <returns>导演类唯一实例</returns>
         public static Director GetInstance()
         {
-            return null == Director.synObject ? Director.synObject = new Director() : Director.synObject;
+            return Director.synObject ?? (Director.synObject = new Director());
         }
 
         /// <summary>

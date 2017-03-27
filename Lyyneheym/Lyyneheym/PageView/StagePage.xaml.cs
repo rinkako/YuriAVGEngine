@@ -22,7 +22,12 @@ namespace Yuri.PageView
         /// 导演类
         /// </summary>
         private Director core = Director.GetInstance();
-        
+
+        /// <summary>
+        /// 初始化标记位
+        /// </summary>
+        private bool isInit = false;
+
         /// <summary>
         /// 过渡效果的数据包装
         /// </summary>
@@ -52,9 +57,13 @@ namespace Yuri.PageView
         /// </summary>
         private void StagePage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            this.core.GetMainRender().ViewLoaded();
-            SCamera.Init();
-            NotificationManager.Init();
+            if (this.isInit == false)
+            {
+                this.core.GetMainRender().ViewLoaded();
+                SCamera.Init();
+                NotificationManager.Init();
+                this.isInit = true;
+            }
         }
 
         #region 窗体监听事件

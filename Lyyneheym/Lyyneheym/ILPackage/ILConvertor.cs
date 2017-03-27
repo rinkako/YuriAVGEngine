@@ -37,6 +37,7 @@ namespace Yuri.ILPackage
                 string sceneName = sapKvp.Key;
                 Dictionary<string, SceneActionPackage> sapPool = sapKvp.Value;
                 List<SceneAction> saHeaderList = new List<SceneAction>();
+                Dictionary<string, SceneAction> yuriDict = new Dictionary<string, SceneAction>();
                 List<Dictionary<string, SceneAction>> labelDictList = new List<Dictionary<string, SceneAction>>();
                 foreach (KeyValuePair<string, SceneActionPackage> SAPPair in sapPool)
                 {
@@ -61,18 +62,18 @@ namespace Yuri.ILPackage
                                 labelDict[currentSAP.aTag] = this.iResContainer[sceneName][currentSAP.saNodeName];
                             }
                             // 处理next
-                            if (currentSAP.next != "" && currentSAP.next != null)
+                            if (!string.IsNullOrEmpty(currentSAP.next))
                             {
-                                this.iResContainer[sceneName][currentSAP.saNodeName].next =
+                                this.iResContainer[sceneName][currentSAP.saNodeName].Next =
                                     this.iResContainer[sceneName][currentSAP.next];
                             }
                             // 处理trueRouting
                             if (currentSAP.trueRouting.Count > 0)
                             {
-                                this.iResContainer[sceneName][currentSAP.saNodeName].trueRouting = new List<SceneAction>();
+                                this.iResContainer[sceneName][currentSAP.saNodeName].TrueRouting = new List<SceneAction>();
                                 foreach (string trueSaName in currentSAP.trueRouting)
                                 {
-                                    this.iResContainer[sceneName][currentSAP.saNodeName].trueRouting.Add(
+                                    this.iResContainer[sceneName][currentSAP.saNodeName].TrueRouting.Add(
                                         this.iResContainer[sceneName][trueSaName]);
                                     openSet.Enqueue(trueSaName);
                                 }
@@ -80,14 +81,16 @@ namespace Yuri.ILPackage
                             // 处理falseRouting
                             if (currentSAP.falseRouting.Count > 0)
                             {
-                                this.iResContainer[sceneName][currentSAP.saNodeName].falseRouting = new List<SceneAction>();
+                                this.iResContainer[sceneName][currentSAP.saNodeName].FalseRouting = new List<SceneAction>();
                                 foreach (string falseSaName in currentSAP.falseRouting)
                                 {
-                                    this.iResContainer[sceneName][currentSAP.saNodeName].falseRouting.Add(
+                                    this.iResContainer[sceneName][currentSAP.saNodeName].FalseRouting.Add(
                                         this.iResContainer[sceneName][falseSaName]);
                                     openSet.Enqueue(falseSaName);
                                 }
                             }
+                            // 记录到Yuri向量
+                            yuriDict.Add(currentSAP.saNodeName, this.iResContainer[sceneName][currentSAP.saNodeName]);
                         }
                         // 处理标签字典
                         labelDictList.Add(labelDict);
@@ -106,7 +109,10 @@ namespace Yuri.ILPackage
                         rsf.LabelDictionary = labelDictList[fc];
                         funcVec.Add(rsf);
                     }
-                    parseScene = new Scene(sceneName, mainSa, funcVec, labelDictList[0]);
+                    parseScene = new Scene(sceneName, mainSa, funcVec, labelDictList[0])
+                    {
+                        YuriDict = yuriDict
+                    };
                 }
                 resList.Add(parseScene);
                 CommonUtils.ConsoleLine(String.Format("Finished SAP Function Recovery: {0}", sceneName), "YuriIL Convertor", OutputStyle.Normal);
@@ -123,7 +129,7 @@ namespace Yuri.ILPackage
         private SceneFunction ParseSaToSF(SceneAction funcSa, string sceneName)
         {
             // 获得函数签名
-            string signature = funcSa.argsDict["sign"];
+            string signature = funcSa.ArgsDict["sign"];
             string[] signItem = signature.Split(new char[] { '(', ')' }, StringSplitOptions.RemoveEmptyEntries);
             List<string> funcParas = new List<string>();
             // 如果没有参数就跳过参数遍历
@@ -181,7 +187,7 @@ namespace Yuri.ILPackage
                     this.ilPackageContainer[currentSceneKey].Add(sap.saNodeName, sap);
                     // sa
                     SceneAction sa = new SceneAction(sap);
-                    this.iResContainer[currentSceneKey].Add(sa.saNodeName, sa);
+                    this.iResContainer[currentSceneKey].Add(sa.NodeName, sa);
                 }
             }
             CommonUtils.ConsoleLine(String.Format("Finished Convert IL to SAP"), "YuriIL Convertor", OutputStyle.Normal);
@@ -319,7 +325,7 @@ namespace Yuri.ILPackage
         /// <returns>SIL语言解释器</returns>
         public static ILConvertor GetInstance()
         {
-            return instance == null ? instance = new ILConvertor() : instance;
+            return ILConvertor.syncObject ?? (ILConvertor.syncObject = new ILConvertor());
         }
 
         /// <summary>
@@ -333,7 +339,7 @@ namespace Yuri.ILPackage
         /// <summary>
         /// 唯一实例
         /// </summary>
-        private static ILConvertor instance = null;
+        private static ILConvertor syncObject = null;
 
         /// <summary>
         /// SAP容器

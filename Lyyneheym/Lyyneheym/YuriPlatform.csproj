@@ -91,6 +91,7 @@
     <Compile Include="PageView\StagePage.xaml.cs">
       <DependentUpon>StagePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="Utils\CommonUtils.cs" />
     <Compile Include="Utils\IOUtils.cs" />
     <Compile Include="Utils\PackageUtils.cs" />
