@@ -27,7 +27,7 @@ namespace Yuri.YuriInterpreter
         /// </summary>
         /// <param name="itype">编译类型</param>
         /// <param name="threadNum">进程数</param>
-        public void Dash(InterpreterType itype, int threadNum = 1)
+        public void Dash(InterpreterType itype, int threadNum = 4)
         {
             this.isMultiThread = (this.threadNum = (threadNum > 8 ? 8 : threadNum)) > 1;
             this.compileType = itype;
@@ -155,20 +155,22 @@ namespace Yuri.YuriInterpreter
                     }
                     if (this.compileType == InterpreterType.DEBUG)
                     {
+                        Pile pile = new Pile();
+                        var yuriResult = new KeyValuePair<string, PackageScene>(
+                            fi.Name.Split('.')[0], (PackageScene)pile.StartDash(resVec, fi.Name.Split('.')[0], this.compileType));
                         lock (this.SceneVector)
                         {
-                            Pile pile = new Pile();
-                            this.SceneVector.Add(new KeyValuePair<string, PackageScene>(
-                                fi.Name.Split('.')[0], (PackageScene)pile.StartDash(resVec, fi.Name.Split('.')[0], this.compileType)));
+                            this.SceneVector.Add(yuriResult);
                         }
                     }
                     else
                     {
+                        Pile pile = new Pile();
+                        var yuriIL = new KeyValuePair<string, string>(
+                            fi.Name.Split('.')[0], (string)pile.StartDash(resVec, fi.Name.Split('.')[0], this.compileType));
                         lock (this.ILVector)
                         {
-                            Pile pile = new Pile();
-                            this.ILVector.Add(new KeyValuePair<string, string>(
-                                fi.Name.Split('.')[0], (string)pile.StartDash(resVec, fi.Name.Split('.')[0], this.compileType)));
+                            this.ILVector.Add(yuriIL);
                         }
                     }
                 }
