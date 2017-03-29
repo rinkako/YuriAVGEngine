@@ -29,7 +29,7 @@ namespace Yuri.PlatformCore
         {
             return polish == String.Empty
                 ? nullValue
-                : Convert.ToDouble(Director.RunMana.CalculatePolish(polish, this.VsmReference));
+                : Convert.ToDouble(PolishEvaluator.Evaluate(polish, this.VsmReference));
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Yuri.PlatformCore
         {
             return polish == String.Empty
                 ? nullValue
-                : (int) (Convert.ToDouble(Director.RunMana.CalculatePolish(polish, this.VsmReference)));
+                : (int) (Convert.ToDouble(PolishEvaluator.Evaluate(polish, this.VsmReference)));
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Yuri.PlatformCore
         {
             return polish == String.Empty
                 ? nullValue
-                : Director.RunMana.CalculatePolish(polish, this.VsmReference).ToString();
+                : PolishEvaluator.Evaluate(polish, this.VsmReference).ToString();
         }
 
         /// <summary>
@@ -602,7 +602,7 @@ namespace Yuri.PlatformCore
         /// 接受一个场景动作并演绎她
         /// </summary>
         /// <param name="action">场景动作实例</param>
-        public void Accept(SceneAction action)
+        public void Execute(SceneAction action)
         {
             switch (action.Type)
             {
@@ -776,7 +776,7 @@ namespace Yuri.PlatformCore
                         );
                     break;
                 case SActionType.act_msglayeropt:
-                    var dashMsgoptItem = Director.RunMana.CalculatePolish(action.ArgsDict["dash"], this.VsmReference);
+                    var dashMsgoptItem = PolishEvaluator.Evaluate(action.ArgsDict["dash"], this.VsmReference);
                     this.MsgLayerOpt(
                         this.ParseInt(action.ArgsDict["id"], 0),
                         this.ParseDirectString(action.ArgsDict["target"], String.Empty),
@@ -1488,6 +1488,5 @@ namespace Yuri.PlatformCore
             this.Drawtext(id, str);
         }
         #endregion
-
     }
 }

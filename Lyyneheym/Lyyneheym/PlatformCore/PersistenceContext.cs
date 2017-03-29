@@ -26,6 +26,13 @@ namespace Yuri.PlatformCore
         /// <param name="varName">变量名</param>
         /// <param name="varObj">要存入的对象</param>
         public static void Assign(string varName, object varObj) => PersistenceContext.symbols[varName] = varObj;
+        
+        /// <summary>
+        /// 从符号表里移除一个变量
+        /// </summary>
+        /// <param name="varName">变量名</param>
+        /// <returns>是否移除成功（变量原本是否存在）</returns>
+        public static bool Remove(string varName) => PersistenceContext.symbols.Remove(varName);
 
         /// <summary>
         /// 从持久容器中取一个变量
@@ -40,7 +47,7 @@ namespace Yuri.PlatformCore
             }
             throw new NullReferenceException("持久化变量 " + varName + " 在作为左值之前被引用");
         }
-
+        
         /// <summary>
         /// 持久符号表
         /// </summary>

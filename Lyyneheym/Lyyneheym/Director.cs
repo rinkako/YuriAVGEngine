@@ -267,7 +267,7 @@ namespace Yuri
                             var iterSa = interruptSa;
                             while (iterSa != null)
                             {
-                                this.updateRender.Accept(interruptSa);
+                                this.updateRender.Execute(interruptSa);
                                 iterSa = iterSa.Next;
                             }
                         }
@@ -318,7 +318,7 @@ namespace Yuri
                         {
                             double waitMs = nextInstruct.ArgsDict.ContainsKey("time")
                                 ? (double)
-                                Director.RunMana.CalculatePolish(nextInstruct.ArgsDict["time"],
+                                PolishEvaluator.Evaluate(nextInstruct.ArgsDict["time"],
                                     Director.RunMana.CallStack)
                                 : 0;
                             Director.RunMana.Delay(nextInstruct.NodeName, DateTime.Now,
@@ -403,7 +403,7 @@ namespace Yuri
                             break;
                         }
                         // 处理常规动作
-                        this.updateRender.Accept(nextInstruct);
+                        this.updateRender.Execute(nextInstruct);
                         break;
                     // 退出
                     case GameState.Exit:
@@ -492,7 +492,7 @@ namespace Yuri
                     if (nextInstruct.Type == SActionType.act_wait)
                     {
                         double waitMs = nextInstruct.ArgsDict.ContainsKey("time")
-                            ? (double) Director.RunMana.CalculatePolish(nextInstruct.ArgsDict["time"], paraVM)
+                            ? (double)PolishEvaluator.Evaluate(nextInstruct.ArgsDict["time"], paraVM)
                             : 0;
                         paraVM.Submit("Parallel Time Waiting", DateTime.Now, TimeSpan.FromMilliseconds(waitMs));
                         break;
@@ -563,7 +563,7 @@ namespace Yuri
                         break;
                     }
                     // 处理常规动作
-                    pdap.Render.Accept(nextInstruct);
+                    pdap.Render.Execute(nextInstruct);
                     break;
                 // 退出（其实就是执行完毕了一轮，应该重新开始）
                 case GameState.Exit:
@@ -666,6 +666,21 @@ namespace Yuri
         /// </summary>
         public static bool IsFullScreen { get; set; } = false;
 
+        /// <summary>
+        /// 获取程序启动的时刻
+        /// </summary>
+        public static DateTime StartupTimeStamp { get; private set; }
+
+        /// <summary>
+        /// 获取程序在本次启动之前的累计使用时间
+        /// </summary>
+        public static TimeSpan LastGameTimeAcc { get; private set; }
+
+        /// <summary>
+        /// 获取程序在本次启动到目前为止的时间间隔
+        /// </summary>
+        public static TimeSpan CurrentTimeAcc => DateTime.Now - Director.StartupTimeStamp;
+        
         /// <summary>
         /// 当前游戏的状态
         /// </summary>

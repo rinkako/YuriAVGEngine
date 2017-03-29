@@ -15,7 +15,7 @@ namespace Yuri
         /// <summary>
         /// 导演类的引用
         /// </summary>
-        private readonly Director core = Director.GetInstance();
+        private readonly Director world = Director.GetInstance();
 
         /// <summary>
         /// Alt键正在被按下的标记
@@ -39,7 +39,7 @@ namespace Yuri
             this.ResizeMode = GlobalDataContext.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
             // 加载主页面
             CommonUtils.ConsoleLine("MWnd Initialization stage 3", "MainWindow", OutputStyle.Normal);
-            this.core.SetStagePageReference(new StagePage());
+            this.world.SetStagePageReference(new StagePage());
             this.mainFrame.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
             this.mainFrame.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
             this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
@@ -57,7 +57,7 @@ namespace Yuri
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             PersistenceContext.SaveToSteadyMemory();
-            this.core.DisposeResource();
+            this.world.DisposeResource();
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Yuri
             }
             else if (e.SystemKey == Key.F4 && MainWindow.altDown)
             {
-                this.core.GetMainRender().Shutdown();
+                this.world.GetMainRender().Shutdown();
             }
             else if (e.SystemKey == Key.Enter && MainWindow.altDown)
             {

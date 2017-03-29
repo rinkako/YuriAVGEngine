@@ -173,4 +173,31 @@ namespace Yuri.PlatformCore
             return new Thickness(mt.Left, mt.Top, mt.Right, mt.Bottom);
         }
     }
+
+    /// <summary>
+    /// 文本展示类型
+    /// </summary>
+    internal enum MessageLayerType
+    {
+        /// <summary>
+        /// 隐藏
+        /// </summary>
+        Disposed,
+        /// <summary>
+        /// 对话框
+        /// </summary>
+        Dialog,
+        /// <summary>
+        /// 全屏文本
+        /// </summary>
+        Novel,
+        /// <summary>
+        /// 对话气泡
+        /// </summary>
+        Bubble,
+        /// <summary>
+        /// 全透明
+        /// </summary>
+        Transparent
+    }
 }

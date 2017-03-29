@@ -11,11 +11,11 @@ namespace Yuri.PlatformCore
     {
         #region 游戏工程数据
         // 工程名称
-        public static string GAME_PROJECT_NAME = "SlyviaProject";
+        public static string GAME_PROJECT_NAME = "YuririProject";
         // 游戏名称
-        public static string GAME_TITLE_NAME = "TestProj";
+        public static string GAME_TITLE_NAME = "Yuri";
         // 游戏密钥
-        public static string GAME_KEY = "testkey";
+        public static string GAME_KEY = "yurayuri";
         // 游戏版本
         public static string GAME_VERSION = "0";
         #endregion
@@ -243,33 +243,6 @@ namespace Yuri.PlatformCore
         #endregion
 
         #region 枚举类型
-        /// <summary>
-        /// 文本展示类型
-        /// </summary>
-        internal enum MessageLayerType
-        {
-            /// <summary>
-            /// 隐藏
-            /// </summary>
-            Disposed,
-            /// <summary>
-            /// 对话框
-            /// </summary>
-            Dialog,
-            /// <summary>
-            /// 全屏文本
-            /// </summary>
-            Novel,
-            /// <summary>
-            /// 对话气泡
-            /// </summary>
-            Bubble,
-            /// <summary>
-            /// 全透明
-            /// </summary>
-            Transparent
-        }
-
         /// <summary>
         /// 枚举：特效类型
         /// </summary>

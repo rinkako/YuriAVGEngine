@@ -137,7 +137,7 @@ namespace Yuri.PlatformCore
             {
                 return this.globalSwitchList[id];
             }
-            CommonUtils.ConsoleLine(String.Format("Invalid Switch id: {0}, TRUE will be returned instead", id), "SymbolManager", OutputStyle.Error);
+            CommonUtils.ConsoleLine(String.Format("Invalid Switch Fetch id: {0}, TRUE will be returned instead", id), "SymbolManager", OutputStyle.Error);
             return true;
         }
 
@@ -180,8 +180,7 @@ namespace Yuri.PlatformCore
         /// <returns>是否是系统开关操作</returns>
         public static bool IsSwitchExpression(string parStr)
         {
-            Regex regex = new Regex(@"^switches{\d+}$");
-            return regex.IsMatch(parStr);
+            return SymbolTable.switchRegex.IsMatch(parStr);
         }
 
         /// <summary>
@@ -261,5 +260,10 @@ namespace Yuri.PlatformCore
         /// 全局开关容器
         /// </summary>
         private List<bool> globalSwitchList = null;
+
+        /// <summary>
+        /// 开关正则式子
+        /// </summary>
+        private static readonly Regex switchRegex = new Regex(@"^switches{\d+}$");
     }
 }

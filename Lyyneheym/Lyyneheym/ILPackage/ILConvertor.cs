@@ -218,7 +218,7 @@ namespace Yuri.ILPackage
                     string body;
                     if ((body = sr.ReadLine()) != ">>>YuriEOF" && body != String.Empty)
                     {
-                        var deb = YuriEncryptor.DecryptString(body, "yurayuri");
+                        var deb = YuriEncryptor.DecryptString(body, GlobalDataContext.GAME_KEY);
                         this.splitContianer.Add(deb);
                     }
                 }
