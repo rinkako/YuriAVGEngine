@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Yuri.Utils;
 
 namespace Yuri.ILPackage
 {
@@ -51,29 +52,32 @@ namespace Yuri.ILPackage
         /// <returns>解密完毕的字符串</returns>
         public static string DecryptString(string data, string key)
         {
-            string str = string.Empty;
-            if (string.IsNullOrEmpty(data))
-            {
-                throw new Exception("data is empty");
-            }
-            MemoryStream ms = new MemoryStream();
-            byte[] myKey = Encoding.UTF8.GetBytes(key);
-            byte[] myIV = { 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF };
-            DES myProvider = new DESCryptoServiceProvider();
-            CryptoStream cs = new CryptoStream(ms, myProvider.CreateDecryptor(myKey, myIV), CryptoStreamMode.Write);
             try
             {
-                byte[] bs = Convert.FromBase64String(data);
+                string str = string.Empty;
+                if (string.IsNullOrEmpty(data))
+                {
+                    throw new Exception("data is empty");
+                }
+                MemoryStream ms = new MemoryStream();
+                var myKey = Encoding.UTF8.GetBytes(key);
+                byte[] myIV = {0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF};
+                DES myProvider = new DESCryptoServiceProvider();
+                CryptoStream cs = new CryptoStream(ms, myProvider.CreateDecryptor(myKey, myIV), CryptoStreamMode.Write);
+                var bs = Convert.FromBase64String(data);
                 cs.Write(bs, 0, bs.Length);
                 cs.FlushFinalBlock();
                 str = Encoding.UTF8.GetString(ms.ToArray());
-            }
-            finally
-            {
                 cs.Close();
                 ms.Close();
+                return str;
             }
-            return str;
+            catch (Exception ex)
+            {
+                CommonUtils.ConsoleLine("Game Key check failed." + ex, "YuriEncryptor", OutputStyle.Error);
+                Director.GetInstance().GetMainRender().Shutdown();
+            }
+            return String.Empty;
         }
     }
 }

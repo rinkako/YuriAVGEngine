@@ -234,7 +234,7 @@ namespace Yuri.PlatformCore
             // 获取变换点绝对坐标
             var sPoint = SCamera.GetScreenCoordination(r, c);
             var viewMana = ViewManager.GetInstance();
-            // 0毫秒不会触发回调
+            // 0时间间隔不会触发回调，因此使用1跳时延做动画以触发回调
             var timespan = immediate ? new Duration(TimeSpan.FromTicks(1)) : SCamera.animationDuration;
             // 调整焦距和焦点
             Director.ScrMana.SCameraScale = ratio;
@@ -248,7 +248,7 @@ namespace Yuri.PlatformCore
                 // 聚焦点在左边
                 if (c <= GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT / 2)
                 {
-                    scaleTransformerBg.CenterX = SCamera.GetScreenCoordination(0, c + (8 - c) / 2).X;
+                    scaleTransformerBg.CenterX = SCamera.GetScreenCoordination(0, c + (GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT / 2 - c) / 2).X;
                 }
                 // 聚焦点在水平中央
                 else if (c == 0)
@@ -258,12 +258,13 @@ namespace Yuri.PlatformCore
                 // 聚焦点在右边
                 else
                 {
-                    scaleTransformerBg.CenterX = SCamera.GetScreenCoordination(0, 9 + (c - 9) / 2).X;
+                    var midR = GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT / 2 + 1;
+                    scaleTransformerBg.CenterX = SCamera.GetScreenCoordination(0, midR + (c - midR) / 2).X;
                 }
                 // 聚焦点在上边
                 if (r < GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2)
                 {
-                    scaleTransformerBg.CenterY = SCamera.GetScreenCoordination(r + (2 - r) / 2, 0).Y;
+                    scaleTransformerBg.CenterY = SCamera.GetScreenCoordination(r + (GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2 - r) / 2, 0).Y;
                 }
                 // 聚焦点在竖直中央
                 else if (r == GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2)
@@ -273,7 +274,7 @@ namespace Yuri.PlatformCore
                 // 聚焦点在下边
                 else
                 {
-                    scaleTransformerBg.CenterY = SCamera.GetScreenCoordination(2 + (r - 2) / 2, 0).Y;
+                    scaleTransformerBg.CenterY = SCamera.GetScreenCoordination(GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2 + (r - GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2) / 2, 0).Y;
                 }
                 // 处理立绘的焦点
                 var aniGroupCs = (TransformGroup)ViewManager.GetInstance().GetViewport(ViewportType.VTCharacterStand).ViewboxBinding.RenderTransform;
@@ -286,7 +287,7 @@ namespace Yuri.PlatformCore
                 // 聚焦点在左边
                 if (c <= GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT / 2)
                 {
-                    scaleTransformerPic.CenterX = SCamera.GetScreenCoordination(0, Math.Max(1, c - (8 - c) / 2)).X;
+                    scaleTransformerPic.CenterX = SCamera.GetScreenCoordination(0, Math.Max(1, c - (GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT / 2 - c) / 2)).X;
                 }
                 // 聚焦点在水平中央
                 else if (c == 0)
@@ -296,12 +297,13 @@ namespace Yuri.PlatformCore
                 // 聚焦点在右边
                 else
                 {
-                    scaleTransformerPic.CenterX = SCamera.GetScreenCoordination(0, Math.Min(GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT, c + (c - 9) / 2)).X;
+                    var midR = GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT / 2 + 1;
+                    scaleTransformerPic.CenterX = SCamera.GetScreenCoordination(0, Math.Min(GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT, c + (c - midR) / 2)).X;
                 }
                 // 聚焦点在上边
                 if (r < GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2)
                 {
-                    scaleTransformerPic.CenterY = SCamera.GetScreenCoordination(Math.Max(0, r - (2 - r) / 2), 0).Y;
+                    scaleTransformerPic.CenterY = SCamera.GetScreenCoordination(Math.Max(0, r - (GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2 - r) / 2), 0).Y;
                 }
                 // 聚焦点在竖直中央
                 else if (r == GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2)
@@ -311,7 +313,7 @@ namespace Yuri.PlatformCore
                 // 聚焦点在下边
                 else
                 {
-                    scaleTransformerPic.CenterY = SCamera.GetScreenCoordination(Math.Min(GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT - 1, r + (r - 2) / 2), 0).Y;
+                    scaleTransformerPic.CenterY = SCamera.GetScreenCoordination(Math.Min(GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT - 1, r + (r - GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2) / 2), 0).Y;
                 }
             }
             // background
@@ -386,11 +388,11 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 重置镜头将中央和焦点都对准屏幕中心并采用1.0的对焦比例
         /// </summary>
-        /// <param name="doubledDuration">是否双倍动画时间</param>
+        /// <param name="doubledDuration">是否1.5倍动画时间</param>
         public static void ResetFocus(bool doubledDuration)
         {
             var viewMana = ViewManager.GetInstance();
-            var timespan = doubledDuration ? new Duration(TimeSpan.FromMilliseconds(SCamera.animationTimeMS * 2)) : SCamera.animationDuration;
+            var timespan = doubledDuration ? new Duration(TimeSpan.FromMilliseconds(SCamera.animationTimeMS * 1.5)) : SCamera.animationDuration;
             // background scale
             double bgRatio = Director.ScrMana.SCameraScale * SCamera.BackgroundDeepRatio;
             Storyboard storyScaleBg = new Storyboard();
@@ -530,7 +532,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static void PreviewEnterScene()
         {
-            FocusOn(GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2, 0, 3, true);
+            SCamera.FocusOn(GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2, 0, 1.8, true);
         }
 
         /// <summary>
@@ -538,7 +540,56 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static void PostEnterScene()
         {
-            ResetFocus(true);
+            SCamera.ResumeBlackFrame();
+            SCamera.ResetFocus(true);
+        }
+
+        /// <summary>
+        /// 离开场景，切入黑场
+        /// </summary>
+        public static void LeaveScene()
+        {
+            var masker = ViewManager.MaskFrameRef;
+            masker.Opacity = 0;
+            masker.Visibility = Visibility.Visible;
+            Storyboard story = new Storyboard();
+            DoubleAnimation doubleAniOpacity = new DoubleAnimation(0, 1, SCamera.animationDuration);
+            doubleAniOpacity.DecelerationRatio = 0.8;
+            Storyboard.SetTarget(doubleAniOpacity, masker);
+            Storyboard.SetTargetProperty(doubleAniOpacity, new PropertyPath(UIElement.OpacityProperty));
+            story.Children.Add(doubleAniOpacity);
+            story.Duration = SCamera.animationDuration;
+            story.FillBehavior = FillBehavior.Stop;
+            story.Completed += (sender, args) =>
+            {
+                masker.Opacity = 1;
+            };
+            story.Begin();
+        }
+
+        /// <summary>
+        /// 直接从黑场中恢复
+        /// </summary>
+        public static void ResumeBlackFrame()
+        {
+            var masker = ViewManager.MaskFrameRef;
+            if (masker.Visibility == Visibility.Hidden)
+            {
+                return;
+            }
+            Storyboard story = new Storyboard();
+            DoubleAnimation doubleAniOpacity = new DoubleAnimation(masker.Opacity, 0, SCamera.animationDuration);
+            doubleAniOpacity.DecelerationRatio = 0.8;
+            Storyboard.SetTarget(doubleAniOpacity, masker);
+            Storyboard.SetTargetProperty(doubleAniOpacity, new PropertyPath(UIElement.OpacityProperty));
+            story.Children.Add(doubleAniOpacity);
+            story.Duration = SCamera.animationDuration;
+            story.FillBehavior = FillBehavior.Stop;
+            story.Completed += (sender, args) =>
+            {
+                masker.Opacity = 0;
+            };
+            story.Begin();
         }
 
         /// <summary>
@@ -611,7 +662,7 @@ namespace Yuri.PlatformCore
             SCamera.SCameraAnimationTimeMS = 500;
             SCamera.DecelerateRatio = 0.7;
             // 景深尺度
-            SCamera.BackgroundDeepRatio = 0.6;
+            SCamera.BackgroundDeepRatio = 0.75;
             SCamera.PictureDeepRatio = 1.2;
             // 尺度初始化
             Director.ScrMana.SCameraScale = 1.0;

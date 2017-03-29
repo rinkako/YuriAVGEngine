@@ -974,6 +974,11 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 获取或设置遮罩层的引用
+        /// </summary>
+        public static Frame MaskFrameRef { get; set; }
+
+        /// <summary>
         /// 视窗向量
         /// </summary>
         private readonly List<YuriViewport> viewboxVec;
@@ -1060,12 +1065,12 @@ namespace Yuri.PlatformCore
         /// 主舞台页面的引用
         /// </summary>
         private PageView.StagePage view => (PageView.StagePage)ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
-
+        
         /// <summary>
         /// 主窗体的引用
         /// </summary>
         private static MainWindow mWnd = null;
-
+        
         /// <summary>
         /// 唯一实例
         /// </summary>

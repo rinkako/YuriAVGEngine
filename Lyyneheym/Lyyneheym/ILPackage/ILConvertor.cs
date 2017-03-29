@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 using Yuri.Utils;
 using Yuri.PlatformCore;
 
@@ -31,24 +32,24 @@ namespace Yuri.ILPackage
         /// </summary>
         private List<Scene> ProcessSARelation()
         {
-            List<Scene> resList = new List<Scene>();
-            foreach (KeyValuePair<string, Dictionary<string, SceneActionPackage>> sapKvp in this.ilPackageContainer)
+            var resList = new List<Scene>();
+            foreach (var sapKvp in this.ilPackageContainer)
             {
                 string sceneName = sapKvp.Key;
-                Dictionary<string, SceneActionPackage> sapPool = sapKvp.Value;
-                List<SceneAction> saHeaderList = new List<SceneAction>();
-                Dictionary<string, SceneAction> yuriDict = new Dictionary<string, SceneAction>();
-                List<Dictionary<string, SceneAction>> labelDictList = new List<Dictionary<string, SceneAction>>();
-                foreach (KeyValuePair<string, SceneActionPackage> SAPPair in sapPool)
+                var sapPool = sapKvp.Value;
+                var saHeaderList = new List<SceneAction>();
+                var yuriDict = new Dictionary<string, SceneAction>();
+                var labelDictList = new List<Dictionary<string, SceneAction>>();
+                foreach (var SAPPair in sapPool)
                 {
-                    Dictionary<string, SceneAction> labelDict = new Dictionary<string, SceneAction>();
+                    var labelDict = new Dictionary<string, SceneAction>();
                     string nodename = SAPPair.Key;
                     SceneActionPackage sap = SAPPair.Value;
                     // 不脏的项目才入队展开
                     if (sap.dirtyBit == false)
                     {
                         saHeaderList.Add(this.iResContainer[sceneName][nodename]);
-                        Queue<string> openSet = new Queue<string>();
+                        var openSet = new Queue<string>();
                         openSet.Enqueue(nodename);
                         // 广度优先遍历
                         while (openSet.Count != 0)
@@ -130,20 +131,15 @@ namespace Yuri.ILPackage
         {
             // 获得函数签名
             string signature = funcSa.ArgsDict["sign"];
-            string[] signItem = signature.Split(new char[] { '(', ')' }, StringSplitOptions.RemoveEmptyEntries);
-            List<string> funcParas = new List<string>();
+            var signItem = signature.Split(new char[] { '(', ')' }, StringSplitOptions.RemoveEmptyEntries);
+            var funcParas = new List<string>();
             // 如果没有参数就跳过参数遍历
             if (signItem.Length > 1)
             {
-                string[] varItem = signItem[1].Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string ivar in varItem)
-                {
-                    funcParas.Add(ivar);
-                }
+                var varItem = signItem[1].Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                funcParas.AddRange(varItem);
             }
-            SceneFunction nsf = new SceneFunction(signItem[0].Trim(), sceneName, funcSa);
-            nsf.Param = funcParas;
-            return nsf;
+            return new SceneFunction(signItem[0].Trim(), sceneName, funcSa) { Param = funcParas };
         }
 
         /// <summary>
@@ -168,14 +164,14 @@ namespace Yuri.ILPackage
                     // 场景标记
                     if (mycommand.StartsWith("YuriIL?"))
                     {
-                        string[] commandItem = mycommand.Split('?');
+                        var commandItem = mycommand.Split('?');
                         currentSceneKey = commandItem[1];
                         this.ilPackageContainer.Add(currentSceneKey, new Dictionary<string,SceneActionPackage>());
                         this.iResContainer.Add(currentSceneKey, new Dictionary<string,SceneAction>());
                     }
                     else if (mycommand.StartsWith("YuriAEIL"))
                     {
-                        string[] commandItem = mycommand.Split('?');
+                        var commandItem = mycommand.Split('?');
                         //GlobalDataContainer.GAME_PROJECT_NAME = commandItem[1];
                         //GlobalDataContainer.GAME_TITLE_NAME = commandItem[1];
                     }
@@ -190,7 +186,7 @@ namespace Yuri.ILPackage
                     this.iResContainer[currentSceneKey].Add(sa.NodeName, sa);
                 }
             }
-            CommonUtils.ConsoleLine(String.Format("Finished Convert IL to SAP"), "YuriIL Convertor", OutputStyle.Normal);
+            CommonUtils.ConsoleLine("Finished Convert IL to SAP", "YuriIL Convertor", OutputStyle.Normal);
         }
         
         /// <summary>
@@ -209,8 +205,8 @@ namespace Yuri.ILPackage
                 }
                 // 分割文件为行
                 CommonUtils.ConsoleLine(String.Format("Spliting file: {0}", finfo.FullName), "YuriIL Convertor", OutputStyle.Normal);
-                FileStream fs = new FileStream(finfo.FullName, FileMode.Open);
-                StreamReader sr = new StreamReader(fs);
+                var fs = new FileStream(finfo.FullName, FileMode.Open);
+                var sr = new StreamReader(fs);
                 // 跳过头部
                 sr.ReadLine();
                 while (!sr.EndOfStream)
@@ -222,11 +218,6 @@ namespace Yuri.ILPackage
                         this.splitContianer.Add(deb);
                     }
                 }
-                
-                //while (!sr.EndOfStream)
-                //{
-                //    this.splitContianer.Add(sr.ReadLine());
-                //}
                 sr.Close();
                 fs.Close();
             }
@@ -240,23 +231,26 @@ namespace Yuri.ILPackage
         private SceneActionPackage ParseSceneActionPackage(string oneline)
         {
             SceneActionPackage sa = null;
-            string[] lineitem = oneline.Split('^');
-            if (lineitem.Length == this.IL_LINEITEM_NUM)
+            var lineitem = oneline.Split('^');
+            if (lineitem.Length == IL_LINEITEM_NUM)
             {
-                sa = new SceneActionPackage();
-                sa.saNodeName = lineitem[0];
-                sa.aType = (SActionType)Enum.Parse(typeof(SActionType), lineitem[0].Split('@')[1], false);
-                sa.argsDict = this.DispatchArgs(lineitem[1]);
-                sa.condPolish = this.DecodeString(lineitem[2]);
-                sa.next = lineitem[3];
-                sa.trueRouting = this.DispatchRouting(lineitem[4]);
-                sa.falseRouting = this.DispatchRouting(lineitem[5]);
-                sa.isBelongFunc = lineitem[6] == "1";
-                sa.funcName = lineitem[7];
-                sa.aTag = this.DecodeString(lineitem[8]);
+                sa = new SceneActionPackage
+                {
+                    saNodeName = lineitem[0],
+                    aType = (SActionType) Enum.Parse(typeof(SActionType), lineitem[0].Split('@')[1], false),
+                    argsDict = this.DispatchArgs(lineitem[1]),
+                    condPolish = this.DecodeString(lineitem[2]),
+                    next = lineitem[3],
+                    trueRouting = this.DispatchRouting(lineitem[4]),
+                    falseRouting = this.DispatchRouting(lineitem[5]),
+                    isBelongFunc = lineitem[6] == "1",
+                    funcName = lineitem[7],
+                    aTag = this.DecodeString(lineitem[8])
+                };
             }
             else
             {
+                CommonUtils.ConsoleLine("IL已损坏", "ILConvertor", OutputStyle.Error);
                 throw new Exception("IL损坏");
             }
             return sa;
@@ -274,7 +268,7 @@ namespace Yuri.ILPackage
             {
                 return String.Empty;
             }
-            byte[] br = new byte[(int)(origin.Length / 3)];
+            var br = new byte[(int)(origin.Length / 3)];
             string rawSb = String.Empty;
             for (int i = 0; i < origin.Length + 1; i++)
             {
@@ -301,14 +295,9 @@ namespace Yuri.ILPackage
         /// <returns>参数字典</returns>
         private Dictionary<string, string> DispatchArgs(string argstr)
         {
-            Dictionary<string, string> resDict = new Dictionary<string, string>();
-            string[] argItem = argstr.Split(new char[] { '#' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string argpair in argItem)
-            {
-                string[] argkvp = argpair.Split(new char[] { '@' }, StringSplitOptions.None);
-                resDict.Add(argkvp[0], this.DecodeString(argkvp[1]));
-            }
-            return resDict;
+            var argItem = argstr.Split(new char[] { '#' }, StringSplitOptions.RemoveEmptyEntries);
+            return argItem.Select(argpair => argpair.Split(new char[] {'@'}, StringSplitOptions.None)).
+                ToDictionary(argkvp => argkvp[0], argkvp => this.DecodeString(argkvp[1]));
         }
 
         /// <summary>
@@ -318,13 +307,7 @@ namespace Yuri.ILPackage
         /// <returns>路径向量</returns>
         private List<string> DispatchRouting(string routingstr)
         {
-            List<string> resList = new List<string>();
-            string[] routeItem = routingstr.Split(new char[] { '#' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string s in routeItem)
-            {
-                resList.Add(s);
-            }
-            return resList;
+            return routingstr.Split(new char[] { '#' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
         /// <summary>
@@ -372,6 +355,6 @@ namespace Yuri.ILPackage
         /// <summary>
         /// IL行的split数量
         /// </summary>
-        private readonly int IL_LINEITEM_NUM = 9;
+        private const int IL_LINEITEM_NUM = 9;
     }
 }

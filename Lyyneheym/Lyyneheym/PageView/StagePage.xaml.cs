@@ -600,7 +600,11 @@ namespace Yuri.PageView
 
         private void button4_Click(object sender, RoutedEventArgs e)
         {
-            if (bt4 == -1)
+            if (bt4 == -2)
+            {
+                SCamera.LeaveScene();
+            }
+            else if (bt4 == -1)
             {
                 SCamera.PreviewEnterScene();
                 SCamera.PostEnterScene();
@@ -668,7 +672,7 @@ namespace Yuri.PageView
             bt4++;
         }
 
-        int bt4 = -1;
+        int bt4 = -2;
 
         private void buttonNext_Click(object sender, RoutedEventArgs e)
         {

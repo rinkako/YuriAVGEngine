@@ -43,6 +43,9 @@ namespace Yuri
             this.mainFrame.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
             this.mainFrame.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
             this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
+            this.maskFrame.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
+            this.maskFrame.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
+            ViewManager.MaskFrameRef = this.maskFrame;
             // 预注册保存和读取页面
             CommonUtils.ConsoleLine("MWnd Initialization stage 4", "MainWindow", OutputStyle.Normal);
             ViewPageManager.RegisterPage("SavePage", new SLPage(isSave: true));

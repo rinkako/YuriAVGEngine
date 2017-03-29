@@ -44,7 +44,7 @@
     <Button x:Name="blur" Content="blur" Width="75" Canvas.Left="640" Canvas.Top="10" Click="Blur_OnClick"/>
     <Button x:Name="noti" Content="noti" Width="75" Canvas.Left="550" Canvas.Top="10" Click="noti_Click"/>
     <Button x:Name="buttonNext" Content="GoNext" Width="75" Canvas.Left="450" Canvas.Top="10" Click="buttonNext_Click"/>
-    <Button x:Name="button4" Content="TEST XX" Width="75" Canvas.Left="150" Canvas.Top="10" Click="button4_Click"/>
+    <Button x:Name="button4" Content="TEST XX" Width="75" Canvas.Left="150" Click="button4_Click"/>
     <Button x:Name="button3" Content="TEST" Width="75" Canvas.Left="90" Canvas.Top="10" Click="button3_Click"	/>
     <Button x:Name="button2" Content="TEST" Width="75" Canvas.Left="10" Canvas.Top="10" Click="button2_Click"	/>
     <Button x:Name="button1" Content="LOAD" Width="75" Canvas.Left="171" Canvas.Top="58" Click="button1_Click"/>
