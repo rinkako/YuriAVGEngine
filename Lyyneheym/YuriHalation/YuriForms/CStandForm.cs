@@ -31,7 +31,7 @@ namespace YuriHalation.YuriForms
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            if (this.textBox1.Text == "")
+            if (this.textBox1.Text == String.Empty)
             {
                 MessageBox.Show("请选择图像");
                 return;
@@ -39,11 +39,11 @@ namespace YuriHalation.YuriForms
             var nameItem = this.textBox1.Text.Split(new char[] {'_', '.'});
             if (this.radioButton1.Checked)
             {
-                Halation.GetInstance().DashCstand(this.numericUpDown3.Value.ToString(), nameItem[0], nameItem[1], this.numericUpDown1.Value.ToString(), this.numericUpDown2.Value.ToString(), "");
+                Halation.GetInstance().DashCstand(this.numericUpDown3.Value.ToString(), nameItem[0], nameItem[1], this.numericUpDown1.Value.ToString(), this.numericUpDown2.Value.ToString(), String.Empty);
             }
             else
             {
-                Halation.GetInstance().DashCstand(this.numericUpDown3.Value.ToString(), nameItem[0], nameItem[1], "", "", this.comboBox1.SelectedIndex.ToString());
+                Halation.GetInstance().DashCstand(this.numericUpDown3.Value.ToString(), nameItem[0], nameItem[1], String.Empty, String.Empty, this.comboBox1.SelectedIndex.ToString());
             }
             this.Close();
         }

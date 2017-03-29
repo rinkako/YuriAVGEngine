@@ -16,7 +16,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// <summary>
         /// 参数的值表达式
         /// </summary>
-        public string valueExp = "";
+        public string valueExp = String.Empty;
     }
 
     /// <summary>

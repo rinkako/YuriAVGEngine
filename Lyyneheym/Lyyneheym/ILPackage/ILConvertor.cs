@@ -153,13 +153,13 @@ namespace Yuri.ILPackage
         {
             this.ilPackageContainer = new Dictionary<string, Dictionary<string, SceneActionPackage>>();
             this.iResContainer = new Dictionary<string, Dictionary<string, SceneAction>>();
-            string currentSceneKey = "";
+            string currentSceneKey = String.Empty;
             foreach (string lineitem in this.splitContianer)
             {
                 // 处理头部
                 if (lineitem.StartsWith(">>>"))
                 {
-                    string mycommand = lineitem.Substring(3).Replace("\r\n", "");
+                    string mycommand = lineitem.Substring(3).Replace("\r\n", String.Empty);
                     // EOF标记
                     if (mycommand == "YuriEOF")
                     {
@@ -211,10 +211,22 @@ namespace Yuri.ILPackage
                 CommonUtils.ConsoleLine(String.Format("Spliting file: {0}", finfo.FullName), "YuriIL Convertor", OutputStyle.Normal);
                 FileStream fs = new FileStream(finfo.FullName, FileMode.Open);
                 StreamReader sr = new StreamReader(fs);
+                // 跳过头部
+                sr.ReadLine();
                 while (!sr.EndOfStream)
                 {
-                    this.splitContianer.Add(sr.ReadLine());
+                    string body;
+                    if ((body = sr.ReadLine()) != ">>>YuriEOF" && body != String.Empty)
+                    {
+                        var deb = YuriEncryptor.DecryptString(body, "yurayuri");
+                        this.splitContianer.Add(deb);
+                    }
                 }
+                
+                //while (!sr.EndOfStream)
+                //{
+                //    this.splitContianer.Add(sr.ReadLine());
+                //}
                 sr.Close();
                 fs.Close();
             }
@@ -258,9 +270,12 @@ namespace Yuri.ILPackage
         /// <returns>解码后的字符串</returns>
         private string DecodeString(string origin, bool isUTF8 = true)
         {
-            if (origin == "" || origin == null) { return ""; }
+            if (string.IsNullOrEmpty(origin))
+            {
+                return String.Empty;
+            }
             byte[] br = new byte[(int)(origin.Length / 3)];
-            string rawSb = "";
+            string rawSb = String.Empty;
             for (int i = 0; i < origin.Length + 1; i++)
             {
                 // 如果是最后一次就要清空缓冲
@@ -272,18 +287,11 @@ namespace Yuri.ILPackage
                 if (i % 3 == 0 && i != 0)
                 {
                     br[(int)(i / 3) - 1] = Convert.ToByte(rawSb);
-                    rawSb = "";
+                    rawSb = String.Empty;
                 }
                 rawSb += origin[i];
             }
-            if (isUTF8)
-            {
-                return Encoding.UTF8.GetString(br);
-            }
-            else
-            {
-                return Encoding.Unicode.GetString(br);
-            }
+            return isUTF8 ? Encoding.UTF8.GetString(br) : Encoding.Unicode.GetString(br);
         }
 
         /// <summary>

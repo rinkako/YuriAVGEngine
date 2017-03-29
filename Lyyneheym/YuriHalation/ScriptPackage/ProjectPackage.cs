@@ -111,6 +111,6 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// <summary>
         /// 工程名称
         /// </summary>
-        private string projectName = "";
+        private string projectName = String.Empty;
     }
 }

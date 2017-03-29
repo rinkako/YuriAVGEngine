@@ -126,7 +126,7 @@ namespace Yuri
         public void ChangeCodePackage(string toRunnable, string parent)
         {
             RunnablePackage rp = null;
-            if (parent == "")
+            if (parent == String.Empty)
             {
                 rp = Halation.project.GetScene(toRunnable);
             }
@@ -150,7 +150,7 @@ namespace Yuri
         /// <summary>
         /// 正在编辑的可运行代码名称
         /// </summary>
-        public static string currentScriptName = "";
+        public static string currentScriptName = String.Empty;
 
         /// <summary>
         /// 代码树被选中节点

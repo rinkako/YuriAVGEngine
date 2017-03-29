@@ -450,7 +450,7 @@ namespace Yuri.PlatformCore
                 // 非函数调用
                 if (this.GameState(vsm) != StackMachineState.FunctionCalling)
                 {
-                    return this.Symbols.Fetch(ResourceManager.GetInstance().GetScene(vsm.EBP.ScriptName), varName.Replace("$", ""));
+                    return this.Symbols.Fetch(ResourceManager.GetInstance().GetScene(vsm.EBP.ScriptName), varName.Replace("$", String.Empty));
                 }
                 // 函数调用
                 else
@@ -580,7 +580,7 @@ namespace Yuri.PlatformCore
                     else if (peeker.ItemType == PolishItemType.STRING || peeker.ItemType == PolishItemType.VAR_STRING)
                     {
                         calcStack.Pop();
-                        double notres = peeker.Cluster == "" ? 1.0 : 0.0;
+                        double notres = peeker.Cluster == String.Empty ? 1.0 : 0.0;
 
                         PolishItem np = new PolishItem()
                         {
@@ -599,7 +599,7 @@ namespace Yuri.PlatformCore
                     {
                         PolishItem newPoi = null;
                         double tempDouble = 0;
-                        string tempString = "";
+                        string tempString = String.Empty;
                         switch (poi.ItemType)
                         {
                             case PolishItemType.CAL_PLUS:

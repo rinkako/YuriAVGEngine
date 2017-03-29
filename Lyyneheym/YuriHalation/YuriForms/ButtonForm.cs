@@ -23,12 +23,12 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button4_Click(object sender, EventArgs e)
         {
-            if (this.textBox1.Text == "")
+            if (this.textBox1.Text == String.Empty)
             {
                 MessageBox.Show("正常按钮图不可以为空");
                 return;
             }
-            if (this.textBox4.Text == "")
+            if (this.textBox4.Text == String.Empty)
             {
                 MessageBox.Show("跳转目标标签不可以为空");
                 return;

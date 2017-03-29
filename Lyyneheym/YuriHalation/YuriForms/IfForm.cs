@@ -38,13 +38,13 @@ namespace YuriHalation.YuriForms
             string op1, op2, opr, expr;
             if (this.checkBox2.Checked)
             {
-                if (this.textBox2.Text == "")
+                if (this.textBox2.Text == String.Empty)
                 {
                     MessageBox.Show("请填写表达式");
                     return;
                 }
                 expr = this.textBox2.Text;
-                op1 = op2 = opr = "";
+                op1 = op2 = opr = String.Empty;
             }
             else
             {
@@ -127,7 +127,7 @@ namespace YuriHalation.YuriForms
                 {
                     op2 = "5#" + this.comboBox4.SelectedItem.ToString();
                 }
-                expr = "";
+                expr = String.Empty;
             }
             Halation.GetInstance().DashIf(this.checkBox1.Checked, expr, op1, opr, op2);
             this.Close();

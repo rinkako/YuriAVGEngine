@@ -71,6 +71,7 @@
     </ApplicationDefinition>
     <Compile Include="Director.cs" />
     <Compile Include="ILPackage\ConfigParser.cs" />
+    <Compile Include="ILPackage\YuriEncryptor.cs" />
     <Compile Include="PageView\SLPage.xaml.cs">
       <DependentUpon>SLPage.xaml</DependentUpon>
     </Compile>
@@ -166,7 +167,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SlyviaInterpreter\YuriInterpreter.csproj">

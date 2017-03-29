@@ -235,7 +235,7 @@ namespace Yuri.PlatformCore
             var sPoint = SCamera.GetScreenCoordination(r, c);
             var viewMana = ViewManager.GetInstance();
             // 0毫秒不会触发回调
-            var timespan = immediate ? new Duration(TimeSpan.FromMilliseconds(1)) : SCamera.animationDuration;
+            var timespan = immediate ? new Duration(TimeSpan.FromTicks(1)) : SCamera.animationDuration;
             // 调整焦距和焦点
             Director.ScrMana.SCameraScale = ratio;
             if (r != Director.ScrMana.SCameraFocusRow || c != Director.ScrMana.SCameraFocusCol)

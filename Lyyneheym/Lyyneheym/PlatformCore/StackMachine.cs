@@ -55,7 +55,7 @@ namespace Yuri.PlatformCore
                 BindingSceneName = sc.Scenario,
                 BindingFunctionName = null,
                 Delay = TimeSpan.FromMilliseconds(0),
-                Tag = ""
+                Tag = String.Empty
             };
             this.coreStack.Push(smf);
             this.EBP = this.SAVEP = this.coreStack.Peek();

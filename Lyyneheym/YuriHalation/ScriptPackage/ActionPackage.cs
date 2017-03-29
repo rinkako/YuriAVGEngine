@@ -13,7 +13,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// <summary>
         /// 节点名称
         /// </summary>
-        public string nodeName = "";
+        public string nodeName = String.Empty;
 
         /// <summary>
         /// 对齐偏移量
@@ -62,7 +62,7 @@ namespace Yuri.YuriHalation.ScriptPackage
             {
                 return ((ActionName)this.nodeType).ToString();
             }
-            return "";
+            return String.Empty;
         }
 
         /// <summary>
@@ -141,11 +141,11 @@ namespace Yuri.YuriHalation.ScriptPackage
                     break;
                 case ActionPackageType.act_jump:
                     desSb.Append(String.Format("场景:{0} ", this.argsDict["filename"].valueExp));
-                    if (this.argsDict["target"].valueExp != "")
+                    if (this.argsDict["target"].valueExp != String.Empty)
                     {
                         desSb.Append(String.Format("标签:{0} ", this.argsDict["target"].valueExp));
                     }
-                    if (this.argsDict["cond"].valueExp != "")
+                    if (this.argsDict["cond"].valueExp != String.Empty)
                     {
                         desSb.Append(String.Format("条件:{0} ", this.argsDict["cond"].valueExp));
                     }
@@ -167,7 +167,7 @@ namespace Yuri.YuriHalation.ScriptPackage
                     break;
                 case ActionPackageType.act_msglayeropt:
                     desSb.Append(String.Format("Target:{0} ", this.argsDict["target"].valueExp));
-                    if (this.argsDict["dash"].valueExp != "")
+                    if (this.argsDict["dash"].valueExp != String.Empty)
                     {
                         desSb.Append(String.Format("目标值:{0} ", this.argsDict["dash"].valueExp));
                     }
@@ -187,7 +187,7 @@ namespace Yuri.YuriHalation.ScriptPackage
                     desSb.Append(String.Format("图层:{0} ", this.argsDict["id"].valueExp));
                     desSb.Append(String.Format("角色:{0} ", this.argsDict["name"].valueExp));
                     desSb.Append(String.Format("表情:{0} ", this.argsDict["face"].valueExp));
-                    if (this.argsDict["loc"].valueExp == "")
+                    if (this.argsDict["loc"].valueExp == String.Empty)
                     {
                         desSb.Append(String.Format("X:{0},Y:{1} ", this.argsDict["x"].valueExp, this.argsDict["y"].valueExp));
                     }
@@ -245,7 +245,7 @@ namespace Yuri.YuriHalation.ScriptPackage
                     }
                     break;
                 case ActionPackageType.act_if:
-                    if (this.argsDict["expr"].valueExp == "")
+                    if (this.argsDict["expr"].valueExp == String.Empty)
                     {
                         string[] ifLeftItems = this.argsDict["op1"].valueExp.ToString().Split('#');
                         switch (ifLeftItems[0])

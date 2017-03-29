@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -14,7 +15,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void Reset()
         {
-            this.Text = "";
+            this.Text = String.Empty;
             this.X = this.Y = 0;
             this.Z = GlobalDataContext.GAME_Z_MESSAGELAYER + Id;
             this.Opacity = 1.0f;

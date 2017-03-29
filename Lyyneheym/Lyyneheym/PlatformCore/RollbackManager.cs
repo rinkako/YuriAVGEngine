@@ -173,11 +173,11 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 前进状态栈
         /// </summary>
-        private readonly static List<RollbackableSnapshot> forwardStack = new List<RollbackableSnapshot>();
+        private static readonly List<RollbackableSnapshot> forwardStack = new List<RollbackableSnapshot>();
 
         /// <summary>
         /// 回滚状态栈
         /// </summary>
-        private readonly static List<RollbackableSnapshot> backwardStack = new List<RollbackableSnapshot>();
+        private static readonly List<RollbackableSnapshot> backwardStack = new List<RollbackableSnapshot>();
     }
 }

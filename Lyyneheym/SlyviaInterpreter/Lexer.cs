@@ -27,10 +27,10 @@ namespace Yuri.YuriInterpreter
             StringBuilder sb = new StringBuilder();
             foreach (Token t in this.resultVector)
             {
-                sb.AppendLine("Token: " + t.Type.ToString() + " " + (t.ErrorBit ? "[ERROR]" : ""));
+                sb.AppendLine("Token: " + t.Type.ToString() + " " + (t.ErrorBit ? "[ERROR]" : String.Empty));
                 sb.AppendLine("  Location: " + t.Line + ", " + t.Column);
                 sb.AppendLine("  Detail: " + t.OriginalCodeStr);
-                sb.AppendLine("");
+                sb.AppendLine(String.Empty);
             }
             return sb.ToString();
         }
@@ -802,12 +802,12 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 处理的文件
         /// </summary>
-        private string dealingFile = "";
+        private string dealingFile = String.Empty;
 
         /// <summary>
         /// 原剧本字串
         /// </summary>
-        private string sourceCode = "";
+        private string sourceCode = String.Empty;
         
         /// <summary>
         /// 下一字符指针

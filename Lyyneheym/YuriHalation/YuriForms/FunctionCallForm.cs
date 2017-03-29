@@ -68,11 +68,11 @@ namespace YuriHalation.YuriForms
         private void button1_Click(object sender, EventArgs e)
         {
             // 检查空值并处理参数
-            string argStr = "";
+            string argStr = String.Empty;
             for (int i = 0; i < this.argsGridDataView.Rows.Count; i++)
             {
                 if (this.argsGridDataView.Rows[i].Cells[1].Value == null ||
-                    (string)(this.argsGridDataView.Rows[i].Cells[1].Value) == "")
+                    (string)(this.argsGridDataView.Rows[i].Cells[1].Value) == String.Empty)
                 {
                     MessageBox.Show("请完整填写", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;

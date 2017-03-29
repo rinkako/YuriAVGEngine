@@ -27,7 +27,7 @@ namespace YuriHalation.YuriForms
                 if (attributes.Length > 0)
                 {
                     AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
-                    if (titleAttribute.Title != "")
+                    if (titleAttribute.Title != String.Empty)
                     {
                         return titleAttribute.Title;
                     }
@@ -51,7 +51,7 @@ namespace YuriHalation.YuriForms
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
                 if (attributes.Length == 0)
                 {
-                    return "";
+                    return String.Empty;
                 }
                 return ((AssemblyDescriptionAttribute)attributes[0]).Description;
             }
@@ -64,7 +64,7 @@ namespace YuriHalation.YuriForms
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
                 if (attributes.Length == 0)
                 {
-                    return "";
+                    return String.Empty;
                 }
                 return ((AssemblyProductAttribute)attributes[0]).Product;
             }
@@ -77,7 +77,7 @@ namespace YuriHalation.YuriForms
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
                 if (attributes.Length == 0)
                 {
-                    return "";
+                    return String.Empty;
                 }
                 return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
             }
@@ -90,7 +90,7 @@ namespace YuriHalation.YuriForms
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
                 if (attributes.Length == 0)
                 {
-                    return "";
+                    return String.Empty;
                 }
                 return ((AssemblyCompanyAttribute)attributes[0]).Company;
             }

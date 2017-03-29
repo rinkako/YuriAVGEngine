@@ -9,7 +9,7 @@ namespace YuriHalation.YuriForms
         public LabelForm()
         {
             InitializeComponent();
-            this.textBox1.Text = "";
+            this.textBox1.Text = String.Empty;
         }
 
         /// <summary>
@@ -17,7 +17,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            if (this.textBox1.Text != "")
+            if (this.textBox1.Text != String.Empty)
             {
                 Halation.GetInstance().DashLabel(this.textBox1.Text);
                 this.Close();

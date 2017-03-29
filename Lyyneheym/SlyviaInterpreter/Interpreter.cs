@@ -48,8 +48,7 @@ namespace Yuri.YuriInterpreter
                 sw.WriteLine(">>>YuriAEIL?" + this.projectName);
                 foreach (KeyValuePair<string, string> ilp in this.ILVector)
                 {
-                    string ils = ilp.Value;
-                    sw.Write(ils);
+                    sw.WriteLine(ilp.Value);
                 }
                 sw.WriteLine(">>>YuriEOF");
                 sw.Close();
@@ -215,12 +214,12 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 项目名称
         /// </summary>
-        public string projectName = "";
+        public string projectName = String.Empty;
 
         /// <summary>
         /// 剧本文件的目录
         /// </summary>
-        public string sceneDirectory = "";
+        public string sceneDirectory = String.Empty;
 
         /// <summary>
         /// 已完成线程数

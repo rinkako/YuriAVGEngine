@@ -11,7 +11,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// <summary>
         /// 变量名
         /// </summary>
-        public string varName = "";
+        public string varName = String.Empty;
 
         /// <summary>
         /// 是否全局变量

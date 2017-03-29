@@ -48,7 +48,7 @@ namespace Yuri.PlatformCore
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            string paraStr = "";
+            string paraStr = String.Empty;
             foreach (string arg in this.Param)
             {
                 sb.Append(arg + ", ");

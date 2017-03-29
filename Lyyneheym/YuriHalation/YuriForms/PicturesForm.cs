@@ -32,7 +32,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button2_Click(object sender, EventArgs e)
         {
-            if (this.textBox1.Text == "")
+            if (this.textBox1.Text == String.Empty)
             {
                 MessageBox.Show("请选择图片文件");
                 return;

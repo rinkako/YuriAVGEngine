@@ -26,7 +26,7 @@ namespace YuriHalation.YuriForms
         private void button1_Click(object sender, EventArgs e)
         {
             // 检查函数名
-            if (this.textBox1.Text == "" ||
+            if (this.textBox1.Text == String.Empty ||
                 !Halation.IsValidVarname(this.textBox1.Text))
             {
                 MessageBox.Show("请使用字母正确填写函数名", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);

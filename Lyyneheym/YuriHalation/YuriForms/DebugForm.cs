@@ -49,14 +49,14 @@ namespace YuriHalation.YuriForms
         private void button1_Click(object sender, EventArgs e)
         {
             
-            this.richTextBox1.Text = "";
+            this.richTextBox1.Text = String.Empty;
             try
             {
                 this.button1.Enabled = false;
                 this.ControlBox = false;
                 debugGameProcess = new Process();
                 debugGameProcess.StartInfo.FileName = rootPath + @"\Yuri.exe";
-                debugGameProcess.StartInfo.Arguments = "";
+                debugGameProcess.StartInfo.Arguments = String.Empty;
                 debugGameProcess.StartInfo.UseShellExecute = false;
                 debugGameProcess.StartInfo.RedirectStandardOutput = true;
                 debugGameProcess.StartInfo.RedirectStandardError = true;

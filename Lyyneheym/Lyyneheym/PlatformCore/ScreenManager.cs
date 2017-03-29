@@ -303,7 +303,7 @@ namespace Yuri.PlatformCore
                 VertiAlign = Va,
                 LineHeight = LineHeight,
                 FontShadow = shadow,
-                Text = ""
+                Text = String.Empty
             };
             this.msgLayerDescVec[id] = mld;
         }
@@ -488,7 +488,7 @@ namespace Yuri.PlatformCore
                 Padding = new MyThickness(GlobalDataContext.GAME_MESSAGELAYER_PADDING),
                 Opacity = 1.0,
                 Visible = false,
-                Text = ""
+                Text = String.Empty
             };
             this.msgLayerDescVec.Add(mainMsgLayer);
             // 初始化附加文本层
@@ -497,7 +497,7 @@ namespace Yuri.PlatformCore
                 MessageLayerDescriptor mld = new MessageLayerDescriptor()
                 {
                     Id = i,
-                    BackgroundResourceName = "",
+                    BackgroundResourceName = String.Empty,
                     FontColorR = GlobalDataContext.GAME_FONT_COLOR.R,
                     FontColorG = GlobalDataContext.GAME_FONT_COLOR.G,
                     FontColorB = GlobalDataContext.GAME_FONT_COLOR.B,
@@ -515,7 +515,7 @@ namespace Yuri.PlatformCore
                     Padding = new MyThickness(GlobalDataContext.GAME_MESSAGELAYER_PADDING),
                     Opacity = 1.0,
                     Visible = false,
-                    Text = ""
+                    Text = String.Empty
                 };
                 this.msgLayerDescVec.Add(mld);
             }

@@ -41,7 +41,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            if (this.textBox1.Text == "")
+            if (this.textBox1.Text == String.Empty)
             {
                 MessageBox.Show("目标值不能为空");
                 return;

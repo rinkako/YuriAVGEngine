@@ -91,7 +91,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// <summary>
         /// 场景的名称
         /// </summary>
-        public string sceneName = "";
+        public string sceneName = String.Empty;
 
         /// <summary>
         /// 函数向量

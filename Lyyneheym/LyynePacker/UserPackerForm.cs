@@ -76,7 +76,7 @@ namespace Yuri.YuriPacker
                     flist = flist,
                     savefile = fwindow.FileName,
                     pak = this.comboBox1.SelectedItem.ToString(),
-                    sign = ""
+                    sign = String.Empty
                 };
                 this.progressBar1.Style = ProgressBarStyle.Marquee;
                 this.tabControl1.Enabled = false;
@@ -101,12 +101,12 @@ namespace Yuri.YuriPacker
         /// </summary>
         private void button2_Click_1(object sender, EventArgs e)
         {
-            if (exPakName == "")
+            if (exPakName == String.Empty)
             {
                 MessageBox.Show("你还没拉入文件呢");
                 return;
             }
-            string savePath = "";
+            string savePath = String.Empty;
             FolderBrowserDialog fdg = new FolderBrowserDialog();
             fdg.Description = "选择资源提取到哪个目录";
             if (fdg.ShowDialog() == DialogResult.OK)
@@ -124,7 +124,7 @@ namespace Yuri.YuriPacker
                 flist = flist,
                 savefile = savePath,
                 pakFile = this.exPakName,
-                sign = ""
+                sign = String.Empty
             };
             this.progressBar1.Style = ProgressBarStyle.Marquee;
             this.tabControl1.Enabled = false;
@@ -239,7 +239,7 @@ namespace Yuri.YuriPacker
         /// <summary>
         /// 要解包的文件名
         /// </summary>
-        private string exPakName = "";
+        private string exPakName = String.Empty;
         #endregion
     }
 

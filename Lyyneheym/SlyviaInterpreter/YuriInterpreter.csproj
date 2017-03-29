@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="YuriEncryptor.cs" />
     <Compile Include="Interpreter.cs" />
     <Compile Include="InterpreterException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

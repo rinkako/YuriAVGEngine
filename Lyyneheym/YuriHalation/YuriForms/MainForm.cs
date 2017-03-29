@@ -119,7 +119,7 @@ namespace YuriHalation.YuriForms
             this.button_AddNewFunc.Enabled = this.button_deleteScene.Enabled = this.projTreeView.SelectedNode.Level == 1;
             this.button_deleteFunc.Enabled = this.projTreeView.SelectedNode.Level == 2;
             this.core.ChangeCodePackage(this.projTreeView.SelectedNode.Text,
-                this.projTreeView.SelectedNode.Level == 1 ? "" : this.projTreeView.SelectedNode.Parent.Text);
+                this.projTreeView.SelectedNode.Level == 1 ? String.Empty : this.projTreeView.SelectedNode.Parent.Text);
             this.codeListBox.HorizontalExtent = this.codeListBox.Width - 16;
             this.core.RefreshCodeContext();
             this.core.RefreshRedoUndo();
@@ -759,7 +759,7 @@ namespace YuriHalation.YuriForms
             FileDialog fd = new OpenFileDialog();
             fd.Filter = "Halation工程|*.yrproj";
             fd.ShowDialog(this);
-            if (fd.FileName != "")
+            if (fd.FileName != String.Empty)
             {
                 this.core.LoadProject(fd.FileName);
                 this.资源ToolStripMenuItem.Enabled = this.编辑ToolStripMenuItem.Enabled =

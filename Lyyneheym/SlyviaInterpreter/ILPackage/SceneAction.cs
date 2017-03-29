@@ -80,7 +80,7 @@ namespace Yuri.YuriInterpreter.ILPackage
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append(this.NodeName + "^");
-                string args = this.ArgsDict.Aggregate("", (x, y) => x + ":#:" + y.Key + ":@:" + y.Value);
+                string args = this.ArgsDict.Aggregate(String.Empty, (x, y) => x + ":#:" + y.Key + ":@:" + y.Value);
                 sb.Append(args.Length > 0 ? args.Substring(3) + "^" : "^");
                 if (this.Type != SActionType.act_else && this.Type != SActionType.act_endif && this.Type != SActionType.act_endfor
                     && this.Type != SActionType.act_function && this.Type != SActionType.act_endfunction && this.Type != SActionType.act_label)
@@ -94,7 +94,7 @@ namespace Yuri.YuriInterpreter.ILPackage
                 sb.Append(this.Next != null ? this.Next.NodeName + "^" : "^");
                 if (this.TrueRouting != null)
                 {
-                    string trues = this.TrueRouting.Aggregate("", (x, y) => x + "#" + y.NodeName);
+                    string trues = this.TrueRouting.Aggregate(String.Empty, (x, y) => x + "#" + y.NodeName);
                     sb.Append(trues.Substring(1) + "^");
                 }
                 else
@@ -103,7 +103,7 @@ namespace Yuri.YuriInterpreter.ILPackage
                 }
                 if (this.FalseRouting != null)
                 {
-                    string falses = this.TrueRouting.Aggregate("", (x, y) => x + "#" + y.NodeName);
+                    string falses = this.TrueRouting.Aggregate(String.Empty, (x, y) => x + "#" + y.NodeName);
                     sb.Append(falses.Substring(1) + "^");
                 }
                 else
@@ -112,7 +112,7 @@ namespace Yuri.YuriInterpreter.ILPackage
                 }
                 sb.Append(this.IsBelongFunc ? "1^" : "0^");
                 sb.Append(this.FuncName + "^");
-                sb.Append(this.Tag != null ? this.Tag.Replace(@"\", @"\\").Replace(@",", @"\,").Replace(@"^", @"\^").Replace("\r\n", @"\$") : "");
+                sb.Append(Tag?.Replace(@"\", @"\\").Replace(@",", @"\,").Replace(@"^", @"\^").Replace("\r\n", @"\$") ?? String.Empty);
                 return sb.ToString();
             }
         }
@@ -125,13 +125,13 @@ namespace Yuri.YuriInterpreter.ILPackage
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(this.NodeName + "^");
-            string args = this.ArgsDict.Aggregate("", (x, y) => x + "#" + y.Key + "@" + this.EncodeString(y.Value));
+            string args = this.ArgsDict.Aggregate(String.Empty, (x, y) => x + "#" + y.Key + "@" + this.EncodeString(y.Value));
             sb.Append(args.Length > 0 ? args.Substring(1) + "^" : "^");
             sb.Append(this.EncodeString(this.CondPolish) + "^");
             sb.Append(this.Next != null ? this.Next.NodeName + "^" : "^");
             if (this.TrueRouting != null)
             {
-                string trues = this.TrueRouting.Aggregate("", (x, y) => x + "#" + y.NodeName);
+                string trues = this.TrueRouting.Aggregate(String.Empty, (x, y) => x + "#" + y.NodeName);
                 sb.Append(trues.Length > 0 ? trues.Substring(1) + "^" : "^");
             }
             else
@@ -140,7 +140,7 @@ namespace Yuri.YuriInterpreter.ILPackage
             }
             if (this.FalseRouting != null)
             {
-                string falses = this.FalseRouting.Aggregate("", (x, y) => x + "#" + y.NodeName);
+                string falses = this.FalseRouting.Aggregate(String.Empty, (x, y) => x + "#" + y.NodeName);
                 sb.Append(falses.Length > 0 ? falses.Substring(1) + "^" : "^");
             }
             else

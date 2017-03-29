@@ -1385,7 +1385,7 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 处理的文件名
         /// </summary>
-        private string dealingFile = "";
+        private string dealingFile = String.Empty;
         
         /// <summary>
         /// 单词流

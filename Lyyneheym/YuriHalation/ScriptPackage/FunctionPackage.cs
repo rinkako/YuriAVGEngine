@@ -55,7 +55,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         {
             get
             {
-                string funArgs = "";
+                string funArgs = String.Empty;
                 foreach (var arg in this.Argv)
                 {
                     funArgs += String.Format(", ${0}", arg);

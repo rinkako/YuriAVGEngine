@@ -1,4 +1,6 @@
-﻿namespace Yuri.YuriInterpreter
+﻿using System;
+
+namespace Yuri.YuriInterpreter
 {
     /// <summary>
     /// 单词类：负责装填词法分析阶段的结果的最小单元
@@ -33,7 +35,7 @@
         /// <summary>
         /// 原字串
         /// </summary>
-        public string OriginalCodeStr = "";
+        public string OriginalCodeStr = String.Empty;
 
         /// <summary>
         /// 错误位

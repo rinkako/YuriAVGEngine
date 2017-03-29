@@ -56,7 +56,7 @@ namespace YuriHalation.YuriForms
             {
                 if (this.switchDataGridView.Rows[i].Cells[1].Value == null)
                 {
-                    desList.Add("");
+                    desList.Add(String.Empty);
                 }
                 else
                 {

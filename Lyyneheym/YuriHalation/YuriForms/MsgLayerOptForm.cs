@@ -42,7 +42,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            if (this.comboBox1.SelectedIndex < 15 && this.textBox1.Text == "")
+            if (this.comboBox1.SelectedIndex < 15 && this.textBox1.Text == String.Empty)
             {
                 MessageBox.Show("请正确填写目标值");
                 return;

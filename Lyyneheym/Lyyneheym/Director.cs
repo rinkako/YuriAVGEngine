@@ -282,7 +282,7 @@ namespace Yuri
                             Director.RunMana.ExitUserWait();
                         }
                         // 处理跳转（与中断调用互斥）
-                        if (interruptExitPoint != "")
+                        if (interruptExitPoint != String.Empty)
                         {
                             var curScene = this.resMana.GetScene(Director.RunMana.CallStack.EBP.BindingSceneName);
                             if (!curScene.LabelDictionary.ContainsKey(interruptExitPoint))
@@ -391,7 +391,7 @@ namespace Yuri
                                 }
                                 Director.RunMana.ExitCall(Director.RunMana.CallStack);
                                 Director.RunMana.CallScene(jumpScene,
-                                    jumpToTarget == "" ? jumpScene.Ctor : jumpScene.LabelDictionary[jumpToTarget]);
+                                    jumpToTarget == String.Empty ? jumpScene.Ctor : jumpScene.LabelDictionary[jumpToTarget]);
                             }
                             break;
                         }
@@ -580,7 +580,7 @@ namespace Yuri
         /// <param name="vsm">关于哪个虚拟机做动作</param>
         private void FunctionCalling(string callFunc, string signFunc, StackMachine vsm)
         {
-            if (signFunc != "" && (!signFunc.StartsWith("(") || !signFunc.EndsWith(")")))
+            if (signFunc != String.Empty && (!signFunc.StartsWith("(") || !signFunc.EndsWith(")")))
             {
                 CommonUtils.ConsoleLine(String.Format("Ignored Function calling (sign not valid): {0} -> {1}", callFunc, signFunc),
                     "Director", OutputStyle.Error);
@@ -608,7 +608,7 @@ namespace Yuri
                 return;
             }
             var sceneFunc = sceneFuncList.First();
-            var signItem = signFunc.Replace("(", "").Replace(")", "").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var signItem = signFunc.Replace("(", String.Empty).Replace(")", String.Empty).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             if (sceneFunc.Param.Count != signItem.Length)
             {
                 CommonUtils.ConsoleLine(String.Format("Ignored Function calling (in {0}, require args num: {1}, but actual:{2})", callFunc, sceneFunc.Param.Count, signItem.Length),

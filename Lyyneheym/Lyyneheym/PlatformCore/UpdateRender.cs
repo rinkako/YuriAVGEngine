@@ -608,16 +608,16 @@ namespace Yuri.PlatformCore
             {
                 case SActionType.act_a:
                     this.A(
-                        this.ParseDirectString(action.ArgsDict["name"], ""),
+                        this.ParseDirectString(action.ArgsDict["name"], String.Empty),
                         this.ParseInt(action.ArgsDict["vid"], -1),
-                        this.ParseDirectString(action.ArgsDict["face"], ""),
-                        this.ParseDirectString(action.ArgsDict["loc"], "")
+                        this.ParseDirectString(action.ArgsDict["face"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["loc"], String.Empty)
                         );
                     break;
                 case SActionType.act_bg:
                     this.Background(
                         this.ParseInt(action.ArgsDict["id"], 0),
-                        this.ParseDirectString(action.ArgsDict["filename"], ""),
+                        this.ParseDirectString(action.ArgsDict["filename"], String.Empty),
                         this.ParseDouble(action.ArgsDict["x"], 0),
                         this.ParseDouble(action.ArgsDict["y"], 0),
                         this.ParseDouble(action.ArgsDict["opacity"], 1),
@@ -631,7 +631,7 @@ namespace Yuri.PlatformCore
                 case SActionType.act_picture:
                     this.Picture(
                         this.ParseInt(action.ArgsDict["id"], 0),
-                        this.ParseDirectString(action.ArgsDict["filename"], ""),
+                        this.ParseDirectString(action.ArgsDict["filename"], String.Empty),
                         this.ParseDouble(action.ArgsDict["x"], 0),
                         this.ParseDouble(action.ArgsDict["y"], 0),
                         this.ParseDouble(action.ArgsDict["opacity"], 1),
@@ -669,7 +669,7 @@ namespace Yuri.PlatformCore
                         this.ParseDouble(action.ArgsDict["xscale"], 1),
                         this.ParseDouble(action.ArgsDict["yscale"], 1),
                         this.ParseDouble(action.ArgsDict["ro"], 0),
-                        action.ArgsDict["anchor"] == "" ? (action.ArgsDict["anchor"] == "center" ? SpriteAnchorType.Center : SpriteAnchorType.LeftTop) : SpriteAnchorType.Center,
+                        action.ArgsDict["anchor"] == String.Empty ? (action.ArgsDict["anchor"] == "center" ? SpriteAnchorType.Center : SpriteAnchorType.LeftTop) : SpriteAnchorType.Center,
                         new Int32Rect(0, 0, 0, 0)
                         );
                     break;
@@ -873,7 +873,7 @@ namespace Yuri.PlatformCore
         /// <param name="locStr">立绘位置</param>
         private void A(string name, int vid, string face, string locStr)
         {
-            if (face != "")
+            if (face != String.Empty)
             {
                 this.Cstand(-1, String.Format("{0}_{1}.png", name, face), locStr, 1, 1, 1, 0, SpriteAnchorType.Center, new Int32Rect(0, 0, 0, 0));
             }
@@ -911,14 +911,14 @@ namespace Yuri.PlatformCore
             {
                 ResourceName = normal
             }, overDesc = null, onDesc = null;
-            if (over != "")
+            if (over != String.Empty)
             {
                 overDesc = new SpriteDescriptor()
                 {
                     ResourceName = over
                 };
             }
-            if (on != "")
+            if (on != String.Empty)
             {
                 onDesc = new SpriteDescriptor()
                 {

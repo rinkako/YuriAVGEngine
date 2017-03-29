@@ -52,7 +52,7 @@ namespace YuriHalation.YuriForms
                 MessageBox.Show("先加入文件");
                 return;
             }
-            string packName = "";
+            string packName = String.Empty;
             switch (this.comboBox1.SelectedIndex)
             {
                 case 0:

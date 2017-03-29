@@ -120,7 +120,7 @@ namespace Yuri.YuriInterpreter
         {
             StringBuilder builder = new StringBuilder();
             builder.Append("> SyntaxTreeNode String Format: ");
-            builder.AppendLine(this.NodeName + ", Type:" + this.NodeSyntaxType.ToString() + ", Func:" + this.NodeType.ToString() + "");
+            builder.AppendLine(this.NodeName + ", Type:" + this.NodeSyntaxType.ToString() + ", Func:" + this.NodeType.ToString() + String.Empty);
             int identation = 0;
             this.GetTree(builder, this, ref identation, false);
             return builder.ToString();
@@ -154,7 +154,7 @@ namespace Yuri.YuriInterpreter
             }
             else if (myNode.NodeSyntaxType == SyntaxType.synr_dialog)
             {
-                string sub = myNode.NodeValue.Replace("\r", "").Replace("\n", "");
+                string sub = myNode.NodeValue.Replace("\r", String.Empty).Replace("\n", String.Empty);
                 builder.Append(" (" + (sub.Length < 12 ? sub : sub.Substring(0, 11) + " ...") + ")");
             }
             builder.Append(Environment.NewLine);
@@ -188,13 +188,13 @@ namespace Yuri.YuriInterpreter
             // 若空就不需要继续了
             if (myNode == null)
             {
-                return "";
+                return String.Empty;
             }
             // 取父母节点，若空就不需要画线了
             SyntaxTreeNode parent = myNode.Parent;
             if (parent == null)
             {
-                return "";
+                return String.Empty;
             }
             // 否则查询祖父母节点来看父母节点的排位
             List<bool> lstline = new List<bool>();
@@ -239,7 +239,7 @@ namespace Yuri.YuriInterpreter
                 parent = pp;
             }
             // 画纵向线
-            string builder = "";
+            string builder = String.Empty;
             for (int i = lstline.Count - 1; i >= 0; i--)
             {
                 builder += lstline[i] ? "│  " : "    ";

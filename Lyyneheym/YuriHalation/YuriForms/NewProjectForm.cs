@@ -36,7 +36,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button2_Click(object sender, EventArgs e)
         {
-            if (this.textBox1.Text != "" && this.textBox2.Text != "" && !this.textBox2.Text.Contains("\\"))
+            if (this.textBox1.Text != String.Empty && this.textBox2.Text != String.Empty && !this.textBox2.Text.Contains("\\"))
             {
                 Halation.GetInstance().NewProject(this.textBox1.Text, this.textBox2.Text);
                 this.Close();
