@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Threading;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Yuri.ILPackage;
 using Yuri.Utils;
 

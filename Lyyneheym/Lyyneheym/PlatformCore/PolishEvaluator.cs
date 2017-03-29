@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 namespace Yuri.PlatformCore
 {
     /// <summary>
-    /// 求值器：逆波兰式求值器
+    /// 逆波兰式求值器
     /// </summary>
     internal static class PolishEvaluator
     {
