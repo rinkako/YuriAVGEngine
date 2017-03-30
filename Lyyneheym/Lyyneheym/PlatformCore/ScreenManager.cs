@@ -438,8 +438,11 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void InitViewboxes()
         {
-            ViewportDescriptor vdTemplate = new ViewportDescriptor()
+            // Background
+            ViewportDescriptor BgTemplate = new ViewportDescriptor()
             {
+                Type = ViewportType.VTBackground,
+                ZIndex = GlobalDataContext.GAME_Z_BACKGROUND,
                 Left = 0,
                 Top = 0,
                 ScaleX = 1.0,
@@ -448,17 +451,35 @@ namespace Yuri.PlatformCore
                 AnchorX = (double)GlobalDataContext.GAME_WINDOW_WIDTH / 2.0,
                 AnchorY = (double)GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0
             };
-            var vtBg = vdTemplate.Clone() as ViewportDescriptor;
-            vtBg.Type = ViewportType.VTBackground;
-            vtBg.ZIndex = GlobalDataContext.GAME_Z_BACKGROUND;
-            this.viewboxDescVec[(int)ViewportType.VTBackground] = vtBg;
-            var vtPics = vdTemplate.Clone() as ViewportDescriptor;
-            vdTemplate.Type = ViewportType.VTPictures;
-            vdTemplate.ZIndex = GlobalDataContext.GAME_Z_PICTURES;
-            this.viewboxDescVec[(int)ViewportType.VTPictures] = vtPics;
-            vdTemplate.Type = ViewportType.VTCharacterStand;
-            vdTemplate.ZIndex = GlobalDataContext.GAME_Z_CHARACTERSTAND;
-            this.viewboxDescVec[(int)ViewportType.VTCharacterStand] = vdTemplate;
+            this.viewboxDescVec[(int)ViewportType.VTBackground] = BgTemplate;
+            // Character
+            ViewportDescriptor CsTemplate = new ViewportDescriptor()
+            {
+                Type = ViewportType.VTCharacterStand,
+                ZIndex = GlobalDataContext.GAME_Z_CHARACTERSTAND,
+                Left = 0,
+                Top = 0,
+                ScaleX = 1.0,
+                ScaleY = 1.0,
+                Angle = 0.0,
+                AnchorX = (double)GlobalDataContext.GAME_WINDOW_WIDTH / 2.0,
+                AnchorY = (double)GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0
+            };
+            this.viewboxDescVec[(int)ViewportType.VTCharacterStand] = CsTemplate;
+            // Picture
+            ViewportDescriptor PicTemplate = new ViewportDescriptor()
+            {
+                Type = ViewportType.VTPictures,
+                ZIndex = GlobalDataContext.GAME_Z_PICTURES,
+                Left = 0,
+                Top = 0,
+                ScaleX = 1.0,
+                ScaleY = 1.0,
+                Angle = 0.0,
+                AnchorX = (double)GlobalDataContext.GAME_WINDOW_WIDTH / 2.0,
+                AnchorY = (double)GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0
+            };
+            this.viewboxDescVec[(int)ViewportType.VTPictures] = PicTemplate;
         }
 
         /// <summary>

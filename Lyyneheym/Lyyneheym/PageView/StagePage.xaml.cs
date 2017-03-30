@@ -149,9 +149,7 @@ namespace Yuri.PageView
             var finePoint = SCamera.GetScreenCoordination(4, 11);
             var zoiPoint = SCamera.GetScreenCoordination(4, 24);
 
-
-            var xxx = this.BO_Cstand_Canvas;
-            var xxxx = this.BO_Cstand_Viewbox;
+            
             var rm = ResourceManager.GetInstance();
             var izetta = rm.GetPicture("伊泽塔1.png", new Int32Rect(-1, 0, 0, 0));
             Image img1 = new Image();
@@ -163,6 +161,9 @@ namespace Yuri.PageView
             var izettad = (SpriteDescriptor)sd.Clone();
             izettad.ToScaleX = izettad.ToScaleY = 0.4;
             izetta.Descriptor = izettad;
+            izetta.Descriptor.X = izettaPoint.X - izetta.SpriteBitmapImage.PixelWidth / 2.0;
+            izetta.Descriptor.Y = izettaPoint.Y - izetta.SpriteBitmapImage.PixelHeight / 2.0;
+
             //Canvas.SetLeft(img1, 150 - izetta.SpriteBitmapImage.PixelWidth / 2.0);
             Canvas.SetLeft(img1, izettaPoint.X - izetta.SpriteBitmapImage.PixelWidth / 2.0);
             Canvas.SetTop(img1, izettaPoint.Y - izetta.SpriteBitmapImage.PixelHeight / 2.0);
@@ -182,6 +183,8 @@ namespace Yuri.PageView
             var fined = (SpriteDescriptor)sd.Clone();
             fined.ToScaleX = fined.ToScaleY = 0.5;
             fine.Descriptor = fined;
+            fine.Descriptor.X = finePoint.X - fine.SpriteBitmapImage.PixelWidth / 2.0;
+            fine.Descriptor.Y = finePoint.Y + 100 - fine.SpriteBitmapImage.PixelHeight / 2.0;
             //Canvas.SetLeft(img2, 400 - fine.SpriteBitmapImage.PixelWidth / 2.0);
             //Canvas.SetTop(img2, 730 - fine.SpriteBitmapImage.PixelHeight / 2.0);
             Canvas.SetLeft(img2, finePoint.X - fine.SpriteBitmapImage.PixelWidth / 2.0);
@@ -201,9 +204,8 @@ namespace Yuri.PageView
             var zoid = (SpriteDescriptor)sd.Clone();
             zoid.ToScaleX = zoid.ToScaleY = 0.43;
             mt.Descriptor = zoid;
-            modelX = 1000 - fine.SpriteBitmapImage.PixelWidth / 2.0;
-            //Canvas.SetLeft(img4, modelX);
-            //Canvas.SetTop(img4, 630 - fine.SpriteBitmapImage.PixelHeight / 2.0);
+            mt.Descriptor.X = zoiPoint.X - mt.SpriteBitmapImage.PixelWidth / 2.0;
+            mt.Descriptor.Y = zoiPoint.Y - mt.SpriteBitmapImage.PixelHeight / 2.0;
             Canvas.SetLeft(img4, zoiPoint.X - mt.SpriteBitmapImage.PixelWidth / 2.0);
             Canvas.SetTop(img4, zoiPoint.Y - mt.SpriteBitmapImage.PixelHeight / 2.0);
             Canvas.SetZIndex(img4, 50);
@@ -260,6 +262,12 @@ namespace Yuri.PageView
             this.BO_Bg_Viewbox.RenderTransform = aniGroup2;
             BgTG = aniGroup2;
             CsTG = aniGroup;
+
+            bgg.Descriptor.ScaleX = 0.75;
+            bgg.Descriptor.ScaleY = 0.75;
+            BgScaleT.ScaleX = 1 * 0.75;
+            BgScaleT.ScaleY = 1 * 0.75;
+
         }
 
         ScaleTransform BgScaleT;
@@ -267,340 +275,11 @@ namespace Yuri.PageView
 
         TransformGroup BgTG;
         TransformGroup CsTG;
-
-        double bgNowX;
-        double csNowX;
-
-        int testcount = 0;
-
-        double modelX;
-
+        
         private void button3_Click(object sender, RoutedEventArgs e)
         {
-            Duration duration = TimeSpan.FromMilliseconds(500);
-            double StandToScale = 2.0, StandaccX = -0.7, StandaccY = -0.7;
-            double bgtoScale = 1.2;
-            if (testcount == 0)
-            {
-                Storyboard story = new Storyboard();
-                Storyboard story2 = new Storyboard();
-                DoubleAnimation doubleAniScaleX = new DoubleAnimation(1, StandToScale, duration);
-                DoubleAnimation doubleAniScaleY = new DoubleAnimation(1, StandToScale, duration);
-                if (StandaccX >= 0)
-                {
-                    doubleAniScaleX.AccelerationRatio = StandaccX;
-                }
-                else
-                {
-                    doubleAniScaleX.DecelerationRatio = -StandaccX;
-                }
-                if (StandaccY >= 0)
-                {
-                    doubleAniScaleY.AccelerationRatio = StandaccY;
-                }
-                else
-                {
-                    doubleAniScaleY.DecelerationRatio = -StandaccY;
-                }
-                Storyboard.SetTarget(doubleAniScaleX, this.BO_Cstand_Viewbox);
-                Storyboard.SetTarget(doubleAniScaleY, this.BO_Cstand_Viewbox);
-                Storyboard.SetTargetProperty(doubleAniScaleX, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
-                Storyboard.SetTargetProperty(doubleAniScaleY, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
-                story.Children.Add(doubleAniScaleX);
-                story.Children.Add(doubleAniScaleY);
-                story.Duration = duration;
-
-                DoubleAnimation doubleAniScaleX2 = new DoubleAnimation(1, bgtoScale, duration);
-                DoubleAnimation doubleAniScaleY2 = new DoubleAnimation(1, bgtoScale, duration);
-                if (StandaccX >= 0)
-                {
-                    doubleAniScaleX2.AccelerationRatio = StandaccX;
-                }
-                else
-                {
-                    doubleAniScaleX2.DecelerationRatio = -StandaccX;
-                }
-                if (StandaccY >= 0)
-                {
-                    doubleAniScaleY2.AccelerationRatio = StandaccY;
-                }
-                else
-                {
-                    doubleAniScaleY2.DecelerationRatio = -StandaccY;
-                }
-                Storyboard.SetTarget(doubleAniScaleX2, this.BO_Bg_Viewbox);
-                Storyboard.SetTarget(doubleAniScaleY2, this.BO_Bg_Viewbox);
-                Storyboard.SetTargetProperty(doubleAniScaleX2, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
-                Storyboard.SetTargetProperty(doubleAniScaleY2, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
-                story2.Children.Add(doubleAniScaleX2);
-                story2.Children.Add(doubleAniScaleY2);
-                story2.Duration = duration;
-
-                story.FillBehavior = FillBehavior.Stop;
-                story2.FillBehavior = FillBehavior.Stop;
-
-                story.Completed += Story_Completed;
-                story2.Completed += Story2_Completed;
-
-                story.Begin();
-                story2.Begin();
-
-                core.GetMainRender().DrawStringToMsgLayer(0, "【伊泽塔】" + Environment.NewLine + "公主公主，你看那边有个画风和我们不一样的人！");
-
-            }
-            else if (testcount == 1)
-            {
-                Storyboard story = new Storyboard();
-                double BgfromX = Canvas.GetLeft(this.BO_Bg_Viewbox);
-                double BgtoX = SCamera.GetScreenCoordination(0, 9).X * Math.Abs(1 - bgtoScale) - modelX * bgtoScale;
-                bgNowX = -BgtoX;
-                DoubleAnimation doubleAniLeft = new DoubleAnimation(BgfromX, -BgtoX, duration);
-                if (StandaccX >= 0)
-                {
-                    doubleAniLeft.AccelerationRatio = StandaccX;
-                }
-                else
-                {
-                    doubleAniLeft.DecelerationRatio = -StandaccX;
-                }
-                Storyboard.SetTarget(doubleAniLeft, this.BO_Bg_Viewbox);
-                Storyboard.SetTargetProperty(doubleAniLeft, new PropertyPath(Canvas.LeftProperty));
-                story.Children.Add(doubleAniLeft);
-                story.Duration = duration;
-
-
-                Storyboard story2 = new Storyboard();
-                double CsfromX = Canvas.GetLeft(this.BO_Cstand_Viewbox);
-                double CstoX = SCamera.GetScreenCoordination(0, 9).X * StandToScale;
-                csNowX = -CstoX;
-                DoubleAnimation doubleAniLeft2 = new DoubleAnimation(CsfromX, -CstoX, duration);
-                if (StandaccX >= 0)
-                {
-                    doubleAniLeft2.AccelerationRatio = StandaccX;
-                }
-                else
-                {
-                    doubleAniLeft2.DecelerationRatio = -StandaccX;
-                }
-                Storyboard.SetTarget(doubleAniLeft2, this.BO_Cstand_Viewbox);
-                Storyboard.SetTargetProperty(doubleAniLeft2, new PropertyPath(Canvas.LeftProperty));
-                story2.Children.Add(doubleAniLeft2);
-                story2.Duration = duration;
-
-                story.FillBehavior = FillBehavior.Stop;
-                story2.FillBehavior = FillBehavior.Stop;
-
-                story.Completed += Story_1_Bg_Completed;
-                story2.Completed += Story2_Cs_Completed;
-
-                story.Begin();
-                story2.Begin();
-
-                core.GetMainRender().DrawStringToMsgLayer(0, "【佐茜】" + Environment.NewLine + "……我只是一个路过的人。");
-            }
-            else if (testcount == 2)
-            {
-                Storyboard story = new Storyboard();
-                Storyboard story2 = new Storyboard();
-                DoubleAnimation doubleAniScaleX = new DoubleAnimation(StandToScale, 1, duration);
-                DoubleAnimation doubleAniScaleY = new DoubleAnimation(StandToScale, 1, duration);
-                if (StandaccX >= 0)
-                {
-                    doubleAniScaleX.AccelerationRatio = StandaccX;
-                }
-                else
-                {
-                    doubleAniScaleX.DecelerationRatio = -StandaccX;
-                }
-                if (StandaccY >= 0)
-                {
-                    doubleAniScaleY.AccelerationRatio = StandaccY;
-                }
-                else
-                {
-                    doubleAniScaleY.DecelerationRatio = -StandaccY;
-                }
-                Storyboard.SetTarget(doubleAniScaleX, this.BO_Cstand_Viewbox);
-                Storyboard.SetTarget(doubleAniScaleY, this.BO_Cstand_Viewbox);
-                Storyboard.SetTargetProperty(doubleAniScaleX, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
-                Storyboard.SetTargetProperty(doubleAniScaleY, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
-                story.Children.Add(doubleAniScaleX);
-                story.Children.Add(doubleAniScaleY);
-                story.Duration = duration;
-
-                DoubleAnimation doubleAniScaleX2 = new DoubleAnimation(bgtoScale, 1, duration);
-                DoubleAnimation doubleAniScaleY2 = new DoubleAnimation(bgtoScale, 1, duration);
-                if (StandaccX >= 0)
-                {
-                    doubleAniScaleX2.AccelerationRatio = StandaccX;
-                }
-                else
-                {
-                    doubleAniScaleX2.DecelerationRatio = -StandaccX;
-                }
-                if (StandaccY >= 0)
-                {
-                    doubleAniScaleY2.AccelerationRatio = StandaccY;
-                }
-                else
-                {
-                    doubleAniScaleY2.DecelerationRatio = -StandaccY;
-                }
-                Storyboard.SetTarget(doubleAniScaleX2, this.BO_Bg_Viewbox);
-                Storyboard.SetTarget(doubleAniScaleY2, this.BO_Bg_Viewbox);
-                Storyboard.SetTargetProperty(doubleAniScaleX2, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
-                Storyboard.SetTargetProperty(doubleAniScaleY2, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
-                story2.Children.Add(doubleAniScaleX2);
-                story2.Children.Add(doubleAniScaleY2);
-                story2.Duration = duration;
-
-
-                Storyboard story3 = new Storyboard();
-                double BgfromX = Canvas.GetLeft(this.BO_Bg_Viewbox);
-                bgNowX = 0;
-                DoubleAnimation doubleAniLeft = new DoubleAnimation(BgfromX, 0, duration);
-                if (StandaccX >= 0)
-                {
-                    doubleAniLeft.AccelerationRatio = StandaccX;
-                }
-                else
-                {
-                    doubleAniLeft.DecelerationRatio = -StandaccX;
-                }
-                Storyboard.SetTarget(doubleAniLeft, this.BO_Bg_Viewbox);
-                Storyboard.SetTargetProperty(doubleAniLeft, new PropertyPath(Canvas.LeftProperty));
-                story3.Children.Add(doubleAniLeft);
-                story3.Duration = duration;
-
-
-                Storyboard story4 = new Storyboard();
-                double CsfromX = Canvas.GetLeft(this.BO_Cstand_Viewbox);
-                csNowX = 0;
-                DoubleAnimation doubleAniLeft2 = new DoubleAnimation(CsfromX, 0, duration);
-                if (StandaccX >= 0)
-                {
-                    doubleAniLeft2.AccelerationRatio = StandaccX;
-                }
-                else
-                {
-                    doubleAniLeft2.DecelerationRatio = -StandaccX;
-                }
-                Storyboard.SetTarget(doubleAniLeft2, this.BO_Cstand_Viewbox);
-                Storyboard.SetTargetProperty(doubleAniLeft2, new PropertyPath(Canvas.LeftProperty));
-                story4.Children.Add(doubleAniLeft2);
-                story4.Duration = duration;
-
-                var t = Canvas.GetLeft(this.BO_Cstand_Viewbox);
-
-                story3.FillBehavior = FillBehavior.Stop;
-                story4.FillBehavior = FillBehavior.Stop;
-                story3.Completed += Story_1_Bg_Completed;
-                story4.Completed += Story2_Cs_Completed;
-
-                story3.Begin();
-                story4.Begin();
-
-
-
-                story.Begin();
-                story2.Begin();
-                core.GetMainRender().DrawStringToMsgLayer(0, "【公主】" + Environment.NewLine + "看上去场景镜头系统做好了呢！");
-
-            }
-            else if (testcount == 3)
-            {
-                BgScaleT.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 4.0 * 3;
-                BgScaleT.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 4.0;
-                CsScaleT.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 16.0 * 15;
-                CsScaleT.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 16.0;
-
-                Storyboard story = new Storyboard();
-                Storyboard story2 = new Storyboard();
-                DoubleAnimation doubleAniScaleX = new DoubleAnimation(1, StandToScale, duration);
-                DoubleAnimation doubleAniScaleY = new DoubleAnimation(1, StandToScale, duration);
-                if (StandaccX >= 0)
-                {
-                    doubleAniScaleX.AccelerationRatio = StandaccX;
-                }
-                else
-                {
-                    doubleAniScaleX.DecelerationRatio = -StandaccX;
-                }
-                if (StandaccY >= 0)
-                {
-                    doubleAniScaleY.AccelerationRatio = StandaccY;
-                }
-                else
-                {
-                    doubleAniScaleY.DecelerationRatio = -StandaccY;
-                }
-                Storyboard.SetTarget(doubleAniScaleX, this.BO_Cstand_Viewbox);
-                Storyboard.SetTarget(doubleAniScaleY, this.BO_Cstand_Viewbox);
-                Storyboard.SetTargetProperty(doubleAniScaleX, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
-                Storyboard.SetTargetProperty(doubleAniScaleY, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
-                story.Children.Add(doubleAniScaleX);
-                story.Children.Add(doubleAniScaleY);
-                story.Duration = duration;
-
-                DoubleAnimation doubleAniScaleX2 = new DoubleAnimation(1, bgtoScale, duration);
-                DoubleAnimation doubleAniScaleY2 = new DoubleAnimation(1, bgtoScale, duration);
-                if (StandaccX >= 0)
-                {
-                    doubleAniScaleX2.AccelerationRatio = StandaccX;
-                }
-                else
-                {
-                    doubleAniScaleX2.DecelerationRatio = -StandaccX;
-                }
-                if (StandaccY >= 0)
-                {
-                    doubleAniScaleY2.AccelerationRatio = StandaccY;
-                }
-                else
-                {
-                    doubleAniScaleY2.DecelerationRatio = -StandaccY;
-                }
-                Storyboard.SetTarget(doubleAniScaleX2, this.BO_Bg_Viewbox);
-                Storyboard.SetTarget(doubleAniScaleY2, this.BO_Bg_Viewbox);
-                Storyboard.SetTargetProperty(doubleAniScaleX2, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
-                Storyboard.SetTargetProperty(doubleAniScaleY2, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
-                story2.Children.Add(doubleAniScaleX2);
-                story2.Children.Add(doubleAniScaleY2);
-                story2.Duration = duration;
-
-                story.Begin();
-                story2.Begin();
-                core.GetMainRender().DrawStringToMsgLayer(0, "【佐茜】" + Environment.NewLine + "这回聚焦我了吧……");
-            }
-            testcount++;
-            if (testcount == 4)
-            {
-                testcount = 0;
-            }
         }
-
-        private void Story2_Completed(object sender, EventArgs e)
-        {
-            BgScaleT.ScaleX = 1.2;
-            BgScaleT.ScaleY = 1.2;
-        }
-
-        private void Story_Completed(object sender, EventArgs e)
-        {
-            CsScaleT.ScaleX = 2.0;
-            CsScaleT.ScaleY = 2.0;
-        }
-
-        private void Story2_Cs_Completed(object sender, EventArgs e)
-        {
-            Canvas.SetLeft(this.BO_Cstand_Viewbox, csNowX);
-        }
-
-        private void Story_1_Bg_Completed(object sender, EventArgs e)
-        {
-            Canvas.SetLeft(this.BO_Bg_Viewbox, bgNowX);
-        }
-
+        
         private void button4_Click(object sender, RoutedEventArgs e)
         {
             if (bt4 == -2)
@@ -614,52 +293,36 @@ namespace Yuri.PageView
             }
             else if (bt4 == 0)
             {
-                SCamera.FocusOn(0, 4, 2);
+                SCamera.FocusOn(0, 6, 2);
             }
-            //else if (bt4 == 1)
-            //{
-            //    SCamera.Translate(2, 4);
-            //}
-            //else if (bt4 == 2)
-            //{
-            //    SCamera.Translate(2, 2);
-            //}
-            //else if (bt4 == 3)
-            //{
-            //    SCamera.Translate(2, 14);
-            //}
-            //else if (bt4 == 4)
-            //{
-            //    SCamera.Translate(2, 0);
-            //}
-            //else if (bt4 == 1)
-            //{
-            //    SCamera.Translate(2, 5);
-            //}
-            //else if (bt4 == 2)
-            //{
-            //    SCamera.Translate(2, 12);
-            //}
-            //else if (bt4 == 3)
-            //{
-            //    SCamera.Translate(2, 5);
-            //}
-            //else if (bt4 == 4)
-            //{
-            //    SCamera.Translate(2, 7);
-            //}
-            //else if (bt4 == 5)
-            //{
-            //    SCamera.Translate(2, 12);
-            //}
-            //else if (bt4 == 6)
-            //{
-            //    SCamera.Translate(2, 7);
-            //}
-            //else if (bt4 == 7)
-            //{
-            //    SCamera.ResetFocus(false);
-            //}
+            else if (bt4 == 1)
+            {
+                SCamera.Translate(2, 8);
+            }
+            else if (bt4 == 2)
+            {
+                SCamera.Translate(2, 12);
+            }
+            else if (bt4 == 3)
+            {
+                SCamera.Translate(2, 0);
+            }
+            else if (bt4 == 4)
+            {
+                SCamera.Translate(2, 24);
+            }
+            else if (bt4 == 5)
+            {
+                SCamera.Translate(2, 12);
+            }
+            else if (bt4 == 6)
+            {
+                SCamera.Translate(2, 24);
+            }
+            else if (bt4 == 7)
+            {
+                SCamera.ResetFocus(false);
+            }
             else if (bt4 <= 32)
             {
                 SCamera.Translate(bt4 % 5, bt4);
@@ -669,7 +332,7 @@ namespace Yuri.PageView
                 if (MessageBox.Show("reset?", "i", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     SCamera.ResetFocus(false);
-                    bt4 = -2;
+                    bt4 = -3;
                 }
             }
             bt4++;
