@@ -152,12 +152,12 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 鼠标按钮状态字典
         /// </summary>
-        private static Dictionary<MouseButton, MouseButtonState> KS_MOUSE_Dict = new Dictionary<MouseButton, MouseButtonState>();
+        private static readonly Dictionary<MouseButton, MouseButtonState> KS_MOUSE_Dict = new Dictionary<MouseButton, MouseButtonState>();
 
         /// <summary>
         /// 键盘按钮状态字典
         /// </summary>
-        private static Dictionary<Key, KeyStates> KS_KEY_Dict = new Dictionary<Key, KeyStates>();
+        private static readonly Dictionary<Key, KeyStates> KS_KEY_Dict = new Dictionary<Key, KeyStates>();
         #endregion
 
         #region 周期性调用
@@ -573,28 +573,22 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 主舞台的引用
         /// </summary>
-        private PageView.StagePage view
-        {
-            get
-            {
-                return (PageView.StagePage)ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
-            }
-        }
+        private PageView.StagePage view => (PageView.StagePage)ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
 
         /// <summary>
         /// 音乐引擎
         /// </summary>
-        private Musician musician = Musician.GetInstance();
+        private readonly Musician musician = Musician.GetInstance();
 
         /// <summary>
         /// 资源管理器
         /// </summary>
-        private ResourceManager resMana = ResourceManager.GetInstance();
+        private readonly ResourceManager resMana = ResourceManager.GetInstance();
 
         /// <summary>
         /// 视窗管理器
         /// </summary>
-        private ViewManager viewMana = ViewManager.GetInstance();
+        private readonly ViewManager viewMana = ViewManager.GetInstance();
         #endregion
 
         #region 演绎函数
@@ -1294,17 +1288,57 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 演绎函数：执行场景镜头动画
+        /// </summary>
+        /// <param name="name">动画名</param>
+        /// <param name="r">目标分区行号</param>
+        /// <param name="c">目标分区列号</param>
+        /// <param name="ro">缩放比，1.0代表原始尺寸</param>
+        private void Scamera(string name, int r, int c, double ro)
+        {
+            if (r < 0 || r > GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT)
+            {
+                r = GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2;
+            }
+            if (c < 0 || c > GlobalDataContext.GAME_SCAMERA_SCR_COLCOUNT)
+            {
+                c = 0;
+            }
+            ro = Math.Max(0.5, Math.Min(2.5, ro));
+            var sname = name.Trim().ToLower();
+            switch (sname)
+            {
+                case "translate":
+                    SCamera.Translate(r, c);
+                    break;
+                case "focus":
+                    SCamera.FocusOn(r, c, ro);
+                    break;
+                case "reset":
+                    SCamera.ResetFocus(false);
+                    break;
+                case "blackframe":
+                    SCamera.LeaveSceneToBlackFrame();
+                    break;
+                case "outblackframe":
+                    SCamera.PreviewEnterScene();
+                    SCamera.PostEnterScene();
+                    break;
+            }
+        }
+        
+        /// <summary>
         /// 选择项
         /// </summary>
         /// <param name="linkStr">选择项跳转链</param>
         private void Branch(string linkStr)
         {
             // 处理跳转链
-            List<KeyValuePair<string, string>> tagList = new List<KeyValuePair<string, string>>();
-            string[] linkItems = linkStr.Split(';');
+            var tagList = new List<KeyValuePair<string, string>>();
+            var linkItems = linkStr.Split(';');
             foreach (var linkItem in linkItems)
             {
-                string[] linkPair = linkItem.Split(',');
+                var linkPair = linkItem.Split(',');
                 if (linkPair.Length == 2)
                 {
                     tagList.Add(new KeyValuePair<string,string>(linkPair[0].Trim(), linkPair[1].Trim()));

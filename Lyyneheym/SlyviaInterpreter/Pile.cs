@@ -885,10 +885,10 @@ namespace Yuri.YuriInterpreter
                                 res = (Math.Abs(op1) > 1e-15) || (Math.Abs(op2) > 1e-15) ? 1 : 0;
                                 break;
                             case PolishItemType.CAL_EQUAL:
-                                res = op1 == op2 ? 1 : 0;
+                                res = Math.Abs(op1 - op2) < 1e-15 ? 1 : 0;
                                 break;
                             case PolishItemType.CAL_NOTEQUAL:
-                                res = op1 != op2 ? 1 : 0;
+                                res = Math.Abs(op1 - op2) > 1e-15 ? 1 : 0;
                                 break;
                             case PolishItemType.CAL_BIG:
                                 res = op1 > op2 ? 1 : 0;
@@ -943,7 +943,7 @@ namespace Yuri.YuriInterpreter
         /// <returns>逆波兰式中的类型</returns>
         private PolishItemType GetPolishItemType(string item)
         {
-            if (item == null || item.Length == 0)
+            if (string.IsNullOrEmpty(item))
             {
                 return PolishItemType.NONE;
             }
@@ -1017,8 +1017,7 @@ namespace Yuri.YuriInterpreter
         private void Reset(string scenario)
         {
             this.scenario = scenario;
-            this.parseTree = new SyntaxTreeNode(SyntaxType.case_kotori);
-            this.parseTree.NodeName = "myKotori_Root";
+            this.parseTree = new SyntaxTreeNode(SyntaxType.case_kotori) { NodeName = "myKotori_Root" };
             this.parser.BlockStack.Push(this.parseTree);
         }
 
@@ -1052,12 +1051,12 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 词法分析器
         /// </summary>
-        private Lexer lexer = null;
+        private readonly Lexer lexer = null;
         
         /// <summary>
         /// 语法分析器
         /// </summary>
-        private Parser parser = null;
+        private readonly Parser parser = null;
         
         /// <summary>
         /// 剧本场景实例

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Yuri.YuriInterpreter
@@ -162,16 +163,16 @@ namespace Yuri.YuriInterpreter
             identation++;
             if (myNode.NodeSyntaxType.ToString().StartsWith("synr_") && myNode.ParamDict != null)
             {
-                foreach (KeyValuePair<string, SyntaxTreeNode> kvp in myNode.ParamDict)
+                foreach (var kvp in myNode.ParamDict)
                 {
                     GetTree(builder, kvp.Value, ref identation, true);
                 }
             }
             if (myNode.Children != null)
             {
-                for (int i = 0; i < myNode.Children.Count; i++)
+                foreach (SyntaxTreeNode t in myNode.Children)
                 {
-                    GetTree(builder, myNode.Children[i], ref identation, false);
+                    GetTree(builder, t, ref identation, false);
                 }
             }
             // 回归缩进
@@ -185,19 +186,14 @@ namespace Yuri.YuriInterpreter
         /// <returns>树的缩进字符串</returns>
         private string DrawTree(SyntaxTreeNode myNode)
         {
-            // 若空就不需要继续了
-            if (myNode == null)
-            {
-                return String.Empty;
-            }
-            // 取父母节点，若空就不需要画线了
-            SyntaxTreeNode parent = myNode.Parent;
+            // 若空就不需要继续了，否则取父母节点，若空就不需要画线了
+            SyntaxTreeNode parent = myNode?.Parent;
             if (parent == null)
             {
                 return String.Empty;
             }
             // 否则查询祖父母节点来看父母节点的排位
-            List<bool> lstline = new List<bool>();
+            var lstline = new List<bool>();
             while (parent != null)
             {
                 SyntaxTreeNode pp = parent.Parent;
@@ -206,17 +202,7 @@ namespace Yuri.YuriInterpreter
                 {
                     if (pp.NodeSyntaxType.ToString().StartsWith("synr_") && pp.ParamDict != null)
                     {
-                        foreach (KeyValuePair<string, SyntaxTreeNode> kvp in pp.ParamDict)
-                        {
-                           if (kvp.Value == parent)
-                           {
-                               break;
-                           }
-                           else
-                           {
-                               indexOfParent++;
-                           }
-                        }
+                        indexOfParent += pp.ParamDict.TakeWhile(kvp => kvp.Value != parent).Count();
                         int nocCount = 0;
                         if (pp.Children != null)
                         {
@@ -249,26 +235,6 @@ namespace Yuri.YuriInterpreter
             int indexOfParent2 = 0;
             if (parent.NodeSyntaxType.ToString().StartsWith("synr_") && parent.ParamDict != null)
             {
-                //foreach (KeyValuePair<string, SyntaxTreeNode> kvp in parent.paramDict)
-                //{
-                //    if (kvp.Value == parent)
-                //    {
-                //        break;
-                //    }
-                //    else
-                //    {
-                //        indexOfParent2++;
-                //    }
-                //}
-                //// 如果是最后一个就不要出头了
-                //if (indexOfParent2 < parent.paramDict.Count - 1)
-                //{
-                //    builder += "├─";
-                //}
-                //else
-                //{
-                //    builder += "└─";
-                //}
                 builder += "└─";
             }
             else if (parent.Children != null)
@@ -397,6 +363,12 @@ namespace Yuri.YuriInterpreter
         synr_waitani,
         // 移除按钮
         synr_deletebutton,
+        // 场景镜头
+        synr_scamera,
+        // 通知
+        synr_notify,
+        // 发送系统消息
+        synr_yurimsg,
         // 参数：类型
         para_type,
         // 参数：函数签名

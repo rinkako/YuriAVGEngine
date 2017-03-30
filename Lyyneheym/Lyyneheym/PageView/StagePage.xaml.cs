@@ -218,13 +218,18 @@ namespace Yuri.PageView
             img3.Height = bgg.SpriteBitmapImage.PixelHeight;
             bgg.DisplayBinding = img3;
             bgg.AnimationElement = img3;
-            bgg.Descriptor = sd;
-            Canvas.SetLeft(img3, 0);
-            Canvas.SetTop(img3, 0);
+            bgg.Descriptor = (SpriteDescriptor)sd.Clone();
+            bgg.Descriptor.X = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
+            bgg.Descriptor.Y = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
+            Canvas.SetLeft(img3, bgg.Descriptor.X - img3.Width / 2);
+            Canvas.SetTop(img3, bgg.Descriptor.Y - img3.Height / 2);
             Canvas.SetZIndex(img3, 5);
             this.BO_Bg_Canvas.Children.Add(img3);
             bgg.InitAnimationRenderTransform();
 
+            //bgg.Descriptor.ToScaleX = 0.5;
+            //bgg.Descriptor.ToScaleY = 0.5;
+            //SpriteAnimation.ScaleAnimation(bgg, TimeSpan.Zero, 1, 0.5, 1, 0.5, 0, 0);
 
             TransformGroup aniGroup = new TransformGroup();
             TranslateTransform XYTransformer = new TranslateTransform();
@@ -255,8 +260,6 @@ namespace Yuri.PageView
             this.BO_Bg_Viewbox.RenderTransform = aniGroup2;
             BgTG = aniGroup2;
             CsTG = aniGroup;
-
-
         }
 
         ScaleTransform BgScaleT;
@@ -602,7 +605,7 @@ namespace Yuri.PageView
         {
             if (bt4 == -2)
             {
-                SCamera.LeaveScene();
+                SCamera.LeaveSceneToBlackFrame();
             }
             else if (bt4 == -1)
             {
@@ -659,7 +662,7 @@ namespace Yuri.PageView
             //}
             else if (bt4 <= 32)
             {
-                SCamera.Translate(2, bt4);
+                SCamera.Translate(bt4 % 5, bt4);
             }
             else if (bt4 == 33)
             {

@@ -703,7 +703,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 为主窗体描绘一个选择支
         /// </summary>
-        /// <param name="sbutton">按钮实例</param>
+        /// <param name="bbutton">按钮实例</param>
         /// <param name="descriptor">按钮描述子</param>
         private void DrawBranchButton(BranchButton bbutton, BranchButtonDescriptor descriptor)
         {

@@ -89,7 +89,7 @@ namespace Yuri.YuriInterpreter
         public List<Token> Analyse()
         {
             // 如果上一轮词法分析完成，那么就要重新构造结果向量
-            if (this.finFlag == true)
+            if (this.finFlag)
             {
                 this.resultVector = new List<Token>();
             }
@@ -190,7 +190,7 @@ namespace Yuri.YuriInterpreter
                         break;
                     // 空白
                     case CharacterType.Space:
-                        successFlag = this.GetSpace(res);
+                        successFlag = this.GetSpace();
                         break;
                     // 谜
                     default:
@@ -392,9 +392,9 @@ namespace Yuri.YuriInterpreter
             if (okFlag) { return true; }
             okFlag = this.ReservedRouter(res, 8, "`waituser", "`msglayer", "`shutdown", "`function", "*filename");
             if (okFlag) { return true; }
-            okFlag = this.ReservedRouter(res, 7, "`picture", "`waitani", "`stopbgm", "`stopbgs", "*opacity");
+            okFlag = this.ReservedRouter(res, 7, "`picture", "`waitani", "`stopbgm", "`stopbgs", "`scamera", "`yurimsg", "*opacity");
             if (okFlag) { return true; }
-            okFlag = this.ReservedRouter(res, 6, "`button", "`branch", "`switch", "`freeze", "`cstand", "`return", "`endfor", "*target", "*normal", "*xscale", "*yscale");
+            okFlag = this.ReservedRouter(res, 6, "`button", "`branch", "`switch", "`freeze", "`cstand", "`return", "`endfor", "`notify", "*target", "*normal", "*xscale", "*yscale");
             if (okFlag) { return true; }
             okFlag = this.ReservedRouter(res, 5, "`label", "`trans", "`endif", "`vocal", "`break", "`title", "*state");
             if (okFlag) { return true; }
@@ -506,7 +506,7 @@ namespace Yuri.YuriInterpreter
             bool entityFlag = false;
             while (this.nextCharPointer < this.sourceCode.Length)
             {
-                CharacterType cara = this.GetCharType(this.sourceCode[this.nextCharPointer]);
+                this.GetCharType(this.sourceCode[this.nextCharPointer]);
                 // 在右方括弧之前的输入都接受，并且这个符号不能是转义的
                 if (this.GetCharType(this.sourceCode[this.nextCharPointer]) == CharacterType.RightBracket)
                 {
@@ -569,7 +569,7 @@ namespace Yuri.YuriInterpreter
             StringBuilder sb = new StringBuilder();
             while (this.nextCharPointer < this.sourceCode.Length)
             {
-                CharacterType cara = this.GetCharType(this.sourceCode[this.nextCharPointer]);
+                this.GetCharType(this.sourceCode[this.nextCharPointer]);
                 // 在双引号之前的输入都接受，并且这个双引号不能是转义的
                 if (this.GetCharType(this.sourceCode[this.nextCharPointer]) == latticeType)
                 {
@@ -587,7 +587,7 @@ namespace Yuri.YuriInterpreter
             // 如果成功封闭
             //res.aType = TokenType.cluster;
             res.Type = TokenType.identifier;
-            res.Tag = (string)sb.ToString();
+            res.Tag = sb.ToString();
             res.OriginalCodeStr = sb.ToString();
             res.ErrorBit = lattice == false;
             return true;
@@ -631,9 +631,8 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 空白符号的自动机路径
         /// </summary>
-        /// <param name="res">结果实例</param>
         /// <returns>是否命中</returns>
-        private bool GetSpace(Token res)
+        private bool GetSpace()
         {
             // 获取字符，看是否要换行
             char c = this.sourceCode[this.nextCharPointer];

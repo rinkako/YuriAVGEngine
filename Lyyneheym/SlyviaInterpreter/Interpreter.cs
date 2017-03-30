@@ -26,10 +26,9 @@ namespace Yuri.YuriInterpreter
         /// 进行编译
         /// </summary>
         /// <param name="itype">编译类型</param>
-        /// <param name="threadNum">进程数</param>
-        public void Dash(InterpreterType itype, int threadNum = 4)
+        /// <param name="threadN">进程数</param>
+        public void Dash(InterpreterType itype, int threadN = 4)
         {
-            this.isMultiThread = (this.threadNum = (threadNum > 8 ? 8 : threadNum)) > 1;
             this.compileType = itype;
             this.threadPool = new List<Thread>();
             this.LoadAndSplit();
@@ -46,7 +45,7 @@ namespace Yuri.YuriInterpreter
                 FileStream fs = new FileStream(storeFile, FileMode.Create);
                 StreamWriter sw = new StreamWriter(fs);
                 sw.WriteLine(">>>YuriAEIL?" + this.projectName);
-                foreach (KeyValuePair<string, string> ilp in this.ILVector)
+                foreach (var ilp in this.ILVector)
                 {
                     sw.WriteLine(ilp.Value);
                 }
@@ -135,9 +134,9 @@ namespace Yuri.YuriInterpreter
                 }
                 lock (this.consoleMutex)
                 {
-                    Console.WriteLine(String.Format("Spliting \"{0}\" At thread {1}", fi.Name, tid));
+                    Console.WriteLine("Spliting \"{0}\" At thread {1}", fi.Name, tid);
                 }
-                List<string> resVec = new List<string>();
+                var resVec = new List<string>();
                 try
                 {
                     FileStream fs = new FileStream(fi.FullName, FileMode.Open);
@@ -150,7 +149,7 @@ namespace Yuri.YuriInterpreter
                     fs.Close();
                     lock (this.consoleMutex)
                     {
-                        Console.WriteLine(String.Format("Compiling \"{0}\" At thread {1}", fi.Name, tid));
+                        Console.WriteLine("Compiling \"{0}\" At thread {1}", fi.Name, tid);
                     }
                     if (this.compileType == InterpreterType.DEBUG)
                     {
@@ -182,7 +181,7 @@ namespace Yuri.YuriInterpreter
             lock (consoleMutex)
             {
                 this.finishedThread++;
-                Console.WriteLine(String.Format("Thread {0} is Finished", tid));
+                Console.WriteLine("Thread {0} is Finished", tid);
             }
         }
 
@@ -209,17 +208,17 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 显示输出互斥量
         /// </summary>
-        private Mutex consoleMutex = new Mutex();
+        private readonly Mutex consoleMutex = new Mutex();
 
         /// <summary>
         /// 项目名称
         /// </summary>
-        public string projectName = String.Empty;
+        public string projectName;
 
         /// <summary>
         /// 剧本文件的目录
         /// </summary>
-        public string sceneDirectory = String.Empty;
+        public string sceneDirectory;
 
         /// <summary>
         /// 已完成线程数
@@ -229,12 +228,7 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 编译类型
         /// </summary>
-        private InterpreterType compileType = InterpreterType.DEBUG;
-
-        /// <summary>
-        /// 是否多线程编译
-        /// </summary>
-        private bool isMultiThread = false;
+        private InterpreterType compileType = InterpreterType.RELEASE_WITH_IL;
 
         /// <summary>
         /// 线程数量

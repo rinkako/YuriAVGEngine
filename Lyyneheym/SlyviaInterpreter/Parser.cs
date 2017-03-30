@@ -106,9 +106,11 @@ namespace Yuri.YuriInterpreter
                         currentPtr.Line = line;
                         // 为子句节点加上一个真分支
                         currentPtr.Children = new List<SyntaxTreeNode>();
-                        SyntaxTreeNode trueBranch = new SyntaxTreeNode(SyntaxType.case_kotori);
-                        trueBranch.Line = line;
-                        trueBranch.Children = new List<SyntaxTreeNode>();
+                        SyntaxTreeNode trueBranch = new SyntaxTreeNode(SyntaxType.case_kotori)
+                        {
+                            Line = line,
+                            Children = new List<SyntaxTreeNode>()
+                        };
                         trueBranch.NodeName = trueBranch.NodeSyntaxType.ToString() + 
                             (stn.NodeSyntaxType == SyntaxType.synr_if ? "_trueBranch" :
                             stn.NodeSyntaxType == SyntaxType.synr_for ? "_forBranch" : "_funDeclaration");
@@ -122,9 +124,11 @@ namespace Yuri.YuriInterpreter
                     else if (stn.NodeSyntaxType == SyntaxType.synr_else)
                     {
                         currentPtr = currentPtr.Parent;
-                        SyntaxTreeNode falseBranch = new SyntaxTreeNode(SyntaxType.case_kotori);
-                        falseBranch.Line = line;
-                        falseBranch.Children = new List<SyntaxTreeNode>();
+                        SyntaxTreeNode falseBranch = new SyntaxTreeNode(SyntaxType.case_kotori)
+                        {
+                            Line = line,
+                            Children = new List<SyntaxTreeNode>()
+                        };
                         falseBranch.NodeName = falseBranch.NodeSyntaxType.ToString() + "_falseBranch";
                         falseBranch.Parent = currentPtr;
                         currentPtr.Children.Add(falseBranch);
@@ -186,29 +190,12 @@ namespace Yuri.YuriInterpreter
                         currentPtr.CandidateFunction = func;
                     }
                     // 调用产生式，下降
-                    if (func != null)
+                    currentPtr = currentPtr != null
+                        ? currentPtr.CandidateFunction.Call(currentPtr, nodeType, iToken)
+                        : this.Derivate(null, func.GetCFType(), nodeType, iToken);
+                    if (currentPtr != null)
                     {
-                        if (currentPtr != null)
-                        {
-                            currentPtr = currentPtr.CandidateFunction.Call(currentPtr, nodeType, iToken);
-                        }
-                        else
-                        {
-                            currentPtr = this.Derivate(currentPtr, func.GetCFType(), nodeType, iToken);
-                        }
-                        if (currentPtr != null)
-                        {
-                            currentPtr.Line = line;
-                        }
-                    }
-                    // 没有对应的候选式时
-                    else
-                    {
-                        if (currentPtr != null)
-                        {
-                            currentPtr.ErrorBit = true;
-                        }
-                        break;
+                        currentPtr.Line = line;
                     }
                 }
                 // 最后看命令推导队列
@@ -216,25 +203,23 @@ namespace Yuri.YuriInterpreter
                 {
                     SyntaxTreeNode reroot = this.commandDerivatorQueue.Dequeue();
                     // 析取范式时
-                    if (reroot.NodeSyntaxType == SyntaxType.case_disjunct)
-                    {
-                        this.parseStack.Push(SyntaxType.case_disjunct);
-                    }
-                    // 值表达式时
-                    else
-                    {
-                        this.parseStack.Push(reroot.NodeSyntaxType);
-                    }
+                    this.parseStack.Push(reroot.NodeSyntaxType == SyntaxType.case_disjunct
+                        ? SyntaxType.case_disjunct
+                        : reroot.NodeSyntaxType);
                     // 把token流改为私有的token流
                     this.istream = reroot.ParamTokenStream;
                     // 在流的末尾，放置结束标记
-                    Token ccToken = new Token();
-                    ccToken.Length = 1;
-                    ccToken.OriginalCodeStr = "#";
-                    ccToken.ErrorBit = false;
-                    ccToken.Type = TokenType.startend;
-                    ccToken.Line = this.dealingLine;
-                    ccToken.Column = this.istream.Count > 0 ? this.istream[Math.Min(this.nextTokenPointer, this.istream.Count - 1)].Column : -1;
+                    Token ccToken = new Token
+                    {
+                        Length = 1,
+                        OriginalCodeStr = "#",
+                        ErrorBit = false,
+                        Type = TokenType.startend,
+                        Line = this.dealingLine,
+                        Column = this.istream.Count > 0
+                                 ? this.istream[Math.Min(this.nextTokenPointer, this.istream.Count - 1)].Column
+                                 : -1
+                    };
                     this.istream.Add(ccToken);
                     // 复位游程
                     this.nextTokenPointer = 0;
@@ -833,13 +818,15 @@ namespace Yuri.YuriInterpreter
             this.parseStack.Push(SyntaxType.tail_startEndLeave);
             this.parseStack.Push(startNodeType);
             // 在流的末尾，放置结束标记
-            Token ccToken = new Token();
-            ccToken.Length = 1;
-            ccToken.OriginalCodeStr = "#";
-            ccToken.ErrorBit = false;
-            ccToken.Type = TokenType.startend;
-            ccToken.Line = this.dealingLine;
-            ccToken.Column = this.istream.Count > 0 ? this.istream.Last().Column + 1 : -1;
+            Token ccToken = new Token
+            {
+                Length = 1,
+                OriginalCodeStr = "#",
+                ErrorBit = false,
+                Type = TokenType.startend,
+                Line = this.dealingLine,
+                Column = this.istream.Count > 0 ? this.istream.Last().Column + 1 : -1
+            };
             this.istream.Add(ccToken);
         }
 
@@ -850,34 +837,19 @@ namespace Yuri.YuriInterpreter
         /// <returns>下一个拿去展开的产生式</returns>
         private SyntaxTreeNode RecursiveDescent(SyntaxTreeNode res)
         {
-            // 已经没有需要递归下降的节点
-            if (res == null)
+            while (true)
             {
-                return null;
+                // 已经没有需要递归下降的节点，否则取她的母亲节点来取得自己的姐妹
+                SyntaxTreeNode parent = res?.Parent;
+                // 如果没有母亲，就说明已经回退到了树的最上层
+                if (parent?.Children == null) { return null; }
+                int i = 0;
+                // 遍历寻找自己在姐妹中的排位
+                for (; i < parent.Children.Count && parent.Children[i] != res; i++) { }
+                // 跳过自己，找最大的妹妹，如果自己没有妹妹，那就递归去找母亲的妹妹
+                if (i + 1 < parent.Children.Count) { return parent.Children[i + 1]; }
+                res = parent;
             }
-            // 否则取她的母亲节点来取得自己的姐妹
-            SyntaxTreeNode parent = res.Parent;
-            // 如果没有母亲，就说明已经回退到了树的最上层
-            if (parent == null || parent.Children == null)
-            {
-                return null;
-            }
-            int i = 0;
-            // 遍历寻找自己在姐妹中的排位
-            for (; i < parent.Children.Count
-                && parent.Children[i] != res; i++);
-            // 跳过自己，找最大的妹妹
-            if (i + 1 < parent.Children.Count)
-            {
-                return parent.Children[i + 1];
-            }
-            // 如果自己没有妹妹，那就递归去找母亲的妹妹
-            SyntaxTreeNode obac = this.RecursiveDescent(parent);
-            if (obac != null)
-            {
-                return obac;
-            }
-            return null;
         }
 
         /// <summary>
@@ -899,13 +871,17 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 为参数的字典节点追加LL1文法推导项
         /// </summary>
+        /// <param name="statementNode">正在推导的节点</param>
+        /// <param name="prescanPointer">单词流扫描指针</param>
         /// <param name="arg">参数在字典中的名字</param>
         /// <param name="derivator">LL1文法推导起始类型</param>
         private void ProcessArgumentDerivator(SyntaxTreeNode statementNode, ref int prescanPointer, string arg, SyntaxType derivator)
         {
             statementNode.ParamDict[arg].Children = new List<SyntaxTreeNode>();
-            SyntaxTreeNode derivationNode = new SyntaxTreeNode(derivator, statementNode.ParamDict[arg]);
-            derivationNode.ParamTokenStream = new List<Token>();
+            SyntaxTreeNode derivationNode = new SyntaxTreeNode(derivator, statementNode.ParamDict[arg])
+            {
+                ParamTokenStream = new List<Token>()
+            };
             prescanPointer += 2;
             while (prescanPointer < this.istream.Count
                 && !this.istream[prescanPointer].Type.ToString().StartsWith("Token_p")
@@ -934,8 +910,10 @@ namespace Yuri.YuriInterpreter
                 prescanPointer++;
                 Token mainToken = this.istream[prescanPointer];
                 // 从下一token的类型决定构造的语法树根节点类型，构造参数字典
-                SyntaxTreeNode statementNode = new SyntaxTreeNode();
-                statementNode.ParamDict = new Dictionary<string, SyntaxTreeNode>();
+                SyntaxTreeNode statementNode = new SyntaxTreeNode
+                {
+                    ParamDict = new Dictionary<string, SyntaxTreeNode>()
+                };
                 switch (mainToken.Type)
                 {
                     case TokenType.Token_o_a:
@@ -1015,6 +993,15 @@ namespace Yuri.YuriInterpreter
                         break;
                     case TokenType.Token_o_load:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_load, "filename");
+                        break;
+                    case TokenType.Token_o_scamera:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_scamera, "name", "x", "y", "ro");
+                        break;
+                    case TokenType.Token_o_notify:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_notify, "target", "name", "filename");
+                        break;
+                    case TokenType.Token_o_yurimsg:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_yurimsg, "sign");
                         break;
                     case TokenType.Token_o_stopbgm:
                         statementNode.NodeSyntaxType = SyntaxType.synr_stopbgm;
@@ -1144,8 +1131,6 @@ namespace Yuri.YuriInterpreter
                     case TokenType.sceneterminator:
                         statementNode.NodeSyntaxType = SyntaxType.synr_dialogTerminator;
                         break;
-                    default:
-                        break;
                 }
                 // 跳过主Token
                 prescanPointer++;
@@ -1253,19 +1238,11 @@ namespace Yuri.YuriInterpreter
                         break;
                     }
                 }
-                // 如果语句成功封闭，则返回根节点
-                if (latticeFlag)
-                {
-                    return statementNode;
-                }
-                // 如果语句没有封闭就抛错误给上层
-                else
-                {
-                    return null;
-                }
+                // 如果语句成功封闭，则返回根节点，没有封闭就抛错误给上层
+                return latticeFlag ? statementNode : null;
             }
             // 如果是剧情文本的情况下
-            else if (this.istream[prescanPointer].Type == TokenType.scenecluster)
+            if (this.istream[prescanPointer].Type == TokenType.scenecluster)
             {
                 // 把所有的剧情文本聚合成篇章
                 SyntaxTreeNode statementNode = new SyntaxTreeNode();
@@ -1274,7 +1251,7 @@ namespace Yuri.YuriInterpreter
                 sc.Column = this.istream[prescanPointer].Column;
                 sc.Line = this.istream[prescanPointer].Line;
                 while (prescanPointer < this.istream.Count - 1 // 减1是要消掉startend的影响
-                    && this.istream[prescanPointer].Type != TokenType.sceneterminator)
+                       && this.istream[prescanPointer].Type != TokenType.sceneterminator)
                 {
                     // 如果匹配错误，就直接向上层抛错误
                     if (!this.istream[prescanPointer].Type.ToString().StartsWith("scene"))
@@ -1290,10 +1267,9 @@ namespace Yuri.YuriInterpreter
                 statementNode.ParamTokenStream.Add(sc);
                 return statementNode;
             }
-            else if (this.istream[prescanPointer].Type == TokenType.sceneterminator)
+            if (this.istream[prescanPointer].Type == TokenType.sceneterminator)
             {
-                SyntaxTreeNode statementNode = new SyntaxTreeNode();
-                statementNode.NodeSyntaxType = SyntaxType.synr_dialogTerminator;
+                SyntaxTreeNode statementNode = new SyntaxTreeNode { NodeSyntaxType = SyntaxType.synr_dialogTerminator };
                 return statementNode;
             }
             // 除此以外，直接抛错误给上层
@@ -1342,8 +1318,7 @@ namespace Yuri.YuriInterpreter
                 myNode.Children = new List<SyntaxTreeNode>();
                 for (int i = 0; i < iSvec.Count; i++)
                 {
-                    SyntaxTreeNode newNode = new SyntaxTreeNode();
-                    newNode.Parent = myNode;
+                    SyntaxTreeNode newNode = new SyntaxTreeNode { Parent = myNode };
                     myNode.Children.Add(newNode);
                     if (flag == false)
                     {
@@ -1395,31 +1370,31 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 匹配栈
         /// </summary>
-        private Stack<SyntaxType> parseStack = new Stack<SyntaxType>();
+        private readonly Stack<SyntaxType> parseStack = new Stack<SyntaxType>();
         
         /// <summary>
         /// 候选式类型的向量
         /// </summary>
-        private List<List<SyntaxType>> derivatorTypeDict = new List<List<SyntaxType>>();
+        private readonly List<List<SyntaxType>> derivatorTypeDict = new List<List<SyntaxType>>();
         
         /// <summary>
         /// 非LL1推导候选节点队列
         /// </summary>
-        private Queue<SyntaxTreeNode> commandDerivatorQueue = new Queue<SyntaxTreeNode>();
+        private readonly Queue<SyntaxTreeNode> commandDerivatorQueue = new Queue<SyntaxTreeNode>();
         
         /// <summary>
         /// LL1预测分析表
         /// </summary>
-        private LL1ParseMap iMap = new LL1ParseMap(LL1ParserMapRowCount, LL1ParserMapColCount);
-        
+        private readonly LL1ParseMap iMap = new LL1ParseMap(LL1ParserMapRowCount, LL1ParserMapColCount);
+
         /// <summary>
         /// LL1分析预测表行数
         /// </summary>
-        private static readonly int LL1ParserMapRowCount = 33;
+        private const int LL1ParserMapRowCount = 33;
 
         /// <summary>
         /// LL1分析预测表列数
         /// </summary>
-        private static readonly int LL1ParserMapColCount = 19;
+        private const int LL1ParserMapColCount = 19;
     }
 }

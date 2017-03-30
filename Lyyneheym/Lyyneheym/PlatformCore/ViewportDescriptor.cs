@@ -47,20 +47,12 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置视窗横向缩放比
         /// </summary>
-        public double ScaleX
-        {
-            get;
-            set;
-        }
+        public double ScaleX { get; set; } = 1.0;
 
         /// <summary>
         /// 获取或设置视窗纵向缩放比
         /// </summary>
-        public double ScaleY
-        {
-            get;
-            set;
-        }
+        public double ScaleY { get; set; } = 1.0;
 
         /// <summary>
         /// 获取或设置视窗动画X锚点

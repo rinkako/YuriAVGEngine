@@ -103,7 +103,7 @@ namespace Yuri.YuriInterpreter.ILPackage
                 }
                 if (this.FalseRouting != null)
                 {
-                    string falses = this.TrueRouting.Aggregate(String.Empty, (x, y) => x + "#" + y.NodeName);
+                    string falses = this.FalseRouting.Aggregate(String.Empty, (x, y) => x + "#" + y.NodeName);
                     sb.Append(falses.Substring(1) + "^");
                 }
                 else
@@ -149,28 +149,20 @@ namespace Yuri.YuriInterpreter.ILPackage
             }
             sb.Append(this.IsBelongFunc ? "1^" : "0^");
             sb.Append(this.FuncName + "^");
-            sb.Append(this.EncodeString((string)this.Tag));
+            sb.Append(this.EncodeString(this.Tag));
             return sb.ToString();
         }
 
         /// <summary>
         /// 把一个字符串做编码
         /// </summary>
-        /// <param name="str"></param>
+        /// <param name="str">要解码的字符串</param>
         /// <param name="isUTF8">标志位，true编码UTF-8，false编码Unicode</param>
         /// <returns>编码完毕的字符串</returns>
         private string EncodeString(string str, bool isUTF8 = true)
         {
             if (str == null) { return null; }
-            byte[] br = null;
-            if (isUTF8)
-            {
-                br = Encoding.UTF8.GetBytes(str);
-            }
-            else
-            {
-                br = Encoding.Unicode.GetBytes(str);
-            }
+            var br = isUTF8 ? Encoding.UTF8.GetBytes(str) : Encoding.Unicode.GetBytes(str);
             StringBuilder sb = new StringBuilder();
             foreach (byte b in br)
             {
@@ -186,8 +178,7 @@ namespace Yuri.YuriInterpreter.ILPackage
         /// <returns>原动作的深拷贝副本</returns>
         public SceneAction Clone(bool pureClone)
         {
-            SceneAction resSa = new SceneAction();
-            resSa.ArgsDict = new Dictionary<string, string>();
+            SceneAction resSa = new SceneAction { ArgsDict = new Dictionary<string, string>() };
             foreach (var kv in this.ArgsDict)
             {
                 resSa.ArgsDict.Add(kv.Key, kv.Value);
@@ -221,10 +212,7 @@ namespace Yuri.YuriInterpreter.ILPackage
         /// 字符串化方法
         /// </summary>
         /// <returns>该动作的名字</returns>
-        public override string ToString()
-        {
-            return this.NodeName;
-        }
+        public override string ToString() => this.NodeName;
     }
 
     /// <summary>
@@ -331,6 +319,12 @@ namespace Yuri.YuriInterpreter.ILPackage
         // 描绘字符串
         act_draw,
         // 移除按钮
-        act_deletebutton
+        act_deletebutton,
+        // 场景镜头
+        act_scamera,
+        // 通知
+        act_notify,
+        // 发送系统消息
+        act_yurimsg,
     }
 }

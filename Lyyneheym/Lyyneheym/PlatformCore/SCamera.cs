@@ -317,13 +317,15 @@ namespace Yuri.PlatformCore
                 }
             }
             // background
+            var bgVbox = viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding;
+            var bgVDesc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground);
             Storyboard storyScaleBg = new Storyboard();
-            DoubleAnimation doubleAniScaleXBg = new DoubleAnimation(1, ratio * SCamera.BackgroundDeepRatio, timespan);
-            DoubleAnimation doubleAniScaleYBg = new DoubleAnimation(1, ratio * SCamera.BackgroundDeepRatio, timespan);
+            DoubleAnimation doubleAniScaleXBg = new DoubleAnimation(bgVDesc.ScaleX, ratio * SCamera.BackgroundDeepRatio, timespan);
+            DoubleAnimation doubleAniScaleYBg = new DoubleAnimation(bgVDesc.ScaleY, ratio * SCamera.BackgroundDeepRatio, timespan);
             doubleAniScaleXBg.DecelerationRatio = SCamera.DecelerateRatio;
             doubleAniScaleYBg.DecelerationRatio = SCamera.DecelerateRatio;
-            Storyboard.SetTarget(doubleAniScaleXBg, viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding);
-            Storyboard.SetTarget(doubleAniScaleYBg, viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding);
+            Storyboard.SetTarget(doubleAniScaleXBg, bgVbox);
+            Storyboard.SetTarget(doubleAniScaleYBg, bgVbox);
             Storyboard.SetTargetProperty(doubleAniScaleXBg, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
             Storyboard.SetTargetProperty(doubleAniScaleYBg, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
             storyScaleBg.Children.Add(doubleAniScaleXBg);
@@ -331,16 +333,17 @@ namespace Yuri.PlatformCore
             storyScaleBg.Duration = timespan;
             storyScaleBg.FillBehavior = FillBehavior.Stop;
             storyScaleBg.Completed += StoryScaleBg_Completed;
-            Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground).ScaleX =
-                Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground).ScaleY = ratio * SCamera.BackgroundDeepRatio;
+            bgVDesc.ScaleX = bgVDesc.ScaleY = ratio * SCamera.BackgroundDeepRatio;
             // character
+            var csVbox = viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding;
+            var csVDesc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand);
             Storyboard storyScaleCs = new Storyboard();
-            DoubleAnimation doubleAniScaleXCs = new DoubleAnimation(1, ratio, timespan);
-            DoubleAnimation doubleAniScaleYCs = new DoubleAnimation(1, ratio, timespan);
+            DoubleAnimation doubleAniScaleXCs = new DoubleAnimation(csVDesc.ScaleX, ratio, timespan);
+            DoubleAnimation doubleAniScaleYCs = new DoubleAnimation(csVDesc.ScaleY, ratio, timespan);
             doubleAniScaleXCs.DecelerationRatio = SCamera.DecelerateRatio;
             doubleAniScaleYCs.DecelerationRatio = SCamera.DecelerateRatio;
-            Storyboard.SetTarget(doubleAniScaleXCs, viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
-            Storyboard.SetTarget(doubleAniScaleYCs, viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
+            Storyboard.SetTarget(doubleAniScaleXCs, csVbox);
+            Storyboard.SetTarget(doubleAniScaleYCs, csVbox);
             Storyboard.SetTargetProperty(doubleAniScaleXCs, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
             Storyboard.SetTargetProperty(doubleAniScaleYCs, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
             storyScaleCs.Children.Add(doubleAniScaleXCs);
@@ -348,8 +351,7 @@ namespace Yuri.PlatformCore
             storyScaleCs.Duration = timespan;
             storyScaleCs.FillBehavior = FillBehavior.Stop;
             storyScaleCs.Completed += StoryScaleCs_Completed;
-            Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).ScaleX =
-                Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).ScaleY = ratio;
+            csVDesc.ScaleX = csVDesc.ScaleY = ratio;
             // 初步只支持1和2两个缩放倍率
             if (ratio <= 1)
             {
@@ -362,13 +364,15 @@ namespace Yuri.PlatformCore
                 Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Top = -GlobalDataContext.GAME_WINDOW_HEIGHT / ratio;
             }
             // picture
+            var picVbox = viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding;
+            var picVDesc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures);
             Storyboard storyScalePic = new Storyboard();
-            DoubleAnimation doubleAniScaleXPic = new DoubleAnimation(1, ratio * SCamera.PictureDeepRatio, timespan);
-            DoubleAnimation doubleAniScaleYPic = new DoubleAnimation(1, ratio * SCamera.PictureDeepRatio, timespan);
+            DoubleAnimation doubleAniScaleXPic = new DoubleAnimation(picVDesc.ScaleX, ratio * SCamera.PictureDeepRatio, timespan);
+            DoubleAnimation doubleAniScaleYPic = new DoubleAnimation(picVDesc.ScaleY, ratio * SCamera.PictureDeepRatio, timespan);
             doubleAniScaleXPic.DecelerationRatio = SCamera.DecelerateRatio;
             doubleAniScaleYPic.DecelerationRatio = SCamera.DecelerateRatio;
-            Storyboard.SetTarget(doubleAniScaleXPic, viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding);
-            Storyboard.SetTarget(doubleAniScaleYPic, viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding);
+            Storyboard.SetTarget(doubleAniScaleXPic, picVbox);
+            Storyboard.SetTarget(doubleAniScaleYPic, picVbox);
             Storyboard.SetTargetProperty(doubleAniScaleXPic, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
             Storyboard.SetTargetProperty(doubleAniScaleYPic, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
             storyScalePic.Children.Add(doubleAniScaleXPic);
@@ -376,8 +380,7 @@ namespace Yuri.PlatformCore
             storyScalePic.Duration = timespan;
             storyScalePic.FillBehavior = FillBehavior.Stop;
             storyScalePic.Completed += StoryScalePic_Completed;
-            Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures).ScaleX =
-                Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures).ScaleY = ratio * SCamera.PictureDeepRatio;
+            picVDesc.ScaleX = picVDesc.ScaleY = ratio * SCamera.PictureDeepRatio;
             // Apply animation
             storyScaleCs.Begin();
             storyScaleBg.Begin();
@@ -547,7 +550,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 离开场景，切入黑场
         /// </summary>
-        public static void LeaveScene()
+        public static void LeaveSceneToBlackFrame()
         {
             var masker = ViewManager.MaskFrameRef;
             masker.Opacity = 0;
@@ -588,6 +591,7 @@ namespace Yuri.PlatformCore
             story.Completed += (sender, args) =>
             {
                 masker.Opacity = 0;
+                masker.Visibility = Visibility.Hidden;
             };
             story.Begin();
         }

@@ -235,6 +235,12 @@ namespace Yuri.YuriInterpreter
         Token_o_draw,
         // 移除按钮
         Token_o_deletebutton,
+        // 场景镜头
+        Token_o_scamera,
+        // 通知
+        Token_o_notify,
+        // 发送系统消息
+        Token_o_yurimsg,
         // 参数：类型
         Token_p_type,
         // 参数：函数签名

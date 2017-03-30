@@ -315,6 +315,12 @@ namespace Yuri.ILPackage
         // 描绘字符串
         act_draw,
         // 移除按钮
-        act_deletebutton
+        act_deletebutton,
+        // 场景镜头
+        act_scamera,
+        // 通知
+        act_notify,
+        // 发送系统消息
+        act_yurimsg,
     }
 }
