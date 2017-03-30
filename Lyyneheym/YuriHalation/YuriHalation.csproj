@@ -236,6 +236,12 @@
     <Compile Include="YuriForms\PicturesForm.Designer.cs">
       <DependentUpon>PicturesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="YuriForms\SCameraForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YuriForms\SCameraForm.Designer.cs">
+      <DependentUpon>SCameraForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="YuriForms\SwitchesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -417,6 +423,9 @@
     <EmbeddedResource Include="YuriForms\PicturesForm.resx">
       <DependentUpon>PicturesForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="YuriForms\SCameraForm.resx">
+      <DependentUpon>SCameraForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\SwitchesForm.resx">
       <DependentUpon>SwitchesForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -451,6 +460,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="HalationLogo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ScrPartition.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

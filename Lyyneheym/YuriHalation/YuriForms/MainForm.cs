@@ -447,8 +447,8 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button31_Click(object sender, EventArgs e)
         {
-            DeleteViewForm dvf = new DeleteViewForm(2);
-            dvf.ShowDialog(this);
+            SCameraForm scf = new SCameraForm();
+            scf.ShowDialog(this);
         }
 
         /// <summary>
