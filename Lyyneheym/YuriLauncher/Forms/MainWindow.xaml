@@ -12,18 +12,17 @@
       <TabItem Header="    系统    " controls:ControlsHelper.HeaderFontSize="22">
         <Grid Name="Grid_System">
           <Grid.Background>
-            <ImageBrush ImageSource="/Yuri.YuriLauncher;component/Resources/Sysbg.png"/>
+            <ImageBrush ImageSource="/Yuri.YuriLauncher;component/Resources/Sysbg_Izetta.png"/>
           </Grid.Background>
           <Button x:Name="button_System_Launch" Content="开始游戏" Foreground="DarkSlateBlue" FontSize="16" HorizontalAlignment="Left" Margin="397,201,0,0" VerticalAlignment="Top" Width="153" Height="55" FontFamily="Microsoft YaHei UI" TabIndex="1"/>
-          <TextBlock x:Name="textBlock_System" Text="游戏时长：&#13;2:23:46&#13;&#13;周目计数：&#13;3&#13;&#13;结局回收：&#13;2/4" Foreground="DarkSlateBlue" Padding="8" Background="White" FontSize="16" FontFamily="Microsoft YaHei UI" Opacity="0.85" HorizontalAlignment="Left" Margin="397,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="153" Height="180"/>
+          <TextBlock x:Name="textBlock_System" Text="游戏时长：&#13;2:23:46&#13;&#13;周目计数：&#13;3&#13;&#13;结局回收：&#13;2/4" Foreground="DarkSlateBlue" Padding="8" Background="Transparent" FontSize="16" FontFamily="Microsoft YaHei UI" Opacity="0.85" HorizontalAlignment="Left" Margin="397,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="153" Height="180"/>
           <ComboBox x:Name="comboBox_System" IsReadOnly="True" Background="White" Opacity="0.7" HorizontalAlignment="Left" Margin="10,230,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" TabIndex="2">
             <ListBoxItem Content="Swing Girls"/>
           </ComboBox>
-
         </Grid>
       </TabItem>
       <TabItem Header="    画面    " controls:ControlsHelper.HeaderFontSize="22" Loaded="Tab_Screen_OnLoaded">
-        <Grid Background="#FFFFFFFF">
+        <Grid Background="#FFFFFFF9">
           <GroupBox x:Name="groupBox_Screen_Resolution" Header="画面模式" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="128" Width="170">
             <Canvas>
               <RadioButton x:Name="radioButton_Screen_Resolution_1" Content="1920 * 1080" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -55,7 +54,7 @@
             <Canvas>
               <RadioButton x:Name="radioButton_Screen_Typing_1" Content="开启" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True" Checked="radioButton_Screen_Typing_1_Checked"/>
               <RadioButton x:Name="radioButton_Screen_Typing_2" Content="关闭" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="77" Checked="radioButton_Screen_Typing_2_Checked"/>
-              <TextBlock Name="textblock_Screen_Typing" Padding="3" Text="菲涅爱伊泽塔&#13;伊泽塔爱菲涅公主" Background="FloralWhite" LineHeight="25" Width="158" Canvas.Top="119" Height="65" FontSize="18" FontFamily="FZXiaoBiaoSong-B05"/>
+              <TextBlock Name="textblock_Screen_Typing" Padding="3" Text="菲涅爱伊泽塔&#13;伊泽塔爱菲涅公主" Background="AliceBlue" LineHeight="25" Width="158" Canvas.Top="119" Height="65" FontSize="18" FontFamily="FZXiaoBiaoSong-B05"/>
               <Slider x:Name="slider_Screen_Typing" Canvas.Left="10" Canvas.Top="35" Width="138" Maximum="200" Value="60" LargeChange="10" SmallChange="10" TickFrequency="10" ValueChanged="slider_Screen_Typing_ValueChanged" TickPlacement="BottomRight"/>
               <Label Content="快" Canvas.Top="17" Canvas.Left="-4"/>
               <Label Content="慢" Canvas.Top="17" Canvas.Left="136"/>
@@ -66,7 +65,7 @@
         </Grid>
       </TabItem>
       <TabItem Header="    音效    " controls:ControlsHelper.HeaderFontSize="22">
-        <Grid Background="#FFFFFFFF">
+        <Grid Background="#FFFFFFF9">
           <GroupBox x:Name="groupBox_Sound_BGM" Header="背景音乐（BGM）音量" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="110" Width="220">
             <Canvas>
               <Slider x:Name="slider_Sound_BGM" Canvas.Left="10" Canvas.Top="26" Width="188" SmallChange="1" Value="60" ValueChanged="slider_Sound_BGM_ValueChanged"/>
@@ -127,10 +126,8 @@
         </Grid>
       </TabItem>
       <TabItem Header="    关于    " controls:ControlsHelper.HeaderFontSize="22">
-        <Grid Name="grid_about">
-          <Grid.Background>
-            <ImageBrush Stretch="Uniform" ImageSource="/Yuri.YuriLauncher;component/Resources/About_1.png" />
-          </Grid.Background>
+        <Grid Name="grid_about" Background="#FFFFFFF9">
+					<Image Source="/Yuri.YuriLauncher;component/Resources/About_1.png"/>
           <Button x:Name="button_about_reference" Content="软件许可证" HorizontalAlignment="Left" Margin="475,229,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft YaHei UI" Foreground="DarkSlateBlue" Click="button_about_reference_Click" TabIndex="3"/>
           <Button x:Name="button_about_resources" Content="素材版权" HorizontalAlignment="Left" Margin="395,229,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft YaHei UI" Foreground="DarkSlateBlue" TabIndex="2"/>
           <Button x:Name="button_about_nextpage" Width="27" Height="27" Content=" ▶" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Margin="525,109,8,128" TabIndex="1"/>
