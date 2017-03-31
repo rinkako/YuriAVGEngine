@@ -94,6 +94,7 @@ namespace Yuri.PlatformCore
         {
             UpdateRender.KS_KEY_Dict[e.Key] = e.KeyStates;
             Director.RunMana.Assignment("&kb_" + e.Key.ToString(), e.IsDown ? "1" : "0", this.VsmReference);
+            // 必须用大于0来判断，因为键有切换和按下两种状态
             if ((UpdateRender.KS_KEY_Dict[Key.LeftAlt] > 0 || UpdateRender.KS_KEY_Dict[Key.RightAlt] > 0)
                 && UpdateRender.KS_KEY_Dict[Key.F4] > 0)
             {
@@ -544,7 +545,7 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 渲染类构造器
+        /// 构造器：创建一个新的画音渲染器
         /// </summary>
         /// <param name="vsm">关于哪个调用堆栈做动作</param>
         public UpdateRender(StackMachine vsm)

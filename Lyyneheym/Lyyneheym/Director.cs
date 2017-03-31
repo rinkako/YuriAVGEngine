@@ -29,12 +29,17 @@ namespace Yuri
                 // 第一次打开游戏就创建持久性上下文
                 if (System.IO.File.Exists(GlobalDataContext.PersistenceFileName) == false)
                 {
+                    PersistenceContext.Assign("___YURIRI@ACCDURATION___", 0);
+                    PersistenceContext.Assign("___YURIRI@FIRSTPLAYTIMESTAMP___", DateTime.Now.ToString());
                     PersistenceContext.SaveToSteadyMemory();
                 }
                 // 非第一次打开游戏就读取持久性上下文
                 else
                 {
                     PersistenceContext.LoadFromSteadyMemory();
+                    Director.LastGameTimeAcc = TimeSpan.Parse(PersistenceContext.Exist("___YURIRI@ACCDURATION___") ?
+                        PersistenceContext.Fetch("___YURIRI@ACCDURATION___").ToString() : "0");
+                    Director.StartupTimeStamp = DateTime.Now;
                 }
             }
             catch (Exception ex)
@@ -53,12 +58,9 @@ namespace Yuri
             {
                 CommonUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalDataContext.Script_Main),
                     "Director", OutputStyle.Error);
-                Environment.Exit(0);
+                this.updateRender.Shutdown();
             }
-            foreach (var sc in this.resMana.GetAllScene())
-            {
-                Director.RunMana.Symbols.AddSymbolTable(sc);
-            }
+            this.resMana.GetAllScene().ForEach((t) => Director.RunMana.Symbols.AddSymbolTable(t));
             Director.RunMana.CallScene(mainScene);
         }
         #endregion
@@ -244,7 +246,7 @@ namespace Yuri
                         break;
                     // 等待动画
                     case GameState.WaitAni:
-                        if (SpriteAnimation.IsAnyAnimation() == false)
+                        if (SpriteAnimation.IsAnyAnimation == false && SCamera.IsAnyAnimation == false)
                         {
                             Director.RunMana.ExitCall(Director.RunMana.CallStack);
                         }
@@ -474,7 +476,7 @@ namespace Yuri
                     break;
                 // 等待动画
                 case GameState.WaitAni:
-                    if (SpriteAnimation.IsAnyAnimation() == false)
+                    if (SpriteAnimation.IsAnyAnimation == false)
                     {
                         paraVM.Consume();
                     }
@@ -698,13 +700,18 @@ namespace Yuri
         }
         
         /// <summary>
-        /// 在游戏结束时释放所有资源
+        /// 在游戏即将结束时释放所有资源
         /// </summary>
-        public void DisposeResource()
+        public void CollapseWorld()
         {
-            CommonUtils.ConsoleLine("Begin dispose resource", "Director", OutputStyle.Important);
+            var collaTimeStamp = DateTime.Now;
+            CommonUtils.ConsoleLine("Yuri world began to collapse at " + collaTimeStamp.ToString(), "Director", OutputStyle.Important);
+            PersistenceContext.Assign("___YURIRI@LASTPLAYTIMESTAMP___", collaTimeStamp.ToString());
+            PersistenceContext.Assign("___YURIRI@ACCDURATION___", Director.LastGameTimeAcc + (collaTimeStamp - Director.StartupTimeStamp));
+            PersistenceContext.SaveToSteadyMemory();
+            CommonUtils.ConsoleLine("Save persistence context OK", "Director", OutputStyle.Important);
             Musician.GetInstance().Dispose();
-            CommonUtils.ConsoleLine("Finished dispose resource, program will shutdown", "Director", OutputStyle.Important);
+            CommonUtils.ConsoleLine("Dispose resource OK, program will shutdown soon", "Director", OutputStyle.Important);
         }
 
         /// <summary>
@@ -775,10 +782,7 @@ namespace Yuri
         /// 获取主渲染器
         /// </summary>
         /// <returns>与主调用堆栈绑定的渲染器</returns>
-        public UpdateRender GetMainRender()
-        {
-            return this.updateRender;
-        }
+        public UpdateRender GetMainRender() => this.updateRender;
         
         /// <summary>
         /// 消息循环计时器

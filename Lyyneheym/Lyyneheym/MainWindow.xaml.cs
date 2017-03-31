@@ -59,8 +59,7 @@ namespace Yuri
         /// </summary>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            PersistenceContext.SaveToSteadyMemory();
-            this.world.DisposeResource();
+            this.world.CollapseWorld();
         }
 
         /// <summary>

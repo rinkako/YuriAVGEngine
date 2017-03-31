@@ -36,6 +36,7 @@ namespace Yuri.PlatformCore
             // 如果查无此键
             if (table.ContainsKey(varName) == false)
             {
+                CommonUtils.ConsoleLine("变量 " + varName + " 在作为左值之前被引用", "SymbolTable", OutputStyle.Error);
                 throw new NullReferenceException("变量 " + varName + " 在作为左值之前被引用");
             }
             return table[varName];
@@ -50,7 +51,6 @@ namespace Yuri.PlatformCore
         public void Assign(string sceneName, string varName, object value)
         {
             var table = this.FindSymbolTable(sceneName);
-            // 为变量赋值
             table[varName] = value;
         }
 
@@ -199,14 +199,9 @@ namespace Yuri.PlatformCore
         /// <returns>符号表</returns>
         private Dictionary<string, object> FindSymbolTable(string sceneName)
         {
-            if (this.userSymbolTableContainer.ContainsKey(sceneName) == false)
-            {
-                return null;
-            }
-            else
-            {
-                return this.userSymbolTableContainer[sceneName];
-            }
+            return this.userSymbolTableContainer.ContainsKey(sceneName)
+                ? this.userSymbolTableContainer[sceneName]
+                : null;
         }
 
         /// <summary>
@@ -215,7 +210,7 @@ namespace Yuri.PlatformCore
         /// <returns>符号表管理器</returns>
         public static SymbolTable GetInstance()
         {
-            return synObject == null ? synObject = new SymbolTable() : synObject;
+            return SymbolTable.synObject ?? (SymbolTable.synObject = new SymbolTable());
         }
 
         /// <summary>

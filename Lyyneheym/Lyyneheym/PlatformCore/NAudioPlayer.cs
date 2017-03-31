@@ -31,7 +31,6 @@ namespace Yuri.PlatformCore
         {
             try
             {
-                NAudioChannelPlayer ncp = new NAudioChannelPlayer();
                 int reHandle = this.handleGenerator.Next(Int32.MinValue, Int32.MaxValue);
                 int encounter = 0;
                 while (this.channelDict.ContainsKey(reHandle) || reHandle == 0)
@@ -42,12 +41,12 @@ namespace Yuri.PlatformCore
                         throw new OutOfMemoryException();
                     }
                 }
-                this.channelDict[reHandle] = ncp;
+                this.channelDict[reHandle] = new NAudioChannelPlayer();
                 return reHandle;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Inovke Channel Failed" + ex.ToString());
+                CommonUtils.ConsoleLine("Invoke Channel Failed." + ex.ToString(), "NAudioPlayer", OutputStyle.Error);
                 return 0;
             }
         }

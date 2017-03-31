@@ -35,6 +35,13 @@ namespace Yuri.PlatformCore
         public static bool Remove(string varName) => PersistenceContext.symbols.Remove(varName);
 
         /// <summary>
+        /// 查找符号表中是否存在某个变量
+        /// </summary>
+        /// <param name="varName">变量名</param>
+        /// <returns>变量是否存在</returns>
+        public static bool Exist(string varName) => PersistenceContext.symbols.ContainsKey(varName);
+
+        /// <summary>
         /// 从持久容器中取一个变量
         /// </summary>
         /// <param name="varName">变量名</param>
@@ -45,6 +52,7 @@ namespace Yuri.PlatformCore
             {
                 return PersistenceContext.symbols[varName];
             }
+            CommonUtils.ConsoleLine("持久化变量 " + varName + " 在作为左值之前被引用", "PersistenceContext", OutputStyle.Error);
             throw new NullReferenceException("持久化变量 " + varName + " 在作为左值之前被引用");
         }
         

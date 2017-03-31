@@ -67,7 +67,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置栈帧状态
         /// </summary>
-        public StackMachineState State = StackMachineState.NOP;
+        public StackMachineState State { get; set; } = StackMachineState.NOP;
         
         /// <summary>
         /// 获取或设置正在执行的脚本名（场景名、函数名）

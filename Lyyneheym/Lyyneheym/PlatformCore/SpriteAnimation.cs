@@ -802,10 +802,7 @@ namespace Yuri.PlatformCore
         /// 返回当前是否有精灵动画正在进行
         /// </summary>
         /// <returns>是否正在播放动画</returns>
-        public static bool IsAnyAnimation()
-        {
-            return SpriteAnimation.aniDict.Count > 0;
-        }
+        public static bool IsAnyAnimation => SpriteAnimation.aniDict.Count > 0;
 
         /// <summary>
         /// 获取当前动画队列里最大的时间间隔值

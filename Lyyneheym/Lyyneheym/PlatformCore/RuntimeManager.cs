@@ -482,13 +482,13 @@ namespace Yuri.PlatformCore
             {
                 saveTraceBackStack = new Stack<StackMachineFrame>()
             };
+            // 弹空所有的函数调用和等待，只保存稳定性场景
             while (this.CallStack.ESP != this.CallStack.SAVEP)
             {
                 savePak.saveTraceBackStack.Push(this.CallStack.Consume());
             }
-            // 缓存指令指针
+            // 缓存指令指针，这里必须直接设null而不能用mircoStep避免IR寄存器被修改
             savePak.CacheIP = this.CallStack.ESP.IP;
-            // 这里必须直接设置而不用mircoStep，避免IR寄存器的更改
             this.CallStack.ESP.IP = null;
             // 处理并行句柄引用
             savePak.ParallelHandlerStore = this.ParallelHandler;
