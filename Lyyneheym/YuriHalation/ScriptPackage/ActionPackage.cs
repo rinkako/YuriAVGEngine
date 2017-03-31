@@ -203,6 +203,38 @@ namespace Yuri.YuriHalation.ScriptPackage
                     desSb.Append(String.Format("类型:{0} ", this.argsDict["type"].valueExp));
                     desSb.Append(String.Format("图形:{0}->{1}->{2} ", this.argsDict["normal"].valueExp, this.argsDict["over"].valueExp, this.argsDict["on"].valueExp));
                     break;
+                case ActionPackageType.act_scamera:
+                    switch (this.argsDict["name"].valueExp)
+                    {
+                        case "translate":
+                            desSb.Append("动作:平移镜头 ");
+                            break;
+                        case "focus":
+                            desSb.Append("动作:调整焦距 ");
+                            break;
+                        case "reset":
+                            desSb.Append("动作:重置 ");
+                            break;
+                        case "blackframe":
+                            desSb.Append("动作:进入黑场 ");
+                            break;
+                        case "outblackframe":
+                            desSb.Append("动作:直接退出黑场 ");
+                            break;
+                        case "enterscene":
+                            desSb.Append("动作:复位并退出黑场 ");
+                            break;
+                    }
+                    if (this.argsDict["name"].valueExp == "translate" || this.argsDict["name"].valueExp == "focus")
+                    {
+                        desSb.Append(String.Format("横区块:{0} ", this.argsDict["x"].valueExp));
+                        desSb.Append(String.Format("纵区块:{0} ", this.argsDict["y"].valueExp));
+                    }
+                    if (this.argsDict["name"].valueExp == "focus")
+                    {
+                        desSb.Append(String.Format("缩放比:{0} ", this.argsDict["ro"].valueExp));
+                    }
+                    break;
                 case ActionPackageType.act_picture:
                     desSb.Append(String.Format("[{0}:{1}] ", this.argsDict["id"].valueExp, this.argsDict["filename"].valueExp));
                     desSb.Append(String.Format("位置:{0},{1} ", this.argsDict["x"].valueExp, this.argsDict["y"].valueExp));
@@ -396,6 +428,12 @@ namespace Yuri.YuriHalation.ScriptPackage
         act_draw,
         // 移除按钮
         act_deletebutton,
+        // 场景镜头
+        act_scamera,
+        // 通知
+        act_notify,
+        // 发送系统消息
+        act_yurimsg,
         // 注释
         notation,
         // 代码片段
@@ -507,6 +545,12 @@ namespace Yuri.YuriHalation.ScriptPackage
         描绘字符串,
         // 移除按钮
         移除按钮,
+        // 场景镜头
+        场景镜头,
+        // 通知
+        通知,
+        // 发送系统消息
+        发送系统消息,
         // 注释
         注释,
         // 代码片段

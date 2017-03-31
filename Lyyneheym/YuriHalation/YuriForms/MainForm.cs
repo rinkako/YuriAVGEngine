@@ -158,6 +158,9 @@ namespace YuriHalation.YuriForms
                         case "执行过渡":
                             FontBrush = Brushes.Orchid;
                             break;
+                        case "场景镜头":
+                            FontBrush = Brushes.DeepSkyBlue;
+                            break;
                         case "开关操作":
                         case "变量操作":
                             FontBrush = Brushes.Red;

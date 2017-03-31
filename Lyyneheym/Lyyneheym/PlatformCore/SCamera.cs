@@ -432,6 +432,12 @@ namespace Yuri.PlatformCore
             };
             picVDesc.ScaleX = picVDesc.ScaleY = ratio * SCamera.PictureDeepRatio;
             // Apply animation
+            lock (SCamera.aniCountMutex)
+            {
+                SCamera.AnimatingStorySet.Add(storyScaleCs);
+                SCamera.AnimatingStorySet.Add(storyScaleBg);
+                SCamera.AnimatingStorySet.Add(storyScalePic);
+            }
             storyScaleCs.Begin();
             storyScaleBg.Begin();
             storyScalePic.Begin();
@@ -645,7 +651,15 @@ namespace Yuri.PlatformCore
             story.Completed += (sender, args) =>
             {
                 masker.Opacity = 1;
+                lock (SCamera.aniCountMutex)
+                {
+                    SCamera.AnimatingStorySet.Remove(story);
+                }
             };
+            lock (SCamera.aniCountMutex)
+            {
+                SCamera.AnimatingStorySet.Add(story);
+            }
             story.Begin();
         }
 
@@ -671,7 +685,15 @@ namespace Yuri.PlatformCore
             {
                 masker.Opacity = 0;
                 masker.Visibility = Visibility.Hidden;
+                lock (SCamera.aniCountMutex)
+                {
+                    SCamera.AnimatingStorySet.Remove(story);
+                }
             };
+            lock (SCamera.aniCountMutex)
+            {
+                SCamera.AnimatingStorySet.Add(story);
+            }
             story.Begin();
         }
 

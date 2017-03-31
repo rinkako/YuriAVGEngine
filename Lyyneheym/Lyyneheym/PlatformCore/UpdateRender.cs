@@ -778,6 +778,14 @@ namespace Yuri.PlatformCore
                         dashMsgoptItem?.ToString() ?? String.Empty
                         );
                     break;
+                case SActionType.act_scamera:
+                    this.Scamera(
+                        this.ParseDirectString(action.ArgsDict["name"], String.Empty),
+                        this.ParseInt(action.ArgsDict["x"], 0),
+                        this.ParseInt(action.ArgsDict["y"], GlobalDataContext.GAME_SCAMERA_SCR_ROWCOUNT / 2 ),
+                        this.ParseDouble(action.ArgsDict["ro"], 0)
+                        );
+                    break;
                 case SActionType.act_draw:
                     this.DrawCommand(
                         this.ParseInt(action.ArgsDict["id"], 0),
@@ -1322,6 +1330,9 @@ namespace Yuri.PlatformCore
                     SCamera.LeaveSceneToBlackFrame();
                     break;
                 case "outblackframe":
+                    SCamera.ResumeBlackFrame();
+                    break;
+                case "enterscene":
                     SCamera.PreviewEnterScene();
                     SCamera.PostEnterScene();
                     break;

@@ -61,6 +61,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Command\IfCommand.cs" />
+    <Compile Include="Command\SCameraCommand.cs" />
     <Compile Include="Command\VarCommand.cs" />
     <Compile Include="Command\FuncallCommand.cs" />
     <Compile Include="Command\MenuPasteCommand.cs" />

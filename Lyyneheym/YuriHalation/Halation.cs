@@ -473,6 +473,12 @@ namespace Yuri
             IHalationCommand cmd = new IfCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, containElse, expr, op1, opr, op2);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
+
+        public void DashSCamera(string name, string x, string y, string ro)
+        {
+            IHalationCommand cmd = new SCameraCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, name, x, y, ro);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
         #endregion
 
         #region 前端菜单相关
