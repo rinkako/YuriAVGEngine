@@ -17,10 +17,10 @@ namespace Yuri.PlatformCore
         {
             this.Text = String.Empty;
             this.X = this.Y = 0;
-            this.Z = GlobalDataContext.GAME_Z_MESSAGELAYER + Id;
+            this.Z = GlobalConfigContext.GAME_Z_MESSAGELAYER + Id;
             this.Opacity = 1.0f;
             this.Visibility = System.Windows.Visibility.Visible;
-            this.Padding = GlobalDataContext.GAME_MESSAGELAYER_PADDING;
+            this.Padding = GlobalConfigContext.GAME_MESSAGELAYER_PADDING;
             this.StyleReset();
         }
 
@@ -29,10 +29,10 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void StyleReset()
         {
-            this.FontColor = GlobalDataContext.GAME_FONT_COLOR;
-            this.FontSize = GlobalDataContext.GAME_FONT_FONTSIZE;
-            this.FontName = GlobalDataContext.GAME_FONT_NAME;
-            this.LineHeight = GlobalDataContext.GAME_FONT_LINEHEIGHT;
+            this.FontColor = GlobalConfigContext.GAME_FONT_COLOR;
+            this.FontSize = GlobalConfigContext.GAME_FONT_FONTSIZE;
+            this.FontName = GlobalConfigContext.GAME_FONT_NAME;
+            this.LineHeight = GlobalConfigContext.GAME_FONT_LINEHEIGHT;
         }
 
         /// <summary>

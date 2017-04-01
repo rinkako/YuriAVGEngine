@@ -67,7 +67,7 @@ namespace Yuri.PlatformCore
             {
                 string[] swiItem = varName.Split(new char[] { '{', '}' });
                 int fetchId = Convert.ToInt32(swiItem[1]);
-                if (fetchId >= 0 && fetchId < GlobalDataContext.GAME_SWITCH_COUNT)
+                if (fetchId >= 0 && fetchId < GlobalConfigContext.GAME_SWITCH_COUNT)
                 {
                     return this.globalSwitchList[fetchId] == true ? 1.0 : 0.0;
                 }
@@ -100,7 +100,7 @@ namespace Yuri.PlatformCore
             {
                 string[] swiItem = varName.Split(new char[] { '{', '}' });
                 int fetchId = Convert.ToInt32(swiItem[1]);
-                if (fetchId >= 0 && fetchId < GlobalDataContext.GAME_SWITCH_COUNT)
+                if (fetchId >= 0 && fetchId < GlobalConfigContext.GAME_SWITCH_COUNT)
                 {
                     if (value == null)
                     {
@@ -133,7 +133,7 @@ namespace Yuri.PlatformCore
         /// <returns>返回开关的状态</returns>
         public bool SwitchFetch(int id)
         {
-            if (id >= 0 && id < GlobalDataContext.GAME_SWITCH_COUNT)
+            if (id >= 0 && id < GlobalConfigContext.GAME_SWITCH_COUNT)
             {
                 return this.globalSwitchList[id];
             }
@@ -148,7 +148,7 @@ namespace Yuri.PlatformCore
         /// <param name="state">目标状态</param>
         public void SwitchAssign(int id, bool state)
         {
-            if (id >= 0 && id < GlobalDataContext.GAME_SWITCH_COUNT)
+            if (id >= 0 && id < GlobalConfigContext.GAME_SWITCH_COUNT)
             {
                 this.globalSwitchList[id] = state;
             }
@@ -229,7 +229,7 @@ namespace Yuri.PlatformCore
             this.globalSwitchList = new List<bool>();
             this.globalSymbolTable = new Dictionary<string, object>();
             this.userSymbolTableContainer = new Dictionary<string, Dictionary<string, object>>();
-            for (int i = 0; i < GlobalDataContext.GAME_SWITCH_COUNT; i++)
+            for (int i = 0; i < GlobalConfigContext.GAME_SWITCH_COUNT; i++)
             {
                 this.globalSwitchList.Add(true);
             }

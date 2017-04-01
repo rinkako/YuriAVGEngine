@@ -4,10 +4,10 @@ using System.Windows.Media;
 namespace Yuri.PlatformCore
 {
     /// <summary>
-    /// <para>全局上下文类：维护整个游戏环境中的系统上下文</para>
+    /// <para>全局设置上下文类：维护整个游戏环境中的系统上下文</para>
     /// <para>她是一个静态类</para>
     /// </summary>
-    internal static class GlobalDataContext
+    internal static class GlobalConfigContext
     {
         #region 游戏工程数据
         // 工程名称
@@ -21,16 +21,18 @@ namespace Yuri.PlatformCore
         #endregion
 
         #region 个性化设置信息
-        // 窗体分辨率：宽度 1280
-        public static int GAME_WINDOW_WIDTH = 1280;
-        // 窗体分辨率：高度 720
-        public static int GAME_WINDOW_HEIGHT = 720;
-        // 窗体分辨率：实际高度（标题栏含）
-        public static int GAME_WINDOW_ACTUALHEIGHT => GlobalDataContext.GAME_WINDOW_HEIGHT + 32;
-        // 窗体分辨率：是否自由调节
-        public static bool GAME_WINDOW_RESIZEABLE = true;
-        // 特效水平
+        // 舞台：是否3D
+        public static bool GAME_IS3D = false;
+        // 舞台：特效水平
         public static PerformanceType GAME_PERFORMANCE_TYPE = PerformanceType.HighQuality;
+        // 舞台：窗体宽度 1280
+        public static int GAME_WINDOW_WIDTH = 1280;
+        // 舞台：窗体高度 720
+        public static int GAME_WINDOW_HEIGHT = 720;
+        // 舞台：窗体实际高度（含标题栏）
+        public static int GAME_WINDOW_ACTUALHEIGHT => GlobalConfigContext.GAME_WINDOW_HEIGHT + 32;
+        // 舞台：是否允许自由调节
+        public static bool GAME_WINDOW_RESIZEABLE = true;
         // 文本展示：模式
         public static MessageLayerType GAME_MESSAGE_MODE = MessageLayerType.Dialog;
         // 文本层：文本层数量
@@ -114,7 +116,7 @@ namespace Yuri.PlatformCore
         // 场景镜头：屏幕横向划分块数
         public static int GAME_SCAMERA_SCR_COLCOUNT = 16 * 2;
         // 场景镜头：屏幕横向单侧出血块数
-        public static int GAME_SCAMERA_SCR_SINGLEBLOODCOLCOUNT = 3 * 2;
+        public static int GAME_SCAMERA_SCR_SINGLEBLOODCOLCOUNT = 6 * 2;
         // 场景镜头：立绘纵向划分块数
         public static int GAME_SCAMERA_CSTAND_ROWCOUNT = 12;
         // 场景镜头：立绘横向尺寸

@@ -16,7 +16,7 @@ namespace Yuri.PlatformCore
             this.NormalDescriptor = this.OverDescriptor = this.OnDescriptor = null;
             this.JumpLabel = String.Empty;
             this.X = this.Y = 0;
-            this.Z = GlobalDataContext.GAME_Z_BUTTON;
+            this.Z = GlobalConfigContext.GAME_Z_BUTTON;
             this.Opacity = 1;
             this.Enable = true;
         }

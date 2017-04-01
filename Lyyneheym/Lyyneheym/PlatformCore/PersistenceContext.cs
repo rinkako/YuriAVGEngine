@@ -12,13 +12,13 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 保存持久上下文到稳定储存器
         /// </summary>
-        public static void SaveToSteadyMemory() => IOUtils.Serialization(PersistenceContext.symbols, GlobalDataContext.PersistenceFileName);
+        public static void SaveToSteadyMemory() => IOUtils.Serialization(PersistenceContext.symbols, GlobalConfigContext.PersistenceFileName);
 
         /// <summary>
         /// 从稳定储存器将持久上下文读入内存
         /// </summary>
         public static void LoadFromSteadyMemory() => PersistenceContext.symbols =
-            IOUtils.Unserialization(GlobalDataContext.PersistenceFileName) as Dictionary<string, object>;
+            IOUtils.Unserialization(GlobalConfigContext.PersistenceFileName) as Dictionary<string, object>;
 
         /// <summary>
         /// 将一个变量放入持久容器中，如果指定变量名已存在，就覆盖原来的对象

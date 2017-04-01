@@ -43,7 +43,7 @@ namespace Yuri.PlatformCore
                     ParallelStateStackRef = ForkableState.DeepCopyBySerialization<Stack<Dictionary<string, bool>>>(Director.RunMana.ParallelStack)
                 };
                 // 如果栈中容量溢出就剔掉最早进入的那个
-                if (RollbackManager.forwardStack.Count >= GlobalDataContext.MaxRollbackStep)
+                if (RollbackManager.forwardStack.Count >= GlobalConfigContext.MaxRollbackStep)
                 {
                     RollbackManager.forwardStack.RemoveAt(0);
                 }
@@ -109,7 +109,7 @@ namespace Yuri.PlatformCore
             ViewManager.GetInstance().ReDraw();
             // 恢复背景音乐
             UpdateRender render = Director.GetInstance().GetMainRender();
-            render.Bgm(Director.RunMana.PlayingBGM, GlobalDataContext.GAME_SOUND_BGMVOL);
+            render.Bgm(Director.RunMana.PlayingBGM, GlobalConfigContext.GAME_SOUND_BGMVOL);
             // 清空字符串缓冲
             render.dialogPreStr = String.Empty;
             render.pendingDialogQueue.Clear();

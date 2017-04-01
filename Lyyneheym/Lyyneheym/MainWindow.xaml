@@ -8,7 +8,7 @@
         Title="MainWindow" Height="752" Width="1280" Closing="Window_Closing" SizeChanged="window_SizeChanged" StateChanged="window_StateChanged" PreviewKeyDown="window_PreviewKeyDown" PreviewKeyUp="window_PreviewKeyUp" Background="White" WindowStartupLocation="CenterScreen">
   <Viewbox x:Name="viewbox" Stretch="UniformToFill" Width="{Binding ElementName=nvWindow, Mode=OneWay}" Height="{Binding ElementName=nvWindow, Mode=OneWay}">
     <Canvas x:Name="mainCanvas" Width="{Binding ElementName=viewbox, Mode=OneWay}" Height="{Binding ElementName=viewbox, Mode=OneWay}">
-      <Frame x:Name="mainFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="Blue"/>
+      <Frame x:Name="mainFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="DeepPink"/>
       <Frame x:Name="maskFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="Black" IsHitTestVisible="False" Visibility="Hidden"/>
     </Canvas>
   </Viewbox>

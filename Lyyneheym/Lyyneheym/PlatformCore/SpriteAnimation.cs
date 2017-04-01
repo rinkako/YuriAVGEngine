@@ -28,7 +28,7 @@ namespace Yuri.PlatformCore
         public static void XYMoveAnimation(YuriSprite sprite, Duration duration, double fromX, double toX, double fromY, double toY, double accX, double accY)
         {
             if (duration.TimeSpan.TotalMilliseconds == 0
-                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
+                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
             {
                 sprite.Descriptor.X = sprite.Descriptor.ToX;
                 sprite.Descriptor.Y = sprite.Descriptor.ToY;
@@ -87,7 +87,7 @@ namespace Yuri.PlatformCore
         public static void XMoveAnimation(YuriSprite sprite, Duration duration, double fromX, double toX, double accX)
         {
             if (duration.TimeSpan.TotalMilliseconds == 0
-                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
+                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
             {
                 sprite.Descriptor.X = sprite.Descriptor.ToX;
                 Canvas.SetLeft(sprite.AnimationElement, sprite.Descriptor.ToX - sprite.AnchorX);
@@ -144,7 +144,7 @@ namespace Yuri.PlatformCore
         public static void YMoveAnimation(YuriSprite sprite, Duration duration, double fromY, double toY, double accY)
         {
             if (duration.TimeSpan.TotalMilliseconds == 0
-                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
+                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
             {
                 sprite.Descriptor.Y = sprite.Descriptor.ToY;
                 Canvas.SetTop(sprite.AnimationElement, sprite.Descriptor.ToY - sprite.AnchorY);
@@ -200,7 +200,7 @@ namespace Yuri.PlatformCore
         public static void ZMoveAnimation(YuriSprite sprite, Duration duration, int fromZ, int toZ, double accZ)
         {
             if (duration.TimeSpan.TotalMilliseconds == 0
-                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
+                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
             {
                 sprite.Descriptor.Z = sprite.Descriptor.ToZ;
                 Canvas.SetZIndex(sprite.AnimationElement, sprite.Descriptor.ToZ);
@@ -259,7 +259,7 @@ namespace Yuri.PlatformCore
         public static void ScaleAnimation(YuriSprite sprite, Duration duration, double fromScaleX, double toScaleX, double fromScaleY, double toScaleY, double accX, double accY)
         {
             if (duration.TimeSpan.TotalMilliseconds == 0
-                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
+                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
             {
                 sprite.Descriptor.ScaleX = sprite.Descriptor.ToScaleX;
                 sprite.Descriptor.ScaleY = sprite.Descriptor.ToScaleY;
@@ -335,7 +335,7 @@ namespace Yuri.PlatformCore
         public static void OpacityAnimation(YuriSprite sprite, Duration duration, double fromOpacity, double toOpacity, double acc)
         {
             if (duration.TimeSpan.TotalMilliseconds == 0
-                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
+                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
             {
                 sprite.Descriptor.Opacity = sprite.Descriptor.ToOpacity;
                 sprite.AnimationElement.Opacity = sprite.Descriptor.ToOpacity;
@@ -391,7 +391,7 @@ namespace Yuri.PlatformCore
         public static void RotateAnimation(YuriSprite sprite, Duration duration, double fromTheta, double toTheta, double acc)
         {
             if (duration.TimeSpan.TotalMilliseconds == 0
-                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
+                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
             {
                 sprite.Descriptor.Angle = sprite.Descriptor.ToAngle;
                 sprite.RotateTransformer.Angle = sprite.Descriptor.ToAngle;
@@ -447,11 +447,11 @@ namespace Yuri.PlatformCore
         public static void BlurMutexAnimation(YuriSprite sprite, Duration duration, double fromRadius, double toRadius)
         {
             if (duration.TimeSpan.TotalMilliseconds == 0
-                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
+                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
             {
                 BlurEffect m_BlurEffect = new BlurEffect();
                 sprite.AnimationElement.Effect = m_BlurEffect;
-                m_BlurEffect.RenderingBias = GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.HighQuality
+                m_BlurEffect.RenderingBias = GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.HighQuality
                     ? RenderingBias.Quality : RenderingBias.Performance;
                 m_BlurEffect.Radius = toRadius;
                 sprite.Descriptor.BlurRadius = toRadius;
@@ -460,7 +460,7 @@ namespace Yuri.PlatformCore
             {
                 BlurEffect m_BlurEffect = new BlurEffect();
                 sprite.AnimationElement.Effect = m_BlurEffect;
-                m_BlurEffect.RenderingBias = GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.HighQuality
+                m_BlurEffect.RenderingBias = GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.HighQuality
                     ? RenderingBias.Quality : RenderingBias.Performance;
                 DoubleAnimation m_DA = new DoubleAnimation
                 {
@@ -496,11 +496,11 @@ namespace Yuri.PlatformCore
         public static void ShadowingMutexAnimation(YuriSprite sprite, Duration duration, Color shadColor, double shadOpacity, double fromRadius, double toRadius)
         {
             if (duration.TimeSpan.TotalMilliseconds == 0 
-                || GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.NoEffect)
+                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
             {
                 DropShadowEffect m_DSEffect = new DropShadowEffect();
                 sprite.AnimationElement.Effect = m_DSEffect;
-                m_DSEffect.RenderingBias = GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.HighQuality
+                m_DSEffect.RenderingBias = GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.HighQuality
                     ? RenderingBias.Quality : RenderingBias.Performance;
                 m_DSEffect.BlurRadius = toRadius;
                 m_DSEffect.Color = shadColor;
@@ -511,7 +511,7 @@ namespace Yuri.PlatformCore
             {
                 DropShadowEffect m_DSEffect = new DropShadowEffect();
                 sprite.AnimationElement.Effect = m_DSEffect;
-                m_DSEffect.RenderingBias = GlobalDataContext.GAME_PERFORMANCE_TYPE == GlobalDataContext.PerformanceType.HighQuality
+                m_DSEffect.RenderingBias = GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.HighQuality
                     ? RenderingBias.Quality : RenderingBias.Performance;
                 m_DSEffect.Color = shadColor;
                 m_DSEffect.Opacity = shadOpacity;

@@ -84,7 +84,7 @@ namespace Yuri.PlatformCore
         /// <param name="track">播放的轨道</param>
         public void PlayBGS(MemoryStream ms, float vol, int track = 0)
         {
-            if (track >= 0 && track < GlobalDataContext.GAME_MUSIC_BGSTRACKNUM && ms != null)
+            if (track >= 0 && track < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM && ms != null)
             {
                 var handle = this.audioEngine.InvokeChannel();
                 this.BgsHandleContainer[track] = new KeyValuePair<int, float>(handle, vol);
@@ -98,7 +98,7 @@ namespace Yuri.PlatformCore
         /// <param name="track">要停止的BGS轨道，缺省值-1表示全部停止</param>
         public void StopBGS(int track = -1)
         {
-            if (track >= 0 && track < GlobalDataContext.GAME_MUSIC_BGSTRACKNUM && this.BgsHandleContainer[track].Key != 0)
+            if (track >= 0 && track < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM && this.BgsHandleContainer[track].Key != 0)
             {
                 this.audioEngine.StopAndRelease(this.BgsHandleContainer[track].Key);
             }
@@ -135,7 +135,7 @@ namespace Yuri.PlatformCore
         /// <param name="track">轨道（-1为全部变更）</param>
         public void SetBGSVolume(int vol, int track = 0)
         {
-            if (track >= 0 && track < GlobalDataContext.GAME_MUSIC_BGSTRACKNUM)
+            if (track >= 0 && track < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM)
             {
                 this.audioEngine.SetVolume(this.BgsHandleContainer[0].Key, vol);
             }
@@ -212,7 +212,7 @@ namespace Yuri.PlatformCore
             {
                 this.BgsHandleContainer.Clear();
             }
-            for (int i = 0; i < GlobalDataContext.GAME_MUSIC_BGSTRACKNUM; i++)
+            for (int i = 0; i < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM; i++)
             {
                 this.BgsHandleContainer.Add(new KeyValuePair<int, float>(0, this.BGSDefaultVolume));
             }
@@ -394,10 +394,10 @@ namespace Yuri.PlatformCore
         private Musician()
         {
             this.audioEngine = NAudioPlayer.GetInstance();
-            this.bgmVolume = GlobalDataContext.GAME_SOUND_BGMVOL;
-            this.bgsVolume = GlobalDataContext.GAME_SOUND_BGSVOL;
-            this.seVolume = GlobalDataContext.GAME_SOUND_SEVOL;
-            this.vocalVolume = GlobalDataContext.GAME_SOUND_VOCALVOL;
+            this.bgmVolume = GlobalConfigContext.GAME_SOUND_BGMVOL;
+            this.bgsVolume = GlobalConfigContext.GAME_SOUND_BGSVOL;
+            this.seVolume = GlobalConfigContext.GAME_SOUND_SEVOL;
+            this.vocalVolume = GlobalConfigContext.GAME_SOUND_VOCALVOL;
             this.Reset();
         }
     }

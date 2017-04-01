@@ -1,4 +1,4 @@
-﻿//#define NOTIME
+﻿#define NOTIME
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace Yuri
                 // 读取游戏设置
                 ConfigParser.ConfigParse();
                 // 第一次打开游戏就创建持久性上下文
-                if (System.IO.File.Exists(GlobalDataContext.PersistenceFileName) == false)
+                if (System.IO.File.Exists(GlobalConfigContext.PersistenceFileName) == false)
                 {
                     PersistenceContext.Assign("___YURIRI@ACCDURATION___", 0);
                     PersistenceContext.Assign("___YURIRI@FIRSTPLAYTIMESTAMP___", DateTime.Now.ToString());
@@ -53,10 +53,10 @@ namespace Yuri
         /// </summary>
         private void InitRuntime()
         {
-            var mainScene = this.resMana.GetScene(GlobalDataContext.Script_Main);
+            var mainScene = this.resMana.GetScene(GlobalConfigContext.Script_Main);
             if (mainScene == null)
             {
-                CommonUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalDataContext.Script_Main),
+                CommonUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalConfigContext.Script_Main),
                     "Director", OutputStyle.Error);
                 this.updateRender.Shutdown();
             }
@@ -127,7 +127,7 @@ namespace Yuri
             UpdateRender render = Director.GetInstance().updateRender;
             render.VsmReference = Director.RunMana.CallStack;
             // 恢复背景音乐
-            render.Bgm(Director.RunMana.PlayingBGM, GlobalDataContext.GAME_SOUND_BGMVOL);
+            render.Bgm(Director.RunMana.PlayingBGM, GlobalConfigContext.GAME_SOUND_BGMVOL);
             // 清空字符串缓冲
             render.dialogPreStr = String.Empty;
             render.pendingDialogQueue.Clear();
@@ -246,7 +246,7 @@ namespace Yuri
                         break;
                     // 等待动画
                     case GameState.WaitAni:
-                        if (SpriteAnimation.IsAnyAnimation == false && SCamera.IsAnyAnimation == false)
+                        if (SpriteAnimation.IsAnyAnimation == false && SCamera2D.IsAnyAnimation == false)
                         {
                             Director.RunMana.ExitCall(Director.RunMana.CallStack);
                         }
@@ -289,10 +289,8 @@ namespace Yuri
                             var curScene = this.resMana.GetScene(Director.RunMana.CallStack.EBP.BindingSceneName);
                             if (!curScene.LabelDictionary.ContainsKey(interruptExitPoint))
                             {
-                                CommonUtils.ConsoleLine(
-                                    String.Format("Ignored Interrupt jump Instruction (target not exist): {0}",
-                                        interruptExitPoint),
-                                    "Director", OutputStyle.Error);
+                                CommonUtils.ConsoleLine( String.Format("Ignored Interrupt jump Instruction (target not exist): {0}",
+                                        interruptExitPoint), "Director", OutputStyle.Error);
                                 break;
                             }
                             Director.RunMana.CallStack.EBP.MircoStep(curScene.LabelDictionary[interruptExitPoint]);
@@ -319,9 +317,7 @@ namespace Yuri
                         if (nextInstruct.Type == SActionType.act_wait)
                         {
                             double waitMs = nextInstruct.ArgsDict.ContainsKey("time")
-                                ? (double)
-                                PolishEvaluator.Evaluate(nextInstruct.ArgsDict["time"],
-                                    Director.RunMana.CallStack)
+                                ? (double)PolishEvaluator.Evaluate(nextInstruct.ArgsDict["time"], Director.RunMana.CallStack)
                                 : 0;
                             Director.RunMana.Delay(nextInstruct.NodeName, DateTime.Now,
                                 TimeSpan.FromMilliseconds(waitMs));
@@ -694,9 +690,9 @@ namespace Yuri
         /// 设置主舞台页面的引用
         /// </summary>
         /// <param name="sp">主窗体</param>
-        public void SetStagePageReference(PageView.StagePage sp)
+        public void SetStagePageReference(PageView.Stage2D sp)
         {
-            ViewPageManager.RegisterPage(GlobalDataContext.FirstViewPage, sp);
+            ViewPageManager.RegisterPage(GlobalConfigContext.FirstViewPage, sp);
         }
         
         /// <summary>
@@ -739,10 +735,10 @@ namespace Yuri
             Director.RunMana.SetScreenManager(ScreenManager.GetInstance());
             Director.RunMana.ParallelHandler = this.ParallelUpdateContext;
             Director.RunMana.PerformingChapter = "Prelogue";
-            SCamera.Init();
+            SCamera2D.Init();
             this.timer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromTicks((long) GlobalDataContext.DirectorTimerInterval)
+                Interval = TimeSpan.FromTicks((long) GlobalConfigContext.DirectorTimerInterval)
             };
             this.timer.Tick += UpdateContext;
 #if NOTIME

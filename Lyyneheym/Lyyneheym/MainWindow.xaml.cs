@@ -31,20 +31,21 @@ namespace Yuri
             InitializeComponent();
             CommonUtils.ConsoleLine("MWnd Initialization stage 2", "MainWindow", OutputStyle.Normal);
             ViewManager.SetWindowReference(this);
-            this.Title = GlobalDataContext.GAME_TITLE_NAME;
-            this.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
-            this.Height = GlobalDataContext.GAME_WINDOW_ACTUALHEIGHT;
-            this.mainCanvas.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
-            this.mainCanvas.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
-            this.ResizeMode = GlobalDataContext.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
+            this.Title = GlobalConfigContext.GAME_TITLE_NAME;
+            this.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.Height = GlobalConfigContext.GAME_WINDOW_ACTUALHEIGHT;
+            this.mainCanvas.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.mainCanvas.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
+            this.ResizeMode = GlobalConfigContext.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
             // 加载主页面
             CommonUtils.ConsoleLine("MWnd Initialization stage 3", "MainWindow", OutputStyle.Normal);
-            this.world.SetStagePageReference(new StagePage());
-            this.mainFrame.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
-            this.mainFrame.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
-            this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
-            this.maskFrame.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
-            this.maskFrame.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
+            this.world.SetStagePageReference(new Stage2D());
+            this.mainFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.mainFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
+            //this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
+            this.mainFrame.Content = new Stage3D();
+            this.maskFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.maskFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
             ViewManager.MaskFrameRef = this.maskFrame;
             // 预注册保存和读取页面
             CommonUtils.ConsoleLine("MWnd Initialization stage 4", "MainWindow", OutputStyle.Normal);
@@ -106,7 +107,7 @@ namespace Yuri
         private void window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.Width = e.NewSize.Width;
-            this.Height = GlobalDataContext.GAME_WINDOW_ACTUALHEIGHT * this.Width / GlobalDataContext.GAME_WINDOW_WIDTH;
+            this.Height = GlobalConfigContext.GAME_WINDOW_ACTUALHEIGHT * this.Width / GlobalConfigContext.GAME_WINDOW_WIDTH;
         }
 
         /// <summary>
@@ -148,8 +149,8 @@ namespace Yuri
             this.Topmost = false;
             this.Left = 0.0;
             this.Top = 0.0;
-            this.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
-            this.Height = GlobalDataContext.GAME_WINDOW_ACTUALHEIGHT;
+            this.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.Height = GlobalConfigContext.GAME_WINDOW_ACTUALHEIGHT;
         }
         #endregion
     }

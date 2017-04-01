@@ -132,16 +132,16 @@ namespace Yuri.PlatformCore
             switch (rtype)
             {
                 case ResourceType.Background:
-                    DevURI = GlobalDataContext.DevURI_PA_BACKGROUND;
-                    PackURI = GlobalDataContext.PackURI_PA_BACKGROUND;
+                    DevURI = GlobalConfigContext.DevURI_PA_BACKGROUND;
+                    PackURI = GlobalConfigContext.PackURI_PA_BACKGROUND;
                     break;
                 case ResourceType.Stand:
-                    DevURI = GlobalDataContext.DevURI_PA_CHARASTAND;
-                    PackURI = GlobalDataContext.PackURI_PA_CHARASTAND;
+                    DevURI = GlobalConfigContext.DevURI_PA_CHARASTAND;
+                    PackURI = GlobalConfigContext.PackURI_PA_CHARASTAND;
                     break;
                 case ResourceType.Pictures:
-                    DevURI = GlobalDataContext.DevURI_PA_PICTURES;
-                    PackURI = GlobalDataContext.PackURI_PA_PICTURES;
+                    DevURI = GlobalConfigContext.DevURI_PA_PICTURES;
+                    PackURI = GlobalConfigContext.PackURI_PA_PICTURES;
                     break;
                 default:
                     return null;
@@ -168,7 +168,7 @@ namespace Yuri.PlatformCore
                 byte[] ob = ResourceCachePool.Refer(rtype.ToString() + "->" + sourceName, ResourceCacheType.Eden);
                 if (ob == null)
                 {
-                    string furi = IOUtils.JoinPath(GlobalDataContext.DevURI_RT_PICTUREASSETS, DevURI, sourceName);
+                    string furi = IOUtils.JoinPath(GlobalConfigContext.DevURI_RT_PICTUREASSETS, DevURI, sourceName);
                     if (File.Exists(IOUtils.ParseURItoURL(furi)))
                     {
                         Uri bg = new Uri(IOUtils.ParseURItoURL(furi), UriKind.RelativeOrAbsolute);
@@ -226,20 +226,20 @@ namespace Yuri.PlatformCore
             switch (rtype)
             {
                 case ResourceType.BGM:
-                    DevURI = GlobalDataContext.DevURI_SO_BGM;
-                    PackURI = GlobalDataContext.PackURI_SO_BGM;
+                    DevURI = GlobalConfigContext.DevURI_SO_BGM;
+                    PackURI = GlobalConfigContext.PackURI_SO_BGM;
                     break;
                 case ResourceType.BGS:
-                    DevURI = GlobalDataContext.DevURI_SO_BGS;
-                    PackURI = GlobalDataContext.PackURI_SO_BGS;
+                    DevURI = GlobalConfigContext.DevURI_SO_BGS;
+                    PackURI = GlobalConfigContext.PackURI_SO_BGS;
                     break;
                 case ResourceType.SE:
-                    DevURI = GlobalDataContext.DevURI_SO_SE;
-                    PackURI = GlobalDataContext.PackURI_SO_SE;
+                    DevURI = GlobalConfigContext.DevURI_SO_SE;
+                    PackURI = GlobalConfigContext.PackURI_SO_SE;
                     break;
                 case ResourceType.VOCAL:
-                    DevURI = GlobalDataContext.DevURI_SO_VOCAL;
-                    PackURI = GlobalDataContext.PackURI_SO_VOCAL;
+                    DevURI = GlobalConfigContext.DevURI_SO_VOCAL;
+                    PackURI = GlobalConfigContext.PackURI_SO_VOCAL;
                     break;
                 default:
                     throw new Exception("调用了音乐获取方法，但却不是获取音乐资源");
@@ -255,7 +255,7 @@ namespace Yuri.PlatformCore
             // 没有封包数据再搜索开发目录
             else
             {
-                string furi = IOUtils.JoinPath(GlobalDataContext.DevURI_RT_SOUND, DevURI, sourceName);
+                string furi = IOUtils.JoinPath(GlobalConfigContext.DevURI_RT_SOUND, DevURI, sourceName);
                 if (File.Exists(IOUtils.ParseURItoURL(furi)))
                 {
                     var ptr = File.ReadAllBytes(IOUtils.ParseURItoURL(furi));
@@ -407,7 +407,7 @@ namespace Yuri.PlatformCore
                     continue;
                 }
                 var headerItem = header.Split('@');
-                if (headerItem.Length != GlobalDataContext.PackHeaderItemNum && headerItem[0] != GlobalDataContext.PackHeader)
+                if (headerItem.Length != GlobalConfigContext.PackHeaderItemNum && headerItem[0] != GlobalConfigContext.PackHeader)
                 {
                     CommonUtils.AsyncConsoleLine(String.Format("Ignored Pack (Bad Header): {0}", pstPath), "ResourceManager", this.consoleMutex, OutputStyle.Warning);
                     continue;
@@ -419,7 +419,7 @@ namespace Yuri.PlatformCore
                     var keyItem = headerItem[3].Split('?');
                     var version = keyItem.Length != 2 ? "0" : keyItem[1];
                     var key = keyItem[0];
-                    if (key != GlobalDataContext.GAME_KEY)
+                    if (key != GlobalConfigContext.GAME_KEY)
                     {
                         CommonUtils.AsyncConsoleLine(String.Format("Ignored Pack (Key Failed): {0}", pstPath), "ResourceManager", this.consoleMutex, OutputStyle.Warning);
                         continue;
@@ -436,7 +436,7 @@ namespace Yuri.PlatformCore
                             CommonUtils.AsyncConsoleLine(String.Format("Ignored Pack of null body: {0}", pstPath), "ResourceManager", this.consoleMutex, OutputStyle.Warning);
                             continue;
                         }
-                        if (lineitem[0] == GlobalDataContext.PackEOF)
+                        if (lineitem[0] == GlobalConfigContext.PackEOF)
                         {
                             CommonUtils.AsyncConsoleLine(String.Format("Stop PST caching because encountered EOF: {0}", pstPath), "ResourceManager", this.consoleMutex, OutputStyle.Warning);
                             break;
@@ -452,7 +452,7 @@ namespace Yuri.PlatformCore
                         ResourceSlot resSlot = new ResourceSlot()
                         {
                             ResourceName = srcName,
-                            BindingFile = pstPath.Substring(0, pstPath.Length - GlobalDataContext.PackPostfix.Length),
+                            BindingFile = pstPath.Substring(0, pstPath.Length - GlobalConfigContext.PackPostfix.Length),
                             Position = srcOffset,
                             Length = srcLength,
                             Version = version
@@ -478,7 +478,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private void InitScenario()
         {
-            List<Scene> sceneList = Yuri.ILPackage.ILConvertor.GetInstance().Dash(IOUtils.ParseURItoURL(GlobalDataContext.DevURI_RT_SCENARIO));
+            List<Scene> sceneList = Yuri.ILPackage.ILConvertor.GetInstance().Dash(IOUtils.ParseURItoURL(GlobalConfigContext.DevURI_RT_SCENARIO));
             foreach (Scene sc in sceneList)
             {
                 if (this.sceneTable.ContainsKey(sc.Scenario))

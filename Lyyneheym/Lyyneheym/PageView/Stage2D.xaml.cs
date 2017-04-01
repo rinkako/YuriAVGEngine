@@ -9,19 +9,18 @@ using System.Windows.Navigation;
 using Yuri.PlatformCore;
 using Yuri.ILPackage;
 using Yuri.YuriInterpreter;
-using System.Windows.Media.Animation;
 
 namespace Yuri.PageView
 {
     /// <summary>
     /// StagePage.xaml 的交互逻辑：主舞台页面
     /// </summary>
-    public partial class StagePage : Page
+    public partial class Stage2D : Page
     {
         /// <summary>
         /// 导演类
         /// </summary>
-        private Director core = Director.GetInstance();
+        private readonly Director core = Director.GetInstance();
 
         /// <summary>
         /// 初始化标记位
@@ -32,24 +31,24 @@ namespace Yuri.PageView
         /// 过渡效果的数据包装
         /// </summary>
         public ObjectDataProvider TransitionDS = new ObjectDataProvider();
-        
+
         /// <summary>
         /// 构造器
         /// </summary>
-        public StagePage()
+        public Stage2D()
         {
             InitializeComponent();
-            this.Width = this.BO_MainGrid.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
-            this.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
-            this.BO_MainGrid.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
-            this.Title = GlobalDataContext.GAME_TITLE_NAME;
+            this.Width = this.BO_MainGrid.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
+            this.BO_MainGrid.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
+            this.Title = GlobalConfigContext.GAME_TITLE_NAME;
             this.TransitionBox.DataContext = this.TransitionDS;
-            this.BO_Bg_Canvas.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
-            this.BO_Bg_Canvas.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
-            this.BO_Cstand_Canvas.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
-            this.BO_Cstand_Canvas.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
-            this.BO_Pics_Canvas.Width = GlobalDataContext.GAME_WINDOW_WIDTH;
-            this.BO_Pics_Canvas.Height = GlobalDataContext.GAME_WINDOW_HEIGHT;
+            this.BO_Bg_Canvas.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.BO_Bg_Canvas.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
+            this.BO_Cstand_Canvas.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.BO_Cstand_Canvas.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
+            this.BO_Pics_Canvas.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.BO_Pics_Canvas.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
         }
 
         /// <summary>
@@ -60,7 +59,7 @@ namespace Yuri.PageView
             if (this.isInit == false)
             {
                 this.core.GetMainRender().ViewLoaded();
-                SCamera.Init();
+                SCamera2D.Init();
                 NotificationManager.Init();
                 this.isInit = true;
             }
@@ -82,7 +81,7 @@ namespace Yuri.PageView
         {
             this.core.UpdateKeyboard(e);
         }
-        
+
         /// <summary>
         /// 事件：鼠标按下按钮
         /// </summary>
@@ -113,7 +112,7 @@ namespace Yuri.PageView
         private void button_Click(object sender, RoutedEventArgs e)
         {
             //this.core.GetMainRender().Save("mysave");
-            ViewManager.RenderFrameworkElementToJPEG(this.BO_MainGrid, GlobalDataContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
+            ViewManager.RenderFrameworkElementToJPEG(this.BO_MainGrid, GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
             SLPage p = (SLPage)ViewPageManager.RetrievePage("SavePage");
             p.ReLoadFileInfo();
             NavigationService.GetNavigationService(this)?.Navigate(p);
@@ -145,11 +144,11 @@ namespace Yuri.PageView
                 ResourceType = ResourceType.Pictures
             };
 
-            var izettaPoint = SCamera.GetScreenCoordination(4, 8);
-            var finePoint = SCamera.GetScreenCoordination(4, 11);
-            var zoiPoint = SCamera.GetScreenCoordination(4, 24);
+            var izettaPoint = SCamera2D.GetScreenCoordination(4, 8);
+            var finePoint = SCamera2D.GetScreenCoordination(4, 11);
+            var zoiPoint = SCamera2D.GetScreenCoordination(4, 24);
 
-            
+
             var rm = ResourceManager.GetInstance();
             var izetta = rm.GetPicture("伊泽塔1.png", new Int32Rect(-1, 0, 0, 0));
             Image img1 = new Image();
@@ -221,8 +220,8 @@ namespace Yuri.PageView
             bgg.DisplayBinding = img3;
             bgg.AnimationElement = img3;
             bgg.Descriptor = (SpriteDescriptor)sd.Clone();
-            bgg.Descriptor.X = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
-            bgg.Descriptor.Y = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
+            bgg.Descriptor.X = GlobalConfigContext.GAME_WINDOW_WIDTH / 2.0;
+            bgg.Descriptor.Y = GlobalConfigContext.GAME_WINDOW_HEIGHT / 2.0;
             Canvas.SetLeft(img3, bgg.Descriptor.X - img3.Width / 2);
             Canvas.SetTop(img3, bgg.Descriptor.Y - img3.Height / 2);
             Canvas.SetZIndex(img3, 5);
@@ -236,11 +235,11 @@ namespace Yuri.PageView
             TransformGroup aniGroup = new TransformGroup();
             TranslateTransform XYTransformer = new TranslateTransform();
             ScaleTransform ScaleTransformer = new ScaleTransform();
-            ScaleTransformer.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
-            ScaleTransformer.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
+            ScaleTransformer.CenterX = GlobalConfigContext.GAME_WINDOW_WIDTH / 2.0;
+            ScaleTransformer.CenterY = GlobalConfigContext.GAME_WINDOW_HEIGHT / 2.0;
             RotateTransform RotateTransformer = new RotateTransform();
-            RotateTransformer.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
-            RotateTransformer.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
+            RotateTransformer.CenterX = GlobalConfigContext.GAME_WINDOW_WIDTH / 2.0;
+            RotateTransformer.CenterY = GlobalConfigContext.GAME_WINDOW_HEIGHT / 2.0;
             CsScaleT = ScaleTransformer;
             aniGroup.Children.Add(XYTransformer);
             aniGroup.Children.Add(ScaleTransformer);
@@ -250,11 +249,11 @@ namespace Yuri.PageView
             TransformGroup aniGroup2 = new TransformGroup();
             TranslateTransform XYTransformer2 = new TranslateTransform();
             ScaleTransform ScaleTransformer2 = new ScaleTransform();
-            ScaleTransformer2.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
-            ScaleTransformer2.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
+            ScaleTransformer2.CenterX = GlobalConfigContext.GAME_WINDOW_WIDTH / 2.0;
+            ScaleTransformer2.CenterY = GlobalConfigContext.GAME_WINDOW_HEIGHT / 2.0;
             RotateTransform RotateTransformer2 = new RotateTransform();
-            RotateTransformer2.CenterX = GlobalDataContext.GAME_WINDOW_WIDTH / 2.0;
-            RotateTransformer2.CenterY = GlobalDataContext.GAME_WINDOW_HEIGHT / 2.0;
+            RotateTransformer2.CenterX = GlobalConfigContext.GAME_WINDOW_WIDTH / 2.0;
+            RotateTransformer2.CenterY = GlobalConfigContext.GAME_WINDOW_HEIGHT / 2.0;
             BgScaleT = ScaleTransformer2;
             aniGroup2.Children.Add(XYTransformer2);
             aniGroup2.Children.Add(ScaleTransformer2);
@@ -275,63 +274,63 @@ namespace Yuri.PageView
 
         TransformGroup BgTG;
         TransformGroup CsTG;
-        
+
         private void button3_Click(object sender, RoutedEventArgs e)
         {
         }
-        
+
         private void button4_Click(object sender, RoutedEventArgs e)
         {
             if (bt4 == -2)
             {
-                SCamera.LeaveSceneToBlackFrame();
+                SCamera2D.LeaveSceneToBlackFrame();
             }
             else if (bt4 == -1)
             {
-                SCamera.PreviewEnterScene();
-                SCamera.PostEnterScene();
+                SCamera2D.PreviewEnterScene();
+                SCamera2D.PostEnterScene();
             }
             else if (bt4 == 0)
             {
-                SCamera.FocusOn(0, 6, 2);
+                SCamera2D.FocusOn(0, 6, 2);
             }
             else if (bt4 == 1)
             {
-                SCamera.Translate(2, 8);
+                SCamera2D.Translate(2, 8);
             }
             else if (bt4 == 2)
             {
-                SCamera.Translate(2, 12);
+                SCamera2D.Translate(2, 12);
             }
             else if (bt4 == 3)
             {
-                SCamera.Translate(2, 0);
+                SCamera2D.Translate(2, 0);
             }
             else if (bt4 == 4)
             {
-                SCamera.Translate(2, 24);
+                SCamera2D.Translate(2, 24);
             }
             else if (bt4 == 5)
             {
-                SCamera.Translate(2, 12);
+                SCamera2D.Translate(2, 12);
             }
             else if (bt4 == 6)
             {
-                SCamera.Translate(2, 24);
+                SCamera2D.Translate(2, 24);
             }
             else if (bt4 == 7)
             {
-                SCamera.ResetFocus(false);
+                SCamera2D.ResetFocus(false);
             }
             else if (bt4 <= 32)
             {
-                SCamera.Translate(bt4 % 5, bt4);
+                SCamera2D.Translate(bt4 % 5, bt4);
             }
             else if (bt4 == 33)
             {
                 if (MessageBox.Show("reset?", "i", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    SCamera.ResetFocus(false);
+                    SCamera2D.ResetFocus(false);
                     bt4 = -3;
                 }
             }
@@ -342,7 +341,7 @@ namespace Yuri.PageView
 
         private void buttonNext_Click(object sender, RoutedEventArgs e)
         {
-            ViewManager.RenderFrameworkElementToJPEG(this.BO_MainGrid, GlobalDataContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
+            ViewManager.RenderFrameworkElementToJPEG(this.BO_MainGrid, GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
             NavigationService.GetNavigationService(this).Navigate(ViewPageManager.RetrievePage("SavePage"));
         }
 
