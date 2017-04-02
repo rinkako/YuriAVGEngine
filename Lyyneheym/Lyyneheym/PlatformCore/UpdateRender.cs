@@ -985,7 +985,7 @@ namespace Yuri.PlatformCore
         /// <param name="cut">纹理切割矩</param>
         private void Background(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
-            Director.ScrMana.AddBackground(id, filename, GlobalConfigContext.GAME_WINDOW_WIDTH / 2.0, GlobalConfigContext.GAME_WINDOW_HEIGHT / 2.0,
+            Director.ScrMana.AddBackground2D(id, filename, GlobalConfigContext.GAME_WINDOW_WIDTH / 2.0, GlobalConfigContext.GAME_WINDOW_HEIGHT / 2.0,
                 id, ro, opacity, xscale, yscale, anchor, cut);
             this.viewMana.Draw(id, ResourceType.Background);
         }
@@ -1335,29 +1335,57 @@ namespace Yuri.PlatformCore
             {
                 c = 0;
             }
-            ro = Math.Max(0.5, Math.Min(2.5, ro));
             var sname = name.Trim().ToLower();
-            switch (sname)
+            if (ViewManager.Is3DStage)
             {
-                case "translate":
-                    SCamera2D.Translate(r, c);
-                    break;
-                case "focus":
-                    SCamera2D.FocusOn(r, c, ro);
-                    break;
-                case "reset":
-                    SCamera2D.ResetFocus(false);
-                    break;
-                case "blackframe":
-                    SCamera2D.LeaveSceneToBlackFrame();
-                    break;
-                case "outblackframe":
-                    SCamera2D.ResumeBlackFrame();
-                    break;
-                case "enterscene":
-                    SCamera2D.PreviewEnterScene();
-                    SCamera2D.PostEnterScene();
-                    break;
+                switch (sname)
+                {
+                    case "translate":
+                        SCamera3D.Translate(r, c);
+                        break;
+                    case "focus":
+                        SCamera3D.FocusOn(r, c, ro);
+                        break;
+                    case "reset":
+                        SCamera3D.ResetFocus(false);
+                        break;
+                    case "blackframe":
+                        SCamera3D.LeaveSceneToBlackFrame();
+                        break;
+                    case "outblackframe":
+                        SCamera3D.ResumeBlackFrame();
+                        break;
+                    case "enterscene":
+                        SCamera3D.PreviewEnterScene();
+                        SCamera3D.PostEnterScene();
+                        break;
+                }
+            }
+            else
+            {
+                ro = Math.Max(0.5, Math.Min(2.5, ro));
+                switch (sname)
+                {
+                    case "translate":
+                        SCamera2D.Translate(r, c);
+                        break;
+                    case "focus":
+                        SCamera2D.FocusOn(r, c, ro);
+                        break;
+                    case "reset":
+                        SCamera2D.ResetFocus(false);
+                        break;
+                    case "blackframe":
+                        SCamera2D.LeaveSceneToBlackFrame();
+                        break;
+                    case "outblackframe":
+                        SCamera2D.ResumeBlackFrame();
+                        break;
+                    case "enterscene":
+                        SCamera2D.PreviewEnterScene();
+                        SCamera2D.PostEnterScene();
+                        break;
+                }
             }
         }
         

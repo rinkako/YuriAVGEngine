@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
 using Yuri.PlatformCore;
 
 namespace Yuri.PageView
@@ -110,8 +112,7 @@ namespace Yuri.PageView
             var vm = ViewManager.GetInstance();
             var p = ResourceManager.GetInstance().GetPicture("伊泽塔1.png", ResourceManager.FullImageRect);
 
-            Director.ScrMana.AddBackground(0, "bg_school.jpg", 0, 0, 0, 0, 1, 1, 1, SpriteAnchorType.Center,
-                ResourceManager.FullImageRect);
+            Director.ScrMana.AddBackground3D("bg_e1.jpg", -30);
             Director.ScrMana.GetSpriteDescriptor(0, ResourceType.Background).Slot3D = 0;
 
             Director.ScrMana.AddCharacterStand(0, "伊泽塔1.png", CharacterStandType.Mid, 0, 0, 1, SpriteAnchorType.Center,
@@ -228,6 +229,39 @@ namespace Yuri.PageView
         private void Button_Click_10(object sender, RoutedEventArgs e)
         {
             SCamera3D.Translate(Convert.ToInt32(tb_row.Text), Convert.ToInt32(tb_col.Text));
+        }
+
+        private void Button_Click_11(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //ScriptEngine engine = Python.CreateEngine();
+                //ScriptScope scope = engine.CreateScope();
+                Student stu = new Student { Name = "Wilber", Age = 28 };
+                //scope.SetVariable("stuObj", stu);
+                //ScriptSource script = engine.CreateScriptSourceFromFile(@"PrintStuInfo.py");
+                //var result = script.Execute(scope);
+                Dictionary<string, object> d = new Dictionary<string, object> {{"stuObj", stu}};
+
+                YuririWorld.ExecuteFile(@"PrintStuInfo.py", d);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
+        }
+    }
+
+    public class Student
+    {
+        public int Age { get; set; }
+        public string Name { get; set; }
+        public override string ToString()
+        {
+            var t = string.Format("{0} is {1} years old", this.Name, this.Age);
+            MessageBox.Show(t);
+            return t;
         }
     }
 }

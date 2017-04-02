@@ -50,7 +50,6 @@ namespace Yuri
             this.mainFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
             this.mainFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
             this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
-            //this.mainFrame.Content = new Stage3D();
             this.maskFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
             this.maskFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
             ViewManager.MaskFrameRef = this.maskFrame;

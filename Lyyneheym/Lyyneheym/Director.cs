@@ -1,4 +1,4 @@
-﻿//#define NOTIME
+﻿#define NOTIME
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -247,7 +247,8 @@ namespace Yuri
                         break;
                     // 等待动画
                     case GameState.WaitAni:
-                        if (SpriteAnimation.IsAnyAnimation == false && SCamera2D.IsAnyAnimation == false)
+                        if (SpriteAnimation.IsAnyAnimation == false && SCamera2D.IsAnyAnimation == false
+                            && SCamera3D.IsAnyAnimation == false)
                         {
                             Director.RunMana.ExitCall(Director.RunMana.CallStack);
                         }

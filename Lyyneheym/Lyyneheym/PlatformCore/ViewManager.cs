@@ -641,11 +641,31 @@ namespace Yuri.PlatformCore
             switch (rType)
             {
                 case ResourceType.Background:
-                    var bgModelGeometry = ViewManager.View3D.ST3D_Background_Fore;
-                    var bgMaterial = bgModelGeometry.Material;
+                    var bgModel = ViewManager.View3D.ST3D_Background_Fore;
+                    var bgGeomtry = bgModel.Geometry as MeshGeometry3D;
+                    if (bgGeomtry.Positions[0].Z != descriptor.BackgroundDeepth3D)
+                    {
+                        List<Point3D> gPointList = new List<Point3D>();
+                        foreach (var orgP in bgGeomtry.Positions)
+                        {
+                            Point3D np = new Point3D
+                            {
+                                X = orgP.X,
+                                Y = orgP.Y,
+                                Z = descriptor.BackgroundDeepth3D
+                            };
+                            gPointList.Add(np);
+                        }
+                        bgGeomtry.Positions.Clear();
+                        foreach (var nvP in gPointList)
+                        {
+                            bgGeomtry.Positions.Add(nvP);
+                        }
+                    }
+                    var bgMaterial = bgModel.Material;
                     if (!(bgMaterial is DiffuseMaterial))
                     {
-                        bgMaterial = bgModelGeometry.Material = new DiffuseMaterial();
+                        bgMaterial = bgModel.Material = new DiffuseMaterial();
                     }
                     var bgMaterialBrush = new ImageBrush(sprite.SpriteBitmapImage)
                     {

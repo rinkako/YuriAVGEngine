@@ -14,7 +14,7 @@ namespace Yuri.PlatformCore
     internal class ScreenManager : ForkableState
     {
         /// <summary>
-        /// 为屏幕增加一个背景精灵描述子
+        /// 为屏幕增加一个2D背景精灵描述子
         /// </summary>
         /// <param name="id">背景层的类型：0-背景 1-前景</param>
         /// <param name="source">资源名称</param>
@@ -27,7 +27,7 @@ namespace Yuri.PlatformCore
         /// <param name="ScaleY">纵向缩放比</param>
         /// <param name="anchor">锚点类型</param>
         /// <param name="cut">纹理切割矩</param>
-        public void AddBackground(int id, string source, double X, double Y, int Z, double Angle, double Opacity, double ScaleX, double ScaleY, SpriteAnchorType anchor, Int32Rect cut)
+        public void AddBackground2D(int id, string source, double X, double Y, int Z, double Angle, double Opacity, double ScaleX, double ScaleY, SpriteAnchorType anchor, Int32Rect cut)
         {
             SpriteDescriptor sd = new SpriteDescriptor()
             {
@@ -45,6 +45,23 @@ namespace Yuri.PlatformCore
                 CutRect = cut
             };
             this.backgroundDescVec[id] = sd;
+        }
+
+        /// <summary>
+        /// 为屏幕增加一个3D背景精灵描述子
+        /// </summary>
+        /// <param name="source">资源名称</param>
+        /// <param name="depth">景深Z坐标</param>
+        public void AddBackground3D(string source, double depth)
+        {
+            SpriteDescriptor sd = new SpriteDescriptor()
+            {
+                Id = 0,
+                ResourceType = ResourceType.Background,
+                ResourceName = source,
+                BackgroundDeepth3D = depth
+            };
+            this.backgroundDescVec[0] = sd;
         }
 
         /// <summary>

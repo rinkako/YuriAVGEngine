@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+using System.Collections.Generic;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 
@@ -29,7 +25,6 @@ namespace Yuri.PlatformCore
             // 计算运动轨迹
             var orgPoint = SCamera3D.GetScreenCoordination(Director.ScrMana.SCameraFocusRow, Director.ScrMana.SCameraFocusCol);
             var destPoint = SCamera3D.GetScreenCoordination(r, c);
-            var scaleRatio = SCamera3D.GetCameraScale(Director.ScrMana.SCameraScale);
             var delta = SCamera3D.GetManhattanDistance(destPoint, orgPoint);
             var actualBeginPoint = ViewManager.View3D.ST3D_Camera.Position;
             // 动画
@@ -77,7 +72,6 @@ namespace Yuri.PlatformCore
             // 计算运动轨迹
             var orgPoint = SCamera3D.GetScreenCoordination(Director.ScrMana.SCameraFocusRow, Director.ScrMana.SCameraFocusCol);
             var destPoint = SCamera3D.GetScreenCoordination(r, c);
-            var originZ = SCamera3D.GetCameraScale(Director.ScrMana.SCameraScale);
             var destZ = SCamera3D.GetCameraZIndex(ratio);
             var deltaXY = SCamera3D.GetManhattanDistance(destPoint, orgPoint);
             var actualBeginPoint = ViewManager.View3D.ST3D_Camera.Position;
@@ -398,12 +392,7 @@ namespace Yuri.PlatformCore
                 SCamera3D.animationDuration = TimeSpan.FromMilliseconds(SCamera3D.animationTimeMS = value);
             }
         }
-
-        /// <summary>
-        /// 上一动作是否为缩放
-        /// </summary>
-        private static bool lastFromScaling = false;
-
+        
         /// <summary>
         /// 场景镜头动画时间间隔
         /// </summary>
@@ -418,12 +407,7 @@ namespace Yuri.PlatformCore
         /// 屏幕分块中心绝对坐标字典
         /// </summary>
         private static Point[,] screenPointMap;
-
-        /// <summary>
-        /// 立绘分块中心相对坐标字典
-        /// </summary>
-        private static Point[] characterPointMap;
-
+        
         /// <summary>
         /// 立绘分区表
         /// </summary>
@@ -453,20 +437,5 @@ namespace Yuri.PlatformCore
         /// Z为0时屏幕纵向尺寸
         /// </summary>
         private const double scrHeight = 3.76;
-
-        /// <summary>
-        /// 背景模型Z值
-        /// </summary>
-        private const double stdBgZ = -8;
-
-        /// <summary>
-        /// 立绘模型Z值
-        /// </summary>
-        private const double stdCsZ = 0;
-
-        /// <summary>
-        /// 前景模型Z值
-        /// </summary>
-        private const double stdFtZ = 4.9;
     }
 }
