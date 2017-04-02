@@ -58,8 +58,8 @@ namespace Yuri.PageView
         {
             if (this.isInit == false)
             {
-                this.core.GetMainRender().ViewLoaded();
                 SCamera2D.Init();
+                this.core.GetMainRender().ViewLoaded();
                 NotificationManager.Init();
                 this.isInit = true;
             }
@@ -106,8 +106,7 @@ namespace Yuri.PageView
             this.core.UpdateMouseWheel(e.Delta);
         }
         #endregion
-
-
+        
         // DEBUG
         private void button_Click(object sender, RoutedEventArgs e)
         {

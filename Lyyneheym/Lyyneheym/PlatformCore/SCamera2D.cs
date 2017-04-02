@@ -21,7 +21,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <remarks>当缩放比不位于区间[1, 2]时，可能出现无法对齐区域中心的情况，需在后续版本中修正</remarks>
         /// <param name="r">区块的横向编号，值域[0, 4]，其中2是屏幕纵向正中</param>
-        /// <param name="c">区块的纵向编号，值域[0, 16]，其中0是屏幕横向正中</param>
+        /// <param name="c">区块的纵向编号，值域[0, 32]，其中0是屏幕横向正中</param>
         public static void Translate(int r, int c)
         {
             var viewMana = ViewManager.GetInstance();
@@ -255,7 +255,7 @@ namespace Yuri.PlatformCore
         /// 以某个区块为焦点调整焦距
         /// </summary>
         /// <param name="r">区块的横向编号，值域[0, 4]，其中2是屏幕纵向正中</param>
-        /// <param name="c">区块的纵向编号，值域[0, 16]，其中0是屏幕横向正中</param>
+        /// <param name="c">区块的纵向编号，值域[0, 32]，其中0是屏幕横向正中</param>
         /// <param name="ratio">缩放的倍率，值域[0.0, +∞]，原始尺寸对应于1.0，原始尺寸指设置中所定义的立绘原始缩放比</param>
         /// <param name="immediate">是否立即执行完毕</param>
         public static void FocusOn(int r, int c, double ratio, bool immediate = false)
@@ -701,7 +701,7 @@ namespace Yuri.PlatformCore
         /// 获取屏幕分区的中心坐标
         /// </summary>
         /// <param name="r">区块的横向编号，值域[0, 4]，其中2是屏幕纵向正中</param>
-        /// <param name="c">区块的纵向编号，值域[0, 16]，其中0是屏幕横向正中</param>
+        /// <param name="c">区块的纵向编号，值域[0, 32]，其中0是屏幕横向正中</param>
         /// <returns>块的中心坐标</returns>
         public static Point GetScreenCoordination(int r, int c)
         {

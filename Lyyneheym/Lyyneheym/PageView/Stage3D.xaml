@@ -5,14 +5,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="1280"
-      Title="Stage3D">
+      Title="Stage3D"
+      MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" MouseWheel="Window_MouseWheel" Background="White" Loaded="Stage3D_OnLoaded">
     <Grid Background="Black">
         <Canvas Name="BO_MainGrid" Background="Black" Left="0" Top="0" Height="720" Width="1280">
             <!-- 3D视窗 -->
             <Viewport3D x:Name="ST3D_Viewport" Height="720" Width="1280" Panel.ZIndex="0">
                 <!-- 摄像机 -->
                 <Viewport3D.Camera>
-                    <PerspectiveCamera Position="0, 0, 8" x:Name="ST3D_Camera"/>
+                    <PerspectiveCamera Position="0, 0, 8" LookDirection="0, 0, -1" x:Name="ST3D_Camera"/>
                 </Viewport3D.Camera>
                 <!-- 3D模型 -->
                 <Viewport3D.Children>
@@ -44,40 +45,7 @@
                     <ModelVisual3D x:Name="ST3D_Character_Container">
                         <ModelVisual3D.Content>
                             <Model3DGroup x:Name="ST3D_Character_Group">
-                                <GeometryModel3D x:Name="F1">
-                                    <GeometryModel3D.Material>
-                                        <DiffuseMaterial Brush="Green"/>
-                                    </GeometryModel3D.Material>
-                                    <GeometryModel3D.Geometry>
-                                        <MeshGeometry3D
-                                              Positions="-3.031 -4.252 0  1.031 -4.252 0  -3.031 1.652 0  1.031 1.652 0"
-                                              TextureCoordinates="0 1  1 1  0 0  1 0   "
-                                              TriangleIndices="0 1 2  1 3 2" />
-                                    </GeometryModel3D.Geometry>
-                                </GeometryModel3D>
-                                <GeometryModel3D x:Name="F2">
-                                    <GeometryModel3D.Material>
-                                        <DiffuseMaterial Brush="Green"/>
-                                    </GeometryModel3D.Material>
-                                    <GeometryModel3D.Geometry>
-                                        <MeshGeometry3D
-                                              Positions="-1.031 -4.252 0  3.031 -4.252 0  -1.031 1.652 0  3.031 1.652 0"
-                                              TextureCoordinates="0 1  1 1  0 0  1 0   "
-                                              TriangleIndices="0 1 2  1 3 2" />
-                                    </GeometryModel3D.Geometry>
-                                </GeometryModel3D>
-
-                                <GeometryModel3D x:Name="Fline">
-                                    <GeometryModel3D.Material>
-                                        <DiffuseMaterial Brush="Green"/>
-                                    </GeometryModel3D.Material>
-                                    <GeometryModel3D.Geometry>
-                                        <MeshGeometry3D
-                                              Positions="-2.048 -0.144 4.9  2.048 -0.144 4.9  -2.048 0.144 4.9  2.048 0.144 4.9"
-                                              TextureCoordinates="0 1  1 1  0 0  1 0   "
-                                              TriangleIndices="0 1 2  1 3 2" />
-                                    </GeometryModel3D.Geometry>
-                                </GeometryModel3D>
+                                
                             </Model3DGroup>
                         </ModelVisual3D.Content>
                     </ModelVisual3D>
@@ -127,6 +95,14 @@
             <Button Content="Button" HorizontalAlignment="Left" Margin="75,137,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_5"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="75,185,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_6"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="10,255,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
+
+            <TextBox Name="tb_row" Text="7" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Width="75"/>
+            <TextBox Name="tb_col" Text="0" HorizontalAlignment="Left" Margin="10,320,0,0" VerticalAlignment="Top" Width="75"/>
+            <TextBox Name="tb_scale" Text="1" HorizontalAlignment="Left" Margin="10,340,0,0" VerticalAlignment="Top" Width="75"/>
+            <Button Content="SCALE" HorizontalAlignment="Left" Margin="10,365,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_8"/>
+            <Button Content="GOTO" HorizontalAlignment="Left" Margin="90,365,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_10"/>
+            <Button Content="RESET" HorizontalAlignment="Left" Margin="10,385,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_9"/>
+
         </Canvas>
     </Grid>
 </Page>

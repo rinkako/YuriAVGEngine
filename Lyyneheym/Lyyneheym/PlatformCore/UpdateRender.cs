@@ -438,7 +438,14 @@ namespace Yuri.PlatformCore
             Canvas.SetLeft(TriaView, GlobalConfigContext.GAME_MESSAGELAYER_TRIA_X);
             Canvas.SetTop(TriaView, GlobalConfigContext.GAME_MESSAGELAYER_TRIA_Y);
             Canvas.SetZIndex(TriaView, GlobalConfigContext.GAME_Z_MESSAGELAYER + 100);
-            this.view.BO_MainGrid.Children.Add(this.MainMsgTriangleSprite.DisplayBinding);
+            if (ViewManager.Is3DStage)
+            {
+                this.view3d.BO_MainGrid.Children.Add(this.MainMsgTriangleSprite.DisplayBinding);
+            }
+            else
+            {
+                this.view2d.BO_MainGrid.Children.Add(this.MainMsgTriangleSprite.DisplayBinding);
+            }
         }
 
         /// <summary>
@@ -536,8 +543,15 @@ namespace Yuri.PlatformCore
         /// </summary>
         private void ViewLoadedInit()
         {
-            // 为视窗管理设置引用
-            this.viewMana.InitViewport2D();
+            // 初始化视窗
+            if (GlobalConfigContext.GAME_IS3D)
+            {
+                this.viewMana.InitViewport3D();
+            }
+            else
+            {
+                this.viewMana.InitViewport2D();
+            }
             // 初始化小三角
             this.InitMsgLayerTria();
             // 初始化文本层
@@ -553,15 +567,18 @@ namespace Yuri.PlatformCore
             // 绑定调用堆栈
             this.VsmReference = vsm;
             // 初始化鼠标和键盘变量
-            if (UpdateRender.KS_MOUSE_Dict.ContainsKey(MouseButton.Left) == false)
+            lock (UpdateRender.KS_MOUSE_Dict)
             {
-                UpdateRender.KS_MOUSE_Dict[MouseButton.Left] = MouseButtonState.Released;
-                UpdateRender.KS_MOUSE_Dict[MouseButton.Middle] = MouseButtonState.Released;
-                UpdateRender.KS_MOUSE_Dict[MouseButton.Right] = MouseButtonState.Released;
-                foreach (var t in Enum.GetNames(typeof(Key)))
+                if (UpdateRender.KS_MOUSE_Dict.ContainsKey(MouseButton.Left) == false)
                 {
-                    UpdateRender.KS_KEY_Dict[(Key)Enum.Parse(typeof(Key), t)] = KeyStates.None;
-                    Director.RunMana.Assignment("&kb_" + t, "0", vsm);
+                    UpdateRender.KS_MOUSE_Dict[MouseButton.Left] = MouseButtonState.Released;
+                    UpdateRender.KS_MOUSE_Dict[MouseButton.Middle] = MouseButtonState.Released;
+                    UpdateRender.KS_MOUSE_Dict[MouseButton.Right] = MouseButtonState.Released;
+                    foreach (var t in Enum.GetNames(typeof(Key)))
+                    {
+                        UpdateRender.KS_KEY_Dict[(Key) Enum.Parse(typeof(Key), t)] = KeyStates.None;
+                        Director.RunMana.Assignment("&kb_" + t, "0", vsm);
+                    }
                 }
             }
         }
@@ -572,9 +589,14 @@ namespace Yuri.PlatformCore
         public StackMachine VsmReference = null;
 
         /// <summary>
-        /// 主舞台的引用
+        /// 2D主舞台的引用
         /// </summary>
-        private PageView.Stage2D view => (PageView.Stage2D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
+        private PageView.Stage2D view2d => (PageView.Stage2D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
+
+        /// <summary>
+        /// 3D主舞台的引用
+        /// </summary>
+        private PageView.Stage3D view3d => (PageView.Stage3D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
 
         /// <summary>
         /// 音乐引擎

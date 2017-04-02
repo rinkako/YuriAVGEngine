@@ -23,31 +23,133 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <remarks>当缩放比不位于区间[1, 2]时，可能出现无法对齐区域中心的情况，需在后续版本中修正</remarks>
         /// <param name="r">区块的横向编号，值域[0, 4]，其中2是屏幕纵向正中</param>
-        /// <param name="c">区块的纵向编号，值域[0, 16]，其中0是屏幕横向正中</param>
+        /// <param name="c">区块的纵向编号，值域[0, 32]，其中0是屏幕横向正中</param>
         public static void Translate(int r, int c)
         {
-            
+            // 计算运动轨迹
+            var orgPoint = SCamera3D.GetScreenCoordination(Director.ScrMana.SCameraFocusRow, Director.ScrMana.SCameraFocusCol);
+            var destPoint = SCamera3D.GetScreenCoordination(r, c);
+            var scaleRatio = SCamera3D.GetCameraScale(Director.ScrMana.SCameraScale);
+            var delta = SCamera3D.GetManhattanDistance(destPoint, orgPoint);
+            var actualBeginPoint = ViewManager.View3D.ST3D_Camera.Position;
+            // 动画
+            Point3DAnimationUsingKeyFrames v3dAni = new Point3DAnimationUsingKeyFrames();
+            EasingPoint3DKeyFrame k1 = new EasingPoint3DKeyFrame()
+            {
+                Value = new Point3D(actualBeginPoint.X, actualBeginPoint.Y, Director.ScrMana.SCameraScale),
+                KeyTime = TimeSpan.FromMilliseconds(0),
+                EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut }
+            };
+            EasingPoint3DKeyFrame k2 = new EasingPoint3DKeyFrame()
+            {
+                Value = new Point3D(actualBeginPoint.X + delta.X, actualBeginPoint.Y + delta.Y, Director.ScrMana.SCameraScale),
+                KeyTime = TimeSpan.FromMilliseconds(SCamera3D.animationTimeMS),
+                EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut }
+            };
+            v3dAni.KeyFrames.Add(k1);
+            v3dAni.KeyFrames.Add(k2);
+            v3dAni.FillBehavior = FillBehavior.Stop;
+            v3dAni.Completed += delegate
+            {
+                lock (SCamera3D.AnimatingStorySet)
+                {
+                    SCamera3D.AnimatingStorySet.Remove(v3dAni);
+                }
+                ViewManager.View3D.ST3D_Camera.Position = new Point3D(actualBeginPoint.X + delta.X,
+                    actualBeginPoint.Y + delta.Y, Director.ScrMana.SCameraScale);
+            };
+            ViewManager.View3D.ST3D_Camera.BeginAnimation(ProjectionCamera.PositionProperty, v3dAni);
+            // 更新后台
+            Director.ScrMana.SCameraFocusRow = r;
+            Director.ScrMana.SCameraFocusCol = c;
         }
 
         /// <summary>
         /// 以某个区块为焦点调整焦距
         /// </summary>
         /// <param name="r">区块的横向编号，值域[0, 4]，其中2是屏幕纵向正中</param>
-        /// <param name="c">区块的纵向编号，值域[0, 16]，其中0是屏幕横向正中</param>
+        /// <param name="c">区块的纵向编号，值域[0, 32]，其中0是屏幕横向正中</param>
         /// <param name="ratio">缩放的倍率，值域[0.0, +∞]，原始尺寸对应于1.0，原始尺寸指设置中所定义的立绘原始缩放比</param>
         /// <param name="immediate">是否立即执行完毕</param>
         public static void FocusOn(int r, int c, double ratio, bool immediate = false)
         {
-            
+            var aniTime = immediate ? 1 : SCamera3D.animationTimeMS;
+            // 计算运动轨迹
+            var orgPoint = SCamera3D.GetScreenCoordination(Director.ScrMana.SCameraFocusRow, Director.ScrMana.SCameraFocusCol);
+            var destPoint = SCamera3D.GetScreenCoordination(r, c);
+            var originZ = SCamera3D.GetCameraScale(Director.ScrMana.SCameraScale);
+            var destZ = SCamera3D.GetCameraZIndex(ratio);
+            var deltaXY = SCamera3D.GetManhattanDistance(destPoint, orgPoint);
+            var actualBeginPoint = ViewManager.View3D.ST3D_Camera.Position;
+            // 动画
+            Point3DAnimationUsingKeyFrames v3dAni = new Point3DAnimationUsingKeyFrames();
+            EasingPoint3DKeyFrame k1 = new EasingPoint3DKeyFrame()
+            {
+                Value = new Point3D(actualBeginPoint.X, actualBeginPoint.Y, Director.ScrMana.SCameraScale),
+                KeyTime = TimeSpan.FromMilliseconds(0),
+                EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut }
+            };
+            EasingPoint3DKeyFrame k2 = new EasingPoint3DKeyFrame()
+            {
+                Value = new Point3D(actualBeginPoint.X + deltaXY.X, actualBeginPoint.Y + deltaXY.Y, destZ),
+                KeyTime = TimeSpan.FromMilliseconds(aniTime),
+                EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut }
+            };
+            v3dAni.KeyFrames.Add(k1);
+            v3dAni.KeyFrames.Add(k2);
+            v3dAni.FillBehavior = FillBehavior.Stop;
+            v3dAni.Completed += delegate
+            {
+                lock (SCamera3D.AnimatingStorySet)
+                {
+                    SCamera3D.AnimatingStorySet.Remove(v3dAni);
+                }
+                ViewManager.View3D.ST3D_Camera.Position = new Point3D(actualBeginPoint.X + deltaXY.X, actualBeginPoint.Y + deltaXY.Y, destZ);
+            };
+            ViewManager.View3D.ST3D_Camera.BeginAnimation(ProjectionCamera.PositionProperty, v3dAni);
+            // 更新后台
+            Director.ScrMana.SCameraFocusRow = r;
+            Director.ScrMana.SCameraFocusCol = c;
+            Director.ScrMana.SCameraScale = destZ;
         }
 
         /// <summary>
         /// 重置镜头将中央和焦点都对准屏幕中心并采用1.0的对焦比例
         /// </summary>
-        /// <param name="doubledDuration">是否1.5倍动画时间</param>
+        /// <param name="doubledDuration">是否2倍动画时间</param>
         public static void ResetFocus(bool doubledDuration)
         {
-            
+            int aniTime = doubledDuration ? SCamera3D.animationTimeMS * 2 : SCamera3D.animationTimeMS;
+            var actualBeginPoint = ViewManager.View3D.ST3D_Camera.Position;
+            Point3DAnimationUsingKeyFrames v3dAni = new Point3DAnimationUsingKeyFrames();
+            EasingPoint3DKeyFrame k1 = new EasingPoint3DKeyFrame()
+            {
+                Value = new Point3D(actualBeginPoint.X, actualBeginPoint.Y, Director.ScrMana.SCameraScale),
+                KeyTime = TimeSpan.FromMilliseconds(0),
+                EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut }
+            };
+            EasingPoint3DKeyFrame k2 = new EasingPoint3DKeyFrame()
+            {
+                Value = new Point3D(0, 0, SCamera3D.orginalCameraZIndex),
+                KeyTime = TimeSpan.FromMilliseconds(aniTime),
+                EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut }
+            };
+            v3dAni.KeyFrames.Add(k1);
+            v3dAni.KeyFrames.Add(k2);
+            v3dAni.FillBehavior = FillBehavior.Stop;
+            v3dAni.Completed += delegate
+            {
+                lock (SCamera3D.AnimatingStorySet)
+                {
+                    SCamera3D.AnimatingStorySet.Remove(v3dAni);
+                }
+                ViewManager.View3D.ST3D_Camera.Position = new Point3D(0, 0, SCamera3D.orginalCameraZIndex);
+            };
+            ViewManager.View3D.ST3D_Camera.BeginAnimation(ProjectionCamera.PositionProperty, v3dAni);
+            // 更新后台
+            Director.ScrMana.SCameraFocusRow = GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2;
+            Director.ScrMana.SCameraFocusCol = 0;
+            Director.ScrMana.SCameraScale = SCamera3D.orginalCameraZIndex;
         }
 
         /// <summary>
@@ -56,7 +158,7 @@ namespace Yuri.PlatformCore
         /// <param name="ratio">缩放的倍率，值域[0.0, +∞]，原始尺寸对应于1.0</param>
         public static void Focus(double ratio)
         {
-
+            SCamera3D.FocusOn(Director.ScrMana.SCameraFocusRow, Director.ScrMana.SCameraFocusCol, ratio);
         }
 
         /// <summary>
@@ -75,7 +177,8 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static void PreviewEnterScene()
         {
-            
+            ViewManager.View3D.ST3D_Camera.Position = new Point3D(0, 0, SCamera3D.orginalCameraZIndex);
+            SCamera3D.FocusOn(GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2, 0, 1.8, true);
         }
 
         /// <summary>
@@ -106,12 +209,12 @@ namespace Yuri.PlatformCore
             story.Completed += (sender, args) =>
             {
                 masker.Opacity = 1;
-                lock (SCamera3D.aniCountMutex)
+                lock (SCamera3D.AnimatingStorySet)
                 {
                     SCamera3D.AnimatingStorySet.Remove(story);
                 }
             };
-            lock (SCamera3D.aniCountMutex)
+            lock (SCamera3D.AnimatingStorySet)
             {
                 SCamera3D.AnimatingStorySet.Add(story);
             }
@@ -140,12 +243,12 @@ namespace Yuri.PlatformCore
             {
                 masker.Opacity = 0;
                 masker.Visibility = Visibility.Hidden;
-                lock (SCamera3D.aniCountMutex)
+                lock (SCamera3D.AnimatingStorySet)
                 {
                     SCamera3D.AnimatingStorySet.Remove(story);
                 }
             };
-            lock (SCamera3D.aniCountMutex)
+            lock (SCamera3D.AnimatingStorySet)
             {
                 SCamera3D.AnimatingStorySet.Add(story);
             }
@@ -159,16 +262,12 @@ namespace Yuri.PlatformCore
         {
             // 动画属性
             SCamera3D.SCameraAnimationTimeMS = 500;
-            SCamera3D.DecelerateRatio = 0.7;
             // 尺度初始化
             Director.ScrMana.SCameraScale = SCamera3D.orginalCameraZIndex;
-            Director.ScrMana.SCameraCenterCol = 0;
-            Director.ScrMana.SCameraCenterRow = 2;
             Director.ScrMana.SCameraFocusCol = 0;
-            Director.ScrMana.SCameraFocusRow = 2;
-            // 计算区块的中轴
-            const double scrWidth = 6.66;
-            double blockWidth = scrWidth / (GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT - GlobalConfigContext.GAME_SCAMERA_SCR_SINGLEBLOODCOLCOUNT);
+            Director.ScrMana.SCameraFocusRow = GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2;
+            // 计算区块的横向中点坐标
+            double blockWidth = SCamera3D.scrWidth / (GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT - GlobalConfigContext.GAME_SCAMERA_SCR_SINGLEBLOODCOLCOUNT);
             double blockOffset = blockWidth / 2.0;
             var xArr = new double[GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT + 1];
             for (int i = GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT; i >= 1; i--)
@@ -177,27 +276,96 @@ namespace Yuri.PlatformCore
             }
             xArr[0] = 0;
             // 计算区块的可视区间
-            SCamera3D.characterBlockList = new List<Tuple<Point3D, Point3D, Point3D, Point3D>>();
+            SCamera3D.CharacterBlockList = new List<Tuple<Point3D, Point3D, Point3D, Point3D>>();
             for (int i = 0; i <= GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT; i++)
             {
                 var LeftBottom = new Point3D(xArr[i] - 2.031, -4.252, 0);
                 var RightBottom = new Point3D(xArr[i] + 2.031, -4.252, 0);
                 var LeftUp = new Point3D(xArr[i] - 2.031, 1.652, 0);
                 var RightUp = new Point3D(xArr[i] + 2.031, 1.652, 0);
-                SCamera3D.characterBlockList.Add(new Tuple<Point3D, Point3D, Point3D, Point3D>(LeftBottom, RightBottom, LeftUp, RightUp));
+                SCamera3D.CharacterBlockList.Add(new Tuple<Point3D, Point3D, Point3D, Point3D>(LeftBottom, RightBottom, LeftUp, RightUp));
+            }
+            // 计算区块中点坐标
+            double blockHeight = SCamera3D.scrHeight / GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT;
+            SCamera3D.screenPointMap = new Point[GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT, GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT + 1];
+            for (int i = 0; i < GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT; i++)
+            {
+                // 变量j从1开始，为0预留位置，0是预留给屏幕横向的中央
+                for (int j = 1; j <= GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT; j++)
+                {
+                    SCamera3D.screenPointMap[i, j] = new Point(xArr[j], (i - GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2) * blockHeight);
+                }
+            }
+            for (int i = 0; i < GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT; i++)
+            {
+                SCamera3D.screenPointMap[i, 0] = new Point(xArr[0], (i - GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2) * blockHeight);
+            }
+            // 计算标准曼哈顿距离表
+            SCamera3D.manhattanDistanceMap = new Dictionary<Point, Dictionary<Point, Point>>();
+            for (int i = 0; i < GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT; i++)
+            {
+                for (int j = 0; j <= GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT; j++)
+                {
+                    var pt = SCamera3D.screenPointMap[i, j];
+                    if (SCamera3D.manhattanDistanceMap.ContainsKey(pt) == false)
+                    {
+                        SCamera3D.manhattanDistanceMap[pt] = new Dictionary<Point, Point>();
+                    }
+                    for (int m = 0; m < GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT; m++)
+                    {
+                        for (int n = 0; n <= GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT; n++)
+                        {
+                            var rhsPt = SCamera3D.screenPointMap[m, n];
+                            SCamera3D.manhattanDistanceMap[pt][rhsPt] = SCamera3D.GetManhattanDistance(pt, rhsPt);
+                        }
+                    }
+                }
             }
         }
+
+        /// <summary>
+        /// 计算两点之间曼哈顿距离
+        /// </summary>
+        /// <param name="pA">世界坐标对镜头平面的投影点A</param>
+        /// <param name="pB">世界坐标对镜头平面的投影点B</param>
+        /// <returns>两点在世界坐标下的曼哈顿距离</returns>
+        public static Point GetManhattanDistance(Point pA, Point pB) => new Point(pA.X - pB.X, pA.Y - pB.Y);
+
+        /// <summary>
+        /// 获取屏幕分区的中心坐标
+        /// </summary>
+        /// <param name="r">区块的横向编号，值域[0, 4]，其中2是屏幕纵向正中</param>
+        /// <param name="c">区块的纵向编号，值域[0, 32]，其中0是屏幕横向正中</param>
+        /// <returns>块的中心坐标</returns>
+        public static Point GetScreenCoordination(int r, int c) => SCamera3D.screenPointMap[r, c];
+
+        /// <summary>
+        /// 获取缩放指定尺度时的镜头深度
+        /// </summary>
+        /// <param name="scale">立绘层缩放尺度</param>
+        /// <returns>镜头的Z坐标</returns>
+        public static double GetCameraZIndex(double scale) => 8.0 * Math.Pow(scale, -1);
+
+        /// <summary>
+        /// 获取指定镜头深度下的缩放尺度
+        /// </summary>
+        /// <param name="zindex">镜头的Z坐标</param>
+        /// <returns>立绘层缩放尺度</returns>
+        public static double GetCameraScale(double zindex) => 8.0 * Math.Pow(zindex, -1);
 
         /// <summary>
         /// 立即跳过所有动画
         /// </summary>
         public static void SkipAll()
         {
-            lock (SCamera3D.aniCountMutex)
+            lock (SCamera3D.AnimatingStorySet)
             {
                 foreach (var ani in SCamera3D.AnimatingStorySet)
                 {
-                    ani.SkipToFill();
+                    if (ani is Storyboard asb)
+                    {
+                        asb.SkipToFill();
+                    }
                 }
             }
         }
@@ -209,22 +377,13 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                lock (SCamera3D.aniCountMutex)
+                lock (SCamera3D.AnimatingStorySet)
                 {
-                    return AnimatingStorySet.Any();
+                    return SCamera3D.AnimatingStorySet.Any();
                 }
             }
         }
         
-        /// <summary>
-        /// 获取或设置动画缓动率
-        /// </summary>
-        public static double DecelerateRatio
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// 获取或设置场景镜头动画时间（毫秒）
         /// </summary>
@@ -268,18 +427,13 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 立绘分区表
         /// </summary>
-        private static List<Tuple<Point3D, Point3D, Point3D, Point3D>> characterBlockList;
+        public static List<Tuple<Point3D, Point3D, Point3D, Point3D>> CharacterBlockList { get; private set; }
 
         /// <summary>
         /// 正在进行的动画计数
         /// </summary>
-        private static readonly HashSet<Storyboard> AnimatingStorySet = new HashSet<Storyboard>();
-
-        /// <summary>
-        /// 动画计数器互斥量
-        /// </summary>
-        private static readonly Mutex aniCountMutex = new Mutex();
-
+        private static readonly HashSet<Timeline> AnimatingStorySet = new HashSet<Timeline>();
+        
         /// <summary>
         /// 屏幕分块中心的标准距离字典
         /// </summary>
@@ -289,5 +443,30 @@ namespace Yuri.PlatformCore
         /// 镜头默认深度
         /// </summary>
         private const double orginalCameraZIndex = 8.0;
+
+        /// <summary>
+        /// Z为0时屏幕横向尺寸
+        /// </summary>
+        private const double scrWidth = 6.66;
+
+        /// <summary>
+        /// Z为0时屏幕纵向尺寸
+        /// </summary>
+        private const double scrHeight = 3.76;
+
+        /// <summary>
+        /// 背景模型Z值
+        /// </summary>
+        private const double stdBgZ = -8;
+
+        /// <summary>
+        /// 立绘模型Z值
+        /// </summary>
+        private const double stdCsZ = 0;
+
+        /// <summary>
+        /// 前景模型Z值
+        /// </summary>
+        private const double stdFtZ = 4.9;
     }
 }

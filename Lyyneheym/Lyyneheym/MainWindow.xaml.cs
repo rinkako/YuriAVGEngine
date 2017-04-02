@@ -39,11 +39,18 @@ namespace Yuri
             this.ResizeMode = GlobalConfigContext.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
             // 加载主页面
             CommonUtils.ConsoleLine("MWnd Initialization stage 3", "MainWindow", OutputStyle.Normal);
-            this.world.SetStagePageReference(new Stage2D());
+            if (GlobalConfigContext.GAME_IS3D)
+            {
+                this.world.SetStagePageReference(new Stage3D());
+            }
+            else
+            {
+                this.world.SetStagePageReference(new Stage2D());
+            }
             this.mainFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
             this.mainFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
-            //this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalDataContext.FirstViewPage);
-            this.mainFrame.Content = new Stage3D();
+            this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
+            //this.mainFrame.Content = new Stage3D();
             this.maskFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
             this.maskFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
             ViewManager.MaskFrameRef = this.maskFrame;

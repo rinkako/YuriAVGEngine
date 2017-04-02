@@ -1,7 +1,8 @@
-﻿#define NOTIME
+﻿//#define NOTIME
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Yuri.Utils;
@@ -689,8 +690,8 @@ namespace Yuri
         /// <summary>
         /// 设置主舞台页面的引用
         /// </summary>
-        /// <param name="sp">主窗体</param>
-        public void SetStagePageReference(PageView.Stage2D sp)
+        /// <param name="sp">主舞台对象</param>
+        public void SetStagePageReference(Page sp)
         {
             ViewPageManager.RegisterPage(GlobalConfigContext.FirstViewPage, sp);
         }

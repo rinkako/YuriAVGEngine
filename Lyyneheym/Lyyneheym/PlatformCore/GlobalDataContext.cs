@@ -22,7 +22,7 @@ namespace Yuri.PlatformCore
 
         #region 个性化设置信息
         // 舞台：是否3D
-        public static bool GAME_IS3D = false;
+        public static bool GAME_IS3D = true;
         // 舞台：特效水平
         public static PerformanceType GAME_PERFORMANCE_TYPE = PerformanceType.HighQuality;
         // 舞台：窗体宽度 1280
@@ -112,7 +112,7 @@ namespace Yuri.PlatformCore
         // 图像层：右立绘Y
         public static double GAME_CHARACTERSTAND_RIGHT_Y = 60;
         // 场景镜头：屏幕纵向划分块数
-        public static int GAME_SCAMERA_SCR_ROWCOUNT = 5;
+        public static int GAME_SCAMERA_SCR_ROWCOUNT = 15;
         // 场景镜头：屏幕横向划分块数
         public static int GAME_SCAMERA_SCR_COLCOUNT = 16 * 2;
         // 场景镜头：屏幕横向单侧出血块数

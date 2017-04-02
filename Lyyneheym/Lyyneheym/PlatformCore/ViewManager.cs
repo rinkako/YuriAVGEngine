@@ -356,25 +356,25 @@ namespace Yuri.PlatformCore
             }
             // 交换前景和背景
             Director.ScrMana.Backlay();
-            view2D.TransitionDS.ObjectInstance = transition;
+            View2D.TransitionDS.ObjectInstance = transition;
             var viewBinder = this.backgroundSpriteVec[(int)BackgroundPage.Fore] == null ?
                 null : this.backgroundSpriteVec[(int)BackgroundPage.Fore].DisplayBinding;
             var canvas = this.GetDrawingCanvas2D(ResourceType.Background);
             if (viewBinder != null && canvas.Children.Contains(viewBinder))
             {
                 canvas.Children.Remove(viewBinder);
-                Canvas.SetZIndex(view2D.TransitionBox, Canvas.GetZIndex(viewBinder));
+                Canvas.SetZIndex(View2D.TransitionBox, Canvas.GetZIndex(viewBinder));
             }
             // 执行过渡
-            view2D.TransitionBox.TransitionEnded += TransitionEnded;
-            view2D.TransitionBox.Content = viewBinder;
+            View2D.TransitionBox.TransitionEnded += TransitionEnded;
+            View2D.TransitionBox.Content = viewBinder;
         }
 
         /// <summary>
         /// 获取主视窗上的过渡容器
         /// </summary>
         /// <returns>过渡容器引用</returns>
-        public TransitionElement GetTransitionBox() => ViewManager.view2D.TransitionBox;
+        public TransitionElement GetTransitionBox() => ViewManager.View2D.TransitionBox;
 
         /// <summary>
         /// 在过渡效果完成时触发
@@ -559,7 +559,7 @@ namespace Yuri.PlatformCore
                 case ResourceType.Pictures:
                     return this.viewbox2dVec[(int)ViewportType.VTPictures].CanvasBinding;
                 default:
-                    return ViewManager.view2D.BO_MainGrid;
+                    return ViewManager.View2D.BO_MainGrid;
             }
         }
         
@@ -621,10 +621,10 @@ namespace Yuri.PlatformCore
             {
                 sprite.AnimationElement = this.viewbox2dVec[(int)ViewportType.VTBackground].ViewboxBinding;
                 // 如果前景渐变框是空就强制刷新她
-                if (view2D.TransitionBox.Content == null && idx == 1)
+                if (View2D.TransitionBox.Content == null && idx == 1)
                 {
                     this.GetDrawingCanvas2D(rType).Children.Remove(spriteImage);
-                    view2D.TransitionBox.Content = spriteImage;
+                    View2D.TransitionBox.Content = spriteImage;
                 }
             }
         }
@@ -641,7 +641,7 @@ namespace Yuri.PlatformCore
             switch (rType)
             {
                 case ResourceType.Background:
-                    var bgModelGeometry = ViewManager.view3D.ST3D_Background_Fore;
+                    var bgModelGeometry = ViewManager.View3D.ST3D_Background_Fore;
                     var bgMaterial = bgModelGeometry.Material;
                     if (!(bgMaterial is DiffuseMaterial))
                     {
@@ -671,7 +671,7 @@ namespace Yuri.PlatformCore
                     ((DiffuseMaterial)csMaterial).Brush = csMaterialBrush;
                     break;
                 case ResourceType.Frontier:
-                    var ftModelGeometry = ViewManager.view3D.ST3D_Frontier_1;
+                    var ftModelGeometry = ViewManager.View3D.ST3D_Frontier_1;
                     var ftMaterial = ftModelGeometry.Material;
                     if (!(ftMaterial is DiffuseMaterial))
                     {
@@ -700,7 +700,7 @@ namespace Yuri.PlatformCore
                     Canvas.SetTop(spriteImage, descriptor.Y - bmp.PixelHeight / 2.0);
                     Canvas.SetZIndex(spriteImage, descriptor.Z);
                     spriteImage.Visibility = Visibility.Visible;
-                    ViewManager.view3D.BO_MainGrid.Children.Add(spriteImage);
+                    ViewManager.View3D.BO_MainGrid.Children.Add(spriteImage);
                     sprite.InitAnimationRenderTransform();
                     sprite.AnimationElement = sprite.DisplayBinding;
                     descriptor.ToScaleX = descriptor.ScaleX;
@@ -716,7 +716,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="cSlot">槽中心在屏幕分块的编号</param>
         /// <returns>模型对象</returns>
-        private GeometryModel3D GetCharacterModel3D(int cSlot) => ViewManager.view3D.ST3D_Character_Group.Children[cSlot] as GeometryModel3D;
+        private GeometryModel3D GetCharacterModel3D(int cSlot) => ViewManager.View3D.ST3D_Character_Group.Children[cSlot] as GeometryModel3D;
 
         /// <summary>
         /// 为主窗体描绘一个文字层
@@ -757,11 +757,11 @@ namespace Yuri.PlatformCore
             msglay.Visibility = descriptor.Visible ? Visibility.Visible : Visibility.Hidden;
             if (ViewManager.Is3DStage)
             {
-                ViewManager.view3D.BO_MainGrid.Children.Add(msgBlock);
+                ViewManager.View3D.BO_MainGrid.Children.Add(msgBlock);
             }
             else
             {
-                ViewManager.view2D.BO_MainGrid.Children.Add(msgBlock);
+                ViewManager.View2D.BO_MainGrid.Children.Add(msgBlock);
             }
         }
 
@@ -801,11 +801,11 @@ namespace Yuri.PlatformCore
             buttonImage.MouseUp += sbutton.MouseUpHandler;
             if (ViewManager.Is3DStage)
             {
-                ViewManager.view3D.BO_MainGrid.Children.Add(buttonImage);
+                ViewManager.View3D.BO_MainGrid.Children.Add(buttonImage);
             }
             else
             {
-                ViewManager.view2D.BO_MainGrid.Children.Add(buttonImage);
+                ViewManager.View2D.BO_MainGrid.Children.Add(buttonImage);
             }
             sbutton.InitAnimationRenderTransform();
         }
@@ -854,11 +854,11 @@ namespace Yuri.PlatformCore
             buttonTextView.MouseUp += bbutton.MouseUpHandler;
             if (ViewManager.Is3DStage)
             {
-                ViewManager.view3D.BO_MainGrid.Children.Add(buttonTextView);
+                ViewManager.View3D.BO_MainGrid.Children.Add(buttonTextView);
             }
             else
             {
-                ViewManager.view2D.BO_MainGrid.Children.Add(buttonTextView);
+                ViewManager.View2D.BO_MainGrid.Children.Add(buttonTextView);
             }
             bbutton.InitAnimationRenderTransform();
         }
@@ -884,7 +884,7 @@ namespace Yuri.PlatformCore
             if (msglay != null)
             {
                 TextBlock msglayView = msglay.DisplayBinding;
-                Canvas workCanvas = ViewManager.Is3DStage ? ViewManager.view3D.BO_MainGrid : ViewManager.view2D.BO_MainGrid;
+                Canvas workCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
                 if (msglayView != null && workCanvas.Children.Contains(msglayView))
                 {
                     workCanvas.Children.Remove(msglayView);
@@ -914,7 +914,7 @@ namespace Yuri.PlatformCore
             if (bbutton != null)
             {
                 var bbView = bbutton.DisplayBinding;
-                Canvas workCanvas = ViewManager.Is3DStage ? ViewManager.view3D.BO_MainGrid : ViewManager.view2D.BO_MainGrid;
+                Canvas workCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
                 if (bbView != null && workCanvas.Children.Contains(bbView))
                 {
                     workCanvas.Children.Remove(bbView);
@@ -940,34 +940,31 @@ namespace Yuri.PlatformCore
                 switch (rType)
                 {
                     case ResourceType.Background:
-                        var bgModelGeometry = ViewManager.view3D.ST3D_Background_Fore;
-                        var bgMaterial = bgModelGeometry.Material;
-                        if (!(bgMaterial is DiffuseMaterial))
+                        var bgModelGeometry = ViewManager.View3D.ST3D_Background_Fore;
+                        if (!(bgModelGeometry.Material is DiffuseMaterial))
                         {
                             return;
                         }
-                        (bgMaterial as DiffuseMaterial).Brush = null;
+                        bgModelGeometry.Material = null;
                         return;
                     case ResourceType.Stand:
                         var slotModelGeometry = this.GetCharacterModel3D(sprite.Descriptor.Slot3D);
-                        var csMaterial = slotModelGeometry?.Material;
-                        if (!(csMaterial is DiffuseMaterial))
+                        if (!(slotModelGeometry?.Material is DiffuseMaterial))
                         {
                             return;
                         }
-                        (csMaterial as DiffuseMaterial).Brush = null;
+                        slotModelGeometry.Material = null;
                         return;
                     case ResourceType.Frontier:
-                        var ftModelGeometry = ViewManager.view3D.ST3D_Frontier_1;
-                        var ftMaterial = ftModelGeometry.Material;
-                        if (!(ftMaterial is DiffuseMaterial))
+                        var ftModelGeometry = ViewManager.View3D.ST3D_Frontier_1;
+                        if (!(ftModelGeometry.Material is DiffuseMaterial))
                         {
                             return;
                         }
-                        (ftMaterial as DiffuseMaterial).Brush = null;
+                        ftModelGeometry.Material = null;
                         return;
                     default:
-                        canvas = ViewManager.view3D.BO_MainGrid;
+                        canvas = ViewManager.View3D.BO_MainGrid;
                         break;
                 }
             }
@@ -997,7 +994,7 @@ namespace Yuri.PlatformCore
                 return;
             }
             Image buttonView = sbutton.DisplayBinding;
-            Canvas workCanvas = ViewManager.Is3DStage ? ViewManager.view3D.BO_MainGrid : ViewManager.view2D.BO_MainGrid;
+            Canvas workCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
             if (buttonView != null && workCanvas.Children.Contains(buttonView))
             {
                 workCanvas.Children.Remove(buttonView);
@@ -1036,29 +1033,29 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 初始化视窗
+        /// 初始化2D视窗
         /// </summary>
-        private void InitViewbox()
+        private void InitView2D()
         {
             if (ViewManager.Is3DStage) { return; }
             // 初始化视窗向量
             this.viewbox2dVec[(int)ViewportType.VTBackground] = new YuriViewport2D()
             {
                 Type = ViewportType.VTBackground,
-                ViewboxBinding = view2D.BO_Bg_Viewbox,
-                CanvasBinding = view2D.BO_Bg_Canvas
+                ViewboxBinding = View2D.BO_Bg_Viewbox,
+                CanvasBinding = View2D.BO_Bg_Canvas
             };
             this.viewbox2dVec[(int)ViewportType.VTCharacterStand] = new YuriViewport2D()
             {
                 Type = ViewportType.VTCharacterStand,
-                ViewboxBinding = view2D.BO_Cstand_Viewbox,
-                CanvasBinding = view2D.BO_Cstand_Canvas
+                ViewboxBinding = View2D.BO_Cstand_Viewbox,
+                CanvasBinding = View2D.BO_Cstand_Canvas
             };
             this.viewbox2dVec[(int)ViewportType.VTPictures] = new YuriViewport2D()
             {
                 Type = ViewportType.VTPictures,
-                ViewboxBinding = view2D.BO_Pics_Viewbox,
-                CanvasBinding = view2D.BO_Pics_Canvas
+                ViewboxBinding = View2D.BO_Pics_Viewbox,
+                CanvasBinding = View2D.BO_Pics_Canvas
             };
             // 初始化变换动画
             for (int i = 0; i < 3; i++)
@@ -1082,6 +1079,38 @@ namespace Yuri.PlatformCore
                 this.viewbox2dVec[i].RotateTransformer = RotateTransformer;
                 this.viewbox2dVec[i].TranslateTransformer = XYTransformer;
                 this.viewbox2dVec[i].ScaleTransformer = ScaleTransformer;
+            }
+        }
+
+        /// <summary>
+        /// 初始化3D视窗
+        /// </summary>
+        private void InitView3D()
+        {
+            if (!ViewManager.Is3DStage) { return; }
+            var cbList = SCamera3D.CharacterBlockList;
+            var csModelGroup = ViewManager.View3D.ST3D_Character_Group;
+            for (int i = 0; i <= GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT; i++)
+            {
+                GeometryModel3D Geom = new GeometryModel3D();
+                var sideFrontPlane = new MeshGeometry3D();
+                sideFrontPlane.Positions.Add(cbList[i].Item1);
+                sideFrontPlane.Positions.Add(cbList[i].Item2);
+                sideFrontPlane.Positions.Add(cbList[i].Item3);
+                sideFrontPlane.Positions.Add(cbList[i].Item4);
+                sideFrontPlane.TriangleIndices.Add(0);
+                sideFrontPlane.TriangleIndices.Add(1);
+                sideFrontPlane.TriangleIndices.Add(2);
+                sideFrontPlane.TriangleIndices.Add(1);
+                sideFrontPlane.TriangleIndices.Add(3);
+                sideFrontPlane.TriangleIndices.Add(2);
+                sideFrontPlane.TextureCoordinates.Add(new Point(0, 1));
+                sideFrontPlane.TextureCoordinates.Add(new Point(1, 1));
+                sideFrontPlane.TextureCoordinates.Add(new Point(0, 0));
+                sideFrontPlane.TextureCoordinates.Add(new Point(1, 0));
+                Geom.Geometry = sideFrontPlane;
+                Geom.Material = null;
+                csModelGroup.Children.Add(Geom);
             }
         }
 
@@ -1110,30 +1139,32 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 更新视窗向量
+        /// 更新2D视窗向量
         /// </summary>
         public void InitViewport2D()
         {
-            this.InitViewbox();
+            this.InitView2D();
+        }
+
+        /// <summary>
+        /// 更新3D视窗向量
+        /// </summary>
+        public void InitViewport3D()
+        {
+            this.InitView3D();
         }
 
         /// <summary>
         /// 为视窗管理器设置窗体的引用并更新视窗向量
         /// </summary>
         /// <param name="wnd">主窗体的引用</param>
-        public static void SetWindowReference(MainWindow wnd)
-        {
-            ViewManager.mWnd = wnd;
-        }
+        public static void SetWindowReference(MainWindow wnd) => ViewManager.mWnd = wnd;
 
         /// <summary>
         /// 获取应用程序主窗体
         /// </summary>
         /// <returns>主窗体的引用</returns>
-        public static MainWindow GetWindowReference()
-        {
-            return ViewManager.mWnd;
-        }
+        public static MainWindow GetWindowReference() => ViewManager.mWnd;
 
         /// <summary>
         /// 获取或设置遮罩层的引用
@@ -1189,21 +1220,13 @@ namespace Yuri.PlatformCore
             {
                 this.LoadTransitions(Assembly.GetAssembly(typeof(Transition)));
                 this.viewbox2dVec = new List<YuriViewport2D>();
-                this.backgroundSpriteVec = new List<YuriSprite>();
-                this.characterStandSpriteVec = new List<YuriSprite>();
                 for (int i = 0; i < 3; i++)
                 {
                     this.viewbox2dVec.Add(null);
                 }
-                for (int i = 0; i < GlobalConfigContext.GAME_BACKGROUND_COUNT; i++)
-                {
-                    this.backgroundSpriteVec.Add(null);
-                }
-                for (int i = 0; i < GlobalConfigContext.GAME_CHARACTERSTAND_COUNT; i++)
-                {
-                    this.characterStandSpriteVec.Add(null);
-                }
             }
+            this.backgroundSpriteVec = new List<YuriSprite>();
+            this.characterStandSpriteVec = new List<YuriSprite>();
             this.pictureSpriteVec = new List<YuriSprite>();
             this.messageLayerVec = new List<MessageLayer>();
             this.branchButtonVec = new List<BranchButton>();
@@ -1224,17 +1247,25 @@ namespace Yuri.PlatformCore
             {
                 this.branchButtonVec.Add(null);
             }
+            for (int i = 0; i < GlobalConfigContext.GAME_BACKGROUND_COUNT; i++)
+            {
+                this.backgroundSpriteVec.Add(null);
+            }
+            for (int i = 0; i < GlobalConfigContext.GAME_CHARACTERSTAND_COUNT; i++)
+            {
+                this.characterStandSpriteVec.Add(null);
+            }
         }
 
         /// <summary>
         /// 2D主舞台页面的引用
         /// </summary>
-        private static Stage2D view2D => ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage) as Stage2D;
+        public static Stage2D View2D => ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage) as Stage2D;
 
         /// <summary>
         /// 3D主舞台页面的引用
         /// </summary>
-        private static Stage3D view3D => ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage) as Stage3D;
+        public static Stage3D View3D => ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage) as Stage3D;
 
         /// <summary>
         /// 获取或设置当前是否使用3D镜头系统

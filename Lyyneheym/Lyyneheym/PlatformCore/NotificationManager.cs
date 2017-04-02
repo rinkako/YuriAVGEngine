@@ -40,17 +40,35 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static void Init()
         {
-            var view = ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage) as PageView.Stage2D;
-            NotificationManager.BoxUI = view.BO_Information;
-            NotificationManager.IcoUI = view.BO_Information_Image;
-            NotificationManager.labelUI = view.BO_Information_Name;
-            NotificationManager.detailUI = view.BO_Information_Detail;
-            TransformGroup aniGroup = new TransformGroup();
-            TranslateTransform XYTransformer = new TranslateTransform();
-            aniGroup.Children.Add(XYTransformer);
-            NotificationManager.BoxUI.RenderTransform = aniGroup;
-            var sp = ResourceManager.GetInstance().GetPicture("NotificationBox.png", ResourceManager.FullImageRect);
-            NotificationManager.BoxUI.Background = new ImageBrush(sp.SpriteBitmapImage);
+            if (GlobalConfigContext.GAME_IS3D)
+            {
+                PageView.Stage3D view = ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage) as PageView.Stage3D;
+                NotificationManager.BoxUI = view.BO_Information;
+                NotificationManager.IcoUI = view.BO_Information_Image;
+                NotificationManager.labelUI = view.BO_Information_Name;
+                NotificationManager.detailUI = view.BO_Information_Detail;
+                TransformGroup aniGroup = new TransformGroup();
+                TranslateTransform XYTransformer = new TranslateTransform();
+                aniGroup.Children.Add(XYTransformer);
+                NotificationManager.BoxUI.RenderTransform = aniGroup;
+                var sp = ResourceManager.GetInstance().GetPicture("NotificationBox.png", ResourceManager.FullImageRect);
+                NotificationManager.BoxUI.Background = new ImageBrush(sp.SpriteBitmapImage);
+            }
+            else
+            {
+                PageView.Stage2D view = ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage) as PageView.Stage2D;
+                NotificationManager.BoxUI = view.BO_Information;
+                NotificationManager.IcoUI = view.BO_Information_Image;
+                NotificationManager.labelUI = view.BO_Information_Name;
+                NotificationManager.detailUI = view.BO_Information_Detail;
+                TransformGroup aniGroup = new TransformGroup();
+                TranslateTransform XYTransformer = new TranslateTransform();
+                aniGroup.Children.Add(XYTransformer);
+                NotificationManager.BoxUI.RenderTransform = aniGroup;
+                var sp = ResourceManager.GetInstance().GetPicture("NotificationBox.png", ResourceManager.FullImageRect);
+                NotificationManager.BoxUI.Background = new ImageBrush(sp.SpriteBitmapImage);
+            }
+
         }
 
         /// <summary>
