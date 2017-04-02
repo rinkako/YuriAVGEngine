@@ -4,9 +4,9 @@ using System.Windows.Controls;
 namespace Yuri.PlatformCore
 {
     /// <summary>
-    /// 视窗封装类
+    /// 2D视窗封装类
     /// </summary>
-    internal sealed class YuriViewport
+    internal sealed class YuriViewport2D
     {
         /// <summary>
         /// 获取或设置视窗类型

@@ -25,8 +25,10 @@ namespace Yuri.PageView
         {
             InitializeComponent();
 
-
-
+            this.BO_MainGrid.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.BO_MainGrid.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
+            this.ST3D_Viewport.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.ST3D_Viewport.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
             // 算区块的中轴
             double scrWidth = 6.66;
             double blockWidth = scrWidth / 20.0;
@@ -168,6 +170,11 @@ namespace Yuri.PageView
         {
             p3.Y -= 0.2;
             this.ST3D_Camera.Position = p3;
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            (this.F1.Material as DiffuseMaterial).Brush = null;
         }
     }
 }

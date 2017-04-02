@@ -366,7 +366,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="vt">视窗类型</param>
         /// <returns>描述子实例</returns>
-        public ViewportDescriptor GetViewboxDescriptor(ViewportType vt)
+        public Viewport2DDescriptor GetViewboxDescriptor(ViewportType vt)
         {
             return this.viewboxDescVec[(int)vt];
         }
@@ -444,7 +444,7 @@ namespace Yuri.PlatformCore
         public void InitViewboxes()
         {
             // Background
-            ViewportDescriptor BgTemplate = new ViewportDescriptor()
+            Viewport2DDescriptor BgTemplate = new Viewport2DDescriptor()
             {
                 Type = ViewportType.VTBackground,
                 ZIndex = GlobalConfigContext.GAME_Z_BACKGROUND,
@@ -458,7 +458,7 @@ namespace Yuri.PlatformCore
             };
             this.viewboxDescVec[(int)ViewportType.VTBackground] = BgTemplate;
             // Character
-            ViewportDescriptor CsTemplate = new ViewportDescriptor()
+            Viewport2DDescriptor CsTemplate = new Viewport2DDescriptor()
             {
                 Type = ViewportType.VTCharacterStand,
                 ZIndex = GlobalConfigContext.GAME_Z_CHARACTERSTAND,
@@ -472,7 +472,7 @@ namespace Yuri.PlatformCore
             };
             this.viewboxDescVec[(int)ViewportType.VTCharacterStand] = CsTemplate;
             // Picture
-            ViewportDescriptor PicTemplate = new ViewportDescriptor()
+            Viewport2DDescriptor PicTemplate = new Viewport2DDescriptor()
             {
                 Type = ViewportType.VTPictures,
                 ZIndex = GlobalConfigContext.GAME_Z_PICTURES,
@@ -557,7 +557,7 @@ namespace Yuri.PlatformCore
             this.buttonDescVec = new List<SpriteButtonDescriptor>();
             this.backgroundDescVec = new List<SpriteDescriptor>();
             this.characterDescVec = new List<SpriteDescriptor>();
-            this.viewboxDescVec = new List<ViewportDescriptor>();
+            this.viewboxDescVec = new List<Viewport2DDescriptor>();
             this.pictureDescVec = new List<SpriteDescriptor>();
             for (int i = 0; i < 3; i++)
             {
@@ -659,7 +659,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 视窗描述向量
         /// </summary>
-        private readonly List<ViewportDescriptor> viewboxDescVec;
+        private readonly List<Viewport2DDescriptor> viewboxDescVec;
 
         /// <summary>
         /// 背景描述向量

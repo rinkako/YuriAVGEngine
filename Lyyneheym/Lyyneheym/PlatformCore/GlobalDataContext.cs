@@ -36,7 +36,7 @@ namespace Yuri.PlatformCore
         // 文本展示：模式
         public static MessageLayerType GAME_MESSAGE_MODE = MessageLayerType.Dialog;
         // 文本层：文本层数量
-        public static int GAME_MESSAGELAYER_COUNT = 5;
+        public static int GAME_MESSAGELAYER_COUNT = 2;
         // 文本层：文本层默认位置X
         public static double GAME_MESSAGELAYER_X = 0;
         // 文本层：文本层默认位置Y

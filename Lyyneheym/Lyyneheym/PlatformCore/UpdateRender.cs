@@ -537,7 +537,7 @@ namespace Yuri.PlatformCore
         private void ViewLoadedInit()
         {
             // 为视窗管理设置引用
-            this.viewMana.InitViewports();
+            this.viewMana.InitViewport2D();
             // 初始化小三角
             this.InitMsgLayerTria();
             // 初始化文本层

@@ -3,10 +3,10 @@
 namespace Yuri.PlatformCore
 {
     /// <summary>
-    /// 可视化视窗描述子
+    /// 可视化2D视窗描述子
     /// </summary>
     [Serializable]
-    internal sealed class ViewportDescriptor : CloneableDescriptor
+    internal sealed class Viewport2DDescriptor : CloneableDescriptor
     {
         /// <summary>
         /// 获取或设置视窗类型

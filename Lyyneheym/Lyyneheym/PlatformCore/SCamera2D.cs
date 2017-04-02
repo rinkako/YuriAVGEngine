@@ -42,11 +42,11 @@ namespace Yuri.PlatformCore
                 double destinationToNormalLineXBg = SCamera2D.GetManhattanDistance(destinationPointBg, normalPointBg, 1).X;
                 double originalToNormalLineXBg = SCamera2D.GetManhattanDistance(originalPointBg, normalPointBg, 1).X;
                 double BgToX = BgfromX - (destinationToNormalLineXBg - originalToNormalLineXBg) * bgRatio;
-                double actualBgBeginX = BgfromX - viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding.ActualWidth / 2.0;
-                double actualBgDestX = BgToX - viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding.ActualWidth / 2.0;
+                double actualBgBeginX = BgfromX - viewMana.GetViewport2D(ViewportType.VTBackground).ViewboxBinding.ActualWidth / 2.0;
+                double actualBgDestX = BgToX - viewMana.GetViewport2D(ViewportType.VTBackground).ViewboxBinding.ActualWidth / 2.0;
                 DoubleAnimation doubleAniLeftBg = new DoubleAnimation(actualBgBeginX, actualBgDestX, SCamera2D.animationDuration);
                 doubleAniLeftBg.DecelerationRatio = SCamera2D.DecelerateRatio;
-                Storyboard.SetTarget(doubleAniLeftBg, viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding);
+                Storyboard.SetTarget(doubleAniLeftBg, viewMana.GetViewport2D(ViewportType.VTBackground).ViewboxBinding);
                 Storyboard.SetTargetProperty(doubleAniLeftBg, new PropertyPath(Canvas.LeftProperty));
                 storyLeftBg.Children.Add(doubleAniLeftBg);
                 storyLeftBg.Duration = SCamera2D.animationDuration;
@@ -66,7 +66,7 @@ namespace Yuri.PlatformCore
                 double CsBeginX = CsfromX;
                 if (SCamera2D.lastFromScaling)
                 {
-                    double actualX = Canvas.GetLeft(viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
+                    double actualX = Canvas.GetLeft(viewMana.GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding);
                     if (actualX != CsBeginX)
                     {
                         CsBeginX = actualX;
@@ -80,7 +80,7 @@ namespace Yuri.PlatformCore
                 double CsToX = CsfromX - (destinationToNormalLineXCs - originalToNormalLineXCs) * Director.ScrMana.SCameraScale;
                 DoubleAnimation doubleAniLeftCs = new DoubleAnimation(CsBeginX, CsToX, SCamera2D.animationDuration);
                 doubleAniLeftCs.DecelerationRatio = SCamera2D.DecelerateRatio;
-                Storyboard.SetTarget(doubleAniLeftCs, viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
+                Storyboard.SetTarget(doubleAniLeftCs, viewMana.GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding);
                 Storyboard.SetTargetProperty(doubleAniLeftCs, new PropertyPath(Canvas.LeftProperty));
                 storyLeftCs.Children.Add(doubleAniLeftCs);
                 storyLeftCs.Duration = SCamera2D.animationDuration;
@@ -104,11 +104,11 @@ namespace Yuri.PlatformCore
                 double destinationToNormalLineXPic = SCamera2D.GetManhattanDistance(destinationPointPic, normalPointPic, 1).X;
                 double originalToNormalLineXPic = SCamera2D.GetManhattanDistance(originalPointPic, normalPointPic, 1).X;
                 double PicToX = PicfromX - (destinationToNormalLineXPic - originalToNormalLineXPic) * picRatio;
-                double actualPicBeginX = PicfromX - viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding.ActualWidth / 2.0;
-                double actualPicDestX = PicToX - viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding.ActualWidth / 2.0;
+                double actualPicBeginX = PicfromX - viewMana.GetViewport2D(ViewportType.VTPictures).ViewboxBinding.ActualWidth / 2.0;
+                double actualPicDestX = PicToX - viewMana.GetViewport2D(ViewportType.VTPictures).ViewboxBinding.ActualWidth / 2.0;
                 DoubleAnimation doubleAniLeftPic = new DoubleAnimation(actualPicBeginX, actualPicDestX, SCamera2D.animationDuration);
                 doubleAniLeftPic.DecelerationRatio = SCamera2D.DecelerateRatio;
-                Storyboard.SetTarget(doubleAniLeftPic, viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding);
+                Storyboard.SetTarget(doubleAniLeftPic, viewMana.GetViewport2D(ViewportType.VTPictures).ViewboxBinding);
                 Storyboard.SetTargetProperty(doubleAniLeftPic, new PropertyPath(Canvas.LeftProperty));
                 storyLeftPic.Children.Add(doubleAniLeftPic);
                 storyLeftPic.Duration = SCamera2D.animationDuration;
@@ -137,11 +137,11 @@ namespace Yuri.PlatformCore
                 double destinationToNormalLineYBg = SCamera2D.GetManhattanDistance(destinationPointBg, normalPointBg, 1).Y;
                 double originalToNormalLineYBg = SCamera2D.GetManhattanDistance(originalPointBg, normalPointBg, 1).Y;
                 double BgToY = BgfromY - (destinationToNormalLineYBg - originalToNormalLineYBg) * bgRatio;
-                double actualBgBeginY = BgfromY - viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding.ActualHeight / 2.0;
-                double actualBgDestY = BgToY - viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding.ActualHeight / 2.0;
+                double actualBgBeginY = BgfromY - viewMana.GetViewport2D(ViewportType.VTBackground).ViewboxBinding.ActualHeight / 2.0;
+                double actualBgDestY = BgToY - viewMana.GetViewport2D(ViewportType.VTBackground).ViewboxBinding.ActualHeight / 2.0;
                 DoubleAnimation doubleAniTopBg = new DoubleAnimation(actualBgBeginY, actualBgDestY, SCamera2D.animationDuration);
                 doubleAniTopBg.DecelerationRatio = SCamera2D.DecelerateRatio;
-                Storyboard.SetTarget(doubleAniTopBg, viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding);
+                Storyboard.SetTarget(doubleAniTopBg, viewMana.GetViewport2D(ViewportType.VTBackground).ViewboxBinding);
                 Storyboard.SetTargetProperty(doubleAniTopBg, new PropertyPath(Canvas.TopProperty));
                 storyTopBg.Children.Add(doubleAniTopBg);
                 storyTopBg.Duration = SCamera2D.animationDuration;
@@ -161,7 +161,7 @@ namespace Yuri.PlatformCore
                 double CsBeginY = CsfromY;
                 if (SCamera2D.lastFromScaling)
                 {
-                    double actualY = Canvas.GetTop(viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
+                    double actualY = Canvas.GetTop(viewMana.GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding);
                     if (actualY != CsBeginY)
                     {
                         CsBeginY = actualY;
@@ -175,7 +175,7 @@ namespace Yuri.PlatformCore
                 double CsToY = CsfromY - (destinationToNormalLineYCs - originalToNormalLineYCs) * Director.ScrMana.SCameraScale;
                 DoubleAnimation doubleAniTopCs = new DoubleAnimation(CsBeginY, CsToY, SCamera2D.animationDuration);
                 doubleAniTopCs.DecelerationRatio = SCamera2D.DecelerateRatio;
-                Storyboard.SetTarget(doubleAniTopCs, viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
+                Storyboard.SetTarget(doubleAniTopCs, viewMana.GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding);
                 Storyboard.SetTargetProperty(doubleAniTopCs, new PropertyPath(Canvas.TopProperty));
                 storyTopCs.Children.Add(doubleAniTopCs);
                 storyTopCs.Duration = SCamera2D.animationDuration;
@@ -199,11 +199,11 @@ namespace Yuri.PlatformCore
                 double destinationToNormalLineYpic = SCamera2D.GetManhattanDistance(destinationPointPic, normalPointPic, 1).Y;
                 double originalToNormalLineYpic = SCamera2D.GetManhattanDistance(originalPointPic, normalPointPic, 1).Y;
                 double PicToY = PicfromY - (destinationToNormalLineYpic - originalToNormalLineYpic) * picRatio;
-                double actualPicBeginY = PicfromY - viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding.ActualHeight / 2.0;
-                double actualPicDestY = PicToY - viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding.ActualHeight / 2.0;
+                double actualPicBeginY = PicfromY - viewMana.GetViewport2D(ViewportType.VTPictures).ViewboxBinding.ActualHeight / 2.0;
+                double actualPicDestY = PicToY - viewMana.GetViewport2D(ViewportType.VTPictures).ViewboxBinding.ActualHeight / 2.0;
                 DoubleAnimation doubleAniTopPic = new DoubleAnimation(actualPicBeginY, actualPicDestY, SCamera2D.animationDuration);
                 doubleAniTopPic.DecelerationRatio = SCamera2D.DecelerateRatio;
-                Storyboard.SetTarget(doubleAniTopPic, viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding);
+                Storyboard.SetTarget(doubleAniTopPic, viewMana.GetViewport2D(ViewportType.VTPictures).ViewboxBinding);
                 Storyboard.SetTargetProperty(doubleAniTopPic, new PropertyPath(Canvas.TopProperty));
                 storyTopPic.Children.Add(doubleAniTopPic);
                 storyTopPic.Duration = SCamera2D.animationDuration;
@@ -272,7 +272,7 @@ namespace Yuri.PlatformCore
                 Director.ScrMana.SCameraFocusRow = r;
                 Director.ScrMana.SCameraFocusCol = c;
                 // 处理背景的焦点
-                var aniGroupBg = (TransformGroup)ViewManager.GetInstance().GetViewport(ViewportType.VTBackground).ViewboxBinding.RenderTransform;
+                var aniGroupBg = (TransformGroup)ViewManager.GetInstance().GetViewport2D(ViewportType.VTBackground).ViewboxBinding.RenderTransform;
                 var scaleTransformerBg = (ScaleTransform)aniGroupBg.Children[1];
                 // 聚焦点在左边
                 if (c <= GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT / 2)
@@ -306,12 +306,12 @@ namespace Yuri.PlatformCore
                     scaleTransformerBg.CenterY = SCamera2D.GetScreenCoordination(GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2 + (r - GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2) / 2, 0).Y;
                 }
                 // 处理立绘的焦点
-                var aniGroupCs = (TransformGroup)ViewManager.GetInstance().GetViewport(ViewportType.VTCharacterStand).ViewboxBinding.RenderTransform;
+                var aniGroupCs = (TransformGroup)ViewManager.GetInstance().GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding.RenderTransform;
                 var scaleTransformerCs = (ScaleTransform)aniGroupCs.Children[1];
                 scaleTransformerCs.CenterX = sPoint.X;
                 scaleTransformerCs.CenterY = sPoint.Y;
                 // 处理前景的焦点
-                var aniGroupPic = (TransformGroup)ViewManager.GetInstance().GetViewport(ViewportType.VTPictures).ViewboxBinding.RenderTransform;
+                var aniGroupPic = (TransformGroup)ViewManager.GetInstance().GetViewport2D(ViewportType.VTPictures).ViewboxBinding.RenderTransform;
                 var scaleTransformerPic = (ScaleTransform)aniGroupPic.Children[1];
                 // 聚焦点在左边
                 if (c <= GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT / 2)
@@ -346,7 +346,7 @@ namespace Yuri.PlatformCore
                 }
             }
             // background
-            var bgVbox = viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding;
+            var bgVbox = viewMana.GetViewport2D(ViewportType.VTBackground).ViewboxBinding;
             var bgVDesc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground);
             Storyboard storyScaleBg = new Storyboard();
             DoubleAnimation doubleAniScaleXBg = new DoubleAnimation(bgVDesc.ScaleX, ratio * SCamera2D.BackgroundDeepRatio, timespan);
@@ -371,7 +371,7 @@ namespace Yuri.PlatformCore
             };
             bgVDesc.ScaleX = bgVDesc.ScaleY = ratio * SCamera2D.BackgroundDeepRatio;
             // character
-            var csVbox = viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding;
+            var csVbox = viewMana.GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding;
             var csVDesc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand);
             Storyboard storyScaleCs = new Storyboard();
             DoubleAnimation doubleAniScaleXCs = new DoubleAnimation(csVDesc.ScaleX, ratio, timespan);
@@ -407,7 +407,7 @@ namespace Yuri.PlatformCore
                 Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Top = -GlobalConfigContext.GAME_WINDOW_HEIGHT / ratio;
             }
             // picture
-            var picVbox = viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding;
+            var picVbox = viewMana.GetViewport2D(ViewportType.VTPictures).ViewboxBinding;
             var picVDesc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures);
             Storyboard storyScalePic = new Storyboard();
             DoubleAnimation doubleAniScaleXPic = new DoubleAnimation(picVDesc.ScaleX, ratio * SCamera2D.PictureDeepRatio, timespan);
@@ -459,8 +459,8 @@ namespace Yuri.PlatformCore
             DoubleAnimation doubleAniScaleYBg = new DoubleAnimation(bgRatio, 1 * SCamera2D.BackgroundDeepRatio, timespan);
             doubleAniScaleXBg.DecelerationRatio = SCamera2D.DecelerateRatio;
             doubleAniScaleYBg.DecelerationRatio = SCamera2D.DecelerateRatio;
-            Storyboard.SetTarget(doubleAniScaleXBg, viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding);
-            Storyboard.SetTarget(doubleAniScaleYBg, viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding);
+            Storyboard.SetTarget(doubleAniScaleXBg, viewMana.GetViewport2D(ViewportType.VTBackground).ViewboxBinding);
+            Storyboard.SetTarget(doubleAniScaleYBg, viewMana.GetViewport2D(ViewportType.VTBackground).ViewboxBinding);
             Storyboard.SetTargetProperty(doubleAniScaleXBg, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
             Storyboard.SetTargetProperty(doubleAniScaleYBg, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
             storyScaleBg.Children.Add(doubleAniScaleXBg);
@@ -472,8 +472,8 @@ namespace Yuri.PlatformCore
             DoubleAnimation doubleAniScaleYCs = new DoubleAnimation(Director.ScrMana.SCameraScale, 1, timespan);
             doubleAniScaleXCs.DecelerationRatio = SCamera2D.DecelerateRatio;
             doubleAniScaleYCs.DecelerationRatio = SCamera2D.DecelerateRatio;
-            Storyboard.SetTarget(doubleAniScaleXCs, viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
-            Storyboard.SetTarget(doubleAniScaleYCs, viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
+            Storyboard.SetTarget(doubleAniScaleXCs, viewMana.GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding);
+            Storyboard.SetTarget(doubleAniScaleYCs, viewMana.GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding);
             Storyboard.SetTargetProperty(doubleAniScaleXCs, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
             Storyboard.SetTargetProperty(doubleAniScaleYCs, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
             storyScaleCs.Children.Add(doubleAniScaleXCs);
@@ -486,15 +486,15 @@ namespace Yuri.PlatformCore
             DoubleAnimation doubleAniScaleYPic = new DoubleAnimation(picRatio, 1 * SCamera2D.PictureDeepRatio, timespan);
             doubleAniScaleXPic.DecelerationRatio = SCamera2D.DecelerateRatio;
             doubleAniScaleYPic.DecelerationRatio = SCamera2D.DecelerateRatio;
-            Storyboard.SetTarget(doubleAniScaleXPic, viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding);
-            Storyboard.SetTarget(doubleAniScaleYPic, viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding);
+            Storyboard.SetTarget(doubleAniScaleXPic, viewMana.GetViewport2D(ViewportType.VTPictures).ViewboxBinding);
+            Storyboard.SetTarget(doubleAniScaleYPic, viewMana.GetViewport2D(ViewportType.VTPictures).ViewboxBinding);
             Storyboard.SetTargetProperty(doubleAniScaleXPic, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)"));
             Storyboard.SetTargetProperty(doubleAniScaleYPic, new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)"));
             storyScalePic.Children.Add(doubleAniScaleXPic);
             storyScalePic.Children.Add(doubleAniScaleYPic);
             storyScalePic.Duration = timespan;
             // background translate
-            var bgVbox = viewMana.GetViewport(ViewportType.VTBackground).ViewboxBinding;
+            var bgVbox = viewMana.GetViewport2D(ViewportType.VTBackground).ViewboxBinding;
             var bgDesc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground);
             bgDesc.Left = bgVbox.ActualWidth / 2.0;
             bgDesc.Top = bgVbox.ActualHeight / 2.0;
@@ -514,31 +514,31 @@ namespace Yuri.PlatformCore
             storyTransBg.Duration = timespan;
             // character translate
             Storyboard storyTransCs = new Storyboard();
-            double CsfromX = Canvas.GetLeft(viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
-            double CsfromY = Canvas.GetTop(viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
+            double CsfromX = Canvas.GetLeft(viewMana.GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding);
+            double CsfromY = Canvas.GetTop(viewMana.GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding);
             DoubleAnimation doubleAniLeftCs = new DoubleAnimation(CsfromX, 0, timespan);
             doubleAniLeftCs.DecelerationRatio = SCamera2D.DecelerateRatio;
-            Storyboard.SetTarget(doubleAniLeftCs, viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
+            Storyboard.SetTarget(doubleAniLeftCs, viewMana.GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding);
             Storyboard.SetTargetProperty(doubleAniLeftCs, new PropertyPath(Canvas.LeftProperty));
             storyTransCs.Children.Add(doubleAniLeftCs);
             DoubleAnimation doubleAniTopCs = new DoubleAnimation(CsfromY, 0, timespan);
             doubleAniTopCs.DecelerationRatio = SCamera2D.DecelerateRatio;
-            Storyboard.SetTarget(doubleAniTopCs, viewMana.GetViewport(ViewportType.VTCharacterStand).ViewboxBinding);
+            Storyboard.SetTarget(doubleAniTopCs, viewMana.GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding);
             Storyboard.SetTargetProperty(doubleAniTopCs, new PropertyPath(Canvas.TopProperty));
             storyTransCs.Children.Add(doubleAniTopCs);
             storyTransCs.Duration = timespan;
             // picture translate
             Storyboard storyTransPic = new Storyboard();
-            double PicfromX = Canvas.GetLeft(viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding);
-            double PicfromY = Canvas.GetTop(viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding);
+            double PicfromX = Canvas.GetLeft(viewMana.GetViewport2D(ViewportType.VTPictures).ViewboxBinding);
+            double PicfromY = Canvas.GetTop(viewMana.GetViewport2D(ViewportType.VTPictures).ViewboxBinding);
             DoubleAnimation doubleAniLeftPic = new DoubleAnimation(PicfromX, 0, timespan);
             doubleAniLeftPic.DecelerationRatio = SCamera2D.DecelerateRatio;
-            Storyboard.SetTarget(doubleAniLeftPic, viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding);
+            Storyboard.SetTarget(doubleAniLeftPic, viewMana.GetViewport2D(ViewportType.VTPictures).ViewboxBinding);
             Storyboard.SetTargetProperty(doubleAniLeftPic, new PropertyPath(Canvas.LeftProperty));
             storyTransPic.Children.Add(doubleAniLeftPic);
             DoubleAnimation doubleAniTopPic = new DoubleAnimation(PicfromY, 0, timespan);
             doubleAniTopPic.DecelerationRatio = SCamera2D.DecelerateRatio;
-            Storyboard.SetTarget(doubleAniTopPic, viewMana.GetViewport(ViewportType.VTPictures).ViewboxBinding);
+            Storyboard.SetTarget(doubleAniTopPic, viewMana.GetViewport2D(ViewportType.VTPictures).ViewboxBinding);
             Storyboard.SetTargetProperty(doubleAniTopPic, new PropertyPath(Canvas.TopProperty));
             storyTransPic.Children.Add(doubleAniTopPic);
             storyTransPic.Duration = timespan;
@@ -602,19 +602,19 @@ namespace Yuri.PlatformCore
         public static void PreviewEnterScene()
         {
             // bgCenter
-            var bgVBox = ViewManager.GetInstance().GetViewport(ViewportType.VTBackground);
+            var bgVBox = ViewManager.GetInstance().GetViewport2D(ViewportType.VTBackground);
             var bgAniGroup = (TransformGroup)bgVBox.ViewboxBinding.RenderTransform;
             var bgScaleTransformer = (ScaleTransform)bgAniGroup.Children[1];
             bgScaleTransformer.CenterX = bgVBox.ViewboxBinding.ActualWidth / 2.0;
             bgScaleTransformer.CenterY = bgVBox.ViewboxBinding.ActualHeight / 2.0;
             // csCenter
-            var csVBox = ViewManager.GetInstance().GetViewport(ViewportType.VTCharacterStand);
+            var csVBox = ViewManager.GetInstance().GetViewport2D(ViewportType.VTCharacterStand);
             var csAniGroup = (TransformGroup)csVBox.ViewboxBinding.RenderTransform;
             var csScaleTransformer = (ScaleTransform)csAniGroup.Children[1];
             csScaleTransformer.CenterX = csVBox.ViewboxBinding.ActualWidth / 2.0;
             csScaleTransformer.CenterY = csVBox.ViewboxBinding.ActualHeight / 2.0;
             // picCenter
-            var picVBox = ViewManager.GetInstance().GetViewport(ViewportType.VTPictures);
+            var picVBox = ViewManager.GetInstance().GetViewport2D(ViewportType.VTPictures);
             var picAniGroup = (TransformGroup)picVBox.ViewboxBinding.RenderTransform;
             var picScaleTransformer = (ScaleTransform)picAniGroup.Children[1];
             picScaleTransformer.CenterX = picVBox.ViewboxBinding.ActualWidth / 2.0;
@@ -866,7 +866,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryTopPic_Completed(object sender, EventArgs e)
         {
-            var sp = ViewManager.GetInstance().GetViewport(ViewportType.VTPictures);
+            var sp = ViewManager.GetInstance().GetViewport2D(ViewportType.VTPictures);
             var desc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures);
             Canvas.SetTop(sp.ViewboxBinding, desc.Top - sp.ViewboxBinding.ActualHeight / 2.0);
         }
@@ -876,7 +876,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryTopCs_Completed(object sender, EventArgs e)
         {
-            var sp = ViewManager.GetInstance().GetViewport(ViewportType.VTCharacterStand);
+            var sp = ViewManager.GetInstance().GetViewport2D(ViewportType.VTCharacterStand);
             var desc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand);
             Canvas.SetTop(sp.ViewboxBinding, desc.Top);
         }
@@ -886,7 +886,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryTopBg_Completed(object sender, EventArgs e)
         {
-            var sp = ViewManager.GetInstance().GetViewport(ViewportType.VTBackground);
+            var sp = ViewManager.GetInstance().GetViewport2D(ViewportType.VTBackground);
             var desc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground);
             Canvas.SetTop(sp.ViewboxBinding, desc.Top - sp.ViewboxBinding.ActualHeight / 2.0);
         }
@@ -896,7 +896,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryLeftPic_Completed(object sender, EventArgs e)
         {
-            var sp = ViewManager.GetInstance().GetViewport(ViewportType.VTPictures);
+            var sp = ViewManager.GetInstance().GetViewport2D(ViewportType.VTPictures);
             var desc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures);
             Canvas.SetLeft(sp.ViewboxBinding, desc.Left - sp.ViewboxBinding.ActualWidth / 2.0);
         }
@@ -906,7 +906,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryLeftCs_Completed(object sender, EventArgs e)
         {
-            var sp = ViewManager.GetInstance().GetViewport(ViewportType.VTCharacterStand);
+            var sp = ViewManager.GetInstance().GetViewport2D(ViewportType.VTCharacterStand);
             var desc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand);
             Canvas.SetLeft(sp.ViewboxBinding, desc.Left);
         }
@@ -916,7 +916,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryLeftBg_Completed(object sender, EventArgs e)
         {
-            var sp = ViewManager.GetInstance().GetViewport(ViewportType.VTBackground);
+            var sp = ViewManager.GetInstance().GetViewport2D(ViewportType.VTBackground);
             var desc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground);
             Canvas.SetLeft(sp.ViewboxBinding, desc.Left - sp.ViewboxBinding.ActualWidth / 2.0);
         }
@@ -926,7 +926,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryScalePic_Completed(object sender, EventArgs e)
         {
-            var aniGroup = (TransformGroup)ViewManager.GetInstance().GetViewport(ViewportType.VTPictures).ViewboxBinding.RenderTransform;
+            var aniGroup = (TransformGroup)ViewManager.GetInstance().GetViewport2D(ViewportType.VTPictures).ViewboxBinding.RenderTransform;
             var scaleTransformer = (ScaleTransform)aniGroup.Children[1];
             scaleTransformer.ScaleX = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures).ScaleX;
             scaleTransformer.ScaleY = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures).ScaleY;
@@ -937,7 +937,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryScaleCs_Completed(object sender, EventArgs e)
         {
-            var aniGroup = (TransformGroup)ViewManager.GetInstance().GetViewport(ViewportType.VTCharacterStand).ViewboxBinding.RenderTransform;
+            var aniGroup = (TransformGroup)ViewManager.GetInstance().GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding.RenderTransform;
             var scaleTransformer = (ScaleTransform)aniGroup.Children[1];
             scaleTransformer.ScaleX = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).ScaleX;
             scaleTransformer.ScaleY = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).ScaleY;
@@ -948,7 +948,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryScaleBg_Completed(object sender, EventArgs e)
         {
-            var aniGroup = (TransformGroup)ViewManager.GetInstance().GetViewport(ViewportType.VTBackground).ViewboxBinding.RenderTransform;
+            var aniGroup = (TransformGroup)ViewManager.GetInstance().GetViewport2D(ViewportType.VTBackground).ViewboxBinding.RenderTransform;
             var scaleTransformer = (ScaleTransform)aniGroup.Children[1];
             scaleTransformer.ScaleX = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground).ScaleX;
             scaleTransformer.ScaleY = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground).ScaleY;
@@ -959,7 +959,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryScalePic_Reset_Completed(object sender, EventArgs e)
         {
-            var aniGroup = (TransformGroup)ViewManager.GetInstance().GetViewport(ViewportType.VTPictures).ViewboxBinding.RenderTransform;
+            var aniGroup = (TransformGroup)ViewManager.GetInstance().GetViewport2D(ViewportType.VTPictures).ViewboxBinding.RenderTransform;
             var scaleTransformer = (ScaleTransform)aniGroup.Children[1];
             scaleTransformer.ScaleX = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures).ScaleX = 1.0 * SCamera2D.PictureDeepRatio;
             scaleTransformer.ScaleY = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures).ScaleY = 1.0 * SCamera2D.PictureDeepRatio;
@@ -970,7 +970,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryScaleCs_Reset_Completed(object sender, EventArgs e)
         {
-            var aniGroup = (TransformGroup)ViewManager.GetInstance().GetViewport(ViewportType.VTCharacterStand).ViewboxBinding.RenderTransform;
+            var aniGroup = (TransformGroup)ViewManager.GetInstance().GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding.RenderTransform;
             var scaleTransformer = (ScaleTransform)aniGroup.Children[1];
             scaleTransformer.ScaleX = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).ScaleX = 1.0;
             scaleTransformer.ScaleY = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).ScaleY = 1.0;
@@ -983,7 +983,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryScaleBg_Reset_Completed(object sender, EventArgs e)
         {
-            var sp = ViewManager.GetInstance().GetViewport(ViewportType.VTBackground);
+            var sp = ViewManager.GetInstance().GetViewport2D(ViewportType.VTBackground);
             var desc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground);
             var aniGroup = (TransformGroup)sp.ViewboxBinding.RenderTransform;
             var scaleTransformer = (ScaleTransform)aniGroup.Children[1];
@@ -996,7 +996,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryTransPic_Reset_Completed(object sender, EventArgs e)
         {
-            var vb = ViewManager.GetInstance().GetViewport(ViewportType.VTPictures).ViewboxBinding;
+            var vb = ViewManager.GetInstance().GetViewport2D(ViewportType.VTPictures).ViewboxBinding;
             Canvas.SetLeft(vb, Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures).Left = 0);
             Canvas.SetTop(vb, Director.ScrMana.GetViewboxDescriptor(ViewportType.VTPictures).Top = 0);
         }
@@ -1006,7 +1006,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryTransCs_Reset_Completed(object sender, EventArgs e)
         {
-            var vb = ViewManager.GetInstance().GetViewport(ViewportType.VTCharacterStand).ViewboxBinding;
+            var vb = ViewManager.GetInstance().GetViewport2D(ViewportType.VTCharacterStand).ViewboxBinding;
             Canvas.SetLeft(vb, Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Left = 0);
             Canvas.SetTop(vb, Director.ScrMana.GetViewboxDescriptor(ViewportType.VTCharacterStand).Top = 0);
         }
@@ -1016,7 +1016,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private static void StoryTransBg_Reset_Completed(object sender, EventArgs e)
         {
-            var sp = ViewManager.GetInstance().GetViewport(ViewportType.VTBackground);
+            var sp = ViewManager.GetInstance().GetViewport2D(ViewportType.VTBackground);
             var desc = Director.ScrMana.GetViewboxDescriptor(ViewportType.VTBackground);
             Canvas.SetLeft(sp.ViewboxBinding, desc.Left - sp.ViewboxBinding.ActualWidth / 2.0);
             Canvas.SetTop(sp.ViewboxBinding, desc.Top - sp.ViewboxBinding.ActualHeight / 2.0);

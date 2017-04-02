@@ -587,6 +587,7 @@ namespace Yuri.PlatformCore
         Pictures,
         Stand,
         Background,
+        Frontier,
         BGM,
         BGS,
         SE,

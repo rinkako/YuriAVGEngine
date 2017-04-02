@@ -44,6 +44,11 @@ namespace Yuri.PlatformCore
         public int Z { get; set; }
 
         /// <summary>
+        /// 获取或设置3D精灵所在的立绘槽号
+        /// </summary>
+        public int Slot3D { get; set; }
+
+        /// <summary>
         /// 获取或设置精灵角度
         /// </summary>
         public double Angle { get; set; }

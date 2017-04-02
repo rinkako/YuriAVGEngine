@@ -6,14 +6,16 @@ using System.Windows.Media.Imaging;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Windows.Media.Media3D;
 using Transitionals;
 using Transitionals.Controls;
 using Yuri.Utils;
+using Yuri.PageView;
 
 namespace Yuri.PlatformCore
 {
     /// <summary>
-    /// 视窗管理器：负责将画面管理器的内容渲染为前端视图
+    /// 视窗管理器：负责将画面管理器的内容渲染为前端2D/3D视图
     /// </summary>
     internal sealed class ViewManager
     {
@@ -23,7 +25,7 @@ namespace Yuri.PlatformCore
         /// <returns>视窗管理器</returns>
         public static ViewManager GetInstance()
         {
-            return ViewManager.synObject == null ? ViewManager.synObject = new ViewManager() : ViewManager.synObject;
+            return ViewManager.synObject ?? (ViewManager.synObject = new ViewManager());
         }
 
         /// <summary>
@@ -34,7 +36,7 @@ namespace Yuri.PlatformCore
             // 先重绘视窗
             for (int i = 0; i < 3; i++)
             {
-                this.ReDrawViewport((ViewportType)i, Director.ScrMana.GetViewboxDescriptor((ViewportType)i));
+                this.ReDrawViewport2D((ViewportType)i, Director.ScrMana.GetViewboxDescriptor((ViewportType)i));
             }
             // 重绘背景
             for (int i = 0; i < this.backgroundSpriteVec.Count; i++)
@@ -122,40 +124,28 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="id">文字层id</param>
         /// <returns>文字层实例</returns>
-        public MessageLayer GetMessageLayer(int id)
-        {
-            return this.messageLayerVec[id];
-        }
+        public MessageLayer GetMessageLayer(int id) => this.messageLayerVec[id];
 
         /// <summary>
         /// 获取画面上的按钮实例
         /// </summary>
         /// <param name="id">按钮id</param>
         /// <returns>按钮实例</returns>
-        public SpriteButton GetSpriteButton(int id)
-        {
-            return this.buttonLayerVec[id];
-        }
+        public SpriteButton GetSpriteButton(int id) => this.buttonLayerVec[id];
 
         /// <summary>
         /// 获取画面上的按钮实例
         /// </summary>
         /// <param name="id">选择支id</param>
         /// <returns>选择支实例</returns>
-        public BranchButton GetBranchButton(int id)
-        {
-            return this.branchButtonVec[id];
-        }
+        public BranchButton GetBranchButton(int id) => this.branchButtonVec[id];
 
         /// <summary>
         /// 获取画面上的视窗
         /// </summary>
-        /// <param name="vt"></param>
+        /// <param name="vt">视窗类型</param>
         /// <returns>视窗实例</returns>
-        public YuriViewport GetViewport(ViewportType vt)
-        {
-            return this.viewboxVec[(int)vt];
-        }
+        public YuriViewport2D GetViewport2D(ViewportType vt) => this.viewbox2dVec[(int)vt];
 
         /// <summary>
         /// 将指定类型的所有项目从画面移除
@@ -273,11 +263,10 @@ namespace Yuri.PlatformCore
         public void RemoveSprite(int id, ResourceType rType)
         {
             Director.ScrMana.RemoveSprite(id, rType);
-            YuriSprite removeOne = null;
+            YuriSprite removeOne;
             switch (rType)
             {
                 case ResourceType.Background:
-                    removeOne = this.backgroundSpriteVec[id];
                     // 交换前景和背景，为消除背景做准备
                     ScreenManager.GetInstance().Backlay();
                     // 执行过渡，消除背景
@@ -325,6 +314,8 @@ namespace Yuri.PlatformCore
         /// <param name="transTypeName">过渡类型的名字</param>
         public void ApplyTransition(string transTypeName)
         {
+            // 如果不是2D舞台就跳过
+            if (ViewManager.Is3DStage) { return; }
             // 刷新精灵
             var backDesc = Director.ScrMana.GetSpriteDescriptor((int)BackgroundPage.Back, ResourceType.Background);
             var foreDesc = Director.ScrMana.GetSpriteDescriptor((int)BackgroundPage.Fore, ResourceType.Background);
@@ -365,28 +356,25 @@ namespace Yuri.PlatformCore
             }
             // 交换前景和背景
             Director.ScrMana.Backlay();
-            this.view.TransitionDS.ObjectInstance = transition;
+            view2D.TransitionDS.ObjectInstance = transition;
             var viewBinder = this.backgroundSpriteVec[(int)BackgroundPage.Fore] == null ?
                 null : this.backgroundSpriteVec[(int)BackgroundPage.Fore].DisplayBinding;
-            var canvas = this.GetDrawingCanvas(ResourceType.Background);
+            var canvas = this.GetDrawingCanvas2D(ResourceType.Background);
             if (viewBinder != null && canvas.Children.Contains(viewBinder))
             {
                 canvas.Children.Remove(viewBinder);
-                Canvas.SetZIndex(this.view.TransitionBox, Canvas.GetZIndex(viewBinder));
+                Canvas.SetZIndex(view2D.TransitionBox, Canvas.GetZIndex(viewBinder));
             }
             // 执行过渡
-            this.view.TransitionBox.TransitionEnded += TransitionEnded;
-            this.view.TransitionBox.Content = viewBinder;
+            view2D.TransitionBox.TransitionEnded += TransitionEnded;
+            view2D.TransitionBox.Content = viewBinder;
         }
 
         /// <summary>
         /// 获取主视窗上的过渡容器
         /// </summary>
         /// <returns>过渡容器引用</returns>
-        public TransitionElement GetTransitionBox()
-        {
-            return this.view.TransitionBox;
-        }
+        public TransitionElement GetTransitionBox() => ViewManager.view2D.TransitionBox;
 
         /// <summary>
         /// 在过渡效果完成时触发
@@ -394,21 +382,21 @@ namespace Yuri.PlatformCore
         private void TransitionEnded(object sender, TransitionEventArgs e)
         {
             // 恢复back层不可见
-            if (this.backgroundSpriteVec[(int)BackgroundPage.Back] != null &&
-                this.backgroundSpriteVec[(int)BackgroundPage.Back].DisplayBinding != null)
+            if (backgroundSpriteVec[(int)BackgroundPage.Back]?.DisplayBinding != null)
             {
                 this.backgroundSpriteVec[(int)BackgroundPage.Back].DisplayBinding.Visibility = Visibility.Hidden;
             }
         }
-        
+
         /// <summary>
         /// 重绘视窗
         /// </summary>
         /// <param name="vt">视窗类型</param>
-        private void ReDrawViewport(ViewportType vt, ViewportDescriptor descriptor)
+        /// <param name="descriptor">2D视窗重绘结果的描述子</param>
+        private void ReDrawViewport2D(ViewportType vt, Viewport2DDescriptor descriptor)
         {
             // 取得前端对象
-            Viewbox vb = this.viewboxVec[(int)vt].ViewboxBinding;
+            Viewbox vb = this.viewbox2dVec[(int)vt].ViewboxBinding;
             // 重置
             if (vt == ViewportType.VTBackground)
             {
@@ -417,8 +405,8 @@ namespace Yuri.PlatformCore
                 {
                     Canvas.SetLeft(vb, bindingBackgroundDescriptor.X - GlobalConfigContext.GAME_WINDOW_WIDTH / 2.0);
                     Canvas.SetTop(vb, bindingBackgroundDescriptor.Y - GlobalConfigContext.GAME_WINDOW_HEIGHT / 2.0);
-                    this.viewboxVec[(int)vt].ScaleTransformer.ScaleX = bindingBackgroundDescriptor.ScaleX;
-                    this.viewboxVec[(int)vt].ScaleTransformer.ScaleY = bindingBackgroundDescriptor.ScaleY;
+                    this.viewbox2dVec[(int)vt].ScaleTransformer.ScaleX = bindingBackgroundDescriptor.ScaleX;
+                    this.viewbox2dVec[(int)vt].ScaleTransformer.ScaleY = bindingBackgroundDescriptor.ScaleY;
                 }
             }
             else
@@ -426,8 +414,8 @@ namespace Yuri.PlatformCore
                 Canvas.SetLeft(vb, descriptor.Left);
                 Canvas.SetTop(vb, descriptor.Top);
 
-                this.viewboxVec[(int)vt].ScaleTransformer.ScaleX = descriptor.ScaleX;
-                this.viewboxVec[(int)vt].ScaleTransformer.ScaleY = descriptor.ScaleY;
+                this.viewbox2dVec[(int)vt].ScaleTransformer.ScaleX = descriptor.ScaleX;
+                this.viewbox2dVec[(int)vt].ScaleTransformer.ScaleY = descriptor.ScaleY;
             }
         }
 
@@ -556,25 +544,25 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 获取对象要描绘上去的画布
+        /// 获取对象要描绘上去的2D画布
         /// </summary>
         /// <param name="rType">资源类型</param>
         /// <returns>画布的引用</returns>
-        private Canvas GetDrawingCanvas(ResourceType rType)
+        private Canvas GetDrawingCanvas2D(ResourceType rType)
         {
             switch (rType)
             {
                 case ResourceType.Background:
-                    return this.viewboxVec[(int)ViewportType.VTBackground].CanvasBinding;
+                    return this.viewbox2dVec[(int)ViewportType.VTBackground].CanvasBinding;
                 case ResourceType.Stand:
-                    return this.viewboxVec[(int)ViewportType.VTCharacterStand].CanvasBinding;
+                    return this.viewbox2dVec[(int)ViewportType.VTCharacterStand].CanvasBinding;
                 case ResourceType.Pictures:
-                    return this.viewboxVec[(int)ViewportType.VTPictures].CanvasBinding;
+                    return this.viewbox2dVec[(int)ViewportType.VTPictures].CanvasBinding;
                 default:
-                    return this.view.BO_MainGrid;
+                    return ViewManager.view2D.BO_MainGrid;
             }
         }
-
+        
         /// <summary>
         /// 为主窗体描绘一个精灵
         /// </summary>
@@ -585,6 +573,25 @@ namespace Yuri.PlatformCore
         private void DrawSprite(YuriSprite sprite, SpriteDescriptor descriptor, ResourceType rType, int idx)
         {
             if (sprite == null) { return; }
+            if (ViewManager.Is3DStage)
+            {
+                this.DrawSprite3D(sprite, descriptor, rType);
+            }
+            else
+            {
+                this.DrawSprite2D(sprite, descriptor, rType, idx);
+            }
+        }
+
+        /// <summary>
+        /// 在2D画布上描绘精灵
+        /// </summary>
+        /// <param name="sprite">精灵</param>
+        /// <param name="descriptor">精灵描述子</param>
+        /// <param name="rType">资源类型</param>
+        /// <param name="idx">描述子在向量的下标</param>
+        private void DrawSprite2D(YuriSprite sprite, SpriteDescriptor descriptor, ResourceType rType, int idx)
+        {
             Image spriteImage = new Image();
             BitmapImage bmp = sprite.SpriteBitmapImage;
             spriteImage.Width = bmp.PixelWidth;
@@ -600,28 +607,117 @@ namespace Yuri.PlatformCore
             Canvas.SetZIndex(spriteImage, descriptor.Z);
             // 此处不可以用descriptor的id去判断background元素的可见性，因为存在backlay
             spriteImage.Visibility = (rType == ResourceType.Background && idx == 0) ? Visibility.Hidden : Visibility.Visible;
-            this.GetDrawingCanvas(rType).Children.Add(spriteImage);
+            this.GetDrawingCanvas2D(rType).Children.Add(spriteImage);
             sprite.InitAnimationRenderTransform();
             if (rType != ResourceType.Background)
             {
                 sprite.AnimationElement = sprite.DisplayBinding;
                 descriptor.ToScaleX = descriptor.ScaleX;
                 descriptor.ToScaleY = descriptor.ScaleY;
-                SpriteAnimation.RotateToAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.Angle, 0);
-                SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.FromMilliseconds(0), descriptor.ScaleX, descriptor.ScaleY, 0, 0);
+                SpriteAnimation.RotateToAnimation(sprite, TimeSpan.Zero, descriptor.Angle, 0);
+                SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.Zero, descriptor.ScaleX, descriptor.ScaleY, 0, 0);
             }
             else
             {
-                sprite.AnimationElement = this.viewboxVec[(int)ViewportType.VTBackground].ViewboxBinding;
+                sprite.AnimationElement = this.viewbox2dVec[(int)ViewportType.VTBackground].ViewboxBinding;
                 // 如果前景渐变框是空就强制刷新她
-                if (this.view.TransitionBox.Content == null && idx == 1)
+                if (view2D.TransitionBox.Content == null && idx == 1)
                 {
-                    this.GetDrawingCanvas(rType).Children.Remove(spriteImage);
-                    this.view.TransitionBox.Content = spriteImage;
+                    this.GetDrawingCanvas2D(rType).Children.Remove(spriteImage);
+                    view2D.TransitionBox.Content = spriteImage;
                 }
             }
         }
-        
+
+        /// <summary>
+        /// 在3D模型组上描绘精灵
+        /// </summary>
+        /// <param name="sprite">精灵</param>
+        /// <param name="descriptor">精灵描述子</param>
+        /// <param name="rType">资源类型</param>
+        /// <param name="idx">描述子在向量的下标</param>
+        private void DrawSprite3D(YuriSprite sprite, SpriteDescriptor descriptor, ResourceType rType)
+        {
+            switch (rType)
+            {
+                case ResourceType.Background:
+                    var bgModelGeometry = ViewManager.view3D.ST3D_Background_Fore;
+                    var bgMaterial = bgModelGeometry.Material;
+                    if (!(bgMaterial is DiffuseMaterial))
+                    {
+                        bgMaterial = bgModelGeometry.Material = new DiffuseMaterial();
+                    }
+                    var bgMaterialBrush = new ImageBrush(sprite.SpriteBitmapImage)
+                    {
+                        AlignmentX = AlignmentX.Center,
+                        AlignmentY = AlignmentY.Center,
+                        TileMode = TileMode.None
+                    };
+                    ((DiffuseMaterial)bgMaterial).Brush = bgMaterialBrush;
+                    break;
+                case ResourceType.Stand:
+                    var slotModelGeometry = this.GetCharacterModel3D(descriptor.Slot3D);
+                    var csMaterial = slotModelGeometry.Material;
+                    if (!(csMaterial is DiffuseMaterial))
+                    {
+                        csMaterial = slotModelGeometry.Material = new DiffuseMaterial();
+                    }
+                    var csMaterialBrush = new ImageBrush(sprite.SpriteBitmapImage)
+                    {
+                        AlignmentX = AlignmentX.Center,
+                        AlignmentY = AlignmentY.Center,
+                        TileMode = TileMode.None
+                    };
+                    ((DiffuseMaterial)csMaterial).Brush = csMaterialBrush;
+                    break;
+                case ResourceType.Frontier:
+                    var ftModelGeometry = ViewManager.view3D.ST3D_Frontier_1;
+                    var ftMaterial = ftModelGeometry.Material;
+                    if (!(ftMaterial is DiffuseMaterial))
+                    {
+                        ftMaterial = ftModelGeometry.Material = new DiffuseMaterial();
+                    }
+                    var ftMaterialBrush = new ImageBrush(sprite.SpriteBitmapImage)
+                    {
+                        AlignmentX = AlignmentX.Center,
+                        AlignmentY = AlignmentY.Center,
+                        TileMode = TileMode.None
+                    };
+                    ((DiffuseMaterial)ftMaterial).Brush = ftMaterialBrush;
+                    break;
+                default:
+                    Image spriteImage = new Image();
+                    BitmapImage bmp = sprite.SpriteBitmapImage;
+                    spriteImage.Width = bmp.PixelWidth;
+                    spriteImage.Height = bmp.PixelHeight;
+                    spriteImage.Source = bmp;
+                    spriteImage.Opacity = descriptor.Opacity;
+                    sprite.CutRect = descriptor.CutRect;
+                    sprite.DisplayBinding = spriteImage;
+                    sprite.Anchor = descriptor.AnchorType;
+                    sprite.Descriptor = descriptor;
+                    Canvas.SetLeft(spriteImage, descriptor.X - bmp.PixelWidth / 2.0);
+                    Canvas.SetTop(spriteImage, descriptor.Y - bmp.PixelHeight / 2.0);
+                    Canvas.SetZIndex(spriteImage, descriptor.Z);
+                    spriteImage.Visibility = Visibility.Visible;
+                    ViewManager.view3D.BO_MainGrid.Children.Add(spriteImage);
+                    sprite.InitAnimationRenderTransform();
+                    sprite.AnimationElement = sprite.DisplayBinding;
+                    descriptor.ToScaleX = descriptor.ScaleX;
+                    descriptor.ToScaleY = descriptor.ScaleY;
+                    SpriteAnimation.RotateToAnimation(sprite, TimeSpan.Zero, descriptor.Angle, 0);
+                    SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.Zero, descriptor.ScaleX, descriptor.ScaleY, 0, 0);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 获取角色立绘槽的3D模型
+        /// </summary>
+        /// <param name="cSlot">槽中心在屏幕分块的编号</param>
+        /// <returns>模型对象</returns>
+        private GeometryModel3D GetCharacterModel3D(int cSlot) => ViewManager.view3D.ST3D_Character_Group.Children[cSlot] as GeometryModel3D;
+
         /// <summary>
         /// 为主窗体描绘一个文字层
         /// </summary>
@@ -631,7 +727,7 @@ namespace Yuri.PlatformCore
         {
             TextBlock msgBlock = new TextBlock();
             msglay.DisplayBinding = msgBlock;
-            if (msglay.BackgroundSprite != null && msglay.BackgroundSprite.SpriteBitmapImage != null)
+            if (msglay.BackgroundSprite?.SpriteBitmapImage != null)
             {
                 ImageBrush ib = new ImageBrush(msglay.BackgroundSprite.SpriteBitmapImage);
                 BitmapImage t = ib.ImageSource as BitmapImage;
@@ -659,7 +755,14 @@ namespace Yuri.PlatformCore
             Canvas.SetTop(msgBlock, descriptor.Y);
             Canvas.SetZIndex(msgBlock, descriptor.Z);
             msglay.Visibility = descriptor.Visible ? Visibility.Visible : Visibility.Hidden;
-            this.view.BO_MainGrid.Children.Add(msgBlock);
+            if (ViewManager.Is3DStage)
+            {
+                ViewManager.view3D.BO_MainGrid.Children.Add(msgBlock);
+            }
+            else
+            {
+                ViewManager.view2D.BO_MainGrid.Children.Add(msgBlock);
+            }
         }
 
         /// <summary>
@@ -696,7 +799,14 @@ namespace Yuri.PlatformCore
             buttonImage.MouseEnter += sbutton.MouseEnterHandler;
             buttonImage.MouseLeave += sbutton.MouseLeaveHandler;
             buttonImage.MouseUp += sbutton.MouseUpHandler;
-            this.view.BO_MainGrid.Children.Add(buttonImage);
+            if (ViewManager.Is3DStage)
+            {
+                ViewManager.view3D.BO_MainGrid.Children.Add(buttonImage);
+            }
+            else
+            {
+                ViewManager.view2D.BO_MainGrid.Children.Add(buttonImage);
+            }
             sbutton.InitAnimationRenderTransform();
         }
 
@@ -742,7 +852,14 @@ namespace Yuri.PlatformCore
             buttonTextView.MouseEnter += bbutton.MouseEnterHandler;
             buttonTextView.MouseLeave += bbutton.MouseLeaveHandler;
             buttonTextView.MouseUp += bbutton.MouseUpHandler;
-            this.view.BO_MainGrid.Children.Add(buttonTextView);
+            if (ViewManager.Is3DStage)
+            {
+                ViewManager.view3D.BO_MainGrid.Children.Add(buttonTextView);
+            }
+            else
+            {
+                ViewManager.view2D.BO_MainGrid.Children.Add(buttonTextView);
+            }
             bbutton.InitAnimationRenderTransform();
         }
 
@@ -759,19 +876,20 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 将选择支从画面移除
+        /// 将文字层从画面移除
         /// </summary>
-        /// <param name="bbutton">选择支实例</param>
-        private void RemoveBranchButton(BranchButton bbutton)
+        /// <param name="msglay">文字层实例</param>
+        private void RemoveMessageLayer(MessageLayer msglay)
         {
-            if (bbutton != null)
+            if (msglay != null)
             {
-                var bbView = bbutton.DisplayBinding;
-                if (bbView != null && this.view.BO_MainGrid.Children.Contains(bbView))
+                TextBlock msglayView = msglay.DisplayBinding;
+                Canvas workCanvas = ViewManager.Is3DStage ? ViewManager.view3D.BO_MainGrid : ViewManager.view2D.BO_MainGrid;
+                if (msglayView != null && workCanvas.Children.Contains(msglayView))
                 {
-                    this.view.BO_MainGrid.Children.Remove(bbView);
+                    workCanvas.Children.Remove(msglayView);
                 }
-                bbutton.DisplayBinding = null;
+                msglay.DisplayBinding = null;
             }
         }
 
@@ -788,42 +906,84 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 将选择支从画面移除
+        /// </summary>
+        /// <param name="bbutton">选择支实例</param>
+        private void RemoveBranchButton(BranchButton bbutton)
+        {
+            if (bbutton != null)
+            {
+                var bbView = bbutton.DisplayBinding;
+                Canvas workCanvas = ViewManager.Is3DStage ? ViewManager.view3D.BO_MainGrid : ViewManager.view2D.BO_MainGrid;
+                if (bbView != null && workCanvas.Children.Contains(bbView))
+                {
+                    workCanvas.Children.Remove(bbView);
+                }
+                bbutton.DisplayBinding = null;
+            }
+        }
+
+        /// <summary>
         /// 将精灵从画布上移除
         /// </summary>
         /// <param name="rType">资源类型</param>
         /// <param name="sprite">精灵实例</param>
         private void RemoveSprite(ResourceType rType, YuriSprite sprite)
         {
-            if (sprite != null)
+            if (sprite == null)
             {
-                var spriteView = sprite.DisplayBinding;
-                var canvas = this.GetDrawingCanvas(rType);
-                if (spriteView != null)
-                {
-                    if (canvas.Children.Contains(spriteView))
-                    {
-                        canvas.Children.Remove(spriteView);
-                    }
-                }
-                sprite.DisplayBinding = null;
+                return;
             }
-        }
-
-        /// <summary>
-        /// 将文字层从画面移除
-        /// </summary>
-        /// <param name="msglay">文字层实例</param>
-        private void RemoveMessageLayer(MessageLayer msglay)
-        {
-            if (msglay != null)
+            Canvas canvas;
+            if (ViewManager.Is3DStage)
             {
-                TextBlock msglayView = msglay.DisplayBinding;
-                if (msglayView != null && this.view.BO_MainGrid.Children.Contains(msglayView))
+                switch (rType)
                 {
-                    this.view.BO_MainGrid.Children.Remove(msglayView);
+                    case ResourceType.Background:
+                        var bgModelGeometry = ViewManager.view3D.ST3D_Background_Fore;
+                        var bgMaterial = bgModelGeometry.Material;
+                        if (!(bgMaterial is DiffuseMaterial))
+                        {
+                            return;
+                        }
+                        (bgMaterial as DiffuseMaterial).Brush = null;
+                        return;
+                    case ResourceType.Stand:
+                        var slotModelGeometry = this.GetCharacterModel3D(sprite.Descriptor.Slot3D);
+                        var csMaterial = slotModelGeometry?.Material;
+                        if (!(csMaterial is DiffuseMaterial))
+                        {
+                            return;
+                        }
+                        (csMaterial as DiffuseMaterial).Brush = null;
+                        return;
+                    case ResourceType.Frontier:
+                        var ftModelGeometry = ViewManager.view3D.ST3D_Frontier_1;
+                        var ftMaterial = ftModelGeometry.Material;
+                        if (!(ftMaterial is DiffuseMaterial))
+                        {
+                            return;
+                        }
+                        (ftMaterial as DiffuseMaterial).Brush = null;
+                        return;
+                    default:
+                        canvas = ViewManager.view3D.BO_MainGrid;
+                        break;
                 }
-                msglay.DisplayBinding = null;
             }
+            else
+            {
+                canvas = this.GetDrawingCanvas2D(rType);
+            }
+            var spriteView = sprite.DisplayBinding;
+            if (spriteView != null)
+            {
+                if (canvas.Children.Contains(spriteView))
+                {
+                    canvas.Children.Remove(spriteView);
+                }
+            }
+            sprite.DisplayBinding = null;
         }
 
         /// <summary>
@@ -832,27 +992,29 @@ namespace Yuri.PlatformCore
         /// <param name="sbutton">按钮实例</param>
         private void RemoveButton(SpriteButton sbutton)
         {
-            if (sbutton != null)
+            if (sbutton == null)
             {
-                Image buttonView = sbutton.DisplayBinding;
-                if (buttonView != null && this.view.BO_MainGrid.Children.Contains(buttonView))
-                {
-                    this.view.BO_MainGrid.Children.Remove(buttonView);
-                    if (sbutton.ImageNormal != null)
-                    {
-                        sbutton.ImageNormal.DisplayBinding = null;
-                    }
-                    if (sbutton.ImageMouseOver != null)
-                    {
-                        sbutton.ImageMouseOver.DisplayBinding = null;
-                    }
-                    if (sbutton.ImageMouseOn != null)
-                    {
-                        sbutton.ImageMouseOn.DisplayBinding = null;
-                    }
-                }
-                sbutton.DisplayBinding = null;
+                return;
             }
+            Image buttonView = sbutton.DisplayBinding;
+            Canvas workCanvas = ViewManager.Is3DStage ? ViewManager.view3D.BO_MainGrid : ViewManager.view2D.BO_MainGrid;
+            if (buttonView != null && workCanvas.Children.Contains(buttonView))
+            {
+                workCanvas.Children.Remove(buttonView);
+                if (sbutton.ImageNormal != null)
+                {
+                    sbutton.ImageNormal.DisplayBinding = null;
+                }
+                if (sbutton.ImageMouseOver != null)
+                {
+                    sbutton.ImageMouseOver.DisplayBinding = null;
+                }
+                if (sbutton.ImageMouseOn != null)
+                {
+                    sbutton.ImageMouseOn.DisplayBinding = null;
+                }
+            }
+            sbutton.DisplayBinding = null;
         }
 
         /// <summary>
@@ -865,7 +1027,6 @@ namespace Yuri.PlatformCore
             {
                 // Must not already exist
                 if (transitionTypes.Contains(type)) { continue; }
-
                 // Must not be abstract.
                 if ((typeof(Transition).IsAssignableFrom(type)) && (!type.IsAbstract))
                 {
@@ -879,24 +1040,25 @@ namespace Yuri.PlatformCore
         /// </summary>
         private void InitViewbox()
         {
+            if (ViewManager.Is3DStage) { return; }
             // 初始化视窗向量
-            this.viewboxVec[(int)ViewportType.VTBackground] = new YuriViewport()
+            this.viewbox2dVec[(int)ViewportType.VTBackground] = new YuriViewport2D()
             {
                 Type = ViewportType.VTBackground,
-                ViewboxBinding = this.view.BO_Bg_Viewbox,
-                CanvasBinding = this.view.BO_Bg_Canvas
+                ViewboxBinding = view2D.BO_Bg_Viewbox,
+                CanvasBinding = view2D.BO_Bg_Canvas
             };
-            this.viewboxVec[(int)ViewportType.VTCharacterStand] = new YuriViewport()
+            this.viewbox2dVec[(int)ViewportType.VTCharacterStand] = new YuriViewport2D()
             {
                 Type = ViewportType.VTCharacterStand,
-                ViewboxBinding = this.view.BO_Cstand_Viewbox,
-                CanvasBinding = this.view.BO_Cstand_Canvas
+                ViewboxBinding = view2D.BO_Cstand_Viewbox,
+                CanvasBinding = view2D.BO_Cstand_Canvas
             };
-            this.viewboxVec[(int)ViewportType.VTPictures] = new YuriViewport()
+            this.viewbox2dVec[(int)ViewportType.VTPictures] = new YuriViewport2D()
             {
                 Type = ViewportType.VTPictures,
-                ViewboxBinding = this.view.BO_Pics_Viewbox,
-                CanvasBinding = this.view.BO_Pics_Canvas
+                ViewboxBinding = view2D.BO_Pics_Viewbox,
+                CanvasBinding = view2D.BO_Pics_Canvas
             };
             // 初始化变换动画
             for (int i = 0; i < 3; i++)
@@ -916,10 +1078,10 @@ namespace Yuri.PlatformCore
                 aniGroup.Children.Add(XYTransformer);
                 aniGroup.Children.Add(ScaleTransformer);
                 aniGroup.Children.Add(RotateTransformer);
-                this.viewboxVec[i].ViewboxBinding.RenderTransform = aniGroup;
-                this.viewboxVec[i].RotateTransformer = RotateTransformer;
-                this.viewboxVec[i].TranslateTransformer = XYTransformer;
-                this.viewboxVec[i].ScaleTransformer = ScaleTransformer;
+                this.viewbox2dVec[i].ViewboxBinding.RenderTransform = aniGroup;
+                this.viewbox2dVec[i].RotateTransformer = RotateTransformer;
+                this.viewbox2dVec[i].TranslateTransformer = XYTransformer;
+                this.viewbox2dVec[i].ScaleTransformer = ScaleTransformer;
             }
         }
 
@@ -950,7 +1112,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 更新视窗向量
         /// </summary>
-        public void InitViewports()
+        public void InitViewport2D()
         {
             this.InitViewbox();
         }
@@ -981,7 +1143,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 视窗向量
         /// </summary>
-        private readonly List<YuriViewport> viewboxVec;
+        private readonly List<YuriViewport2D> viewbox2dVec;
 
         /// <summary>
         /// 背景精灵向量
@@ -1023,29 +1185,36 @@ namespace Yuri.PlatformCore
         /// </summary>
         private ViewManager()
         {
-            this.LoadTransitions(Assembly.GetAssembly(typeof(Transition)));
-            this.backgroundSpriteVec = new List<YuriSprite>();
-            this.characterStandSpriteVec = new List<YuriSprite>();
+            if (ViewManager.Is3DStage == false)
+            {
+                this.LoadTransitions(Assembly.GetAssembly(typeof(Transition)));
+                this.viewbox2dVec = new List<YuriViewport2D>();
+                this.backgroundSpriteVec = new List<YuriSprite>();
+                this.characterStandSpriteVec = new List<YuriSprite>();
+                for (int i = 0; i < 3; i++)
+                {
+                    this.viewbox2dVec.Add(null);
+                }
+                for (int i = 0; i < GlobalConfigContext.GAME_BACKGROUND_COUNT; i++)
+                {
+                    this.backgroundSpriteVec.Add(null);
+                }
+                for (int i = 0; i < GlobalConfigContext.GAME_CHARACTERSTAND_COUNT; i++)
+                {
+                    this.characterStandSpriteVec.Add(null);
+                }
+            }
             this.pictureSpriteVec = new List<YuriSprite>();
             this.messageLayerVec = new List<MessageLayer>();
             this.branchButtonVec = new List<BranchButton>();
             this.buttonLayerVec = new List<SpriteButton>();
-            this.viewboxVec = new List<YuriViewport>();
-            for (int i = 0; i < 3; i++)
-            {
-                this.viewboxVec.Add(null);
-            }
-            for (int i = 0; i < GlobalConfigContext.GAME_BACKGROUND_COUNT; i++)
-            {
-                this.backgroundSpriteVec.Add(null);
-            }
-            for (int i = 0; i < GlobalConfigContext.GAME_CHARACTERSTAND_COUNT; i++)
-            {
-                this.characterStandSpriteVec.Add(null);
-            }
             for (int i = 0; i < GlobalConfigContext.GAME_IMAGELAYER_COUNT; i++)
             {
                 this.pictureSpriteVec.Add(null);
+            }
+            for (int i = 0; i < GlobalConfigContext.GAME_MESSAGELAYER_COUNT; i++)
+            {
+                this.messageLayerVec.Add(null);
             }
             for (int i = 0; i < GlobalConfigContext.GAME_BUTTON_COUNT; i++)
             {
@@ -1055,16 +1224,17 @@ namespace Yuri.PlatformCore
             {
                 this.branchButtonVec.Add(null);
             }
-            for (int i = 0; i < GlobalConfigContext.GAME_MESSAGELAYER_COUNT; i++)
-            {
-                this.messageLayerVec.Add(null);
-            }
         }
 
         /// <summary>
-        /// 主舞台页面的引用
+        /// 2D主舞台页面的引用
         /// </summary>
-        private PageView.Stage2D view => (PageView.Stage2D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
+        private static Stage2D view2D => ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage) as Stage2D;
+
+        /// <summary>
+        /// 3D主舞台页面的引用
+        /// </summary>
+        private static Stage3D view3D => ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage) as Stage3D;
 
         /// <summary>
         /// 获取或设置当前是否使用3D镜头系统
@@ -1087,7 +1257,13 @@ namespace Yuri.PlatformCore
     /// </summary>
     internal enum BackgroundPage
     {
+        /// <summary>
+        /// 背景层：不可见的层，过渡效果所作用的层
+        /// </summary>
         Back = 0,
+        /// <summary>
+        /// 前景层：可见的层
+        /// </summary>
         Fore = 1
     }
 }

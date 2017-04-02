@@ -90,7 +90,7 @@
     <Compile Include="PlatformCore\SCamera3D.cs" />
     <Compile Include="PlatformCore\ViewPageManager.cs" />
     <Compile Include="PlatformCore\ViewportDescriptor.cs" />
-    <Compile Include="PlatformCore\YuriViewport.cs" />
+    <Compile Include="PlatformCore\YuriViewport2D.cs" />
     <Compile Include="PageView\Stage2D.xaml.cs">
       <DependentUpon>Stage2D.xaml</DependentUpon>
     </Compile>
