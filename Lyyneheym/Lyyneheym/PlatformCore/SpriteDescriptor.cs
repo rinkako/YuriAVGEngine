@@ -49,9 +49,9 @@ namespace Yuri.PlatformCore
         public int Slot3D { get; set; }
 
         /// <summary>
-        /// 获取或设置3D精灵用做背景时距离镜头的深度Z坐标
+        /// 获取或设置3D精灵距离镜头的深度Z坐标
         /// </summary>
-        public double BackgroundDeepth3D { get; set; }
+        public double Deepth3D { get; set; }
 
         /// <summary>
         /// 获取或设置精灵角度

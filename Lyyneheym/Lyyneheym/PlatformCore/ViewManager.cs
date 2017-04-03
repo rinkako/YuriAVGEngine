@@ -635,7 +635,6 @@ namespace Yuri.PlatformCore
         /// <param name="sprite">精灵</param>
         /// <param name="descriptor">精灵描述子</param>
         /// <param name="rType">资源类型</param>
-        /// <param name="idx">描述子在向量的下标</param>
         private void DrawSprite3D(YuriSprite sprite, SpriteDescriptor descriptor, ResourceType rType)
         {
             switch (rType)
@@ -643,7 +642,7 @@ namespace Yuri.PlatformCore
                 case ResourceType.Background:
                     var bgModel = ViewManager.View3D.ST3D_Background_Fore;
                     var bgGeomtry = bgModel.Geometry as MeshGeometry3D;
-                    if (bgGeomtry.Positions[0].Z != descriptor.BackgroundDeepth3D)
+                    if (bgGeomtry.Positions[0].Z != descriptor.Deepth3D)
                     {
                         List<Point3D> gPointList = new List<Point3D>();
                         foreach (var orgP in bgGeomtry.Positions)
@@ -652,7 +651,7 @@ namespace Yuri.PlatformCore
                             {
                                 X = orgP.X,
                                 Y = orgP.Y,
-                                Z = descriptor.BackgroundDeepth3D
+                                Z = descriptor.Deepth3D
                             };
                             gPointList.Add(np);
                         }
@@ -676,11 +675,31 @@ namespace Yuri.PlatformCore
                     ((DiffuseMaterial)bgMaterial).Brush = bgMaterialBrush;
                     break;
                 case ResourceType.Stand:
-                    var slotModelGeometry = this.GetCharacterModel3D(descriptor.Slot3D);
-                    var csMaterial = slotModelGeometry.Material;
+                    var slotModel = this.GetCharacterModel3D(descriptor.Slot3D);
+                    var csGeomtry = slotModel.Geometry as MeshGeometry3D;
+                    if (csGeomtry.Positions[0].Z != descriptor.Deepth3D)
+                    {
+                        List<Point3D> gPointList = new List<Point3D>();
+                        foreach (var orgP in csGeomtry.Positions)
+                        {
+                            Point3D np = new Point3D
+                            {
+                                X = orgP.X,
+                                Y = orgP.Y,
+                                Z = descriptor.Deepth3D
+                            };
+                            gPointList.Add(np);
+                        }
+                        csGeomtry.Positions.Clear();
+                        foreach (var nvP in gPointList)
+                        {
+                            csGeomtry.Positions.Add(nvP);
+                        }
+                    }
+                    var csMaterial = slotModel.Material;
                     if (!(csMaterial is DiffuseMaterial))
                     {
-                        csMaterial = slotModelGeometry.Material = new DiffuseMaterial();
+                        csMaterial = slotModel.Material = new DiffuseMaterial();
                     }
                     var csMaterialBrush = new ImageBrush(sprite.SpriteBitmapImage)
                     {
@@ -691,11 +710,31 @@ namespace Yuri.PlatformCore
                     ((DiffuseMaterial)csMaterial).Brush = csMaterialBrush;
                     break;
                 case ResourceType.Frontier:
-                    var ftModelGeometry = ViewManager.View3D.ST3D_Frontier_1;
-                    var ftMaterial = ftModelGeometry.Material;
+                    var ftModel = ViewManager.View3D.ST3D_Frontier_1;
+                    var ftGeomtry = ftModel.Geometry as MeshGeometry3D;
+                    if (ftGeomtry.Positions[0].Z != descriptor.Deepth3D)
+                    {
+                        List<Point3D> gPointList = new List<Point3D>();
+                        foreach (var orgP in ftGeomtry.Positions)
+                        {
+                            Point3D np = new Point3D
+                            {
+                                X = orgP.X,
+                                Y = orgP.Y,
+                                Z = descriptor.Deepth3D
+                            };
+                            gPointList.Add(np);
+                        }
+                        ftGeomtry.Positions.Clear();
+                        foreach (var nvP in gPointList)
+                        {
+                            ftGeomtry.Positions.Add(nvP);
+                        }
+                    }
+                    var ftMaterial = ftModel.Material;
                     if (!(ftMaterial is DiffuseMaterial))
                     {
-                        ftMaterial = ftModelGeometry.Material = new DiffuseMaterial();
+                        ftMaterial = ftModel.Material = new DiffuseMaterial();
                     }
                     var ftMaterialBrush = new ImageBrush(sprite.SpriteBitmapImage)
                     {
@@ -715,7 +754,6 @@ namespace Yuri.PlatformCore
                     sprite.CutRect = descriptor.CutRect;
                     sprite.DisplayBinding = spriteImage;
                     sprite.Anchor = descriptor.AnchorType;
-                    sprite.Descriptor = descriptor;
                     Canvas.SetLeft(spriteImage, descriptor.X - bmp.PixelWidth / 2.0);
                     Canvas.SetTop(spriteImage, descriptor.Y - bmp.PixelHeight / 2.0);
                     Canvas.SetZIndex(spriteImage, descriptor.Z);
@@ -729,6 +767,7 @@ namespace Yuri.PlatformCore
                     SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.Zero, descriptor.ScaleX, descriptor.ScaleY, 0, 0);
                     break;
             }
+            sprite.Descriptor = descriptor;
         }
 
         /// <summary>
@@ -1271,7 +1310,10 @@ namespace Yuri.PlatformCore
             {
                 this.backgroundSpriteVec.Add(null);
             }
-            for (int i = 0; i < GlobalConfigContext.GAME_CHARACTERSTAND_COUNT; i++)
+            var charaBorder = ViewManager.Is3DStage
+                ? GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT
+                : GlobalConfigContext.GAME_CHARACTERSTAND_COUNT;
+            for (int i = 0; i < charaBorder; i++)
             {
                 this.characterStandSpriteVec.Add(null);
             }

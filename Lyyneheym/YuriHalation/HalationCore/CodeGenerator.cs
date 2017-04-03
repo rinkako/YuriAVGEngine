@@ -219,24 +219,7 @@ namespace Yuri.YuriHalation.HalationCore
                         aCode += String.Format("name=\"{0}\" ", act.argsDict["name"].valueExp);
                         aCode += String.Format("face=\"{0}\" ", act.argsDict["face"].valueExp);
                         aCode += String.Format("vid=\"{0}\" ", act.argsDict["vid"].valueExp);
-                        switch (act.argsDict["loc"].valueExp)
-                        {
-                            case "左":
-                                aCode += "loc=\"left\"";
-                                break;
-                            case "左中":
-                                aCode += "loc=\"midleft\"";
-                                break;
-                            case "右中":
-                                aCode += "loc=\"midright\"";
-                                break;
-                            case "右":
-                                aCode += "loc=\"right\"";
-                                break;
-                            default:
-                                aCode += "loc=\"mid\"";
-                                break;
-                        }
+                        aCode += String.Format("loc=\"{0}\"", act.argsDict["loc"].valueExp);
                         codeBuilder.AppendLine(aCode);
                         break;
                     case ActionPackageType.act_dialog:

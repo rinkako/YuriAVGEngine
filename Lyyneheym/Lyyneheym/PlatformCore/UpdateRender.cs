@@ -682,17 +682,15 @@ namespace Yuri.PlatformCore
                         String.Format("{0}_{1}.png", action.ArgsDict["name"], action.ArgsDict["face"]),
                         this.ParseDouble(action.ArgsDict["x"], 0),
                         this.ParseDouble(action.ArgsDict["y"], 0),
-                        this.ParseDouble(action.ArgsDict["opacity"], 1),
-                        this.ParseDouble(action.ArgsDict["xscale"], 1),
-                        this.ParseDouble(action.ArgsDict["yscale"], 1),
-                        this.ParseDouble(action.ArgsDict["ro"], 0),
-                        action.ArgsDict["anchor"] == String.Empty ? (action.ArgsDict["anchor"] == "center" ? SpriteAnchorType.Center : SpriteAnchorType.LeftTop) : SpriteAnchorType.Center,
+                        1,
+                        this.ParseInt(action.ArgsDict["loc"], 0),
+                        SpriteAnchorType.Center,
                         new Int32Rect(0, 0, 0, 0)
                         );
                     break;
                 case SActionType.act_deletecstand:
                     this.Deletecstand(
-                        (CharacterStandType)this.ParseInt(action.ArgsDict["id"], 5)
+                        this.ParseInt(action.ArgsDict["id"], 0)
                         );
                     break;
                 case SActionType.act_se:
@@ -831,7 +829,7 @@ namespace Yuri.PlatformCore
         public void Shutdown()
         {
             CommonUtils.ConsoleLine("Shutdown is called", "UpdateRender", OutputStyle.Important);
-            ViewManager.GetWindowReference().Close();
+            ViewManager.GetWindowReference()?.Close();
         }
 
         /// <summary>
@@ -985,8 +983,15 @@ namespace Yuri.PlatformCore
         /// <param name="cut">纹理切割矩</param>
         private void Background(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
-            Director.ScrMana.AddBackground2D(id, filename, GlobalConfigContext.GAME_WINDOW_WIDTH / 2.0, GlobalConfigContext.GAME_WINDOW_HEIGHT / 2.0,
+            if (ViewManager.Is3DStage)
+            {
+                Director.ScrMana.AddBackground3D(filename, -8);
+            }
+            else
+            {
+                Director.ScrMana.AddBackground2D(id, filename, GlobalConfigContext.GAME_WINDOW_WIDTH / 2.0, GlobalConfigContext.GAME_WINDOW_HEIGHT / 2.0,
                 id, ro, opacity, xscale, yscale, anchor, cut);
+            }
             this.viewMana.Draw(id, ResourceType.Background);
         }
 
@@ -1099,36 +1104,52 @@ namespace Yuri.PlatformCore
         /// <param name="cut">纹理切割矩</param>
         private void Cstand(int id, string filename, string locationStr, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
-            CharacterStandType cst;
-            switch (locationStr)
+            int tloc;
+            if (ViewManager.Is3DStage)
             {
-                case "l":
-                case "left":
-                    cst = CharacterStandType.Left;
-                    if (id == -1) { id = 0; }
-                    break;
-                case "ml":
-                case "midleft":
-                    cst = CharacterStandType.MidLeft;
-                    if (id == -1) { id = 1; }
-                    break;
-                case "mr":
-                case "midright":
-                    cst = CharacterStandType.MidRight;
-                    if (id == -1) { id = 3; }
-                    break;
-                case "r":
-                case "right":
-                    cst = CharacterStandType.Right;
-                    if (id == -1) { id = 4; }
-                    break;
-                default:
-                    cst = CharacterStandType.Mid;
-                    if (id == -1) { id = 2; }
-                    break;
+                if (Int32.TryParse(locationStr, out tloc))
+                {
+                    Director.ScrMana.AddCharacterStand3D(tloc, filename, 0);
+                }
+                else
+                {
+                    Director.ScrMana.AddCharacterStand3D(tloc = 0, filename, 0);
+                }
             }
-            Director.ScrMana.AddCharacterStand(id, filename, cst, id, ro, opacity, anchor, cut);
-            this.viewMana.Draw(id, ResourceType.Stand);
+            else
+            {
+                CharacterStandType cst;
+                switch (locationStr)
+                {
+                    case "l":
+                    case "left":
+                        cst = CharacterStandType.Left;
+                        if (id == -1) { id = 0; }
+                        break;
+                    case "ml":
+                    case "midleft":
+                        cst = CharacterStandType.MidLeft;
+                        if (id == -1) { id = 1; }
+                        break;
+                    case "mr":
+                    case "midright":
+                        cst = CharacterStandType.MidRight;
+                        if (id == -1) { id = 3; }
+                        break;
+                    case "r":
+                    case "right":
+                        cst = CharacterStandType.Right;
+                        if (id == -1) { id = 4; }
+                        break;
+                    default:
+                        cst = CharacterStandType.Mid;
+                        if (id == -1) { id = 2; }
+                        break;
+                }
+                Director.ScrMana.AddCharacterStand2D(id, filename, cst, id, ro, opacity, anchor, cut);
+                tloc = id;
+            }
+            this.viewMana.Draw(tloc, ResourceType.Stand);
         }
 
         /// <summary>
@@ -1139,29 +1160,35 @@ namespace Yuri.PlatformCore
         /// <param name="x">X坐标</param>
         /// <param name="y">Y坐标</param>
         /// <param name="opacity">不透明度</param>
-        /// <param name="xscale">X缩放比</param>
-        /// <param name="yscale">Y缩放比</param>
-        /// <param name="ro">角度</param>
+        /// <param name="loc">横向相对位置分块号</param>
         /// <param name="anchor">锚点</param>
         /// <param name="cut">纹理切割矩</param>
-        private void Cstand(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
+        private void Cstand(int id, string filename, double x, double y, double opacity, int loc, SpriteAnchorType anchor, Int32Rect cut)
         {
-            Director.ScrMana.AddCharacterStand(id, filename, x, y, id, ro, opacity, anchor, cut);
-            this.viewMana.Draw(id, ResourceType.Stand);
+            int passinId;
+            if (ViewManager.Is3DStage)
+            {
+                Director.ScrMana.AddCharacterStand3D(passinId = loc, filename, 0);
+            }
+            else
+            {
+                Director.ScrMana.AddCharacterStand2D(passinId = id, filename, x, y, id, 0, opacity, anchor, cut);
+            }
+            this.viewMana.Draw(passinId, ResourceType.Stand);
         }
 
         /// <summary>
         /// 演绎函数：移除立绘
         /// </summary>
-        private void Deletecstand(CharacterStandType cst)
+        private void Deletecstand(int cst)
         {
-            if (cst == CharacterStandType.All)
+            if (cst == -1)
             {
                 this.viewMana.RemoveView(ResourceType.Stand);
             }
             else
             {
-                this.viewMana.RemoveSprite(Convert.ToInt32(cst), ResourceType.Stand);
+                this.viewMana.RemoveSprite(cst, ResourceType.Stand);
             }
         }
 

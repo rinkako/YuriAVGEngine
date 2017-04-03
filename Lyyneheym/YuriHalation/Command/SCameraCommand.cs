@@ -17,13 +17,13 @@ namespace Yuri.YuriHalation.Command
         /// <param name="x">作用横向块编号</param>
         /// <param name="y">作用纵向块编号</param>
         /// <param name="ro">缩放比</param>
-        public SCameraCommand(int line, int indent, RunnablePackage parent, string name, string x, string y, string ro)
+        public SCameraCommand(int line, int indent, RunnablePackage parent, string name, string r, string c, string ro)
             : base(line, indent, parent)
         {
             HalaAttrList hal = new HalaAttrList();
             hal.Add(new KeyValuePair<string, KeyValuePair<ArgType, string>>("name", new KeyValuePair<ArgType, string>(ArgType.Arg_name, name)));
-            hal.Add(new KeyValuePair<string, KeyValuePair<ArgType, string>>("x", new KeyValuePair<ArgType, string>(ArgType.Arg_x, x)));
-            hal.Add(new KeyValuePair<string, KeyValuePair<ArgType, string>>("y", new KeyValuePair<ArgType, string>(ArgType.Arg_y, y)));
+            hal.Add(new KeyValuePair<string, KeyValuePair<ArgType, string>>("x", new KeyValuePair<ArgType, string>(ArgType.Arg_x, r)));
+            hal.Add(new KeyValuePair<string, KeyValuePair<ArgType, string>>("y", new KeyValuePair<ArgType, string>(ArgType.Arg_y, c)));
             hal.Add(new KeyValuePair<string, KeyValuePair<ArgType, string>>("ro", new KeyValuePair<ArgType, string>(ArgType.Arg_ro, ro)));
             base.Init(hal, ActionPackageType.act_scamera);
         }

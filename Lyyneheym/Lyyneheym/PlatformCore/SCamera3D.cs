@@ -427,7 +427,7 @@ namespace Yuri.PlatformCore
         /// 镜头默认深度
         /// </summary>
         private const double orginalCameraZIndex = 8.0;
-
+        
         /// <summary>
         /// Z为0时屏幕横向尺寸
         /// </summary>
@@ -437,5 +437,6 @@ namespace Yuri.PlatformCore
         /// Z为0时屏幕纵向尺寸
         /// </summary>
         private const double scrHeight = 3.76;
+        
     }
 }

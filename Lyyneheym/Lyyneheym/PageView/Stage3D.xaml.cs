@@ -112,17 +112,17 @@ namespace Yuri.PageView
             var vm = ViewManager.GetInstance();
             var p = ResourceManager.GetInstance().GetPicture("伊泽塔1.png", ResourceManager.FullImageRect);
 
-            Director.ScrMana.AddBackground3D("bg_e1.jpg", -30);
+            Director.ScrMana.AddBackground3D("bg_school.jpg", -8);
             Director.ScrMana.GetSpriteDescriptor(0, ResourceType.Background).Slot3D = 0;
 
-            Director.ScrMana.AddCharacterStand(0, "伊泽塔1.png", CharacterStandType.Mid, 0, 0, 1, SpriteAnchorType.Center,
+            Director.ScrMana.AddCharacterStand2D(0, "伊泽塔1.png", CharacterStandType.Mid, 0, 0, 1, SpriteAnchorType.Center,
                 ResourceManager.FullImageRect);
             Director.ScrMana.GetSpriteDescriptor(0, ResourceType.Stand).Slot3D = 9;
-            Director.ScrMana.AddCharacterStand(2, "公主1.png", CharacterStandType.Mid, 0, 0, 1, SpriteAnchorType.Center,
+            Director.ScrMana.AddCharacterStand2D(2, "公主1.png", CharacterStandType.Mid, 0, 0, 1, SpriteAnchorType.Center,
                 ResourceManager.FullImageRect);
             Director.ScrMana.GetSpriteDescriptor(2, ResourceType.Stand).Slot3D = 12;
 
-            Director.ScrMana.AddCharacterStand(1, "Zoithyt-4-2.png", CharacterStandType.Mid, 0, 0, 1, SpriteAnchorType.Center,
+            Director.ScrMana.AddCharacterStand2D(1, "Zoithyt-4-2.png", CharacterStandType.Mid, 0, 0, 1, SpriteAnchorType.Center,
                 ResourceManager.FullImageRect);
             Director.ScrMana.GetSpriteDescriptor(1, ResourceType.Stand).Slot3D = 24;
 

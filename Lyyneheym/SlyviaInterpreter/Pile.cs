@@ -773,7 +773,9 @@ namespace Yuri.YuriInterpreter
                         processStack.Push(topSa.TrueRouting[i]);
                     }
                 }
-                resSb.AppendLine(YuriEncryptor.EncryptString(topSa.ToIL(), Pile.Encryptor));
+                resSb.AppendLine(this.needEncryption
+                    ? YuriEncryptor.EncryptString(topSa.ToIL(), Pile.Encryptor)
+                    : topSa.ToIL());
             }
             return resSb.ToString();
         }
@@ -788,7 +790,9 @@ namespace Yuri.YuriInterpreter
             List<SceneFunction> sf = scene.FuncContainer;
             SceneAction mainSa = scene.Ctor;
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(YuriEncryptor.EncryptString(scene.GetILSign(), Pile.Encryptor));
+            sb.AppendLine(this.needEncryption
+                ? YuriEncryptor.EncryptString(scene.GetILSign(), Pile.Encryptor)
+                : scene.GetILSign());
             sb.Append(this.ILGenerator(mainSa));
             foreach (SceneFunction scenefunc in sf)
             {
@@ -1042,6 +1046,11 @@ namespace Yuri.YuriInterpreter
             Regex myRegex = new Regex(regEx);
             return myRegex.IsMatch(parStr);
         }
+
+        /// <summary>
+        /// 是否加密
+        /// </summary>
+        public bool needEncryption = true;
 
         /// <summary>
         /// 场景名称

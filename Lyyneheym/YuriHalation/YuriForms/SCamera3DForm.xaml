@@ -40,7 +40,7 @@
         </GroupBox>
         <Button Content="Preview" Canvas.Left="1298" Canvas.Top="474" Width="130" Height="22"/>
         <Button Content="确认" Canvas.Left="1298" Canvas.Top="680" Width="130" Height="29"/>
-        <GroupBox Name="Groupbox_Element" Header="Element" Height="139" Canvas.Left="1298" Canvas.Top="501" Width="130">
+        <GroupBox Name="Groupbox_Element" Header="Preview Element" Height="139" Canvas.Left="1298" Canvas.Top="501" Width="130">
             <Canvas>
                 <Button Content="BG" Canvas.Left="10" Canvas.Top="10" Width="36"/>
                 <TextBox Name="Textbox_Background_Z" Height="20" Canvas.Left="77" TextWrapping="Wrap" Text="-8" Canvas.Top="10" Width="31"/>

@@ -253,7 +253,7 @@ namespace Yuri.PlatformCore
         /// <param name="target">目标标签</param>
         public void CallScene(Scene scene, SceneAction target = null)
         {
-            CommonUtils.ConsoleLine(String.Format("Call Scene: {0} , with target: {1}", scene.Scenario, target == null ? "null" : target.NodeName),
+            CommonUtils.ConsoleLine(String.Format("Call Scene: {0} , with target: {1}", scene?.Scenario, target == null ? "null" : target.NodeName),
                     "RuntimeManager", OutputStyle.Important);
             // 基础调用
             this.CallStack.Submit(scene, target);

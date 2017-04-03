@@ -1,4 +1,4 @@
-﻿#define NOTIME
+﻿//#define NOTIME
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -313,6 +313,7 @@ namespace Yuri
                         // 如果指令空了就立即迭代本次消息循环
                         if (nextInstruct == null)
                         {
+                            this.timer.Start();
                             return;
                         }
                         // 处理影响调用堆栈的动作

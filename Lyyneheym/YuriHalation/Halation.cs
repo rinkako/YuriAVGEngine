@@ -474,9 +474,9 @@ namespace Yuri
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
-        public void DashSCamera(string name, string x, string y, string ro)
+        public void DashSCamera(string name, string r, string c, string ro)
         {
-            IHalationCommand cmd = new SCameraCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, name, x, y, ro);
+            IHalationCommand cmd = new SCameraCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, name, r, c, ro);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
         #endregion

@@ -227,8 +227,8 @@ namespace Yuri.YuriHalation.ScriptPackage
                     }
                     if (this.argsDict["name"].valueExp == "translate" || this.argsDict["name"].valueExp == "focus")
                     {
-                        desSb.Append(String.Format("横区块:{0} ", this.argsDict["x"].valueExp));
-                        desSb.Append(String.Format("纵区块:{0} ", this.argsDict["y"].valueExp));
+                        desSb.Append(String.Format("行区块:{0} ", this.argsDict["x"].valueExp));
+                        desSb.Append(String.Format("列区块:{0} ", this.argsDict["y"].valueExp));
                     }
                     if (this.argsDict["name"].valueExp == "focus")
                     {

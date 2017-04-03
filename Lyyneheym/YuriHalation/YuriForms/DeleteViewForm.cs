@@ -11,7 +11,7 @@ namespace YuriHalation.YuriForms
             InitializeComponent();
             this.radioButton1.Checked = true;
             this.numericUpDown2.Enabled = false;
-            this.comboBox1.Enabled = false;
+            this.numericUpDown3.Enabled = false;
             this.numericUpDown1.Maximum = Halation.project.Config.GameViewPicturesCount - 1;
             this.numericUpDown2.Maximum = Halation.project.Config.GameViewButtonCount - 1;
             switch (selectedIndex)
@@ -35,7 +35,7 @@ namespace YuriHalation.YuriForms
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            this.comboBox1.Enabled = this.radioButton2.Checked;
+            this.numericUpDown3.Enabled = this.radioButton2.Checked;
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -54,7 +54,7 @@ namespace YuriHalation.YuriForms
             }
             else if (this.radioButton2.Checked)
             {
-                Halation.GetInstance().DashDeletecstand(this.comboBox1.SelectedIndex.ToString());
+                Halation.GetInstance().DashDeletecstand(this.numericUpDown3.Value.ToString());
             }
             else
             {

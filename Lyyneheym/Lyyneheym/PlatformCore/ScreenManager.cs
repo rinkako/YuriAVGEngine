@@ -56,12 +56,12 @@ namespace Yuri.PlatformCore
         {
             SpriteDescriptor sd = new SpriteDescriptor()
             {
-                Id = 0,
+                Id = 1,
                 ResourceType = ResourceType.Background,
                 ResourceName = source,
-                BackgroundDeepth3D = depth
+                Deepth3D = depth
             };
-            this.backgroundDescVec[0] = sd;
+            this.backgroundDescVec[1] = sd;
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Yuri.PlatformCore
         /// <param name="Opacity">不透明度</param>
         /// <param name="anchor">锚点类型</param>
         /// <param name="cut">纹理切割矩</param>
-        public void AddCharacterStand(int id, string source, double X, double Y, int Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
+        public void AddCharacterStand2D(int id, string source, double X, double Y, int Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
         {
             SpriteDescriptor sd = new SpriteDescriptor()
             {
@@ -95,7 +95,7 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 为屏幕增加一个立绘精灵描述子
+        /// 为屏幕增加一个2D立绘精灵描述子
         /// </summary>
         /// <param name="id">立绘位置id号</param>
         /// <param name="source">资源名称</param>
@@ -105,7 +105,7 @@ namespace Yuri.PlatformCore
         /// <param name="Opacity">不透明度</param>
         /// <param name="anchor">锚点类型</param>
         /// <param name="cut">纹理切割矩</param>
-        public void AddCharacterStand(int id, string source, CharacterStandType cst, int Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
+        public void AddCharacterStand2D(int id, string source, CharacterStandType cst, int Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
         {
             SpriteDescriptor sd = null;
             switch (cst)
@@ -190,6 +190,28 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 为屏幕增加一个3D立绘精灵描述子
+        /// </summary>
+        /// <param name="id">立绘位置id号</param>
+        /// <param name="source">资源名称</param>
+        /// <param name="depth">景深Z坐标</param>
+        public void AddCharacterStand3D(int id, string source, int depth)
+        {
+            this.characterDescVec[id] = new SpriteDescriptor()
+            {
+                Id = id,
+                Slot3D = id,
+                Deepth3D = depth,
+                ResourceType = ResourceType.Stand,
+                ResourceName = source,
+                X = GlobalConfigContext.GAME_CHARACTERSTAND_LEFT_X,
+                Y = GlobalConfigContext.GAME_CHARACTERSTAND_LEFT_Y,
+                Z = 0,
+                CutRect = ResourceManager.FullImageRect
+            };
+        }
+        
+        /// <summary>
         /// 为屏幕增加一个图片精灵描述子
         /// </summary>
         /// <param name="id">图片的id</param>
@@ -250,7 +272,7 @@ namespace Yuri.PlatformCore
                 OverDescriptor = overDesc,
                 OnDescriptor = onDesc,
                 Opacity = 1.0,
-                Eternal = type == "once" ? false : true
+                Eternal = type != "once"
             };
             this.buttonDescVec[id] = sbd;
         }
@@ -584,7 +606,10 @@ namespace Yuri.PlatformCore
             {
                 this.backgroundDescVec.Add(null);
             }
-            for (int i = 0; i < GlobalConfigContext.GAME_CHARACTERSTAND_COUNT; i++)
+            var charaBorder = ViewManager.Is3DStage
+                ? GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT
+                : GlobalConfigContext.GAME_CHARACTERSTAND_COUNT;
+            for (int i = 0; i < charaBorder; i++)
             {
                 this.characterDescVec.Add(null);
             }

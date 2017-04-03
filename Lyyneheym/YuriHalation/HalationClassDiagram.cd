@@ -13,6 +13,7 @@
       <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MainWindow.xaml.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Yuri.YuriHalation.Command.ACommand" Collapsed="true">
     <Position X="17.5" Y="1.75" Width="1.75" />
@@ -310,7 +311,7 @@
   <Class Name="Yuri.Halation" Collapsed="true">
     <Position X="14" Y="8" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>KgB2ASnxggMEAYSAtJILCigkFkxICICJMMCgDAQgAgI=</HashCode>
+      <HashCode>KgB2ASnxggMEAYSAtpILCigkFkxICICJMMCgDAQgAgI=</HashCode>
       <FileName>Halation.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -331,17 +332,9 @@
   <Class Name="Yuri.YuriHalation.HalationCore.Musician" Collapsed="true">
     <Position X="14" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QSAAAIAAIEAQxAAAKVEYAAAABCAIAACYIAAEIAACAYg=</HashCode>
+      <HashCode>QSAAAIAAAAAQxABACVEYAAAABCAIAACYIAAEAAACAYg=</HashCode>
       <FileName>HalationCore\Musician.cs</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="Yuri.YuriHalation.HalationCore.BassPlayer" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="16.25" Y="6" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>gAAoACAAACIwAwBCEAQAAgAgBAZAAAPAoAgAAQAAEBA=</HashCode>
-      <FileName>HalationCore\Musician.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="Yuri.YuriHalation.HalationCore.PackageUtils" Collapsed="true">
     <Position X="2.75" Y="11" Width="1.5" />
@@ -470,7 +463,7 @@
   <Class Name="YuriHalation.YuriForms.CStandForm" Collapsed="true">
     <Position X="11.75" Y="7" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAABAQAACAAAACAAAYAAACEHAAAAQAgAI=</HashCode>
+      <HashCode>AAAAAAAAACAAABAAAACAAAgCAAAYAAACEHAAAAQAgAI=</HashCode>
       <FileName>YuriForms\CStandForm.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -484,7 +477,7 @@
   <Class Name="YuriHalation.YuriForms.DeleteViewForm" Collapsed="true">
     <Position X="16.25" Y="7" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAABAQAACAAAACAAAIAAACAGAAAAAAgAI=</HashCode>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACAAAIAAACAGAAAAQAgAI=</HashCode>
       <FileName>YuriForms\DeleteViewForm.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -540,7 +533,7 @@
   <Class Name="YuriHalation.YuriForms.MainForm" Collapsed="true">
     <Position X="11.75" Y="9" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CXwWR/2DDbDBwwzPVICCh8cLoM174vDww3Ifcfn0aMA=</HashCode>
+      <HashCode>CXwWR/2DDbDB4wzPVICCh8cLoM374vDww3Ifcfn0aMA=</HashCode>
       <FileName>YuriForms\MainForm.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -659,14 +652,14 @@
   <Enum Name="Yuri.YuriHalation.ScriptPackage.ActionPackageType" Collapsed="true">
     <Position X="2.25" Y="15.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>FigAACWAELAAIAAgQAYggCCIAAwAAAIyFiACHWALSrQ=</HashCode>
+      <HashCode>FigAACWAELAAIAAgQAYgiCCIAAwAAAIyFiACHWALSrQ=</HashCode>
       <FileName>ScriptPackage\ActionPackage.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="Yuri.YuriHalation.ScriptPackage.ActionName" Collapsed="true">
     <Position X="0.5" Y="15.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BkIpgSUMkLgAAAAAACQgAsKCEQohAQIgAFSAUAADIAA=</HashCode>
+      <HashCode>jkIpgSUMkLgAAAAAACQgAsKCEQohAQIgAFSAUAADIAA=</HashCode>
       <FileName>ScriptPackage\ActionPackage.cs</FileName>
     </TypeIdentifier>
   </Enum>

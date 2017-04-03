@@ -21,7 +21,6 @@ namespace YuriHalation.YuriForms
                 this.comboBox1.Items.Add(s);
             }
             this.comboBox1.SelectedIndex = 0;
-            this.comboBox2.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -29,7 +28,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            Halation.GetInstance().DashA(this.comboBox1.SelectedItem.ToString(), this.textBox1.Text, this.comboBox2.SelectedItem.ToString(), this.textBox2.Text);
+            Halation.GetInstance().DashA(this.comboBox1.SelectedItem.ToString(), this.textBox1.Text, this.numericUpDown1.Value.ToString(), this.textBox2.Text);
             this.Close();
         }
     }

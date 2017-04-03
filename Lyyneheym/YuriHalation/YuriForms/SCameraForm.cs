@@ -97,7 +97,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            if (this.radioButton5.Checked && this.textBox1.Text.Trim() == String.Empty)
+             if (this.radioButton5.Checked && this.textBox1.Text.Trim() == String.Empty)
             {
                 MessageBox.Show("聚焦比不能为空，且应该是 [0.5, 2.5] 区间中的值");
                 return;
