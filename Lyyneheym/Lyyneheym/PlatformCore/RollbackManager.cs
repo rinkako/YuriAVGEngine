@@ -77,6 +77,7 @@ namespace Yuri.PlatformCore
                     // 重演绎
                     RollbackManager.GotoSteadyState(lastStep);
                 }
+                NotificationManager.SystemMessageNotify("正在回滚", 800);
             }
         }
         

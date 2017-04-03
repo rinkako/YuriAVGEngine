@@ -730,6 +730,13 @@ namespace Yuri.PlatformCore
                         this.ParseString(action.ArgsDict["filename"], "autosave")
                         );
                     break;
+                case SActionType.act_notify:
+                    this.Notify(
+                        this.ParseDirectString(action.ArgsDict["name"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["target"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["filename"], String.Empty)
+                        );
+                    break;
                 case SActionType.act_label:
                     break;
                 case SActionType.act_switch:
@@ -1012,6 +1019,17 @@ namespace Yuri.PlatformCore
         {
             Director.ScrMana.AddPicture(id, filename, x, y, id, xscale, yscale, ro, opacity, anchor, cut);
             this.viewMana.Draw(id, ResourceType.Pictures);
+        }
+
+        /// <summary>
+        /// 演绎函数：显示通知
+        /// </summary>
+        /// <param name="name">通知大标题</param>
+        /// <param name="detail">通知详情</param>
+        /// <param name="iconFilename">通知的图标资源名</param>
+        public void Notify(string name, string detail, string iconFilename)
+        {
+            NotificationManager.Notify(name, detail, iconFilename);
         }
 
         /// <summary>

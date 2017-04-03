@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace Yuri.PlatformCore
 {
@@ -15,7 +15,7 @@ namespace Yuri.PlatformCore
     internal static class NotificationManager
     {
         /// <summary>
-        /// 发布一个系统级通知
+        /// 发布一个成就通知到通知队列中并处理队列
         /// </summary>
         /// <param name="label">通知的标题</param>
         /// <param name="detail">通知的具体内容</param>
@@ -36,6 +36,28 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 发布一个系统级通知
+        /// </summary>
+        /// <param name="msg">通知内容</param>
+        /// <param name="delayMS">显示的毫秒数</param>
+        public static void SystemMessageNotify(string msg, int delayMS)
+        {
+            if (msgTimer.IsEnabled)
+            {
+                msgTimer.Stop();
+            }
+            NotificationManager.msgUI.Content = msg ?? String.Empty;
+            NotificationManager.msgUI.Visibility = Visibility.Visible;
+            msgTimer.Interval = TimeSpan.FromMilliseconds(delayMS);
+            msgTimer.Tick += delegate
+            {
+                NotificationManager.msgUI.Visibility = Visibility.Hidden;
+                msgTimer.Stop();
+            };
+            msgTimer.Start();
+        }
+
+        /// <summary>
         /// 初始化通知管理器
         /// </summary>
         public static void Init()
@@ -43,6 +65,7 @@ namespace Yuri.PlatformCore
             if (GlobalConfigContext.GAME_IS3D)
             {
                 PageView.Stage3D view = ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage) as PageView.Stage3D;
+                NotificationManager.msgUI = view.BO_MessageLabel;
                 NotificationManager.BoxUI = view.BO_Information;
                 NotificationManager.IcoUI = view.BO_Information_Image;
                 NotificationManager.labelUI = view.BO_Information_Name;
@@ -57,6 +80,7 @@ namespace Yuri.PlatformCore
             else
             {
                 PageView.Stage2D view = ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage) as PageView.Stage2D;
+                NotificationManager.msgUI = view.BO_MessageLabel;
                 NotificationManager.BoxUI = view.BO_Information;
                 NotificationManager.IcoUI = view.BO_Information_Image;
                 NotificationManager.labelUI = view.BO_Information_Name;
@@ -157,6 +181,11 @@ namespace Yuri.PlatformCore
         private static readonly Queue<NotifyMessageItem> pendingMessages = new Queue<NotifyMessageItem>();
 
         /// <summary>
+        /// 系统级通知计时器
+        /// </summary>
+        private static readonly DispatcherTimer msgTimer = new DispatcherTimer();
+
+        /// <summary>
         /// 通知窗体容器的引用
         /// </summary>
         private static Grid BoxUI = null;
@@ -175,6 +204,11 @@ namespace Yuri.PlatformCore
         /// 通知详情的引用
         /// </summary>
         private static TextBlock detailUI = null;
+
+        /// <summary>
+        /// 系统级通知的引用
+        /// </summary>
+        private static Label msgUI = null;
 
         /// <summary>
         /// 通知窗体距离右版边的距离

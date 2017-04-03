@@ -40,6 +40,12 @@
                 <TextBlock Name="BO_Information_Detail" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="11" TextWrapping="Wrap"></TextBlock>
             </Grid>
         </Grid>
+        <!-- 提示语Label -->
+        <Label Name="BO_MessageLabel" Content="" FontSize="25" Foreground="White" Canvas.Left="10" Canvas.Top="10" Visibility="Hidden" IsHitTestVisible="False">
+            <Label.Effect>
+                <DropShadowEffect ShadowDepth="0" Color="Black" Opacity="1" BlurRadius="5"/>
+            </Label.Effect>
+        </Label>
         <!-- Debug Button -->
         <Button x:Name="blur" Content="blur" Width="75" Canvas.Left="640" Canvas.Top="10" Click="Blur_OnClick"/>
         <Button x:Name="noti" Content="noti" Width="75" Canvas.Left="550" Canvas.Top="10" Click="noti_Click"/>

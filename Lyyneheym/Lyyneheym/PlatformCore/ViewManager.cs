@@ -33,10 +33,18 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void ReDraw()
         {
-            // 先重绘视窗
-            for (int i = 0; i < 3; i++)
+            // 先重绘可视化舞台
+            if (ViewManager.Is3DStage)
             {
-                this.ReDrawViewport2D((ViewportType)i, Director.ScrMana.GetViewboxDescriptor((ViewportType)i));
+                var scale = SCamera3D.GetCameraScale(Director.ScrMana.SCameraScale);
+                SCamera3D.FocusOn(Director.ScrMana.SCameraFocusRow, Director.ScrMana.SCameraFocusCol, scale, true);
+            }
+            else
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    this.ReDrawViewport2D((ViewportType)i, Director.ScrMana.GetViewboxDescriptor((ViewportType)i));
+                }
             }
             // 重绘背景
             for (int i = 0; i < this.backgroundSpriteVec.Count; i++)
@@ -267,10 +275,20 @@ namespace Yuri.PlatformCore
             switch (rType)
             {
                 case ResourceType.Background:
-                    // 交换前景和背景，为消除背景做准备
-                    ScreenManager.GetInstance().Backlay();
-                    // 执行过渡，消除背景
-                    this.ApplyTransition("FadeTransition");
+                    if (ViewManager.Is3DStage)
+                    {
+                        removeOne = this.backgroundSpriteVec[id];
+                        this.backgroundSpriteVec[id] = null;
+                        this.RemoveSprite(ResourceType.Background, removeOne);
+                        break;
+                    }
+                    else
+                    {
+                        // 交换前景和背景，为消除背景做准备
+                        ScreenManager.GetInstance().Backlay();
+                        // 执行过渡，消除背景
+                        this.ApplyTransition("FadeTransition");
+                    }
                     break;
                 case ResourceType.Stand:
                     removeOne = this.characterStandSpriteVec[id];

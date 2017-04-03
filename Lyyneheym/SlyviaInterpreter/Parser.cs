@@ -998,7 +998,7 @@ namespace Yuri.YuriInterpreter
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_scamera, "name", "x", "y", "ro");
                         break;
                     case TokenType.Token_o_notify:
-                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_notify, "target", "name", "filename");
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_notify, "name", "target", "filename");
                         break;
                     case TokenType.Token_o_yurimsg:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_yurimsg, "sign");

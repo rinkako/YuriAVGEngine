@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 
@@ -22,41 +23,46 @@ namespace Yuri.PlatformCore
         /// <param name="c">区块的纵向编号，值域[0, 32]，其中0是屏幕横向正中</param>
         public static void Translate(int r, int c)
         {
-            // 计算运动轨迹
-            var orgPoint = SCamera3D.GetScreenCoordination(Director.ScrMana.SCameraFocusRow, Director.ScrMana.SCameraFocusCol);
-            var destPoint = SCamera3D.GetScreenCoordination(r, c);
-            var delta = SCamera3D.GetManhattanDistance(destPoint, orgPoint);
-            var actualBeginPoint = ViewManager.View3D.ST3D_Camera.Position;
-            // 动画
-            Point3DAnimationUsingKeyFrames v3dAni = new Point3DAnimationUsingKeyFrames();
-            EasingPoint3DKeyFrame k1 = new EasingPoint3DKeyFrame()
+            lock (SCamera3D.AniMutex)
             {
-                Value = new Point3D(actualBeginPoint.X, actualBeginPoint.Y, Director.ScrMana.SCameraScale),
-                KeyTime = TimeSpan.FromMilliseconds(0),
-                EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut }
-            };
-            EasingPoint3DKeyFrame k2 = new EasingPoint3DKeyFrame()
-            {
-                Value = new Point3D(actualBeginPoint.X + delta.X, actualBeginPoint.Y + delta.Y, Director.ScrMana.SCameraScale),
-                KeyTime = TimeSpan.FromMilliseconds(SCamera3D.animationTimeMS),
-                EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut }
-            };
-            v3dAni.KeyFrames.Add(k1);
-            v3dAni.KeyFrames.Add(k2);
-            v3dAni.FillBehavior = FillBehavior.Stop;
-            v3dAni.Completed += delegate
-            {
-                lock (SCamera3D.AnimatingStorySet)
+                // 计算运动轨迹
+                var orgPoint = SCamera3D.GetScreenCoordination(SCamera3D.lastFocusRow, SCamera3D.lastFocusCol);
+                var destPoint = SCamera3D.GetScreenCoordination(r, c);
+                var delta = SCamera3D.GetManhattanDistance(destPoint, orgPoint);
+                var actualBeginPoint = ViewManager.View3D.ST3D_Camera.Position;
+                // 动画
+                Point3DAnimationUsingKeyFrames v3dAni = new Point3DAnimationUsingKeyFrames();
+                EasingPoint3DKeyFrame k1 = new EasingPoint3DKeyFrame()
                 {
-                    SCamera3D.AnimatingStorySet.Remove(v3dAni);
-                }
-                ViewManager.View3D.ST3D_Camera.Position = new Point3D(actualBeginPoint.X + delta.X,
-                    actualBeginPoint.Y + delta.Y, Director.ScrMana.SCameraScale);
-            };
-            ViewManager.View3D.ST3D_Camera.BeginAnimation(ProjectionCamera.PositionProperty, v3dAni);
-            // 更新后台
-            Director.ScrMana.SCameraFocusRow = r;
-            Director.ScrMana.SCameraFocusCol = c;
+                    Value = new Point3D(actualBeginPoint.X, actualBeginPoint.Y, SCamera3D.lastZIndex),
+                    KeyTime = TimeSpan.FromMilliseconds(0),
+                    EasingFunction = new CubicEase() {EasingMode = EasingMode.EaseOut}
+                };
+                EasingPoint3DKeyFrame k2 = new EasingPoint3DKeyFrame()
+                {
+                    Value =
+                        new Point3D(actualBeginPoint.X + delta.X, actualBeginPoint.Y + delta.Y, SCamera3D.lastZIndex),
+                    KeyTime = TimeSpan.FromMilliseconds(SCamera3D.animationTimeMS),
+                    EasingFunction = new CubicEase() {EasingMode = EasingMode.EaseOut}
+                };
+                v3dAni.KeyFrames.Add(k1);
+                v3dAni.KeyFrames.Add(k2);
+                v3dAni.FillBehavior = FillBehavior.Stop;
+                v3dAni.Completed += delegate
+                {
+                    lock (SCamera3D.AnimatingStorySet)
+                    {
+                        SCamera3D.AnimatingStorySet.Remove(v3dAni);
+                    }
+                    ViewManager.View3D.ST3D_Camera.Position = new Point3D(actualBeginPoint.X + delta.X,
+                        actualBeginPoint.Y + delta.Y, SCamera3D.lastZIndex);
+                };
+                ViewManager.View3D.ST3D_Camera.BeginAnimation(ProjectionCamera.PositionProperty, v3dAni);
+                // 更新后台
+                Director.ScrMana.SCameraFocusRow = SCamera3D.lastFocusRow = r;
+                Director.ScrMana.SCameraFocusCol = SCamera3D.lastFocusCol = c;
+                Director.ScrMana.SCameraScale = SCamera3D.lastZIndex;
+            }
         }
 
         /// <summary>
@@ -68,43 +74,56 @@ namespace Yuri.PlatformCore
         /// <param name="immediate">是否立即执行完毕</param>
         public static void FocusOn(int r, int c, double ratio, bool immediate = false)
         {
-            var aniTime = immediate ? 1 : SCamera3D.animationTimeMS;
-            // 计算运动轨迹
-            var orgPoint = SCamera3D.GetScreenCoordination(Director.ScrMana.SCameraFocusRow, Director.ScrMana.SCameraFocusCol);
-            var destPoint = SCamera3D.GetScreenCoordination(r, c);
-            var destZ = SCamera3D.GetCameraZIndex(ratio);
-            var deltaXY = SCamera3D.GetManhattanDistance(destPoint, orgPoint);
-            var actualBeginPoint = ViewManager.View3D.ST3D_Camera.Position;
-            // 动画
-            Point3DAnimationUsingKeyFrames v3dAni = new Point3DAnimationUsingKeyFrames();
-            EasingPoint3DKeyFrame k1 = new EasingPoint3DKeyFrame()
+            lock (SCamera3D.AniMutex)
             {
-                Value = new Point3D(actualBeginPoint.X, actualBeginPoint.Y, Director.ScrMana.SCameraScale),
-                KeyTime = TimeSpan.FromMilliseconds(0),
-                EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut }
-            };
-            EasingPoint3DKeyFrame k2 = new EasingPoint3DKeyFrame()
-            {
-                Value = new Point3D(actualBeginPoint.X + deltaXY.X, actualBeginPoint.Y + deltaXY.Y, destZ),
-                KeyTime = TimeSpan.FromMilliseconds(aniTime),
-                EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut }
-            };
-            v3dAni.KeyFrames.Add(k1);
-            v3dAni.KeyFrames.Add(k2);
-            v3dAni.FillBehavior = FillBehavior.Stop;
-            v3dAni.Completed += delegate
-            {
-                lock (SCamera3D.AnimatingStorySet)
+                // 计算运动轨迹
+                var orgPoint = SCamera3D.GetScreenCoordination(SCamera3D.lastFocusRow, SCamera3D.lastFocusCol);
+                var destPoint = SCamera3D.GetScreenCoordination(r, c);
+                var destZ = SCamera3D.GetCameraZIndex(ratio);
+                var deltaXY = SCamera3D.GetManhattanDistance(destPoint, orgPoint);
+                var actualBeginPoint = ViewManager.View3D.ST3D_Camera.Position;
+                // 瞬时动画就直接移动
+                if (immediate)
                 {
-                    SCamera3D.AnimatingStorySet.Remove(v3dAni);
+                    ViewManager.View3D.ST3D_Camera.Position = new Point3D(actualBeginPoint.X + deltaXY.X,
+                        actualBeginPoint.Y + deltaXY.Y, destZ);
+                    Director.ScrMana.SCameraFocusRow = SCamera3D.lastFocusRow = r;
+                    Director.ScrMana.SCameraFocusCol = SCamera3D.lastFocusCol = c;
+                    Director.ScrMana.SCameraScale = SCamera3D.lastZIndex = destZ;
+                    return;
                 }
-                ViewManager.View3D.ST3D_Camera.Position = new Point3D(actualBeginPoint.X + deltaXY.X, actualBeginPoint.Y + deltaXY.Y, destZ);
-            };
-            ViewManager.View3D.ST3D_Camera.BeginAnimation(ProjectionCamera.PositionProperty, v3dAni);
-            // 更新后台
-            Director.ScrMana.SCameraFocusRow = r;
-            Director.ScrMana.SCameraFocusCol = c;
-            Director.ScrMana.SCameraScale = destZ;
+                // 动画
+                Point3DAnimationUsingKeyFrames v3dAni = new Point3DAnimationUsingKeyFrames();
+                EasingPoint3DKeyFrame k1 = new EasingPoint3DKeyFrame()
+                {
+                    Value = new Point3D(actualBeginPoint.X, actualBeginPoint.Y, SCamera3D.lastZIndex),
+                    KeyTime = TimeSpan.FromMilliseconds(0),
+                    EasingFunction = new CubicEase() {EasingMode = EasingMode.EaseOut}
+                };
+                EasingPoint3DKeyFrame k2 = new EasingPoint3DKeyFrame()
+                {
+                    Value = new Point3D(actualBeginPoint.X + deltaXY.X, actualBeginPoint.Y + deltaXY.Y, destZ),
+                    KeyTime = TimeSpan.FromMilliseconds(SCamera3D.animationTimeMS),
+                    EasingFunction = new CubicEase() {EasingMode = EasingMode.EaseOut}
+                };
+                v3dAni.KeyFrames.Add(k1);
+                v3dAni.KeyFrames.Add(k2);
+                v3dAni.FillBehavior = FillBehavior.Stop;
+                v3dAni.Completed += delegate
+                {
+                    lock (SCamera3D.AnimatingStorySet)
+                    {
+                        SCamera3D.AnimatingStorySet.Remove(v3dAni);
+                    }
+                    ViewManager.View3D.ST3D_Camera.Position = new Point3D(actualBeginPoint.X + deltaXY.X,
+                        actualBeginPoint.Y + deltaXY.Y, destZ);
+                };
+                ViewManager.View3D.ST3D_Camera.BeginAnimation(ProjectionCamera.PositionProperty, v3dAni);
+                // 更新后台
+                Director.ScrMana.SCameraFocusRow = SCamera3D.lastFocusRow = r;
+                Director.ScrMana.SCameraFocusCol = SCamera3D.lastFocusCol = c;
+                Director.ScrMana.SCameraScale = SCamera3D.lastZIndex = destZ;
+            }
         }
 
         /// <summary>
@@ -113,37 +132,41 @@ namespace Yuri.PlatformCore
         /// <param name="doubledDuration">是否2倍动画时间</param>
         public static void ResetFocus(bool doubledDuration)
         {
-            int aniTime = doubledDuration ? SCamera3D.animationTimeMS * 2 : SCamera3D.animationTimeMS;
-            var actualBeginPoint = ViewManager.View3D.ST3D_Camera.Position;
-            Point3DAnimationUsingKeyFrames v3dAni = new Point3DAnimationUsingKeyFrames();
-            EasingPoint3DKeyFrame k1 = new EasingPoint3DKeyFrame()
+            lock (SCamera3D.AniMutex)
             {
-                Value = new Point3D(actualBeginPoint.X, actualBeginPoint.Y, Director.ScrMana.SCameraScale),
-                KeyTime = TimeSpan.FromMilliseconds(0),
-                EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut }
-            };
-            EasingPoint3DKeyFrame k2 = new EasingPoint3DKeyFrame()
-            {
-                Value = new Point3D(0, 0, SCamera3D.orginalCameraZIndex),
-                KeyTime = TimeSpan.FromMilliseconds(aniTime),
-                EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut }
-            };
-            v3dAni.KeyFrames.Add(k1);
-            v3dAni.KeyFrames.Add(k2);
-            v3dAni.FillBehavior = FillBehavior.Stop;
-            v3dAni.Completed += delegate
-            {
-                lock (SCamera3D.AnimatingStorySet)
+                int aniTime = doubledDuration ? SCamera3D.animationTimeMS * 2 : SCamera3D.animationTimeMS;
+                var actualBeginPoint = ViewManager.View3D.ST3D_Camera.Position;
+                Point3DAnimationUsingKeyFrames v3dAni = new Point3DAnimationUsingKeyFrames();
+                EasingPoint3DKeyFrame k1 = new EasingPoint3DKeyFrame()
                 {
-                    SCamera3D.AnimatingStorySet.Remove(v3dAni);
-                }
-                ViewManager.View3D.ST3D_Camera.Position = new Point3D(0, 0, SCamera3D.orginalCameraZIndex);
-            };
-            ViewManager.View3D.ST3D_Camera.BeginAnimation(ProjectionCamera.PositionProperty, v3dAni);
-            // 更新后台
-            Director.ScrMana.SCameraFocusRow = GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2;
-            Director.ScrMana.SCameraFocusCol = 0;
-            Director.ScrMana.SCameraScale = SCamera3D.orginalCameraZIndex;
+                    Value = new Point3D(actualBeginPoint.X, actualBeginPoint.Y, SCamera3D.lastZIndex),
+                    KeyTime = TimeSpan.FromMilliseconds(0),
+                    EasingFunction = new CubicEase() {EasingMode = EasingMode.EaseOut}
+                };
+                EasingPoint3DKeyFrame k2 = new EasingPoint3DKeyFrame()
+                {
+                    Value = new Point3D(0, 0, SCamera3D.orginalCameraZIndex),
+                    KeyTime = TimeSpan.FromMilliseconds(aniTime),
+                    EasingFunction = new CubicEase() {EasingMode = EasingMode.EaseOut}
+                };
+                v3dAni.KeyFrames.Add(k1);
+                v3dAni.KeyFrames.Add(k2);
+                v3dAni.FillBehavior = FillBehavior.Stop;
+                v3dAni.Completed += delegate
+                {
+                    lock (SCamera3D.AnimatingStorySet)
+                    {
+                        SCamera3D.AnimatingStorySet.Remove(v3dAni);
+                    }
+                    ViewManager.View3D.ST3D_Camera.Position = new Point3D(0, 0, SCamera3D.orginalCameraZIndex);
+                };
+                ViewManager.View3D.ST3D_Camera.BeginAnimation(ProjectionCamera.PositionProperty, v3dAni);
+                // 更新后台
+                Director.ScrMana.SCameraFocusRow =
+                    SCamera3D.lastFocusRow = GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2;
+                Director.ScrMana.SCameraFocusCol = SCamera3D.lastFocusCol = 0;
+                Director.ScrMana.SCameraScale = SCamera3D.lastZIndex = SCamera3D.orginalCameraZIndex;
+            }
         }
 
         /// <summary>
@@ -171,7 +194,10 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static void PreviewEnterScene()
         {
-            ViewManager.View3D.ST3D_Camera.Position = new Point3D(0, 0, SCamera3D.orginalCameraZIndex);
+            lock (SCamera3D.AniMutex)
+            {
+                ViewManager.View3D.ST3D_Camera.Position = new Point3D(0, 0, SCamera3D.orginalCameraZIndex);
+            }
             SCamera3D.FocusOn(GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2, 0, 1.8, true);
         }
 
@@ -189,30 +215,33 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static void LeaveSceneToBlackFrame()
         {
-            var masker = ViewManager.MaskFrameRef;
-            masker.Opacity = 0;
-            masker.Visibility = Visibility.Visible;
-            Storyboard story = new Storyboard();
-            DoubleAnimation doubleAniOpacity = new DoubleAnimation(0, 1, SCamera3D.animationDuration);
-            doubleAniOpacity.DecelerationRatio = 0.8;
-            Storyboard.SetTarget(doubleAniOpacity, masker);
-            Storyboard.SetTargetProperty(doubleAniOpacity, new PropertyPath(UIElement.OpacityProperty));
-            story.Children.Add(doubleAniOpacity);
-            story.Duration = SCamera3D.animationDuration;
-            story.FillBehavior = FillBehavior.Stop;
-            story.Completed += (sender, args) =>
+            lock (SCamera3D.AniMutex)
             {
-                masker.Opacity = 1;
+                var masker = ViewManager.MaskFrameRef;
+                masker.Opacity = 0;
+                masker.Visibility = Visibility.Visible;
+                Storyboard story = new Storyboard();
+                DoubleAnimation doubleAniOpacity = new DoubleAnimation(0, 1, SCamera3D.animationDuration);
+                doubleAniOpacity.DecelerationRatio = 0.8;
+                Storyboard.SetTarget(doubleAniOpacity, masker);
+                Storyboard.SetTargetProperty(doubleAniOpacity, new PropertyPath(UIElement.OpacityProperty));
+                story.Children.Add(doubleAniOpacity);
+                story.Duration = SCamera3D.animationDuration;
+                story.FillBehavior = FillBehavior.Stop;
+                story.Completed += (sender, args) =>
+                {
+                    masker.Opacity = 1;
+                    lock (SCamera3D.AnimatingStorySet)
+                    {
+                        SCamera3D.AnimatingStorySet.Remove(story);
+                    }
+                };
                 lock (SCamera3D.AnimatingStorySet)
                 {
-                    SCamera3D.AnimatingStorySet.Remove(story);
+                    SCamera3D.AnimatingStorySet.Add(story);
                 }
-            };
-            lock (SCamera3D.AnimatingStorySet)
-            {
-                SCamera3D.AnimatingStorySet.Add(story);
+                story.Begin();
             }
-            story.Begin();
         }
 
         /// <summary>
@@ -220,33 +249,36 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static void ResumeBlackFrame()
         {
-            var masker = ViewManager.MaskFrameRef;
-            if (masker.Visibility == Visibility.Hidden)
+            lock (SCamera3D.AniMutex)
             {
-                return;
-            }
-            Storyboard story = new Storyboard();
-            DoubleAnimation doubleAniOpacity = new DoubleAnimation(masker.Opacity, 0, SCamera3D.animationDuration);
-            doubleAniOpacity.DecelerationRatio = 0.8;
-            Storyboard.SetTarget(doubleAniOpacity, masker);
-            Storyboard.SetTargetProperty(doubleAniOpacity, new PropertyPath(UIElement.OpacityProperty));
-            story.Children.Add(doubleAniOpacity);
-            story.Duration = SCamera3D.animationDuration;
-            story.FillBehavior = FillBehavior.Stop;
-            story.Completed += (sender, args) =>
-            {
-                masker.Opacity = 0;
-                masker.Visibility = Visibility.Hidden;
+                var masker = ViewManager.MaskFrameRef;
+                if (masker.Visibility == Visibility.Hidden)
+                {
+                    return;
+                }
+                Storyboard story = new Storyboard();
+                DoubleAnimation doubleAniOpacity = new DoubleAnimation(masker.Opacity, 0, SCamera3D.animationDuration);
+                doubleAniOpacity.DecelerationRatio = 0.8;
+                Storyboard.SetTarget(doubleAniOpacity, masker);
+                Storyboard.SetTargetProperty(doubleAniOpacity, new PropertyPath(UIElement.OpacityProperty));
+                story.Children.Add(doubleAniOpacity);
+                story.Duration = SCamera3D.animationDuration;
+                story.FillBehavior = FillBehavior.Stop;
+                story.Completed += (sender, args) =>
+                {
+                    masker.Opacity = 0;
+                    masker.Visibility = Visibility.Hidden;
+                    lock (SCamera3D.AnimatingStorySet)
+                    {
+                        SCamera3D.AnimatingStorySet.Remove(story);
+                    }
+                };
                 lock (SCamera3D.AnimatingStorySet)
                 {
-                    SCamera3D.AnimatingStorySet.Remove(story);
+                    SCamera3D.AnimatingStorySet.Add(story);
                 }
-            };
-            lock (SCamera3D.AnimatingStorySet)
-            {
-                SCamera3D.AnimatingStorySet.Add(story);
+                story.Begin();
             }
-            story.Begin();
         }
         
         /// <summary>
@@ -407,7 +439,12 @@ namespace Yuri.PlatformCore
         /// 屏幕分块中心绝对坐标字典
         /// </summary>
         private static Point[,] screenPointMap;
-        
+
+        /// <summary>
+        /// 动画效果互斥锁
+        /// </summary>
+        private static readonly Mutex AniMutex = new Mutex();
+
         /// <summary>
         /// 立绘分区表
         /// </summary>
@@ -422,6 +459,21 @@ namespace Yuri.PlatformCore
         /// 屏幕分块中心的标准距离字典
         /// </summary>
         private static Dictionary<Point, Dictionary<Point, Point>> manhattanDistanceMap;
+
+        /// <summary>
+        /// 最后对准的行区块，用于回滚
+        /// </summary>
+        private static int lastFocusRow = GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2;
+
+        /// <summary>
+        /// 最后对准的列区块，用于回滚
+        /// </summary>
+        private static int lastFocusCol = 0;
+
+        /// <summary>
+        /// 最后的镜头深度，用于回滚
+        /// </summary>
+        private static double lastZIndex = 8;
 
         /// <summary>
         /// 镜头默认深度

@@ -86,25 +86,32 @@
                     <TextBlock Name="BO_Information_Detail" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="11" TextWrapping="Wrap"></TextBlock>
                 </Grid>
             </Grid>
+            <!-- 提示语Label -->
+            <Label Name="BO_MessageLabel" Content="" FontSize="25" Foreground="White" Canvas.Left="10" Canvas.Top="10" Visibility="Hidden" IsHitTestVisible="False">
+                <Label.Effect>
+                    <DropShadowEffect ShadowDepth="0" Color="Black" Opacity="1" BlurRadius="5"/>
+                </Label.Effect>
+            </Label>
             <!-- Debug按钮 -->
-            <Button Content="233" Width="150" Height="50" Margin="10,10,1120,660" Click="Button_Click"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="11,161,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_4"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="141,161,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="75,137,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_5"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="75,185,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_6"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="10,255,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
+            <Canvas Visibility="Hidden">
+                <Button Content="233" Width="150" Height="50" Margin="10,10,1120,660" Click="Button_Click"/>
+                <Button Content="Button" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+                <Button Content="Button" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
+                <Button Content="Button" HorizontalAlignment="Left" Margin="11,161,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_4"/>
+                <Button Content="Button" HorizontalAlignment="Left" Margin="141,161,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
+                <Button Content="Button" HorizontalAlignment="Left" Margin="75,137,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_5"/>
+                <Button Content="Button" HorizontalAlignment="Left" Margin="75,185,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_6"/>
+                <Button Content="Button" HorizontalAlignment="Left" Margin="10,255,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
 
-            <TextBox Name="tb_row" Text="7" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Width="75"/>
-            <TextBox Name="tb_col" Text="0" HorizontalAlignment="Left" Margin="10,320,0,0" VerticalAlignment="Top" Width="75"/>
-            <TextBox Name="tb_scale" Text="1" HorizontalAlignment="Left" Margin="10,340,0,0" VerticalAlignment="Top" Width="75"/>
-            <Button Content="SCALE" HorizontalAlignment="Left" Margin="10,365,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_8"/>
-            <Button Content="GOTO" HorizontalAlignment="Left" Margin="90,365,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_10"/>
-            <Button Content="RESET" HorizontalAlignment="Left" Margin="10,385,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_9"/>
+                <TextBox Name="tb_row" Text="7" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Width="75"/>
+                <TextBox Name="tb_col" Text="0" HorizontalAlignment="Left" Margin="10,320,0,0" VerticalAlignment="Top" Width="75"/>
+                <TextBox Name="tb_scale" Text="1" HorizontalAlignment="Left" Margin="10,340,0,0" VerticalAlignment="Top" Width="75"/>
+                <Button Content="SCALE" HorizontalAlignment="Left" Margin="10,365,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_8"/>
+                <Button Content="GOTO" HorizontalAlignment="Left" Margin="90,365,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_10"/>
+                <Button Content="RESET" HorizontalAlignment="Left" Margin="10,385,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_9"/>
 
-            <Button Content="IRON" HorizontalAlignment="Left" Margin="10,485,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_11"/>
-            
+                <Button Content="IRON" HorizontalAlignment="Left" Margin="10,485,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_11"/>
+            </Canvas>
         </Canvas>
     </Grid>
 </Page>
