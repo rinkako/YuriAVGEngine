@@ -854,5 +854,11 @@ namespace YuriHalation.YuriForms
             upf.ShowDialog(this);
         }
         #endregion
+
+        private void button35_Click_2(object sender, EventArgs e)
+        {
+            SCamera3DForm scf = new SCamera3DForm();
+            scf.ShowDialog();
+        }
     }
 }

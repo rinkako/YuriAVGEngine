@@ -237,11 +237,17 @@
     <Compile Include="YuriForms\PicturesForm.Designer.cs">
       <DependentUpon>PicturesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="YuriForms\SCamera3DForm.xaml.cs">
+      <DependentUpon>SCamera3DForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="YuriForms\SCameraForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="YuriForms\SCameraForm.Designer.cs">
       <DependentUpon>SCameraForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="YuriForms\Stage3D.xaml.cs">
+      <DependentUpon>Stage3D.xaml</DependentUpon>
     </Compile>
     <Compile Include="YuriForms\SwitchesForm.cs">
       <SubType>Form</SubType>
@@ -327,6 +333,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="YuriForms\SCamera3DForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="YuriForms\Stage3D.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -121,6 +121,7 @@
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button35 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.actionGroupBox.SuspendLayout();
@@ -530,6 +531,7 @@
             // 
             this.actionGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.actionGroupBox.Controls.Add(this.button35);
             this.actionGroupBox.Controls.Add(this.button33);
             this.actionGroupBox.Controls.Add(this.button34);
             this.actionGroupBox.Controls.Add(this.button31);
@@ -1044,6 +1046,17 @@
             this.panel1.Size = new System.Drawing.Size(1030, 705);
             this.panel1.TabIndex = 36;
             // 
+            // button35
+            // 
+            this.button35.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.button35.Location = new System.Drawing.Point(6, 660);
+            this.button35.Name = "button35";
+            this.button35.Size = new System.Drawing.Size(100, 28);
+            this.button35.TabIndex = 34;
+            this.button35.Text = "3DSCamera";
+            this.button35.UseVisualStyleBackColor = false;
+            this.button35.Click += new System.EventHandler(this.button35_Click_2);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1164,5 +1177,6 @@
         private System.Windows.Forms.Button button_deleteFunc;
         private System.Windows.Forms.Button button_deleteScene;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
+        private System.Windows.Forms.Button button35;
     }
 }

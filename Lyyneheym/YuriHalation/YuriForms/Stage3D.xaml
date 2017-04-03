@@ -1,12 +1,11 @@
-﻿<Page x:Class="Yuri.PageView.Stage3D"
+﻿<Page x:Class="YuriHalation.YuriForms.Stage3D"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="1280"
-      Title="Stage3D"
-      MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" MouseWheel="Window_MouseWheel" Background="White" Loaded="Stage3D_OnLoaded">
+      Title="Stage3D" Background="White" Loaded="Stage3D_OnLoaded">
     <Grid Background="Black">
         <Canvas Name="BO_MainGrid" Background="Black" Left="0" Top="0" Height="720" Width="1280">
             <!-- 3D视窗 -->
@@ -29,7 +28,7 @@
                             <Model3DGroup x:Name="ST3D_Background_Group">
                                 <GeometryModel3D x:Name="ST3D_Background_Fore">
                                     <GeometryModel3D.Material>
-                                        <DiffuseMaterial Brush="Black"/>
+                                        <DiffuseMaterial Brush="Pink"/>
                                     </GeometryModel3D.Material>
                                     <GeometryModel3D.Geometry>
                                         <MeshGeometry3D Positions="-16,-9,-8  16,-9,-8  -16,9,-8  16,9,-8"
@@ -45,7 +44,7 @@
                     <ModelVisual3D x:Name="ST3D_Character_Container">
                         <ModelVisual3D.Content>
                             <Model3DGroup x:Name="ST3D_Character_Group">
-                                
+
                             </Model3DGroup>
                         </ModelVisual3D.Content>
                     </ModelVisual3D>
@@ -69,42 +68,8 @@
                     </ModelVisual3D>
                 </Viewport3D.Children>
             </Viewport3D>
-            <!-- Information -->
-            <Grid Name="BO_Information" VerticalAlignment="Top" HorizontalAlignment="Right" Canvas.Top="40" Canvas.Right="-400" Width="264" Height="71" Opacity="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="7*"/>
-                </Grid.ColumnDefinitions>
-                <Image Name="BO_Information_Image" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="5"></Image>
-                <Grid Grid.Row="0" Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50*"/>
-                        <RowDefinition Height="5*"/>
-                        <RowDefinition Height="45*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Name="BO_Information_Name" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" FontSize="18"></TextBlock>
-                    <TextBlock Name="BO_Information_Detail" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="11" TextWrapping="Wrap"></TextBlock>
-                </Grid>
-            </Grid>
-            <!-- Debug按钮 -->
-            <Button Content="233" Width="150" Height="50" Margin="10,10,1120,660" Click="Button_Click"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="11,161,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_4"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="141,161,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="75,137,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_5"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="75,185,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_6"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="10,255,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_7"/>
-
-            <TextBox Name="tb_row" Text="7" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Width="75"/>
-            <TextBox Name="tb_col" Text="0" HorizontalAlignment="Left" Margin="10,320,0,0" VerticalAlignment="Top" Width="75"/>
-            <TextBox Name="tb_scale" Text="1" HorizontalAlignment="Left" Margin="10,340,0,0" VerticalAlignment="Top" Width="75"/>
-            <Button Content="SCALE" HorizontalAlignment="Left" Margin="10,365,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_8"/>
-            <Button Content="GOTO" HorizontalAlignment="Left" Margin="90,365,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_10"/>
-            <Button Content="RESET" HorizontalAlignment="Left" Margin="10,385,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_9"/>
-
-            <Button Content="IRON" HorizontalAlignment="Left" Margin="10,485,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_11"/>
-            
+            <!-- 黑场遮罩 -->
+            <Frame x:Name="maskFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="Black" IsHitTestVisible="False" Visibility="Hidden"/>
         </Canvas>
     </Grid>
 </Page>

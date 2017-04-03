@@ -1,0 +1,57 @@
+﻿<Window x:Class="YuriHalation.YuriForms.SCamera3DForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:YuriHalation.YuriForms"
+        mc:Ignorable="d"
+        Title="SCamera3DForm" Height="752" Width="1450" Background="FloralWhite" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Canvas>
+        <Frame x:Name="T_Frame" Width="1280" Height="720" Canvas.Left="0" Canvas.Right="0" Background="Black"></Frame>
+        <Button Content="Up" Canvas.Left="1343" Canvas.Top="10" Width="40" Height="40"/>
+        <Button Content="Down" Canvas.Left="1343" Canvas.Top="55" Width="40" Height="40"/>
+        <Button Content="Left" Canvas.Left="1298" Canvas.Top="31" Width="40" Height="40"/>
+        <Button Content="Right" Canvas.Left="1388" Canvas.Top="31" Width="40" Height="40"/>
+        <Button Content="In" Canvas.Left="1298" Canvas.Top="110" Width="40" Height="40"/>
+        <Button Content="Out" Canvas.Left="1388" Canvas.Top="110" Width="40" Height="40"/>
+        <GroupBox Name="Groupbox_Action" Header="Action" Height="157" Canvas.Left="1298" Canvas.Top="155" Width="130">
+            <Canvas>
+                <RadioButton Name="Action_Radio_1" Content="进入黑场" Canvas.Left="10" Canvas.Top="10" IsChecked="True"/>
+                <RadioButton Name="Action_Radio_2" Content="进入场景" Canvas.Left="10" Canvas.Top="30" IsChecked="False"/>
+                <RadioButton Name="Action_Radio_3" Content="直接退出黑场" Canvas.Left="10" Canvas.Top="50" IsChecked="False"/>
+                <RadioButton Name="Action_Radio_4" Content="平移镜头" Canvas.Left="10" Canvas.Top="70" IsChecked="False" Checked="Action_Radio_4_Checked" Unchecked="Action_Radio_4_Unchecked"/>
+                <RadioButton Name="Action_Radio_5" Content="调整焦距" Canvas.Left="10" Canvas.Top="90" IsChecked="False" Checked="Action_Radio_5_Checked" Unchecked="Action_Radio_5_Unchecked"/>
+                <RadioButton Name="Action_Radio_6" Content="复位镜头" Canvas.Left="10" Canvas.Top="110" IsChecked="False"/>
+            </Canvas>
+        </GroupBox>
+        <GroupBox Name="Groupbox_Position" Header="Camera Position" Height="89" Canvas.Left="1298" Canvas.Top="317" Width="130" IsEnabled="False">
+            <Canvas>
+                <Label Content="ROW" Canvas.Left="8" Canvas.Top="6"/>
+                <TextBox Name="Textbox_Position_Row" Height="20" Canvas.Left="53" TextWrapping="Wrap" Text="7" Canvas.Top="10" Width="55"/>
+                <Label Content="COL" Canvas.Left="8" Canvas.Top="36"/>
+                <TextBox Name="Textbox_Position_Col" Height="20" Canvas.Left="53" TextWrapping="Wrap" Text="0" Canvas.Top="40" Width="55"/>
+            </Canvas>
+        </GroupBox>
+        <GroupBox Name="Groupbox_Focusing" Header="Camera Focus" Height="58" Canvas.Left="1298" Canvas.Top="411" Width="130" IsEnabled="False">
+            <Canvas>
+                <Label Content="ro" Canvas.Left="8" Canvas.Top="6"/>
+                <TextBox Name="Textbox_FocusRo" Height="20" Canvas.Left="53" TextWrapping="Wrap" Text="1.0" Canvas.Top="10" Width="55"/>
+            </Canvas>
+        </GroupBox>
+        <Button Content="Preview" Canvas.Left="1298" Canvas.Top="474" Width="130" Height="22"/>
+        <Button Content="确认" Canvas.Left="1298" Canvas.Top="680" Width="130" Height="29"/>
+        <GroupBox Name="Groupbox_Element" Header="Element" Height="139" Canvas.Left="1298" Canvas.Top="501" Width="130">
+            <Canvas>
+                <Button Content="BG" Canvas.Left="10" Canvas.Top="10" Width="36"/>
+                <TextBox Name="Textbox_Background_Z" Height="20" Canvas.Left="77" TextWrapping="Wrap" Text="-8" Canvas.Top="10" Width="31"/>
+                <Label Content="Z" Canvas.Left="60" Canvas.Top="7"/>
+                <Button Name="Textbox_Frontier_Z" Content="FT" Canvas.Left="10" Canvas.Top="35" Width="36"/>
+                <TextBox Height="20" Canvas.Left="77" TextWrapping="Wrap" Text="4.5" Canvas.Top="35" Width="31"/>
+                <Label Content="Z" Canvas.Left="60" Canvas.Top="32"/>
+                <ComboBox Name="Combobox_Cstand" Canvas.Left="10" Canvas.Top="67" Width="98" Height="19" IsReadOnly="True"></ComboBox>
+                <Button Content="CS Set" Canvas.Left="10" Canvas.Top="91" Width="46"/>
+                <Button Content="CS Del" Canvas.Right="10" Canvas.Top="91" Width="46"/>
+            </Canvas>
+        </GroupBox>
+    </Canvas>
+</Window>
