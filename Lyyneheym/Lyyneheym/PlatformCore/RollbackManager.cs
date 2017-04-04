@@ -21,8 +21,8 @@ namespace Yuri.PlatformCore
             {
                 // 取上一状态
                 var recentStep = RollbackManager.backwardStack.Last();
-                RollbackManager.backwardStack.RemoveAt(RollbackManager.backwardStack.Count - 1);
-                RollbackManager.forwardStack.Add(recentStep);
+                RollbackManager.backwardStack.RemoveLast();
+                RollbackManager.forwardStack.AddLast(recentStep);
                 // 重演绎
                 RollbackManager.GotoSteadyState(recentStep);
             }
@@ -45,10 +45,10 @@ namespace Yuri.PlatformCore
                 // 如果栈中容量溢出就剔掉最早进入的那个
                 if (RollbackManager.forwardStack.Count >= GlobalConfigContext.MaxRollbackStep)
                 {
-                    RollbackManager.forwardStack.RemoveAt(0);
+                    RollbackManager.forwardStack.RemoveFirst();
                 }
                 // 入栈
-                RollbackManager.forwardStack.Add(ssp);
+                RollbackManager.forwardStack.AddLast(ssp);
             }
         }
 
@@ -67,29 +67,27 @@ namespace Yuri.PlatformCore
                 if (RollbackManager.IsRollingBack == false && RollbackManager.forwardStack.Count > 1)
                 {
                     var selfStep = RollbackManager.forwardStack.Last();
-                    RollbackManager.forwardStack.RemoveAt(RollbackManager.forwardStack.Count - 1);
-                    RollbackManager.backwardStack.Add(selfStep);
+                    RollbackManager.forwardStack.RemoveLast();
+                    RollbackManager.backwardStack.AddLast(selfStep);
                     RollbackManager.IsRollingBack = true;
                 }
                 // 取上一状态
                 if (RollbackManager.IsRollingBack && RollbackManager.forwardStack.Count > 0)
                 {
                     var lastStep = RollbackManager.forwardStack.Last();
-                    RollbackManager.forwardStack.RemoveAt(RollbackManager.forwardStack.Count - 1);
-                    RollbackManager.backwardStack.Add(lastStep);
+                    RollbackManager.forwardStack.RemoveLast();
+                    RollbackManager.backwardStack.AddLast(lastStep);
                     // 重演绎
                     if (ViewManager.Is3DStage)
                     {
-                        //SCamera3D.SSemaphore.WaitOne();
                         RollbackManager.GotoSteadyState(lastStep);
-                        //SCamera3D.SSemaphore.Release();
                     }
                     else
                     {
                         RollbackManager.GotoSteadyState(lastStep);
                     }
+                    NotificationManager.SystemMessageNotify("正在回滚", 800);
                 }
-                NotificationManager.SystemMessageNotify("正在回滚", 800);
             }
         }
         
@@ -171,7 +169,7 @@ namespace Yuri.PlatformCore
                     if (RollbackManager.backwardStack.Count > 0)
                     {
                         var b = RollbackManager.backwardStack.Last();
-                        RollbackManager.forwardStack.Add(b);
+                        RollbackManager.forwardStack.AddLast(b);
                         RollbackManager.backwardStack.Clear();
                     }
                 }
@@ -186,11 +184,11 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 前进状态栈
         /// </summary>
-        private static readonly List<RollbackableSnapshot> forwardStack = new List<RollbackableSnapshot>();
+        private static readonly LinkedList<RollbackableSnapshot> forwardStack = new LinkedList<RollbackableSnapshot>();
 
         /// <summary>
         /// 回滚状态栈
         /// </summary>
-        private static readonly List<RollbackableSnapshot> backwardStack = new List<RollbackableSnapshot>();
+        private static readonly LinkedList<RollbackableSnapshot> backwardStack = new LinkedList<RollbackableSnapshot>();
     }
 }
