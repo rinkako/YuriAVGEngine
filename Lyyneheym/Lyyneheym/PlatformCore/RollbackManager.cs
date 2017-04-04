@@ -57,8 +57,11 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static void SteadyBackward()
         {
-            // 还有得回滚时才滚
-            if (RollbackManager.forwardStack.Count > 0)
+            // 还有得回滚且不在动画时才滚
+            if (RollbackManager.forwardStack.Count > 0 &&
+                ((ViewManager.Is3DStage == false && SCamera2D.IsAnyAnimation == false) ||
+                (ViewManager.Is3DStage && SCamera3D.IsAnyAnimation == false)) &&
+                Director.RunMana.GameState(Director.RunMana.CallStack) != StackMachineState.WaitAnimation)
             {
                 // 如果还未回滚过就要将自己先移除
                 if (RollbackManager.IsRollingBack == false && RollbackManager.forwardStack.Count > 1)
@@ -75,7 +78,16 @@ namespace Yuri.PlatformCore
                     RollbackManager.forwardStack.RemoveAt(RollbackManager.forwardStack.Count - 1);
                     RollbackManager.backwardStack.Add(lastStep);
                     // 重演绎
-                    RollbackManager.GotoSteadyState(lastStep);
+                    if (ViewManager.Is3DStage)
+                    {
+                        //SCamera3D.SSemaphore.WaitOne();
+                        RollbackManager.GotoSteadyState(lastStep);
+                        //SCamera3D.SSemaphore.Release();
+                    }
+                    else
+                    {
+                        RollbackManager.GotoSteadyState(lastStep);
+                    }
                 }
                 NotificationManager.SystemMessageNotify("正在回滚", 800);
             }
