@@ -164,10 +164,10 @@
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.numericUpDown51 = new System.Windows.Forms.NumericUpDown();
             this.label51 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.switchDataGridView = new System.Windows.Forms.DataGridView();
             this.描述 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -1129,7 +1129,7 @@
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(145, 21);
             this.textBox7.TabIndex = 52;
-            this.textBox7.Text = "黑体";
+            this.textBox7.Text = "思源宋体";
             // 
             // label32
             // 
@@ -2082,16 +2082,6 @@
             this.label51.TabIndex = 34;
             this.label51.Text = "开关数量";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(463, 335);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "确定";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // tabPage7
             // 
             this.tabPage7.BackColor = System.Drawing.SystemColors.Control;
@@ -2122,6 +2112,16 @@
             this.描述.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.描述.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.描述.Width = 460;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(463, 335);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "确定";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // GlobalConfigForm
             // 

@@ -20,7 +20,7 @@ namespace Yuri.YuriLauncher.Utils
         public void PlayBGM(string resourceName, string filename, float vol)
         {
             // 如果有BGM在播放就截断
-            if (this.isBGMPlaying || this.isBGMPaused)
+            if (this.IsBGMPlaying || this.isBGMPaused)
             {
                 this.StopAndReleaseBGM();
             }
@@ -28,7 +28,7 @@ namespace Yuri.YuriLauncher.Utils
             BgmHandleContainer = new KeyValuePair<string, int>(resourceName, handle);
             this.bgmVolume = vol;
             this.audioEngine.InitAndPlay(handle, new MemoryStream(File.ReadAllBytes(filename)), this.bgmVolume, true);
-            this.isBGMPlaying = this.isBGMLoaded = true;
+            this.IsBGMPlaying = this.IsBGMLoaded = true;
             this.isBGMPaused = false;
         }
 
@@ -37,10 +37,10 @@ namespace Yuri.YuriLauncher.Utils
         /// </summary>
         public void PauseBGM()
         {
-            if (this.isBGMLoaded && this.isBGMPlaying)
+            if (this.IsBGMLoaded && this.IsBGMPlaying)
             {
                 this.audioEngine.Pause(this.BgmHandleContainer.Value);
-                this.isBGMPlaying = false;
+                this.IsBGMPlaying = false;
                 this.isBGMPaused = true;
             }
         }
@@ -50,10 +50,10 @@ namespace Yuri.YuriLauncher.Utils
         /// </summary>
         public void ResumeBGM()
         {
-            if (this.isBGMLoaded && this.isBGMPaused)
+            if (this.IsBGMLoaded && this.isBGMPaused)
             {
                 this.audioEngine.ResumePlay(this.BgmHandleContainer.Value);
-                this.isBGMPlaying = true;
+                this.IsBGMPlaying = true;
                 this.isBGMPaused = false;
             }
         }
@@ -63,10 +63,10 @@ namespace Yuri.YuriLauncher.Utils
         /// </summary>
         public void StopAndReleaseBGM()
         {
-            if (this.isBGMLoaded)
+            if (this.IsBGMLoaded)
             {
                 this.audioEngine.StopAndRelease(this.BgmHandleContainer.Value);
-                this.isBGMLoaded = this.isBGMPlaying = false;
+                this.IsBGMLoaded = this.IsBGMPlaying = false;
                 this.BgmHandleContainer = new KeyValuePair<string, int>(null, 0);
             }
         }
@@ -118,7 +118,7 @@ namespace Yuri.YuriLauncher.Utils
         /// <param name="vol"></param>
         public void SetBGMVolume(float vol)
         {
-            if (this.isBGMLoaded)
+            if (this.IsBGMLoaded)
             {
                 this.BGMVolume = vol;
             }
@@ -204,7 +204,7 @@ namespace Yuri.YuriLauncher.Utils
             {
                 this.BgsHandleContainer.Add(new KeyValuePair<int, float>(0, this.BGSDefaultVolume));
             }
-            this.isBGMLoaded = this.isBGMPaused = this.isBGMPlaying = this.isMute = false;
+            this.IsBGMLoaded = this.isBGMPaused = this.IsBGMPlaying = this.IsMute = false;
         }
         
         /// <summary>
@@ -262,7 +262,7 @@ namespace Yuri.YuriLauncher.Utils
         /// <summary>
         /// 获取BGM是否正在播放
         /// </summary>
-        public bool isBGMPlaying
+        public bool IsBGMPlaying
         {
             get;
             private set;
@@ -271,7 +271,7 @@ namespace Yuri.YuriLauncher.Utils
         /// <summary>
         /// 获取BGM是否已经加载
         /// </summary>
-        public bool isBGMLoaded
+        public bool IsBGMLoaded
         {
             get;
             private set;
@@ -289,7 +289,7 @@ namespace Yuri.YuriLauncher.Utils
         /// <summary>
         /// 获取当前BGM名字
         /// </summary>
-        public string currentBGM
+        public string CurrentBGM
         {
             get
             {
@@ -300,7 +300,7 @@ namespace Yuri.YuriLauncher.Utils
         /// <summary>
         /// 获取是否有BGS在播放
         /// </summary>
-        public bool isAnyBGS
+        public bool IsAnyBGS
         {
             get
             {
@@ -311,7 +311,7 @@ namespace Yuri.YuriLauncher.Utils
         /// <summary>
         /// 获取或设置是否静音
         /// </summary>
-        public bool isMute
+        public bool IsMute
         {
             get;
             set;

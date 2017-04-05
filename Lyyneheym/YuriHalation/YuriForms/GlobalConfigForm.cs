@@ -185,10 +185,5 @@ namespace YuriHalation.YuriForms
             // 关闭窗体
             this.Close();
         }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            var str = Halation.GetNameAndValue<ConfigPackage>(Halation.project.Config);
-        }
     }
 }

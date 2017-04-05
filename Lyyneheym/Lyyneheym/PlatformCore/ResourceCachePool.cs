@@ -280,7 +280,7 @@ namespace Yuri.PlatformCore
             {
                 for (int i = 0; i < this.heapLength; i++)
                 {
-                    if (match(buffer[i]) == true)
+                    if (match(buffer[i]))
                     {
                         return buffer[i];
                     }
@@ -297,7 +297,7 @@ namespace Yuri.PlatformCore
             {
                 for (int i = 0; i < this.heapLength; i++)
                 {
-                    if (match(buffer[i]) == true)
+                    if (match(buffer[i]))
                     {
                         return i;
                     }

@@ -17,12 +17,12 @@ namespace Yuri.PlatformCore
         /// <returns>计算结果的值（Double/字符串）</returns>
         public static object Evaluate(string polish, StackMachine vsm)
         {
-            List<PolishItem> calcList = PolishEvaluator.GetPolishItemList(polish, vsm);
+            var calcList = PolishEvaluator.GetPolishItemList(polish, vsm);
             if (calcList.Count == 0)
             {
                 return null;
             }
-            Stack<PolishItem> calcStack = new Stack<PolishItem>();
+            var calcStack = new Stack<PolishItem>();
             foreach (PolishItem poi in calcList)
             {
                 // 操作数压栈
@@ -35,47 +35,51 @@ namespace Yuri.PlatformCore
                 if (poi.ItemType == PolishItemType.CAL_NOT && calcStack.Count >= 1)
                 {
                     PolishItem peeker = calcStack.Peek();
-                    if (peeker.ItemType == PolishItemType.CONSTANT || peeker.ItemType == PolishItemType.VAR_NUM)
+                    switch (peeker.ItemType)
                     {
-                        calcStack.Pop();
-                        double notres = Math.Abs(peeker.Number) < 1e-15 ? 1.0 : 0.0;
-                        PolishItem np = new PolishItem()
+                        case PolishItemType.CONSTANT:
+                        case PolishItemType.VAR_NUM:
                         {
-                            Number = notres,
-                            Reference = notres
-                        };
-                        calcStack.Push(np);
-                        continue;
-                    }
-                    else if (peeker.ItemType == PolishItemType.STRING || peeker.ItemType == PolishItemType.VAR_STRING)
-                    {
-                        calcStack.Pop();
-                        double notres = peeker.Cluster == String.Empty ? 1.0 : 0.0;
+                            calcStack.Pop();
+                            double notres = Math.Abs(peeker.Number) < 1e-15 ? 1.0 : 0.0;
+                            PolishItem np = new PolishItem()
+                            {
+                                Number = notres,
+                                Reference = notres
+                            };
+                            calcStack.Push(np);
+                            continue;
+                        }
+                        case PolishItemType.STRING:
+                        case PolishItemType.VAR_STRING:
+                        {
+                            calcStack.Pop();
+                            double notres = peeker.Cluster == String.Empty ? 1.0 : 0.0;
 
-                        PolishItem np = new PolishItem()
-                        {
-                            Number = notres,
-                            Reference = notres
-                        };
-                        calcStack.Push(np);
-                        continue;
+                            PolishItem np = new PolishItem()
+                            {
+                                Number = notres,
+                                Reference = notres
+                            };
+                            calcStack.Push(np);
+                            continue;
+                        }
                     }
                 }
                 if (calcStack.Count >= 2)
                 {
                     PolishItem operand2 = calcStack.Pop();
                     PolishItem operand1 = calcStack.Pop();
-                    if (PolishItem.isOperatable(operand1, operand2) == true)
+                    if (PolishItem.isOperatable(operand1, operand2))
                     {
-                        PolishItem newPoi = null;
-                        double tempDouble = 0;
-                        string tempString = String.Empty;
+                        PolishItem newPoi;
+                        double tempDouble;
                         switch (poi.ItemType)
                         {
                             case PolishItemType.CAL_PLUS:
                                 if (operand1.Reference is string)
                                 {
-                                    tempString = (string)operand1.Reference + (string)operand2.Reference;
+                                    var tempString = (string)operand1.Reference + (string)operand2.Reference;
                                     newPoi = new PolishItem()
                                     {
                                         Cluster = tempString,
@@ -343,8 +347,8 @@ namespace Yuri.PlatformCore
         /// <returns>可计算项目向量</returns>
         private static List<PolishItem> GetPolishItemList(string polish, StackMachine vsm)
         {
-            List<PolishItem> resVec = new List<PolishItem>();
-            string[] polishItem = polish.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var resVec = new List<PolishItem>();
+            var polishItem = polish.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string item in polishItem)
             {
                 PolishItem poi = null;
@@ -398,135 +402,125 @@ namespace Yuri.PlatformCore
                         };
                     }
                 }
-                else if (item == "+")
+                else switch (item)
                 {
-                    poi = new PolishItem()
-                    {
-                        Number = 0.0f,
-                        Cluster = null,
-                        ItemType = PolishItemType.CAL_PLUS,
-                        Reference = null
-                    };
-                }
-                else if (item == "-")
-                {
-                    poi = new PolishItem()
-                    {
-                        Number = 0.0f,
-                        Cluster = null,
-                        ItemType = PolishItemType.CAL_MINUS,
-                        Reference = null
-                    };
-                }
-                else if (item == "*")
-                {
-                    poi = new PolishItem()
-                    {
-                        Number = 0.0f,
-                        Cluster = null,
-                        ItemType = PolishItemType.CAL_MULTI,
-                        Reference = null
-                    };
-                }
-                else if (item == "/")
-                {
-                    poi = new PolishItem()
-                    {
-                        Number = 0.0f,
-                        Cluster = null,
-                        ItemType = PolishItemType.CAL_DIV,
-                        Reference = null
-                    };
-                }
-                else if (item == "!")
-                {
-                    poi = new PolishItem()
-                    {
-                        Number = 0.0f,
-                        Cluster = null,
-                        ItemType = PolishItemType.CAL_NOT,
-                        Reference = null
-                    };
-                }
-                else if (item == "&&")
-                {
-                    poi = new PolishItem()
-                    {
-                        Number = 0.0f,
-                        Cluster = null,
-                        ItemType = PolishItemType.CAL_ANDAND,
-                        Reference = null
-                    };
-                }
-                else if (item == "||")
-                {
-                    poi = new PolishItem()
-                    {
-                        Number = 0.0f,
-                        Cluster = null,
-                        ItemType = PolishItemType.CAL_OROR,
-                        Reference = null
-                    };
-                }
-                else if (item == "<>")
-                {
-                    poi = new PolishItem()
-                    {
-                        Number = 0.0f,
-                        Cluster = null,
-                        ItemType = PolishItemType.CAL_NOTEQUAL,
-                        Reference = null
-                    };
-                }
-                else if (item == "==")
-                {
-                    poi = new PolishItem()
-                    {
-                        Number = 0.0f,
-                        Cluster = null,
-                        ItemType = PolishItemType.CAL_EQUAL,
-                        Reference = null
-                    };
-                }
-                else if (item == ">")
-                {
-                    poi = new PolishItem()
-                    {
-                        Number = 0.0f,
-                        Cluster = null,
-                        ItemType = PolishItemType.CAL_BIG,
-                        Reference = null
-                    };
-                }
-                else if (item == "<")
-                {
-                    poi = new PolishItem()
-                    {
-                        Number = 0.0f,
-                        Cluster = null,
-                        ItemType = PolishItemType.CAL_SMALL,
-                        Reference = null
-                    };
-                }
-                else if (item == ">=")
-                {
-                    poi = new PolishItem()
-                    {
-                        Number = 0.0f,
-                        Cluster = null,
-                        ItemType = PolishItemType.CAL_BIGEQUAL,
-                        Reference = null
-                    };
-                }
-                else if (item == "<=")
-                {
-                    poi = new PolishItem()
-                    {
-                        Number = 0.0f,
-                        Cluster = null,
-                        ItemType = PolishItemType.CAL_SMALLEQUAL,
-                        Reference = null
-                    };
+                    case "+":
+                        poi = new PolishItem()
+                        {
+                            Number = 0.0f,
+                            Cluster = null,
+                            ItemType = PolishItemType.CAL_PLUS,
+                            Reference = null
+                        };
+                        break;
+                    case "-":
+                        poi = new PolishItem()
+                        {
+                            Number = 0.0f,
+                            Cluster = null,
+                            ItemType = PolishItemType.CAL_MINUS,
+                            Reference = null
+                        };
+                        break;
+                    case "*":
+                        poi = new PolishItem()
+                        {
+                            Number = 0.0f,
+                            Cluster = null,
+                            ItemType = PolishItemType.CAL_MULTI,
+                            Reference = null
+                        };
+                        break;
+                    case "/":
+                        poi = new PolishItem()
+                        {
+                            Number = 0.0f,
+                            Cluster = null,
+                            ItemType = PolishItemType.CAL_DIV,
+                            Reference = null
+                        };
+                        break;
+                    case "!":
+                        poi = new PolishItem()
+                        {
+                            Number = 0.0f,
+                            Cluster = null,
+                            ItemType = PolishItemType.CAL_NOT,
+                            Reference = null
+                        };
+                        break;
+                    case "&&":
+                        poi = new PolishItem()
+                        {
+                            Number = 0.0f,
+                            Cluster = null,
+                            ItemType = PolishItemType.CAL_ANDAND,
+                            Reference = null
+                        };
+                        break;
+                    case "||":
+                        poi = new PolishItem()
+                        {
+                            Number = 0.0f,
+                            Cluster = null,
+                            ItemType = PolishItemType.CAL_OROR,
+                            Reference = null
+                        };
+                        break;
+                    case "<>":
+                        poi = new PolishItem()
+                        {
+                            Number = 0.0f,
+                            Cluster = null,
+                            ItemType = PolishItemType.CAL_NOTEQUAL,
+                            Reference = null
+                        };
+                        break;
+                    case "==":
+                        poi = new PolishItem()
+                        {
+                            Number = 0.0f,
+                            Cluster = null,
+                            ItemType = PolishItemType.CAL_EQUAL,
+                            Reference = null
+                        };
+                        break;
+                    case ">":
+                        poi = new PolishItem()
+                        {
+                            Number = 0.0f,
+                            Cluster = null,
+                            ItemType = PolishItemType.CAL_BIG,
+                            Reference = null
+                        };
+                        break;
+                    case "<":
+                        poi = new PolishItem()
+                        {
+                            Number = 0.0f,
+                            Cluster = null,
+                            ItemType = PolishItemType.CAL_SMALL,
+                            Reference = null
+                        };
+                        break;
+                    case ">=":
+                        poi = new PolishItem()
+                        {
+                            Number = 0.0f,
+                            Cluster = null,
+                            ItemType = PolishItemType.CAL_BIGEQUAL,
+                            Reference = null
+                        };
+                        break;
+                    case "<=":
+                        poi = new PolishItem()
+                        {
+                            Number = 0.0f,
+                            Cluster = null,
+                            ItemType = PolishItemType.CAL_SMALLEQUAL,
+                            Reference = null
+                        };
+                        break;
                 }
                 if (poi != null)
                 {

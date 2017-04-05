@@ -111,6 +111,8 @@ namespace Yuri.PlatformCore
         public static double GAME_CHARACTERSTAND_RIGHT_X = 525;
         // 图像层：右立绘Y
         public static double GAME_CHARACTERSTAND_RIGHT_Y = 60;
+        // 场景镜头：是否开启场景镜头系统
+        public static bool GAME_SCAMERA_ENABLE = true;
         // 场景镜头：屏幕纵向划分块数
         public static int GAME_SCAMERA_SCR_ROWCOUNT = 15;
         // 场景镜头：屏幕横向划分块数

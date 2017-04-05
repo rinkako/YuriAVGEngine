@@ -52,6 +52,6 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 前端页引用字典
         /// </summary>
-        private static Dictionary<string, Page> pageDict;
+        private static readonly Dictionary<string, Page> pageDict;
     }
 }

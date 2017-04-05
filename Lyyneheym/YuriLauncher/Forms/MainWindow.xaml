@@ -54,7 +54,7 @@
             <Canvas>
               <RadioButton x:Name="radioButton_Screen_Typing_1" Content="开启" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True" Checked="radioButton_Screen_Typing_1_Checked"/>
               <RadioButton x:Name="radioButton_Screen_Typing_2" Content="关闭" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="77" Checked="radioButton_Screen_Typing_2_Checked"/>
-              <TextBlock Name="textblock_Screen_Typing" Padding="3" Text="菲涅爱伊泽塔&#13;伊泽塔爱菲涅公主" Background="AliceBlue" LineHeight="25" Width="158" Canvas.Top="119" Height="65" FontSize="18" FontFamily="FZXiaoBiaoSong-B05"/>
+              <TextBlock Name="textblock_Screen_Typing" Padding="3" Text="菲涅爱伊泽塔&#13;伊泽塔爱菲涅公主" Background="AliceBlue" LineHeight="25" Width="158" Canvas.Top="119" Height="65" FontSize="18" FontFamily="Source Han Serif SC"/>
               <Slider x:Name="slider_Screen_Typing" Canvas.Left="10" Canvas.Top="35" Width="138" Maximum="200" Value="60" LargeChange="10" SmallChange="10" TickFrequency="10" ValueChanged="slider_Screen_Typing_ValueChanged" TickPlacement="BottomRight"/>
               <Label Content="快" Canvas.Top="17" Canvas.Left="-4"/>
               <Label Content="慢" Canvas.Top="17" Canvas.Left="136"/>

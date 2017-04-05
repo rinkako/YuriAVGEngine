@@ -385,7 +385,6 @@ namespace Yuri.PlatformCore
         {
             this.HideMessageTria();
             Storyboard MsgLayerTypingStory = new Storyboard();
-            DiscreteStringKeyFrame discreteStringKeyFrame;
             StringAnimationUsingKeyFrames stringAnimationUsingKeyFrames = new StringAnimationUsingKeyFrames();
             Duration aniDuration = new Duration(TimeSpan.FromMilliseconds(wordTimeSpan * appendString.Length));
             stringAnimationUsingKeyFrames.Duration = aniDuration;
@@ -393,7 +392,7 @@ namespace Yuri.PlatformCore
             string tmp = orgString;
             foreach (char c in appendString)
             {
-                discreteStringKeyFrame = new DiscreteStringKeyFrame();
+                var discreteStringKeyFrame = new DiscreteStringKeyFrame();
                 discreteStringKeyFrame.KeyTime = KeyTime.Paced;
                 tmp += c;
                 discreteStringKeyFrame.Value = tmp;
@@ -491,17 +490,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取当前是否正在显示对话
         /// </summary>
-        public bool IsShowingDialog
-        {
-            get
-            {
-                return this.isShowingDialog;
-            }
-            private set
-            {
-                this.isShowingDialog = value;
-            }
-        }
+        public bool IsShowingDialog => this.isShowingDialog;
 
         /// <summary>
         /// 是否下一动作仍为对话
@@ -1116,8 +1105,8 @@ namespace Yuri.PlatformCore
         /// <param name="filename">资源名称</param>
         /// <param name="locationStr">立绘位置字符串</param>
         /// <param name="opacity">不透明度</param>
-        /// <param name="xscale">X缩放比</param>
-        /// <param name="yscale">Y缩放比</param>
+        /// <param name="xscale">[废弃的] X缩放比</param>
+        /// <param name="yscale">[废弃的] Y缩放比</param>
         /// <param name="ro">角度</param>
         /// <param name="anchor">锚点</param>
         /// <param name="cut">纹理切割矩</param>
@@ -1373,6 +1362,10 @@ namespace Yuri.PlatformCore
         /// <param name="ro">缩放比，1.0代表原始尺寸</param>
         private void Scamera(string name, int r, int c, double ro)
         {
+            if (GlobalConfigContext.GAME_SCAMERA_ENABLE == false)
+            {
+                return;
+            }
             if (r < 0 || r > GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT)
             {
                 r = GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2;

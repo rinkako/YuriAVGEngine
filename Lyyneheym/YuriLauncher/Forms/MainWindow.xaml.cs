@@ -171,7 +171,7 @@ namespace Yuri.YuriLauncher.Forms
             if (this.label_Sound_BGM != null)
             {
                 this.label_Sound_BGM.Content = this.slider_Sound_BGM.Value.ToString("0");
-                if (this.musicMana.isBGMPlaying)
+                if (this.musicMana.IsBGMPlaying)
                 {
                     this.musicMana.SetBGMVolume((int)(this.slider_Sound_BGM.Value) * 10);
                 }
@@ -217,7 +217,7 @@ namespace Yuri.YuriLauncher.Forms
             if (this.label_Sound_BGS != null)
             {
                 this.label_Sound_BGS.Content = this.slider_Sound_BGS.Value.ToString("0");
-                if (this.musicMana.isAnyBGS)
+                if (this.musicMana.IsAnyBGS)
                 {
                     this.musicMana.SetBGSVolume((int)(this.slider_Sound_BGS.Value) * 10);
                 }
