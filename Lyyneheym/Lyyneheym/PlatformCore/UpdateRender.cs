@@ -136,7 +136,7 @@ namespace Yuri.PlatformCore
             // 上滚
             if (delta > 0)
             {
-                RollbackManager.SteadyBackward();
+                 RollbackManager.SteadyBackward();
             }
             // 下滚
             else
@@ -319,10 +319,10 @@ namespace Yuri.PlatformCore
                     }
                 }
                 // 回滚时不打字而是直接显示
-                //if (RollbackManager.IsRollingBack)
-                //{
-                //    wordDelay = false;
-                //}
+                if (RollbackManager.IsRollingBack)
+                {
+                    wordDelay = false;
+                }
                 // 打字动画
                 this.TypeWriter(0, this.dialogPreStr, currentRun, this.viewMana.GetMessageLayer(0).DisplayBinding, wordDelay ? GlobalConfigContext.GAME_MSG_TYPING_DELAY : 0);
                 this.dialogPreStr += currentRun;
@@ -852,6 +852,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <remarks>若要强行修改对话框中的内容，请使用DrawStringToMsgLayer方法</remarks>
         /// <param name="dialogStr">要显示的文本</param>
+        /// <param name="continous">是否连续对话</param>
         private void Dialog(string dialogStr, bool continous)
         {
             // 清除上一次的显示缓存
