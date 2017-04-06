@@ -34,7 +34,7 @@ namespace Yuri.Utils
                 BinaryWriter pakBw = new BinaryWriter(pakFs);
                 // 获取文件长度
                 int fileEncounter = fileList.Count;
-                synWriter.WriteLine(String.Format("___SlyviaLyyneheym@{0}", fileEncounter));
+                synWriter.WriteLine("___SlyviaLyyneheym@{0}", fileEncounter);
                 // 打包文件
                 FileStream fs;
                 BinaryReader fbr;
@@ -50,9 +50,8 @@ namespace Yuri.Utils
                         pakBw.Write(fbr.ReadByte());
                         fcount++;
                     }
-
                     string[] nameSplitItem = fileList[i].Split('\\');
-                    synWriter.WriteLine(String.Format("{0}:{1}:{2}", nameSplitItem[nameSplitItem.Length - 1], accCounter, fcount));
+                    synWriter.WriteLine("{0}:{1}:{2}", nameSplitItem[nameSplitItem.Length - 1], accCounter, fcount);
                     accCounter += fcount;
                     fs.Close();
                     fs.Dispose();
@@ -81,12 +80,12 @@ namespace Yuri.Utils
         {
             try
             {
-                StreamReader synReader = new StreamReader(packFile + ".pst");
-                FileStream pakFs = new FileStream(packFile, FileMode.Open);
-                BinaryReader pakBr = new BinaryReader(pakFs);
-                FileStream extFs = new FileStream(saveFile, FileMode.Create);
-                BinaryWriter extBr = new BinaryWriter(extFs);
-                string[] synHeadSplitItem = synReader.ReadLine().Split('@');
+                var synReader = new StreamReader(packFile + ".pst");
+                var pakFs = new FileStream(packFile, FileMode.Open);
+                var pakBr = new BinaryReader(pakFs);
+                var extFs = new FileStream(saveFile, FileMode.Create);
+                var extBr = new BinaryWriter(extFs);
+                var synHeadSplitItem = synReader.ReadLine().Split('@');
                 if (synHeadSplitItem[0] != "___SlyviaLyyneheym")
                 {
                     return false;
@@ -113,16 +112,6 @@ namespace Yuri.Utils
                 {
                     extBr.Write(pakBr.ReadByte());
                 }
-                //pakFs.Seek(filePointer, SeekOrigin.Begin);
-                //byte[] myData = new byte[fileSize];
-                //for (int t = 0; t < fileSize; t++)
-                //{
-                //    myData[t] = pakBr.ReadByte();
-                //}
-                //for (int t = 0; t < fileSize; t++)
-                //{
-                //    extBr.Write(myData[t]);
-                //}
                 pakBr.Close();
                 pakFs.Close();
                 extBr.Close();
@@ -145,9 +134,9 @@ namespace Yuri.Utils
         /// <returns>资源的字节序列</returns>
         public static GCHandle GetObjectManagedHandle(string packFile, string resourceName, long offset, long length)
         {
-            FileStream pakFs = new FileStream(packFile, FileMode.Open);
+            var pakFs = new FileStream(packFile, FileMode.Open);
             pakFs.Seek(offset, SeekOrigin.Begin);
-            byte[] buffer = new byte[length];
+            var buffer = new byte[length];
             if (length >= Int32.MaxValue)
             {
                 BinaryReader pakBr = new BinaryReader(pakFs);

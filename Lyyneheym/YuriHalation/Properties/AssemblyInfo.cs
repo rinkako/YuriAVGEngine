@@ -8,7 +8,7 @@ using System.Windows;
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("YuriHalation")]
-[assembly: AssemblyDescription("Halation is an IDE for Yuri Script, Yuri Project")]
+[assembly: AssemblyDescription("Halation is an open source IDE for Yuri Script, Yuri Project, licensed under MS-PL.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Rinkako")]
 [assembly: AssemblyProduct("Yuri Project / Halation")]
