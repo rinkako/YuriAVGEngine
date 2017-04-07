@@ -269,5 +269,37 @@ namespace Yuri.YuriLauncher.Forms
                 this.textblock_Screen_Typing.FontSize = fontDialog.Font.Size;
             }
         }
+
+        /// <summary>
+        /// 画面：全屏幕
+        /// </summary>
+        private void radioButton_Screen_Window_1_Checked(object sender, RoutedEventArgs e)
+        {
+            if (this.groupBox_Screen_Resolution != null)
+            {
+                this.radioButton_Screen_Resolution_3.IsChecked = true;
+                this.groupBox_Screen_Resolution.IsEnabled = false;
+            }
+        }
+
+        /// <summary>
+        /// 画面：窗口
+        /// </summary>
+        private void radioButton_Screen_Window_2_Checked(object sender, RoutedEventArgs e)
+        {
+            if (this.groupBox_Screen_Resolution != null)
+            {
+                this.groupBox_Screen_Resolution.IsEnabled = true;
+            }
+        }
+
+        /// <summary>
+        /// 按钮：版权
+        /// </summary>
+        private void button_about_resources_Click(object sender, RoutedEventArgs e)
+        {
+            RightsForm rf = new RightsForm();
+            rf.ShowDialog();
+        }
     }
 }

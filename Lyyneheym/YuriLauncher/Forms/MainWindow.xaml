@@ -33,8 +33,8 @@
           </GroupBox>
           <GroupBox x:Name="groupBox_Screen_Window" Header="屏显模式" HorizontalAlignment="Left" Margin="10,152,0,0" VerticalAlignment="Top" Height="80" Width="170">
             <Canvas>
-              <RadioButton x:Name="radioButton_Screen_Window_1" Content="全屏幕" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-              <RadioButton x:Name="radioButton_Screen_Window_2" Content="窗口" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="23" IsChecked="True"/>
+              <RadioButton x:Name="radioButton_Screen_Window_1" Content="全屏幕" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="radioButton_Screen_Window_1_Checked"/>
+              <RadioButton x:Name="radioButton_Screen_Window_2" Content="窗口" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="23" IsChecked="True" Checked="radioButton_Screen_Window_2_Checked"/>
             </Canvas>
           </GroupBox>
           <GroupBox x:Name="groupBox_Screen_Animation" Header="动画特效" HorizontalAlignment="Left" Margin="195,10,0,0" VerticalAlignment="Top" Height="128" Width="170">
@@ -129,7 +129,7 @@
         <Grid Name="grid_about" Background="#FFFFFFF9">
 					<Image Source="/Yuri.YuriLauncher;component/Resources/About_1.png"/>
           <Button x:Name="button_about_reference" Content="软件许可证" HorizontalAlignment="Left" Margin="475,229,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft YaHei UI" Foreground="DarkSlateBlue" Click="button_about_reference_Click" TabIndex="3"/>
-          <Button x:Name="button_about_resources" Content="素材版权" HorizontalAlignment="Left" Margin="395,229,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft YaHei UI" Foreground="DarkSlateBlue" TabIndex="2"/>
+          <Button x:Name="button_about_resources" Content="资源版权" HorizontalAlignment="Left" Margin="395,229,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft YaHei UI" Foreground="DarkSlateBlue" TabIndex="2" Click="button_about_resources_Click"/>
           <Button x:Name="button_about_nextpage" Width="27" Height="27" Content=" ▶" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Margin="525,109,8,128" TabIndex="1"/>
         </Grid>
       </TabItem>
