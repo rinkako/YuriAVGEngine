@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Threading;
 using System.Collections.Generic;
-using Yuri.ILPackage;
 using Yuri.Utils;
+using Yuri.Yuriri;
 
 namespace Yuri.PlatformCore
 {

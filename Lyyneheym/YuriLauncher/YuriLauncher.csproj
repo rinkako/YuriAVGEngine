@@ -119,6 +119,7 @@
   <ItemGroup>
     <Compile Include="Utils\CommonUtils.cs" />
     <Compile Include="Utils\IOUtils.cs" />
+    <Compile Include="Utils\LicenseContainer.cs" />
     <Compile Include="Utils\Musician.cs" />
     <Compile Include="Utils\NAudioPlayer.cs" />
     <Compile Include="Utils\NetworkUtils.cs" />
@@ -134,6 +135,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Sysbg_Izetta.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CVICON_01.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriPlatform", "Lyyneheym\YuriPlatform.csproj", "{D513CF82-CCCE-4D15-8F34-D17663C26FA7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriPacker", "LyynePacker\YuriPacker.csproj", "{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriInterpreter", "SlyviaInterpreter\YuriInterpreter.csproj", "{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}"
 EndProject
@@ -17,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriLauncher", "YuriLauncher\YuriLauncher.csproj", "{455F67A2-BF20-40CE-AC4F-C0C294C2A979}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuriri", "Yuriri\Yuriri.csproj", "{2CE410D4-7EB7-473E-ACC8-6EF39038188E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,17 +39,6 @@ Global
 		{D513CF82-CCCE-4D15-8F34-D17663C26FA7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D513CF82-CCCE-4D15-8F34-D17663C26FA7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D513CF82-CCCE-4D15-8F34-D17663C26FA7}.Release|x86.ActiveCfg = Release|Any CPU
-		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Debug|x86.Build.0 = Debug|Any CPU
-		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Release|x86.ActiveCfg = Release|Any CPU
 		{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -82,6 +71,18 @@ Global
 		{455F67A2-BF20-40CE-AC4F-C0C294C2A979}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{455F67A2-BF20-40CE-AC4F-C0C294C2A979}.Release|x86.ActiveCfg = Release|Any CPU
 		{455F67A2-BF20-40CE-AC4F-C0C294C2A979}.Release|x86.Build.0 = Release|Any CPU
+		{2CE410D4-7EB7-473E-ACC8-6EF39038188E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CE410D4-7EB7-473E-ACC8-6EF39038188E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CE410D4-7EB7-473E-ACC8-6EF39038188E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2CE410D4-7EB7-473E-ACC8-6EF39038188E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2CE410D4-7EB7-473E-ACC8-6EF39038188E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2CE410D4-7EB7-473E-ACC8-6EF39038188E}.Debug|x86.Build.0 = Debug|Any CPU
+		{2CE410D4-7EB7-473E-ACC8-6EF39038188E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CE410D4-7EB7-473E-ACC8-6EF39038188E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CE410D4-7EB7-473E-ACC8-6EF39038188E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2CE410D4-7EB7-473E-ACC8-6EF39038188E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2CE410D4-7EB7-473E-ACC8-6EF39038188E}.Release|x86.ActiveCfg = Release|Any CPU
+		{2CE410D4-7EB7-473E-ACC8-6EF39038188E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

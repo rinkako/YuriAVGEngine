@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
-using Yuri.ILPackage;
 
-namespace Yuri.PlatformCore
+namespace Yuri.Yuriri
 {
     /// <summary>
     /// <para>场景类：控制一个剧本章节的演出</para>
     /// <para>通常，一个场景拥有一个动作序列和依存她的函数</para>
     /// <para>演绎剧本就是在调用堆栈上遍历这个序列的过程</para>
     /// </summary>
-    internal class Scene
+    public sealed class Scene
     {
         /// <summary>
         /// 构造器
@@ -25,13 +25,10 @@ namespace Yuri.PlatformCore
             this.FuncContainer = funcVec;
             this.LabelDictionary = labelDict;
             this.ParallellerContainer = new List<SceneFunction>();
-            foreach (var sf in this.FuncContainer)
-            {
-                if (sf.Callname.StartsWith("sync_", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    this.ParallellerContainer.Add(sf);
-                }
-            }
+            var paraC = from t in this.FuncContainer
+                        where t.Callname.StartsWith("sync_", StringComparison.CurrentCultureIgnoreCase)
+                        select t;
+            this.ParallellerContainer.AddRange(paraC);
         }
 
         /// <summary>

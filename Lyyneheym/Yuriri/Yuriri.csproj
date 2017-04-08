@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}</ProjectGuid>
+    <ProjectGuid>{2CE410D4-7EB7-473E-ACC8-6EF39038188E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Yuri.YuriInterpreter</RootNamespace>
-    <AssemblyName>Yuri.YuriInterpreter</AssemblyName>
+    <RootNamespace>Yuri.Yuriri</RootNamespace>
+    <AssemblyName>Yuriri</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,34 +34,16 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="YuriEncryptor.cs" />
-    <Compile Include="Interpreter.cs" />
-    <Compile Include="InterpreterException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CandidateFunction.cs" />
-    <Compile Include="Lexer.cs" />
-    <Compile Include="LL1ParseMap.cs" />
-    <Compile Include="Parser.cs" />
-    <Compile Include="Pile.cs" />
-    <Compile Include="SyntaxTreeNode.cs" />
-    <Compile Include="Token.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Yuriri\Yuriri.csproj">
-      <Project>{2ce410d4-7eb7-473e-acc8-6ef39038188e}</Project>
-      <Name>Yuriri</Name>
-    </ProjectReference>
+    <Compile Include="Scene.cs" />
+    <Compile Include="SceneAction.cs" />
+    <Compile Include="SceneActionPackage.cs" />
+    <Compile Include="SceneFunction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -2,9 +2,8 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Windows.Media;
-using Yuri.PlatformCore;
 
-namespace Yuri.ILPackage
+namespace Yuri.PlatformCore
 {
     using GDC = GlobalConfigContext;
     /// <summary>
@@ -20,12 +19,12 @@ namespace Yuri.ILPackage
             // 读入数据
             FileStream fs = new FileStream(Director.BasePath + "YuriConfig.dat", FileMode.Open);
             StreamReader sr = new StreamReader(fs);
-            Dictionary<string, string> configDict = new Dictionary<string, string>();
+            var configDict = new Dictionary<string, string>();
             while (sr.EndOfStream == false)
             {
                 string aline = sr.ReadLine();
-                string[] lineitems = aline.Split(new string[] {" => "}, StringSplitOptions.RemoveEmptyEntries);
-                if (lineitems.Length == 2)
+                var lineitems = aline?.Split(new[] {" => "}, StringSplitOptions.RemoveEmptyEntries);
+                if (lineitems?.Length == 2)
                 {
                     configDict.Add(lineitems[0], lineitems[1]);
                 }

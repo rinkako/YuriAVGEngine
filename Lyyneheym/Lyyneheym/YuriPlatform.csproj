@@ -94,8 +94,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Director.cs" />
-    <Compile Include="ILPackage\ConfigParser.cs" />
-    <Compile Include="ILPackage\YuriEncryptor.cs" />
+    <Compile Include="PlatformCore\ConfigParser.cs" />
+    <Compile Include="PlatformCore\YuriEncryptor.cs" />
     <Compile Include="PageView\SLPage.xaml.cs">
       <DependentUpon>SLPage.xaml</DependentUpon>
     </Compile>
@@ -130,8 +130,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ILPackage\ILConvertor.cs" />
-    <Compile Include="ILPackage\SceneAction.cs" />
+    <Compile Include="PlatformCore\ILConvertor.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -160,8 +159,6 @@
     <Compile Include="PlatformCore\PolishItem.cs" />
     <Compile Include="PlatformCore\ResourceManager.cs" />
     <Compile Include="PlatformCore\RuntimeManager.cs" />
-    <Compile Include="PlatformCore\Scene.cs" />
-    <Compile Include="PlatformCore\SceneFunction.cs" />
     <Compile Include="PlatformCore\ScreenManager.cs" />
     <Compile Include="PlatformCore\SpriteAnimation.cs" />
     <Compile Include="PlatformCore\SpriteButton.cs" />
@@ -203,17 +200,10 @@
       <Project>{6194a2aa-1c9d-40cd-8c8f-ea66f679cc0f}</Project>
       <Name>YuriInterpreter</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="UnityWebPlayerAXLib">
-      <Guid>{75A564FE-95D1-41A9-B1D9-10D1E3CB502B}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
+    <ProjectReference Include="..\Yuriri\Yuriri.csproj">
+      <Project>{2ce410d4-7eb7-473e-acc8-6ef39038188e}</Project>
+      <Name>Yuriri</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

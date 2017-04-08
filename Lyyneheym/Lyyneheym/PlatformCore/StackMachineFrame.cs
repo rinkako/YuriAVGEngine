@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Yuri.ILPackage;
+using Yuri.Yuriri;
 
 namespace Yuri.PlatformCore
 {

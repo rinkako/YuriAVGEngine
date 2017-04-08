@@ -1,5 +1,5 @@
 ﻿using System;
-using Yuri.ILPackage;
+using Yuri.Yuriri;
 
 namespace Yuri.PlatformCore
 {

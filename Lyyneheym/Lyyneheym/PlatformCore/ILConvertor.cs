@@ -1,12 +1,12 @@
 ﻿using System;
-using System.IO;
-using System.Text;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using Yuri.Utils;
-using Yuri.PlatformCore;
+using Yuri.Yuriri;
 
-namespace Yuri.ILPackage
+namespace Yuri.PlatformCore
 {
     /// <summary>
     /// <para>中间语言转换类：将SIL语言转换为场景动作序列</para>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using Yuri.YuriInterpreter.ILPackage;
+using Yuri.Yuriri;
 
 namespace Yuri.YuriInterpreter
 {
@@ -739,9 +739,9 @@ namespace Yuri.YuriInterpreter
         /// </summary>
         /// <param name="sceneItem">一个键值对，主场景序列头部和函数向量</param>
         /// <returns>场景实例</returns>
-        private PackageScene ConstructScene(KeyValuePair<SceneAction, List<SceneFunction>> sceneItem)
+        private Scene ConstructScene(KeyValuePair<SceneAction, List<SceneFunction>> sceneItem)
         {
-            return new PackageScene(this.scenario, sceneItem.Key, sceneItem.Value);
+            return new Scene(this.scenario, sceneItem.Key, sceneItem.Value, null);
         }
 
         /// <summary>
@@ -785,7 +785,7 @@ namespace Yuri.YuriInterpreter
         /// </summary>
         /// <param name="scene">场景实例</param>
         /// <returns>IL字符串</returns>
-        private string ILGenerator(PackageScene scene)
+        private string ILGenerator(Scene scene)
         {
             List<SceneFunction> sf = scene.FuncContainer;
             SceneAction mainSa = scene.Ctor;
@@ -1070,7 +1070,7 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 剧本场景实例
         /// </summary>
-        private PackageScene rootScene = null;
+        private Scene rootScene = null;
         
         /// <summary>
         /// 语法树根节点

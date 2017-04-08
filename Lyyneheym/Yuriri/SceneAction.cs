@@ -1,15 +1,15 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using Yuri.Utils;
+using System.Linq;
+using System.Text;
 
-namespace Yuri.ILPackage
+namespace Yuri.Yuriri
 {
     /// <summary>
     /// 场景动作类：语义分析器输出的中间代码类
     /// </summary>
     [Serializable]
-    internal class SceneAction
+    public sealed class SceneAction
     {
         /// <summary>
         /// 节点名称
@@ -83,13 +83,117 @@ namespace Yuri.ILPackage
         /// <returns>该作用对象动作的下一动作</returns>
         public static SceneAction operator++(SceneAction rhs)
         {
-            if (rhs != null)
+            return rhs?.Next;
+        }
+
+        /// <summary>
+        /// 对话合并脏位
+        /// </summary>
+        public bool DialogDirtyBit = false;
+
+        /// <summary>
+        /// 将动作转化为可序列化字符串
+        /// </summary>
+        /// <returns>IL字符串</returns>
+        public string ToIL(bool isClearText = false)
+        {
+            if (!isClearText)
             {
-                return rhs.Next;
+                return this.ToEncodeIL();
             }
-            CommonUtils.ConsoleLine("++ applied on an action but it is null", "SceneAction", OutputStyle.Error);
-            return null;
-        } 
+            StringBuilder sb = new StringBuilder();
+            sb.Append(this.NodeName + "^");
+            string args = this.ArgsDict.Aggregate(String.Empty, (x, y) => x + ":#:" + y.Key + ":@:" + y.Value);
+            sb.Append(args.Length > 0 ? args.Substring(3) + "^" : "^");
+            if (this.Type != SActionType.act_else && this.Type != SActionType.act_endif && this.Type != SActionType.act_endfor
+                && this.Type != SActionType.act_function && this.Type != SActionType.act_endfunction && this.Type != SActionType.act_label)
+            {
+                sb.Append(this.CondPolish + "^");
+            }
+            else
+            {
+                sb.Append("^");
+            }
+            sb.Append(this.Next != null ? this.Next.NodeName + "^" : "^");
+            if (this.TrueRouting != null)
+            {
+                string trues = this.TrueRouting.Aggregate(String.Empty, (x, y) => x + "#" + y.NodeName);
+                sb.Append(trues.Substring(1) + "^");
+            }
+            else
+            {
+                sb.Append("^");
+            }
+            if (this.FalseRouting != null)
+            {
+                string falses = this.FalseRouting.Aggregate(String.Empty, (x, y) => x + "#" + y.NodeName);
+                sb.Append(falses.Substring(1) + "^");
+            }
+            else
+            {
+                sb.Append("^");
+            }
+            sb.Append(this.IsBelongFunc ? "1^" : "0^");
+            sb.Append(this.ReliedFuncName + "^");
+            sb.Append(Tag?.Replace(@"\", @"\\").Replace(@",", @"\,").Replace(@"^", @"\^").Replace("\r\n", @"\$") ?? String.Empty);
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 将动作转化为可序列化的已编码字符串
+        /// </summary>
+        /// <returns>编码完毕的IL字符串</returns>
+        private string ToEncodeIL()
+
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(this.NodeName + "^");
+            string args = this.ArgsDict.Aggregate(String.Empty, (x, y) => x + "#" + y.Key + "@" + this.EncodeString(y.Value));
+            sb.Append(args.Length > 0 ? args.Substring(1) + "^" : "^");
+            sb.Append(this.EncodeString(this.CondPolish) + "^");
+            sb.Append(this.Next != null ? this.Next.NodeName + "^" : "^");
+            if (this.TrueRouting != null)
+            {
+                string trues = this.TrueRouting.Aggregate(String.Empty, (x, y) => x + "#" + y.NodeName);
+                sb.Append(trues.Length > 0 ? trues.Substring(1) + "^" : "^");
+            }
+            else
+            {
+                sb.Append("^");
+            }
+            if (this.FalseRouting != null)
+            {
+                string falses = this.FalseRouting.Aggregate(String.Empty, (x, y) => x + "#" + y.NodeName);
+                sb.Append(falses.Length > 0 ? falses.Substring(1) + "^" : "^");
+            }
+            else
+            {
+                sb.Append("^");
+            }
+            sb.Append(this.IsBelongFunc ? "1^" : "0^");
+            sb.Append(this.ReliedFuncName + "^");
+            sb.Append(this.EncodeString(this.Tag));
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 把一个字符串做编码
+        /// </summary>
+        /// <param name="str">要解码的字符串</param>
+        /// <param name="isUTF8">标志位，true编码UTF-8，false编码Unicode</param>
+        /// <returns>编码完毕的字符串</returns>
+        private string EncodeString(string str, bool isUTF8 = true)
+        {
+            if (str == null) { return null; }
+            var br = isUTF8 ? Encoding.UTF8.GetBytes(str) : Encoding.Unicode.GetBytes(str);
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in br)
+            {
+                sb.Append(String.Format("{0:D3}", b));
+            }
+            return sb.ToString();
+        }
+
 
         /// <summary>
         /// 默认构造函数
@@ -116,7 +220,7 @@ namespace Yuri.ILPackage
             resSa.ReliedFuncName = this.ReliedFuncName;
             resSa.IsBelongFunc = this.IsBelongFunc;
             resSa.NodeName = this.NodeName;
-            if (pureClone != false)
+            if (pureClone)
             {
                 return resSa;
             }
@@ -142,75 +246,7 @@ namespace Yuri.ILPackage
         /// <returns>该动作的名字</returns>
         public override string ToString() => this.NodeName;
     }
-
-    [Serializable]
-    internal class SceneActionPackage
-    {
-        /// <summary>
-        /// 节点名称
-        /// </summary>
-        public string saNodeName = null;
-        
-        /// <summary>
-        /// 节点动作
-        /// </summary>
-        public SActionType aType = SActionType.NOP;
-        
-        /// <summary>
-        /// 参数字典
-        /// </summary>
-        public Dictionary<string, string> argsDict = new Dictionary<string, string>();
-        
-        /// <summary>
-        /// 条件从句逆波兰表达
-        /// </summary>
-        public string condPolish = null;
-        
-        /// <summary>
-        /// 下一节点
-        /// </summary>
-        public string next = null;
-        
-        /// <summary>
-        /// 下一真节点向量
-        /// </summary>
-        public List<string> trueRouting = null;
-        
-        /// <summary>
-        /// 下一假节点向量
-        /// </summary>
-        public List<string> falseRouting = null;
-
-        /// <summary>
-        /// 是否依存函数
-        /// </summary>
-        public bool isBelongFunc = false;
-        
-        /// <summary>
-        /// 依存函数名
-        /// </summary>
-        public string funcName = null;
-
-        /// <summary>
-        /// 附加值
-        /// </summary>
-        public string aTag = null;
-
-        /// <summary>
-        /// 脏位
-        /// </summary>
-        public bool dirtyBit = false;
-
-        /// <summary>
-        /// 字符串化方法
-        /// </summary>
-        /// <returns>该动作的名字</returns>
-        public override string ToString()
-        {
-            return this.saNodeName;
-        }
-    }
-
+    
     /// <summary>
     /// 枚举：动作节点类型
     /// </summary>

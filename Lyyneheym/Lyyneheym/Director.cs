@@ -7,7 +7,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Yuri.Utils;
 using Yuri.PlatformCore;
-using Yuri.ILPackage;
+using Yuri.Yuriri;
 
 namespace Yuri
 {

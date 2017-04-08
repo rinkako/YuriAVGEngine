@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows;
 using System.Collections.Generic;
-using System.Threading;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 

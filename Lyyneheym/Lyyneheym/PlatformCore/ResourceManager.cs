@@ -4,6 +4,7 @@ using System.Windows;
 using System.Threading;
 using System.Collections.Generic;
 using Yuri.Utils;
+using Yuri.Yuriri;
 
 namespace Yuri.PlatformCore
 {
@@ -478,7 +479,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         private void InitScenario()
         {
-            List<Scene> sceneList = Yuri.ILPackage.ILConvertor.GetInstance().Dash(IOUtils.ParseURItoURL(GlobalConfigContext.DevURI_RT_SCENARIO));
+            List<Scene> sceneList = ILConvertor.GetInstance().Dash(IOUtils.ParseURItoURL(GlobalConfigContext.DevURI_RT_SCENARIO));
             foreach (Scene sc in sceneList)
             {
                 if (this.sceneTable.ContainsKey(sc.Scenario))

@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Yuri.ILPackage;
 
-namespace Yuri.PlatformCore
+namespace Yuri.Yuriri
 {
     /// <summary>
-    /// 函数调用类：处理场景里的函数
+    /// <para>场景函数类：封装场景里的函数</para>
+    /// <para>在发生函数调用时，场景函数将作为模板产生一个深拷贝对象提交给调用堆栈，它负责维护自身的符号表</para>
     /// </summary>
     [Serializable]
-    internal class SceneFunction
+    public class SceneFunction
     {
         /// <summary>
         /// 构造器
         /// </summary>
         public SceneFunction(string callname, string parent, SceneAction sa = null)
         {
-            this.ParentSceneName = parent;
-            this.Callname = callname;
             this.Sa = sa;
+            this.Callname = callname;
+            this.ParentSceneName = parent;
+            this.Symbols = new Dictionary<string, object>();
             this.LabelDictionary = new Dictionary<string, SceneAction>();
         }
 
@@ -29,14 +30,11 @@ namespace Yuri.PlatformCore
         /// <returns>新的符号实例</returns>
         public SceneFunction Fork(bool pureFork)
         {
-            SceneFunction nsf = new SceneFunction(this.Callname, this.ParentSceneName, this.Sa);
-            nsf.Param = this.Param;
-            if (!pureFork)
+            SceneFunction nsf = new SceneFunction(this.Callname, this.ParentSceneName, this.Sa) { Param = this.Param };
+            if (pureFork) { return nsf; }
+            foreach (var svar in this.Symbols)
             {
-                foreach (var svar in this.Symbols)
-                {
-                    nsf.Symbols.Add(svar.Key, svar.Value);
-                }
+                nsf.Symbols.Add(svar.Key, svar.Value);
             }
             return nsf;
         }
@@ -63,38 +61,32 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置函数的全局名称
         /// </summary>
-        public string GlobalName
-        {
-            get
-            {
-                return String.Format("__YuriFunc@{0}?{1}", this.Callname, this.ParentSceneName);
-            }
-        }
+        public string GlobalName => String.Format("__YuriFunc@{0}?{1}", this.Callname, this.ParentSceneName);
 
         /// <summary>
-        /// 绑定动作序列
+        /// 函数动作序列入口
         /// </summary>
-        public SceneAction Sa = null;
+        public SceneAction Sa { get; set; }
 
         /// <summary>
         /// 函数名
         /// </summary>
-        public string Callname = null;
+        public string Callname { get; set; }
 
         /// <summary>
         /// 形参列表
-        /// </summary>
-        public List<string> Param = null;
+        /// </summary> 
+        public List<string> Param { get; set; } = null;
 
         /// <summary>
         /// 场景名称
         /// </summary>
-        public string ParentSceneName = null;
+        public string ParentSceneName { get; set; }
 
         /// <summary>
         /// 绑定符号表
         /// </summary>
-        public Dictionary<string, object> Symbols = new Dictionary<string,object>();
+        public Dictionary<string, object> Symbols { get; set; }
 
         /// <summary>
         /// 场景标签字典

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Collections.Generic;
-using Yuri.YuriInterpreter.ILPackage;
+using Yuri.Yuriri;
 
 namespace Yuri.YuriInterpreter
 {
@@ -68,7 +68,7 @@ namespace Yuri.YuriInterpreter
             // 加载合法脚本文件到队列
             if (this.compileType == InterpreterType.DEBUG)
             {
-                this.SceneVector = new List<KeyValuePair<string, PackageScene>>();
+                this.SceneVector = new List<KeyValuePair<string, Scene>>();
             }
             else
             {
@@ -154,8 +154,8 @@ namespace Yuri.YuriInterpreter
                     if (this.compileType == InterpreterType.DEBUG)
                     {
                         Pile pile = new Pile();
-                        var yuriResult = new KeyValuePair<string, PackageScene>(
-                            fi.Name.Split('.')[0], (PackageScene)pile.StartDash(resVec, fi.Name.Split('.')[0], this.compileType));
+                        var yuriResult = new KeyValuePair<string, Scene>(
+                            fi.Name.Split('.')[0], (Scene)pile.StartDash(resVec, fi.Name.Split('.')[0], this.compileType));
                         lock (this.SceneVector)
                         {
                             this.SceneVector.Add(yuriResult);
@@ -198,7 +198,7 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// Scene结果向量
         /// </summary>
-        private List<KeyValuePair<string, PackageScene>> SceneVector;
+        private List<KeyValuePair<string, Scene>> SceneVector;
 
         /// <summary>
         /// 线程池

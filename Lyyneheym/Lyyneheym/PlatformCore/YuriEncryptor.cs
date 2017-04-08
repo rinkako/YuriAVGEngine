@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Yuri.Utils;
 
-namespace Yuri.ILPackage
+namespace Yuri.PlatformCore
 {
     /// <summary>
     /// 加密解密类
@@ -54,7 +54,6 @@ namespace Yuri.ILPackage
         {
             try
             {
-                string str = string.Empty;
                 if (string.IsNullOrEmpty(data))
                 {
                     throw new Exception("data is empty");
@@ -67,7 +66,7 @@ namespace Yuri.ILPackage
                 var bs = Convert.FromBase64String(data);
                 cs.Write(bs, 0, bs.Length);
                 cs.FlushFinalBlock();
-                str = Encoding.UTF8.GetString(ms.ToArray());
+                var str = Encoding.UTF8.GetString(ms.ToArray());
                 cs.Close();
                 ms.Close();
                 return str;

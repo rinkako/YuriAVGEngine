@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows;
 using NAudio.Wave;
 using Yuri.Utils;
 
