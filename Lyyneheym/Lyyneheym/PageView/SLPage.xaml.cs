@@ -396,7 +396,7 @@ namespace Yuri.PageView
                 try
                 {
                     this.core.GetMainRender().Load(this.saveList[this.lastPointed].Name.Replace(GlobalConfigContext.GAME_SAVE_POSTFIX, String.Empty));
-                    NavigationService.GoBack();
+                    this.NavigationService.GoBack();
                 }
                 catch (Exception ex)
                 {

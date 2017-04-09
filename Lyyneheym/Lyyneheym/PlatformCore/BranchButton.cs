@@ -73,8 +73,7 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                if (this.DisplayBinding == null) { return 0; }
-                return Canvas.GetLeft(this.DisplayBinding);
+                return this.DisplayBinding == null ? 0 : Canvas.GetLeft(this.DisplayBinding);
             }
             set
             {
@@ -111,8 +110,7 @@ namespace Yuri.PlatformCore
         {
             get
             {
-                if (this.DisplayBinding == null) { return 0; }
-                return Canvas.GetZIndex(this.DisplayBinding);
+                return this.DisplayBinding == null ? 0 : Canvas.GetZIndex(this.DisplayBinding);
             }
             set
             {
@@ -206,12 +204,16 @@ namespace Yuri.PlatformCore
         {
             TransformGroup aniGroup = new TransformGroup();
             TranslateTransform XYTransformer = new TranslateTransform();
-            ScaleTransform ScaleTransformer = new ScaleTransform();
-            ScaleTransformer.CenterX = this.AnchorX;
-            ScaleTransformer.CenterY = this.AnchorY;
-            RotateTransform RotateTransformer = new RotateTransform();
-            RotateTransformer.CenterX = this.AnchorX;
-            RotateTransformer.CenterY = this.AnchorY;
+            ScaleTransform ScaleTransformer = new ScaleTransform
+            {
+                CenterX = this.AnchorX,
+                CenterY = this.AnchorY
+            };
+            RotateTransform RotateTransformer = new RotateTransform
+            {
+                CenterX = this.AnchorX,
+                CenterY = this.AnchorY
+            };
             aniGroup.Children.Add(XYTransformer);
             aniGroup.Children.Add(ScaleTransformer);
             aniGroup.Children.Add(RotateTransformer);
@@ -221,8 +223,6 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 提供精灵按钮鼠标离开时的处理函数
         /// </summary>
-        /// <param name="sender">触发者</param>
-        /// <param name="e">鼠标参数</param>
         public void MouseLeaveHandler(object sender, MouseEventArgs e)
         {
             if (this.Enable)
@@ -241,8 +241,6 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 提供精灵按钮鼠标移入时的处理函数
         /// </summary>
-        /// <param name="sender">触发者</param>
-        /// <param name="e">鼠标参数</param>
         public void MouseEnterHandler(object sender, MouseEventArgs e)
         {
             if (this.Enable)
@@ -261,8 +259,6 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 提供精灵按钮鼠标按下时的处理函数
         /// </summary>
-        /// <param name="sender">触发者</param>
-        /// <param name="e">鼠标参数</param>
         public void MouseOnHandler(object sender, MouseEventArgs e)
         {
             if (this.Enable)
@@ -281,8 +277,6 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 提供精灵按钮鼠标松开时的处理函数
         /// </summary>
-        /// <param name="sender">触发者</param>
-        /// <param name="e">鼠标参数</param>
         public void MouseUpHandler(object sender, MouseEventArgs e)
         {
             if (this.Enable)
@@ -305,10 +299,13 @@ namespace Yuri.PlatformCore
                         }
                         return;
                     }
-                    BitmapImage myBitmapImage = this.ImageNormal.SpriteBitmapImage;
-                    this.DisplayBinding.Width = myBitmapImage.PixelWidth;
-                    this.DisplayBinding.Height = myBitmapImage.PixelHeight;
-                    this.DisplayBinding.Background = new ImageBrush(myBitmapImage);
+                    if (this.DisplayBinding != null)
+                    {
+                        BitmapImage myBitmapImage = this.ImageNormal.SpriteBitmapImage;
+                        this.DisplayBinding.Width = myBitmapImage.PixelWidth;
+                        this.DisplayBinding.Height = myBitmapImage.PixelHeight;
+                        this.DisplayBinding.Background = new ImageBrush(myBitmapImage);
+                    }
                     // 向运行时环境提交中断
                     Director.GetInstance().SubmitInterrupt(this.Ntr);
                     // 移除按钮

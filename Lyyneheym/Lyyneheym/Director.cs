@@ -696,6 +696,7 @@ namespace Yuri
         public void SetStagePageReference(Page sp)
         {
             ViewPageManager.RegisterPage(GlobalConfigContext.FirstViewPage, sp);
+            ViewPageManager.InitFirstPage(sp);
         }
         
         /// <summary>

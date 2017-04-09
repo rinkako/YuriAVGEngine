@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
+using System.Windows.Navigation;
 using Yuri.Utils;
 using Yuri.Yuriri;
 
@@ -79,11 +80,6 @@ namespace Yuri.PlatformCore
         /// </summary>
         public KeyStates GetKeyboardState(Key key)
         {
-            if (UpdateRender.KS_KEY_Dict.ContainsKey(key) == false)
-            {
-                UpdateRender.KS_KEY_Dict.Add(key, KeyStates.None);
-                return KeyStates.None;
-            }
             return UpdateRender.KS_KEY_Dict[key];
         }
 
@@ -265,7 +261,15 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void UpdateForKeyboardState()
         {
-            
+            if (UpdateRender.KS_KEY_Dict[Key.S] > 0)
+            {
+                Canvas mainCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
+                ViewManager.RenderFrameworkElementToJPEG(mainCanvas, GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
+                PageView.SLPage p = (PageView.SLPage)ViewPageManager.RetrievePage("SavePage");
+                p.ReLoadFileInfo();
+                NavigationService.GetNavigationService(ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage))?.Navigate(p);
+            }
+
         }
         
         /// <summary>

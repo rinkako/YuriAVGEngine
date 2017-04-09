@@ -529,12 +529,21 @@ namespace Yuri.PlatformCore
         private void ReDrawButton(int id, SpriteButtonDescriptor descriptor)
         {
             // 不需要重绘的情况
-            if (descriptor == null) { return; }
+            if (descriptor == null)
+            {
+                this.RemoveButton(this.buttonLayerVec[id]);
+                return;
+            }
             SpriteButton oldButton = this.buttonLayerVec[id];
-            SpriteButton sbutton = new SpriteButton(id);
-            sbutton.ImageNormal = descriptor.NormalDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.NormalDescriptor.ResourceName, new Int32Rect(-1, 0, 0, 0));
-            sbutton.ImageMouseOver = descriptor.OverDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.OverDescriptor.ResourceName, new Int32Rect(-1, 0, 0, 0));
-            sbutton.ImageMouseOn = descriptor.OnDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.OnDescriptor.ResourceName, new Int32Rect(-1, 0, 0, 0));
+            SpriteButton sbutton = new SpriteButton(id)
+            {
+                ImageNormal = descriptor.NormalDescriptor == null ? null
+                        : ResourceManager.GetInstance() .GetPicture(descriptor.NormalDescriptor.ResourceName, ResourceManager.FullImageRect),
+                ImageMouseOver = descriptor.OverDescriptor == null ? null
+                        : ResourceManager.GetInstance() .GetPicture(descriptor.OverDescriptor.ResourceName, ResourceManager.FullImageRect),
+                ImageMouseOn = descriptor.OnDescriptor == null ? null
+                        : ResourceManager.GetInstance()  .GetPicture(descriptor.OnDescriptor.ResourceName, ResourceManager.FullImageRect)
+            };
             this.buttonLayerVec[id] = sbutton;
             // 重绘
             this.RemoveButton(oldButton);
@@ -549,7 +558,11 @@ namespace Yuri.PlatformCore
         private void ReDrawBranchButton(int id, BranchButtonDescriptor descriptor)
         {
             // 不需要重绘的情况
-            if (descriptor == null) { return; }
+            if (descriptor == null)
+            {
+                this.RemoveBranchButton(this.branchButtonVec[id]);
+                return;
+            }
             BranchButton oldButton = this.branchButtonVec[id];
             BranchButton sbutton = new BranchButton(id);
             sbutton.ImageNormal = descriptor.NormalDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.NormalDescriptor.ResourceName, new Int32Rect(-1, 0, 0, 0));
@@ -1108,11 +1121,35 @@ namespace Yuri.PlatformCore
                 }
             }
         }
+        
+        /// <summary>
+        /// 将窗体控件转化为JPEG图片
+        /// </summary>
+        /// <param name="ui">控件的引用</param>
+        /// <param name="filename">要保存的图片文件名</param>
+        public static void RenderFrameworkElementToJPEG(FrameworkElement ui, string filename)
+        {
+            try
+            {
+                System.IO.FileStream ms = new System.IO.FileStream(filename, System.IO.FileMode.Create);
+                RenderTargetBitmap bmp = new RenderTargetBitmap((int)ui.ActualWidth, (int)ui.ActualHeight, 96d, 96d, PixelFormats.Pbgra32);
+                bmp.Render(ui);
+                JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bmp));
+                encoder.Save(ms);
+                ms.Close();
+            }
+            catch (Exception ex)
+            {
+                CommonUtils.ConsoleLine(String.Format("Saving Snapshot Failed. path: {0} with CLR Error: {1}", filename, ex.ToString())
+                    , "ViewManager", OutputStyle.Error);
+            }
+        }
 
         /// <summary>
-        /// 初始化2D视窗
+        /// 初始化2D视图
         /// </summary>
-        private void InitView2D()
+        public void InitViewport2D()
         {
             if (ViewManager.Is3DStage) { return; }
             // 初始化视窗向量
@@ -1160,9 +1197,9 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 初始化3D视窗
+        /// 初始化3D视图
         /// </summary>
-        private void InitView3D()
+        public void InitViewport3D()
         {
             if (!ViewManager.Is3DStage) { return; }
             var cbList = SCamera3D.CharacterBlockList;
@@ -1189,46 +1226,6 @@ namespace Yuri.PlatformCore
                 Geom.Material = null;
                 csModelGroup.Children.Add(Geom);
             }
-        }
-
-        /// <summary>
-        /// 将窗体控件转化为JPEG图片
-        /// </summary>
-        /// <param name="ui">控件的引用</param>
-        /// <param name="filename">要保存的图片文件名</param>
-        public static void RenderFrameworkElementToJPEG(FrameworkElement ui, string filename)
-        {
-            try
-            {
-                System.IO.FileStream ms = new System.IO.FileStream(filename, System.IO.FileMode.Create);
-                RenderTargetBitmap bmp = new RenderTargetBitmap((int)ui.ActualWidth, (int)ui.ActualHeight, 96d, 96d, PixelFormats.Pbgra32);
-                bmp.Render(ui);
-                JpegBitmapEncoder encoder = new JpegBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(bmp));
-                encoder.Save(ms);
-                ms.Close();
-            }
-            catch (Exception ex)
-            {
-                CommonUtils.ConsoleLine(String.Format("Saving Snapshot Failed. path: {0} with CLR Error: {1}", filename, ex.ToString())
-                    , "ViewManager", OutputStyle.Error);
-            }
-        }
-
-        /// <summary>
-        /// 更新2D视窗向量
-        /// </summary>
-        public void InitViewport2D()
-        {
-            this.InitView2D();
-        }
-
-        /// <summary>
-        /// 更新3D视窗向量
-        /// </summary>
-        public void InitViewport3D()
-        {
-            this.InitView3D();
         }
 
         /// <summary>
