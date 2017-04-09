@@ -105,7 +105,7 @@ namespace Yuri.PlatformCore
                 ScriptName = null,
                 PC = 0,
                 IP = ntr.interruptSA,
-                IR = ntr.interruptSA.NodeName,
+                IR = ntr.interruptSA?.NodeName,
                 Argv = null,
                 BindingFunctionName = null,
                 BindingSceneName = null,

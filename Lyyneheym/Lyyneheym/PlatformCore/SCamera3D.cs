@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
@@ -17,8 +18,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 将镜头中心平移到指定的区块
         /// </summary>
-        /// <remarks>当缩放比不位于区间[1, 2]时，可能出现无法对齐区域中心的情况，需在后续版本中修正</remarks>
-        /// <param name="r">区块的横向编号，值域[0, 4]，其中2是屏幕纵向正中</param>
+        /// <param name="r">区块的横向编号，值域[0, 14]，其中7是屏幕纵向正中</param>
         /// <param name="c">区块的纵向编号，值域[0, 32]，其中0是屏幕横向正中</param>
         public static void Translate(int r, int c)
         {
@@ -45,15 +45,16 @@ namespace Yuri.PlatformCore
             v3dAni.KeyFrames.Add(k1);
             v3dAni.KeyFrames.Add(k2);
             v3dAni.FillBehavior = FillBehavior.Stop;
+            AnimationClock aniClock = v3dAni.CreateClock();
             lock (SCamera3D.AnimatingStorySet)
             {
-                SCamera3D.AnimatingStorySet.Add(v3dAni);
+                SCamera3D.AnimatingStorySet.Add(aniClock);
             }
             v3dAni.Completed += delegate
             {
                 lock (SCamera3D.AnimatingStorySet)
                 {
-                    SCamera3D.AnimatingStorySet.Remove(v3dAni);
+                    SCamera3D.AnimatingStorySet.Remove(aniClock);
                 }
                 ViewManager.View3D.ST3D_Camera.Position = new Point3D(actualBeginPoint.X + delta.X,
                     actualBeginPoint.Y + delta.Y, SCamera3D.lastZIndex);
@@ -68,9 +69,9 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 以某个区块为焦点调整焦距
         /// </summary>
-        /// <param name="r">区块的横向编号，值域[0, 4]，其中2是屏幕纵向正中</param>
+        /// <param name="r">区块的横向编号，值域[0, 14]，其中7是屏幕纵向正中</param>
         /// <param name="c">区块的纵向编号，值域[0, 32]，其中0是屏幕横向正中</param>
-        /// <param name="ratio">缩放的倍率，值域[0.0, +∞]，原始尺寸对应于1.0，原始尺寸指设置中所定义的立绘原始缩放比</param>
+        /// <param name="ratio">缩放的倍率，值域(0.0, +∞]，原始尺寸对应于1.0，原始尺寸指设置中所定义的立绘原始缩放比</param>
         /// <param name="immediate">是否立即执行完毕</param>
         public static void FocusOn(int r, int c, double ratio, bool immediate = false)
         {
@@ -107,15 +108,16 @@ namespace Yuri.PlatformCore
             v3dAni.KeyFrames.Add(k1);
             v3dAni.KeyFrames.Add(k2);
             v3dAni.FillBehavior = FillBehavior.Stop;
+            AnimationClock aniClock = v3dAni.CreateClock();
             lock (SCamera3D.AnimatingStorySet)
             {
-                SCamera3D.AnimatingStorySet.Add(v3dAni);
+                SCamera3D.AnimatingStorySet.Add(aniClock);
             }
             v3dAni.Completed += delegate
             {
                 lock (SCamera3D.AnimatingStorySet)
                 {
-                    SCamera3D.AnimatingStorySet.Remove(v3dAni);
+                    SCamera3D.AnimatingStorySet.Remove(aniClock);
                 }
                 ViewManager.View3D.ST3D_Camera.Position = new Point3D(actualBeginPoint.X + deltaXY.X,
                     actualBeginPoint.Y + deltaXY.Y, destZ);
@@ -151,22 +153,22 @@ namespace Yuri.PlatformCore
             v3dAni.KeyFrames.Add(k1);
             v3dAni.KeyFrames.Add(k2);
             v3dAni.FillBehavior = FillBehavior.Stop;
+            AnimationClock aniClock = v3dAni.CreateClock();
             lock (SCamera3D.AnimatingStorySet)
             {
-                SCamera3D.AnimatingStorySet.Add(v3dAni);
+                SCamera3D.AnimatingStorySet.Add(aniClock);
             }
             v3dAni.Completed += delegate
             {
                 lock (SCamera3D.AnimatingStorySet)
                 {
-                    SCamera3D.AnimatingStorySet.Remove(v3dAni);
+                    SCamera3D.AnimatingStorySet.Remove(aniClock);
                 }
                 ViewManager.View3D.ST3D_Camera.Position = new Point3D(0, 0, SCamera3D.orginalCameraZIndex);
             };
             ViewManager.View3D.ST3D_Camera.BeginAnimation(ProjectionCamera.PositionProperty, v3dAni);
             // 更新后台
-            Director.ScrMana.SCameraFocusRow =
-                SCamera3D.lastFocusRow = GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2;
+            Director.ScrMana.SCameraFocusRow = SCamera3D.lastFocusRow = GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2;
             Director.ScrMana.SCameraFocusCol = SCamera3D.lastFocusCol = 0;
             Director.ScrMana.SCameraScale = SCamera3D.lastZIndex = SCamera3D.orginalCameraZIndex;
         }
@@ -174,7 +176,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 在镜头聚焦的区块上调整焦距
         /// </summary>
-        /// <param name="ratio">缩放的倍率，值域[0.0, +∞]，原始尺寸对应于1.0</param>
+        /// <param name="ratio">缩放的倍率，值域(0.0, +∞]，原始尺寸对应于1.0</param>
         public static void Focus(double ratio)
         {
             SCamera3D.FocusOn(Director.ScrMana.SCameraFocusRow, Director.ScrMana.SCameraFocusCol, ratio);
@@ -353,7 +355,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取屏幕分区的中心坐标
         /// </summary>
-        /// <param name="r">区块的横向编号，值域[0, 4]，其中2是屏幕纵向正中</param>
+        /// <param name="r">区块的横向编号，值域[0, 14]，其中7是屏幕纵向正中</param>
         /// <param name="c">区块的纵向编号，值域[0, 32]，其中0是屏幕横向正中</param>
         /// <returns>块的中心坐标</returns>
         public static Point GetScreenCoordination(int r, int c) => SCamera3D.screenPointMap[r, c];
@@ -384,6 +386,10 @@ namespace Yuri.PlatformCore
                     if (ani is Storyboard asb)
                     {
                         asb.SkipToFill();
+                    }
+                    else if (ani is AnimationClock ac)
+                    {
+                        ac.Controller?.SkipToFill();
                     }
                 }
             }
@@ -441,7 +447,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 正在进行的动画计数
         /// </summary>
-        private static readonly HashSet<Timeline> AnimatingStorySet = new HashSet<Timeline>();
+        private static readonly HashSet<object> AnimatingStorySet = new HashSet<object>();
         
         /// <summary>
         /// 屏幕分块中心的标准距离字典

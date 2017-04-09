@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Yuri.YuriLauncher.Utils;
 
@@ -28,13 +22,18 @@ namespace Yuri.YuriLauncher.Forms
                     this.label5.Text = "Apache License 2.0";
                     this.textBox2.Text = LicenseContainer.Licenses_Apache_2_Eng;
                     break;
-                // NAudio
+                // MahMetro
                 case 1:
+                    this.label5.Text = "MIT License";
+                    this.textBox2.Text = LicenseContainer.MIT_Eng;
+                    break;
+                // NAudio
+                case 2:
                     this.label5.Text = "Microsoft Public License(Ms-PL)";
                     this.textBox2.Text = LicenseContainer.Licenses_MSPL_Eng;
                     break;
                 // Transitionals
-                case 2:
+                case 3:
                     this.label5.Text = "Microsoft Public License(Ms-PL)";
                     this.textBox2.Text = LicenseContainer.Licenses_MSPL_Eng;
                     break;

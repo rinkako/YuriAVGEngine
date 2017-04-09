@@ -332,12 +332,12 @@ namespace Yuri.PageView
                         var descName = GlobalConfigContext.GAME_SAVE_DIR + @"\" + GlobalConfigContext.GAME_SAVE_DESCRIPTOR_PREFIX +
                             saveList[this.lastPointed].Name.Substring(GlobalConfigContext.GAME_SAVE_PREFIX.Length).Replace(GlobalConfigContext.GAME_SAVE_POSTFIX,
                             GlobalConfigContext.GAME_SAVE_DESCRIPTOR_POSTFIX);
-                        File.Delete(Utils.IOUtils.ParseURItoURL(descName));
+                        File.Delete(IOUtils.ParseURItoURL(descName));
                     }
                     catch (Exception ex)
                     {
-                        Utils.CommonUtils.ConsoleLine("覆盖存档时，在移除过时文件过程出现异常" + Environment.NewLine + ex.ToString(),
-                        "SLPage", Utils.OutputStyle.Warning);
+                        CommonUtils.ConsoleLine("覆盖存档时，在移除过时文件过程出现异常" + Environment.NewLine + ex.ToString(),
+                        "SLPage", OutputStyle.Warning);
                     }
                 }
                 // 获得存档时间戳 
@@ -383,8 +383,8 @@ namespace Yuri.PageView
                 }
                 catch (Exception ex)
                 {
-                    Utils.CommonUtils.ConsoleLine("保存存档的辅助文件出现异常" + Environment.NewLine + ex.ToString(),
-                        "SLPage", Utils.OutputStyle.Warning);
+                    CommonUtils.ConsoleLine("保存存档的辅助文件出现异常" + Environment.NewLine + ex.ToString(),
+                        "SLPage", OutputStyle.Warning);
                 }
                 // 保存完毕强制刷新页面
                 this.button_MouseEnter(this.lastPointed, null);
@@ -401,7 +401,7 @@ namespace Yuri.PageView
                 catch (Exception ex)
                 {
                     var exStr = "读取存档文件失败，存档是损坏的？" + Environment.NewLine + ex.ToString();
-                    Utils.CommonUtils.ConsoleLine(exStr, "SLPage", Utils.OutputStyle.Error);
+                    CommonUtils.ConsoleLine(exStr, "SLPage", Utils.OutputStyle.Error);
                     MessageBox.Show(exStr);
                     return;
                 }
@@ -426,11 +426,11 @@ namespace Yuri.PageView
         /// <summary>
         /// 文件位按钮向量
         /// </summary>
-        private List<Button> slotButtonList = new List<Button>();
+        private readonly List<Button> slotButtonList = new List<Button>();
 
         /// <summary>
         /// 导演类的引用
         /// </summary>
-        private Director core = Director.GetInstance();
+        private readonly Director core = Director.GetInstance();
     }
 }

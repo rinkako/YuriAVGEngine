@@ -170,8 +170,10 @@ namespace Yuri.PlatformCore
             // 按下了鼠标左键
             if (UpdateRender.KS_MOUSE_Dict[MouseButton.Left] == MouseButtonState.Pressed)
             {
-                // 要松开才生效的情况下
-                if (this.MouseLeftUpFlag == true)
+                // 要松开左键，并且场景镜头动画播放完毕才生效
+                if (this.MouseLeftUpFlag && 
+                    (ViewManager.Is3DStage && SCamera3D.IsAnyAnimation == false ||
+                    ViewManager.Is3DStage == false && SCamera2D.IsAnyAnimation == false))
                 {
                     // 正在显示对话
                     if (this.isShowingDialog && Director.IsButtonClicking == false)
@@ -200,7 +202,6 @@ namespace Yuri.PlatformCore
                             this.Stopvocal();
                             // 标记为非回滚
                             RollbackManager.IsRollingBack = false;
-
                         }
                         // 正在显示对话则向前推进一个趟
                         else

@@ -12,7 +12,7 @@
       <TabItem Header="    系统    " controls:ControlsHelper.HeaderFontSize="22">
         <Grid Name="Grid_System">
           <Grid.Background>
-            <ImageBrush ImageSource="/Yuri.YuriLauncher;component/Resources/Sysbg_Izetta.png"/>
+            <ImageBrush ImageSource="/YuriLauncher;component/Resources/Sysbg_Izetta.png"/>
           </Grid.Background>
           <Button x:Name="button_System_Launch" Content="开始游戏" Foreground="DarkSlateBlue" FontSize="16" HorizontalAlignment="Left" Margin="397,201,0,0" VerticalAlignment="Top" Width="153" Height="55" FontFamily="Microsoft YaHei UI" TabIndex="1"/>
           <TextBlock x:Name="textBlock_System" Text="游戏时长：&#13;2:23:46&#13;&#13;周目计数：&#13;3&#13;&#13;结局回收：&#13;2/4" Foreground="DarkSlateBlue" Padding="8" Background="Transparent" FontSize="16" FontFamily="Microsoft YaHei UI" Opacity="0.85" HorizontalAlignment="Left" Margin="397,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="153" Height="180"/>
@@ -103,7 +103,7 @@
       <TabItem Header="    键位    " controls:ControlsHelper.HeaderFontSize="22">
         <Grid>
           <Grid.Background>
-            <ImageBrush Stretch="Uniform" ImageSource="/Yuri.YuriLauncher;component/Resources/Keyset.png"/>
+            <ImageBrush Stretch="Uniform" ImageSource="/YuriLauncher;component/Resources/Keyset.png"/>
           </Grid.Background>
           <GroupBox x:Name="groupBox_Key_Rclick" Header="鼠标右键" HorizontalAlignment="Left" Margin="303,10,0,0" VerticalAlignment="Top" Height="77" Width="247">
             <Canvas>
@@ -127,7 +127,7 @@
       </TabItem>
       <TabItem Header="    关于    " controls:ControlsHelper.HeaderFontSize="22">
         <Grid Name="grid_about" Background="#FFFFFFF9">
-					<Image Source="/Yuri.YuriLauncher;component/Resources/About_1.png"/>
+					<Image Source="/YuriLauncher;component/Resources/About_1.png"/>
           <Button x:Name="button_about_reference" Content="软件许可证" HorizontalAlignment="Left" Margin="475,229,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft YaHei UI" Foreground="DarkSlateBlue" Click="button_about_reference_Click" TabIndex="3"/>
           <Button x:Name="button_about_resources" Content="资源版权" HorizontalAlignment="Left" Margin="395,229,0,0" VerticalAlignment="Top" Width="75" FontFamily="Microsoft YaHei UI" Foreground="DarkSlateBlue" TabIndex="2" Click="button_about_resources_Click"/>
           <Button x:Name="button_about_nextpage" Width="27" Height="27" Content=" ▶" Foreground="SkyBlue" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}" Margin="525,109,8,128" TabIndex="1"/>

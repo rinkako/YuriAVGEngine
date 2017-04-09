@@ -102,7 +102,7 @@ namespace Yuri.PlatformCore
                 if (saHeaderList.Count > 0)
                 {
                     SceneAction mainSa = saHeaderList[0];
-                    List<SceneFunction> funcVec = new List<SceneFunction>();
+                    var funcVec = new List<SceneFunction>();
                     for (int fc = 1; fc < saHeaderList.Count; fc++)
                     {
                         SceneAction fsa = saHeaderList[fc];
@@ -230,7 +230,7 @@ namespace Yuri.PlatformCore
         /// <returns>动作序列包</returns>
         private SceneActionPackage ParseSceneActionPackage(string oneline)
         {
-            SceneActionPackage sa = null;
+            SceneActionPackage sa;
             var lineitem = oneline.Split('^');
             if (lineitem.Length == IL_LINEITEM_NUM)
             {
@@ -268,19 +268,19 @@ namespace Yuri.PlatformCore
             {
                 return String.Empty;
             }
-            var br = new byte[(int)(origin.Length / 3)];
+            var br = new byte[origin.Length / 3];
             string rawSb = String.Empty;
             for (int i = 0; i < origin.Length + 1; i++)
             {
                 // 如果是最后一次就要清空缓冲
                 if (i == origin.Length)
                 {
-                    br[(int)(i / 3) - 1] = Convert.ToByte(rawSb);
+                    br[i / 3 - 1] = Convert.ToByte(rawSb);
                     break;
                 }
                 if (i % 3 == 0 && i != 0)
                 {
-                    br[(int)(i / 3) - 1] = Convert.ToByte(rawSb);
+                    br[i / 3 - 1] = Convert.ToByte(rawSb);
                     rawSb = String.Empty;
                 }
                 rawSb += origin[i];
@@ -295,8 +295,8 @@ namespace Yuri.PlatformCore
         /// <returns>参数字典</returns>
         private Dictionary<string, string> DispatchArgs(string argstr)
         {
-            var argItem = argstr.Split(new char[] { '#' }, StringSplitOptions.RemoveEmptyEntries);
-            return argItem.Select(argpair => argpair.Split(new char[] {'@'}, StringSplitOptions.None)).
+            var argItem = argstr.Split(new[] { '#' }, StringSplitOptions.RemoveEmptyEntries);
+            return argItem.Select(argpair => argpair.Split(new[] {'@'}, StringSplitOptions.None)).
                 ToDictionary(argkvp => argkvp[0], argkvp => this.DecodeString(argkvp[1]));
         }
 
@@ -307,7 +307,7 @@ namespace Yuri.PlatformCore
         /// <returns>路径向量</returns>
         private List<string> DispatchRouting(string routingstr)
         {
-            return routingstr.Split(new char[] { '#' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            return routingstr.Split(new[] { '#' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
         /// <summary>
