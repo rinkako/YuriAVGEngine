@@ -90,12 +90,8 @@ namespace Yuri.PlatformCore
         {
             UpdateRender.KS_KEY_Dict[e.Key] = e.KeyStates;
             Director.RunMana.Assignment("&kb_" + e.Key.ToString(), e.IsDown ? "1" : "0", this.VsmReference);
-            // 必须用大于0来判断，因为键有切换和按下两种状态
-            if ((UpdateRender.KS_KEY_Dict[Key.LeftAlt] > 0 || UpdateRender.KS_KEY_Dict[Key.RightAlt] > 0)
-                && UpdateRender.KS_KEY_Dict[Key.F4] > 0)
-            {
-                this.Shutdown();
-            }
+            // 触发更新事件
+            this.UpdateForKeyboardState();
         }
 
         /// <summary>
@@ -261,15 +257,22 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void UpdateForKeyboardState()
         {
-            if (UpdateRender.KS_KEY_Dict[Key.S] > 0)
+            if (UpdateRender.KS_KEY_Dict[Key.S] == KeyStates.Down && ViewPageManager.IsAtMainStage())
             {
                 Canvas mainCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
                 ViewManager.RenderFrameworkElementToJPEG(mainCanvas, GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
                 PageView.SLPage p = (PageView.SLPage)ViewPageManager.RetrievePage("SavePage");
                 p.ReLoadFileInfo();
-                NavigationService.GetNavigationService(ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage))?.Navigate(p);
+                ViewPageManager.NavigateTo("SavePage");
             }
-
+            if (UpdateRender.KS_KEY_Dict[Key.L] == KeyStates.Toggled && ViewPageManager.IsAtMainStage())
+            {
+                Canvas mainCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
+                ViewManager.RenderFrameworkElementToJPEG(mainCanvas, GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
+                PageView.SLPage p = (PageView.SLPage)ViewPageManager.RetrievePage("LoadPage");
+                p.ReLoadFileInfo();
+                ViewPageManager.NavigateTo("LoadPage");
+            }
         }
         
         /// <summary>

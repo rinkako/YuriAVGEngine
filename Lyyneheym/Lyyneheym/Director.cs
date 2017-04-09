@@ -413,7 +413,6 @@ namespace Yuri
                 }
                 // 处理IO
                 this.updateRender.UpdateForMouseState();
-                this.updateRender.UpdateForKeyboardState();
                 // 是否恢复消息循环
                 if (resumeFlag)
                 {

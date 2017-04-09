@@ -126,6 +126,22 @@ namespace Yuri
                 this.FullScreenTransform();
             }
         }
+
+        /// <summary>
+        /// 事件：键盘按下按钮
+        /// </summary>
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            this.world.UpdateKeyboard(e);
+        }
+
+        /// <summary>
+        /// 事件：键盘松开按钮
+        /// </summary>
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            this.world.UpdateKeyboard(e);
+        }
         #endregion
 
         #region 辅助函数

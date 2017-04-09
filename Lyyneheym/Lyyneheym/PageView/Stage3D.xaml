@@ -6,7 +6,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="1280"
       Title="Stage3D"
-      MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" MouseWheel="Window_MouseWheel" Background="White" Loaded="Stage3D_OnLoaded">
+      MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" MouseWheel="Window_MouseWheel" Background="White" Loaded="Stage3D_OnLoaded">
     <Grid Background="Black">
         <Canvas Name="BO_MainGrid" Background="Black" Left="0" Top="0" Height="720" Width="1280">
             <!-- 3D视窗 -->

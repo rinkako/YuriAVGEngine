@@ -89,6 +89,16 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 获取当前是否位于主舞台页面
+        /// </summary>
+        /// <returns>是否在主舞台</returns>
+        public static bool IsAtMainStage()
+        {
+            return ViewPageManager.PageCallStack.Count > 0 && 
+                (ViewPageManager.PageCallStack.Peek() is PageView.Stage3D || ViewPageManager.PageCallStack.Peek() is PageView.Stage2D);
+        }
+
+        /// <summary>
         /// 获取当前呈现在屏幕上的页面
         /// </summary>
         public static Page CurrentPage => ViewPageManager.PageCallStack.Count > 0 ? ViewPageManager.PageCallStack.Peek() : null;

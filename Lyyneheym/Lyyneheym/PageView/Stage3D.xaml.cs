@@ -53,23 +53,7 @@ namespace Yuri.PageView
                 this.isInit = true;
             }
         }
-
-        /// <summary>
-        /// 事件：键盘按下按钮
-        /// </summary>
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            this.core.UpdateKeyboard(e);
-        }
-
-        /// <summary>
-        /// 事件：键盘松开按钮
-        /// </summary>
-        private void Window_KeyUp(object sender, KeyEventArgs e)
-        {
-            this.core.UpdateKeyboard(e);
-        }
-
+        
         /// <summary>
         /// 事件：鼠标按下按钮
         /// </summary>

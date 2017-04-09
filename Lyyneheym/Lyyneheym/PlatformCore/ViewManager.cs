@@ -149,7 +149,7 @@ namespace Yuri.PlatformCore
         public BranchButton GetBranchButton(int id) => this.branchButtonVec[id];
 
         /// <summary>
-        /// 获取画面上的视窗
+        /// 获取画面上的2D视窗
         /// </summary>
         /// <param name="vt">视窗类型</param>
         /// <returns>视窗实例</returns>

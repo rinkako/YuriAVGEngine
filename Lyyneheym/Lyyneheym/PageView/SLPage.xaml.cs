@@ -294,7 +294,8 @@ namespace Yuri.PageView
         /// </summary>
         private void SL_Button_Back_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            NavigationService.GoBack();
+            //NavigationService.GoBack();
+            ViewPageManager.GoBack();
         }
 
         /// <summary>
