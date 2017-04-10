@@ -253,6 +253,11 @@ namespace Yuri.PlatformCore
         /// <param name="target">目标标签</param>
         public void CallScene(Scene scene, SceneAction target = null)
         {
+            if (scene == null)
+            {
+                return;
+            }
+            var beforeSceneName = this.CallStack.SAVEP?.BindingSceneName;
             CommonUtils.ConsoleLine(String.Format("Call Scene: {0} , with target: {1}", scene?.Scenario, target == null ? "null" : target.NodeName),
                     "RuntimeManager", OutputStyle.Important);
             // 基础调用
@@ -278,32 +283,35 @@ namespace Yuri.PlatformCore
                 }
             }
             // 处理场景的并行函数
-            if (scene.ParallellerContainer.Count > 0)
+            if (beforeSceneName != null && beforeSceneName != scene.Scenario)
             {
-                int counter = 0;
-                foreach (var psf in scene.ParallellerContainer)
+                if (scene.ParallellerContainer.Count > 0)
                 {
-                    DispatcherTimer dt = new DispatcherTimer();
-                    dt.Interval = TimeSpan.FromTicks((long)GlobalConfigContext.DirectorTimerInterval);
-                    dt.Tick += this.ParallelHandler;
-                    this.ParallelDispatcherList.Add(dt);
-                    var pvm = new StackMachine();
-                    pvm.SetMachineName("VM#" + psf.GlobalName);
-                    pvm.Submit(psf, new List<object>());
-                    this.ParallelVMList.Add(pvm);
-                    ParallelDispatcherArgsPackage pdap = new ParallelDispatcherArgsPackage()
+                    int counter = 0;
+                    foreach (var psf in scene.ParallellerContainer)
                     {
-                        Index = counter++,
-                        Render = new UpdateRender(pvm),
-                        BindingSF = psf
-                    };
-                    dt.Tag = pdap;
-                    dt.Start();
-                    activeDict[pvm.StackName] = true;
+                        DispatcherTimer dt = new DispatcherTimer();
+                        dt.Interval = TimeSpan.FromTicks((long) GlobalConfigContext.DirectorTimerInterval);
+                        dt.Tick += this.ParallelHandler;
+                        this.ParallelDispatcherList.Add(dt);
+                        var pvm = new StackMachine();
+                        pvm.SetMachineName("VM#" + psf.GlobalName);
+                        pvm.Submit(psf, new List<object>());
+                        this.ParallelVMList.Add(pvm);
+                        ParallelDispatcherArgsPackage pdap = new ParallelDispatcherArgsPackage()
+                        {
+                            Index = counter++,
+                            Render = new UpdateRender(pvm),
+                            BindingSF = psf
+                        };
+                        dt.Tag = pdap;
+                        dt.Start();
+                        activeDict[pvm.StackName] = true;
+                    }
                 }
+                // 压并行状态栈
+                this.ParallelStack.Push(activeDict);
             }
-            // 压并行状态栈
-            this.ParallelStack.Push(activeDict);
         }
 
         /// <summary>

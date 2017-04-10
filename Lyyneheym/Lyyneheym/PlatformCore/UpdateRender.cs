@@ -86,9 +86,11 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 设置键盘上某个按键当前状态
         /// </summary>
-        public void SetKeyboardState(KeyEventArgs e)
+        /// <param name="e">事件对象</param>
+        /// <param name="isDown">是否按下</param>
+        public void SetKeyboardState(KeyEventArgs e, bool isDown)
         {
-            UpdateRender.KS_KEY_Dict[e.Key] = e.KeyStates;
+            UpdateRender.KS_KEY_Dict[e.Key] = isDown ? KeyStates.Down : KeyStates.None;
             Director.RunMana.Assignment("&kb_" + e.Key.ToString(), e.IsDown ? "1" : "0", this.VsmReference);
             // 触发更新事件
             this.UpdateForKeyboardState();
@@ -265,7 +267,7 @@ namespace Yuri.PlatformCore
                 p.ReLoadFileInfo();
                 ViewPageManager.NavigateTo("SavePage");
             }
-            if (UpdateRender.KS_KEY_Dict[Key.L] == KeyStates.Toggled && ViewPageManager.IsAtMainStage())
+            if (UpdateRender.KS_KEY_Dict[Key.L] == KeyStates.Down && ViewPageManager.IsAtMainStage())
             {
                 Canvas mainCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
                 ViewManager.RenderFrameworkElementToJPEG(mainCanvas, GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");

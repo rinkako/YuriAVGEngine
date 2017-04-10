@@ -132,7 +132,7 @@ namespace Yuri
         /// </summary>
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            this.world.UpdateKeyboard(e);
+            this.world.UpdateKeyboard(e, true);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace Yuri
         /// </summary>
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-            this.world.UpdateKeyboard(e);
+            this.world.UpdateKeyboard(e, false);
         }
         #endregion
 

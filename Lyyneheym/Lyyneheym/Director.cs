@@ -71,9 +71,10 @@ namespace Yuri
         /// 提供由前端更新后台键盘按键信息的方法
         /// </summary>
         /// <param name="e">键盘事件</param>
-        public void UpdateKeyboard(KeyEventArgs e)
+        /// <param name="isDown">是否按下</param>
+        public void UpdateKeyboard(KeyEventArgs e, bool isDown)
         {
-            this.updateRender.SetKeyboardState(e);
+            this.updateRender.SetKeyboardState(e, isDown);
             CommonUtils.ConsoleLine(String.Format("Keyboard event: {0} <- {1}", e.Key.ToString(), e.KeyStates.ToString()),
                 "Director", OutputStyle.Normal);
         }

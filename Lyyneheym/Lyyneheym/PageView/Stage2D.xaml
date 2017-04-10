@@ -9,7 +9,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="1280"
       Title="StagePage" ShowsNavigationUI="False"
-			MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" MouseWheel="Window_MouseWheel" Background="White" Loaded="StagePage_OnLoaded">
+			MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" MouseWheel="Window_MouseWheel" Background="White" Loaded="StagePage_OnLoaded">
     <Canvas Name="BO_MainGrid" Background="Black" Left="0" Top="0">
         <!-- Background, Character, Pictures -->
         <Viewbox x:Name="BO_Bg_Viewbox" Stretch="UniformToFill" Width="{Binding ElementName=mainStagePage, Mode=OneWay}" Height="{Binding ElementName=mainStagePage, Mode=OneWay}" Canvas.Left="0" Canvas.Top="0">
