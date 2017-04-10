@@ -2,6 +2,9 @@
 using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Linq;
+using Yuri.PlatformCore.Evaluator;
+using Yuri.PlatformCore.Graphic;
+using Yuri.PlatformCore.VM;
 using Yuri.Utils;
 using Yuri.Yuriri;
 

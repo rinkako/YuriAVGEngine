@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Yuri.PlatformCore;
 
 namespace Yuri.Utils
 {

@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using Yuri.PlatformCore;
 using Yuri.PageView;
+using Yuri.PlatformCore.Graphic;
 using Yuri.Utils;
 
 namespace Yuri

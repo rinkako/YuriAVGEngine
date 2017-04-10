@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Media3D;
 using Yuri.PlatformCore;
+using Yuri.PlatformCore.Graphic;
 
 namespace Yuri.PageView
 {

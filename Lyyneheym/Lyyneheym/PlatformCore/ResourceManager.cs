@@ -3,6 +3,8 @@ using System.IO;
 using System.Windows;
 using System.Threading;
 using System.Collections.Generic;
+using Yuri.PlatformCore.Graphic;
+using Yuri.PlatformCore.VM;
 using Yuri.Utils;
 using Yuri.Yuriri;
 

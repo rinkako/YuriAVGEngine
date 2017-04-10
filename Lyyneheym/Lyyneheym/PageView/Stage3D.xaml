@@ -45,7 +45,7 @@
                     <ModelVisual3D x:Name="ST3D_Character_Container">
                         <ModelVisual3D.Content>
                             <Model3DGroup x:Name="ST3D_Character_Group">
-                                
+
                             </Model3DGroup>
                         </ModelVisual3D.Content>
                     </ModelVisual3D>
@@ -69,29 +69,6 @@
                     </ModelVisual3D>
                 </Viewport3D.Children>
             </Viewport3D>
-            <!-- Information -->
-            <Grid Name="BO_Information" VerticalAlignment="Top" HorizontalAlignment="Right" Canvas.Top="40" Canvas.Right="-400" Width="264" Height="71" Opacity="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="7*"/>
-                </Grid.ColumnDefinitions>
-                <Image Name="BO_Information_Image" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="5"></Image>
-                <Grid Grid.Row="0" Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50*"/>
-                        <RowDefinition Height="5*"/>
-                        <RowDefinition Height="45*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Name="BO_Information_Name" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" FontSize="18"></TextBlock>
-                    <TextBlock Name="BO_Information_Detail" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="11" TextWrapping="Wrap"></TextBlock>
-                </Grid>
-            </Grid>
-            <!-- 提示语Label -->
-            <Label Name="BO_MessageLabel" Content="" FontSize="25" Foreground="White" Canvas.Left="10" Canvas.Top="10" Visibility="Hidden" IsHitTestVisible="False">
-                <Label.Effect>
-                    <DropShadowEffect ShadowDepth="0" Color="Black" Opacity="1" BlurRadius="5"/>
-                </Label.Effect>
-            </Label>
             <!-- Debug按钮 -->
             <Canvas Visibility="Hidden">
                 <Button Content="233" Width="150" Height="50" Margin="10,10,1120,660" Click="Button_Click"/>

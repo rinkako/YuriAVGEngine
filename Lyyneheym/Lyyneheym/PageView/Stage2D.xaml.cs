@@ -7,6 +7,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using Yuri.PlatformCore;
+using Yuri.PlatformCore.Graphic;
+using Yuri.PlatformCore.VM;
 using Yuri.YuriInterpreter;
 using Yuri.Yuriri;
 

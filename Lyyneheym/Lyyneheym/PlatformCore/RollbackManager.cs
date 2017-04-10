@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Yuri.PlatformCore.Graphic;
+using Yuri.PlatformCore.VM;
 using Yuri.Yuriri;
 
 namespace Yuri.PlatformCore

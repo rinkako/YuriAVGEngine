@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media;
+using Yuri.PlatformCore.Graphic;
 
 namespace Yuri.PlatformCore
 {

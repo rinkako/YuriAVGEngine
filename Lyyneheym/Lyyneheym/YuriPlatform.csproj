@@ -93,29 +93,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Director.cs" />
-    <Compile Include="PlatformCore\ConfigParser.cs" />
-    <Compile Include="PlatformCore\YuriEncryptor.cs" />
+    <Compile Include="PlatformCore\Director.cs" />
+    <Compile Include="PlatformCore\VM\ConfigParser.cs" />
+    <Compile Include="Utils\EncryptUtils.cs" />
     <Compile Include="PageView\SLPage.xaml.cs">
       <DependentUpon>SLPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PageView\Stage3D.xaml.cs">
       <DependentUpon>Stage3D.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PlatformCore\NAudioPlayer.cs" />
+    <Compile Include="PlatformCore\Audio\NAudioPlayer.cs" />
     <Compile Include="PlatformCore\NotificationManager.cs" />
-    <Compile Include="PlatformCore\CloneableDescriptor.cs" />
-    <Compile Include="PlatformCore\PersistenceContext.cs" />
-    <Compile Include="PlatformCore\PolishEvaluator.cs" />
-    <Compile Include="PlatformCore\ResourceCachePool.cs" />
+    <Compile Include="PlatformCore\Graphic\CloneableDescriptor.cs" />
+    <Compile Include="PlatformCore\VM\PersistenceContext.cs" />
+    <Compile Include="PlatformCore\Evaluator\PolishEvaluator.cs" />
+    <Compile Include="PlatformCore\VM\ResourceCachePool.cs" />
     <Compile Include="PlatformCore\RollbackManager.cs" />
-    <Compile Include="PlatformCore\SCamera2D.cs" />
-    <Compile Include="PlatformCore\RollbackableSnapshot.cs" />
-    <Compile Include="PlatformCore\SCamera3D.cs" />
-    <Compile Include="PlatformCore\ViewPageManager.cs" />
-    <Compile Include="PlatformCore\Viewport2DDescriptor.cs" />
+    <Compile Include="PlatformCore\Graphic\SCamera2D.cs" />
+    <Compile Include="PlatformCore\VM\RollbackableSnapshot.cs" />
+    <Compile Include="PlatformCore\Graphic\SCamera3D.cs" />
+    <Compile Include="PlatformCore\Graphic\ViewPageManager.cs" />
+    <Compile Include="PlatformCore\Graphic\Viewport2DDescriptor.cs" />
     <Compile Include="PlatformCore\YuririWorld.cs" />
-    <Compile Include="PlatformCore\YuriViewport2D.cs" />
+    <Compile Include="PlatformCore\Graphic\Viewport2D.cs" />
     <Compile Include="PageView\Stage2D.xaml.cs">
       <DependentUpon>Stage2D.xaml</DependentUpon>
     </Compile>
@@ -130,7 +130,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PlatformCore\ILConvertor.cs" />
+    <Compile Include="PlatformCore\VM\ILConvertor.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -149,27 +149,27 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlatformCore\BranchButton.cs" />
-    <Compile Include="PlatformCore\BranchButtonDescriptor.cs" />
+    <Compile Include="PlatformCore\Graphic\BranchButton.cs" />
+    <Compile Include="PlatformCore\Graphic\BranchButtonDescriptor.cs" />
     <Compile Include="PlatformCore\GlobalDataContext.cs" />
-    <Compile Include="PlatformCore\Interrupt.cs" />
-    <Compile Include="PlatformCore\MessageLayer.cs" />
-    <Compile Include="PlatformCore\MessageLayerDescriptor.cs" />
-    <Compile Include="PlatformCore\Musician.cs" />
-    <Compile Include="PlatformCore\PolishItem.cs" />
+    <Compile Include="PlatformCore\VM\Interrupt.cs" />
+    <Compile Include="PlatformCore\Graphic\MessageLayer.cs" />
+    <Compile Include="PlatformCore\Graphic\MessageLayerDescriptor.cs" />
+    <Compile Include="PlatformCore\Audio\Musician.cs" />
+    <Compile Include="PlatformCore\Evaluator\PolishItem.cs" />
     <Compile Include="PlatformCore\ResourceManager.cs" />
     <Compile Include="PlatformCore\RuntimeManager.cs" />
-    <Compile Include="PlatformCore\ScreenManager.cs" />
-    <Compile Include="PlatformCore\SpriteAnimation.cs" />
-    <Compile Include="PlatformCore\SpriteButton.cs" />
-    <Compile Include="PlatformCore\SpriteButtonDescriptor.cs" />
-    <Compile Include="PlatformCore\SpriteDescriptor.cs" />
-    <Compile Include="PlatformCore\StackMachine.cs" />
-    <Compile Include="PlatformCore\StackMachineFrame.cs" />
-    <Compile Include="PlatformCore\SymbolTable.cs" />
+    <Compile Include="PlatformCore\Graphic\ScreenManager.cs" />
+    <Compile Include="PlatformCore\Graphic\SpriteAnimation.cs" />
+    <Compile Include="PlatformCore\Graphic\SpriteButton.cs" />
+    <Compile Include="PlatformCore\Graphic\SpriteButtonDescriptor.cs" />
+    <Compile Include="PlatformCore\Graphic\SpriteDescriptor.cs" />
+    <Compile Include="PlatformCore\VM\StackMachine.cs" />
+    <Compile Include="PlatformCore\VM\StackMachineFrame.cs" />
+    <Compile Include="PlatformCore\VM\SymbolTable.cs" />
     <Compile Include="PlatformCore\UpdateRender.cs" />
-    <Compile Include="PlatformCore\ViewManager.cs" />
-    <Compile Include="PlatformCore\YuriSprite.cs" />
+    <Compile Include="PlatformCore\Graphic\ViewManager.cs" />
+    <Compile Include="PlatformCore\Graphic\YuriSprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -182,7 +182,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
     </Compile>
     <None Include="app.config" />
-    <Compile Include="PlatformCore\ForkableState.cs" />
+    <Compile Include="PlatformCore\VM\ForkableState.cs" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -205,6 +205,7 @@
       <Name>Yuriri</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

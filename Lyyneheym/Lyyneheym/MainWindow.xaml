@@ -6,10 +6,35 @@
         xmlns:local="clr-namespace:Yuri"
         mc:Ignorable="d"
         Title="MainWindow" Height="752" Width="1280" Closing="Window_Closing" SizeChanged="window_SizeChanged" StateChanged="window_StateChanged" PreviewKeyDown="window_PreviewKeyDown" PreviewKeyUp="window_PreviewKeyUp" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" Background="White" WindowStartupLocation="CenterScreen">
-  <Viewbox x:Name="viewbox" Stretch="UniformToFill" Width="{Binding ElementName=nvWindow, Mode=OneWay}" Height="{Binding ElementName=nvWindow, Mode=OneWay}">
-    <Canvas x:Name="mainCanvas" Width="{Binding ElementName=viewbox, Mode=OneWay}" Height="{Binding ElementName=viewbox, Mode=OneWay}">
-      <Frame x:Name="mainFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="DeepPink"/>
-      <Frame x:Name="maskFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="Black" IsHitTestVisible="False" Visibility="Hidden"/>
-    </Canvas>
-  </Viewbox>
+    <Viewbox x:Name="viewbox" Stretch="UniformToFill" Width="{Binding ElementName=nvWindow, Mode=OneWay}" Height="{Binding ElementName=nvWindow, Mode=OneWay}">
+        <Canvas x:Name="mainCanvas" Width="{Binding ElementName=viewbox, Mode=OneWay}" Height="{Binding ElementName=viewbox, Mode=OneWay}">
+            <!-- 主舞台层 -->
+            <Frame x:Name="mainFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="DeepPink"/>
+            <!-- 遮罩层 -->
+            <Frame x:Name="maskFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="Black" IsHitTestVisible="False" Visibility="Hidden"/>
+            <!-- 提示语Label -->
+            <Label Name="BO_MessageLabel" Content="" FontSize="25" Foreground="White" Canvas.Left="10" Canvas.Top="10" Visibility="Hidden" IsHitTestVisible="False">
+                <Label.Effect>
+                    <DropShadowEffect ShadowDepth="0" Color="Black" Opacity="1" BlurRadius="5"/>
+                </Label.Effect>
+            </Label>
+            <!-- Information -->
+            <Grid Name="BO_Information" VerticalAlignment="Top" HorizontalAlignment="Right" Canvas.Top="40" Canvas.Right="-400" Width="264" Height="71" Opacity="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="7*"/>
+                 </Grid.ColumnDefinitions>
+                 <Image Name="BO_Information_Image" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="5"></Image>
+                 <Grid Grid.Row="0" Grid.Column="1">
+                     <Grid.RowDefinitions>
+                         <RowDefinition Height="50*"/>
+                         <RowDefinition Height="5*"/>
+                         <RowDefinition Height="45*"/>
+                     </Grid.RowDefinitions>
+                     <TextBlock Name="BO_Information_Name" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" FontSize="18"></TextBlock>
+                     <TextBlock Name="BO_Information_Detail" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="11" TextWrapping="Wrap"></TextBlock>
+                 </Grid> 
+            </Grid>
+        </Canvas>
+    </Viewbox>
 </Window>
