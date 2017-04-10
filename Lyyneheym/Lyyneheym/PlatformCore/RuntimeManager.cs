@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Threading;
 using System.Collections.Generic;
+using System.Linq;
 using Yuri.Utils;
 using Yuri.Yuriri;
 
@@ -18,17 +19,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="vsm">关于哪个调用堆栈做动作</param>
         /// <returns>栈顶状态</returns>
-        public StackMachineState GameState(StackMachine vsm)
-        {
-            if (vsm.ESP == null)
-            {
-                return StackMachineState.NOP;
-            }
-            else
-            {
-                return vsm.ESP.State;
-            }
-        }
+        public StackMachineState GameState(StackMachine vsm) => vsm.ESP?.State ?? StackMachineState.NOP;
 
         /// <summary>
         /// 取下一动作指令并暂存当前执行的动作
@@ -92,17 +83,14 @@ namespace Yuri.PlatformCore
                             break;
                         }
                         // falseRouting
-                        else if (ret.FalseRouting != null && ret.FalseRouting.Count > 0)
+                        if (ret.FalseRouting != null && ret.FalseRouting.Count > 0)
                         {
                             ret = vsm.ESP.MircoStep(ret.FalseRouting[0]);
                             break;
                         }
                         // next
-                        else
-                        {
-                            ret = vsm.ESP.MacroStep(ret);
-                            break;
-                        }
+                        ret = vsm.ESP.MacroStep(ret);
+                        break;
                     case SActionType.act_endfor:
                         // endfor直接跳过
                         ret = vsm.ESP.MacroStep(ret);
@@ -197,31 +185,26 @@ namespace Yuri.PlatformCore
                     }
                 }
                 // 关闭计时器
-                foreach (var pdt in this.ParallelDispatcherList)
-                {
-                    pdt.Stop();
-                }
+                this.ParallelDispatcherList.ForEach(pdt => pdt.Stop());
             }
         }
 
         /// <summary>
         /// 从一个并行状态变换到另一个并行状态
         /// </summary>
-        /// <param name="fromState">变化前的状态描述子</param>
-        /// <param name="toState">目标状态描述子</param>
+        /// <param name="fromState">变化前状态的描述子</param>
+        /// <param name="toState">目标状态的描述子</param>
         public void BackTraceParallelState(Dictionary<string, bool> fromState, Dictionary<string, bool> toState)
         {
             // 找出要移除的并行堆栈
-            List<string> removeList = new List<string>();
+            var removeList = new List<string>();
             if (toState != null)
             {
-                foreach (var vmKvp in toState)
-                {
-                    if (fromState.ContainsKey(vmKvp.Key) == false)
-                    {
-                        removeList.Add(vmKvp.Key);
-                    }
-                }
+                removeList.AddRange(from removeKvp in fromState where toState.ContainsKey(removeKvp.Key) == false select removeKvp.Key);
+            }
+            else
+            {
+                removeList.AddRange(fromState.Select(removeKvp => removeKvp.Key));
             }
             // 停止这些并行计时器，移除并行堆栈
             foreach (var r in removeList)
@@ -263,7 +246,7 @@ namespace Yuri.PlatformCore
             // 基础调用
             this.CallStack.Submit(scene, target);
             // 如果当前有并行，而又调用了带有并行的场景，那么就要暂停现在的并行
-            Dictionary<string, bool> activeDict = new Dictionary<string, bool>();
+            var activeDict = new Dictionary<string, bool>();
             if (this.ParallelStack.Count != 0)
             {
                 var curParaStateDict = this.ParallelStack.Peek();
@@ -283,7 +266,7 @@ namespace Yuri.PlatformCore
                 }
             }
             // 处理场景的并行函数
-            if (beforeSceneName != null && beforeSceneName != scene.Scenario)
+            if (beforeSceneName != scene.Scenario)
             {
                 if (scene.ParallellerContainer.Count > 0)
                 {
@@ -460,11 +443,8 @@ namespace Yuri.PlatformCore
                     return this.Symbols.Fetch(ResourceManager.GetInstance().GetScene(vsm.EBP.ScriptName), varName.Replace("$", String.Empty));
                 }
                 // 函数调用
-                else
-                {
-                    var funFrame = vsm.ESP.BindingFunction;
-                    return funFrame.Symbols[varName.Replace("$", String.Empty)];
-                }
+                var funFrame = vsm.ESP.BindingFunction;
+                return funFrame.Symbols[varName.Replace("$", String.Empty)];
             }
             // 处理全局变量
             if (varName.StartsWith("&"))
