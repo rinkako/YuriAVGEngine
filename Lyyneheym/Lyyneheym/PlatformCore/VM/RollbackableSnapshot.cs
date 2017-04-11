@@ -54,16 +54,7 @@ namespace Yuri.PlatformCore.VM
             get;
             set;
         }
-
-        /// <summary>
-        /// 并行栈的拷贝
-        /// </summary>
-        public Stack<Dictionary<string, bool>> ParallelStateStackRef
-        {
-            get;
-            set;
-        }
-
+        
         /// <summary>
         /// 音乐状态的拷贝
         /// </summary>

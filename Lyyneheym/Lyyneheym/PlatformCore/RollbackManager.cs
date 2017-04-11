@@ -42,7 +42,6 @@ namespace Yuri.PlatformCore
                     VMRef = vm,
                     SymbolRef = SymbolTable.GetInstance().Fork() as SymbolTable,
                     ScreenStateRef = ScreenManager.GetInstance().Fork() as ScreenManager,
-                    ParallelStateStackRef = ForkableState.DeepCopyBySerialization<Stack<Dictionary<string, bool>>>(Director.RunMana.ParallelStack)
                 };
                 // 如果栈中容量溢出就剔掉最早进入的那个
                 if (RollbackManager.forwardStack.Count >= GlobalConfigContext.MaxRollbackStep)
@@ -103,17 +102,18 @@ namespace Yuri.PlatformCore
             Director.PauseUpdateContext();
             // 结束全部动画
             SpriteAnimation.ClearAnimateWaitingDict();
-            // 检查是否需要停下当前的并行处理
-            if (ssp.VMRef.ESP.BindingSceneName != Director.RunMana.CallStack.ESP.BindingSceneName)
+            // 检查是否需要回滚当前的并行处理
+            bool needRepara = false;
+            if (ssp.VMRef.ESP.BindingSceneName != Director.RunMana.CallStack.SAVEP.BindingSceneName)
             {
-                Director.RunMana.StopParallel();
+                Director.RunMana.PauseParallel();
+                needRepara = true;
             }
             // 退到SSP所描述的状态
             SymbolTable.ResetSynObject(ssp.SymbolRef.Fork() as SymbolTable);
             ScreenManager.ResetSynObject(ssp.ScreenStateRef.Fork() as ScreenManager);
             Director.RunMana.ResetCallstackObject(ssp.VMRef.Fork() as StackMachine);
             Director.RunMana.PlayingBGM = ssp.MusicRef;
-            Director.RunMana.ParallelStack = ForkableState.DeepCopyBySerialization(ssp.ParallelStateStackRef);
             Director.RunMana.DashingPureSa = ssp.ReactionRef.Clone(true);
             Director.ScrMana = ScreenManager.GetInstance();
             // 刷新主渲染器上的堆栈绑定
@@ -139,6 +139,11 @@ namespace Yuri.PlatformCore
             };
             // 提交中断到主调用堆栈
             Director.RunMana.CallStack.Submit(reactionNtr);
+            // 重启并行
+            if (needRepara)
+            {
+                Director.RunMana.BackTraceParallel();
+            }
             // 重启消息循环
             Director.ResumeUpdateContext();
         }

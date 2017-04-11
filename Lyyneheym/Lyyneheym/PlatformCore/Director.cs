@@ -436,7 +436,7 @@ namespace Yuri.PlatformCore
         {
             // 获取绑定的调用堆栈
             ParallelDispatcherArgsPackage pdap = (sender as DispatcherTimer).Tag as ParallelDispatcherArgsPackage;
-            StackMachine paraVM = Director.RunMana.ParallelVMList[pdap.Index];
+            StackMachine paraVM = Director.RunMana.ParallelExecutorStack.Peek()[pdap.Index].Executor;
             // 取得调用堆栈顶部状态
             StackMachineState stackState = Director.RunMana.GameState(paraVM);
             GameState paraGameState = GameState.Exit;
