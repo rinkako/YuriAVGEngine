@@ -835,6 +835,6 @@ namespace Yuri.PlatformCore.Graphic
         /// <summary>
         /// 正在进行的动画字典
         /// </summary>
-        private static Dictionary<Storyboard, YuriSprite> aniDict = new Dictionary<Storyboard, YuriSprite>();
+        private static readonly Dictionary<Storyboard, YuriSprite> aniDict = new Dictionary<Storyboard, YuriSprite>();
     }
 }

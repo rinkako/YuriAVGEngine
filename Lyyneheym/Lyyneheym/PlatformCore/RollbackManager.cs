@@ -79,14 +79,7 @@ namespace Yuri.PlatformCore
                     RollbackManager.forwardStack.RemoveLast();
                     RollbackManager.backwardStack.AddLast(lastStep);
                     // 重演绎
-                    if (ViewManager.Is3DStage)
-                    {
-                        RollbackManager.GotoSteadyState(lastStep);
-                    }
-                    else
-                    {
-                        RollbackManager.GotoSteadyState(lastStep);
-                    }
+                    RollbackManager.GotoSteadyState(lastStep);
                     NotificationManager.SystemMessageNotify("正在回滚", 800);
                 }
             }
@@ -142,7 +135,10 @@ namespace Yuri.PlatformCore
             // 重启并行
             if (needRepara)
             {
+                var sc = ResourceManager.GetInstance().GetScene(ssp.VMRef.ESP.BindingSceneName);
+                Director.RunMana.ConstructParallelForRollingBack(sc);
                 Director.RunMana.BackTraceParallel();
+                Director.RunMana.LastScenario = sc.Scenario;
             }
             // 重启消息循环
             Director.ResumeUpdateContext();

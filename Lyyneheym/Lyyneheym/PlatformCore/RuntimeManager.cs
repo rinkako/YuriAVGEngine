@@ -171,30 +171,6 @@ namespace Yuri.PlatformCore
                 }
             }
         }
-        
-        /// <summary>
-        /// 暂停并行处理
-        /// </summary>
-        public void PauseParallel()
-        {
-            if (this.ParallelExecutorStack.Count == 0)
-            {
-                return;
-            }
-            this.ParallelExecutorStack.Peek().ForEach(t => t.Dispatcher.Stop());
-        }
-
-        /// <summary>
-        /// 恢复并行处理
-        /// </summary>
-        public void RestartParallel()
-        {
-            if (this.ParallelExecutorStack.Count == 0)
-            {
-                return;
-            }
-            this.ParallelExecutorStack.Peek().ForEach(t => t.Dispatcher.Start());
-        }
 
         /// <summary>
         /// 场景调用
@@ -220,35 +196,7 @@ namespace Yuri.PlatformCore
             // 处理场景的并行函数
             if (this.LastScenario != scene.Scenario)
             {
-                var execList = new List<ParallelExecutor>();
-                if (scene.ParallellerContainer.Count > 0)
-                {
-                    int counter = 0;
-                    foreach (var psf in scene.ParallellerContainer)
-                    {
-                        ParallelExecutor pExec = new ParallelExecutor();
-                        DispatcherTimer dt = new DispatcherTimer
-                        {
-                            Interval = TimeSpan.FromTicks((long) GlobalConfigContext.DirectorTimerInterval)
-                        };
-                        dt.Tick += this.ParallelHandler;
-                        pExec.Dispatcher = dt;
-                        var pvm = new StackMachine();
-                        pvm.SetMachineName("VM#" + psf.GlobalName);
-                        pvm.Submit(psf, new List<object>());
-                        pExec.Executor = pvm;
-                        ParallelDispatcherArgsPackage pdap = new ParallelDispatcherArgsPackage()
-                        {
-                            Index = counter++,
-                            Render = new UpdateRender(pvm),
-                            BindingSF = psf
-                        };
-                        dt.Tag = pdap;
-                        dt.Start();
-                        execList.Add(pExec);
-                    }
-                }
-                this.ParallelExecutorStack.Push(execList);
+                this.ConstructParallel(scene);
             }
             // 更新场景名字记录
             this.LastScenario = scene.Scenario;
@@ -343,10 +291,73 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 为回滚构造场景的并行处理
+        /// </summary>
+        /// <param name="scene">需要构造的场景实例</param>
+        public void ConstructParallelForRollingBack(Scene scene)
+        {
+            var reverseStack = new Stack<List<ParallelExecutor>>();
+            while (this.ParallelExecutorStack.Count > 0)
+            {
+                reverseStack.Push(this.ParallelExecutorStack.Pop());
+            }
+            this.ConstructParallel(scene);
+            while (reverseStack.Count > 0)
+            {
+                this.ParallelExecutorStack.Push(reverseStack.Pop());
+            }
+        }
+
+        /// <summary>
+        /// 构造场景的并行处理
+        /// </summary>
+        /// <param name="scene">需要构造的场景实例</param>
+        public void ConstructParallel(Scene scene)
+        {
+            var execList = new List<ParallelExecutor>();
+            if (scene.ParallellerContainer.Count > 0)
+            {
+                int counter = 0;
+                foreach (var psf in scene.ParallellerContainer)
+                {
+                    ParallelExecutor pExec = new ParallelExecutor()
+                    {
+                        Scenario = scene.Scenario
+                    };
+                    DispatcherTimer dt = new DispatcherTimer
+                    {
+                        Interval = TimeSpan.FromTicks((long)GlobalConfigContext.DirectorTimerInterval)
+                    };
+                    dt.Tick += this.ParallelHandler;
+                    pExec.Dispatcher = dt;
+                    var pvm = new StackMachine();
+                    pvm.SetMachineName("VM#" + psf.GlobalName);
+                    pvm.Submit(psf, new List<object>());
+                    pExec.Executor = pvm;
+                    ParallelDispatcherArgsPackage pdap = new ParallelDispatcherArgsPackage()
+                    {
+                        Index = counter++,
+                        Render = new UpdateRender(pvm),
+                        BindingSF = psf
+                    };
+                    dt.Tag = pdap;
+                    dt.Start();
+                    execList.Add(pExec);
+                }
+            }
+            this.ParallelExecutorStack.Push(execList);
+        }
+        
+        /// <summary>
         /// 回滚并行堆栈的状态
         /// </summary>
         public void BackTraceParallel()
         {
+            // 游戏结束的情况
+            if (this.ParallelExecutorStack.Count == 0)
+            {
+                return;
+            }
             // 弹空上一并行堆栈的内容
             var lastParaExecList = this.ParallelExecutorStack.Pop();
             foreach (var lexec in lastParaExecList)
@@ -364,6 +375,45 @@ namespace Yuri.PlatformCore
             }
             // 重启当前并行状态栈顶的并行处理器
             this.ParallelExecutorStack.Peek().ForEach(e => e.Dispatcher.Start());
+        }
+
+        /// <summary>
+        /// 停止并清空并行堆栈
+        /// </summary>
+        public void StopAllParallel()
+        {
+            while (this.ParallelExecutorStack.Count > 0)
+            {
+                this.ParallelExecutorStack.Pop().ForEach(t =>
+                {
+                    t.Executor.Clear();
+                    t.Dispatcher.Stop();
+                });
+            }
+        }
+
+        /// <summary>
+        /// 暂停并行处理
+        /// </summary>
+        public void PauseParallel()
+        {
+            if (this.ParallelExecutorStack.Count == 0)
+            {
+                return;
+            }
+            this.ParallelExecutorStack.Peek().ForEach(t => t.Dispatcher.Stop());
+        }
+
+        /// <summary>
+        /// 恢复并行处理
+        /// </summary>
+        public void RestartParallel()
+        {
+            if (this.ParallelExecutorStack.Count == 0)
+            {
+                return;
+            }
+            this.ParallelExecutorStack.Peek().ForEach(t => t.Dispatcher.Start());
         }
 
         /// <summary>
@@ -542,12 +592,12 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 获取并行执行器堆栈
+        /// 获取或设置并行执行器堆栈
         /// </summary>
         public Stack<List<ParallelExecutor>> ParallelExecutorStack
         {
             get;
-            private set;
+            set;
         }
         
         /// <summary>
@@ -579,12 +629,12 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 获取上一个场景的名字
+        /// 获取或设置上一个场景的名字
         /// </summary>
         public string LastScenario
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>
@@ -633,6 +683,11 @@ namespace Yuri.PlatformCore
     /// </summary>
     internal sealed class ParallelExecutor
     {
+        /// <summary>
+        /// 场景名称
+        /// </summary>
+        public string Scenario { get; set; }
+
         /// <summary>
         /// 并行堆栈
         /// </summary>

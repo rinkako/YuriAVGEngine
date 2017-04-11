@@ -295,7 +295,6 @@ namespace Yuri.PageView
         /// </summary>
         private void SL_Button_Back_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //NavigationService.GoBack();
             ViewPageManager.GoBack();
         }
 
@@ -398,14 +397,14 @@ namespace Yuri.PageView
                 try
                 {
                     this.core.GetMainRender().Load(this.saveList[this.lastPointed].Name.Replace(GlobalConfigContext.GAME_SAVE_POSTFIX, String.Empty));
-                    this.NavigationService.GoBack();
+                    // 返回主舞台
+                    ViewPageManager.GoBack();
                 }
                 catch (Exception ex)
                 {
                     var exStr = "读取存档文件失败，存档是损坏的？" + Environment.NewLine + ex.ToString();
                     CommonUtils.ConsoleLine(exStr, "SLPage", Utils.OutputStyle.Error);
                     MessageBox.Show(exStr);
-                    return;
                 }
             }
         }

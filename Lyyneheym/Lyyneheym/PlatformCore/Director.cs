@@ -115,6 +115,8 @@ namespace Yuri.PlatformCore
             // 清空画面并停下BGM
             ViewManager.GetInstance().RemoveView(ResourceType.Unknown);
             Musician.GetInstance().StopAndReleaseBGM();
+            // 检查是否需要回滚当前的并行处理
+            Director.RunMana.StopAllParallel();
             // 变更运行时环境
             Director.RunMana = rm;
             Director.RunMana.ParallelHandler = Director.GetInstance().ParallelUpdateContext;
@@ -149,6 +151,12 @@ namespace Yuri.PlatformCore
             };
             // 提交中断
             Director.RunMana.CallStack.Submit(reactionNtr);
+            // 重启并行
+            var sc = ResourceManager.GetInstance().GetScene(Director.RunMana.CallStack.EBP.BindingSceneName);
+            Director.RunMana.ParallelExecutorStack = new Stack<List<ParallelExecutor>>();
+            Director.RunMana.ConstructParallel(sc);
+            Director.RunMana.RestartParallel();
+            Director.RunMana.LastScenario = sc.Scenario;
             // 重启消息循环
             Director.ResumeUpdateContext();
         }
