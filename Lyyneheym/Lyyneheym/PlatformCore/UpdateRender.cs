@@ -140,6 +140,7 @@ namespace Yuri.PlatformCore
             else
             {
                 //RollbackManager.SteadyForward(true, null, null);
+                this.ForwardToNextSteadyState();
             }
         }
 
@@ -169,45 +170,9 @@ namespace Yuri.PlatformCore
             if (UpdateRender.KS_MOUSE_Dict[MouseButton.Left] == MouseButtonState.Pressed)
             {
                 // 要松开左键，并且场景镜头动画播放完毕才生效
-                if (this.MouseLeftUpFlag && 
-                    (ViewManager.Is3DStage && SCamera3D.IsAnyAnimation == false ||
-                    ViewManager.Is3DStage == false && SCamera2D.IsAnyAnimation == false))
+                if (this.MouseLeftUpFlag)
                 {
-                    // 正在显示对话
-                    if (this.isShowingDialog && Director.IsButtonClicking == false)
-                    {
-                        // 如果还在播放打字动画就跳跃
-                        if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() != 1.0)
-                        {
-                            this.MsgStoryboardDict[0].SkipToFill();
-                            this.MouseLeftUpFlag = false;
-                            return;
-                        }
-                        // 判断是否已经完成全部趟的显示
-                        else if (this.pendingDialogQueue.Count == 0)
-                        {
-                            // 弹掉用户等待状态
-                            Director.RunMana.ExitCall(Director.RunMana.CallStack);
-                            this.isShowingDialog = false;
-                            this.dialogPreStr = String.Empty;
-                            // 非连续对话时消除对话框
-                            if (this.IsContinousDialog == false)
-                            {
-                                this.viewMana.GetMessageLayer(0).Visibility = Visibility.Hidden;
-                                this.HideMessageTria();
-                            }
-                            // 截断语音
-                            this.Stopvocal();
-                            // 标记为非回滚
-                            RollbackManager.IsRollingBack = false;
-                        }
-                        // 正在显示对话则向前推进一个趟
-                        else
-                        {
-                            this.viewMana.GetMessageLayer(0).Visibility = Visibility.Visible;
-                            this.DrawDialogRunQueue();
-                        }
-                    }
+                    this.ForwardToNextSteadyState();
                 }
                 // 连续按压生效的情况下
                 else
@@ -280,7 +245,53 @@ namespace Yuri.PlatformCore
                 ViewPageManager.NavigateTo("LoadPage");
             }
         }
-        
+
+        /// <summary>
+        /// 推进一个稳定状态
+        /// </summary>
+        private void ForwardToNextSteadyState()
+        {
+            if (ViewManager.Is3DStage && SCamera3D.IsAnyAnimation == false ||
+                ViewManager.Is3DStage == false && SCamera2D.IsAnyAnimation == false)
+            {
+                // 正在显示对话
+                if (this.isShowingDialog && Director.IsButtonClicking == false)
+                {
+                    // 如果还在播放打字动画就跳跃
+                    if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() != 1.0)
+                    {
+                        this.MsgStoryboardDict[0].SkipToFill();
+                        this.MouseLeftUpFlag = false;
+                        return;
+                    }
+                    // 判断是否已经完成全部趟的显示
+                    else if (this.pendingDialogQueue.Count == 0)
+                    {
+                        // 弹掉用户等待状态
+                        Director.RunMana.ExitCall(Director.RunMana.CallStack);
+                        this.isShowingDialog = false;
+                        this.dialogPreStr = String.Empty;
+                        // 非连续对话时消除对话框
+                        if (this.IsContinousDialog == false)
+                        {
+                            this.viewMana.GetMessageLayer(0).Visibility = Visibility.Hidden;
+                            this.HideMessageTria();
+                        }
+                        // 截断语音
+                        this.Stopvocal();
+                        // 标记为非回滚
+                        RollbackManager.IsRollingBack = false;
+                    }
+                    // 正在显示对话则向前推进一个趟
+                    else
+                    {
+                        this.viewMana.GetMessageLayer(0).Visibility = Visibility.Visible;
+                        this.DrawDialogRunQueue();
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// 鼠标左键是否松开标志位
         /// </summary>
