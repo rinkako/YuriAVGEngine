@@ -59,8 +59,7 @@ namespace Yuri.PlatformCore.Graphic
         {
             get
             {
-                if (this.DisplayBinding == null) { return 0; }
-                return Canvas.GetLeft(this.DisplayBinding);
+                return this.DisplayBinding == null ? 0 : Canvas.GetLeft(this.DisplayBinding);
             }
             set
             {
@@ -78,8 +77,7 @@ namespace Yuri.PlatformCore.Graphic
         {
             get
             {
-                if (this.DisplayBinding == null) { return 0; }
-                return Canvas.GetTop(this.DisplayBinding);
+                return this.DisplayBinding == null ? 0 : Canvas.GetTop(this.DisplayBinding);
             }
             set
             {
@@ -97,8 +95,7 @@ namespace Yuri.PlatformCore.Graphic
         {
             get
             {
-                if (this.DisplayBinding == null) { return 0; }
-                return Canvas.GetZIndex(this.DisplayBinding);
+                return this.DisplayBinding == null ? 0 : Canvas.GetZIndex(this.DisplayBinding);
             }
             set
             {
@@ -187,12 +184,16 @@ namespace Yuri.PlatformCore.Graphic
         {
             TransformGroup aniGroup = new TransformGroup();
             TranslateTransform XYTransformer = new TranslateTransform();
-            ScaleTransform ScaleTransformer = new ScaleTransform();
-            ScaleTransformer.CenterX = this.AnchorX;
-            ScaleTransformer.CenterY = this.AnchorY;
-            RotateTransform RotateTransformer = new RotateTransform();
-            RotateTransformer.CenterX = this.AnchorX;
-            RotateTransformer.CenterY = this.AnchorY;
+            ScaleTransform ScaleTransformer = new ScaleTransform
+            {
+                CenterX = this.AnchorX,
+                CenterY = this.AnchorY
+            };
+            RotateTransform RotateTransformer = new RotateTransform
+            {
+                CenterX = this.AnchorX,
+                CenterY = this.AnchorY
+            };
             aniGroup.Children.Add(XYTransformer);
             aniGroup.Children.Add(ScaleTransformer);
             aniGroup.Children.Add(RotateTransformer);
@@ -274,12 +275,13 @@ namespace Yuri.PlatformCore.Graphic
         /// <param name="e">鼠标参数</param>
         public void MouseUpHandler(object sender, MouseEventArgs e)
         {
-
             Director.IsButtonClicking = false;
             if (this.Enable)
             {
                 if (this.IsMouseOn)
                 {
+                    // 标记为非回滚
+                    RollbackManager.IsRollingBack = false;
                     if (this.DisplayBinding != null && this.IsMouseOver && this.ImageMouseOver != null)
                     {
                         BitmapImage myBitmapImage2 = this.ImageMouseOver.SpriteBitmapImage;
@@ -315,6 +317,7 @@ namespace Yuri.PlatformCore.Graphic
                         Director.GetInstance().RemoveButton(this.Id);
                     }
                 }
+                // 松开按钮
                 this.IsMouseOn = false;
             }
         }

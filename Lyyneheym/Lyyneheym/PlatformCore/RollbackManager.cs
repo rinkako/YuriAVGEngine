@@ -34,7 +34,7 @@ namespace Yuri.PlatformCore
             {
                 // 构造当前状态的拷贝
                 var vm = Director.RunMana.CallStack.Fork() as StackMachine;
-                vm.SetMachineName("Yuri#Forked_" + DateTime.Now.Ticks.ToString());
+                vm.SetMachineName(String.Format("Yuri!Forked?{0}?{1}", DateTime.Now.Ticks, rand.Next(0, int.MaxValue)));
                 RollbackableSnapshot ssp = new RollbackableSnapshot()
                 {
                     TimeStamp = DateTime.Now,
@@ -152,8 +152,7 @@ namespace Yuri.PlatformCore
         {
             RollbackManager.backwardStack.Clear();
             RollbackManager.forwardStack.Clear();
-            Utils.CommonUtils.ConsoleLine("Rollback Manager already reset",
-                "Rollback Manager", Utils.OutputStyle.Important);
+            Utils.CommonUtils.ConsoleLine("Rollback Manager already reset", "Rollback Manager", Utils.OutputStyle.Important);
         }
 
         /// <summary>
@@ -184,6 +183,11 @@ namespace Yuri.PlatformCore
         /// 回滚标志变量
         /// </summary>
         private static bool rollingFlag = false;
+
+        /// <summary>
+        /// 随机数发生器
+        /// </summary>
+        private static readonly Random rand = new Random();
 
         /// <summary>
         /// 前进状态栈

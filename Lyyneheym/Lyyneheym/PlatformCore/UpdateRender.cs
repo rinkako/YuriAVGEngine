@@ -1501,6 +1501,8 @@ namespace Yuri.PlatformCore
                 Director.ScrMana.AddBranchButton(i, GroupX, BeginY + DeltaY * 2 * i, tagList[i].Value, tagList[i].Key, normalDesc, overDesc, onDesc);
                 this.viewMana.Draw(i, ResourceType.BranchButton);
             }
+            // 更改状态
+            this.isShowingDialog = false;
             // 追加等待
             Director.RunMana.UserWait("UpdateRender", String.Format("BranchWaitFor:{0}", linkStr));
         }

@@ -92,8 +92,7 @@ namespace Yuri.PlatformCore.Graphic
         {
             get
             {
-                if (this.DisplayBinding == null) { return 0; }
-                return Canvas.GetTop(this.DisplayBinding);
+                return this.DisplayBinding == null ? 0 : Canvas.GetTop(this.DisplayBinding);
             }
             set
             {
@@ -284,6 +283,8 @@ namespace Yuri.PlatformCore.Graphic
             {
                 if (this.IsMouseOn)
                 {
+                    // 标记为非回滚
+                    RollbackManager.IsRollingBack = false;
                     if (this.DisplayBinding != null && this.IsMouseOver && this.ImageMouseOver != null)
                     {
                         BitmapImage myBitmapImage2 = this.ImageMouseOver.SpriteBitmapImage;
@@ -316,6 +317,7 @@ namespace Yuri.PlatformCore.Graphic
                         Director.GetInstance().RemoveAllBranchButton();
                     }
                 }
+                // 松开按钮
                 this.IsMouseOn = false;
             }
         }
