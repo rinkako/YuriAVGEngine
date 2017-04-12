@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using Yuri.PlatformCore.Audio;
 using Yuri.PlatformCore.Evaluator;
 using Yuri.PlatformCore.Graphic;
+using Yuri.PlatformCore.Graphic3D;
 using Yuri.PlatformCore.VM;
 using Yuri.Utils;
 using Yuri.Yuriri;

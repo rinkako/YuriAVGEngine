@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Yuri.PlatformCore.Graphic;
+using Yuri.PlatformCore.Graphic3D;
 using Yuri.PlatformCore.VM;
 using Yuri.Yuriri;
 

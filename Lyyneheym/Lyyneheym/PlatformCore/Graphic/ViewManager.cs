@@ -10,6 +10,7 @@ using System.Windows.Media.Media3D;
 using Transitionals;
 using Transitionals.Controls;
 using Yuri.PageView;
+using Yuri.PlatformCore.Graphic3D;
 using Yuri.PlatformCore.VM;
 using Yuri.Utils;
 

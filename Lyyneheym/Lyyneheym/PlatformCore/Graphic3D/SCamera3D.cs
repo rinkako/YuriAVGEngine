@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Collections.Generic;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
+using Yuri.PlatformCore.Graphic;
 
-namespace Yuri.PlatformCore.Graphic
+namespace Yuri.PlatformCore.Graphic3D
 {
     /// <summary>
     /// <para>3D场景镜头类：为游戏提供有3D景深效果的镜头移动动画</para>

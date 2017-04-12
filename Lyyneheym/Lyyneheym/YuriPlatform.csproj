@@ -94,6 +94,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="PlatformCore\Director.cs" />
+    <Compile Include="PlatformCore\Graphic3D\ParticleDescriptor3D.cs" />
+    <Compile Include="PlatformCore\Graphic3D\ParticleEmitter3D.cs" />
+    <Compile Include="PlatformCore\Graphic3D\ParticleSystem3D.cs" />
     <Compile Include="PlatformCore\VM\ConfigParser.cs" />
     <Compile Include="Utils\EncryptUtils.cs" />
     <Compile Include="PageView\SLPage.xaml.cs">
@@ -111,7 +114,7 @@
     <Compile Include="PlatformCore\RollbackManager.cs" />
     <Compile Include="PlatformCore\Graphic\SCamera2D.cs" />
     <Compile Include="PlatformCore\VM\RollbackableSnapshot.cs" />
-    <Compile Include="PlatformCore\Graphic\SCamera3D.cs" />
+    <Compile Include="PlatformCore\Graphic3D\SCamera3D.cs" />
     <Compile Include="PlatformCore\Graphic\ViewPageManager.cs" />
     <Compile Include="PlatformCore\Graphic\Viewport2DDescriptor.cs" />
     <Compile Include="PlatformCore\YuririWorld.cs" />
