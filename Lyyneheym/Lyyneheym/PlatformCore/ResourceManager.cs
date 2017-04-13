@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Threading;
 using System.Collections.Generic;
+using System.Linq;
 using Yuri.PlatformCore.Graphic;
 using Yuri.PlatformCore.VM;
 using Yuri.Utils;
@@ -111,12 +112,7 @@ namespace Yuri.PlatformCore
         /// <returns>场景实例向量</returns>
         public List<Scene> GetAllScene()
         {
-            List<Scene> resVec = new List<Scene>();
-            foreach (var sc in this.sceneTable)
-            {
-                resVec.Add(sc.Value);
-            }
-            return resVec;
+            return this.sceneTable.Select(sc => sc.Value).ToList();
         }
 
         /// <summary>
@@ -189,6 +185,69 @@ namespace Yuri.PlatformCore
                 sprite.Init(sourceName, rtype, ms, cutRect);
             }
             return sprite;
+        }
+
+        /// <summary>
+        /// 测试某个资源是否存在
+        /// </summary>
+        /// <param name="sourceName">资源名称</param>
+        /// <param name="rtype">资源类型</param>
+        /// <returns>资源是否存在</returns>
+        public bool IsResourceExist(string sourceName, ResourceType rtype)
+        {
+            if (sourceName == String.Empty) { return false; }
+            string DevURI, PackURI, SearchURI;
+            // 处理路径
+            switch (rtype)
+            {
+                case ResourceType.Background:
+                    DevURI = GlobalConfigContext.DevURI_PA_BACKGROUND;
+                    PackURI = GlobalConfigContext.PackURI_PA_BACKGROUND;
+                    SearchURI = GlobalConfigContext.DevURI_RT_PICTUREASSETS;
+                    break;
+                case ResourceType.Stand:
+                    DevURI = GlobalConfigContext.DevURI_PA_CHARASTAND;
+                    PackURI = GlobalConfigContext.PackURI_PA_CHARASTAND;
+                    SearchURI = GlobalConfigContext.DevURI_RT_PICTUREASSETS;
+                    break;
+                case ResourceType.Pictures:
+                    DevURI = GlobalConfigContext.DevURI_PA_PICTURES;
+                    PackURI = GlobalConfigContext.PackURI_PA_PICTURES;
+                    SearchURI = GlobalConfigContext.DevURI_RT_PICTUREASSETS;
+                    break;
+                case ResourceType.BGM:
+                    DevURI = GlobalConfigContext.DevURI_SO_BGM;
+                    PackURI = GlobalConfigContext.PackURI_SO_BGM;
+                    SearchURI = GlobalConfigContext.DevURI_RT_SOUND;
+                    break;
+                case ResourceType.BGS:
+                    DevURI = GlobalConfigContext.DevURI_SO_BGS;
+                    PackURI = GlobalConfigContext.PackURI_SO_BGS;
+                    SearchURI = GlobalConfigContext.DevURI_RT_SOUND;
+                    break;
+                case ResourceType.SE:
+                    DevURI = GlobalConfigContext.DevURI_SO_SE;
+                    PackURI = GlobalConfigContext.PackURI_SO_SE;
+                    SearchURI = GlobalConfigContext.DevURI_RT_SOUND;
+                    break;
+                case ResourceType.VOCAL:
+                    DevURI = GlobalConfigContext.DevURI_SO_VOCAL;
+                    PackURI = GlobalConfigContext.PackURI_SO_VOCAL;
+                    SearchURI = GlobalConfigContext.DevURI_RT_SOUND;
+                    break;
+                default:
+                    return false;
+            }
+            // 总是先查看是否有为封包的数据
+            if (this.resourceTable.ContainsKey(DevURI) &&
+                this.resourceTable[DevURI].ContainsKey(sourceName))
+            {
+                return true;
+            }
+            // 没有封包数据再搜索开发目录
+
+            string furi = IOUtils.JoinPath(SearchURI, DevURI, sourceName);
+            return File.Exists(IOUtils.ParseURItoURL(furi));
         }
 
         /// <summary>
@@ -372,7 +431,6 @@ namespace Yuri.PlatformCore
             }
             // 等待线程回调
             while (this.threadFinishCounter < threadNum) { }
-            //this.InitDictionaryByPST(0);
         }
 
         /// <summary>
@@ -527,12 +585,12 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 封包资源字典
         /// </summary>
-        private Dictionary<string, Dictionary<string, ResourceSlot>> resourceTable = null;
+        private readonly Dictionary<string, Dictionary<string, ResourceSlot>> resourceTable = null;
 
         /// <summary>
         /// 场景字典
         /// </summary>
-        private Dictionary<string, Scene> sceneTable = null;
+        private readonly Dictionary<string, Scene> sceneTable = null;
 
         /// <summary>
         /// 等待处理的pst队列

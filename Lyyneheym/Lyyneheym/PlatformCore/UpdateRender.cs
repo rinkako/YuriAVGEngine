@@ -426,7 +426,7 @@ namespace Yuri.PlatformCore
             Storyboard.SetTarget(stringAnimationUsingKeyFrames, msglayBinding);
             Storyboard.SetTargetProperty(stringAnimationUsingKeyFrames, new PropertyPath(TextBlock.TextProperty));
             MsgLayerTypingStory.Children.Add(stringAnimationUsingKeyFrames);
-            MsgLayerTypingStory.Completed += new EventHandler(this.TypeWriterAnimationCompletedCallback);
+            MsgLayerTypingStory.Completed += this.TypeWriterAnimationCompletedCallback;
             MsgLayerTypingStory.Begin();
             this.MsgStoryboardDict[id] = MsgLayerTypingStory;
         }

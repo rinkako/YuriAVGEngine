@@ -16,7 +16,7 @@ namespace Yuri
         /// <summary>
         /// 导演类的引用
         /// </summary>
-        private readonly Director world = Director.GetInstance();
+        private Director world;
 
         /// <summary>
         /// Alt键正在被按下的标记
@@ -28,9 +28,7 @@ namespace Yuri
         /// </summary>
         public MainWindow()
         {
-            CommonUtils.ConsoleLine("MWnd Initialization stage 1", "MainWindow", OutputStyle.Normal);
             InitializeComponent();
-            CommonUtils.ConsoleLine("MWnd Initialization stage 2", "MainWindow", OutputStyle.Normal);
             ViewManager.SetWindowReference(this);
             this.Title = GlobalConfigContext.GAME_TITLE_NAME;
             this.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
@@ -39,7 +37,21 @@ namespace Yuri
             this.mainCanvas.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
             this.ResizeMode = GlobalConfigContext.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
             // 加载主页面
-            CommonUtils.ConsoleLine("MWnd Initialization stage 3", "MainWindow", OutputStyle.Normal);
+            this.mainFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.mainFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
+            ViewPageManager.RegisterPage("SplashPage", new SplashPage());
+            this.mainFrame.Content = ViewPageManager.RetrievePage("SplashPage");
+            this.maskFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.maskFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
+            ViewManager.MaskFrameRef = this.maskFrame;
+        }
+
+        /// <summary>
+        /// 强制跳转到标题画面
+        /// </summary>
+        public void GoToTitle()
+        {
+            this.world = Director.GetInstance();
             if (GlobalConfigContext.GAME_IS3D)
             {
                 this.world.SetStagePageReference(new Stage3D());
@@ -48,17 +60,10 @@ namespace Yuri
             {
                 this.world.SetStagePageReference(new Stage2D());
             }
-            this.mainFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
-            this.mainFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
-            this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
-            this.maskFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
-            this.maskFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
-            ViewManager.MaskFrameRef = this.maskFrame;
             // 预注册保存和读取页面
-            CommonUtils.ConsoleLine("MWnd Initialization stage 4", "MainWindow", OutputStyle.Normal);
             ViewPageManager.RegisterPage("SavePage", new SLPage(isSave: true));
             ViewPageManager.RegisterPage("LoadPage", new SLPage(isSave: false));
-            CommonUtils.ConsoleLine("MWnd Initialization finish", "MainWindow", OutputStyle.Important);
+            this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
         }
         
         #region 窗体监听事件
