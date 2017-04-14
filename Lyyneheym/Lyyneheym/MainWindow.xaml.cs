@@ -15,7 +15,7 @@ namespace Yuri
         /// <summary>
         /// 导演类的引用
         /// </summary>
-        private Director world;
+        private Director world = Director.GetInstance();
 
         /// <summary>
         /// Alt键正在被按下的标记
@@ -57,7 +57,6 @@ namespace Yuri
         {
             if (MainWindow.initFlag == false)
             {
-                this.world = Director.GetInstance();
                 if (GlobalConfigContext.GAME_IS3D)
                 {
                     this.world.SetStagePageReference(new Stage3D());
@@ -72,6 +71,7 @@ namespace Yuri
                 MainWindow.initFlag = true;
             }
             this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
+            Director.ResumeUpdateContext();
         }
         
         #region 窗体监听事件

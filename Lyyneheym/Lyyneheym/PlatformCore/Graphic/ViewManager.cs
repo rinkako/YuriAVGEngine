@@ -546,6 +546,9 @@ namespace Yuri.PlatformCore.Graphic
                 ImageMouseOn = descriptor.OnDescriptor == null ? null
                         : ResourceManager.GetInstance()  .GetPicture(descriptor.OnDescriptor.ResourceName, ResourceManager.FullImageRect)
             };
+            sbutton.ImageNormal.Descriptor = descriptor.NormalDescriptor;
+            sbutton.ImageMouseOver.Descriptor = descriptor.OverDescriptor;
+            sbutton.ImageMouseOn.Descriptor = descriptor.OnDescriptor;
             this.buttonLayerVec[id] = sbutton;
             // 重绘
             this.RemoveButton(oldButton);
@@ -829,7 +832,6 @@ namespace Yuri.PlatformCore.Graphic
                 ib.AlignmentY = AlignmentY.Top;
                 msgBlock.Background = ib;
             }
-            
             msglay.Width = descriptor.Width;
             msglay.Height = descriptor.Height;
             msglay.Opacity = descriptor.Opacity;
@@ -871,6 +873,12 @@ namespace Yuri.PlatformCore.Graphic
             buttonImage.Source = bmp;
             buttonImage.Opacity = descriptor.Opacity;
             sbutton.DisplayBinding = buttonImage;
+            sbutton.ImageNormal.DisplayBinding = buttonImage;
+            sbutton.ImageMouseOver.DisplayBinding = buttonImage;
+            sbutton.ImageMouseOn.DisplayBinding = buttonImage;
+            sbutton.ImageNormal.AnimationElement = buttonImage;
+            sbutton.ImageMouseOver.AnimationElement = buttonImage;
+            sbutton.ImageMouseOn.AnimationElement = buttonImage;
             sbutton.Eternal = descriptor.Eternal;
             sbutton.Enable = descriptor.Enable;
             sbutton.Ntr = new Interrupt()
@@ -883,8 +891,8 @@ namespace Yuri.PlatformCore.Graphic
                 pureInterrupt = false,
                 exitWait = !descriptor.Eternal
             };
-            Canvas.SetLeft(buttonImage, descriptor.X);
-            Canvas.SetTop(buttonImage, descriptor.Y);
+            Canvas.SetLeft(buttonImage, descriptor.X - bmp.PixelWidth / 2.0);
+            Canvas.SetTop(buttonImage, descriptor.Y - bmp.PixelHeight / 2.0);
             Canvas.SetZIndex(buttonImage, descriptor.Z);
             buttonImage.Visibility = Visibility.Visible;
             buttonImage.MouseDown += sbutton.MouseOnHandler;

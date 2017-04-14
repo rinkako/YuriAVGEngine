@@ -677,7 +677,7 @@ namespace Yuri.PlatformCore
                     string moveResType = action.ArgsDict["name"];
                     this.Move(
                         this.ParseInt(action.ArgsDict["id"], 0),
-                        moveResType == "picture" ? ResourceType.Pictures : (moveResType == "stand" ? ResourceType.Stand : ResourceType.Background),
+                        moveResType == "picture" ? ResourceType.Pictures : (moveResType == "stand" ? ResourceType.Stand : (moveResType == "button" ? ResourceType.Button : ResourceType.Background)),
                         this.ParseDirectString(action.ArgsDict["target"], String.Empty),
                         this.ParseDouble(action.ArgsDict["dash"], 1),
                         this.ParseDouble(action.ArgsDict["acc"], 0),
@@ -1060,6 +1060,11 @@ namespace Yuri.PlatformCore
         {
             YuriSprite actionSprite = this.viewMana.GetSprite(id, rType);
             SpriteDescriptor descriptor = Director.ScrMana.GetSpriteDescriptor(id, rType);
+            if (rType == ResourceType.Button)
+            {
+                actionSprite = this.viewMana.GetSpriteButton(id).ImageNormal;
+                descriptor = actionSprite.Descriptor;
+            }
             if (actionSprite == null)
             {
                 CommonUtils.ConsoleLine(String.Format("Ignored move (target sprite is null): {0}, {1}", rType.ToString(), id),

@@ -46,23 +46,13 @@ namespace Yuri.PageView
         }
 
         /// <summary>
-        /// 闪屏信息向量
-        /// </summary>
-        private List<string> splashQueue;
-
-        /// <summary>
-        /// 当前闪屏次数
-        /// </summary>
-        private int splashCounter = 0;
-
-        /// <summary>
         /// 处理闪屏队列
         /// </summary>
         private void HandleSplashQueue()
         {
             if (splashCounter < splashQueue.Count)
             {
-                string curSplashName = String.Format("Splash_{0}.png", this.splashCounter);
+                string curSplashName = this.splashQueue[this.splashCounter];
                 var resMana = ResourceManager.GetInstance();
                 var mscMana = Musician.GetInstance();
                 string seSplashName;
@@ -89,14 +79,13 @@ namespace Yuri.PageView
         /// </summary>
         private void SplashAnimation()
         {
-            const int delta = 1000;
             this.story = new Storyboard();
             DoubleAnimationUsingKeyFrames daukf_opacity = new DoubleAnimationUsingKeyFrames();
             EasingDoubleKeyFrame k0_opacity = new EasingDoubleKeyFrame(0.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(0)));
-            EasingDoubleKeyFrame k1_opacity = new EasingDoubleKeyFrame(0.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(delta)));
-            EasingDoubleKeyFrame k2_opacity = new EasingDoubleKeyFrame(1.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(delta + AnimationTimeMS)));
-            EasingDoubleKeyFrame k3_opacity = new EasingDoubleKeyFrame(1.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(delta + AnimationTimeMS + PendingTimeMS)));
-            EasingDoubleKeyFrame k4_opacity = new EasingDoubleKeyFrame(0.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(delta + AnimationTimeMS * 2 + PendingTimeMS)));
+            EasingDoubleKeyFrame k1_opacity = new EasingDoubleKeyFrame(0.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(blackDelta)));
+            EasingDoubleKeyFrame k2_opacity = new EasingDoubleKeyFrame(1.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(blackDelta + AnimationTimeMS)));
+            EasingDoubleKeyFrame k3_opacity = new EasingDoubleKeyFrame(1.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(blackDelta + AnimationTimeMS + PendingTimeMS)));
+            EasingDoubleKeyFrame k4_opacity = new EasingDoubleKeyFrame(0.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(blackDelta + AnimationTimeMS * 2 + PendingTimeMS)));
             daukf_opacity.KeyFrames.Add(k0_opacity);
             daukf_opacity.KeyFrames.Add(k1_opacity);
             daukf_opacity.KeyFrames.Add(k2_opacity);
@@ -108,11 +97,9 @@ namespace Yuri.PageView
             this.story.FillBehavior = FillBehavior.Stop;
             this.story.Completed += delegate
             {
-                this.isAnimating = false;
                 this.splashCounter++;
                 this.HandleSplashQueue();
             };
-            this.isAnimating = true;
             this.story.Begin();
         }
 
@@ -135,10 +122,20 @@ namespace Yuri.PageView
         private Storyboard story;
 
         /// <summary>
-        /// 是否正在动画
+        /// 闪屏信息向量
         /// </summary>
-        private bool isAnimating = false;
-        
+        private List<string> splashQueue;
+
+        /// <summary>
+        /// 当前闪屏次数
+        /// </summary>
+        private int splashCounter = 0;
+
+        /// <summary>
+        /// 两张闪屏开始的时间间隔
+        /// </summary>
+        private const int blackDelta = 1000;
+
         /// <summary>
         /// 渐变动画时长
         /// </summary>

@@ -760,8 +760,8 @@ namespace Yuri.PlatformCore
 #if NOTIME
 #else
             this.InitRuntime();
-            this.timer.Start();
-            CommonUtils.ConsoleLine("Context Update Dispatcher is begun", "Director", OutputStyle.Important);
+            //this.timer.Start();
+            //CommonUtils.ConsoleLine("Context Update Dispatcher is begun", "Director", OutputStyle.Important);
 #endif
         }
 

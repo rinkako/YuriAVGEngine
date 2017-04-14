@@ -16,6 +16,8 @@ namespace Yuri.PlatformCore.Graphic
         /// <summary>
         /// 初始化精灵对象，它只能被执行一次
         /// </summary>
+        /// <param name="resName">资源名称</param>
+        /// <param name="resType">资源类型</param>
         /// <param name="ms">材质的内存流</param>
         /// <param name="cutrect">材质切割矩形</param>
         public void Init(string resName, ResourceType resType, MemoryStream ms, Int32Rect? cutrect = null)
@@ -44,6 +46,8 @@ namespace Yuri.PlatformCore.Graphic
         /// <summary>
         /// 初始化精灵对象，它只能被执行一次
         /// </summary>
+        /// <param name="resName">资源名称</param>
+        /// <param name="resType">资源类型</param>
         /// <param name="uri">材质的路径</param>
         /// <param name="cutrect">材质切割矩形</param>
         public void Init(string resName, ResourceType resType, Uri uri, Int32Rect? cutrect = null)
@@ -296,46 +300,22 @@ namespace Yuri.PlatformCore.Graphic
         /// <summary>
         /// 获取源图片的宽度
         /// </summary>
-        public double ImageWidth
-        {
-            get
-            {
-                return this.SpriteBitmapImage.Width;
-            }
-        }
+        public double ImageWidth => this.SpriteBitmapImage.Width;
 
         /// <summary>
         /// 获取源图片的高度
         /// </summary>
-        public double ImageHeight
-        {
-            get
-            {
-                return this.SpriteBitmapImage.Height;
-            }
-        }
+        public double ImageHeight => this.SpriteBitmapImage.Height;
 
         /// <summary>
         /// 获取当前精灵是否被绑定到Image前端对象上
         /// </summary>
-        public bool IsDisplaying
-        {
-            get
-            {
-                return this.DisplayBinding != null;
-            }
-        }
+        public bool IsDisplaying => this.DisplayBinding != null;
 
         /// <summary>
         /// 获取精灵是否被缩放
         /// </summary>
-        public bool IsScaling
-        {
-            get
-            {
-                return this.Descriptor.ScaleX != 1 || this.Descriptor.ScaleY != 1;
-            }
-        }
+        public bool IsScaling => this.Descriptor.ScaleX != 1 || this.Descriptor.ScaleY != 1;
 
         /// <summary>
         /// 获取精灵的资源类型
