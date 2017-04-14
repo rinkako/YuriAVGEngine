@@ -1000,14 +1000,14 @@ namespace Yuri.PlatformCore
         /// <param name="opacity">不透明度</param>
         /// <param name="xscale">X缩放比</param>
         /// <param name="yscale">Y缩放比</param>
-        /// <param name="ro">图片角度</param>
+        /// <param name="ro">图片角度或深度</param>
         /// <param name="anchor">锚点</param>
         /// <param name="cut">纹理切割矩</param>
         private void Background(int id, string filename, double x, double y, double opacity, double xscale, double yscale, double ro, SpriteAnchorType anchor, Int32Rect cut)
         {
             if (ViewManager.Is3DStage)
             {
-                Director.ScrMana.AddBackground3D(filename, -8);
+                Director.ScrMana.AddBackground3D(filename, ro);
             }
             else
             {

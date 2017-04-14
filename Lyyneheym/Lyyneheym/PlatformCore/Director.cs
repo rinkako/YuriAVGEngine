@@ -714,7 +714,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 在游戏即将结束时释放所有资源
         /// </summary>
-        public void CollapseWorld()
+        public static void CollapseWorld()
         {
             var collaTimeStamp = DateTime.Now;
             CommonUtils.ConsoleLine("Yuri world began to collapse at " + collaTimeStamp.ToString(), "Director", OutputStyle.Important);

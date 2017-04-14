@@ -245,9 +245,9 @@ namespace Yuri.PlatformCore
                 return true;
             }
             // 没有封包数据再搜索开发目录
-
             string furi = IOUtils.JoinPath(SearchURI, DevURI, sourceName);
-            return File.Exists(IOUtils.ParseURItoURL(furi));
+            var url = IOUtils.ParseURItoURL(furi);
+            return File.Exists(url);
         }
 
         /// <summary>

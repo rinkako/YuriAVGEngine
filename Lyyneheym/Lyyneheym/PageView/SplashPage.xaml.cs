@@ -1,7 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
-using System.Threading;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
@@ -25,17 +24,47 @@ namespace Yuri.PageView
         }
 
         /// <summary>
-        /// 读取闪屏界面并轮流展示
+        /// 读取闪屏界面信息
         /// </summary>
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             this.Splash_Image_Box.Opacity = 0;
-            int splashCounter = 1;
+            int readCounter = 0;
             var resMana = ResourceManager.GetInstance();
-            var mscMana = Musician.GetInstance();
-            string curSplashName;
-            while (resMana.IsResourceExist(curSplashName = String.Format("Splash_{0}.png", splashCounter), ResourceType.Pictures))
+            if (this.splashQueue == null)
             {
+                this.splashQueue = new List<string>();
+                string curSplashName;
+                while (resMana.IsResourceExist(curSplashName = String.Format("Splash_{0}.png", readCounter),
+                    ResourceType.Pictures))
+                {
+                    this.splashQueue.Add(curSplashName);
+                    ++readCounter;
+                }
+            }
+            this.HandleSplashQueue();
+        }
+
+        /// <summary>
+        /// 闪屏信息向量
+        /// </summary>
+        private List<string> splashQueue;
+
+        /// <summary>
+        /// 当前闪屏次数
+        /// </summary>
+        private int splashCounter = 0;
+
+        /// <summary>
+        /// 处理闪屏队列
+        /// </summary>
+        private void HandleSplashQueue()
+        {
+            if (splashCounter < splashQueue.Count)
+            {
+                string curSplashName = String.Format("Splash_{0}.png", this.splashCounter);
+                var resMana = ResourceManager.GetInstance();
+                var mscMana = Musician.GetInstance();
                 string seSplashName;
                 if (resMana.IsResourceExist(seSplashName = String.Format("Splash_{0}.mp3", splashCounter), ResourceType.SE))
                 {
@@ -45,15 +74,14 @@ namespace Yuri.PageView
                 var sp = resMana.GetPicture(curSplashName, ResourceManager.FullImageRect);
                 this.Splash_Image_Box.Source = sp.SpriteBitmapImage;
                 this.SplashAnimation();
-                while (this.isAnimating)
-                {
-                    System.Windows.Forms.Application.DoEvents();
-                }
-                this.Splash_Image_Box.Source = null;
-                ++splashCounter;
             }
-            // 返回主界面
-            ViewManager.mWnd.GoToTitle();
+            else
+            {
+                // 返回主界面
+                this.splashCounter = 0;
+                this.Splash_Image_Box.Source = null;
+                ViewManager.mWnd.GoToMainStage();
+            }
         }
 
         /// <summary>
@@ -65,7 +93,7 @@ namespace Yuri.PageView
             this.story = new Storyboard();
             DoubleAnimationUsingKeyFrames daukf_opacity = new DoubleAnimationUsingKeyFrames();
             EasingDoubleKeyFrame k0_opacity = new EasingDoubleKeyFrame(0.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(0)));
-            EasingDoubleKeyFrame k1_opacity = new EasingDoubleKeyFrame(0.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(delta + 0)));
+            EasingDoubleKeyFrame k1_opacity = new EasingDoubleKeyFrame(0.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(delta)));
             EasingDoubleKeyFrame k2_opacity = new EasingDoubleKeyFrame(1.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(delta + AnimationTimeMS)));
             EasingDoubleKeyFrame k3_opacity = new EasingDoubleKeyFrame(1.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(delta + AnimationTimeMS + PendingTimeMS)));
             EasingDoubleKeyFrame k4_opacity = new EasingDoubleKeyFrame(0.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(delta + AnimationTimeMS * 2 + PendingTimeMS)));
@@ -78,15 +106,28 @@ namespace Yuri.PageView
             Storyboard.SetTargetProperty(daukf_opacity, new PropertyPath(OpacityProperty));
             this.story.Children.Add(daukf_opacity);
             this.story.FillBehavior = FillBehavior.Stop;
-            this.story.Completed += delegate { this.isAnimating = false; };
+            this.story.Completed += delegate
+            {
+                this.isAnimating = false;
+                this.splashCounter++;
+                this.HandleSplashQueue();
+            };
             this.isAnimating = true;
             this.story.Begin();
         }
 
+        /// <summary>
+        /// 事件：按下鼠标跳过动画
+        /// </summary>
         private void Page_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.story.SkipToFill();
         }
+
+        /// <summary>
+        /// 闪屏时退出标记
+        /// </summary>
+        public static bool LoadingExitFlag { get; set; } = false;
 
         /// <summary>
         /// Splash动画的故事板

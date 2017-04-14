@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using Yuri.PlatformCore;
 using Yuri.PageView;
+using Yuri.PlatformCore;
 using Yuri.PlatformCore.Graphic;
-using Yuri.Utils;
 
 namespace Yuri
 {
@@ -22,7 +21,12 @@ namespace Yuri
         /// Alt键正在被按下的标记
         /// </summary>
         private static bool altDown = false;
-        
+
+        /// <summary>
+        /// 是否初始化完毕
+        /// </summary>
+        private static bool initFlag = false;
+
         /// <summary>
         /// 构造器
         /// </summary>
@@ -47,22 +51,26 @@ namespace Yuri
         }
 
         /// <summary>
-        /// 强制跳转到标题画面
+        /// 强制跳转到主舞台
         /// </summary>
-        public void GoToTitle()
+        public void GoToMainStage()
         {
-            this.world = Director.GetInstance();
-            if (GlobalConfigContext.GAME_IS3D)
+            if (MainWindow.initFlag == false)
             {
-                this.world.SetStagePageReference(new Stage3D());
+                this.world = Director.GetInstance();
+                if (GlobalConfigContext.GAME_IS3D)
+                {
+                    this.world.SetStagePageReference(new Stage3D());
+                }
+                else
+                {
+                    this.world.SetStagePageReference(new Stage2D());
+                }
+                // 预注册保存和读取页面
+                ViewPageManager.RegisterPage("SavePage", new SLPage(isSave: true));
+                ViewPageManager.RegisterPage("LoadPage", new SLPage(isSave: false));
+                MainWindow.initFlag = true;
             }
-            else
-            {
-                this.world.SetStagePageReference(new Stage2D());
-            }
-            // 预注册保存和读取页面
-            ViewPageManager.RegisterPage("SavePage", new SLPage(isSave: true));
-            ViewPageManager.RegisterPage("LoadPage", new SLPage(isSave: false));
             this.mainFrame.Content = ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
         }
         
@@ -72,7 +80,8 @@ namespace Yuri
         /// </summary>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            this.world.CollapseWorld();
+            SplashPage.LoadingExitFlag = true;
+            Director.CollapseWorld();
         }
 
         /// <summary>

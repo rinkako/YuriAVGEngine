@@ -31,7 +31,7 @@ namespace YuriHalation.YuriForms
                 MessageBox.Show("请选择图像");
                 return;
             }
-            Halation.GetInstance().DashBg(this.radioButton1.Checked ? "0" : "1", this.textBox1.Text);
+            Halation.GetInstance().DashBg(this.radioButton1.Checked ? "0" : "1", this.textBox1.Text, this.textBox2.Text);
             this.Close();
         }
 

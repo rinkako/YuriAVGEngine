@@ -19,11 +19,13 @@ namespace Yuri.YuriHalation.Command
         /// <param name="parent">所属的可运行包装</param>
         /// <param name="id">背景层id</param>
         /// <param name="filename">资源文件名</param>
-        public BgCommand(int line, int indent, RunnablePackage parent, string id, string filename)
+        /// <param name="ro">3D世界深度</param>
+        public BgCommand(int line, int indent, RunnablePackage parent, string id, string filename, string ro)
             : base(line, indent, parent)
         {
             HalaAttrList hal = new HalaAttrList();
             hal.Add(new KeyValuePair<string, KeyValuePair<ArgType, string>>("id", new KeyValuePair<ArgType, string>(ArgType.Arg_id, id)));
+            hal.Add(new KeyValuePair<string, KeyValuePair<ArgType, string>>("ro", new KeyValuePair<ArgType, string>(ArgType.Arg_ro, ro)));
             hal.Add(new KeyValuePair<string, KeyValuePair<ArgType, string>>("filename", new KeyValuePair<ArgType, string>(ArgType.Arg_filename, filename)));
             base.Init(hal, ActionPackageType.act_bg);
         }

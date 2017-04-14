@@ -432,9 +432,9 @@ namespace Yuri
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
-        public void DashBg(string id, string filename)
+        public void DashBg(string id, string filename, string ro)
         {
-            IHalationCommand cmd = new BgCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, filename);
+            IHalationCommand cmd = new BgCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, filename, ro);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
