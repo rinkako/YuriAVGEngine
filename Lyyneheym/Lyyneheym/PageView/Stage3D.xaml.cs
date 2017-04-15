@@ -209,35 +209,24 @@ namespace Yuri.PageView
 
         private void Button_Click_11(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                //ScriptEngine engine = Python.CreateEngine();
-                //ScriptScope scope = engine.CreateScope();
-                Student stu = new Student { Name = "Wilber", Age = 28 };
-                //scope.SetVariable("stuObj", stu);
-                //ScriptSource script = engine.CreateScriptSourceFromFile(@"PrintStuInfo.py");
-                //var result = script.Execute(scope);
-                Dictionary<string, object> d = new Dictionary<string, object> {{"stuObj", stu}};
+            //try
+            //{
+            //    //ScriptEngine engine = Python.CreateEngine();
+            //    //ScriptScope scope = engine.CreateScope();
+            //    Student stu = new Student { Name = "Wilber", Age = 28 };
+            //    //scope.SetVariable("stuObj", stu);
+            //    //ScriptSource script = engine.CreateScriptSourceFromFile(@"PrintStuInfo.py");
+            //    //var result = script.Execute(scope);
+            //    Dictionary<string, object> d = new Dictionary<string, object> {{"stuObj", stu}};
 
-                YuririWorld.ExecuteFile(@"PrintStuInfo.py", d);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            //    YuririWorld.ExecuteFile(@"PrintStuInfo.py", d);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
             
         }
     }
-
-    public class Student
-    {
-        public int Age { get; set; }
-        public string Name { get; set; }
-        public override string ToString()
-        {
-            var t = string.Format("{0} is {1} years old", this.Name, this.Age);
-            MessageBox.Show(t);
-            return t;
-        }
-    }
+    
 }

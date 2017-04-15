@@ -54,6 +54,9 @@ namespace Yuri.PageView
             {
                 string curSplashName = this.splashQueue[this.splashCounter];
                 var resMana = ResourceManager.GetInstance();
+                var sp = resMana.GetPicture(curSplashName, ResourceManager.FullImageRect);
+                this.Splash_Image_Box.Source = sp.SpriteBitmapImage;
+                this.SplashAnimation();
                 var mscMana = Musician.GetInstance();
                 string seSplashName;
                 if (resMana.IsResourceExist(seSplashName = String.Format("Splash_{0}.mp3", splashCounter), ResourceType.SE))
@@ -61,9 +64,6 @@ namespace Yuri.PageView
                     var se = resMana.GetSE(seSplashName);
                     mscMana.PlaySE(se, GlobalConfigContext.GAME_SOUND_SEVOL);
                 }
-                var sp = resMana.GetPicture(curSplashName, ResourceManager.FullImageRect);
-                this.Splash_Image_Box.Source = sp.SpriteBitmapImage;
-                this.SplashAnimation();
             }
             else
             {
@@ -81,12 +81,10 @@ namespace Yuri.PageView
         {
             this.story = new Storyboard();
             DoubleAnimationUsingKeyFrames daukf_opacity = new DoubleAnimationUsingKeyFrames();
-            EasingDoubleKeyFrame k0_opacity = new EasingDoubleKeyFrame(0.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(0)));
             EasingDoubleKeyFrame k1_opacity = new EasingDoubleKeyFrame(0.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(blackDelta)));
             EasingDoubleKeyFrame k2_opacity = new EasingDoubleKeyFrame(1.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(blackDelta + AnimationTimeMS)));
             EasingDoubleKeyFrame k3_opacity = new EasingDoubleKeyFrame(1.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(blackDelta + AnimationTimeMS + PendingTimeMS)));
             EasingDoubleKeyFrame k4_opacity = new EasingDoubleKeyFrame(0.0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(blackDelta + AnimationTimeMS * 2 + PendingTimeMS)));
-            daukf_opacity.KeyFrames.Add(k0_opacity);
             daukf_opacity.KeyFrames.Add(k1_opacity);
             daukf_opacity.KeyFrames.Add(k2_opacity);
             daukf_opacity.KeyFrames.Add(k3_opacity);
@@ -134,7 +132,7 @@ namespace Yuri.PageView
         /// <summary>
         /// 两张闪屏开始的时间间隔
         /// </summary>
-        private const int blackDelta = 1000;
+        private const int blackDelta = 0;
 
         /// <summary>
         /// 渐变动画时长

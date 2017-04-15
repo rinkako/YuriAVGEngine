@@ -351,7 +351,7 @@ namespace Yuri.PageView
                     // 构造存档文件名（不需要后缀，UR的Save方法已经封装了）
                     var fname = String.Format("{0}{1}", GlobalConfigContext.GAME_SAVE_PREFIX, saveIdentity);
                     // 保存游戏信息
-                    this.core.GetMainRender().Save(fname);
+                    this.core.GetMainRender().ActualSave(fname);
                     // 更新页面的信息
                     this.saveList[this.lastPointed] = new FileInfo(GlobalConfigContext.GAME_SAVE_DIR + @"\" + fname + GlobalConfigContext.GAME_SAVE_POSTFIX);
                     this.slotButtonList[this.lastPointed].Content = String.Format("存档{0}：{1}/{2} {3}:{4}",
@@ -396,7 +396,7 @@ namespace Yuri.PageView
                 // 读取文件
                 try
                 {
-                    this.core.GetMainRender().Load(this.saveList[this.lastPointed].Name.Replace(GlobalConfigContext.GAME_SAVE_POSTFIX, String.Empty));
+                    this.core.GetMainRender().ActualLoad(this.saveList[this.lastPointed].Name.Replace(GlobalConfigContext.GAME_SAVE_POSTFIX, String.Empty));
                     // 返回主舞台
                     ViewPageManager.GoBack();
                 }

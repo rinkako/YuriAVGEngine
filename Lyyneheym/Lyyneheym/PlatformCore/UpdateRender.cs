@@ -7,6 +7,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
+using System.Windows.Navigation;
+using Yuri.PageView;
 using Yuri.PlatformCore.Audio;
 using Yuri.PlatformCore.Evaluator;
 using Yuri.PlatformCore.Graphic;
@@ -735,14 +737,10 @@ namespace Yuri.PlatformCore
                 case SActionType.act_title:
                     break;
                 case SActionType.act_save:
-                    this.Save(
-                        this.ParseString(action.ArgsDict["filename"], "autosave")
-                        );
+                    this.Save();
                     break;
                 case SActionType.act_load:
-                    this.Load(
-                        this.ParseString(action.ArgsDict["filename"], "autosave")
-                        );
+                    this.Load();
                     break;
                 case SActionType.act_notify:
                     this.Notify(
@@ -1336,10 +1334,30 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 演绎函数：保存游戏
+        /// 演绎函数：呼叫存档画面
+        /// </summary>
+        public void Save()
+        {
+            var renderCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
+            ViewManager.RenderFrameworkElementToJPEG(renderCanvas, GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
+            ((SLPage)ViewPageManager.RetrievePage("SavePage")).ReLoadFileInfo();
+            ViewPageManager.NavigateTo("SavePage");
+        }
+
+        /// <summary>
+        /// 演绎函数：呼叫读档画面
+        /// </summary>
+        public void Load()
+        {
+            ((SLPage)ViewPageManager.RetrievePage("LoadPage")).ReLoadFileInfo();
+            ViewPageManager.NavigateTo("LoadPage");
+        }
+
+        /// <summary>
+        /// 保存游戏到文件
         /// </summary>
         /// <param name="saveFileName">文件名</param>
-        public void Save(string saveFileName)
+        public void ActualSave(string saveFileName)
         {
             SpriteAnimation.SkipAllAnimation();
             if (this.pendingDialogQueue.Count > 0)
@@ -1353,10 +1371,10 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 演绎函数：载入游戏
+        /// 载入游戏到文件
         /// </summary>
         /// <param name="loadFileName">文件名</param>
-        public void Load(string loadFileName)
+        public void ActualLoad(string loadFileName)
         {
             SpriteAnimation.SkipAllAnimation();
             var rm = (RuntimeManager)IOUtils.Unserialization(GlobalConfigContext.GAME_SAVE_DIR + "\\" + loadFileName + GlobalConfigContext.GAME_SAVE_POSTFIX);

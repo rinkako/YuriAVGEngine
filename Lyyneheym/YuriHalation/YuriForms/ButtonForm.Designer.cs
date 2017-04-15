@@ -189,8 +189,8 @@
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
-            "点击后销毁",
-            "一直存在"});
+            "once",
+            "eternal"});
             this.comboBox1.Location = new System.Drawing.Point(228, 26);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(120, 20);
