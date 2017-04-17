@@ -139,7 +139,8 @@ namespace Yuri.PageView
                     var shotName = GlobalConfigContext.GAME_SAVE_DIR + @"\" + GlobalConfigContext.GAME_SAVE_SNAPSHOT_PREFIX +
                         saveList[pointId].Name.Substring(GlobalConfigContext.GAME_SAVE_PREFIX.Length).Replace(GlobalConfigContext.GAME_SAVE_POSTFIX,
                         GlobalConfigContext.GAME_SAVE_SNAPSHOT_POSTFIX);
-                    if (File.Exists(shotName))
+                    var fullShotName = IOUtils.ParseURItoURL(shotName);
+                    if (File.Exists(fullShotName))
                     {
                         var p = ResourceManager.GetInstance().GetSaveSnapshot(shotName);
                         this.SL_SnapshotImage.Source = p.SpriteBitmapImage;
@@ -152,10 +153,11 @@ namespace Yuri.PageView
                     var descName = GlobalConfigContext.GAME_SAVE_DIR + @"\" + GlobalConfigContext.GAME_SAVE_DESCRIPTOR_PREFIX +
                         saveList[pointId].Name.Substring(GlobalConfigContext.GAME_SAVE_PREFIX.Length).Replace(GlobalConfigContext.GAME_SAVE_POSTFIX,
                         GlobalConfigContext.GAME_SAVE_DESCRIPTOR_POSTFIX);
+                    var fullDescName = IOUtils.ParseURItoURL(descName);
                     var chapterStr = String.Empty;
-                    if (File.Exists(descName))
+                    if (File.Exists(fullDescName))
                     {
-                        FileStream fs = new FileStream(descName, FileMode.Open);
+                        FileStream fs = new FileStream(fullDescName, FileMode.Open);
                         StreamReader sr = new StreamReader(fs);
                         chapterStr = sr.ReadLine();
                         if (this.isSave)
@@ -228,7 +230,7 @@ namespace Yuri.PageView
                 this.slotButtonList[pointId].Background = Brushes.LightBlue;
                 lastPointed = pointId;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // empty
             }
@@ -338,7 +340,7 @@ namespace Yuri.PageView
                     catch (Exception ex)
                     {
                         CommonUtils.ConsoleLine("覆盖存档时，在移除过时文件过程出现异常" + Environment.NewLine + ex.ToString(),
-                        "SLPage", OutputStyle.Warning);
+                        "SLPage", OutputStyle.Error);
                     }
                 }
                 // 获得存档时间戳 
@@ -353,7 +355,7 @@ namespace Yuri.PageView
                     // 保存游戏信息
                     this.core.GetMainRender().ActualSave(fname);
                     // 更新页面的信息
-                    this.saveList[this.lastPointed] = new FileInfo(GlobalConfigContext.GAME_SAVE_DIR + @"\" + fname + GlobalConfigContext.GAME_SAVE_POSTFIX);
+                    this.saveList[this.lastPointed] = new FileInfo(IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + @"\" + fname + GlobalConfigContext.GAME_SAVE_POSTFIX));
                     this.slotButtonList[this.lastPointed].Content = String.Format("存档{0}：{1}/{2} {3}:{4}",
                         this.lastPointed + 1, timeItems[1], timeItems[2], timeItems[3], timeItems[4]);
                 }
@@ -366,16 +368,16 @@ namespace Yuri.PageView
                 try
                 {
                     // 保存截图文件
-                    if (File.Exists(GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg"))
+                    if (File.Exists(IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg")))
                     {
-                        File.Copy(GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg", String.Format("{0}\\{1}{2}{3}",
-                            GlobalConfigContext.GAME_SAVE_DIR, GlobalConfigContext.GAME_SAVE_SNAPSHOT_PREFIX,
-                            saveIdentity, GlobalConfigContext.GAME_SAVE_SNAPSHOT_POSTFIX));
+                        File.Copy(IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg"),
+                            IOUtils.ParseURItoURL(String.Format("{0}\\{1}{2}{3}", GlobalConfigContext.GAME_SAVE_DIR,
+                            GlobalConfigContext.GAME_SAVE_SNAPSHOT_PREFIX, saveIdentity, GlobalConfigContext.GAME_SAVE_SNAPSHOT_POSTFIX)));
                     }
                     // 保存描述子
                     var descFname = String.Format("{0}\\{1}{2}{3}", GlobalConfigContext.GAME_SAVE_DIR,
                         GlobalConfigContext.GAME_SAVE_DESCRIPTOR_PREFIX, saveIdentity, GlobalConfigContext.GAME_SAVE_DESCRIPTOR_POSTFIX);
-                    FileStream fs = new FileStream(descFname, FileMode.Create);
+                    FileStream fs = new FileStream(IOUtils.ParseURItoURL(descFname), FileMode.Create);
                     StreamWriter sw = new StreamWriter(fs);
                     sw.WriteLine(Director.RunMana.PerformingChapter.Trim());
                     sw.WriteLine(this.SL_Descriptor_TextBox.Text.Trim());

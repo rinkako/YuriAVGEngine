@@ -558,9 +558,6 @@ namespace Yuri.PlatformCore
             this.Symbols = SymbolTable.GetInstance();
             this.Screen = null;
             this.PlayingBGM = String.Empty;
-            //this.ParallelStack = new Stack<Dictionary<string, bool>>();
-            //this.ParallelDispatcherList = new List<DispatcherTimer>();
-            //this.ParallelVMList = new List<StackMachine>();
             this.ParallelExecutorStack = new Stack<List<ParallelExecutor>>();
         }
 
@@ -572,6 +569,26 @@ namespace Yuri.PlatformCore
             this.Reset();
         }
         
+        /// <summary>
+        /// 获取或设置并行执行器堆栈
+        /// </summary>
+        /// <remarks>在序列化RuntimeManager时务必保证该字段为null值</remarks>
+        public Stack<List<ParallelExecutor>> ParallelExecutorStack
+        {
+            get;
+            set;
+        }
+        
+        /// <summary>
+        /// 获取或设置并行堆栈的处理函数
+        /// </summary>
+        /// <remarks>在序列化RuntimeManager时务必保证该字段为null值</remarks>
+        public EventHandler ParallelHandler
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// 获取主调用堆栈
         /// </summary>
@@ -588,25 +605,6 @@ namespace Yuri.PlatformCore
         {
             get;
             private set;
-        }
-
-        /// <summary>
-        /// 获取或设置并行执行器堆栈
-        /// </summary>
-        public Stack<List<ParallelExecutor>> ParallelExecutorStack
-        {
-            get;
-            set;
-        }
-        
-        /// <summary>
-        /// 获取或设置并行堆栈的处理函数
-        /// </summary>
-        /// <remarks>在序列化RuntimeManager时务必保证该字段为null值</remarks>
-        public EventHandler ParallelHandler
-        {
-            get;
-            set;
         }
 
         /// <summary>

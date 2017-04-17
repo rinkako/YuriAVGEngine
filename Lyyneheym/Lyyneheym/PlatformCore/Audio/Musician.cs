@@ -67,6 +67,7 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public void StopAndReleaseBGM()
         {
+            Director.RunMana.PlayingBGM = String.Empty;
             if (this.IsBgmLoaded)
             {
                 this.audioEngine.StopAndRelease(this.BgmHandleContainer.Value);

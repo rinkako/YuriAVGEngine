@@ -1151,8 +1151,8 @@ namespace Yuri.PlatformCore.Graphic
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine(String.Format("Saving Snapshot Failed. path: {0} with CLR Error: {1}", filename, ex.ToString())
-                    , "ViewManager", OutputStyle.Error);
+                CommonUtils.ConsoleLine(String.Format("Saving Snapshot Failed. path: {0} with CLR Error: {1}", filename, ex),
+                    "ViewManager", OutputStyle.Error);
             }
         }
 

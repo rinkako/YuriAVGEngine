@@ -233,16 +233,16 @@ namespace Yuri.PlatformCore
             if (UpdateRender.KS_KEY_Dict[Key.S] == KeyStates.Down && ViewPageManager.IsAtMainStage())
             {
                 Canvas mainCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
-                ViewManager.RenderFrameworkElementToJPEG(mainCanvas, GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
-                PageView.SLPage p = (PageView.SLPage)ViewPageManager.RetrievePage("SavePage");
+                ViewManager.RenderFrameworkElementToJPEG(mainCanvas, IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg"));
+                SLPage p = (SLPage)ViewPageManager.RetrievePage("SavePage");
                 p.ReLoadFileInfo();
                 ViewPageManager.NavigateTo("SavePage");
             }
             if (UpdateRender.KS_KEY_Dict[Key.L] == KeyStates.Down && ViewPageManager.IsAtMainStage())
             {
                 Canvas mainCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
-                ViewManager.RenderFrameworkElementToJPEG(mainCanvas, GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
-                PageView.SLPage p = (PageView.SLPage)ViewPageManager.RetrievePage("LoadPage");
+                ViewManager.RenderFrameworkElementToJPEG(mainCanvas, IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg"));
+                SLPage p = (SLPage)ViewPageManager.RetrievePage("LoadPage");
                 p.ReLoadFileInfo();
                 ViewPageManager.NavigateTo("LoadPage");
             }
@@ -1271,7 +1271,6 @@ namespace Yuri.PlatformCore
         private void Stopbgm()
         {
             this.musician.StopAndReleaseBGM();
-            Director.RunMana.PlayingBGM = String.Empty;
         }
 
         /// <summary>
@@ -1369,7 +1368,7 @@ namespace Yuri.PlatformCore
             }
             var sp = Director.RunMana.PreviewSave();
             PersistenceContext.SaveToSteadyMemory();
-            IOUtils.Serialization(Director.RunMana, GlobalConfigContext.GAME_SAVE_DIR + "\\" + saveFileName + GlobalConfigContext.GAME_SAVE_POSTFIX);
+            IOUtils.Serialization(Director.RunMana, IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\" + saveFileName + GlobalConfigContext.GAME_SAVE_POSTFIX));
             Director.RunMana.FinishedSave(sp);
         }
 
@@ -1380,7 +1379,7 @@ namespace Yuri.PlatformCore
         public void ActualLoad(string loadFileName)
         {
             SpriteAnimation.SkipAllAnimation();
-            var rm = (RuntimeManager)IOUtils.Unserialization(GlobalConfigContext.GAME_SAVE_DIR + "\\" + loadFileName + GlobalConfigContext.GAME_SAVE_POSTFIX);
+            var rm = (RuntimeManager)IOUtils.Unserialization(IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\" + loadFileName + GlobalConfigContext.GAME_SAVE_POSTFIX));
             Director.ResumeFromSaveData(rm);
         }
 
