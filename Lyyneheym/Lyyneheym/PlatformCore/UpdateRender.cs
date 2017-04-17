@@ -1338,6 +1338,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void Save()
         {
+            Director.PauseUpdateContext();
             var renderCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
             ViewManager.RenderFrameworkElementToJPEG(renderCanvas, GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
             ((SLPage)ViewPageManager.RetrievePage("SavePage")).ReLoadFileInfo();
@@ -1349,6 +1350,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void Load()
         {
+            Director.PauseUpdateContext();
             ((SLPage)ViewPageManager.RetrievePage("LoadPage")).ReLoadFileInfo();
             ViewPageManager.NavigateTo("LoadPage");
         }

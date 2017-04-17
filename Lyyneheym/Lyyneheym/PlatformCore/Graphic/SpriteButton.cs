@@ -213,7 +213,7 @@ namespace Yuri.PlatformCore.Graphic
                 if (this.DisplayBinding != null && (this.ImageMouseOver != null || this.ImageMouseOn != null))
                 {
                     BitmapImage myBitmapImage = this.ImageNormal.SpriteBitmapImage;
-                    this.ImageNormal.DisplayBinding = this.DisplayBinding;
+                    //this.ImageNormal.DisplayBinding = this.DisplayBinding;
                     this.DisplayBinding.Width = myBitmapImage.PixelWidth;
                     this.DisplayBinding.Height = myBitmapImage.PixelHeight;
                     this.DisplayBinding.Source = myBitmapImage;
@@ -234,9 +234,9 @@ namespace Yuri.PlatformCore.Graphic
                 if (this.DisplayBinding != null && this.ImageMouseOver != null)
                 {
                     BitmapImage myBitmapImage = this.ImageMouseOver.SpriteBitmapImage;
-                    this.ImageNormal.DisplayBinding = null;
-                    this.ImageMouseOn.DisplayBinding = null;
-                    this.ImageMouseOver.DisplayBinding = this.DisplayBinding;
+                    //this.ImageNormal.DisplayBinding = null;
+                    //this.ImageMouseOn.DisplayBinding = null;
+                    //this.ImageMouseOver.DisplayBinding = this.DisplayBinding;
                     this.DisplayBinding.Width = myBitmapImage.PixelWidth;
                     this.DisplayBinding.Height = myBitmapImage.PixelHeight;
                     this.DisplayBinding.Source = myBitmapImage;
@@ -258,9 +258,9 @@ namespace Yuri.PlatformCore.Graphic
                 if (this.DisplayBinding != null && this.ImageMouseOn != null)
                 {
                     BitmapImage myBitmapImage = this.ImageMouseOn.SpriteBitmapImage;
-                    this.ImageNormal.DisplayBinding = null;
-                    this.ImageMouseOn.DisplayBinding = this.DisplayBinding;
-                    this.ImageMouseOver.DisplayBinding = null;
+                    //this.ImageNormal.DisplayBinding = null;
+                    //this.ImageMouseOn.DisplayBinding = this.DisplayBinding;
+                    //this.ImageMouseOver.DisplayBinding = null;
                     this.DisplayBinding.Width = myBitmapImage.PixelWidth;
                     this.DisplayBinding.Height = myBitmapImage.PixelHeight;
                     this.DisplayBinding.Source = myBitmapImage;
@@ -285,9 +285,9 @@ namespace Yuri.PlatformCore.Graphic
                     if (this.DisplayBinding != null && this.IsMouseOver && this.ImageMouseOver != null)
                     {
                         BitmapImage myBitmapImage2 = this.ImageMouseOver.SpriteBitmapImage;
-                        this.ImageNormal.DisplayBinding = null;
-                        this.ImageMouseOn.DisplayBinding = null;
-                        this.ImageMouseOver.DisplayBinding = this.DisplayBinding;
+                        //this.ImageNormal.DisplayBinding = null;
+                        //this.ImageMouseOn.DisplayBinding = null;
+                        //this.ImageMouseOver.DisplayBinding = this.DisplayBinding;
                         this.DisplayBinding.Width = myBitmapImage2.PixelWidth;
                         this.DisplayBinding.Height = myBitmapImage2.PixelHeight;
                         this.DisplayBinding.Source = myBitmapImage2;
@@ -302,9 +302,9 @@ namespace Yuri.PlatformCore.Graphic
                         return;
                     }
                     BitmapImage myBitmapImage = this.ImageNormal.SpriteBitmapImage;
-                    this.ImageNormal.DisplayBinding = this.DisplayBinding;
-                    this.ImageMouseOn.DisplayBinding = null;
-                    this.ImageMouseOver.DisplayBinding = null;
+                    //this.ImageNormal.DisplayBinding = this.DisplayBinding;
+                    //this.ImageMouseOn.DisplayBinding = null;
+                    //this.ImageMouseOver.DisplayBinding = null;
                     this.DisplayBinding.Width = myBitmapImage.PixelWidth;
                     this.DisplayBinding.Height = myBitmapImage.PixelHeight;
                     this.DisplayBinding.Source = myBitmapImage;

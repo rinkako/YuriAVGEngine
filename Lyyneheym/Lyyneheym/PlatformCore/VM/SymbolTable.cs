@@ -28,7 +28,7 @@ namespace Yuri.PlatformCore.VM
         /// <para>使用一个变量作为右值</para>
         /// <para>如果这个变量从未使用过，将抛出错误</para>
         /// </summary>
-        /// <param name="sceneObject">场景实例/param>
+        /// <param name="sceneObject">场景实例</param>
         /// <param name="varName">变量名</param>
         /// <returns>变量在运行时环境的引用</returns>
         public object Fetch(Scene sceneObject, string varName)
