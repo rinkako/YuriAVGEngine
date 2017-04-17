@@ -269,7 +269,7 @@ namespace Yuri.PageView
                     var descName = GlobalConfigContext.GAME_SAVE_DIR + @"\" + GlobalConfigContext.GAME_SAVE_DESCRIPTOR_PREFIX +
                         saveList[this.lastPointed].Name.Substring(GlobalConfigContext.GAME_SAVE_PREFIX.Length).Replace(GlobalConfigContext.GAME_SAVE_POSTFIX,
                         GlobalConfigContext.GAME_SAVE_DESCRIPTOR_POSTFIX);
-                    File.Delete(Utils.IOUtils.ParseURItoURL(descName));
+                    File.Delete(IOUtils.ParseURItoURL(descName));
                     // 处理截图
                     //var shotName = GlobalDataContainer.GAME_SAVE_DIR + @"\" + GlobalDataContainer.GAME_SAVE_SNAPSHOT_PREFIX +
                     //    saveList[this.lastPointed].Name.Substring(GlobalDataContainer.GAME_SAVE_PREFIX.Length).Replace(GlobalDataContainer.GAME_SAVE_POSTFIX,
@@ -284,7 +284,7 @@ namespace Yuri.PageView
                 catch (Exception ex)
                 {
                     var exStr = "在删除文件时发生了异常：" + ex.ToString();
-                    Utils.CommonUtils.ConsoleLine(exStr, "SLPage", Utils.OutputStyle.Warning);
+                    CommonUtils.ConsoleLine(exStr, "SLPage", OutputStyle.Warning);
                     MessageBox.Show(exStr);
                 }
             }

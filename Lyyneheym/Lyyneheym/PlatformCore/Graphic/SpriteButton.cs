@@ -95,13 +95,13 @@ namespace Yuri.PlatformCore.Graphic
         {
             get
             {
-                return this.DisplayBinding == null ? 0 : Canvas.GetZIndex(this.DisplayBinding);
+                return this.DisplayBinding == null ? 0 : Panel.GetZIndex(this.DisplayBinding);
             }
             set
             {
                 if (this.DisplayBinding != null)
                 {
-                    Canvas.SetZIndex(this.DisplayBinding, value);
+                    Panel.SetZIndex(this.DisplayBinding, value);
                 }
             }
         }
@@ -305,9 +305,12 @@ namespace Yuri.PlatformCore.Graphic
                     //this.ImageNormal.DisplayBinding = this.DisplayBinding;
                     //this.ImageMouseOn.DisplayBinding = null;
                     //this.ImageMouseOver.DisplayBinding = null;
-                    this.DisplayBinding.Width = myBitmapImage.PixelWidth;
-                    this.DisplayBinding.Height = myBitmapImage.PixelHeight;
-                    this.DisplayBinding.Source = myBitmapImage;
+                    if (this.DisplayBinding != null)
+                    {
+                        this.DisplayBinding.Width = myBitmapImage.PixelWidth;
+                        this.DisplayBinding.Height = myBitmapImage.PixelHeight;
+                        this.DisplayBinding.Source = myBitmapImage;
+                    }
                     // 向运行时环境提交中断
                     Director.GetInstance().SubmitInterrupt(this.Ntr);
                     // 移除按钮

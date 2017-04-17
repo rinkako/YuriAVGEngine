@@ -111,6 +111,10 @@ namespace Yuri.PlatformCore.Graphic
                         "ViewPageManager", OutputStyle.Error);
                     Director.GetInstance().GetMainRender().Shutdown();
                 }
+                if (ViewPageManager.CurrentPage is PageView.Stage3D || ViewPageManager.CurrentPage is PageView.Stage2D)
+                {
+                    Director.ResumeUpdateContext();
+                }
             }
             catch (Exception ex)
             {

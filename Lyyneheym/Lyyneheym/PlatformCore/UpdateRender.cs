@@ -1271,6 +1271,7 @@ namespace Yuri.PlatformCore
         private void Stopbgm()
         {
             this.musician.StopAndReleaseBGM();
+            Director.RunMana.PlayingBGM = String.Empty;
         }
 
         /// <summary>

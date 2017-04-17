@@ -20,7 +20,7 @@ namespace Yuri.PlatformCore
         public static void SteadyForward(bool fromWheel, SceneAction saPtr, string playingBGM)
         {
             // 回滚后返回，移栈并演绎
-            if (fromWheel == true && RollbackManager.IsRollingBack)
+            if (fromWheel && RollbackManager.IsRollingBack)
             {
                 // 取上一状态
                 var recentStep = RollbackManager.backwardStack.Last();
