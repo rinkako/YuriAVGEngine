@@ -50,7 +50,7 @@ namespace Yuri.PlatformCore.VM
                 ScriptName = sc.Scenario,
                 PC = 0,
                 IP = offset ?? sc.Ctor,
-                IR = sc.Ctor.NodeName,
+                IR = sc.Ctor?.NodeName,
                 Argv = null,
                 BindingSceneName = sc.Scenario,
                 BindingFunctionName = null,
@@ -223,25 +223,12 @@ namespace Yuri.PlatformCore.VM
         /// 返回调用栈中的项目计数
         /// </summary>
         /// <returns>调用栈计数</returns>
-        public int Count()
-        {
-            return this.coreStack.Count;
-        }
+        public int Count() => this.coreStack.Count;
 
         /// <summary>
         /// 栈顶指针
         /// </summary>
-        public StackMachineFrame ESP
-        {
-            get
-            {
-                if (this.coreStack.Count > 0)
-                {
-                    return this.coreStack.Peek();
-                }
-                return null;
-            }
-        }
+        public StackMachineFrame ESP => this.coreStack.Count > 0 ? this.coreStack.Peek() : null;
 
         /// <summary>
         /// 中断或等待前指针
@@ -255,19 +242,20 @@ namespace Yuri.PlatformCore.VM
                 {
                     return this.ebp;
                 }
-                Stack<StackMachineFrame> ebpSerachStack = new Stack<StackMachineFrame>();
-                StackMachineFrame xebp = this.ESP;
-                while (xebp.State != StackMachineState.Interpreting && xebp.State != StackMachineState.FunctionCalling)
-                {
-                    ebpSerachStack.Push(this.coreStack.Pop());
-                    xebp = this.coreStack.Peek();
-                }
-                this.ebp = xebp;
-                while (ebpSerachStack.Count > 0)
-                {
-                    this.coreStack.Push(ebpSerachStack.Pop());
-                }
-                return this.ebp;
+                return this.ebp = this.coreStack.First(xp => xp.State == StackMachineState.Interpreting || xp.State == StackMachineState.FunctionCalling);
+                //Stack<StackMachineFrame> ebpSerachStack = new Stack<StackMachineFrame>();
+                //StackMachineFrame xebp = this.ESP;
+                //while (xebp.State != StackMachineState.Interpreting && xebp.State != StackMachineState.FunctionCalling)
+                //{
+                //    ebpSerachStack.Push(this.coreStack.Pop());
+                //    xebp = this.coreStack.Peek();
+                //}
+                //this.ebp = xebp;
+                //while (ebpSerachStack.Count > 0)
+                //{
+                //    this.coreStack.Push(ebpSerachStack.Pop());
+                //}
+                //return this.ebp;
             }
             private set
             {
@@ -287,13 +275,7 @@ namespace Yuri.PlatformCore.VM
         /// <summary>
         /// 当前jump指令是否有效
         /// </summary>
-        public bool IsAbleJMP
-        {
-            get
-            {
-                return this.ESP.State != StackMachineState.FunctionCalling;
-            }
-        }
+        public bool IsAbleJMP => this.ESP.State != StackMachineState.FunctionCalling;
 
         /// <summary>
         /// 该堆栈的名字
