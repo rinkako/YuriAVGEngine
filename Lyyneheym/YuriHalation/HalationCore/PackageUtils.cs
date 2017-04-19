@@ -36,21 +36,18 @@ namespace Yuri.YuriHalation.HalationCore
                 int fileEncounter = fileList.Count;
                 synWriter.WriteLine(String.Format("___SlyviaLyyneheym@{0}@{1}@{2}", fileEncounter, pak, sign));
                 // 打包文件
-                FileStream fs;
-                BinaryReader fbr;
                 long accCounter = 0;
                 //保存每张Image为byte[]
                 for (int i = 0; i < fileEncounter; i++)
                 {
-                    fs = new FileStream(fileList[i], FileMode.Open);
-                    fbr = new BinaryReader(fs);
+                    var fs = new FileStream(fileList[i], FileMode.Open);
+                    var fbr = new BinaryReader(fs);
                     long fcount = 0;
                     while (fs.Position != fs.Length)
                     {
                         pakBw.Write(fbr.ReadByte());
                         fcount++;
                     }
-
                     string[] nameSplitItem = fileList[i].Split('\\');
                     synWriter.WriteLine(String.Format("{0}:{1}:{2}", nameSplitItem[nameSplitItem.Length - 1], accCounter, fcount));
                     accCounter += fcount;
@@ -113,16 +110,6 @@ namespace Yuri.YuriHalation.HalationCore
                 {
                     extBr.Write(pakBr.ReadByte());
                 }
-                //pakFs.Seek(filePointer, SeekOrigin.Begin);
-                //byte[] myData = new byte[fileSize];
-                //for (int t = 0; t < fileSize; t++)
-                //{
-                //    myData[t] = pakBr.ReadByte();
-                //}
-                //for (int t = 0; t < fileSize; t++)
-                //{
-                //    extBr.Write(myData[t]);
-                //}
                 pakBr.Close();
                 pakFs.Close();
                 extBr.Close();

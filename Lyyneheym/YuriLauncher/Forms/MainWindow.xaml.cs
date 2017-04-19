@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -25,9 +26,36 @@ namespace Yuri.YuriLauncher.Forms
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        /// <summary>
+        /// 后台配置信息
+        /// </summary>
+        private readonly LauncherConfigPackage cp = new LauncherConfigPackage();
+
+        /// <summary>
+        /// 构造器
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
+            // 加载原始设置数据
+            try
+            {
+                if (File.Exists(IOUtils.ParseURItoURL("YuriConfig.dat")))
+                {
+                    this.cp.ReadConfigData();
+                    this.UpdateViewContext();
+                }
+                else
+                {
+                    System.Windows.Forms.MessageBox.Show(@"缺失配置文件，无法使用Launcher");
+                    Environment.Exit(0);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show(@"加载配置失败 " + Environment.NewLine + ex);
+                Environment.Exit(0);
+            }
         }
 
         /// <summary>
@@ -55,10 +83,6 @@ namespace Yuri.YuriLauncher.Forms
                 discreteStringKeyFrame.Value = tmp;
                 stringAnimationUsingKeyFrames.KeyFrames.Add(discreteStringKeyFrame);
             }
-            var waitFrame = new DiscreteStringKeyFrame
-            {
-                KeyTime = TimeSpan.FromMilliseconds(ctr * wordTimeSpan + 2000)
-            };
             Storyboard.SetTarget(stringAnimationUsingKeyFrames, msglayBinding);
             Storyboard.SetTargetProperty(stringAnimationUsingKeyFrames, new PropertyPath(TextBlock.TextProperty));
             MsgLayerTypingStory.Children.Add(stringAnimationUsingKeyFrames);
@@ -300,6 +324,248 @@ namespace Yuri.YuriLauncher.Forms
         {
             RightsForm rf = new RightsForm();
             rf.ShowDialog();
+        }
+
+        /// <summary>
+        /// 按钮：开始游戏
+        /// </summary>
+        private void button_System_Launch_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        /// <summary>
+        /// 根据设置文件更新前端信息
+        /// </summary>
+        private void UpdateViewContext()
+        {
+            // 画面模式
+            this.radioButton_Screen_Resolution_1.IsChecked = false;
+            this.radioButton_Screen_Resolution_2.IsChecked = false;
+            this.radioButton_Screen_Resolution_3.IsChecked = false;
+            this.radioButton_Screen_Resolution_4.IsChecked = false;
+            if (this.cp["GameViewportWidth"] == "1920")
+            {
+                this.radioButton_Screen_Resolution_1.IsChecked = true;
+            }
+            else if (this.cp["GameViewportWidth"] == "1600")
+            {
+                this.radioButton_Screen_Resolution_2.IsChecked = true;
+            }
+            else if (this.cp["GameViewportWidth"] == "1024")
+            {
+                this.radioButton_Screen_Resolution_4.IsChecked = true;
+            }
+            else
+            {
+                this.radioButton_Screen_Resolution_3.IsChecked = true;
+            }
+            // 屏显模式
+            this.radioButton_Screen_Window_1.IsChecked = false;
+            this.radioButton_Screen_Window_2.IsChecked = false;
+            if (this.cp["GameFullScreen"] == "True")
+            {
+                this.radioButton_Screen_Window_1.IsChecked = true;
+            }
+            else
+            {
+                this.radioButton_Screen_Window_2.IsChecked = true;
+            }
+            // 动画特效
+            this.radioButton_Screen_Animation_1.IsChecked = false;
+            this.radioButton_Screen_Animation_2.IsChecked = false;
+            this.radioButton_Screen_Animation_3.IsChecked = false;
+            if (this.cp["GamePerformance"] == "2")
+            {
+                radioButton_Screen_Animation_3.IsChecked = true;
+            }
+            else if (this.cp["GamePerformance"] == "1")
+            {
+                radioButton_Screen_Animation_2.IsChecked = true;
+            }
+            else
+            {
+                radioButton_Screen_Animation_1.IsChecked = true;
+            }
+            // 场景镜头
+            this.radioButton_Screen_SCamera_1.IsChecked = false;
+            this.radioButton_Screen_SCamera_2.IsChecked = false;
+            if (this.cp["GameEnableSCamera"] == "False")
+            {
+                this.radioButton_Screen_SCamera_2.IsChecked = true;
+            }
+            else
+            {
+                this.radioButton_Screen_SCamera_1.IsChecked = true;
+            }
+            // 打字动画
+            this.radioButton_Screen_Typing_1.IsChecked = false;
+            this.radioButton_Screen_Typing_2.IsChecked = false;
+            if (this.cp["GameMsgLayerTypeSpeed"] == "0")
+            {
+                this.radioButton_Screen_Typing_2.IsChecked = true;
+                this.slider_Screen_Typing.Value = 0;
+            }
+            else
+            {
+                this.radioButton_Screen_Typing_1.IsChecked = true;
+                this.slider_Screen_Typing.Value = Convert.ToInt32(this.cp["GameMsgLayerTypeSpeed"]);
+            }
+            // 字体
+            try
+            {
+                this.textblock_Screen_Typing.FontFamily = new System.Windows.Media.FontFamily(this.cp["GameMsgLayerFontName"]);
+            }
+            catch (Exception)
+            {
+                this.textblock_Screen_Typing.FontFamily = new System.Windows.Media.FontFamily("黑体");
+            }
+            // 音效
+            this.slider_Sound_BGM.Value = Math.Round(Convert.ToInt32(this.cp["GameMusicBGMVol"]) / 10.0);
+            this.slider_Sound_BGS.Value = Math.Round(Convert.ToInt32(this.cp["GameMusicBGSVol"]) / 10.0);
+            this.slider_Sound_SE.Value = Math.Round(Convert.ToInt32(this.cp["GameMusicSEVol"]) / 10.0);
+            this.slider_Sound_Vocal.Value = Math.Round(Convert.ToInt32(this.cp["GameMusicVocalVol"]) / 10.0);
+            toggleSwitch_Sound_Mute.IsChecked = this.cp["GameMute"] == "True";
+            // 鼠标右键
+            this.radioButton_Rclick_1.IsChecked = this.cp["GameRClickMode"] == "0";
+            // 鼠标滚轮
+            this.radioButton_RollingBack_1.IsChecked = this.cp["GameScrollingMode"] == "0";
+            // 自动移动指针
+            this.radioButton_Quickmove_1.IsChecked = this.cp["GameAutoPointer"] == "True";
+        }
+
+        /// <summary>
+        /// 更新后台的配置信息
+        /// </summary>
+        private void UpdateConfigContext()
+        {
+            // 画面模式
+            if (this.radioButton_Screen_Resolution_1.IsChecked == true)
+            {
+                this.cp["GameViewportWidth"] = "1920";
+                this.cp["GameViewportHeight"] = "1080";
+            }
+            else if (this.radioButton_Screen_Resolution_2.IsChecked == true)
+            {
+                this.cp["GameViewportWidth"] = "1600";
+                this.cp["GameViewportHeight"] = "900";
+            }
+            else if (this.radioButton_Screen_Resolution_3.IsChecked == true)
+            {
+                this.cp["GameViewportWidth"] = "1024";
+                this.cp["GameViewportHeight"] = "576";
+            }
+            else
+            {
+                this.cp["GameViewportWidth"] = "1280";
+                this.cp["GameViewportHeight"] = "720";
+            }
+            // 屏显模式
+            if (radioButton_Screen_Window_1.IsChecked == true)
+            {
+                this.cp["GameFullScreen"] = "True";
+            }
+            else
+            {
+                this.cp["GameFullScreen"] = "False";
+            }
+            // 动画特效
+            if (radioButton_Screen_Animation_3.IsChecked == true)
+            {
+                this.cp["GamePerformance"] = "2";
+            }
+            else if (radioButton_Screen_Animation_2.IsChecked == true)
+            {
+                this.cp["GamePerformance"] = "1";
+            }
+            else
+            {
+                this.cp["GamePerformance"] = "0";
+            }
+            // 场景镜头
+            if (radioButton_Screen_SCamera_2.IsChecked == true)
+            {
+                this.cp["GameEnableSCamera"] = "False";
+            }
+            else
+            {
+                this.cp["GameEnableSCamera"] = "True";
+            }
+            // 打字动画
+            if (radioButton_Screen_Typing_2.IsChecked == true)
+            {
+                this.cp["GameMsgLayerTypeSpeed"] = this.slider_Screen_Typing.Value.ToString("0");
+            }
+            else
+            {
+                this.cp["GameMsgLayerTypeSpeed"] = "0";
+            }
+            // 字体
+            try
+            {
+                this.cp["GameMsgLayerFontName"] = textblock_Screen_Typing.FontFamily.FamilyNames.First().ToString();
+            }
+            catch (Exception)
+            {
+                this.cp["GameMsgLayerFontName"] = "思源宋体";
+            }
+            // 音效
+            this.cp["GameMusicBGMVol"] = (this.slider_Sound_BGM.Value * 10).ToString("0");
+            this.cp["GameMusicBGSVol"] = (this.slider_Sound_BGS.Value * 10).ToString("0");
+            this.cp["GameMusicSEVol"] = (this.slider_Sound_SE.Value * 10).ToString("0");
+            this.cp["GameMusicVocalVol"] = (this.slider_Sound_Vocal.Value * 10).ToString("0");
+            this.cp["GameMute"] = toggleSwitch_Sound_Mute.IsChecked == true ? "True" : "False";
+            // 鼠标右键
+            if (this.radioButton_Rclick_1.IsChecked == true)
+            {
+                this.cp["GameRClickMode"] = "0";
+            }
+            else
+            {
+                this.cp["GameRClickMode"] = "1";
+            }
+            // 鼠标滚轮
+            if (this.radioButton_RollingBack_1.IsChecked == true)
+            {
+                this.cp["GameScrollingMode"] = "0";
+            }
+            else
+            {
+                this.cp["GameScrollingMode"] = "1";
+            }
+            // 自动移动指针
+            if (this.radioButton_Quickmove_1.IsChecked == true)
+            {
+                this.cp["GameAutoPointer"] = "True";
+            }
+            else
+            {
+                this.cp["GameAutoPointer"] = "False";
+            }
+        }
+
+        /// <summary>
+        /// 保存设置
+        /// </summary>
+        private void SaveConfigContext()
+        {
+            try
+            {
+                this.UpdateConfigContext();
+                this.cp.WriteSteady();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show(@"保存配置失败" + Environment.NewLine + ex);
+            }
+        }
+
+        /// <summary>
+        /// 事件：关闭窗体
+        /// </summary>
+        private void MetroWindow_Closed(object sender, EventArgs e)
+        {
+            this.SaveConfigContext();
         }
     }
 }

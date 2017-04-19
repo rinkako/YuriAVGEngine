@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using Transitionals;
 using Transitionals.Controls;
-using Yuri.PageView;
-using Yuri.PlatformCore.Graphic3D;
-using Yuri.PlatformCore.VM;
 using Yuri.Utils;
+using Yuri.PageView;
+using Yuri.PlatformCore.VM;
+using Yuri.PlatformCore.Graphic3D;
 
 namespace Yuri.PlatformCore.Graphic
 {
@@ -218,8 +219,6 @@ namespace Yuri.PlatformCore.Graphic
                         }
                     }
                     return;
-                default:
-                    break;
             }
             for (int bi = 0; bi < this.buttonLayerVec.Count; bi++)
             {
@@ -282,7 +281,6 @@ namespace Yuri.PlatformCore.Graphic
                         removeOne = this.backgroundSpriteVec[id];
                         this.backgroundSpriteVec[id] = null;
                         this.RemoveSprite(ResourceType.Background, removeOne);
-                        break;
                     }
                     else
                     {
@@ -351,8 +349,8 @@ namespace Yuri.PlatformCore.Graphic
             Type transType = this.transitionTypes[0];
             foreach (var t in this.transitionTypes)
             {
-                string[] nameItem = t.ToString().Split('.');
-                if (nameItem[nameItem.Length - 1].ToLower() == transTypeName.ToLower())
+                var nameItem = t.ToString().Split('.');
+                if (String.Equals(nameItem[nameItem.Length - 1], transTypeName, StringComparison.CurrentCultureIgnoreCase))
                 {
                     transType = t;
                     break;
@@ -360,12 +358,11 @@ namespace Yuri.PlatformCore.Graphic
             }
             Transition transition = (Transition)Activator.CreateInstance(transType);
             // 处理真实的Backlay动作
-            if (this.backgroundSpriteVec[(int)BackgroundPage.Back] != null &&
-                this.backgroundSpriteVec[(int)BackgroundPage.Back].DisplayBinding != null)
+            if (backgroundSpriteVec[(int)BackgroundPage.Back]?.DisplayBinding != null)
             {
                 this.backgroundSpriteVec[(int)BackgroundPage.Back].DisplayBinding.Visibility = Visibility.Visible;
             }
-            CommonUtils.Swap<YuriSprite>(this.backgroundSpriteVec, (int)BackgroundPage.Fore, (int)BackgroundPage.Back);
+            CommonUtils.Swap(this.backgroundSpriteVec, (int)BackgroundPage.Fore, (int)BackgroundPage.Back);
             if (this.backgroundSpriteVec[(int)BackgroundPage.Fore] != null)
             {
                 this.backgroundSpriteVec[(int)BackgroundPage.Fore].DisplayZ = (int)BackgroundPage.Fore + GlobalConfigContext.GAME_Z_BACKGROUND;
@@ -377,13 +374,12 @@ namespace Yuri.PlatformCore.Graphic
             // 交换前景和背景
             Director.ScrMana.Backlay();
             View2D.TransitionDS.ObjectInstance = transition;
-            var viewBinder = this.backgroundSpriteVec[(int)BackgroundPage.Fore] == null ?
-                null : this.backgroundSpriteVec[(int)BackgroundPage.Fore].DisplayBinding;
+            var viewBinder = backgroundSpriteVec[(int)BackgroundPage.Fore]?.DisplayBinding;
             var canvas = this.GetDrawingCanvas2D(ResourceType.Background);
             if (viewBinder != null && canvas.Children.Contains(viewBinder))
             {
                 canvas.Children.Remove(viewBinder);
-                Canvas.SetZIndex(View2D.TransitionBox, Canvas.GetZIndex(viewBinder));
+                Panel.SetZIndex(View2D.TransitionBox, Panel.GetZIndex(viewBinder));
             }
             // 执行过渡
             View2D.TransitionBox.TransitionEnded += TransitionEnded;
@@ -394,7 +390,10 @@ namespace Yuri.PlatformCore.Graphic
         /// 获取主视窗上的过渡容器
         /// </summary>
         /// <returns>过渡容器引用</returns>
-        public TransitionElement GetTransitionBox() => ViewManager.View2D.TransitionBox;
+        public TransitionElement GetTransitionBox()
+        {
+            return ViewManager.View2D.TransitionBox;
+        }
 
         /// <summary>
         /// 在过渡效果完成时触发
@@ -433,7 +432,6 @@ namespace Yuri.PlatformCore.Graphic
             {
                 Canvas.SetLeft(vb, descriptor.Left);
                 Canvas.SetTop(vb, descriptor.Top);
-
                 this.viewbox2dVec[(int)vt].ScaleTransformer.ScaleX = descriptor.ScaleX;
                 this.viewbox2dVec[(int)vt].ScaleTransformer.ScaleY = descriptor.ScaleY;
             }
@@ -512,10 +510,12 @@ namespace Yuri.PlatformCore.Graphic
                 (msglay.BackgroundSprite != null && msglay.BackgroundSprite.ResourceName != descriptor.BackgroundResourceName) ||
                 forceReload)
             {
-                YuriSprite bgSprite = ResourceManager.GetInstance().GetPicture(descriptor.BackgroundResourceName, new Int32Rect(-1, 0, 0, 0));
-                MessageLayer newLayer = new MessageLayer();
-                newLayer.BackgroundSprite = bgSprite;
-                newLayer.Id = id;
+                YuriSprite bgSprite = ResourceManager.GetInstance().GetPicture(descriptor.BackgroundResourceName, ResourceManager.FullImageRect);
+                MessageLayer newLayer = new MessageLayer
+                {
+                    BackgroundSprite = bgSprite,
+                    Id = id
+                };
                 this.messageLayerVec[id] = msglay = newLayer;
             }
             // 重绘文本层
@@ -569,10 +569,15 @@ namespace Yuri.PlatformCore.Graphic
                 return;
             }
             BranchButton oldButton = this.branchButtonVec[id];
-            BranchButton sbutton = new BranchButton(id);
-            sbutton.ImageNormal = descriptor.NormalDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.NormalDescriptor.ResourceName, new Int32Rect(-1, 0, 0, 0));
-            sbutton.ImageMouseOver = descriptor.OverDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.OverDescriptor.ResourceName, new Int32Rect(-1, 0, 0, 0));
-            sbutton.ImageMouseOn = descriptor.OnDescriptor == null ? null : ResourceManager.GetInstance().GetPicture(descriptor.OnDescriptor.ResourceName, new Int32Rect(-1, 0, 0, 0));
+            BranchButton sbutton = new BranchButton(id)
+            {
+                ImageNormal = descriptor.NormalDescriptor == null ? null
+                    : ResourceManager.GetInstance().GetPicture(descriptor.NormalDescriptor.ResourceName, ResourceManager.FullImageRect),
+                ImageMouseOver = descriptor.OverDescriptor == null ? null 
+                    : ResourceManager.GetInstance().GetPicture(descriptor.OverDescriptor.ResourceName, ResourceManager.FullImageRect),
+                ImageMouseOn = descriptor.OnDescriptor == null ? null
+                    : ResourceManager.GetInstance().GetPicture(descriptor.OnDescriptor.ResourceName, ResourceManager.FullImageRect)
+            };
             this.branchButtonVec[id] = sbutton;
             // 重绘
             this.RemoveBranchButton(oldButton);
@@ -640,7 +645,7 @@ namespace Yuri.PlatformCore.Graphic
             sprite.Descriptor = descriptor;
             Canvas.SetLeft(spriteImage, descriptor.X - bmp.PixelWidth / 2.0);
             Canvas.SetTop(spriteImage, descriptor.Y - bmp.PixelHeight / 2.0);
-            Canvas.SetZIndex(spriteImage, descriptor.Z);
+            Panel.SetZIndex(spriteImage, descriptor.Z);
             // 此处不可以用descriptor的id去判断background元素的可见性，因为存在backlay
             spriteImage.Visibility = (rType == ResourceType.Background && idx == 0) ? Visibility.Hidden : Visibility.Visible;
             this.GetDrawingCanvas2D(rType).Children.Add(spriteImage);
@@ -650,8 +655,8 @@ namespace Yuri.PlatformCore.Graphic
                 sprite.AnimationElement = sprite.DisplayBinding;
                 descriptor.ToScaleX = descriptor.ScaleX;
                 descriptor.ToScaleY = descriptor.ScaleY;
-                SpriteAnimation.RotateToAnimation(sprite, TimeSpan.Zero, descriptor.Angle, 0);
-                SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.Zero, descriptor.ScaleX, descriptor.ScaleY, 0, 0);
+                SpriteAnimation.RotateToAnimation(sprite, TimeSpan.Zero, descriptor.Angle);
+                SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.Zero, descriptor.ScaleX, descriptor.ScaleY);
             }
             else
             {
@@ -680,17 +685,10 @@ namespace Yuri.PlatformCore.Graphic
                     var bgGeomtry = bgModel.Geometry as MeshGeometry3D;
                     if (bgGeomtry.Positions[0].Z != descriptor.Deepth3D)
                     {
-                        List<Point3D> gPointList = new List<Point3D>();
-                        foreach (var orgP in bgGeomtry.Positions)
+                        var gPointList = bgGeomtry.Positions.Select(orgP => new Point3D
                         {
-                            Point3D np = new Point3D
-                            {
-                                X = orgP.X,
-                                Y = orgP.Y,
-                                Z = descriptor.Deepth3D
-                            };
-                            gPointList.Add(np);
-                        }
+                            X = orgP.X, Y = orgP.Y, Z = descriptor.Deepth3D
+                        }).ToList();
                         bgGeomtry.Positions.Clear();
                         foreach (var nvP in gPointList)
                         {
@@ -715,17 +713,10 @@ namespace Yuri.PlatformCore.Graphic
                     var csGeomtry = slotModel.Geometry as MeshGeometry3D;
                     if (csGeomtry.Positions[0].Z != descriptor.Deepth3D)
                     {
-                        List<Point3D> gPointList = new List<Point3D>();
-                        foreach (var orgP in csGeomtry.Positions)
+                        var gPointList = csGeomtry.Positions.Select(orgP => new Point3D
                         {
-                            Point3D np = new Point3D
-                            {
-                                X = orgP.X,
-                                Y = orgP.Y,
-                                Z = descriptor.Deepth3D
-                            };
-                            gPointList.Add(np);
-                        }
+                            X = orgP.X, Y = orgP.Y, Z = descriptor.Deepth3D
+                        }).ToList();
                         csGeomtry.Positions.Clear();
                         foreach (var nvP in gPointList)
                         {
@@ -750,17 +741,10 @@ namespace Yuri.PlatformCore.Graphic
                     var ftGeomtry = ftModel.Geometry as MeshGeometry3D;
                     if (ftGeomtry.Positions[0].Z != descriptor.Deepth3D)
                     {
-                        List<Point3D> gPointList = new List<Point3D>();
-                        foreach (var orgP in ftGeomtry.Positions)
+                        var gPointList = ftGeomtry.Positions.Select(orgP => new Point3D
                         {
-                            Point3D np = new Point3D
-                            {
-                                X = orgP.X,
-                                Y = orgP.Y,
-                                Z = descriptor.Deepth3D
-                            };
-                            gPointList.Add(np);
-                        }
+                            X = orgP.X, Y = orgP.Y, Z = descriptor.Deepth3D
+                        }).ToList();
                         ftGeomtry.Positions.Clear();
                         foreach (var nvP in gPointList)
                         {
@@ -792,15 +776,15 @@ namespace Yuri.PlatformCore.Graphic
                     sprite.Anchor = descriptor.AnchorType;
                     Canvas.SetLeft(spriteImage, descriptor.X - bmp.PixelWidth / 2.0);
                     Canvas.SetTop(spriteImage, descriptor.Y - bmp.PixelHeight / 2.0);
-                    Canvas.SetZIndex(spriteImage, descriptor.Z);
+                    Panel.SetZIndex(spriteImage, descriptor.Z);
                     spriteImage.Visibility = Visibility.Visible;
                     ViewManager.View3D.BO_MainGrid.Children.Add(spriteImage);
                     sprite.InitAnimationRenderTransform();
                     sprite.AnimationElement = sprite.DisplayBinding;
                     descriptor.ToScaleX = descriptor.ScaleX;
                     descriptor.ToScaleY = descriptor.ScaleY;
-                    SpriteAnimation.RotateToAnimation(sprite, TimeSpan.Zero, descriptor.Angle, 0);
-                    SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.Zero, descriptor.ScaleX, descriptor.ScaleY, 0, 0);
+                    SpriteAnimation.RotateToAnimation(sprite, TimeSpan.Zero, descriptor.Angle);
+                    SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.Zero, descriptor.ScaleX, descriptor.ScaleY);
                     break;
             }
             sprite.Descriptor = descriptor;
@@ -824,12 +808,13 @@ namespace Yuri.PlatformCore.Graphic
             msglay.DisplayBinding = msgBlock;
             if (msglay.BackgroundSprite?.SpriteBitmapImage != null)
             {
-                ImageBrush ib = new ImageBrush(msglay.BackgroundSprite.SpriteBitmapImage);
-                BitmapImage t = ib.ImageSource as BitmapImage;
-                ib.Stretch = Stretch.None;
-                ib.TileMode = TileMode.None;
-                ib.AlignmentX = AlignmentX.Left;
-                ib.AlignmentY = AlignmentY.Top;
+                ImageBrush ib = new ImageBrush(msglay.BackgroundSprite.SpriteBitmapImage)
+                {
+                    Stretch = Stretch.None,
+                    TileMode = TileMode.None,
+                    AlignmentX = AlignmentX.Left,
+                    AlignmentY = AlignmentY.Top
+                };
                 msgBlock.Background = ib;
             }
             msglay.Width = descriptor.Width;
@@ -847,7 +832,7 @@ namespace Yuri.PlatformCore.Graphic
             msglay.DisplayBinding.TextAlignment = TextAlignment.Left;
             Canvas.SetLeft(msgBlock, descriptor.X);
             Canvas.SetTop(msgBlock, descriptor.Y);
-            Canvas.SetZIndex(msgBlock, descriptor.Z);
+            Panel.SetZIndex(msgBlock, descriptor.Z);
             msglay.Visibility = descriptor.Visible ? Visibility.Visible : Visibility.Hidden;
             if (ViewManager.Is3DStage)
             {
@@ -893,7 +878,7 @@ namespace Yuri.PlatformCore.Graphic
             };
             Canvas.SetLeft(buttonImage, descriptor.X - bmp.PixelWidth / 2.0);
             Canvas.SetTop(buttonImage, descriptor.Y - bmp.PixelHeight / 2.0);
-            Canvas.SetZIndex(buttonImage, descriptor.Z);
+            Panel.SetZIndex(buttonImage, descriptor.Z);
             buttonImage.Visibility = Visibility.Visible;
             buttonImage.MouseDown += sbutton.MouseOnHandler;
             buttonImage.MouseEnter += sbutton.MouseEnterHandler;
@@ -921,11 +906,13 @@ namespace Yuri.PlatformCore.Graphic
             BitmapImage bmp = bbutton.ImageNormal.SpriteBitmapImage;
             buttonTextView.Width = bmp.PixelWidth;
             buttonTextView.Height = bmp.PixelHeight;
-            ImageBrush ib = new ImageBrush(bmp);
-            ib.AlignmentX = AlignmentX.Left;
-            ib.AlignmentY = AlignmentY.Top;
-            ib.TileMode = TileMode.None;
-            ib.Stretch = Stretch.Fill;
+            ImageBrush ib = new ImageBrush(bmp)
+            {
+                AlignmentX = AlignmentX.Left,
+                AlignmentY = AlignmentY.Top,
+                TileMode = TileMode.None,
+                Stretch = Stretch.Fill
+            };
             buttonTextView.FontSize = GlobalConfigContext.GAME_BRANCH_FONTSIZE;
             buttonTextView.Foreground = new SolidColorBrush(GlobalConfigContext.GAME_BRANCH_FONTCOLOR);
             buttonTextView.FontFamily = new FontFamily(GlobalConfigContext.GAME_BRANCH_FONTNAME);
@@ -946,7 +933,7 @@ namespace Yuri.PlatformCore.Graphic
             };
             Canvas.SetLeft(buttonTextView, descriptor.X);
             Canvas.SetTop(buttonTextView, descriptor.Y);
-            Canvas.SetZIndex(buttonTextView, descriptor.Z);
+            Panel.SetZIndex(buttonTextView, descriptor.Z);
             buttonTextView.Visibility = Visibility.Visible;
             buttonTextView.MouseDown += bbutton.MouseOnHandler;
             buttonTextView.MouseEnter += bbutton.MouseEnterHandler;

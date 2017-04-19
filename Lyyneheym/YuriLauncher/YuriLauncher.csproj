@@ -118,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Utils\CommonUtils.cs" />
+    <Compile Include="Utils\LauncherConfigPackage.cs" />
     <Compile Include="Utils\IOUtils.cs" />
     <Compile Include="Utils\LicenseContainer.cs" />
     <Compile Include="Utils\Musician.cs" />

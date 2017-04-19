@@ -6,16 +6,16 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
 				TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType"
-        Title="Yuri Launcher" Height="332" Width="566" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" UseLayoutRounding="True">
+        Title="Yuri Launcher" Height="332" Width="566" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" UseLayoutRounding="True" Closed="MetroWindow_Closed">
   <Grid>
     <controls:MetroAnimatedSingleRowTabControl x:Name="tabControl" Height="301" controls:TabControlHelper.Transition="Left" controls:TabControlHelper.IsUnderlined="True" Margin="0,0,0,0">
-      <TabItem Header="    系统    " controls:ControlsHelper.HeaderFontSize="22">
+      <TabItem Header="    游戏    " controls:ControlsHelper.HeaderFontSize="22">
         <Grid Name="Grid_System">
           <Grid.Background>
             <ImageBrush ImageSource="/YuriLauncher;component/Resources/Sysbg_Izetta.png"/>
           </Grid.Background>
-          <Button x:Name="button_System_Launch" Content="开始游戏" Foreground="DarkSlateBlue" FontSize="16" HorizontalAlignment="Left" Margin="397,201,0,0" VerticalAlignment="Top" Width="153" Height="55" FontFamily="Microsoft YaHei UI" TabIndex="1"/>
-          <TextBlock x:Name="textBlock_System" Text="游戏时长：&#13;2:23:46&#13;&#13;周目计数：&#13;3&#13;&#13;结局回收：&#13;2/4" Foreground="DarkSlateBlue" Padding="8" Background="Transparent" FontSize="16" FontFamily="Microsoft YaHei UI" Opacity="0.85" HorizontalAlignment="Left" Margin="397,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="153" Height="180"/>
+          <Button x:Name="button_System_Launch" Content="开始游戏" Foreground="DarkSlateBlue" FontSize="16" HorizontalAlignment="Left" Margin="397,201,0,0" VerticalAlignment="Top" Width="153" Height="55" FontFamily="Microsoft YaHei UI" TabIndex="1" Click="button_System_Launch_Click"/>
+          <TextBlock Visibility="Hidden" x:Name="textBlock_System" Text="游戏时长：&#13;2:23:46&#13;&#13;周目计数：&#13;3&#13;&#13;结局回收：&#13;2/4" Foreground="DarkSlateBlue" Padding="8" Background="Transparent" FontSize="16" FontFamily="Microsoft YaHei UI" Opacity="0.85" HorizontalAlignment="Left" Margin="397,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="153" Height="180"/>
           <ComboBox x:Name="comboBox_System" IsReadOnly="True" Background="White" Opacity="0.7" HorizontalAlignment="Left" Margin="10,230,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" TabIndex="2">
             <ListBoxItem Content="Swing Girls"/>
           </ComboBox>

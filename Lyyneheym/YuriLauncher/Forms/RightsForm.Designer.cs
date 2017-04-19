@@ -199,7 +199,7 @@
             this.groupBox5.Size = new System.Drawing.Size(176, 93);
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "精灵小姐";
+            this.groupBox5.Text = "提儿";
             // 
             // linkLabel5
             // 

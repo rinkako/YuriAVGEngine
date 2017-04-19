@@ -51,9 +51,21 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static int GAME_WINDOW_ACTUALHEIGHT => GlobalConfigContext.GAME_WINDOW_HEIGHT + 32;
         /// <summary>
+        /// 舞台：启动时刻的窗体宽度
+        /// </summary>
+        public static int GAME_VIEWPORT_WIDTH = 1280;
+        /// <summary>
+        /// 舞台：启动时刻的窗体高度
+        /// </summary>
+        public static int GAME_VIEWPORT_HEIGHT = 720;
+        /// <summary>
         /// 舞台：是否允许自由调节
         /// </summary>
         public static bool GAME_WINDOW_RESIZEABLE = true;
+        /// <summary>
+        /// 舞台：以全屏模式启动
+        /// </summary>
+        public static bool GAME_WINDOW_FULLSCREEN = false;
         /// <summary>
         /// 文本展示：模式
         /// </summary>
@@ -243,6 +255,10 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static double GAME_SCAMERA_CSTAND_NORMALRATIO = 0.4;
         /// <summary>
+        /// 全局：自动移动指针
+        /// </summary>
+        public static bool GAME_AUTO_POINTER = false;
+        /// <summary>
         /// 全局：背景Z坐标
         /// </summary>
         public static int GAME_Z_BACKGROUND = 0;
@@ -286,6 +302,10 @@ namespace Yuri.PlatformCore
         /// 音频：VOCAL默认音量
         /// </summary>
         public static float GAME_SOUND_VOCALVOL = 1000;
+        /// <summary>
+        /// 音频：静音
+        /// </summary>
+        public static bool GAME_SOUND_MUTE = false;
         /// <summary>
         /// 存档：截图存档
         /// </summary>
@@ -401,19 +421,19 @@ namespace Yuri.PlatformCore
 
         #region 封装包名字常量
         /// <summary>
-        /// 包后缀
+        /// 包：后缀
         /// </summary>
         public static readonly string PackPostfix = ".dat";
         /// <summary>
-        /// 包开头
+        /// 包：开头
         /// </summary>
         public static readonly string PackHeader = "___SlyviaLyyneheym";
         /// <summary>
-        /// 包结束
+        /// 包：结束
         /// </summary>
         public static readonly string PackEOF = "___SlyviaLyyneheymEOF";
         /// <summary>
-        /// 包头部项目数
+        /// 包：头部项目数
         /// </summary>
         public static readonly int PackHeaderItemNum = 4;
         /// <summary>
@@ -478,15 +498,30 @@ namespace Yuri.PlatformCore
             /// <summary>
             /// 全特效
             /// </summary>
-            HighQuality,
+            HighQuality = 0,
             /// <summary>
             /// 减弱特效
             /// </summary>
-            Weaken,
+            Weaken = 1,
             /// <summary>
             /// 无特效
             /// </summary>
-            NoEffect
+            NoEffect = 2
+        }
+
+        /// <summary>
+        /// 枚举：右键类型
+        /// </summary>
+        internal enum RClickType
+        {
+            /// <summary>
+            /// 仅右键菜单
+            /// </summary>
+            RClickMenu = 0,
+            /// <summary>
+            /// 舞台后右键菜单
+            /// </summary>
+            StageAndMenu = 1
         }
         #endregion
     }

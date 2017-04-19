@@ -6,7 +6,7 @@ namespace Yuri.YuriHalation.ScriptPackage
     /// 游戏设置类
     /// </summary>
     [Serializable]
-    class ConfigPackage
+    internal sealed class ConfigPackage
     {
         /// <summary>
         /// 工程：游戏名称
@@ -21,7 +21,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// <summary>
         /// 工程：游戏密钥
         /// </summary>
-        public string GameProjKey = "mykey";
+        public string GameProjKey = "yurayuri";
 
         /// <summary>
         /// 可视：窗口宽度

@@ -7,7 +7,7 @@
     <ProjectGuid>{CB704EFC-BD27-4422-A61E-E7EBB9370577}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>YuriHalation</RootNamespace>
+    <RootNamespace>Yuri.YuriHalation</RootNamespace>
     <AssemblyName>YuriHalation</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

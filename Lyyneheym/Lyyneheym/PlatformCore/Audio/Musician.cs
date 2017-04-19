@@ -30,8 +30,8 @@ namespace Yuri.PlatformCore.Audio
             }
             int handle = this.audioEngine.InvokeChannel();
             this.BgmHandleContainer = new KeyValuePair<string, int>(resourceName, handle);
-            this.bgmVolume = vol;
-            this.audioEngine.InitAndPlay(handle, ms, vol, true);
+            this.bgmVolume = this.IsMute ? 0 : vol;
+            this.audioEngine.InitAndPlay(handle, ms, this.bgmVolume, true);
             this.IsBgmPlaying = this.IsBgmLoaded = true;
             this.IsBgmPaused = false;
         }
@@ -88,8 +88,8 @@ namespace Yuri.PlatformCore.Audio
             if (track >= 0 && track < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM && ms != null)
             {
                 var handle = this.audioEngine.InvokeChannel();
-                this.BgsHandleContainer[track] = new KeyValuePair<int, float>(handle, vol);
-                this.audioEngine.InitAndPlay(handle, ms, vol, true);
+                this.BgsHandleContainer[track] = new KeyValuePair<int, float>(handle, this.IsMute ? 0 : vol);
+                this.audioEngine.InitAndPlay(handle, ms, this.IsMute ? 0 : vol, true);
             }
         }
 
@@ -123,7 +123,7 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="vol">音量值，值域[0, 1000]</param>
         public void SetBGMVolume(float vol)
         {
-            if (this.IsBgmLoaded)
+            if (this.IsBgmLoaded && this.IsMute == false)
             {
                 this.BGMVolume = vol;
             }
@@ -138,7 +138,7 @@ namespace Yuri.PlatformCore.Audio
         {
             if (track >= 0 && track < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM)
             {
-                this.audioEngine.SetVolume(this.BgsHandleContainer[0].Key, vol);
+                this.audioEngine.SetVolume(this.BgsHandleContainer[0].Key, this.IsMute ? 0 : vol);
             }
             else
             {
@@ -146,7 +146,7 @@ namespace Yuri.PlatformCore.Audio
                 {
                     if (t.Key != 0)
                     {
-                        this.audioEngine.SetVolume(t.Key, vol);
+                        this.audioEngine.SetVolume(t.Key, this.IsMute ? 0 : vol);
                     }
                 }
             }
@@ -165,7 +165,7 @@ namespace Yuri.PlatformCore.Audio
                 return;
             }
             int handle = this.audioEngine.InvokeChannel();
-            this.audioEngine.InitAndPlay(handle, ms, vol, false);
+            this.audioEngine.InitAndPlay(handle, ms, this.IsMute ? 0 : vol, false);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Yuri.PlatformCore.Audio
             }
             this.StopAndReleaseVocal();
             this.VocalHandle = this.audioEngine.InvokeChannel();
-            this.audioEngine.InitAndPlay(this.VocalHandle, ms, vol, false);
+            this.audioEngine.InitAndPlay(this.VocalHandle, ms, this.IsMute ? 0 : vol, false);
         }
 
         /// <summary>
@@ -312,24 +312,12 @@ namespace Yuri.PlatformCore.Audio
         /// <summary>
         /// 获取当前BGM名字
         /// </summary>
-        public string CurrentBgm
-        {
-            get
-            {
-                return this.BgmHandleContainer.Key;
-            }
-        }
+        public string CurrentBgm => this.BgmHandleContainer.Key;
 
         /// <summary>
         /// 获取是否有BGS在播放
         /// </summary>
-        public bool IsAnyBgs
-        {
-            get
-            {
-                return this.BgsHandleContainer.TrueForAll((x) => x.Key == 0) == false;
-            }
-        }
+        public bool IsAnyBgs => this.BgsHandleContainer.TrueForAll((x) => x.Key == 0) == false;
 
         /// <summary>
         /// 获取或设置是否静音
@@ -338,7 +326,7 @@ namespace Yuri.PlatformCore.Audio
         {
             get;
             set;
-        }
+        } = false;
 
         /// <summary>
         /// 当前语音句柄

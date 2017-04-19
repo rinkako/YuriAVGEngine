@@ -260,7 +260,7 @@ namespace Yuri.PlatformCore
                 if (this.isShowingDialog && Director.IsButtonClicking == false)
                 {
                     // 如果还在播放打字动画就跳跃
-                    if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() != 1.0)
+                    if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() < 1.0)
                     {
                         this.MsgStoryboardDict[0].SkipToFill();
                         this.MouseLeftUpFlag = false;
@@ -871,6 +871,7 @@ namespace Yuri.PlatformCore
             this.viewMana.GetMessageLayer(0).Text = String.Empty;
             this.dialogPreStr = String.Empty;
             // 刷新
+            this.IsContinousDialog = continous;
             this.pendingDialog = dialogStr;
             this.viewMana.GetMessageLayer(0).Visibility = Visibility.Visible;
             this.DrawStringToMsgLayer(0, this.pendingDialog);
