@@ -1120,7 +1120,7 @@ namespace Yuri.PlatformCore.Graphic
         }
         
         /// <summary>
-        /// 将窗体控件转化为JPEG图片
+        /// 将WPF窗体控件转化为JPEG图片
         /// </summary>
         /// <param name="ui">控件的引用</param>
         /// <param name="filename">要保存的图片文件名</param>

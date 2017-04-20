@@ -1368,7 +1368,7 @@ namespace Yuri.PlatformCore
                 this.DrawDialogRunQueue(this.pendingDialogQueue.Count, false);
             }
             var sp = Director.RunMana.PreviewSave();
-            PersistenceContext.SaveToSteadyMemory();
+            PersistenceContextDAO.SaveToSteadyMemory();
             IOUtils.Serialization(Director.RunMana, IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\" + saveFileName + GlobalConfigContext.GAME_SAVE_POSTFIX));
             Director.RunMana.FinishedSave(sp);
         }

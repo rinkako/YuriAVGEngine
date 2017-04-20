@@ -446,7 +446,7 @@ namespace Yuri.PlatformCore
             // 处理持久化变量
             else if (varname.StartsWith("%"))
             {
-                PersistenceContext.Assign(varname.Replace("%", String.Empty), PolishEvaluator.Evaluate(valuePolish, vsm));
+                PersistenceContextDAO.Assign(varname.Replace("%", String.Empty), PolishEvaluator.Evaluate(valuePolish, vsm));
             }
         }
 
@@ -478,7 +478,7 @@ namespace Yuri.PlatformCore
             // 处理持久化变量
             if (varName.StartsWith("%"))
             {
-                return PersistenceContext.Fetch(varName.Replace("%", String.Empty));
+                return PersistenceContextDAO.Fetch(varName.Replace("%", String.Empty));
             }
             return null;
         }
