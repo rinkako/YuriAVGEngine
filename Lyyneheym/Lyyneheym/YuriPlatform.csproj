@@ -103,9 +103,11 @@
     <Compile Include="PlatformCore\Graphic3D\ParticleSystem3D.cs" />
     <Compile Include="PlatformCore\VM\ConfigParser.cs" />
     <Compile Include="PlatformCore\VM\EvaluatableContext.cs" />
+    <Compile Include="PlatformCore\VM\GlobalContextDAO.cs" />
     <Compile Include="PlatformCore\VM\IRuntimeContext.cs" />
     <Compile Include="PlatformCore\VM\PersistContext.cs" />
     <Compile Include="PlatformCore\VM\SaveableContext.cs" />
+    <Compile Include="PlatformCore\VM\SceneContextDAO.cs" />
     <Compile Include="PlatformCore\VM\SimpleContext.cs" />
     <Compile Include="Utils\EncryptUtils.cs" />
     <Compile Include="PageView\SLPage.xaml.cs">
@@ -117,7 +119,7 @@
     <Compile Include="PlatformCore\Audio\NAudioPlayer.cs" />
     <Compile Include="PlatformCore\NotificationManager.cs" />
     <Compile Include="PlatformCore\Graphic\CloneableDescriptor.cs" />
-    <Compile Include="PlatformCore\VM\PersistenceContextDAO.cs" />
+    <Compile Include="PlatformCore\VM\PersistContextDAO.cs" />
     <Compile Include="PlatformCore\Evaluator\PolishEvaluator.cs" />
     <Compile Include="PlatformCore\VM\ResourceCachePool.cs" />
     <Compile Include="PlatformCore\RollbackManager.cs" />

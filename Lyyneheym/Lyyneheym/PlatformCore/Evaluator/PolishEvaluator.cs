@@ -8,18 +8,8 @@ namespace Yuri.PlatformCore.Evaluator
     /// <summary>
     /// 逆波兰式求值器
     /// </summary>
-    internal class PolishEvaluator : IEvaluator
+    internal class PolishEvaluator
     {
-        object IEvaluator.Evaluate(string expr, StackMachine vsm)
-        {
-            return Evaluate(expr, vsm);
-        }
-
-        bool IEvaluator.EvaluateBoolean(string polish, StackMachine vsm)
-        {
-            return EvaluateBoolean(polish, vsm);
-        }
-
         /// <summary>
         /// 计算表达式
         /// </summary>

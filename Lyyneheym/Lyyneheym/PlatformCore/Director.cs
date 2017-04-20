@@ -34,16 +34,16 @@ namespace Yuri.PlatformCore
                 // 第一次打开游戏就创建持久性上下文
                 if (System.IO.File.Exists(GlobalConfigContext.PersistenceFileName) == false)
                 {
-                    PersistenceContextDAO.Assign("___YURIRI@ACCDURATION___", 0);
-                    PersistenceContextDAO.Assign("___YURIRI@FIRSTPLAYTIMESTAMP___", DateTime.Now.ToString());
-                    PersistenceContextDAO.SaveToSteadyMemory();
+                    PersistContextDAO.Assign("___YURIRI@ACCDURATION___", 0);
+                    PersistContextDAO.Assign("___YURIRI@FIRSTPLAYTIMESTAMP___", DateTime.Now.ToString());
+                    PersistContextDAO.SaveToSteadyMemory();
                 }
                 // 非第一次打开游戏就读取持久性上下文
                 else
                 {
-                    PersistenceContextDAO.LoadFromSteadyMemory();
-                    Director.LastGameTimeAcc = TimeSpan.Parse(PersistenceContextDAO.Exist("___YURIRI@ACCDURATION___") ?
-                        PersistenceContextDAO.Fetch("___YURIRI@ACCDURATION___").ToString() : "0");
+                    PersistContextDAO.LoadFromSteadyMemory();
+                    Director.LastGameTimeAcc = TimeSpan.Parse(PersistContextDAO.Exist("___YURIRI@ACCDURATION___") ?
+                        PersistContextDAO.Fetch("___YURIRI@ACCDURATION___").ToString() : "0");
                     Director.StartupTimeStamp = DateTime.Now;
                 }
             }
@@ -718,9 +718,9 @@ namespace Yuri.PlatformCore
         {
             var collaTimeStamp = DateTime.Now;
             CommonUtils.ConsoleLine("Yuri world began to collapse at " + collaTimeStamp.ToString(), "Director", OutputStyle.Important);
-            PersistenceContextDAO.Assign("___YURIRI@LASTPLAYTIMESTAMP___", collaTimeStamp.ToString());
-            PersistenceContextDAO.Assign("___YURIRI@ACCDURATION___", Director.LastGameTimeAcc + (collaTimeStamp - Director.StartupTimeStamp));
-            PersistenceContextDAO.SaveToSteadyMemory();
+            PersistContextDAO.Assign("___YURIRI@LASTPLAYTIMESTAMP___", collaTimeStamp.ToString());
+            PersistContextDAO.Assign("___YURIRI@ACCDURATION___", Director.LastGameTimeAcc + (collaTimeStamp - Director.StartupTimeStamp));
+            PersistContextDAO.SaveToSteadyMemory();
             CommonUtils.ConsoleLine("Save persistence context OK", "Director", OutputStyle.Important);
             Musician.GetInstance().Dispose();
             CommonUtils.ConsoleLine("Dispose resource OK, program will shutdown soon", "Director", OutputStyle.Important);

@@ -31,17 +31,17 @@ namespace Yuri.PlatformCore.VM
         /// <param name="sceneObject">场景实例</param>
         /// <param name="varName">变量名</param>
         /// <returns>变量在运行时环境的引用</returns>
-        public object Fetch(Scene sceneObject, string varName)
-        {
-            var table = this.FindSymbolTable(sceneObject.Scenario);
-            // 如果查无此键
-            if (table.ContainsKey(varName) == false)
-            {
-                CommonUtils.ConsoleLine("变量 " + varName + " 在作为左值之前被引用", "SymbolTable", OutputStyle.Error);
-                throw new NullReferenceException("变量 " + varName + " 在作为左值之前被引用");
-            }
-            return table[varName];
-        }
+        //public object Fetch(Scene sceneObject, string varName)
+        //{
+        //    var table = this.FindSymbolTable(sceneObject.Scenario);
+        //    // 如果查无此键
+        //    if (table.ContainsKey(varName) == false)
+        //    {
+        //        CommonUtils.ConsoleLine("变量 " + varName + " 在作为左值之前被引用", "SymbolTable", OutputStyle.Error);
+        //        throw new NullReferenceException("变量 " + varName + " 在作为左值之前被引用");
+        //    }
+        //    return table[varName];
+        //}
 
         /// <summary>
         /// 将一个变量赋值，如果变量不存在，将被注册后再赋值
@@ -49,11 +49,11 @@ namespace Yuri.PlatformCore.VM
         /// <param name="sceneName">场景名称</param>
         /// <param name="varName">变量名称</param>
         /// <param name="value">变量的值</param>
-        public void Assign(string sceneName, string varName, object value)
-        {
-            var table = this.FindSymbolTable(sceneName);
-            table[varName] = value;
-        }
+        //public void Assign(string sceneName, string varName, object value)
+        //{
+        //    var table = this.FindSymbolTable(sceneName);
+        //    table[varName] = value;
+        //}
 
         /// <summary>
         /// <para>使用一个全局变量作为右值</para>
