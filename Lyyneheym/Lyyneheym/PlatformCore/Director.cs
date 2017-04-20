@@ -65,7 +65,7 @@ namespace Yuri.PlatformCore
                     "Director", OutputStyle.Error);
                 this.updateRender.Shutdown();
             }
-            this.resMana.GetAllScene().ForEach((t) => Director.RunMana.Symbols.AddSymbolTable(t));
+            this.resMana.GetAllScene().ForEach((t) => Director.RunMana.Symbols.AddSceneSymbolContext(t));
             Director.RunMana.CallScene(mainScene);
         }
         #endregion

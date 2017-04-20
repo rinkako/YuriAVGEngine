@@ -12,6 +12,40 @@ namespace Yuri.PlatformCore.VM
     internal sealed class SceneContextDAO : ForkableState
     {
         /// <summary>
+        /// 获取当前场景上下文集合是否包含指定场景
+        /// </summary>
+        /// <param name="sceneName">场景名字</param>
+        /// <returns>是否已有该场景对应的上下文</returns>
+        public bool ExistScene(string sceneName)
+        {
+            return this.userSymbolTableContainer.ContainsKey(sceneName);
+        }
+
+        /// <summary>
+        /// 为指定的场景创建上下文
+        /// </summary>
+        /// <param name="sceneName">场景名字</param>
+        public void CreateSceneContext(string sceneName)
+        {
+            this.userSymbolTableContainer.Add(sceneName, new SaveableContext(sceneName));
+        }
+
+        /// <summary>
+        /// 清除指定场景上下文中的内容
+        /// </summary>
+        /// <param name="sceneName">场景名字</param>
+        /// <returns>是否存在这个场景并清除成功</returns>
+        public bool ClearSceneContext(string sceneName)
+        {
+            if (this.ExistScene(sceneName))
+            {
+                this.userSymbolTableContainer[sceneName].Clear();
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// 将一个变量赋值，如果变量不存在，将被注册后再赋值
         /// </summary>
         /// <param name="sceneName">场景名称</param>
@@ -19,8 +53,8 @@ namespace Yuri.PlatformCore.VM
         /// <param name="value">变量的值</param>
         public void Assign(string sceneName, string varName, object value)
         {
-            var table = this.FindSymbolTable(sceneName);
-            table[varName] = value;
+            var ctx = this.FindSceneContext(sceneName);
+            ctx.Assign(varName, value);
         }
        
         /// <summary>
@@ -32,14 +66,14 @@ namespace Yuri.PlatformCore.VM
         /// <returns>变量在运行时环境的引用</returns>
         public object Fetch(Scene sceneObject, string varName)
         {
-            var table = this.FindSymbolTable(sceneObject.Scenario);
+            var ctx = this.FindSceneContext(sceneObject.Scenario);
             // 如果查无此键
-            if (table.ContainsKey(varName) == false)
+            if (ctx.Exist(varName) == false)
             {
                 CommonUtils.ConsoleLine("变量 " + varName + " 在作为左值之前被引用", "SymbolTable", OutputStyle.Error);
                 throw new NullReferenceException("变量 " + varName + " 在作为左值之前被引用");
             }
-            return table[varName];
+            return ctx.Fetch(varName);
         }
 
         /// <summary>
@@ -58,16 +92,16 @@ namespace Yuri.PlatformCore.VM
         /// </summary>
         /// <param name="sceneName">场景名</param>
         /// <returns>符号表</returns>
-        private Dictionary<string, object> FindSymbolTable(string sceneName)
+        private SaveableContext FindSceneContext(string sceneName)
         {
             return this.userSymbolTableContainer.ContainsKey(sceneName)
                 ? this.userSymbolTableContainer[sceneName]
                 : null;
         }
-
+        
         /// <summary>
-        /// 场景符号表
+        /// 场景符号上下文
         /// </summary>
-        private Dictionary<string, Dictionary<string, object>> userSymbolTableContainer = null;
+        private readonly Dictionary<string, SaveableContext> userSymbolTableContainer = null;
     }
 }
