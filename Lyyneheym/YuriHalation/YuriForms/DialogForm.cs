@@ -41,7 +41,7 @@ namespace YuriHalation.YuriForms
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    Halation.GetInstance().DashEditScript(this.textBox1.Text);
                 }
             }
             else

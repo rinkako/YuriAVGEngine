@@ -6,9 +6,12 @@ namespace YuriHalation.YuriForms
 {
     public partial class NotationForm : Form
     {
-        public NotationForm()
+        private bool isEditing;
+
+        public NotationForm(bool isEdit)
         {
             InitializeComponent();
+            this.isEditing = isEdit;
         }
 
         /// <summary>
@@ -16,7 +19,14 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            Halation.GetInstance().DashNotation(this.textBox1.Text);
+            if (this.isEditing)
+            {
+                Halation.GetInstance().DashEditNotation(this.textBox1.Text);
+            }
+            else
+            {
+                Halation.GetInstance().DashNotation(this.textBox1.Text);
+            }
             this.Close();
         }
     }

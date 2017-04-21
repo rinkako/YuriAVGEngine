@@ -63,7 +63,9 @@
     <Compile Include="Command\EditDialogCommand.cs" />
     <Compile Include="Command\HalationSingleEditCommand.cs" />
     <Compile Include="Command\IfCommand.cs" />
+    <Compile Include="Command\EditNotationCommand.cs" />
     <Compile Include="Command\SCameraCommand.cs" />
+    <Compile Include="Command\EditScriptCommand.cs" />
     <Compile Include="Command\VarCommand.cs" />
     <Compile Include="Command\FuncallCommand.cs" />
     <Compile Include="Command\MenuPasteCommand.cs" />
