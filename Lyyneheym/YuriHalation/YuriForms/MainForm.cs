@@ -268,7 +268,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button2_Click(object sender, EventArgs e)
         {
-            AFrom af = new AFrom();
+            AForm af = new AForm(false);
             af.ShowDialog(this);
         }
 
@@ -383,7 +383,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button23_Click(object sender, EventArgs e)
         {
-            NotationForm nf = new NotationForm();
+            NotationForm nf = new NotationForm(false);
             nf.ShowDialog(this);
         }
 
@@ -416,7 +416,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button25_Click(object sender, EventArgs e)
         {
-            WaitForm wf = new WaitForm();
+            WaitForm wf = new WaitForm(false);
             wf.ShowDialog(this);
         }
 
@@ -592,11 +592,27 @@ namespace YuriHalation.YuriForms
             switch (editPack.nodeType)
             {
                 case ActionPackageType.act_dialog:
-                    DialogForm editDf = new DialogForm("显示对话", true, editPack.argsDict["context"].valueExp);
-                    editDf.ShowDialog(this);
+                    DialogForm editDialogDf = new DialogForm("显示对话", true, editPack.argsDict["context"].valueExp);
+                    editDialogDf.ShowDialog(this);
+                    break;
+                case ActionPackageType.script:
+                    DialogForm editScriptDf = new DialogForm("代码片段", true, editPack.argsDict["context"].valueExp);
+                    editScriptDf.ShowDialog(this);
+                    break;
+                case ActionPackageType.notation:
+                    NotationForm editNf = new NotationForm(true, editPack.argsDict["context"].valueExp);
+                    editNf.ShowDialog(this);
+                    break;
+                case ActionPackageType.act_wait:
+                    WaitForm editWf = new WaitForm(true, Convert.ToInt32(editPack.argsDict["time"].valueExp));
+                    editWf.ShowDialog(this);
+                    break;
+                case ActionPackageType.act_a:
+                    AForm editAf = new AForm(true, editPack.argsDict["name"].valueExp, editPack.argsDict["face"].valueExp, editPack.argsDict["loc"].valueExp, editPack.argsDict["vid"].valueExp);
+                    editAf.ShowDialog(this);
                     break;
                 default:
-                    MessageBox.Show("还没做……");
+                    MessageBox.Show(@"该项目不支持编辑");
                     break;
             }
         }

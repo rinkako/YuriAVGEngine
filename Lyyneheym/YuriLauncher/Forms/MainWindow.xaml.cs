@@ -225,7 +225,7 @@ namespace Yuri.YuriLauncher.Forms
                 this.cp["GameViewportWidth"] = "1600";
                 this.cp["GameViewportHeight"] = "900";
             }
-            else if (this.radioButton_Screen_Resolution_3.IsChecked == true)
+            else if (this.radioButton_Screen_Resolution_4.IsChecked == true)
             {
                 this.cp["GameViewportWidth"] = "1024";
                 this.cp["GameViewportHeight"] = "576";

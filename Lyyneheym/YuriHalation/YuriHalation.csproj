@@ -60,6 +60,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\EditACommand.cs" />
     <Compile Include="Command\EditDialogCommand.cs" />
     <Compile Include="Command\HalationSingleEditCommand.cs" />
     <Compile Include="Command\IfCommand.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Command\TransCommand.cs" />
     <Compile Include="Command\ScriptCommand.cs" />
     <Compile Include="Command\ForCommand.cs" />
+    <Compile Include="Command\EditWaitCommand.cs" />
     <Compile Include="Command\WaitCommand.cs" />
     <Compile Include="Command\WaitaniCommand.cs" />
     <Compile Include="Command\WaituserCommand.cs" />
@@ -297,11 +299,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="YuriForms\AFrom.cs">
+    <Compile Include="YuriForms\AForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="YuriForms\AFrom.Designer.cs">
-      <DependentUpon>AFrom.cs</DependentUpon>
+    <Compile Include="YuriForms\AForm.Designer.cs">
+      <DependentUpon>AForm.cs</DependentUpon>
     </Compile>
     <Compile Include="YuriForms\DeleteViewForm.cs">
       <SubType>Form</SubType>
@@ -369,8 +371,8 @@
     <EmbeddedResource Include="YuriForms\AddSceneForm.resx">
       <DependentUpon>AddSceneForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="YuriForms\AFrom.resx">
-      <DependentUpon>AFrom.cs</DependentUpon>
+    <EmbeddedResource Include="YuriForms\AForm.resx">
+      <DependentUpon>AForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\BgForm.resx">
       <DependentUpon>BgForm.cs</DependentUpon>

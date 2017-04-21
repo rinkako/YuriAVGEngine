@@ -1,6 +1,6 @@
 ﻿namespace YuriHalation.YuriForms
 {
-    partial class AFrom
+    partial class AForm
     {
         /// <summary>
         /// Required designer variable.
@@ -168,7 +168,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "状态变更";
-            this.Load += new System.EventHandler(this.AFrom_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

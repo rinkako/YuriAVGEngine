@@ -8,10 +8,14 @@ namespace YuriHalation.YuriForms
     {
         private bool isEditing;
 
-        public NotationForm(bool isEdit)
+        public NotationForm(bool isEdit, string preStr = "")
         {
             InitializeComponent();
             this.isEditing = isEdit;
+            if (isEdit)
+            {
+                this.textBox1.Text = preStr;
+            }
         }
 
         /// <summary>

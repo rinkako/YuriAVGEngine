@@ -282,6 +282,12 @@ namespace Yuri
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
+        public void DashEditA(string toName, string toFace, string toLoc, string toVocal)
+        {
+            IHalationCommand cmd = new EditACommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, toName, toFace, toLoc, toVocal);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
         public void DashMsgLayer(string toLayerId)
         {
             IHalationCommand cmd = new MsgLayerCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, toLayerId);
@@ -393,6 +399,12 @@ namespace Yuri
         public void DashWait(string span)
         {
             IHalationCommand cmd = new WaitCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, span);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashEditWait(string span)
+        {
+            IHalationCommand cmd = new EditWaitCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, span);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
