@@ -95,13 +95,12 @@ namespace Yuri.PlatformCore.VM
         private SaveableContext FindSceneContext(string sceneName)
         {
             return this.userSymbolTableContainer.ContainsKey(sceneName)
-                ? this.userSymbolTableContainer[sceneName]
-                : null;
+                ? this.userSymbolTableContainer[sceneName] : null;
         }
         
         /// <summary>
         /// 场景符号上下文
         /// </summary>
-        private readonly Dictionary<string, SaveableContext> userSymbolTableContainer = null;
+        private readonly Dictionary<string, SaveableContext> userSymbolTableContainer = new Dictionary<string, SaveableContext>();
     }
 }

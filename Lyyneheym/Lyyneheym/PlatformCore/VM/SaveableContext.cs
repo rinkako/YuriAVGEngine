@@ -14,7 +14,7 @@ namespace Yuri.PlatformCore.VM
         /// <param name="scenario">上下文所绑定的场景名</param>
         public SaveableContext(string scenario)
         {
-            this.BindingScene = scenario;
+            this.ContextNamespace = this.BindingScene = scenario;
         }
 
         /// <summary>

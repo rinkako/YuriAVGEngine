@@ -3,8 +3,9 @@
 namespace Yuri.PlatformCore.VM
 {
     /// <summary>
-    /// 简单上下文类：提供基本的上下文服务，并且不能被序列化
+    /// 简单上下文类：提供基本的上下文服务
     /// </summary>
+    [Serializable]
     internal sealed class SimpleContext : EvaluatableContext
     {
         /// <summary>

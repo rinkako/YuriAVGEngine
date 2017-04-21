@@ -429,7 +429,7 @@ namespace Yuri.PlatformCore
                 // 非函数调用
                 if (this.GameState(vsm) != StackMachineState.FunctionCalling)
                 {
-                    this.Symbols.Assign(vsm.EBP.ScriptName, varname.Replace("$", String.Empty), PolishEvaluator.Evaluate(valuePolish, vsm));
+                    this.Symbols.SceneCtxDao.Assign(vsm.EBP.ScriptName, varname.Replace("$", String.Empty), PolishEvaluator.Evaluate(valuePolish, vsm));
                 }
                 // 函数调用
                 else
@@ -441,7 +441,7 @@ namespace Yuri.PlatformCore
             // 处理全局变量
             else if (varname.StartsWith("&"))
             {
-                this.Symbols.GlobalAssign(varname.Replace("&", String.Empty), PolishEvaluator.Evaluate(valuePolish, vsm));
+                this.Symbols.GlobalCtxDao.GlobalAssign(varname.Replace("&", String.Empty), PolishEvaluator.Evaluate(valuePolish, vsm));
             }
             // 处理持久化变量
             else if (varname.StartsWith("%"))
@@ -464,7 +464,7 @@ namespace Yuri.PlatformCore
                 // 非函数调用
                 if (this.GameState(vsm) != StackMachineState.FunctionCalling)
                 {
-                    return this.Symbols.Fetch(ResourceManager.GetInstance().GetScene(vsm.EBP.ScriptName), varName.Replace("$", String.Empty));
+                    return this.Symbols.SceneCtxDao.Fetch(ResourceManager.GetInstance().GetScene(vsm.EBP.ScriptName), varName.Replace("$", String.Empty));
                 }
                 // 函数调用
                 var funFrame = vsm.ESP.BindingFunction;
@@ -473,7 +473,7 @@ namespace Yuri.PlatformCore
             // 处理全局变量
             if (varName.StartsWith("&"))
             {
-                return this.Symbols.GlobalFetch(varName.Replace("&", String.Empty));
+                return this.Symbols.GlobalCtxDao.GlobalFetch(varName.Replace("&", String.Empty));
             }
             // 处理持久化变量
             if (varName.StartsWith("%"))
@@ -701,6 +701,15 @@ namespace Yuri.PlatformCore
     /// </summary>
     internal sealed class PreviewSaveDataStoringPackage
     {
+        /// <summary>
+        /// 临时上下文缓存
+        /// </summary>
+        public SimpleContext TempCtx
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// 指令指针缓存
         /// </summary>

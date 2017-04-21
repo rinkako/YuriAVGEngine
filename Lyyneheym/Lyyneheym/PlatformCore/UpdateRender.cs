@@ -1401,7 +1401,7 @@ namespace Yuri.PlatformCore
         /// <param name="toState">目标状态</param>
         private void Switch(int switchId, bool toState)
         {
-            Director.RunMana.Symbols.SwitchAssign(switchId, toState);
+            Director.RunMana.Symbols.GlobalCtxDao.SwitchAssign(switchId, toState);
         }
 
         /// <summary>

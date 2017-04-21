@@ -9,6 +9,7 @@ namespace Yuri.PlatformCore.VM
     /// <summary>
     /// 全局变量上下文DAO：为游戏的全局变量上下文提供包装
     /// </summary>
+    [Serializable]
     internal sealed class GlobalContextDAO : ForkableState
     {
         /// <summary>

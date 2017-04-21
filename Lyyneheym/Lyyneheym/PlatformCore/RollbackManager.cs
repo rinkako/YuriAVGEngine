@@ -41,7 +41,8 @@ namespace Yuri.PlatformCore
                     MusicRef = playingBGM,
                     ReactionRef = saPtr,
                     VMRef = vm,
-                    SymbolRef = SymbolTable.GetInstance().Fork() as SymbolTable,
+                    globalDao = SymbolTable.GetInstance().GlobalCtxDao.Fork() as GlobalContextDAO,
+                    sceneDao = SymbolTable.GetInstance().SceneCtxDao.Fork() as SceneContextDAO,
                     ScreenStateRef = ScreenManager.GetInstance().Fork() as ScreenManager,
                 };
                 // 如果栈中容量溢出就剔掉最早进入的那个
@@ -104,7 +105,7 @@ namespace Yuri.PlatformCore
                 needRepara = true;
             }
             // 退到SSP所描述的状态
-            SymbolTable.ResetSynObject(ssp.SymbolRef.Fork() as SymbolTable);
+            SymbolTable.GetInstance().SetDAO(ssp.sceneDao.Fork() as SceneContextDAO, ssp.globalDao.Fork() as GlobalContextDAO);
             ScreenManager.ResetSynObject(ssp.ScreenStateRef.Fork() as ScreenManager);
             Director.RunMana.ResetCallstackObject(ssp.VMRef.Fork() as StackMachine);
             Director.RunMana.PlayingBGM = ssp.MusicRef;

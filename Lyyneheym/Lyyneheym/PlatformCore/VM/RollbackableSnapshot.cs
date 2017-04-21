@@ -36,11 +36,20 @@ namespace Yuri.PlatformCore.VM
             get;
             set;
         }
+        
+        /// <summary>
+        /// 全局变量上下文的拷贝
+        /// </summary>
+        public GlobalContextDAO globalDao
+        {
+            get;
+            set;
+        }
 
         /// <summary>
-        /// 符号表的拷贝
+        /// 场景上下文的拷贝
         /// </summary>
-        public SymbolTable SymbolRef
+        public SceneContextDAO sceneDao
         {
             get;
             set;

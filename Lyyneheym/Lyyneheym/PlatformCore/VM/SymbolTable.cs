@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Yuri.Utils;
 using Yuri.Yuriri;
 
 namespace Yuri.PlatformCore.VM
@@ -10,8 +8,29 @@ namespace Yuri.PlatformCore.VM
     /// <para>符号表类：维护运行时环境的用户符号</para>
     /// <para>她是一个单例类，只有唯一实例</para>
     /// </summary>
-    internal sealed class SymbolTable : ForkableState
+    [Serializable]
+    internal sealed class SymbolTable
     {
+        /// <summary>
+        /// 为符号表设置新的DAO
+        /// </summary>
+        /// <param name="sceneDao">场景上下文DAO</param>
+        /// <param name="globalDao">全局变量上下文DAO</param>
+        public void SetDAO(SceneContextDAO sceneDao, GlobalContextDAO globalDao)
+        {
+            this.SceneCtxDao = sceneDao;
+            this.GlobalCtxDao = globalDao;
+        }
+
+        /// <summary>
+        /// 为符号表设置临时上下文
+        /// </summary>
+        /// <param name="tempCtx">临时上下文对象</param>
+        public void SetTemporaryDAO(SimpleContext tempCtx)
+        {
+            this.GlobalTempCtxDao = tempCtx;
+        }
+
         /// <summary>
         /// 为场景添加符号表
         /// </summary>
@@ -19,11 +38,11 @@ namespace Yuri.PlatformCore.VM
         /// <returns>操作成功与否</returns>
         public bool AddSceneSymbolContext(Scene scene)
         {
-            if (this.sceneCtxDao.ExistScene(scene.Scenario))
+            if (this.SceneCtxDao.ExistScene(scene.Scenario))
             {
                 return false;
             }
-            this.sceneCtxDao.CreateSceneContext(scene.Scenario);
+            this.SceneCtxDao.CreateSceneContext(scene.Scenario);
             return true;
         }
 
@@ -34,7 +53,7 @@ namespace Yuri.PlatformCore.VM
         /// <returns>是否是系统开关操作</returns>
         public static bool IsSwitchExpression(string parStr)
         {
-            return SymbolTable.switchRegex.IsMatch(parStr);
+            return Regex.IsMatch(parStr, @"^switches{\d+}$");
         }
 
         /// <summary>
@@ -60,32 +79,29 @@ namespace Yuri.PlatformCore.VM
         /// </summary>
         private SymbolTable()
         {
-
+            this.SceneCtxDao = new SceneContextDAO();
+            this.GlobalCtxDao = new GlobalContextDAO();
+            this.GlobalTempCtxDao = new SimpleContext("&__YuriTemporary");
         }
         
         /// <summary>
-        /// 场景变量DAO
+        /// 获取场景变量DAO
         /// </summary>
-        private SceneContextDAO sceneCtxDao = null;
+        public SceneContextDAO SceneCtxDao { get; private set; }
 
         /// <summary>
-        /// 全局变量DAO
+        /// 获取全局变量DAO
         /// </summary>
-        private GlobalContextDAO globalCtxDao = null;
+        public GlobalContextDAO GlobalCtxDao { get; private set; }
 
         /// <summary>
-        /// 全局临时变量DAO
+        /// 获取全局临时变量DAO
         /// </summary>
-        private SimpleContext globalTempCtxDao = null;
+        public SimpleContext GlobalTempCtxDao { get; private set; }
 
         /// <summary>
         /// 唯一实例
         /// </summary>
         private static SymbolTable synObject = null;
-        
-        /// <summary>
-        /// 开关正则式子
-        /// </summary>
-        private static readonly Regex switchRegex = new Regex(@"^switches{\d+}$");
     }
 }
