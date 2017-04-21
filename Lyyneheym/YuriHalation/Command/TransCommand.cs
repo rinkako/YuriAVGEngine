@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：过渡
     /// </summary>
-    class TransCommand : IHalationSingleCommand
+    internal class TransCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 过渡

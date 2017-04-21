@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.ScriptPackage
     /// 场景包装类
     /// </summary>
     [Serializable]
-    class ScenePackage : RunnablePackage
+    internal class ScenePackage : RunnablePackage
     {
         /// <summary>
         /// 创建一个指定名称的场景

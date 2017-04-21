@@ -40,12 +40,9 @@ namespace Yuri.PlatformCore.VM
                 {
                     return (bool)this.globalSwitchList.Fetch(fetchId.ToString()) == true ? 1.0 : 0.0;
                 }
-                else
-                {
-                    CommonUtils.ConsoleLine(String.Format("Invalid Switch id: {0}, TRUE will be returned instead", fetchId),
-                        "SymbolManager", OutputStyle.Error);
-                    return 1.0;
-                }
+                CommonUtils.ConsoleLine(String.Format("Invalid Switch id: {0}, TRUE will be returned instead", fetchId),
+                    "SymbolManager", OutputStyle.Error);
+                return 1.0;
             }
             // 如果查无此键
             if (this.globalSymbolTable.Exist(varName) == false)

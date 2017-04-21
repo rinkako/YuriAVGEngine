@@ -6,7 +6,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// IDE命令类：粘贴
     /// </summary>
-    class MenuPasteCommand : IHalationCommand
+    internal class MenuPasteCommand : IHalationCommand
     {
         /// <summary>
         /// 粘贴代码向量里的代码

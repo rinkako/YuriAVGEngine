@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：状态变更
     /// </summary>
-    class ACommand : IHalationSingleCommand
+    internal class ACommand : IHalationSingleCommand
     {
         /// <summary>
         /// 变更状态

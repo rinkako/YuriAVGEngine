@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.HalationCore
     /// <summary>
     /// 文件管理器：管理Halation的文件IO动作
     /// </summary>
-    static class FileManager
+    internal static class FileManager
     {
         /// <summary>
         /// 为工程初始化目录

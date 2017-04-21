@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：显示背景
     /// </summary>
-    class BgCommand : IHalationSingleCommand
+    internal class BgCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 显示背景

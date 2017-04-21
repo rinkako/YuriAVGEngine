@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：场景镜头动画
     /// </summary>
-    class SCameraCommand : IHalationSingleCommand
+    internal class SCameraCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 动画

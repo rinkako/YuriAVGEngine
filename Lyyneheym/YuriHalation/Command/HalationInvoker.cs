@@ -5,7 +5,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令执行器
     /// </summary>
-    static class HalationInvoker
+    internal static class HalationInvoker
     {
         /// <summary>
         /// 执行指定的命令

@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：中断循环
     /// </summary>
-    class BreakCommand : IHalationSingleCommand
+    internal class BreakCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 中断循环

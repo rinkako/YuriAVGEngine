@@ -4,7 +4,7 @@ using Yuri.YuriHalation.ScriptPackage;
 
 namespace Yuri.YuriHalation.Command
 {
-    class IfCommand : IHalationCommand
+    internal class IfCommand : IHalationCommand
     {
         /// <summary>
         /// 循环

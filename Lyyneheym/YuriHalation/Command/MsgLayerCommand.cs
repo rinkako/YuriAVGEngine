@@ -6,7 +6,7 @@ namespace Yuri.YuriHalation.Command
 {
     using HalaAttrList = List<KeyValuePair<string, KeyValuePair<ArgType, string>>>;
 
-    class MsgLayerCommand : IHalationSingleCommand
+    internal class MsgLayerCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 变更文字层

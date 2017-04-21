@@ -482,6 +482,12 @@ namespace Yuri
         #endregion
 
         #region 前端菜单相关
+
+        public ActionPackage GetEditPackage(int idx)
+        {
+            return Halation.currentCodePackage.GetAction(idx);
+        }
+
         public void DeleteCode(int begin, int count)
         {
             for (int i = begin; i < begin + count; i++)
@@ -496,7 +502,7 @@ namespace Yuri
             IHalationCommand cmd = new MenuDeleteCommand(Halation.currentCodePackage, begin, count);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
-
+        
         public void CutCode(int begin, int count)
         {
             // 这里不能clear，因为命令栈会保存每次的复制项

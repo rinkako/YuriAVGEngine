@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：开关操作
     /// </summary>
-    class SwitchCommand : IHalationSingleCommand
+    internal class SwitchCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 开关操作

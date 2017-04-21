@@ -7,7 +7,7 @@ namespace Yuri.YuriHalation.ScriptPackage
     /// 函数包装类
     /// </summary>
     [Serializable]
-    class FunctionPackage : RunnablePackage
+    internal class FunctionPackage : RunnablePackage
     {
         /// <summary>
         /// 创建一个指定函数名的函数

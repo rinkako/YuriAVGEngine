@@ -10,7 +10,7 @@ namespace YuriHalation.YuriForms
         /// <summary>
         /// 控制器实例
         /// </summary>
-        Halation core = Halation.GetInstance();
+        private Halation core = Halation.GetInstance();
 
         /// <summary>
         /// 构造器

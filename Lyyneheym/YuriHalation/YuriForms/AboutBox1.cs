@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace YuriHalation.YuriForms
 {
-    partial class AboutBox1 : Form
+    internal partial class AboutBox1 : Form
     {
         public AboutBox1()
         {

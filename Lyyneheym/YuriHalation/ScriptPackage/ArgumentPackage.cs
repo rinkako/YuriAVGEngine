@@ -6,7 +6,7 @@ namespace Yuri.YuriHalation.ScriptPackage
     /// 参数包装类
     /// </summary>
     [Serializable]
-    class ArgumentPackage
+    internal class ArgumentPackage
     {
         /// <summary>
         /// 参数的类型

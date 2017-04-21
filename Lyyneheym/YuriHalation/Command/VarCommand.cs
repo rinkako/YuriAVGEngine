@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：变量操作
     /// </summary>
-    class VarCommand : IHalationSingleCommand
+    internal class VarCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 变量操作

@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：直接描绘文本
     /// </summary>
-    class DrawCommand : IHalationSingleCommand
+    internal class DrawCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 直接描绘文本

@@ -30,7 +30,7 @@ namespace YuriHalation.YuriForms
         /// <summary>
         /// 调试进程
         /// </summary>
-        Process debugGameProcess;
+        private Process debugGameProcess;
 
         /// <summary>
         /// 构造器
@@ -78,7 +78,7 @@ namespace YuriHalation.YuriForms
         /// <summary>
         /// 当调试进程的错误到来时
         /// </summary>
-        void debugGameProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        private void debugGameProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (e.Data != null)
             {
@@ -89,7 +89,7 @@ namespace YuriHalation.YuriForms
         /// <summary>
         /// 当调试进程的输出到来时
         /// </summary>
-        void debugGameProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        private void debugGameProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (e.Data != null)
             {

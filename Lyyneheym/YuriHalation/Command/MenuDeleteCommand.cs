@@ -6,7 +6,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// IDE命令类：删除
     /// </summary>
-    class MenuDeleteCommand : IHalationCommand
+    internal class MenuDeleteCommand : IHalationCommand
     {
         /// <summary>
         /// 删除代码向量里的代码

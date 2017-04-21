@@ -7,7 +7,7 @@ namespace Yuri.YuriHalation.ScriptPackage
     /// 可执行包装类
     /// </summary>
     [Serializable]
-    class RunnablePackage
+    internal class RunnablePackage
     {
         /// <summary>
         /// 构造函数

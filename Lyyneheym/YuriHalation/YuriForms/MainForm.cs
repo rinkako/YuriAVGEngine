@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Yuri;
+using Yuri.YuriHalation.ScriptPackage;
 
 namespace YuriHalation.YuriForms
 {
@@ -583,6 +584,12 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
+            if (this.codeListBox.SelectedItems.Count != 1)
+            {
+                return;
+            }
+            var editPack = this.core.GetEditPackage(this.codeListBox.SelectedIndex);
+            
             MessageBox.Show("还没做……");
         }
 

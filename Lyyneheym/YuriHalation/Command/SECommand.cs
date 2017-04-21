@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：播放BGM
     /// </summary>
-    class SECommand : IHalationSingleCommand
+    internal class SECommand : IHalationSingleCommand
     {
         /// <summary>
         /// 播放BGM

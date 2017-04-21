@@ -6,7 +6,7 @@ namespace Yuri.YuriHalation.ScriptPackage
     /// 变量包装类
     /// </summary>
     [Serializable]
-    class VariablePackage
+    internal class VariablePackage
     {
         /// <summary>
         /// 变量名

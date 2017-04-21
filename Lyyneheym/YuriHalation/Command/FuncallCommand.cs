@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：函数调用
     /// </summary>
-    class FuncallCommand : IHalationSingleCommand
+    internal class FuncallCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 函数调用

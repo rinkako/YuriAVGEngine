@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：播放Vocal
     /// </summary>
-    class VocalCommand : IHalationSingleCommand
+    internal class VocalCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 播放Vocal

@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：等待动画结束
     /// </summary>
-    class WaitaniCommand : IHalationSingleCommand
+    internal class WaitaniCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 等待动画结束

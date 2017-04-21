@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：状态变更
     /// </summary>
-    class BranchCommand : IHalationSingleCommand
+    internal class BranchCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 直接描绘文本

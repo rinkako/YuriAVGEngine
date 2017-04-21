@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：停止背景音乐
     /// </summary>
-    class StopBGMCommand : IHalationSingleCommand
+    internal class StopBGMCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 停止背景音乐

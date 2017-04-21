@@ -133,21 +133,21 @@ namespace YuriHalation.YuriForms
         /// <summary>
         /// 图片文件夹
         /// </summary>
-        DirectoryInfo dirInfoPictures;
+        private DirectoryInfo dirInfoPictures;
 
         /// <summary>
         /// 立绘文件夹
         /// </summary>
-        DirectoryInfo dirInfoCharacter;
+        private DirectoryInfo dirInfoCharacter;
 
         /// <summary>
         /// 背景文件夹
         /// </summary>
-        DirectoryInfo dirInfoBackground;
+        private DirectoryInfo dirInfoBackground;
 
         /// <summary>
         /// 路径信息向量
         /// </summary>
-        List<string> pathVect = new List<string>();
+        private List<string> pathVect = new List<string>();
     }
 }

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Yuri.YuriHalation.ScriptPackage;
 
 namespace Yuri.YuriHalation.Command
 {
     using HalaAttrList = List<KeyValuePair<string, KeyValuePair<ArgType, string>>>;
 
-    class IHalationSingleCommand : IHalationCommand
+    internal class IHalationSingleCommand : IHalationCommand
     {
         /// <summary>
         /// 构造一个待执行的单条语句
@@ -26,16 +27,12 @@ namespace Yuri.YuriHalation.Command
         /// </summary>
         public void Dash()
         {
-            var ArgDict = new Dictionary<string, ArgumentPackage>();
-            foreach (var kvp in this.ArgumentList)
-            {
-                ArgDict.Add(kvp.Key, new ArgumentPackage() { aType = kvp.Value.Key, valueExp = kvp.Value.Value });
-            }
+            var ArgDict = this.ArgumentList.ToDictionary(kvp => kvp.Key, kvp => new ArgumentPackage() {aType = kvp.Value.Key, valueExp = kvp.Value.Value});
             ActionPackage ap = new ActionPackage()
             {
                 indent = this.indent,
                 argsDict = ArgDict,
-                nodeName = String.Format("{0}@{1}", this.commandLine, this.apType.ToString()),
+                nodeName = String.Format("{0}@{1}", this.commandLine, this.apType),
                 nodeType = this.apType
             };
             this.parent.AddAction(ap, this.commandLine);

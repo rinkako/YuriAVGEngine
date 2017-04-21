@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：修改文本层属性
     /// </summary>
-    class MsgLayerOptCommand : IHalationSingleCommand
+    internal class MsgLayerOptCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 修改文本层属性

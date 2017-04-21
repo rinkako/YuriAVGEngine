@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：添加标签
     /// </summary>
-    class LabelCommand : IHalationSingleCommand
+    internal class LabelCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 添加标签

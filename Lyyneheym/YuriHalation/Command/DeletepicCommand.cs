@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：删除图片
     /// </summary>
-    class DeletepicCommand : IHalationSingleCommand
+    internal class DeletepicCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 删除图片

@@ -6,7 +6,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// IDE命令类：剪切
     /// </summary>
-    class MenuCutCommand : IHalationCommand
+    internal class MenuCutCommand : IHalationCommand
     {
         /// <summary>
         /// 剪切代码向量里的代码

@@ -2,7 +2,7 @@
 
 namespace Yuri.YuriHalation.Command
 {
-    static class HalationViewCommand
+    internal static class HalationViewCommand
     {
         public static bool AddItemToCodeListbox(int insertLine, int indent, string text)
         {

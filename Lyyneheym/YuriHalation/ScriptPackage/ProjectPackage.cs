@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.ScriptPackage
     /// 工程包装类
     /// </summary>
     [Serializable]
-    class ProjectPackage
+    internal class ProjectPackage
     {
         /// <summary>
         /// 建立一个工程

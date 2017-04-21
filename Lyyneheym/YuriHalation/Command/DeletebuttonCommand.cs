@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：删除按钮
     /// </summary>
-    class DeletebuttonCommand : IHalationSingleCommand
+    internal class DeletebuttonCommand : IHalationSingleCommand
     {
         /// <summary>
         /// 删除按钮
