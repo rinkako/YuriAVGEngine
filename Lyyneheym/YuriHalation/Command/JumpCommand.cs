@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：跳转
     /// </summary>
-    internal class JumpCommand : IHalationSingleCommand
+    internal class JumpCommand : HalationSingleCommand
     {
         /// <summary>
         /// 跳转

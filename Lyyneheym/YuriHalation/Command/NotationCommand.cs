@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：注释
     /// </summary>
-    internal class NotationCommand : IHalationSingleCommand
+    internal class NotationCommand : HalationSingleCommand
     {
         /// <summary>
         /// 注释

@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：结束当前场景
     /// </summary>
-    internal class ReturnCommand : IHalationSingleCommand
+    internal class ReturnCommand : HalationSingleCommand
     {
         /// <summary>
         /// 结束当前场景

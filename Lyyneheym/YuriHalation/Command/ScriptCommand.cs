@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：代码片段
     /// </summary>
-    internal class ScriptCommand : IHalationSingleCommand
+    internal class ScriptCommand : HalationSingleCommand
     {
         /// <summary>
         /// 代码片段

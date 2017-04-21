@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：动画
     /// </summary>
-    internal class MoveCommand : IHalationSingleCommand
+    internal class MoveCommand : HalationSingleCommand
     {
         /// <summary>
         /// 动画

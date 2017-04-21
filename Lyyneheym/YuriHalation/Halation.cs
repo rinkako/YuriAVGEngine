@@ -264,6 +264,12 @@ namespace Yuri
             this.RefreshProjectTree();
         }
 
+        public void DashEditDialog(string context)
+        {
+            IHalationCommand cmd = new EditDialogCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, context);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
         public void DashDialog(string context)
         {
             IHalationCommand cmd = new DialogCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, context);

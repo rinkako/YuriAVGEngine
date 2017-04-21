@@ -259,7 +259,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            DialogForm formDialog = new DialogForm("显示对话");
+            DialogForm formDialog = new DialogForm("显示对话", false);
             formDialog.ShowDialog(this);
         }
 
@@ -433,7 +433,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button33_Click(object sender, EventArgs e)
         {
-            DialogForm df = new DialogForm("代码片段");
+            DialogForm df = new DialogForm("代码片段", false);
             df.ShowDialog(this);
         }
 
@@ -589,8 +589,16 @@ namespace YuriHalation.YuriForms
                 return;
             }
             var editPack = this.core.GetEditPackage(this.codeListBox.SelectedIndex);
-            
-            MessageBox.Show("还没做……");
+            switch (editPack.nodeType)
+            {
+                case ActionPackageType.act_dialog:
+                    DialogForm editDf = new DialogForm("显示对话", true, editPack.argsDict["context"].valueExp);
+                    editDf.ShowDialog(this);
+                    break;
+                default:
+                    MessageBox.Show("还没做……");
+                    break;
+            }
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：等待用户操作
     /// </summary>
-    internal class WaituserCommand : IHalationSingleCommand
+    internal class WaituserCommand : HalationSingleCommand
     {
         /// <summary>
         /// 等待用户操作

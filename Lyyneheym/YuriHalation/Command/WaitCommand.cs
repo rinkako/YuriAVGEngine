@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：显示对话
     /// </summary>
-    internal class WaitCommand : IHalationSingleCommand
+    internal class WaitCommand : HalationSingleCommand
     {
         /// <summary>
         /// 显示对话

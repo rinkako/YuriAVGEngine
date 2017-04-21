@@ -42,6 +42,25 @@ namespace Yuri.YuriHalation.ScriptPackage
         }
 
         /// <summary>
+        /// 替换指定位置的一个动作
+        /// </summary>
+        /// <param name="ap">新的动作包装</param>
+        /// <param name="editLine">要被替换的行</param>
+        /// <returns>操作成功与否</returns>
+        public bool ReplaceAction(ActionPackage ap, int editLine)
+        {
+            if (editLine >= 0 && editLine < this.APList.Count)
+            {
+                this.APList[editLine] = ap;
+            }
+            else
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 查找一个局部变量，如果不存在就增加它；并且增添它的被引用次数
         /// </summary>
         /// <param name="varName">变量名</param>

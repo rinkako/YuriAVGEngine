@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：删除立绘
     /// </summary>
-    internal class DeletestandCommand : IHalationSingleCommand
+    internal class DeletestandCommand : HalationSingleCommand
     {
         /// <summary>
         /// 删除立绘
