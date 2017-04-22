@@ -1,12 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.IO;
 using System.Threading;
-using Yuri;
+using System.Windows.Forms;
 using Yuri.YuriHalation.HalationCore;
 
-namespace YuriHalation.YuriForms
+namespace Yuri.YuriHalation.YuriForms
 {
     public partial class UserPackerForm : Form
     {

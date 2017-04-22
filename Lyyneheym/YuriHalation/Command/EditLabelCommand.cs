@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：添加标签
     /// </summary>
-    internal class LabelCommand : HalationSingleCommand
+    internal class EditLabelCommand : HalationSingleEditCommand
     {
         /// <summary>
         /// 添加标签
@@ -18,7 +18,7 @@ namespace Yuri.YuriHalation.Command
         /// <param name="indent">对齐偏移</param>
         /// <param name="parent">所属的可运行包装</param>
         /// <param name="name">标签名</param>
-        public LabelCommand(int line, int indent, RunnablePackage parent, string name)
+        public EditLabelCommand(int line, int indent, RunnablePackage parent, string name)
             : base(line, indent, parent)
         {
             HalaAttrList hal = new HalaAttrList();

@@ -1,21 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Yuri;
 
-namespace YuriHalation.YuriForms
+namespace Yuri.YuriHalation.YuriForms
 {
     public partial class SCameraForm : Form
     {
-        public SCameraForm()
+        private readonly bool isEditing;
+
+        public SCameraForm(bool isEdit, string name = "", string r = "0", string c = "0", string ro = "1")
         {
             InitializeComponent();
             this.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            this.isEditing = isEdit;
+            if (isEdit)
+            {
+                this.numericUpDown1.Value = Convert.ToInt32(r);
+                this.numericUpDown2.Value = Convert.ToInt32(c);
+                this.textBox1.Text = ro;
+                switch (name)
+                {
+                    case "blackframe":
+                        this.radioButton1.Checked = true;
+                        break;
+                    case "enterscene":
+                        this.radioButton2.Checked = true;
+                        break;
+                    case "outblackframe":
+                        this.radioButton3.Checked = true;
+                        break;
+                    case "translate":
+                        this.radioButton4.Checked = true;
+                        break;
+                    case "focus":
+                        this.radioButton5.Checked = true;
+                        break;
+                    default:
+                        this.radioButton6.Checked = true;
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -97,13 +120,21 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-             if (this.radioButton5.Checked && this.textBox1.Text.Trim() == String.Empty)
+            if (this.radioButton5.Checked && this.textBox1.Text.Trim() == String.Empty)
             {
-                MessageBox.Show("聚焦比不能为空，且应该是 [0.5, 2.5] 区间中的值");
+                MessageBox.Show(@"聚焦比不能为空");
                 return;
             }
-            Halation.GetInstance().DashSCamera(this.scameraAct,
+            if (this.isEditing)
+            {
+                Halation.GetInstance().DashEditSCamera(this.scameraAct,
                 this.numericUpDown1.Value.ToString(), this.numericUpDown2.Value.ToString(), this.textBox1.Text.Trim());
+            }
+            else
+            {
+                Halation.GetInstance().DashSCamera(this.scameraAct,
+                this.numericUpDown1.Value.ToString(), this.numericUpDown2.Value.ToString(), this.textBox1.Text.Trim());
+            }
             this.Close();
         }
 

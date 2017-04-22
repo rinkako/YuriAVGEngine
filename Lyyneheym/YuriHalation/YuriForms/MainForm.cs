@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Yuri;
 using Yuri.YuriHalation.ScriptPackage;
 
-namespace YuriHalation.YuriForms
+namespace Yuri.YuriHalation.YuriForms
 {
     public partial class MainForm : Form
     {
         /// <summary>
         /// 控制器实例
         /// </summary>
-        private Halation core = Halation.GetInstance();
+        private readonly Halation core = Halation.GetInstance();
 
         /// <summary>
         /// 构造器
@@ -356,7 +355,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button20_Click(object sender, EventArgs e)
         {
-            LabelForm lf = new LabelForm();
+            LabelForm lf = new LabelForm(false);
             lf.ShowDialog(this);
         }
 
@@ -365,7 +364,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button19_Click(object sender, EventArgs e)
         {
-            JumpForm jf = new JumpForm();
+            JumpForm jf = new JumpForm(false);
             jf.ShowDialog(this);
         }
 
@@ -442,7 +441,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button32_Click(object sender, EventArgs e)
         {
-            DeleteViewForm dvf = new DeleteViewForm(0);
+            DeleteViewForm dvf = new DeleteViewForm(0, false);
             dvf.ShowDialog(this);
         }
 
@@ -451,7 +450,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button31_Click(object sender, EventArgs e)
         {
-            SCameraForm scf = new SCameraForm();
+            SCameraForm scf = new SCameraForm(false);
             scf.ShowDialog(this);
         }
 
@@ -486,7 +485,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button12_Click(object sender, EventArgs e)
         {
-            MoveForm mf = new MoveForm();
+            MoveForm mf = new MoveForm(false);
             mf.ShowDialog(this);
         }
 
@@ -513,7 +512,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button24_Click(object sender, EventArgs e)
         {
-            ButtonForm bf = new ButtonForm();
+            ButtonForm bf = new ButtonForm(false);
             bf.ShowDialog(this);
         }
 
@@ -522,7 +521,7 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button8_Click(object sender, EventArgs e)
         {
-            PicturesForm pf = new PicturesForm();
+            PicturesForm pf = new PicturesForm(false);
             pf.ShowDialog(this);
         }
 
@@ -608,8 +607,60 @@ namespace YuriHalation.YuriForms
                     editWf.ShowDialog(this);
                     break;
                 case ActionPackageType.act_a:
-                    AForm editAf = new AForm(true, editPack.argsDict["name"].valueExp, editPack.argsDict["face"].valueExp, editPack.argsDict["loc"].valueExp, editPack.argsDict["vid"].valueExp);
+                    AForm editAf = new AForm(true, editPack.argsDict["name"].valueExp,
+                        editPack.argsDict["face"].valueExp, editPack.argsDict["loc"].valueExp,
+                        editPack.argsDict["vid"].valueExp);
                     editAf.ShowDialog(this);
+                    break;
+                case ActionPackageType.act_picture:
+                    PicturesForm editPf = new PicturesForm(true, editPack.argsDict["id"].valueExp,
+                        editPack.argsDict["filename"].valueExp, editPack.argsDict["x"].valueExp,
+                        editPack.argsDict["y"].valueExp, editPack.argsDict["xscale"].valueExp,
+                        editPack.argsDict["yscale"].valueExp, editPack.argsDict["opacity"].valueExp,
+                        editPack.argsDict["ro"].valueExp);
+                    editPf.ShowDialog(this);
+                    break;
+                case ActionPackageType.act_move:
+                    MoveForm editMf = new MoveForm(true, editPack.argsDict["name"].valueExp,
+                        editPack.argsDict["id"].valueExp, editPack.argsDict["time"].valueExp,
+                        editPack.argsDict["target"].valueExp, editPack.argsDict["dash"].valueExp,
+                        editPack.argsDict["acc"].valueExp);
+                    editMf.ShowDialog(this);
+                    break;
+                case ActionPackageType.act_button:
+                    ButtonForm editBf = new ButtonForm(true, editPack.argsDict["id"].valueExp,
+                        editPack.argsDict["x"].valueExp, editPack.argsDict["y"].valueExp,
+                        editPack.argsDict["target"].valueExp, editPack.argsDict["type"].valueExp,
+                        editPack.argsDict["normal"].valueExp, editPack.argsDict["over"].valueExp,
+                        editPack.argsDict["on"].valueExp);
+                    editBf.ShowDialog(this);
+                    break;
+                case ActionPackageType.act_jump:
+                    JumpForm editJf = new JumpForm(true, editPack.argsDict["filename"].valueExp,
+                        editPack.argsDict["target"].valueExp, editPack.argsDict["cond"].valueExp);
+                    editJf.ShowDialog(this);
+                    break;
+                case ActionPackageType.act_label:
+                    LabelForm editLf = new LabelForm(true, editPack.argsDict["name"].valueExp);
+                    editLf.ShowDialog(this);
+                    break;
+                case ActionPackageType.act_scamera:
+                    SCameraForm editScf = new SCameraForm(true, editPack.argsDict["name"].valueExp,
+                        editPack.argsDict["x"].valueExp, editPack.argsDict["y"].valueExp,
+                        editPack.argsDict["ro"].valueExp);
+                    editScf.ShowDialog(this);
+                    break;
+                case ActionPackageType.act_deletepicture:
+                    DeleteViewForm editDpf = new DeleteViewForm(0, true, editPack.argsDict["id"].valueExp);
+                    editDpf.ShowDialog(this);
+                    break;
+                case ActionPackageType.act_deletecstand:
+                    DeleteViewForm editDcf = new DeleteViewForm(1, true, editPack.argsDict["id"].valueExp);
+                    editDcf.ShowDialog(this);
+                    break;
+                case ActionPackageType.act_deletebutton:
+                    DeleteViewForm editDsf = new DeleteViewForm(2, true, editPack.argsDict["id"].valueExp);
+                    editDsf.ShowDialog(this);
                     break;
                 default:
                     MessageBox.Show(@"该项目不支持编辑");
@@ -771,7 +822,7 @@ namespace YuriHalation.YuriForms
         {
             var dr = MessageBox.Show("确定要退出吗" + Environment.NewLine + "未保存的工作将会丢失", "退出Halation",
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-            if (dr == System.Windows.Forms.DialogResult.OK)
+            if (dr == DialogResult.OK)
             {
                 Environment.Exit(0);
             }

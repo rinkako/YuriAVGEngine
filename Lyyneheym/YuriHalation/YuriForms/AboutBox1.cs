@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace YuriHalation.YuriForms
+namespace Yuri.YuriHalation.YuriForms
 {
     internal partial class AboutBox1 : Form
     {

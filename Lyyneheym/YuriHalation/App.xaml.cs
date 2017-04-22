@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace YuriHalation
+namespace Yuri.YuriHalation
 {
     /// <summary>
     /// App.xaml 的交互逻辑

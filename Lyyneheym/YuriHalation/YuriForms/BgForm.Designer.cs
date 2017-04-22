@@ -1,4 +1,4 @@
-﻿namespace YuriHalation.YuriForms
+﻿namespace Yuri.YuriHalation.YuriForms
 {
     partial class BgForm
     {
@@ -109,11 +109,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(211, 41);
+            this.label2.Location = new System.Drawing.Point(193, 41);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(11, 12);
+            this.label2.Size = new System.Drawing.Size(29, 12);
             this.label2.TabIndex = 7;
-            this.label2.Text = "Z";
+            this.label2.Text = "3D-Z";
             // 
             // BgForm
             // 

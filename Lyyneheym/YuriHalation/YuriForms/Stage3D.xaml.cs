@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 
-namespace YuriHalation.YuriForms
+namespace Yuri.YuriHalation.YuriForms
 {
     /// <summary>
     /// Stage3D.xaml 的交互逻辑

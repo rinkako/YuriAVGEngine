@@ -1,9 +1,8 @@
-﻿<Window x:Class="YuriHalation.YuriForms.SCamera3DForm"
+﻿<Window x:Class="Yuri.YuriHalation.YuriForms.SCamera3DForm"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:YuriHalation.YuriForms"
         mc:Ignorable="d"
         Title="SCamera3DForm" Height="752" Width="1450" Background="FloralWhite" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Canvas>

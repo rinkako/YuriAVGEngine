@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Yuri;
 using Yuri.YuriHalation.ScriptPackage;
 
-namespace YuriHalation.YuriForms
+namespace Yuri.YuriHalation.YuriForms
 {
     /// <summary>
     /// 窗体：全局设定

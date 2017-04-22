@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：场景镜头动画
     /// </summary>
-    internal class SCameraCommand : HalationSingleCommand
+    internal class EditSCameraCommand : HalationSingleEditCommand
     {
         /// <summary>
         /// 场景镜头动画
@@ -20,7 +20,7 @@ namespace Yuri.YuriHalation.Command
         /// <param name="r">作用横向块编号</param>
         /// <param name="c">作用纵向块编号</param>
         /// <param name="ro">缩放比</param>
-        public SCameraCommand(int line, int indent, RunnablePackage parent, string name, string r, string c, string ro)
+        public EditSCameraCommand(int line, int indent, RunnablePackage parent, string name, string r, string c, string ro)
             : base(line, indent, parent)
         {
             HalaAttrList hal = new HalaAttrList();

@@ -1,4 +1,4 @@
-﻿namespace YuriHalation.YuriForms
+﻿namespace Yuri.YuriHalation.YuriForms
 {
     partial class MusicForm
     {

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Windows.Forms;
-using Yuri;
 
-namespace YuriHalation.YuriForms
+namespace Yuri.YuriHalation.YuriForms
 {
     public partial class LabelForm : Form
     {
-        public LabelForm()
+        private readonly bool isEditing;
+
+        public LabelForm(bool isEdit, string name = "")
         {
             InitializeComponent();
-            this.textBox1.Text = String.Empty;
+            this.textBox1.Text = (this.isEditing = isEdit) ? name : String.Empty;
         }
 
         /// <summary>
@@ -17,15 +18,20 @@ namespace YuriHalation.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            if (this.textBox1.Text != String.Empty)
+            if (this.textBox1.Text == String.Empty)
             {
-                Halation.GetInstance().DashLabel(this.textBox1.Text);
-                this.Close();
+                MessageBox.Show(@"请填写标签");
+                return;
+            }
+            if (this.isEditing)
+            {
+                Halation.GetInstance().DashEditLabel(this.textBox1.Text);
             }
             else
             {
-                MessageBox.Show("请填写标签");
+                Halation.GetInstance().DashLabel(this.textBox1.Text);
             }
+            this.Close();
         }
     }
 }

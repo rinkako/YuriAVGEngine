@@ -60,11 +60,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\EditDeletestandCommand.cs" />
+    <Compile Include="Command\EditDeletepicCommand.cs" />
+    <Compile Include="Command\EditDeletebuttonCommand.cs" />
+    <Compile Include="Command\EditButtonCommand.cs" />
     <Compile Include="Command\EditACommand.cs" />
     <Compile Include="Command\EditDialogCommand.cs" />
     <Compile Include="Command\HalationSingleEditCommand.cs" />
     <Compile Include="Command\IfCommand.cs" />
     <Compile Include="Command\EditNotationCommand.cs" />
+    <Compile Include="Command\EditPictureCommand.cs" />
+    <Compile Include="Command\EditMoveCommand.cs" />
+    <Compile Include="Command\EditLabelCommand.cs" />
+    <Compile Include="Command\EditJumpCommand.cs" />
+    <Compile Include="Command\EditSCameraCommand.cs" />
     <Compile Include="Command\SCameraCommand.cs" />
     <Compile Include="Command\EditScriptCommand.cs" />
     <Compile Include="Command\VarCommand.cs" />

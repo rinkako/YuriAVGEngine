@@ -1,9 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using NAudio.Wave;
 
-namespace YuriHalation.HalationCore
+namespace Yuri.YuriHalation.HalationCore
 {    
     /// <summary>
     /// NAudio音频播放器

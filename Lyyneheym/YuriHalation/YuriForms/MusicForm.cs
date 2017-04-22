@@ -1,11 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using Yuri.YuriHalation.HalationCore;
-using Yuri;
 
-namespace YuriHalation.YuriForms
+namespace Yuri.YuriHalation.YuriForms
 {
     public partial class MusicForm : Form
     {

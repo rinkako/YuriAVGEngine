@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using Yuri;
 
-namespace YuriHalation.YuriForms
+namespace Yuri.YuriHalation.YuriForms
 {
     /// <summary>
     /// 窗体：显示对话

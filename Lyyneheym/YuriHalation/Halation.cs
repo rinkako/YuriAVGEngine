@@ -1,15 +1,15 @@
 ﻿using System;
-using System.IO;
-using System.Windows.Forms;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
-using YuriHalation.YuriForms;
-using Yuri.YuriHalation.ScriptPackage;
-using Yuri.YuriHalation.HalationCore;
+using System.Windows.Forms;
 using Yuri.YuriHalation.Command;
+using Yuri.YuriHalation.HalationCore;
+using Yuri.YuriHalation.ScriptPackage;
+using Yuri.YuriHalation.YuriForms;
 using Yuri.YuriInterpreter;
 
-namespace Yuri
+namespace Yuri.YuriHalation
 {
     /// <summary>
     /// 控制器类：负责前端与后台的交互
@@ -354,9 +354,21 @@ namespace Yuri
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
+        public void DashEditLabel(string label)
+        {
+            IHalationCommand cmd = new EditLabelCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, label);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
         public void DashJump(string target, string filename = "", string cond = "")
         {
             IHalationCommand cmd = new JumpCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, filename, target, cond);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashEditJump(string target, string filename = "", string cond = "")
+        {
+            IHalationCommand cmd = new EditJumpCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, filename, target, cond);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
@@ -438,15 +450,33 @@ namespace Yuri
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
+        public void DashEditDeletepicture(string id)
+        {
+            IHalationCommand cmd = new EditDeletepicCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
         public void DashDeletecstand(string id)
         {
             IHalationCommand cmd = new DeletestandCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
+        public void DashEditDeletecstand(string id)
+        {
+            IHalationCommand cmd = new EditDeletestandCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
         public void DashDeletebutton(string id)
         {
             IHalationCommand cmd = new DeletebuttonCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashEditDeletebutton(string id)
+        {
+            IHalationCommand cmd = new EditDeletebuttonCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
@@ -459,6 +489,12 @@ namespace Yuri
         public void DashMove(string name, string id, string time, string target, string dash, string acc)
         {
             IHalationCommand cmd = new MoveCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, name, id, time, target, dash, acc);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashEditMove(string name, string id, string time, string target, string dash, string acc)
+        {
+            IHalationCommand cmd = new EditMoveCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, name, id, time, target, dash, acc);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
@@ -480,9 +516,21 @@ namespace Yuri
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
+        public void DashEditButton(string id, string x, string y, string target, string type, string normal, string over, string on)
+        {
+            IHalationCommand cmd = new EditButtonCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, x, y, target, type, normal, over, on);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
         public void DashPicture(string id, string filename, string x, string y, string xscale, string yscale, string opacity, string ro)
         {
             IHalationCommand cmd = new PictureCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, filename, x, y, xscale, yscale, opacity, ro);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashEditPicture(string id, string filename, string x, string y, string xscale, string yscale, string opacity, string ro)
+        {
+            IHalationCommand cmd = new EditPictureCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, filename, x, y, xscale, yscale, opacity, ro);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
@@ -509,6 +557,12 @@ namespace Yuri
             IHalationCommand cmd = new SCameraCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, name, r, c, ro);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
+
+        public void DashEditSCamera(string name, string r, string c, string ro)
+        {
+            IHalationCommand cmd = new EditSCameraCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, name, r, c, ro);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
         #endregion
 
         #region 前端菜单相关
@@ -525,7 +579,7 @@ namespace Yuri
                 var act = Halation.currentCodePackage.GetAction(i);
                 if (act.nodeName == "pad" && act.indent <= Halation.currentCodePackage.GetAction(begin).indent)
                 {
-                    MessageBox.Show("不能删除插入节点");
+                    MessageBox.Show(@"不能删除插入节点");
                     return;
                 }
             }

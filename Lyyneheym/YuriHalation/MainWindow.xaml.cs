@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using YuriHalation.YuriForms;
+using Yuri.YuriHalation.YuriForms;
 
-namespace YuriHalation
+namespace Yuri.YuriHalation
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑

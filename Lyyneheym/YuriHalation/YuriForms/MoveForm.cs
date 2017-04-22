@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Windows.Forms;
-using Yuri;
 
-namespace YuriHalation.YuriForms
+namespace Yuri.YuriHalation.YuriForms
 {
     public partial class MoveForm : Form
     {
-        public MoveForm()
+        private bool isEditing;
+
+        public MoveForm(bool isEdit, string name = "picture", string id = "0", string time = "0", string target = "opacity", string dash = "1", string acc = "0")
         {
             InitializeComponent();
             foreach (var s in this.propertyItemDesc)
@@ -15,6 +16,30 @@ namespace YuriHalation.YuriForms
             }
             this.comboBox1.SelectedIndex = 0;
             this.comboBox2.SelectedIndex = 0;
+            this.isEditing = isEdit;
+            if (isEdit)
+            {
+                for (int i = 0; i < this.comboBox1.Items.Count; i++)
+                {
+                    if (this.comboBox1.Items[i].ToString() == name)
+                    {
+                        this.comboBox1.SelectedIndex = i;
+                        break;
+                    }
+                }
+                this.numericUpDown1.Value = Convert.ToInt32(id);
+                for (int i = 0; i < this.comboBox2.Items.Count; i++)
+                {
+                    if (this.propertyItem[i] == target)
+                    {
+                        this.comboBox2.SelectedIndex = i;
+                        break;
+                    }
+                }
+                this.textBox1.Text = dash;
+                this.numericUpDown2.Value = Convert.ToInt32(acc);
+                this.numericUpDown3.Value = Convert.ToInt32(time);
+            }
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -46,9 +71,20 @@ namespace YuriHalation.YuriForms
                 MessageBox.Show("目标值不能为空");
                 return;
             }
-            Halation.GetInstance().DashMove(this.comboBox1.SelectedItem.ToString(),
-                this.numericUpDown1.Value.ToString(), this.numericUpDown3.Value.ToString(),
-                this.propertyItem[this.comboBox2.SelectedIndex], this.textBox1.Text, this.numericUpDown2.Value.ToString());
+            if (this.isEditing)
+            {
+                Halation.GetInstance().DashEditMove(this.comboBox1.SelectedItem.ToString(),
+                    this.numericUpDown1.Value.ToString(), this.numericUpDown3.Value.ToString(),
+                    this.propertyItem[this.comboBox2.SelectedIndex], this.textBox1.Text,
+                    this.numericUpDown2.Value.ToString());
+            }
+            else
+            {
+                Halation.GetInstance().DashMove(this.comboBox1.SelectedItem.ToString(),
+                    this.numericUpDown1.Value.ToString(), this.numericUpDown3.Value.ToString(),
+                    this.propertyItem[this.comboBox2.SelectedIndex], this.textBox1.Text,
+                    this.numericUpDown2.Value.ToString());
+            }
             this.Close();
         }
 

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using Yuri;
 
-namespace YuriHalation.YuriForms
+namespace Yuri.YuriHalation.YuriForms
 {
     public partial class VarForm : Form
     {

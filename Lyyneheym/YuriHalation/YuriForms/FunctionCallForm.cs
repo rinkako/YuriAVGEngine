@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using Yuri;
 using Yuri.YuriHalation.ScriptPackage;
 
-namespace YuriHalation.YuriForms
+namespace Yuri.YuriHalation.YuriForms
 {
     public partial class FunctionCallForm : Form
     {
