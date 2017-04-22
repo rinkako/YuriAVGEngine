@@ -182,6 +182,7 @@ namespace Yuri.YuriHalation.ScriptPackage
                 case ActionPackageType.act_bg:
                     desSb.Append(String.Format("图层:{0} ", this.argsDict["id"].valueExp == "0" ? "背景" : "前景"));
                     desSb.Append(String.Format("文件:{0} ", this.argsDict["filename"].valueExp));
+                    desSb.Append(String.Format("深度:{0} ", this.argsDict["ro"].valueExp));
                     break;
                 case ActionPackageType.act_cstand:
                     desSb.Append(String.Format("图层:{0} ", this.argsDict["id"].valueExp));
@@ -255,6 +256,9 @@ namespace Yuri.YuriHalation.ScriptPackage
                     string[] varRightItems = this.argsDict["opRight"].valueExp.Split('#');
                     switch (varRightItems[0])
                     {
+                        case "0":
+                            desSb.Append(String.Format("%{0} ", varRightItems[1]));
+                            break;
                         case "1":
                             desSb.Append(String.Format("常数[{0}] ", varRightItems[1]));
                             break;
@@ -282,6 +286,9 @@ namespace Yuri.YuriHalation.ScriptPackage
                         string[] ifLeftItems = this.argsDict["op1"].valueExp.ToString().Split('#');
                         switch (ifLeftItems[0])
                         {
+                            case "0":
+                                desSb.Append(String.Format("%{0} ", ifLeftItems[1]));
+                                break;
                             case "1":
                                 desSb.Append(String.Format("&{0} ", ifLeftItems[1]));
                                 break;
@@ -296,6 +303,9 @@ namespace Yuri.YuriHalation.ScriptPackage
                         string[] ifRightItems = this.argsDict["op2"].valueExp.Split('#');
                         switch (ifRightItems[0])
                         {
+                            case "0":
+                                desSb.Append(String.Format("%{0} ", ifRightItems[1]));
+                                break;
                             case "1":
                                 desSb.Append(String.Format("常数[{0}] ", ifRightItems[1]));
                                 break;

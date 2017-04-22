@@ -32,7 +32,7 @@ namespace Yuri.YuriHalation.YuriForms
         {
             var dr = MessageBox.Show("确定要退出吗" + Environment.NewLine + "未保存的工作将会丢失", "退出Halation",
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-            if (dr == System.Windows.Forms.DialogResult.Cancel)
+            if (dr == DialogResult.Cancel)
             {
                 e.Cancel = true;
             }
@@ -494,7 +494,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void button7_Click(object sender, EventArgs e)
         {
-            BgForm bf = new BgForm();
+            BgForm bf = new BgForm(false);
             bf.ShowDialog(this);
         }
 
@@ -539,7 +539,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void button21_Click(object sender, EventArgs e)
         {
-            VarForm vf = new VarForm();
+            VarForm vf = new VarForm(false);
             vf.ShowDialog(this);
         }
 
@@ -548,7 +548,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void button26_Click(object sender, EventArgs e)
         {
-            IfForm iff = new IfForm();
+            IfForm iff = new IfForm(false);
             iff.ShowDialog(this);
         }
         #endregion
@@ -583,7 +583,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
-            if (this.codeListBox.SelectedItems.Count != 1)
+            if (this.codeListBox.SelectedIndex == -1)
             {
                 return;
             }
@@ -662,6 +662,22 @@ namespace Yuri.YuriHalation.YuriForms
                     DeleteViewForm editDsf = new DeleteViewForm(2, true, editPack.argsDict["id"].valueExp);
                     editDsf.ShowDialog(this);
                     break;
+                case ActionPackageType.act_bg:
+                    BgForm editBgf = new BgForm(true, editPack.argsDict["id"].valueExp,
+                        editPack.argsDict["filename"].valueExp, editPack.argsDict["ro"].valueExp);
+                    editBgf.ShowDialog(this);
+                    break;
+                case ActionPackageType.act_var:
+                    VarForm editVf = new VarForm(true, editPack.argsDict["opLeft"].valueExp,
+                        editPack.argsDict["op"].valueExp, editPack.argsDict["opRight"].valueExp);
+                    editVf.ShowDialog(this);
+                    break;
+                case ActionPackageType.act_if:
+                    IfForm editIff = new IfForm(true, Convert.ToBoolean(editPack.argsDict["?elseflag"].valueExp),
+                        editPack.argsDict["expr"].valueExp, editPack.argsDict["op1"].valueExp,
+                        editPack.argsDict["opr"].valueExp, editPack.argsDict["op2"].valueExp);
+                    editIff.ShowDialog(this);
+                    break;
                 default:
                     MessageBox.Show(@"该项目不支持编辑");
                     break;
@@ -673,7 +689,10 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void 复制ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.core.CopyCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
+            if (this.codeListBox.SelectedIndex != -1)
+            {
+                this.core.CopyCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
+            }
         }
 
         /// <summary>
@@ -681,8 +700,12 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void 删除ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.core.DeleteCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
-            this.core.RefreshCodeContext();
+            if (this.codeListBox.SelectedIndex != -1)
+            {
+                this.core.DeleteCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
+                this.core.RefreshCodeContext();
+                this.actionGroupBox.Enabled = false;
+            }
         }
 
         /// <summary>
@@ -690,8 +713,12 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void 剪切ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.core.CutCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
-            this.core.RefreshCodeContext();
+            if (this.codeListBox.SelectedIndex != -1)
+            {
+                this.core.CutCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
+                this.core.RefreshCodeContext();
+                this.actionGroupBox.Enabled = false;
+            }
         }
 
         /// <summary>
@@ -699,8 +726,12 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void 粘贴ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.core.PasteCode(this.codeListBox.SelectedIndex);
-            this.core.RefreshCodeContext();
+            if (this.codeListBox.SelectedIndex != -1)
+            {
+                this.core.PasteCode(this.codeListBox.SelectedIndex);
+                this.core.RefreshCodeContext();
+                this.actionGroupBox.Enabled = false;
+            }
         }
 
         /// <summary>

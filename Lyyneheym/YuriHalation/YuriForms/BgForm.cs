@@ -5,9 +5,25 @@ namespace Yuri.YuriHalation.YuriForms
 {
     public partial class BgForm : Form
     {
-        public BgForm()
+        private readonly bool isEditing;
+
+        public BgForm(bool isEdit, string id = "1", string filename = "", string ro = "-8")
         {
             InitializeComponent();
+            this.isEditing = isEdit;
+            if (isEdit)
+            {
+                if (id == "1")
+                {
+                    this.radioButton2.Checked = true;
+                }
+                else
+                {
+                    this.radioButton1.Checked = true;
+                }
+                this.textBox1.Text = filename;
+                this.textBox2.Text = ro;
+            }
         }
 
         /// <summary>
@@ -27,10 +43,17 @@ namespace Yuri.YuriHalation.YuriForms
         {
             if (this.textBox1.Text == String.Empty)
             {
-                MessageBox.Show("请选择图像");
+                MessageBox.Show(@"请选择图像");
                 return;
             }
-            Halation.GetInstance().DashBg(this.radioButton1.Checked ? "0" : "1", this.textBox1.Text, this.textBox2.Text);
+            if (this.isEditing)
+            {
+                Halation.GetInstance().DashEditBg(this.radioButton1.Checked ? "0" : "1", this.textBox1.Text, this.textBox2.Text);
+            }
+            else
+            {
+                Halation.GetInstance() .DashBg(this.radioButton1.Checked ? "0" : "1", this.textBox1.Text, this.textBox2.Text);
+            }
             this.Close();
         }
 

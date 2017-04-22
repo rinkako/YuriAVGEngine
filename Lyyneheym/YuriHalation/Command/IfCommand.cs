@@ -40,6 +40,7 @@ namespace Yuri.YuriHalation.Command
             ifArgDict.Add("op2", new ArgumentPackage() { aType = ArgType.unknown, valueExp = this.operand2 });
             ifArgDict.Add("opr", new ArgumentPackage() { aType = ArgType.unknown, valueExp = this.operateMode });
             ifArgDict.Add("expr", new ArgumentPackage() { aType = ArgType.unknown, valueExp = this.condExpr });
+            ifArgDict.Add("?elseflag", new ArgumentPackage() { aType = ArgType.unknown, valueExp = this.isContainElse.ToString() });
             ActionPackage ap1 = new ActionPackage()
             {
                 indent = this.indent,

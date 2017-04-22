@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Yuri.YuriHalation.Command;
@@ -46,8 +47,7 @@ namespace Yuri.YuriHalation
         /// <returns>一个包含了字段与字段值键值对的向量</returns>
         public static List<KeyValuePair<string, object>> GetNameAndValue<T>(T t)
         {
-            List<KeyValuePair<string, object>> resList = new List<KeyValuePair<string, object>>();
-            string tStr = string.Empty;
+            var resList = new List<KeyValuePair<string, object>>();
             if (t == null)
             {
                 return resList;
@@ -57,10 +57,7 @@ namespace Yuri.YuriHalation
             {
                 return resList;
             }
-            foreach (var item in properties)
-            {
-                resList.Add(new KeyValuePair<string, object>(item.Name, item.GetValue(t)));
-            }
+            resList.AddRange(properties.Select(item => new KeyValuePair<string, object>(item.Name, item.GetValue(t))));
             return resList;
         }
         #endregion
@@ -106,15 +103,9 @@ namespace Yuri.YuriHalation
             var ActList = Halation.currentCodePackage.GetAction();
             foreach (var act in ActList)
             {
-                if (act.nodeName != "pad")
-                {
-                    HalationViewCommand.AddItemToCodeListbox(-1, act.indent,
-                    String.Format("{0}{1}{2}{3}", act.GetFlag(), act.GetActionName(), act.GetSpace(), act.GetParaDescription()));
-                }
-                else
-                {
-                    HalationViewCommand.AddItemToCodeListbox(-1, act.indent, "◆ ");
-                }
+                HalationViewCommand.AddItemToCodeListbox(-1, act.indent, act.nodeName != "pad"
+                    ? String.Format("{0}{1}{2}{3}", act.GetFlag(), act.GetActionName(), act.GetSpace(), act.GetParaDescription())
+                    : "◆ ");
             }
             this.RefreshRedoUndo();
         }
@@ -123,9 +114,10 @@ namespace Yuri.YuriHalation
         /// 变更当前操作的场景或函数
         /// </summary>
         /// <param name="toRunnable">目标场景或函数</param>
+        /// <param name="parent">该场景或函数的上级名字</param>
         public void ChangeCodePackage(string toRunnable, string parent)
         {
-            RunnablePackage rp = null;
+            RunnablePackage rp;
             if (parent == String.Empty)
             {
                 rp = Halation.project.GetScene(toRunnable);
@@ -134,7 +126,6 @@ namespace Yuri.YuriHalation
             {
                 rp = ((ScenePackage)Halation.project.GetScene(parent)).GetFunc(toRunnable.Split('@')[0]);
             }
-
             Halation.currentCodePackage = rp;
         }
 
@@ -504,6 +495,12 @@ namespace Yuri.YuriHalation
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
+        public void DashEditBg(string id, string filename, string ro)
+        {
+            IHalationCommand cmd = new EditBgCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, filename, ro);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
         public void DashCstand(string id, string name, string face, string x, string y, string loc)
         {
             IHalationCommand cmd = new CstandCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, name, face, x, y, loc);
@@ -546,9 +543,21 @@ namespace Yuri.YuriHalation
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
+        public void DashEditVar(string op1, string opm, string op2)
+        {
+            IHalationCommand cmd = new EditVarCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, op1, opm, op2);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
         public void DashIf(bool containElse, string expr, string op1, string opr, string op2)
         {
             IHalationCommand cmd = new IfCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, containElse, expr, op1, opr, op2);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashEditIf(bool containElse, string expr, string op1, string opr, string op2)
+        {
+            IHalationCommand cmd = new EditIfCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, containElse, expr, op1, opr, op2);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 

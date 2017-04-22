@@ -5,10 +5,12 @@ namespace Yuri.YuriHalation.YuriForms
 {
     public partial class IfForm : Form
     {
+        private readonly bool isEditing;
+
         /// <summary>
         /// 窗体：条件分支
         /// </summary>
-        public IfForm()
+        public IfForm(bool isEdit, bool containElse = false, string expr = "", string op1 = "", string opr = "", string op2 = "")
         {
             InitializeComponent();
             // 处理开关操作的可选性
@@ -25,6 +27,92 @@ namespace Yuri.YuriHalation.YuriForms
             else
             {
                 this.radioButton12.Enabled = false;
+            }
+            this.isEditing = isEdit;
+            if (isEdit)
+            {
+                this.checkBox1.Enabled = false;
+                if (expr != String.Empty)
+                {
+                    this.checkBox2.Checked = true;
+                    this.textBox2.Text = expr;
+                }
+                else
+                {
+                    switch (opr)
+                    {
+                        case "==":
+                            this.radioButton3.Checked = true;
+                            break;
+                        case "<>":
+                            this.radioButton4.Checked = true;
+                            break;
+                        case ">":
+                            this.radioButton5.Checked = true;
+                            break;
+                        case "<":
+                            this.radioButton6.Checked = true;
+                            break;
+                        case ">=":
+                            this.radioButton7.Checked = true;
+                            break;
+                        default:
+                            this.radioButton8.Checked = true;
+                            break;
+                    }
+                    var ifLeftItems = op1.Split('#');
+                    var ifRightItems = op2.Split('#');
+                    switch (ifLeftItems[0])
+                    {
+                        case "0":
+                            this.radioButton15.Checked = true;
+                            this.textBox7.Text = ifLeftItems[1];
+                            break;
+                        case "1":
+                            this.radioButton1.Checked = true;
+                            this.textBox4.Text = ifLeftItems[1];
+                            break;
+                        case "2":
+                            this.radioButton2.Checked = true;
+                            this.textBox1.Text = ifLeftItems[1];
+                            break;
+                        case "3":
+                            this.radioButton12.Checked = true;
+                            this.comboBox3.SelectedIndex = Convert.ToInt32(ifLeftItems[1]);
+                            break;
+                    }
+                    switch (ifRightItems[0])
+                    {
+                        case "0":
+                            this.radioButton16.Checked = true;
+                            this.textBox8.Text = ifRightItems[1];
+                            break;
+                        case "1":
+                            this.radioButton9.Checked = true;
+                            this.numericUpDown1.Value = Convert.ToInt32(ifRightItems[1]);
+                            break;
+                        case "2":
+                            this.radioButton14.Checked = true;
+                            this.textBox6.Text = ifRightItems[1];
+                            break;
+                        case "3":
+                            this.radioButton10.Checked = true;
+                            this.textBox5.Text = ifRightItems[1];
+                            break;
+                        case "4":
+                            this.radioButton11.Checked = true;
+                            this.textBox3.Text = ifRightItems[1];
+                            break;
+                        case "5":
+                            this.radioButton13.Checked = true;
+                            this.comboBox4.SelectedIndex = ifRightItems[1] == "off" ? 0 : 1;
+                            break;
+                    }
+                    if (containElse)
+                    {
+                        this.checkBox1.Checked = true;
+                    }
+                }
             }
         }
 
@@ -65,6 +153,15 @@ namespace Yuri.YuriHalation.YuriForms
                         return;
                     }
                     op1 = "2#" + this.textBox1.Text;
+                }
+                else if (this.radioButton15.Checked)
+                {
+                    if (!Halation.IsValidVarname(this.textBox7.Text))
+                    {
+                        MessageBox.Show("操作数A变量名不合法");
+                        return;
+                    }
+                    op1 = "0#" + this.textBox7.Text;
                 }
                 else
                 {
@@ -122,13 +219,29 @@ namespace Yuri.YuriHalation.YuriForms
                     }
                     op2 = "4#" + this.textBox3.Text;
                 }
+                else if (this.radioButton16.Checked)
+                {
+                    if (!Halation.IsValidVarname(this.textBox8.Text))
+                    {
+                        MessageBox.Show("操作数A变量名不合法");
+                        return;
+                    }
+                    op2 = "0#" + this.textBox8.Text;
+                }
                 else
                 {
                     op2 = "5#" + this.comboBox4.SelectedItem.ToString();
                 }
                 expr = String.Empty;
             }
-            Halation.GetInstance().DashIf(this.checkBox1.Checked, expr, op1, opr, op2);
+            if (this.isEditing)
+            {
+                Halation.GetInstance().DashEditIf(this.checkBox1.Checked, expr, op1, opr, op2);
+            }
+            else
+            {
+                Halation.GetInstance().DashIf(this.checkBox1.Checked, expr, op1, opr, op2);
+            }
             this.Close();
         }
 
@@ -193,6 +306,16 @@ namespace Yuri.YuriHalation.YuriForms
         private void radioButton11_CheckedChanged(object sender, EventArgs e)
         {
             this.textBox3.Enabled = this.radioButton11.Checked;
+        }
+
+        private void radioButton15_CheckedChanged(object sender, EventArgs e)
+        {
+            this.textBox7.Enabled = this.radioButton15.Checked;
+        }
+
+        private void radioButton16_CheckedChanged(object sender, EventArgs e)
+        {
+            this.textBox8.Enabled = this.radioButton16.Checked;
         }
     }
 }

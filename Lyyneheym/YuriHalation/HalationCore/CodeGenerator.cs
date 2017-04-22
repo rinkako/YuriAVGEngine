@@ -126,6 +126,9 @@ namespace Yuri.YuriHalation.HalationCore
                         var varRights = act.argsDict["opRight"].valueExp.Split('#');
                         switch (varRights[0])
                         {
+                            case "0":
+                                varCode += String.Format("%{0}", varRights[1]);
+                                break;
                             case "1":
                                 varCode += String.Format("{0}", varRights[1]);
                                 break;
@@ -158,10 +161,13 @@ namespace Yuri.YuriHalation.HalationCore
                         string ifCode = "@if cond=";
                         if (act.argsDict["expr"].valueExp == String.Empty)
                         {
-                            string[] ifLeftItems = act.argsDict["op1"].valueExp.ToString().Split('#');
-                            string[] ifRightItems = act.argsDict["op2"].valueExp.Split('#');
+                            var ifLeftItems = act.argsDict["op1"].valueExp.Split('#');
+                            var ifRightItems = act.argsDict["op2"].valueExp.Split('#');
                             switch (ifLeftItems[0])
                             {
+                                case "0":
+                                    ifCode += String.Format("%{0}", ifLeftItems[1]);
+                                    break;
                                 case "1":
                                     ifCode += String.Format("&{0}", ifLeftItems[1]);
                                     break;
@@ -182,6 +188,9 @@ namespace Yuri.YuriHalation.HalationCore
                             }
                             switch (ifRightItems[0])
                             {
+                                case "0":
+                                    ifCode += String.Format("%{0}", ifRightItems[1]);
+                                    break;
                                 case "1":
                                     ifCode += ifRightItems[1];
                                     break;
