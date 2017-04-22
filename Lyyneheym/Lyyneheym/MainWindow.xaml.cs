@@ -15,7 +15,7 @@ namespace Yuri
         /// <summary>
         /// 导演类的引用
         /// </summary>
-        private Director world = Director.GetInstance();
+        private readonly Director world = Director.GetInstance();
 
         /// <summary>
         /// Alt键正在被按下的标记
@@ -35,10 +35,10 @@ namespace Yuri
             InitializeComponent();
             ViewManager.SetWindowReference(this);
             this.Title = GlobalConfigContext.GAME_TITLE_NAME;
-            this.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
-            this.Height = GlobalConfigContext.GAME_WINDOW_ACTUALHEIGHT;
-            this.mainCanvas.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
-            this.mainCanvas.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
+            this.Width = GlobalConfigContext.GAME_VIEWPORT_WIDTH;
+            this.Height = GlobalConfigContext.GAME_VIEWPORT_ACTUALHEIGHT;
+            this.mainCanvas.Width = GlobalConfigContext.GAME_VIEWPORT_WIDTH;
+            this.mainCanvas.Height = GlobalConfigContext.GAME_VIEWPORT_HEIGHT;
             this.ResizeMode = GlobalConfigContext.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
             // 加载主页面
             this.mainFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
@@ -101,13 +101,14 @@ namespace Yuri
             {
                 if (Director.IsFullScreen)
                 {
+                    Director.IsFullScreen = !Director.IsFullScreen;
                     this.WindowScreenTransform();
                 }
                 else
                 {
+                    Director.IsFullScreen = !Director.IsFullScreen;
                     this.FullScreenTransform();
                 }
-                Director.IsFullScreen = !Director.IsFullScreen;
             }
         }
 
@@ -127,8 +128,12 @@ namespace Yuri
         /// </summary>
         private void window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            this.Width = e.NewSize.Width;
-            this.Height = GlobalConfigContext.GAME_WINDOW_ACTUALHEIGHT * this.Width / GlobalConfigContext.GAME_WINDOW_WIDTH;
+            //if (Director.IsFullScreen == false)
+            //{
+            //    this.Width = e.NewSize.Width;
+            //    this.Height = GlobalConfigContext.GAME_WINDOW_ACTUALHEIGHT * this.Width /
+            //                  GlobalConfigContext.GAME_WINDOW_WIDTH;
+            //}
         }
 
         /// <summary>

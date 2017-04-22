@@ -113,8 +113,8 @@
           </GroupBox>
           <GroupBox x:Name="groupBox_Key_RollingBack" Header="鼠标滚轮" HorizontalAlignment="Left" Margin="303,94,0,0" VerticalAlignment="Top" Height="77" Width="247">
             <Canvas>
-              <RadioButton x:Name="radioButton_RollingBack_1" Content="仅回滚" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True"/>
-              <RadioButton x:Name="radioButton_RollingBack_2" Content="回滚与前进" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="116" Canvas.Top="10" IsEnabled="False"/>
+              <RadioButton x:Name="radioButton_RollingBack_1" Content="仅回滚" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="False"/>
+              <RadioButton x:Name="radioButton_RollingBack_2" Content="回滚与前进" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="116" Canvas.Top="10" IsChecked="True"/>
             </Canvas>
           </GroupBox>
           <GroupBox x:Name="groupBox_Key_Quickmove" Header="自动移动指针" HorizontalAlignment="Left" Margin="303,177,0,0" VerticalAlignment="Top" Height="77" Width="247">
