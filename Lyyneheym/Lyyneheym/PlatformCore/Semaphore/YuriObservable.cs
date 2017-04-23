@@ -27,6 +27,14 @@ namespace Yuri.PlatformCore.Semaphore
         }
 
         /// <summary>
+        /// 清空所有的订阅者
+        /// </summary>
+        public virtual void ClearObserver()
+        {
+            this.observers.Clear();
+        }
+
+        /// <summary>
         /// 广播更新通知
         /// </summary>
         public virtual void NotifyAll()
@@ -42,7 +50,7 @@ namespace Yuri.PlatformCore.Semaphore
         {
             foreach (var ob in this.observers)
             {
-                if (ob.Group == group)
+                if (ob.ObGroup == group)
                 {
                     ob.Notified(this);
                 }
@@ -57,7 +65,7 @@ namespace Yuri.PlatformCore.Semaphore
         {
             foreach (var ob in this.observers)
             {
-                if (ob.Tag.Equals(tag))
+                if (ob.ObserverTag.Equals(tag))
                 {
                     ob.Notified(this);
                 }
@@ -70,18 +78,18 @@ namespace Yuri.PlatformCore.Semaphore
         /// <param name="tag">订阅号的Tag</param>
         protected YuriObservable(object tag)
         {
-            this.Tag = tag;
+            this.ObservableTag = tag;
         }
 
         /// <summary>
         /// 该订阅号的Tag
         /// </summary>
-        public object Tag { get; set; } = null;
+        public object ObservableTag { get; set; } = null;
 
         /// <summary>
-        /// 获取或设置最后一次更新的附加信息
+        /// 获取最后一次更新的附加信息
         /// </summary>
-        public object UpdateInfo { get; set; } = null;
+        public object UpdateInfo { get; private set; } = null;
 
         /// <summary>
         /// 订阅者列表

@@ -17,8 +17,8 @@ namespace Yuri.PlatformCore.Semaphore
         /// <param name="tag">观察者的Tag</param>
         protected YuriObserver(string group, object tag)
         {
-            this.Group = group;
-            this.Tag = tag;
+            this.ObGroup = group;
+            this.ObserverTag = tag;
         }
 
         /// <summary>
@@ -30,11 +30,11 @@ namespace Yuri.PlatformCore.Semaphore
         /// <summary>
         /// 该观察者的Group
         /// </summary>
-        public string Group { get; set; }
+        public string ObGroup { get; set; }
 
         /// <summary>
         /// 该观察者的Tag
         /// </summary>
-        public object Tag { get; set; }
+        public object ObserverTag { get; set; }
     }
 }
