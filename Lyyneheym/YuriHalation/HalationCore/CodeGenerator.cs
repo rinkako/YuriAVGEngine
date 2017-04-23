@@ -61,7 +61,7 @@ namespace Yuri.YuriHalation.HalationCore
                 // 处理主序列
                 sceneBuilder.AppendLine(this.ParseToScript(handleSp));
                 // 处理函数
-                foreach (var fp in (handleSp as ScenePackage).GetFunc())
+                foreach (var fp in handleSp.GetFunc())
                 {
                     sceneBuilder.AppendLine();
                     sceneBuilder.AppendLine(fp.functionDeclaration);

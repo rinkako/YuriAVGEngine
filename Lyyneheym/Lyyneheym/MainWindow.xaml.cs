@@ -124,19 +124,6 @@ namespace Yuri
         }
         
         /// <summary>
-        /// 事件：窗体大小改变
-        /// </summary>
-        private void window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            //if (Director.IsFullScreen == false)
-            //{
-            //    this.Width = e.NewSize.Width;
-            //    this.Height = GlobalConfigContext.GAME_WINDOW_ACTUALHEIGHT * this.Width /
-            //                  GlobalConfigContext.GAME_WINDOW_WIDTH;
-            //}
-        }
-
-        /// <summary>
         /// 事件：窗口尺寸模式改变
         /// </summary>
         private void window_StateChanged(object sender, EventArgs e)

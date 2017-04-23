@@ -101,6 +101,9 @@
     <Compile Include="PlatformCore\Graphic3D\ParticleDescriptor3D.cs" />
     <Compile Include="PlatformCore\Graphic3D\ParticleEmitter3D.cs" />
     <Compile Include="PlatformCore\Graphic3D\ParticleSystem3D.cs" />
+    <Compile Include="PlatformCore\Semaphore\SemaphoreDispatcher.cs" />
+    <Compile Include="PlatformCore\Semaphore\YuriObservable.cs" />
+    <Compile Include="PlatformCore\Semaphore\YuriObserver.cs" />
     <Compile Include="PlatformCore\VM\ConfigParser.cs" />
     <Compile Include="PlatformCore\VM\EvaluatableContext.cs" />
     <Compile Include="PlatformCore\VM\GlobalContextDAO.cs" />
