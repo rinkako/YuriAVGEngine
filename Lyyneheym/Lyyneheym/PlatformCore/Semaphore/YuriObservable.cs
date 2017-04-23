@@ -11,6 +11,28 @@ namespace Yuri.PlatformCore.Semaphore
         /// <summary>
         /// 将订阅者ob加入该订阅号的通知列表
         /// </summary>
+        /// <param name="lhs">订阅号</param>
+        /// <param name="rhs">订阅者</param>
+        public static YuriObservable operator +(YuriObservable lhs, YuriObserver rhs)
+        {
+            lhs.Attach(rhs);
+            return lhs;
+        }
+
+        /// <summary>
+        /// 将订阅者ob从该订阅号的通知列表中移除
+        /// </summary>
+        /// <param name="lhs">订阅号</param>
+        /// <param name="rhs">订阅者</param>
+        public static YuriObservable operator -(YuriObservable lhs, YuriObserver rhs)
+        {
+            lhs.Detach(rhs);
+            return lhs;
+        }
+
+        /// <summary>
+        /// 将订阅者ob加入该订阅号的通知列表
+        /// </summary>
         /// <param name="ob">订阅者</param>
         public virtual void Attach(YuriObserver ob)
         {
@@ -25,7 +47,7 @@ namespace Yuri.PlatformCore.Semaphore
         {
             this.observers.Remove(ob);
         }
-
+        
         /// <summary>
         /// 清空所有的订阅者
         /// </summary>

@@ -7,7 +7,7 @@ using System.Threading;
 namespace Yuri.PlatformCore.Semaphore
 {
     /// <summary>
-    /// Yuri信号类：为游戏提供
+    /// Yuri信号类：为游戏信号调度系统提供基础设施
     /// </summary>
     internal sealed class YuriSemaphore : YuriObservable
     {
