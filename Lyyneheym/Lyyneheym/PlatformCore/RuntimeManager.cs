@@ -182,7 +182,7 @@ namespace Yuri.PlatformCore
             {
                 return;
             }
-            CommonUtils.ConsoleLine(String.Format("Call Scene: {0} , with target: {1}", scene?.Scenario, target == null ? "null" : target.NodeName),
+            CommonUtils.ConsoleLine(String.Format("Call Scene: {0} , with target: {1}", scene.Scenario, target == null ? "null" : target.NodeName),
                     "RuntimeManager", OutputStyle.Important);
             // 基础调用
             this.CallStack.Submit(scene, target);
@@ -337,7 +337,8 @@ namespace Yuri.PlatformCore
                     {
                         Index = counter++,
                         Render = new UpdateRender(pvm),
-                        BindingSF = psf
+                        BindingSF = psf,
+                        IsSemaphore = false
                     };
                     dt.Tag = pdap;
                     dt.Start();
@@ -659,6 +660,16 @@ namespace Yuri.PlatformCore
     /// </summary>
     internal sealed class ParallelDispatcherArgsPackage
     {
+        /// <summary>
+        /// 是否为信号量处理并行包装
+        /// </summary>
+        public bool IsSemaphore { get; set; } = false;
+
+        /// <summary>
+        /// 信号量处理器的堆栈
+        /// </summary>
+        public StackMachine SemaphoreStack { get; set; } = null;
+
         /// <summary>
         /// 获取或设置在并行向量里的下标
         /// </summary>

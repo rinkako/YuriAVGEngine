@@ -11,32 +11,13 @@ namespace Yuri.PlatformCore.Semaphore
         /// <summary>
         /// 将订阅者ob加入该订阅号的通知列表
         /// </summary>
-        /// <param name="lhs">订阅号</param>
-        /// <param name="rhs">订阅者</param>
-        public static YuriObservable operator +(YuriObservable lhs, YuriObserver rhs)
-        {
-            lhs.Attach(rhs);
-            return lhs;
-        }
-
-        /// <summary>
-        /// 将订阅者ob从该订阅号的通知列表中移除
-        /// </summary>
-        /// <param name="lhs">订阅号</param>
-        /// <param name="rhs">订阅者</param>
-        public static YuriObservable operator -(YuriObservable lhs, YuriObserver rhs)
-        {
-            lhs.Detach(rhs);
-            return lhs;
-        }
-
-        /// <summary>
-        /// 将订阅者ob加入该订阅号的通知列表
-        /// </summary>
         /// <param name="ob">订阅者</param>
         public virtual void Attach(YuriObserver ob)
         {
-            this.observers.Add(ob);
+            lock (this)
+            {
+                this.observers.Add(ob);
+            }
         }
 
         /// <summary>
@@ -45,7 +26,10 @@ namespace Yuri.PlatformCore.Semaphore
         /// <param name="ob">订阅者</param>
         public virtual void Detach(YuriObserver ob)
         {
-            this.observers.Remove(ob);
+            lock (this)
+            {
+                this.observers.Remove(ob);
+            }
         }
         
         /// <summary>
@@ -53,7 +37,10 @@ namespace Yuri.PlatformCore.Semaphore
         /// </summary>
         public virtual void ClearObserver()
         {
-            this.observers.Clear();
+            lock (this)
+            {
+                this.observers.Clear();
+            }
         }
 
         /// <summary>
@@ -61,7 +48,10 @@ namespace Yuri.PlatformCore.Semaphore
         /// </summary>
         public virtual void NotifyAll()
         {
-            this.observers.ForEach(ob => ob.Notified(this));
+            lock (this)
+            {
+                this.observers.ForEach(ob => ob.Notified(this));
+            }
         }
 
         /// <summary>
@@ -70,11 +60,14 @@ namespace Yuri.PlatformCore.Semaphore
         /// <param name="group">订阅者的group</param>
         public virtual void NotifyGroup(string group)
         {
-            foreach (var ob in this.observers)
+            lock (this)
             {
-                if (ob.ObGroup == group)
+                foreach (var ob in this.observers)
                 {
-                    ob.Notified(this);
+                    if (ob.ObGroup == group)
+                    {
+                        ob.Notified(this);
+                    }
                 }
             }
         }
@@ -85,11 +78,14 @@ namespace Yuri.PlatformCore.Semaphore
         /// <param name="tag">订阅者的tag</param>
         public virtual void Notify(object tag)
         {
-            foreach (var ob in this.observers)
+            lock (this)
             {
-                if (ob.ObserverTag.Equals(tag))
+                foreach (var ob in this.observers)
                 {
-                    ob.Notified(this);
+                    if (ob.ObserverTag.Equals(tag))
+                    {
+                        ob.Notified(this);
+                    }
                 }
             }
         }

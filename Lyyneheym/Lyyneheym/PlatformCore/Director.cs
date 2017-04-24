@@ -444,8 +444,22 @@ namespace Yuri.PlatformCore
         private void ParallelUpdateContext(object sender, EventArgs e)
         {
             // 获取绑定的调用堆栈
-            ParallelDispatcherArgsPackage pdap = (sender as DispatcherTimer).Tag as ParallelDispatcherArgsPackage;
-            StackMachine paraVM = Director.RunMana.ParallelExecutorStack.Peek()[pdap.Index].Executor;
+            ParallelDispatcherArgsPackage pdap = null;
+            try
+            {
+                pdap = (sender as DispatcherTimer).Tag as ParallelDispatcherArgsPackage;
+            }
+            catch (Exception ex)
+            {
+                CommonUtils.ConsoleLine("Parallel Failed " + ex, "Director", OutputStyle.Warning);
+                return;
+            }
+            if (pdap == null)
+            {
+                CommonUtils.ConsoleLine("Parallel Failed.", "Director", OutputStyle.Warning);
+                return;
+            }
+            var paraVM = pdap.IsSemaphore ? pdap.SemaphoreStack : Director.RunMana.ParallelExecutorStack.Peek()[pdap.Index].Executor;
             // 取得调用堆栈顶部状态
             StackMachineState stackState = Director.RunMana.GameState(paraVM);
             GameState paraGameState = GameState.Exit;
@@ -629,7 +643,7 @@ namespace Yuri.PlatformCore
                 return;
             }
             // 处理参数列表
-            List<object> argsVec = new List<object>();
+            var argsVec = new List<object>();
             foreach (var s in signItem)
             {
                 string trimedPara = s.Trim();

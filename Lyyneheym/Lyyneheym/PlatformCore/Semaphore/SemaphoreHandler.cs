@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Threading;
 using Yuri.Yuriri;
 
 namespace Yuri.PlatformCore.Semaphore
@@ -33,13 +34,18 @@ namespace Yuri.PlatformCore.Semaphore
         /// <returns>信号处理机描述</returns>
         public override string ToString()
         {
-            return String.Format("{0} <- {1}", this.Type, this.Handler.GlobalName);
+            return String.Format("{0} <- {1}", this.Type, this.BindingFunction.GlobalName);
         }
 
         /// <summary>
         /// 获取或设置绑定的处理函数
         /// </summary>
-        public SceneFunction Handler { get; set; }
+        public SceneFunction BindingFunction { get; set; }
+
+        /// <summary>
+        /// 线程分发器
+        /// </summary>
+        public DispatcherTimer Dispatcher { get; set; } = null;
 
         /// <summary>
         /// 获取或设置信号处理机类型
