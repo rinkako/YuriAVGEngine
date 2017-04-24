@@ -443,20 +443,29 @@ namespace Yuri.PlatformCore
         /// </summary>
         private void ParallelUpdateContext(object sender, EventArgs e)
         {
+            // 如果主消息循环暂停那么就直接迭代掉
+            if (Director.IsContextUpdatePaused)
+            {
+                return;
+            }
             // 获取绑定的调用堆栈
-            ParallelDispatcherArgsPackage pdap = null;
+            var dispatcher = sender as DispatcherTimer;
+            dispatcher.Stop();
+            ParallelDispatcherArgsPackage pdap;
             try
             {
-                pdap = (sender as DispatcherTimer).Tag as ParallelDispatcherArgsPackage;
+                pdap = dispatcher.Tag as ParallelDispatcherArgsPackage;
             }
             catch (Exception ex)
             {
                 CommonUtils.ConsoleLine("Parallel Failed " + ex, "Director", OutputStyle.Warning);
+                dispatcher.Start();
                 return;
             }
             if (pdap == null)
             {
                 CommonUtils.ConsoleLine("Parallel Failed.", "Director", OutputStyle.Warning);
+                dispatcher.Start();
                 return;
             }
             var paraVM = pdap.IsSemaphore ? pdap.SemaphoreStack : Director.RunMana.ParallelExecutorStack.Peek()[pdap.Index].Executor;
@@ -471,9 +480,11 @@ namespace Yuri.PlatformCore
                     break;
                 case StackMachineState.WaitUser:
                     // 并行器里不应该出现等待用户IO，立即结束本次迭代
+                    dispatcher.Start();
                     return;
                 case StackMachineState.WaitAnimation:
                     // 并行器里不应该出现等待动画结束，立即结束本次迭代
+                    dispatcher.Start();
                     return;
                 case StackMachineState.Await:
                     paraGameState = GameState.Waiting;
@@ -483,6 +494,7 @@ namespace Yuri.PlatformCore
                     CommonUtils.ConsoleLine(
                         "There is a interrupt in parallel function, which may cause system pause",
                         "Director", OutputStyle.Warning);
+                    dispatcher.Start();
                     return;
                 case StackMachineState.NOP:
                     paraGameState = GameState.Exit;
@@ -513,6 +525,7 @@ namespace Yuri.PlatformCore
                     // 如果指令空了就立即迭代本次消息循环
                     if (nextInstruct == null)
                     {
+                        dispatcher.Start();
                         return;
                     }
                     // 处理影响调用堆栈的动作
@@ -597,6 +610,7 @@ namespace Yuri.PlatformCore
                     paraVM.Submit(pdap.BindingSF, new List<object>());
                     break;
             }
+            dispatcher.Start();
         }
 
         /// <summary>
@@ -670,6 +684,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static void PauseUpdateContext()
         {
+            Director.IsContextUpdatePaused = true;
             Director.GetInstance().timer.Stop();
             CommonUtils.ConsoleLine("Context Update Dispatcher is stopped", "Director", OutputStyle.Important);
         }
@@ -680,6 +695,7 @@ namespace Yuri.PlatformCore
         public static void ResumeUpdateContext()
         {
             Director.GetInstance().timer.Start();
+            Director.IsContextUpdatePaused = false;
             CommonUtils.ConsoleLine("Context Update Dispatcher is resumed", "Director", OutputStyle.Important);
         }
 
@@ -694,6 +710,11 @@ namespace Yuri.PlatformCore
         public static bool IsFullScreen { get; set; } = false;
 
         /// <summary>
+        /// 获取或设置主消息循环是否已经暂停
+        /// </summary>
+        public static bool IsContextUpdatePaused { get; set; } = true;
+
+        /// <summary>
         /// 获取程序启动的时刻
         /// </summary>
         public static DateTime StartupTimeStamp { get; private set; }
@@ -702,7 +723,7 @@ namespace Yuri.PlatformCore
         /// 获取程序在本次启动之前的累计使用时间
         /// </summary>
         public static TimeSpan LastGameTimeAcc { get; private set; }
-
+        
         /// <summary>
         /// 获取程序在本次启动到目前为止的时间间隔
         /// </summary>

@@ -20,32 +20,44 @@ namespace Yuri.PlatformCore.Semaphore
         /// <param name="shandler">处理机</param>
         public static void Schedule(YuriSemaphore selphine, SemaphoreHandler shandler)
         {
-            var handleFunc = shandler.BindingFunction;
-            ParallelExecutor pExec = new ParallelExecutor()
+            switch (shandler.Type)
             {
-                Scenario = handleFunc.ParentSceneName
-            };
-            DispatcherTimer dt = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromTicks((long)GlobalConfigContext.DirectorTimerInterval)
-            };
-            dt.Tick += Director.RunMana.ParallelHandler;
-            pExec.Dispatcher = dt;
-            var pvm = new StackMachine();
-            pvm.SetMachineName("SignalVM#" + handleFunc.GlobalName);
-            pvm.Submit(handleFunc, new List<object>());
-            pExec.Executor = pvm;
-            ParallelDispatcherArgsPackage pdap = new ParallelDispatcherArgsPackage()
-            {
-                Index = -1,
-                Render = new UpdateRender(pvm),
-                BindingSF = handleFunc,
-                IsSemaphore = true,
-                SemaphoreStack = pvm
-            };
-            dt.Tag = pdap;
-            shandler.Dispatcher = dt;
-            dt.Start();
+                case SemaphoreHandlerType.ScheduleOnce:
+                    if (selphine.Activated)
+                    {
+                        var handleFunc = shandler.BindingFunction;
+                        ParallelExecutor pExec = new ParallelExecutor()
+                        {
+                            Scenario = handleFunc.ParentSceneName
+                        };
+                        DispatcherTimer dt = new DispatcherTimer
+                        {
+                            Interval = TimeSpan.FromTicks((long) GlobalConfigContext.DirectorTimerInterval)
+                        };
+                        dt.Tick += Director.RunMana.ParallelHandler;
+                        pExec.Dispatcher = dt;
+                        var pvm = new StackMachine();
+                        pvm.SetMachineName("SignalVM#" + handleFunc.GlobalName);
+                        pvm.Submit(handleFunc, new List<object>());
+                        pExec.Executor = pvm;
+                        ParallelDispatcherArgsPackage pdap = new ParallelDispatcherArgsPackage()
+                        {
+                            Index = -1,
+                            Render = new UpdateRender(pvm),
+                            BindingSF = handleFunc,
+                            IsSemaphore = true,
+                            SemaphoreStack = pvm
+                        };
+                        dt.Tag = pdap;
+                        shandler.Dispatcher = dt;
+                        dt.Start();
+                    }
+                    break;
+                case SemaphoreHandlerType.ScheduleForever:
+                    throw new NotImplementedException();
+                case SemaphoreHandlerType.ScheduleWhenActivated:
+                    throw new NotImplementedException();
+            }
         }
 
         /// <summary>
@@ -91,7 +103,27 @@ namespace Yuri.PlatformCore.Semaphore
         }
 
         /// <summary>
-        /// 激活一个命名信号量
+        /// 添加一个信号量
+        /// </summary>
+        /// <param name="semaphoreName">信号量的名字</param>
+        /// <param name="initActivated">初始化时是否处于激活状态</param>
+        /// <param name="tag">附加值</param>
+        public static void SetSemaphore(string semaphoreName, bool initActivated = false, object tag = null)
+        {
+            SemaphoreDispatcher.semaphoreDict[semaphoreName] = new YuriSemaphore(semaphoreName, initActivated, tag);
+        }
+
+        /// <summary>
+        /// 移除一个信号量
+        /// </summary>
+        /// <param name="semaphoreName">信号量的名字</param>
+        public static void RemoveSemaphore(string semaphoreName)
+        {
+            SemaphoreDispatcher.semaphoreDict.Remove(semaphoreName);
+        }
+
+        /// <summary>
+        /// 激活一个命名信号量，如果信号量不存在，将被初始化并激活
         /// </summary>
         /// <param name="semaphoreName">信号的名字</param>
         /// <param name="tag">信号的Tag</param>

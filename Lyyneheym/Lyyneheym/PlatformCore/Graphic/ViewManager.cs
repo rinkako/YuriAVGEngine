@@ -490,6 +490,7 @@ namespace Yuri.PlatformCore.Graphic
             {
                 newSprite = sprite;
             }
+            newSprite.Descriptor = descriptor;
             // 重绘精灵
             this.RemoveSprite(rType, sprite);
             this.DrawSprite(newSprite, descriptor, rType, id);
