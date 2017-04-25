@@ -23,35 +23,33 @@ namespace Yuri.PlatformCore.Semaphore
             switch (shandler.Type)
             {
                 case SemaphoreHandlerType.ScheduleOnce:
-                    if (selphine.Activated)
+                    var handleFunc = selphine.Activated ? shandler.ActivateFunc : shandler.DeActivateFunc;
+                    if (handleFunc == null) { return; }
+                    ParallelExecutor pExec = new ParallelExecutor()
                     {
-                        var handleFunc = shandler.BindingFunction;
-                        ParallelExecutor pExec = new ParallelExecutor()
-                        {
-                            Scenario = handleFunc.ParentSceneName
-                        };
-                        DispatcherTimer dt = new DispatcherTimer
-                        {
-                            Interval = TimeSpan.FromTicks((long) GlobalConfigContext.DirectorTimerInterval)
-                        };
-                        dt.Tick += Director.RunMana.ParallelHandler;
-                        pExec.Dispatcher = dt;
-                        var pvm = new StackMachine();
-                        pvm.SetMachineName("SignalVM#" + handleFunc.GlobalName);
-                        pvm.Submit(handleFunc, new List<object>());
-                        pExec.Executor = pvm;
-                        ParallelDispatcherArgsPackage pdap = new ParallelDispatcherArgsPackage()
-                        {
-                            Index = -1,
-                            Render = new UpdateRender(pvm),
-                            BindingSF = handleFunc,
-                            IsSemaphore = true,
-                            SemaphoreStack = pvm
-                        };
-                        dt.Tag = pdap;
-                        shandler.Dispatcher = dt;
-                        dt.Start();
-                    }
+                        Scenario = handleFunc.ParentSceneName
+                    };
+                    DispatcherTimer dt = new DispatcherTimer
+                    {
+                        Interval = TimeSpan.FromTicks((long) GlobalConfigContext.DirectorTimerInterval)
+                    };
+                    dt.Tick += Director.RunMana.ParallelHandler;
+                    pExec.Dispatcher = dt;
+                    var pvm = new StackMachine();
+                    pvm.SetMachineName("SemaphoreVM#" + handleFunc.GlobalName);
+                    pvm.Submit(handleFunc, new List<object>());
+                    pExec.Executor = pvm;
+                    ParallelDispatcherArgsPackage pdap = new ParallelDispatcherArgsPackage()
+                    {
+                        Index = -1,
+                        Render = new UpdateRender(pvm),
+                        BindingSF = handleFunc,
+                        IsSemaphore = true,
+                        SemaphoreStack = pvm
+                    };
+                    dt.Tag = pdap;
+                    shandler.Dispatcher = dt;
+                    dt.Start();
                     break;
                 case SemaphoreHandlerType.ScheduleForever:
                     throw new NotImplementedException();
@@ -64,22 +62,24 @@ namespace Yuri.PlatformCore.Semaphore
         /// 为当前场景注册信号调度服务
         /// </summary>
         /// <param name="semaphoreName">信号名</param>
-        /// <param name="bindingFunc">信号处理函数</param>
+        /// <param name="activator">激活函数</param>
+        /// <param name="deactivator">反激活函数</param>
         /// <param name="tag">信号附加值</param>
         /// <param name="groupName">信号分组名</param>
-        public static void RegisterSemaphoreService(string semaphoreName, SceneFunction bindingFunc, object tag = null, string groupName = "")
+        public static void RegisterSemaphoreService(string semaphoreName, SceneFunction activator, SceneFunction deactivator, object tag = null, string groupName = "")
         {
             lock (SemaphoreDispatcher.syncMutex)
             {
                 if (SemaphoreDispatcher.semaphoreDict.ContainsKey(semaphoreName) == false)
                 {
-                    CommonUtils.ConsoleLine("semaphore not exist for binding to " + bindingFunc.GlobalName,
+                    CommonUtils.ConsoleLine("semaphore not exist for binding to " + activator?.GlobalName + ", " + deactivator?.GlobalName,
                         "SemaphoreDispatcher", OutputStyle.Error);
                     return;
                 }
                 var hdObject = new SemaphoreHandler(groupName, tag)
                 {
-                    BindingFunction = bindingFunc,
+                    ActivateFunc = activator,
+                    DeActivateFunc = deactivator,
                     Type = SemaphoreHandlerType.ScheduleOnce
                 };
                 SemaphoreDispatcher.semaphoreDict[semaphoreName].Attach(hdObject);

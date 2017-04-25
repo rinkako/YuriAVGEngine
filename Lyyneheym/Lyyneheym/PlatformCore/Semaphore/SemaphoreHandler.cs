@@ -34,13 +34,18 @@ namespace Yuri.PlatformCore.Semaphore
         /// <returns>信号处理机描述</returns>
         public override string ToString()
         {
-            return String.Format("{0} <- {1}", this.Type, this.BindingFunction.GlobalName);
+            return String.Format("{0} <- A: {1}, D: {2} ", this.Type, this.ActivateFunc?.GlobalName, this.DeActivateFunc?.GlobalName);
         }
 
         /// <summary>
-        /// 获取或设置绑定的处理函数
+        /// 获取或设置绑定的激活函数
         /// </summary>
-        public SceneFunction BindingFunction { get; set; }
+        public SceneFunction ActivateFunc { get; set; }
+
+        /// <summary>
+        /// 获取或设置绑定的反激活函数
+        /// </summary>
+        public SceneFunction DeActivateFunc { get; set; }
 
         /// <summary>
         /// 线程分发器
@@ -59,15 +64,15 @@ namespace Yuri.PlatformCore.Semaphore
     internal enum SemaphoreHandlerType
     {
         /// <summary>
-        /// 在信号被激活时执行一次处理函数
+        /// 在信号改变时执行一次处理函数
         /// </summary>
         ScheduleOnce,
         /// <summary>
-        /// 在信号被激活时循环执行处理函数直到函数主动退出
+        /// 在信号被激活时循环执行激活函数直到函数主动退出并执行一次反激活函数
         /// </summary>
         ScheduleForever,
         /// <summary>
-        /// 在信号被激活时循环执行处理函数直到信号被熄灭
+        /// 在信号被激活时循环执行处理函数直到信号被熄灭被执行一次反激活函数
         /// </summary>
         ScheduleWhenActivated
     }
