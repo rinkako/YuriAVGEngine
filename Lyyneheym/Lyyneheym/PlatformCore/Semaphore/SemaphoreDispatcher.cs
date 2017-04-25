@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Windows.Input;
 using System.Windows.Threading;
 using Yuri.PlatformCore.VM;
 using Yuri.Utils;
@@ -70,6 +71,7 @@ namespace Yuri.PlatformCore.Semaphore
         {
             lock (SemaphoreDispatcher.syncMutex)
             {
+                semaphoreName = semaphoreName.ToUpper();
                 if (SemaphoreDispatcher.semaphoreDict.ContainsKey(semaphoreName) == false)
                 {
                     CommonUtils.ConsoleLine("semaphore not exist for binding to " + activator?.GlobalName + ", " + deactivator?.GlobalName,
@@ -110,6 +112,7 @@ namespace Yuri.PlatformCore.Semaphore
         /// <param name="tag">附加值</param>
         public static void SetSemaphore(string semaphoreName, bool initActivated = false, object tag = null)
         {
+            semaphoreName = semaphoreName.ToUpper();
             SemaphoreDispatcher.semaphoreDict[semaphoreName] = new YuriSemaphore(semaphoreName, initActivated, tag);
         }
 
@@ -119,7 +122,7 @@ namespace Yuri.PlatformCore.Semaphore
         /// <param name="semaphoreName">信号量的名字</param>
         public static void RemoveSemaphore(string semaphoreName)
         {
-            SemaphoreDispatcher.semaphoreDict.Remove(semaphoreName);
+            SemaphoreDispatcher.semaphoreDict.Remove(semaphoreName.ToUpper());
         }
 
         /// <summary>
@@ -129,6 +132,7 @@ namespace Yuri.PlatformCore.Semaphore
         /// <param name="tag">信号的Tag</param>
         public static void Activate(string semaphoreName, object tag = null)
         {
+            semaphoreName = semaphoreName.ToUpper();
             lock (SemaphoreDispatcher.syncMutex)
             {
                 if (SemaphoreDispatcher.semaphoreDict.ContainsKey(semaphoreName) == false)
@@ -147,6 +151,7 @@ namespace Yuri.PlatformCore.Semaphore
         {
             lock (SemaphoreDispatcher.syncMutex)
             {
+                semaphoreName = semaphoreName.ToUpper();
                 if (SemaphoreDispatcher.semaphoreDict.ContainsKey(semaphoreName))
                 {
                     SemaphoreDispatcher.semaphoreDict[semaphoreName].Activated = false;
@@ -181,7 +186,7 @@ namespace Yuri.PlatformCore.Semaphore
                     kvp.Value.Dispatcher.Stop();
                 }
             }
-            SemaphoreDispatcher.handlerList.RemoveAll(t => t.Value.ObGroup.Equals(group));
+            SemaphoreDispatcher.handlerList.RemoveAll(t => String.Compare(group, t.Value.ObGroup, StringComparison.OrdinalIgnoreCase) == 0);
         }
 
         /// <summary>
@@ -194,6 +199,22 @@ namespace Yuri.PlatformCore.Semaphore
                 kvp.Value.Dispatcher.Stop();
             }
             SemaphoreDispatcher.handlerList.Clear();
+        }
+
+        /// <summary>
+        /// 初始化系统默认信号量
+        /// </summary>
+        public static void InitSystemSemaphore()
+        {
+            // 键盘IO信号量
+            foreach (var t in Enum.GetNames(typeof(Key)))
+            {
+                SemaphoreDispatcher.SetSemaphore($"System_Key_{t}");
+            }
+            // 鼠标IO信号量
+            SemaphoreDispatcher.SetSemaphore("System_Mouse_Left");
+            SemaphoreDispatcher.SetSemaphore("System_Mouse_Middle");
+            SemaphoreDispatcher.SetSemaphore("System_Mouse_Right");
         }
 
         /// <summary>

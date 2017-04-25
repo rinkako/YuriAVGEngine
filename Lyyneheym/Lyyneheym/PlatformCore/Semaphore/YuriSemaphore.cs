@@ -50,11 +50,12 @@ namespace Yuri.PlatformCore.Semaphore
             {
                 lock (this)
                 {
-                    if (value != this.activateFlag)
+                    var orgValue = this.activateFlag;
+                    this.activateFlag = value;
+                    if (value != orgValue)
                     {
                         base.NotifyAll();
                     }
-                    this.activateFlag = value;
                 }
             }
         }

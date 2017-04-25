@@ -7,12 +7,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
-using System.Windows.Navigation;
 using Yuri.PageView;
 using Yuri.PlatformCore.Audio;
 using Yuri.PlatformCore.Evaluator;
 using Yuri.PlatformCore.Graphic;
 using Yuri.PlatformCore.Graphic3D;
+using Yuri.PlatformCore.Semaphore;
 using Yuri.PlatformCore.VM;
 using Yuri.Utils;
 using Yuri.Yuriri;
@@ -97,7 +97,7 @@ namespace Yuri.PlatformCore
         public void SetKeyboardState(KeyEventArgs e, bool isDown)
         {
             UpdateRender.KS_KEY_Dict[e.Key] = isDown ? KeyStates.Down : KeyStates.None;
-            Director.RunMana.Assignment("&kb_" + e.Key.ToString(), e.IsDown ? "1" : "0", this.VsmReference);
+            Director.RunMana.Assignment("&kb_" + e.Key, e.IsDown ? "1" : "0", this.VsmReference);
             // 触发更新事件
             this.UpdateForKeyboardState();
         }
@@ -607,12 +607,12 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 2D主舞台的引用
         /// </summary>
-        private PageView.Stage2D view2d => (PageView.Stage2D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
+        private Stage2D view2d => (PageView.Stage2D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
 
         /// <summary>
         /// 3D主舞台的引用
         /// </summary>
-        private PageView.Stage3D view3d => (PageView.Stage3D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
+        private Stage3D view3d => (PageView.Stage3D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
 
         /// <summary>
         /// 音乐引擎
@@ -837,6 +837,15 @@ namespace Yuri.PlatformCore
                         action.Tag.Last() == '1'
                         );
                     break;
+                case SActionType.act_semaphore:
+                    this.Semaphore(
+                        this.ParseDirectString(action.ArgsDict["name"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["target"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["activator"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["deactivator"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["dash"], String.Empty)
+                        );
+                    break;
                 default:
                     break;
             }
@@ -934,6 +943,37 @@ namespace Yuri.PlatformCore
         private void Break(SceneAction breakSa)
         {
             Director.RunMana.CallStack.ESP.MircoStep(breakSa.Next);
+        }
+
+        /// <summary>
+        /// 演绎函数：信号系统操作
+        /// </summary>
+        /// <param name="cmd">信号命令</param>
+        /// <param name="semaphoreName">信号量名字</param>
+        /// <param name="activatorName">激活函数名</param>
+        /// <param name="deactivatorName">反激活函数名</param>
+        /// <param name="dash">信号量操作目标值</param>
+        private void Semaphore(string cmd, string semaphoreName, string activatorName, string deactivatorName, string dash)
+        {
+            cmd = cmd.ToLower();
+            var curScene = this.resMana.GetScene(Director.RunMana.CallStack.EBP.BindingSceneName);
+            switch (cmd)
+            {
+                case "binding":
+                    var bindActivator = activatorName == String.Empty ? null : curScene.FuncContainer.Find(t => t.Callname == activatorName);
+                    var bindDeactivator = deactivatorName == String.Empty ? null : curScene.FuncContainer.Find(t => t.Callname == deactivatorName);
+                    SemaphoreDispatcher.RegisterSemaphoreService(semaphoreName, bindActivator, bindDeactivator, null, "UserScene");
+                    break;
+                case "unbind":
+                    SemaphoreDispatcher.UnregisterSemaphoreService();
+                    break;
+                case "set":
+                    SemaphoreDispatcher.SetSemaphore(semaphoreName, dash.ToLower() == "true", null);
+                    break;
+                case "remove":
+                    SemaphoreDispatcher.RemoveSemaphore(semaphoreName);
+                    break;
+            }
         }
 
         /// <summary>

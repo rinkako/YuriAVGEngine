@@ -9,6 +9,7 @@ using Yuri.PlatformCore.Audio;
 using Yuri.PlatformCore.Evaluator;
 using Yuri.PlatformCore.Graphic;
 using Yuri.PlatformCore.Graphic3D;
+using Yuri.PlatformCore.Semaphore;
 using Yuri.PlatformCore.VM;
 using Yuri.Utils;
 using Yuri.Yuriri;
@@ -65,8 +66,9 @@ namespace Yuri.PlatformCore
                     "Director", OutputStyle.Error);
                 this.updateRender.Shutdown();
             }
-            this.resMana.GetAllScene().ForEach((t) => Director.RunMana.Symbols.AddSceneSymbolContext(t));
+            this.resMana.GetAllScene().ForEach(t => Director.RunMana.Symbols.AddSceneSymbolContext(t));
             Director.RunMana.CallScene(mainScene);
+            SemaphoreDispatcher.InitSystemSemaphore();
         }
         #endregion
 
@@ -607,7 +609,22 @@ namespace Yuri.PlatformCore
                     break;
                 // 退出（其实就是执行完毕了一轮，应该重新开始）
                 case GameState.Exit:
-                    paraVM.Submit(pdap.BindingSF, new List<object>());
+                    if (pdap.IsSemaphore == false)
+                    {
+                        paraVM.Submit(pdap.BindingSF, new List<object>());
+                    }
+                    else
+                    {
+                        switch (pdap.SemaphoreType)
+                        {
+                            case SemaphoreHandlerType.ScheduleOnce:
+                                return;
+                            case SemaphoreHandlerType.ScheduleForever:
+                                throw new NotImplementedException();
+                            case SemaphoreHandlerType.ScheduleWhenActivated:
+                                throw new NotImplementedException();
+                        }
+                    }
                     break;
             }
             dispatcher.Start();

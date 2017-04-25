@@ -2,6 +2,7 @@
 using System.Windows.Threading;
 using System.Collections.Generic;
 using Yuri.PlatformCore.Evaluator;
+using Yuri.PlatformCore.Semaphore;
 using Yuri.PlatformCore.Graphic;
 using Yuri.PlatformCore.VM;
 using Yuri.Utils;
@@ -282,10 +283,13 @@ namespace Yuri.PlatformCore
         {
             // 弹调用堆栈
             var consumed = svm.Consume();
-            // 如果弹出的是主堆栈上的场景，就要恢复到上一个并行栈帧的状态
+            // 弹出的是主堆栈上的场景
             if (svm == this.CallStack && consumed.State == StackMachineState.Interpreting)
             {
+                // 恢复到上一个并行栈帧的状态
                 this.BackTraceParallel();
+                // 关闭当前的信号量订阅者
+                SemaphoreDispatcher.UnregisterSemaphoreService();
             }
         }
 
@@ -661,16 +665,6 @@ namespace Yuri.PlatformCore
     internal sealed class ParallelDispatcherArgsPackage
     {
         /// <summary>
-        /// 是否为信号量处理并行包装
-        /// </summary>
-        public bool IsSemaphore { get; set; } = false;
-
-        /// <summary>
-        /// 信号量处理器的堆栈
-        /// </summary>
-        public StackMachine SemaphoreStack { get; set; } = null;
-
-        /// <summary>
         /// 获取或设置在并行向量里的下标
         /// </summary>
         public int Index { get; set; }
@@ -684,6 +678,21 @@ namespace Yuri.PlatformCore
         /// 获取或设置绑定的函数入口
         /// </summary>
         public SceneFunction BindingSF { get; set; }
+
+        /// <summary>
+        /// 是否为信号量处理并行包装
+        /// </summary>
+        public bool IsSemaphore { get; set; } = false;
+
+        /// <summary>
+        /// 信号量处理器的堆栈
+        /// </summary>
+        public StackMachine SemaphoreStack { get; set; } = null;
+
+        /// <summary>
+        /// 信号量调度类型
+        /// </summary>
+        public SemaphoreHandlerType SemaphoreType { get; set; } = SemaphoreHandlerType.ScheduleOnce;
     }
 
     /// <summary>
