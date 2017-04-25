@@ -10,6 +10,7 @@ using Yuri.PlatformCore;
 using Yuri.PlatformCore.Graphic;
 using Yuri.PlatformCore.VM;
 using Yuri.YuriInterpreter;
+using Yuri.YuriInterpreter.YuriILEnum;
 using Yuri.Yuriri;
 
 namespace Yuri.PageView

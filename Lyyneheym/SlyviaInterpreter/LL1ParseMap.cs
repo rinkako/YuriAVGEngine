@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Yuri.YuriInterpreter.YuriILEnum;
 
 namespace Yuri.YuriInterpreter
 {
@@ -56,8 +57,7 @@ namespace Yuri.YuriInterpreter
         /// <param name="proc">产生式</param>
         public void SetCellular(int row, int col, CandidateFunction proc)
         {
-            if (0 <= row && row < this.rowCount &&
-              0 <= col && col < this.colCount)
+            if (0 <= row && row < this.rowCount && 0 <= col && col < this.colCount)
             {
                 this.parserMap[row, col] = proc;
             }
@@ -101,7 +101,7 @@ namespace Yuri.YuriInterpreter
                     return new CandidateFunction(nilserver, CFunctionType.umi_epsilon);
                 }
                 CandidateFunction candidator = this.GetCFunction(this.leftNodesDict[left], this.nextLeavesDict[leave]);
-                return candidator == null ? new CandidateFunction(null, CFunctionType.umi_errorEnd) : candidator;
+                return candidator ?? new CandidateFunction(null, CFunctionType.umi_errorEnd);
             }
             catch (Exception ex)
             {
@@ -114,26 +114,26 @@ namespace Yuri.YuriInterpreter
         /// <summary>
         /// 行游标
         /// </summary>
-        private int rowCount = 0;
+        private readonly int rowCount;
 
         /// <summary>
         /// 列游标
         /// </summary>
-        private int colCount = 0;
+        private readonly int colCount;
 
         /// <summary>
         /// 产生式左字典
         /// </summary>
-        private Dictionary<SyntaxType, int> leftNodesDict = new Dictionary<SyntaxType,int>();
+        private readonly Dictionary<SyntaxType, int> leftNodesDict = new Dictionary<SyntaxType,int>();
         
         /// <summary>
         /// 产生式右字典
         /// </summary>
-        private Dictionary<TokenType, int> nextLeavesDict = new Dictionary<TokenType,int>();
+        private readonly Dictionary<TokenType, int> nextLeavesDict = new Dictionary<TokenType,int>();
         
         /// <summary>
         /// LL1预测表
         /// </summary>
-        private CandidateFunction[,] parserMap = null;
+        private readonly CandidateFunction[,] parserMap = null;
     }
 }

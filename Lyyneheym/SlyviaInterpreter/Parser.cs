@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Yuri.YuriInterpreter.YuriILEnum;
 
 namespace Yuri.YuriInterpreter
 {
@@ -180,7 +181,7 @@ namespace Yuri.YuriInterpreter
                             Message = "语法匹配错误",
                             HitLine = iToken.Line,
                             HitColumn = iToken.Column,
-                            HitPhase = InterpreterException.InterpreterPhase.Parser,
+                            HitPhase = InterpreterPhase.Parser,
                             SceneFileName = this.dealingFile
                         };
                     }
@@ -325,7 +326,6 @@ namespace Yuri.YuriInterpreter
             this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wunit__brucket_disjunct_57)].Add(SyntaxType.tail_leftParentheses_Leave);
             this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wunit__brucket_disjunct_57)].Add(SyntaxType.case_disjunct);
             this.derivatorTypeDict[Convert.ToInt32(CFunctionType.deri___wunit__brucket_disjunct_57)].Add(SyntaxType.tail_rightParentheses_Leave);
-
             // 初始化预测分析表的表头
             // 设置行属性：非终结符
             iMap.SetRow(0, SyntaxType.case_disjunct);
@@ -382,9 +382,7 @@ namespace Yuri.YuriInterpreter
             iMap.SetCol(16, TokenType.Token_GreaterThan_Equality);
             iMap.SetCol(17, TokenType.Token_LessThan_Equality);
             iMap.SetCol(18, TokenType.startend);
-
             // 初始化LL1-上下文无关文法
-            // iProco都指向通用展开式函数Homura
             iHandle iProco = this.Derivate;
             // 错误的情况下，没有考虑短语层次的错误恢复，因此错误处理器都指向null
             for (int i = 0; i < LL1ParserMapRowCount; i++)
@@ -831,7 +829,7 @@ namespace Yuri.YuriInterpreter
         }
 
         /// <summary>
-        /// 递归下降构造语法树并取下一节点
+        /// 递归下降，构造语法树并取下一节点
         /// </summary>
         /// <param name="res">母亲节点</param>
         /// <returns>下一个拿去展开的产生式</returns>
@@ -843,11 +841,11 @@ namespace Yuri.YuriInterpreter
                 SyntaxTreeNode parent = res?.Parent;
                 // 如果没有母亲，就说明已经回退到了树的最上层
                 if (parent?.Children == null) { return null; }
-                int i = 0;
+                int iPtr = 0;
                 // 遍历寻找自己在姐妹中的排位
-                for (; i < parent.Children.Count && parent.Children[i] != res; i++) { }
+                for (; iPtr < parent.Children.Count && parent.Children[iPtr] != res; iPtr++) { }
                 // 跳过自己，找最大的妹妹，如果自己没有妹妹，那就递归去找母亲的妹妹
-                if (i + 1 < parent.Children.Count) { return parent.Children[i + 1]; }
+                if (iPtr + 1 < parent.Children.Count) { return parent.Children[iPtr + 1]; }
                 res = parent;
             }
         }
@@ -1003,6 +1001,9 @@ namespace Yuri.YuriInterpreter
                     case TokenType.Token_o_yurimsg:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_yurimsg, "sign");
                         break;
+                    case TokenType.Token_o_semaphore:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_semaphore, "name", "target", "dash", "activator", "deactivator");
+                        break;
                     case TokenType.Token_o_stopbgm:
                         statementNode.NodeSyntaxType = SyntaxType.synr_stopbgm;
                         break;
@@ -1058,7 +1059,7 @@ namespace Yuri.YuriInterpreter
                                 Message = "for语句块匹配不成立，是否多余/残缺了endfor？",
                                 HitLine = this.dealingLine,
                                 HitColumn = mainToken.Column,
-                                HitPhase = InterpreterException.InterpreterPhase.Parser,
+                                HitPhase = InterpreterPhase.Parser,
                                 SceneFileName = this.dealingFile
                             };
                         }
@@ -1090,7 +1091,7 @@ namespace Yuri.YuriInterpreter
                                 Message = "if语句块匹配不成立，是否多余/残缺了endif？",
                                 HitLine = this.dealingLine,
                                 HitColumn = mainToken.Column,
-                                HitPhase = InterpreterException.InterpreterPhase.Parser,
+                                HitPhase = InterpreterPhase.Parser,
                                 SceneFileName = this.dealingFile
                             };
                         }
@@ -1114,7 +1115,7 @@ namespace Yuri.YuriInterpreter
                                 Message = "函数定义匹配不成立，是否多余/残缺了endfunction？",
                                 HitLine = this.dealingLine,
                                 HitColumn = mainToken.Column,
-                                HitPhase = InterpreterException.InterpreterPhase.Parser,
+                                HitPhase = InterpreterPhase.Parser,
                                 SceneFileName = this.dealingFile
                             };
                         }
@@ -1125,7 +1126,7 @@ namespace Yuri.YuriInterpreter
                             Message = "未识别的语句：" + mainToken.OriginalCodeStr,
                             HitLine = this.dealingLine,
                             HitColumn = mainToken.Column,
-                            HitPhase = InterpreterException.InterpreterPhase.Parser,
+                            HitPhase = InterpreterPhase.Parser,
                             SceneFileName = this.dealingFile
                         };
                     case TokenType.sceneterminator:
@@ -1219,6 +1220,12 @@ namespace Yuri.YuriInterpreter
                         case TokenType.Token_p_sign:
                             this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "sign", SyntaxType.tail_idenLeave);
                             break;
+                        case TokenType.Token_p_activator:
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "activator", SyntaxType.tail_idenLeave);
+                            break;
+                        case TokenType.Token_p_deactivator:
+                            this.ProcessArgumentDerivator(statementNode, ref prescanPointer, "deactivator", SyntaxType.tail_idenLeave);
+                            break;
                         case TokenType.startend:
                             break;
                         default:
@@ -1227,7 +1234,7 @@ namespace Yuri.YuriInterpreter
                                 Message = "未识别的语句参数：" + this.istream[prescanPointer].OriginalCodeStr,
                                 HitLine = this.dealingLine,
                                 HitColumn = this.istream[prescanPointer].Column,
-                                HitPhase = InterpreterException.InterpreterPhase.Parser,
+                                HitPhase = InterpreterPhase.Parser,
                                 SceneFileName = this.dealingFile
                             };
                     }
@@ -1246,10 +1253,12 @@ namespace Yuri.YuriInterpreter
             {
                 // 把所有的剧情文本聚合成篇章
                 SyntaxTreeNode statementNode = new SyntaxTreeNode();
-                Token sc = new Token();
-                sc.Type = TokenType.scenecluster;
-                sc.Column = this.istream[prescanPointer].Column;
-                sc.Line = this.istream[prescanPointer].Line;
+                Token sc = new Token
+                {
+                    Type = TokenType.scenecluster,
+                    Column = this.istream[prescanPointer].Column,
+                    Line = this.istream[prescanPointer].Line
+                };
                 while (prescanPointer < this.istream.Count - 1 // 减1是要消掉startend的影响
                        && this.istream[prescanPointer].Type != TokenType.sceneterminator)
                 {
@@ -1263,8 +1272,7 @@ namespace Yuri.YuriInterpreter
                 // 把这个唯一token加到语法树上
                 statementNode.NodeSyntaxType = SyntaxType.synr_dialog;
                 statementNode.NodeValue = (string)sc.Tag;
-                statementNode.ParamTokenStream = new List<Token>();
-                statementNode.ParamTokenStream.Add(sc);
+                statementNode.ParamTokenStream = new List<Token> { sc };
                 return statementNode;
             }
             if (this.istream[prescanPointer].Type == TokenType.sceneterminator)
@@ -1286,9 +1294,10 @@ namespace Yuri.YuriInterpreter
         /// <returns>下一个展开节点的指针</returns>
         private SyntaxTreeNode Derivate(SyntaxTreeNode myNode, CFunctionType myType, SyntaxType mySyntax, Token myToken)
         {
-            // 更新节点信息
+            // 不推导空节点
             if (myNode != null)
             {
+                // 更新节点信息
                 myNode.NodeType = myType;
                 myNode.NodeValue = myToken.OriginalCodeStr;
                 myNode.NodeSyntaxType = mySyntax;
@@ -1318,7 +1327,7 @@ namespace Yuri.YuriInterpreter
                 myNode.Children = new List<SyntaxTreeNode>();
                 for (int i = 0; i < iSvec.Count; i++)
                 {
-                    SyntaxTreeNode newNode = new SyntaxTreeNode { Parent = myNode };
+                    SyntaxTreeNode newNode = new SyntaxTreeNode {Parent = myNode};
                     myNode.Children.Add(newNode);
                     if (flag == false)
                     {

@@ -9,6 +9,7 @@ using Yuri.YuriHalation.HalationCore;
 using Yuri.YuriHalation.ScriptPackage;
 using Yuri.YuriHalation.YuriForms;
 using Yuri.YuriInterpreter;
+using Yuri.YuriInterpreter.YuriILEnum;
 
 namespace Yuri.YuriHalation
 {

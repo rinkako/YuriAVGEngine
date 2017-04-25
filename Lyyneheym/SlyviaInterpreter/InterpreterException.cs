@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Yuri.YuriInterpreter.YuriILEnum;
 
 namespace Yuri.YuriInterpreter
 {
@@ -15,6 +16,14 @@ namespace Yuri.YuriInterpreter
         public InterpreterException()
         {
             this.Message = "用户脚本编译错误";
+            try
+            {
+                System.Windows.Forms.MessageBox.Show(this.ToStringImpl());
+            }
+            catch
+            {
+                Console.WriteLine("Compile Error");
+            }
         }
 
         /// <summary>
@@ -92,31 +101,28 @@ namespace Yuri.YuriInterpreter
         }
 
         /// <summary>
-        /// 错误实例字符串化
+        /// 重写字符串化方法
         /// </summary>
         /// <returns>错误信息</returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("在编译过程中发生了错误：");
-            sb.AppendLine(String.Format("At:    {0} -> {1}, {2}", this.SceneFileName, this.HitLine + 1, this.HitColumn + 1));
-            sb.AppendLine(String.Format("Phase: {0}", this.HitPhase.ToString()));
-            sb.AppendLine(String.Format("Info:  {0}", this.Message));
-            sb.AppendLine(String.Format("             {0}", DateTime.Now.ToLocalTime().ToString()));
-            sb.AppendLine();
-            return sb.ToString();
+            return this.ToStringImpl();
         }
 
         /// <summary>
-        /// 枚举：编译过程
+        /// 错误实例字符串化
         /// </summary>
-        public enum InterpreterPhase
+        /// <returns>错误信息</returns>
+        private string ToStringImpl()
         {
-            Lexer,
-            Parser,
-            Sematicer,
-            Optimizer,
-            ILGenerator
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("在编译过程中发生了错误：");
+            sb.AppendLine(String.Format("At:    {0} -> {1}, {2}", this.SceneFileName, this.HitLine + 1, this.HitColumn + 1));
+            sb.AppendLine(String.Format("Phase: {0}", this.HitPhase));
+            sb.AppendLine(String.Format("Info:  {0}", this.Message));
+            sb.AppendLine(String.Format("             {0}", DateTime.Now.ToLocalTime()));
+            sb.AppendLine();
+            return sb.ToString();
         }
     }
 }

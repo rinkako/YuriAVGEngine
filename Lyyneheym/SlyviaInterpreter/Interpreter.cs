@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Collections.Generic;
+using Yuri.YuriInterpreter.YuriILEnum;
 using Yuri.Yuriri;
 
 namespace Yuri.YuriInterpreter
@@ -234,15 +235,5 @@ namespace Yuri.YuriInterpreter
         /// 线程数量
         /// </summary>
         private int threadNum = 1;
-    }
-
-    /// <summary>
-    /// 枚举：编译结果的类型
-    /// </summary>
-    public enum InterpreterType
-    {
-        DEBUG,
-        RELEASE_WITH_IL,
-        RELEASE_WITH_BINARY_SCENE
     }
 }

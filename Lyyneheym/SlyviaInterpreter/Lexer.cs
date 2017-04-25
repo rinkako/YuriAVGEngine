@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Yuri.YuriInterpreter.YuriILEnum;
 
 namespace Yuri.YuriInterpreter
 {
@@ -96,8 +97,7 @@ namespace Yuri.YuriInterpreter
             // 分析这个句子
             while (this.nextCharPointer < this.sourceCode.Length)
             {
-                Token nextToken;
-                this.DFA(out nextToken);
+                this.DFA(out Token nextToken);
                 if (nextToken != null)
                 {
                     this.resultVector.Add(nextToken);
@@ -200,7 +200,7 @@ namespace Yuri.YuriInterpreter
                             Message = "有未识别的字符输入：" + res.OriginalCodeStr,
                             HitLine = res.Line,
                             HitColumn = res.Column,
-                            HitPhase = InterpreterException.InterpreterPhase.Lexer,
+                            HitPhase = InterpreterPhase.Lexer,
                             SceneFileName = this.dealingFile
                         };
                 }
@@ -379,16 +379,15 @@ namespace Yuri.YuriInterpreter
         /// <returns>是否命中</returns>
         private bool GetReservedCalculator(Token res)
         {
-            bool okFlag = false;
-            okFlag = this.ReservedRouter(res, 13, "`deletepicture");
+            var okFlag = this.ReservedRouter(res, 13, "`deletepicture");
             if (okFlag) { return true; }
             okFlag = this.ReservedRouter(res, 12, "`deletecstand", "`deletebutton");
             if (okFlag) { return true; }
-            okFlag = this.ReservedRouter(res, 11, "`msglayeropt", "`endfunction");
+            okFlag = this.ReservedRouter(res, 11, "`msglayeropt", "`endfunction", "*deactivator");
             if (okFlag) { return true; }
             okFlag = this.ReservedRouter(res, 10, "`titlepoint");
             if (okFlag) { return true; }
-            okFlag = this.ReservedRouter(res, 9, "`stopvocal");
+            okFlag = this.ReservedRouter(res, 9, "`stopvocal", "`semaphore", "*activator");
             if (okFlag) { return true; }
             okFlag = this.ReservedRouter(res, 8, "`waituser", "`msglayer", "`shutdown", "`function", "*filename");
             if (okFlag) { return true; }

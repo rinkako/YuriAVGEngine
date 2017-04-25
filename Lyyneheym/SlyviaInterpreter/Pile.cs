@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using Yuri.YuriInterpreter.YuriILEnum;
 using Yuri.Yuriri;
 
 namespace Yuri.YuriInterpreter
@@ -689,7 +690,7 @@ namespace Yuri.YuriInterpreter
                     Message = "一个非函数节点被作为函数声明处理",
                     HitLine = Convert.ToInt32((funcSa.Tag.Split('-'))[0]),
                     HitColumn = Convert.ToInt32((funcSa.Tag.Split('-'))[1]),
-                    HitPhase = InterpreterException.InterpreterPhase.Sematicer,
+                    HitPhase = InterpreterPhase.Sematicer,
                     SceneFileName = this.scenario
                 };
             }
@@ -703,7 +704,7 @@ namespace Yuri.YuriInterpreter
                     Message = "函数签名不合法",
                     HitLine = Convert.ToInt32((funcSa.Tag.Split('-'))[0]),
                     HitColumn = Convert.ToInt32((funcSa.Tag.Split('-'))[1]),
-                    HitPhase = InterpreterException.InterpreterPhase.Sematicer,
+                    HitPhase = InterpreterPhase.Sematicer,
                     SceneFileName = this.scenario
                 };
             }
@@ -725,7 +726,7 @@ namespace Yuri.YuriInterpreter
                             Message = "函数签名的参数列表不合法",
                             HitLine = Convert.ToInt32((funcSa.Tag.Split('-'))[0]),
                             HitColumn = Convert.ToInt32((funcSa.Tag.Split('-'))[1]),
-                            HitPhase = InterpreterException.InterpreterPhase.Sematicer,
+                            HitPhase = InterpreterPhase.Sematicer,
                             SceneFileName = this.scenario
                         };
                     }
@@ -817,9 +818,9 @@ namespace Yuri.YuriInterpreter
             string[] polishItem = polish.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
             foreach (string item in polishItem)
             {
-                PolishItemType ptype = this.GetPolishItemType(item);
+                OptimizerPolishItemType ptype = this.GetPolishItemType(item);
                 // 如果是操作数就入栈
-                if (ptype < PolishItemType.CAL_PLUS)
+                if (ptype < OptimizerPolishItemType.CAL_PLUS)
                 {
                     polishStack.Push(item);
                 }
@@ -827,9 +828,9 @@ namespace Yuri.YuriInterpreter
                 else
                 {
                     // 只有!操作符是单目操作
-                    if (ptype == PolishItemType.CAL_NOT && polishStack.Count >= 1)
+                    if (ptype == OptimizerPolishItemType.CAL_NOT && polishStack.Count >= 1)
                     {
-                        if (this.GetPolishItemType(polishStack.Peek()) == PolishItemType.CONSTANT)
+                        if (this.GetPolishItemType(polishStack.Peek()) == OptimizerPolishItemType.CONSTANT)
                         {
                             string booleanItem = polishStack.Pop();
                             polishStack.Push(Math.Abs(Convert.ToDouble(booleanItem)) < 1e-15 ? "1" : "0");
@@ -840,13 +841,13 @@ namespace Yuri.YuriInterpreter
                             polishStack.Push(item);
                         }
                     }
-                    else if (ptype >= PolishItemType.CAL_PLUS && polishStack.Count >= 2)
+                    else if (ptype >= OptimizerPolishItemType.CAL_PLUS && polishStack.Count >= 2)
                     {
                         string operand2 = polishStack.Pop();
                         string operand1 = polishStack.Pop();
                         // 如果两个操作数有不是常数项的，那就不可以做常数折叠
-                        if (this.GetPolishItemType(operand1) != PolishItemType.CONSTANT
-                            || this.GetPolishItemType(operand2) != PolishItemType.CONSTANT)
+                        if (this.GetPolishItemType(operand1) != OptimizerPolishItemType.CONSTANT
+                            || this.GetPolishItemType(operand2) != OptimizerPolishItemType.CONSTANT)
                         {
                             polishStack.Push(operand1);
                             polishStack.Push(operand2);
@@ -859,16 +860,16 @@ namespace Yuri.YuriInterpreter
                         double res = 0.0f;
                         switch (ptype)
                         {
-                            case PolishItemType.CAL_PLUS:
+                            case OptimizerPolishItemType.CAL_PLUS:
                                 res = op1 + op2;
                                 break;
-                            case PolishItemType.CAL_MINUS:
+                            case OptimizerPolishItemType.CAL_MINUS:
                                 res = op1 - op2;
                                 break;
-                            case PolishItemType.CAL_MULTI:
+                            case OptimizerPolishItemType.CAL_MULTI:
                                 res = op1 * op2;
                                 break;
-                            case PolishItemType.CAL_DIV:
+                            case OptimizerPolishItemType.CAL_DIV:
                                 if (Math.Abs(op2) < 1e-15)
                                 {
                                     throw new InterpreterException()
@@ -876,34 +877,34 @@ namespace Yuri.YuriInterpreter
                                         Message = String.Format("除零错误：（{0}/{1}）", op1.ToString(), op2.ToString()),
                                         HitLine = mynode.Line,
                                         HitColumn = mynode.Column,
-                                        HitPhase = InterpreterException.InterpreterPhase.Optimizer,
+                                        HitPhase = InterpreterPhase.Optimizer,
                                         SceneFileName = this.scenario
                                     };
                                 }
                                 res = op1 / op2;
                                 break;
-                            case PolishItemType.CAL_ANDAND:
+                            case OptimizerPolishItemType.CAL_ANDAND:
                                 res = (Math.Abs(op1) > 1e-15) && (Math.Abs(op2) > 1e-15) ? 1 : 0;
                                 break;
-                            case PolishItemType.CAL_OROR:
+                            case OptimizerPolishItemType.CAL_OROR:
                                 res = (Math.Abs(op1) > 1e-15) || (Math.Abs(op2) > 1e-15) ? 1 : 0;
                                 break;
-                            case PolishItemType.CAL_EQUAL:
+                            case OptimizerPolishItemType.CAL_EQUAL:
                                 res = Math.Abs(op1 - op2) < 1e-15 ? 1 : 0;
                                 break;
-                            case PolishItemType.CAL_NOTEQUAL:
+                            case OptimizerPolishItemType.CAL_NOTEQUAL:
                                 res = Math.Abs(op1 - op2) > 1e-15 ? 1 : 0;
                                 break;
-                            case PolishItemType.CAL_BIG:
+                            case OptimizerPolishItemType.CAL_BIG:
                                 res = op1 > op2 ? 1 : 0;
                                 break;
-                            case PolishItemType.CAL_SMALL:
+                            case OptimizerPolishItemType.CAL_SMALL:
                                 res = op1 < op2 ? 1 : 0;
                                 break;
-                            case PolishItemType.CAL_BIGEQUAL:
+                            case OptimizerPolishItemType.CAL_BIGEQUAL:
                                 res = op1 >= op2 ? 1 : 0;
                                 break;
-                            case PolishItemType.CAL_SMALLEQUAL:
+                            case OptimizerPolishItemType.CAL_SMALLEQUAL:
                                 res = op1 <= op2 ? 1 : 0;
                                 break;
                             default:
@@ -924,7 +925,7 @@ namespace Yuri.YuriInterpreter
                             Message = "polish栈运算错误，栈（顶->底）：" + polishStackTrace,
                             HitLine = -1,
                             HitColumn = -1,
-                            HitPhase = InterpreterException.InterpreterPhase.Optimizer,
+                            HitPhase = InterpreterPhase.Optimizer,
                             SceneFileName = this.scenario
                         };
                     }
@@ -945,73 +946,73 @@ namespace Yuri.YuriInterpreter
         /// </summary>
         /// <param name="item">项目字符串</param>
         /// <returns>逆波兰式中的类型</returns>
-        private PolishItemType GetPolishItemType(string item)
+        private OptimizerPolishItemType GetPolishItemType(string item)
         {
             if (string.IsNullOrEmpty(item))
             {
-                return PolishItemType.NONE;
+                return OptimizerPolishItemType.NONE;
             }
             else if (item.StartsWith("$") || item.StartsWith("&"))
             {
-                return PolishItemType.VAR;
+                return OptimizerPolishItemType.VAR;
             }
             else if (item[0] >= '0' && item[0] <= '9')
             {
-                return PolishItemType.CONSTANT;
+                return OptimizerPolishItemType.CONSTANT;
             }
             else if (item == "+")
             {
-                return PolishItemType.CAL_PLUS;
+                return OptimizerPolishItemType.CAL_PLUS;
             }
             else if (item == "-")
             {
-                return PolishItemType.CAL_MINUS;
+                return OptimizerPolishItemType.CAL_MINUS;
             }
             else if (item == "*")
             {
-                return PolishItemType.CAL_MULTI;
+                return OptimizerPolishItemType.CAL_MULTI;
             }
             else if (item == "/")
             {
-                return PolishItemType.CAL_DIV;
+                return OptimizerPolishItemType.CAL_DIV;
             }
             else if (item == "!")
             {
-                return PolishItemType.CAL_NOT;
+                return OptimizerPolishItemType.CAL_NOT;
             }
             else if (item == "&&")
             {
-                return PolishItemType.CAL_ANDAND;
+                return OptimizerPolishItemType.CAL_ANDAND;
             }
             else if (item == "||")
             {
-                return PolishItemType.CAL_OROR;
+                return OptimizerPolishItemType.CAL_OROR;
             }
             else if (item == "<>")
             {
-                return PolishItemType.CAL_NOTEQUAL;
+                return OptimizerPolishItemType.CAL_NOTEQUAL;
             }
             else if (item == "==")
             {
-                return PolishItemType.CAL_EQUAL;
+                return OptimizerPolishItemType.CAL_EQUAL;
             }
             else if (item == ">")
             {
-                return PolishItemType.CAL_BIG;
+                return OptimizerPolishItemType.CAL_BIG;
             }
             else if (item == "<")
             {
-                return PolishItemType.CAL_SMALL;
+                return OptimizerPolishItemType.CAL_SMALL;
             }
             else if (item == ">=")
             {
-                return PolishItemType.CAL_BIGEQUAL;
+                return OptimizerPolishItemType.CAL_BIGEQUAL;
             }
             else if (item == "<=")
             {
-                return PolishItemType.CAL_SMALLEQUAL;
+                return OptimizerPolishItemType.CAL_SMALLEQUAL;
             }
-            return PolishItemType.STRING;
+            return OptimizerPolishItemType.STRING;
         }
 
         /// <summary>
@@ -1091,31 +1092,5 @@ namespace Yuri.YuriInterpreter
         /// 标签跳转字典
         /// </summary>
         private Dictionary<string, SceneAction> blockDict = null;
-    }
-
-    /// <summary>
-    /// 枚举：逆波兰式项类型
-    /// </summary>
-    internal enum PolishItemType
-    {
-        NONE,
-        CONSTANT,
-        STRING,
-        VAR,
-        VAR_NUM,
-        VAR_STRING,
-        CAL_PLUS,
-        CAL_MINUS,
-        CAL_MULTI,
-        CAL_DIV,
-        CAL_ANDAND,
-        CAL_OROR,
-        CAL_NOT,
-        CAL_EQUAL,
-        CAL_NOTEQUAL,
-        CAL_BIG,
-        CAL_SMALL,
-        CAL_BIGEQUAL,
-        CAL_SMALLEQUAL
     }
 }
