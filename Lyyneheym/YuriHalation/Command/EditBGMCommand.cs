@@ -8,7 +8,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：播放BGM
     /// </summary>
-    internal class BGMCommand : HalationSingleCommand
+    internal class EditBGMCommand : HalationSingleEditCommand
     {
         /// <summary>
         /// 播放BGM
@@ -18,7 +18,7 @@ namespace Yuri.YuriHalation.Command
         /// <param name="parent">所属的可运行包装</param>
         /// <param name="filename">BGM资源名</param>
         /// <param name="vol">音量</param>
-        public BGMCommand(int line, int indent, RunnablePackage parent, string filename, string vol)
+        public EditBGMCommand(int line, int indent, RunnablePackage parent, string filename, string vol)
             : base(line, indent, parent)
         {
             HalaAttrList hal = new HalaAttrList();

@@ -7,14 +7,14 @@ namespace Yuri.YuriHalation.YuriForms
     public partial class SwitchesForm : Form
     {
         /// <summary>
-        /// 控制器实例
+        /// 编辑状态位
         /// </summary>
-        private Halation core = Halation.GetInstance();
+        private readonly bool isEditing;
 
         /// <summary>
         /// 构造器
         /// </summary>
-        public SwitchesForm(string title)
+        public SwitchesForm(string title, bool isEdit, string id = "0", string dash = "off")
         {
             InitializeComponent();
             this.Text = title;
@@ -29,13 +29,23 @@ namespace Yuri.YuriHalation.YuriForms
                 this.comboBox1.SelectedIndex = 0;
             }
             // 加载开关
-            List<string> switchVector = Halation.project.SwitchDescriptorList;
+            var switchVector = Halation.project.SwitchDescriptorList;
             // 加载开关列表
             for (int i = 0; i < switchVector.Count; i++)
             {
                 this.switchDataGridView.Rows.Add();
                 this.switchDataGridView.Rows[i].Cells[0].Value = i;
                 this.switchDataGridView.Rows[i].Cells[1].Value = switchVector[i];
+            }
+            this.isEditing = isEdit;
+            if (isEditing)
+            {
+                int tid = Convert.ToInt32(id);
+                if (tid >= 0 && tid < switchVector.Count)
+                {
+                    this.switchDataGridView.Rows[tid].Cells[1].Selected = true;
+                }
+                this.comboBox1.SelectedIndex = dash == "off" ? 1 : 0;
             }
         }
 
@@ -45,12 +55,12 @@ namespace Yuri.YuriHalation.YuriForms
         private void button1_Click(object sender, EventArgs e)
         {
             // 开关操作时没有选择就不要应用
-            if (this.Text != "开关管理器" && this.switchDataGridView.SelectedCells.Count < 1)
+            if (this.Text != @"开关管理器" && this.switchDataGridView.SelectedCells.Count < 1)
             {
                 return;
             }
             // 更新开关描述
-            List<string> desList = new List<string>();
+            var desList = new List<string>();
             for (int i = 0; i < Halation.project.Config.GameMaxSwitchCount; i++)
             {
                 if (this.switchDataGridView.Rows[i].Cells[1].Value == null)
@@ -65,10 +75,19 @@ namespace Yuri.YuriHalation.YuriForms
             }
             Halation.project.SwitchDescriptorList = desList;
             // 开关操作
-            if (this.Text != "开关管理器")
+            if (this.Text != @"开关管理器")
             {
-                // 提交命令
-                Halation.GetInstance().DashSwitches(this.switchDataGridView.SelectedCells[0].RowIndex.ToString(), this.comboBox1.SelectedItem.ToString());
+                // 提交到后台
+                if (this.isEditing)
+                {
+                    Halation.GetInstance().DashEditSwitches(
+                        this.switchDataGridView.SelectedCells[0].RowIndex.ToString(), this.comboBox1.SelectedItem.ToString());
+                }
+                else
+                {
+                    Halation.GetInstance().DashSwitches(
+                        this.switchDataGridView.SelectedCells[0].RowIndex.ToString(), this.comboBox1.SelectedItem.ToString());
+                }
             }
             this.Close();
         }

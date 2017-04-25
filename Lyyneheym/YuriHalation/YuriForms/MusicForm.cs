@@ -8,7 +8,9 @@ namespace Yuri.YuriHalation.YuriForms
 {
     public partial class MusicForm : Form
     {
-        public MusicForm(string title, int index)
+        private readonly bool isEditing;
+
+        public MusicForm(string title, int index, bool isEdit)
         {
             InitializeComponent();
             this.Text = title;
@@ -24,6 +26,7 @@ namespace Yuri.YuriHalation.YuriForms
                 this.button1.Text = "选中";
                 this.button2.Text = "取消";
             }
+            this.isEditing = isEdit;
         }
 
         private void MusicForm_Load(object sender, EventArgs e)
@@ -98,7 +101,16 @@ namespace Yuri.YuriHalation.YuriForms
                     case "BGM":
                         if (this.listBoxBGM.SelectedIndex != -1)
                         {
-                            Halation.GetInstance().DashPlayBGM(this.listBoxBGM.SelectedItem.ToString(), this.volTrackBar.Value.ToString());
+                            if (this.isEditing)
+                            {
+                                Halation.GetInstance().DashEditPlayBGM(
+                                       this.listBoxBGM.SelectedItem.ToString(), this.volTrackBar.Value.ToString());
+                            }
+                            else
+                            {
+                                Halation.GetInstance().DashPlayBGM(
+                                    this.listBoxBGM.SelectedItem.ToString(), this.volTrackBar.Value.ToString());
+                            }
                         }
                         break;
                     case "BGS":

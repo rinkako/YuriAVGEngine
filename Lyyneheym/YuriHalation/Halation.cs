@@ -321,6 +321,12 @@ namespace Yuri.YuriHalation
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
+        public void DashEditPlayBGM(string filename, string vol)
+        {
+            IHalationCommand cmd = new EditBGMCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, filename, vol);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
         public void DashPlayBGS(string filename, string vol)
         {
             IHalationCommand cmd = new BGSCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, filename, vol);
@@ -366,6 +372,12 @@ namespace Yuri.YuriHalation
         public void DashSwitches(string id, string state)
         {
             IHalationCommand cmd = new SwitchCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, state);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashEditSwitches(string id, string state)
+        {
+            IHalationCommand cmd = new EditSwitchCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, id, state);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 

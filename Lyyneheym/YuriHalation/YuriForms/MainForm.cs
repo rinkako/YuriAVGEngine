@@ -319,7 +319,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void button14_Click(object sender, EventArgs e)
         {
-            MusicForm mf = new MusicForm("插入音乐", 0);
+            MusicForm mf = new MusicForm("插入音乐", 0, false);
             mf.ShowDialog(this);
         }
 
@@ -328,7 +328,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void button13_Click(object sender, EventArgs e)
         {
-            MusicForm mf = new MusicForm("插入音乐", 1);
+            MusicForm mf = new MusicForm("插入音乐", 1, false);
             mf.ShowDialog(this);
         }
 
@@ -337,7 +337,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void button16_Click(object sender, EventArgs e)
         {
-            MusicForm mf = new MusicForm("插入音乐", 2);
+            MusicForm mf = new MusicForm("插入音乐", 2, false);
             mf.ShowDialog(this);
         }
 
@@ -373,7 +373,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void button22_Click(object sender, EventArgs e)
         {
-            SwitchesForm sf = new SwitchesForm("开关操作");
+            SwitchesForm sf = new SwitchesForm("开关操作", false);
             sf.ShowDialog(this);
         }
 
@@ -678,6 +678,15 @@ namespace Yuri.YuriHalation.YuriForms
                         editPack.argsDict["opr"].valueExp, editPack.argsDict["op2"].valueExp);
                     editIff.ShowDialog(this);
                     break;
+                case ActionPackageType.act_switch:
+                    SwitchesForm editSwf = new SwitchesForm("开关操作", true,
+                        editPack.argsDict["id"].valueExp, editPack.argsDict["dash"].valueExp);
+                    editSwf.ShowDialog(this);
+                    break;
+                //case ActionPackageType.act_bgm:
+                //    MusicForm editBgmf = new MusicForm("插入音乐", 0, true);
+                //    editBgmf.ShowDialog(this);
+                //    break;
                 default:
                     MessageBox.Show(@"该项目不支持编辑");
                     break;
@@ -815,7 +824,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void bGMToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MusicForm mf = new MusicForm("音乐管理", 0);
+            MusicForm mf = new MusicForm("音乐管理", 0, false);
             mf.ShowDialog(this);
         }
 
@@ -824,7 +833,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void bGSToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MusicForm mf = new MusicForm("音乐管理", 1);
+            MusicForm mf = new MusicForm("音乐管理", 1, false);
             mf.ShowDialog(this);
         }
 
@@ -833,7 +842,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void sEToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MusicForm mf = new MusicForm("音乐管理", 2);
+            MusicForm mf = new MusicForm("音乐管理", 2, false);
             mf.ShowDialog(this);
         }
 
@@ -842,7 +851,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void vOCALToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MusicForm mf = new MusicForm("音乐管理", 3);
+            MusicForm mf = new MusicForm("音乐管理", 3, false);
             mf.ShowDialog(this);
         }
 
@@ -917,7 +926,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void 开关管理器ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SwitchesForm sf = new SwitchesForm("开关管理器");
+            SwitchesForm sf = new SwitchesForm("开关管理器", false);
             sf.ShowDialog(this);
         }
 

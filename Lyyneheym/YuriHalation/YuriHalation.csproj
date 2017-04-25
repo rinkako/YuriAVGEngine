@@ -60,6 +60,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\EditBGMCommand.cs" />
     <Compile Include="Command\EditBgCommand.cs" />
     <Compile Include="Command\EditDeletestandCommand.cs" />
     <Compile Include="Command\EditDeletepicCommand.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Command\SCameraCommand.cs" />
     <Compile Include="Command\EditScriptCommand.cs" />
     <Compile Include="Command\EditVarCommand.cs" />
+    <Compile Include="Command\EditSwitchCommand.cs" />
     <Compile Include="Command\VarCommand.cs" />
     <Compile Include="Command\FuncallCommand.cs" />
     <Compile Include="Command\MenuPasteCommand.cs" />

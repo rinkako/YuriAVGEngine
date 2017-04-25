@@ -9,7 +9,7 @@ namespace Yuri.YuriHalation.Command
     /// <summary>
     /// 命令类：开关操作
     /// </summary>
-    internal class SwitchCommand : HalationSingleCommand
+    internal class EditSwitchCommand : HalationSingleEditCommand
     {
         /// <summary>
         /// 开关操作
@@ -19,7 +19,7 @@ namespace Yuri.YuriHalation.Command
         /// <param name="parent">所属的可运行包装</param>
         /// <param name="id">要操作的开关id</param>
         /// <param name="dash">目标状态</param>
-        public SwitchCommand(int line, int indent, RunnablePackage parent, string id, string dash)
+        public EditSwitchCommand(int line, int indent, RunnablePackage parent, string id, string dash)
             : base(line, indent, parent)
         {
             HalaAttrList hal = new HalaAttrList();
