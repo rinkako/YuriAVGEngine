@@ -60,6 +60,24 @@ namespace Yuri.PlatformCore.Semaphore
         }
 
         /// <summary>
+        /// 依照字典重绑定信号与处理机
+        /// </summary>
+        /// <param name="scene">当前场景</param>
+        /// <param name="bindingDict">重绑定字典</param>
+        public static void ReBinding(Scene scene, Dictionary<string, List<Tuple<string, string>>> bindingDict)
+        {
+            foreach (var sema in bindingDict)
+            {
+                foreach (var tp in sema.Value)
+                {
+                    var activator = scene.FuncContainer.Find(t => t.Callname == tp.Item1);
+                    var deactivator = scene.FuncContainer.Find(t => t.Callname == tp.Item2);
+                    SemaphoreDispatcher.RegisterSemaphoreService(sema.Key, activator, deactivator, null, "", true);
+                }
+            }
+        }
+        
+        /// <summary>
         /// 为当前场景注册信号调度服务
         /// </summary>
         /// <param name="semaphoreName">信号名</param>
@@ -67,7 +85,8 @@ namespace Yuri.PlatformCore.Semaphore
         /// <param name="deactivator">反激活函数</param>
         /// <param name="tag">信号附加值</param>
         /// <param name="groupName">信号分组名</param>
-        public static void RegisterSemaphoreService(string semaphoreName, SceneFunction activator, SceneFunction deactivator, object tag = null, string groupName = "")
+        /// <param name="isRebinding">是否为重绑定</param>
+        public static void RegisterSemaphoreService(string semaphoreName, SceneFunction activator, SceneFunction deactivator, object tag = null, string groupName = "", bool isRebinding = false)
         {
             lock (SemaphoreDispatcher.syncMutex)
             {
@@ -86,13 +105,23 @@ namespace Yuri.PlatformCore.Semaphore
                 };
                 SemaphoreDispatcher.semaphoreDict[semaphoreName].Attach(hdObject);
                 SemaphoreDispatcher.handlerList.Add(new KeyValuePair<string, SemaphoreHandler>(semaphoreName, hdObject));
+                if (isRebinding == false)
+                {
+                    if (Director.RunMana.SemaphoreBindings.ContainsKey(semaphoreName) == false)
+                    {
+                        Director.RunMana.SemaphoreBindings[semaphoreName] = new List<Tuple<string, string>>();
+                    }
+                    Director.RunMana.SemaphoreBindings[semaphoreName].Add(new Tuple<string, string>(
+                        activator?.Callname, deactivator?.Callname));
+                }
             }
         }
 
         /// <summary>
         /// 注销信号调度服务
         /// </summary>
-        public static void UnregisterSemaphoreService()
+        /// <param name="isRebinding">是否为重绑定</param>
+        public static void UnregisterSemaphoreService(bool isRebinding = false)
         {
             lock (SemaphoreDispatcher.syncMutex)
             {
@@ -101,6 +130,10 @@ namespace Yuri.PlatformCore.Semaphore
                     SemaphoreDispatcher.semaphoreDict[kvp.Key].Detach(kvp.Value);
                 }
                 SemaphoreDispatcher.handlerList.Clear();
+                if (isRebinding == false)
+                {
+                    Director.RunMana.SemaphoreBindings.Clear();
+                }
             }
         }
 

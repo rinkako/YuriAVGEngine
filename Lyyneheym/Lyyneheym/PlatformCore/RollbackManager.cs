@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Yuri.PlatformCore.Graphic;
 using Yuri.PlatformCore.Graphic3D;
+using Yuri.PlatformCore.Semaphore;
 using Yuri.PlatformCore.VM;
 using Yuri.Yuriri;
 
@@ -44,6 +45,7 @@ namespace Yuri.PlatformCore
                     globalDao = SymbolTable.GetInstance().GlobalCtxDao.Fork() as GlobalContextDAO,
                     sceneDao = SymbolTable.GetInstance().SceneCtxDao.Fork() as SceneContextDAO,
                     ScreenStateRef = ScreenManager.GetInstance().Fork() as ScreenManager,
+                    SemaphoreDict = ForkableState.DeepCopyBySerialization(Director.RunMana.SemaphoreBindings)
                 };
                 // 如果栈中容量溢出就剔掉最早进入的那个
                 if (RollbackManager.forwardStack.Count >= GlobalConfigContext.MaxRollbackStep)
@@ -110,6 +112,7 @@ namespace Yuri.PlatformCore
             Director.RunMana.ResetCallstackObject(ssp.VMRef.Fork() as StackMachine);
             Director.RunMana.PlayingBGM = ssp.MusicRef;
             Director.RunMana.DashingPureSa = ssp.ReactionRef.Clone(true);
+            Director.RunMana.SemaphoreBindings = ForkableState.DeepCopyBySerialization(ssp.SemaphoreDict);
             Director.ScrMana = ScreenManager.GetInstance();
             // 刷新主渲染器上的堆栈绑定
             Director.GetInstance().RefreshMainRenderVMReference();
@@ -137,10 +140,12 @@ namespace Yuri.PlatformCore
             // 重启并行
             if (needRepara)
             {
-                var sc = ResourceManager.GetInstance().GetScene(ssp.VMRef.ESP.BindingSceneName);
+                var sc = ResourceManager.GetInstance().GetScene(ssp.VMRef.EBP.BindingSceneName);
                 Director.RunMana.ConstructParallelForRollingBack(sc);
                 Director.RunMana.BackTraceParallel();
                 Director.RunMana.LastScenario = sc.Scenario;
+                SemaphoreDispatcher.UnregisterSemaphoreService(true);
+                SemaphoreDispatcher.ReBinding(sc, Director.RunMana.SemaphoreBindings);
             }
             // 重启消息循环
             Director.ResumeUpdateContext();

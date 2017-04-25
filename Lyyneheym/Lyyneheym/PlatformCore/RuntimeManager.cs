@@ -564,6 +564,7 @@ namespace Yuri.PlatformCore
             this.Screen = null;
             this.PlayingBGM = String.Empty;
             this.ParallelExecutorStack = new Stack<List<ParallelExecutor>>();
+            this.SemaphoreBindings = new Dictionary<string, List<Tuple<string, string>>>();
         }
 
         /// <summary>
@@ -589,6 +590,16 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <remarks>在序列化RuntimeManager时务必保证该字段为null值</remarks>
         public EventHandler ParallelHandler
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 获取或设置信号量绑定信息
+        /// </summary>
+        /// <remarks>数据结构：键-信号量名字，值-一个二元组向量，第一元激活函数名，第二元反激活函数名</remarks>
+        public Dictionary<string, List<Tuple<string, string>>> SemaphoreBindings
         {
             get;
             set;

@@ -160,6 +160,9 @@ namespace Yuri.PlatformCore
             Director.RunMana.ConstructParallel(sc);
             Director.RunMana.RestartParallel();
             Director.RunMana.LastScenario = sc.Scenario;
+            // 重启信号系统
+            SemaphoreDispatcher.UnregisterSemaphoreService(true);
+            SemaphoreDispatcher.ReBinding(sc, Director.RunMana.SemaphoreBindings);
             // 重启消息循环
             Director.ResumeUpdateContext();
         }
@@ -441,7 +444,7 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 处理并行调用的消息循环
+        /// 处理并行调用和信号函数的消息循环
         /// </summary>
         private void ParallelUpdateContext(object sender, EventArgs e)
         {
@@ -620,7 +623,8 @@ namespace Yuri.PlatformCore
                             case SemaphoreHandlerType.ScheduleOnce:
                                 return;
                             case SemaphoreHandlerType.ScheduleForever:
-                                throw new NotImplementedException();
+                                paraVM.Submit(pdap.BindingSF, new List<object>());
+                                break;
                             case SemaphoreHandlerType.ScheduleWhenActivated:
                                 throw new NotImplementedException();
                         }

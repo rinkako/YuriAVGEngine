@@ -36,7 +36,16 @@ namespace Yuri.PlatformCore.VM
             get;
             set;
         }
-        
+
+        /// <summary>
+        /// 信号绑定字典的拷贝
+        /// </summary>
+        public Dictionary<string, List<Tuple<string, string>>> SemaphoreDict
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// 全局变量上下文的拷贝
         /// </summary>
