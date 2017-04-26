@@ -97,7 +97,6 @@ namespace Yuri.PlatformCore
         public void SetKeyboardState(KeyEventArgs e, bool isDown)
         {
             UpdateRender.KS_KEY_Dict[e.Key] = isDown ? KeyStates.Down : KeyStates.None;
-            //Director.RunMana.Assignment("&kb_" + e.Key, e.IsDown ? "1" : "0", this.VsmReference);
             // 触发更新事件
             this.UpdateForKeyboardState();
         }
@@ -116,6 +115,14 @@ namespace Yuri.PlatformCore
         public void SetMouseButtonState(MouseButton key, MouseButtonState state)
         {
             UpdateRender.KS_MOUSE_Dict[key] = state;
+            if (state == MouseButtonState.Pressed)
+            {
+                SemaphoreDispatcher.Activate($"System_Mouse_{key}");
+            }
+            else
+            {
+                SemaphoreDispatcher.Deactivate($"System_Mouse_{key}");
+            }
         }
 
         /// <summary>

@@ -99,7 +99,7 @@ namespace Yuri.PlatformCore
             Director.PauseUpdateContext();
             // 结束全部动画
             SpriteAnimation.ClearAnimateWaitingDict();
-            // 检查是否需要回滚当前的并行处理
+            // 检查是否需要回滚当前的并行处理和信号绑定
             bool needRepara = false;
             if (ssp.VMRef.ESP.BindingSceneName != Director.RunMana.CallStack.SAVEP.BindingSceneName)
             {
@@ -137,7 +137,7 @@ namespace Yuri.PlatformCore
             };
             // 提交中断到主调用堆栈
             Director.RunMana.CallStack.Submit(reactionNtr);
-            // 重启并行
+            // 重启并行处理和信号系统
             if (needRepara)
             {
                 var sc = ResourceManager.GetInstance().GetScene(ssp.VMRef.EBP.BindingSceneName);
@@ -171,7 +171,7 @@ namespace Yuri.PlatformCore
             }
             set
             {
-                rollingFlag = value;
+                RollbackManager.rollingFlag = value;
                 if (value == false)
                 {
                     if (RollbackManager.backwardStack.Count > 0)

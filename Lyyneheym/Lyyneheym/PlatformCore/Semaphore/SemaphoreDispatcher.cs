@@ -21,6 +21,7 @@ namespace Yuri.PlatformCore.Semaphore
         /// <param name="shandler">处理机</param>
         public static void Schedule(YuriSemaphore selphine, SemaphoreHandler shandler)
         {
+            if (!SemaphoreDispatcher.EnableDispatcher) { return; }
             switch (shandler.Type)
             {
                 case SemaphoreHandlerType.ScheduleOnce:
@@ -246,9 +247,10 @@ namespace Yuri.PlatformCore.Semaphore
                 SemaphoreDispatcher.SetSemaphore($"System_Key_{t}");
             }
             // 鼠标IO信号量
-            SemaphoreDispatcher.SetSemaphore("System_Mouse_Left");
-            SemaphoreDispatcher.SetSemaphore("System_Mouse_Middle");
-            SemaphoreDispatcher.SetSemaphore("System_Mouse_Right");
+            foreach (var t in Enum.GetNames(typeof(MouseButton)))
+            {
+                SemaphoreDispatcher.SetSemaphore($"System_Mouse_{t}");
+            }
         }
 
         /// <summary>
