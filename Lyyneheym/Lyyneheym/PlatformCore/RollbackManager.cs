@@ -144,7 +144,6 @@ namespace Yuri.PlatformCore
                 Director.RunMana.ConstructParallelForRollingBack(sc);
                 Director.RunMana.BackTraceParallel();
                 Director.RunMana.LastScenario = sc.Scenario;
-                SemaphoreDispatcher.UnregisterSemaphoreService(true);
                 SemaphoreDispatcher.ReBinding(sc, Director.RunMana.SemaphoreBindings);
             }
             // 重启消息循环

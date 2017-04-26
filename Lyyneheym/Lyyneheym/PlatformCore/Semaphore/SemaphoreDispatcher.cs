@@ -60,12 +60,13 @@ namespace Yuri.PlatformCore.Semaphore
         }
 
         /// <summary>
-        /// 依照字典重绑定信号与处理机
+        /// 注销现有的信号处理机并依照字典重绑定信号与处理机
         /// </summary>
         /// <param name="scene">当前场景</param>
         /// <param name="bindingDict">重绑定字典</param>
         public static void ReBinding(Scene scene, Dictionary<string, List<Tuple<string, string>>> bindingDict)
         {
+            SemaphoreDispatcher.UnregisterSemaphoreService(true);
             foreach (var sema in bindingDict)
             {
                 foreach (var tp in sema.Value)

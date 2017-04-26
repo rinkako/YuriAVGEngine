@@ -97,7 +97,7 @@ namespace Yuri.PlatformCore
         public void SetKeyboardState(KeyEventArgs e, bool isDown)
         {
             UpdateRender.KS_KEY_Dict[e.Key] = isDown ? KeyStates.Down : KeyStates.None;
-            Director.RunMana.Assignment("&kb_" + e.Key, e.IsDown ? "1" : "0", this.VsmReference);
+            //Director.RunMana.Assignment("&kb_" + e.Key, e.IsDown ? "1" : "0", this.VsmReference);
             // 触发更新事件
             this.UpdateForKeyboardState();
         }
@@ -593,7 +593,7 @@ namespace Yuri.PlatformCore
                     foreach (var t in Enum.GetNames(typeof(Key)))
                     {
                         UpdateRender.KS_KEY_Dict[(Key) Enum.Parse(typeof(Key), t)] = KeyStates.None;
-                        Director.RunMana.Assignment("&kb_" + t, "0", vsm);
+                        //Director.RunMana.Assignment("&kb_" + t, "0", vsm);
                     }
                 }
             }

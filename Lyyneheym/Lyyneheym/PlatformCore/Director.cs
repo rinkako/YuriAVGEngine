@@ -161,7 +161,6 @@ namespace Yuri.PlatformCore
             Director.RunMana.RestartParallel();
             Director.RunMana.LastScenario = sc.Scenario;
             // 重启信号系统
-            SemaphoreDispatcher.UnregisterSemaphoreService(true);
             SemaphoreDispatcher.ReBinding(sc, Director.RunMana.SemaphoreBindings);
             // 重启消息循环
             Director.ResumeUpdateContext();
