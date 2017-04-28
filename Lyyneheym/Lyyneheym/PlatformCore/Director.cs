@@ -772,7 +772,7 @@ namespace Yuri.PlatformCore
         public static void CollapseWorld()
         {
             var collaTimeStamp = DateTime.Now;
-            CommonUtils.ConsoleLine("Yuri world began to collapse at " + collaTimeStamp.ToString(), "Director", OutputStyle.Important);
+            CommonUtils.ConsoleLine("Yuri world began to collapse at " + collaTimeStamp, "Director", OutputStyle.Important);
             PersistContextDAO.Assign("___YURIRI@LASTPLAYTIMESTAMP___", collaTimeStamp.ToString());
             PersistContextDAO.Assign("___YURIRI@ACCDURATION___", Director.LastGameTimeAcc + (collaTimeStamp - Director.StartupTimeStamp));
             PersistContextDAO.SaveToSteadyMemory();
@@ -806,17 +806,15 @@ namespace Yuri.PlatformCore
             Director.RunMana.SetScreenManager(ScreenManager.GetInstance());
             Director.RunMana.ParallelHandler = this.ParallelUpdateContext;
             Director.RunMana.PerformingChapter = "Prelogue";
-            SCamera2D.Init();
+            //SCamera2D.Init();
             this.timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromTicks((long) GlobalConfigContext.DirectorTimerInterval)
             };
-            this.timer.Tick += UpdateContext;
+            this.timer.Tick += this.UpdateContext;
 #if NOTIME
 #else
             this.InitRuntime();
-            //this.timer.Start();
-            //CommonUtils.ConsoleLine("Context Update Dispatcher is begun", "Director", OutputStyle.Important);
 #endif
         }
 

@@ -112,6 +112,8 @@
         // 发送系统消息
         act_yurimsg,
         // 信号系统
-        act_semaphore
+        act_semaphore,
+        // 章节设置
+        act_chapter,
     }
 }

@@ -175,6 +175,8 @@
         Token_o_yurimsg,
         // 信号操作
         Token_o_semaphore,
+        // 章节设置
+        Token_o_chapter,
         // 参数：类型
         Token_p_type,
         // 参数：函数签名

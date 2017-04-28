@@ -302,5 +302,16 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// 杂项：开关数量
         /// </summary>
         public int GameMaxSwitchCount = 100;
+
+        // TODO 完善全局设置的功能
+        public bool GameFullScreen = false;
+        public int GamePerformance = 0;
+        public bool GameEnableSCamera = true;
+        public bool GameMute = false;
+        public int GameRClickMode = 0;
+        public int GameScrollingMode = 1;
+        public bool GameAutoPointer = false;
+        public int GameViewportWidth = 1280;
+        public int GameViewportHeight = 720;
     }
 }

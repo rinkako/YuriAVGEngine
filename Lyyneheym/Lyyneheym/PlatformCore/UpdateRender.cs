@@ -828,7 +828,7 @@ namespace Yuri.PlatformCore
                     this.Scamera(
                         this.ParseDirectString(action.ArgsDict["name"], String.Empty),
                         this.ParseInt(action.ArgsDict["x"], 0),
-                        this.ParseInt(action.ArgsDict["y"], GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2 ),
+                        this.ParseInt(action.ArgsDict["y"], GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2),
                         this.ParseDouble(action.ArgsDict["ro"], 0)
                         );
                     break;
@@ -842,6 +842,12 @@ namespace Yuri.PlatformCore
                     this.Dialog(
                         action.Tag.Substring(0, action.Tag.Length - 2),
                         action.Tag.Last() == '1'
+                        );
+                    break;
+                case SActionType.act_chapter:
+                    this.Chapter(
+                        this.ParseDirectString(action.ArgsDict["name"], 
+                        Director.RunMana.LastScenario == null ? String.Empty : Director.RunMana.LastScenario)
                         );
                     break;
                 case SActionType.act_semaphore:
@@ -981,6 +987,15 @@ namespace Yuri.PlatformCore
                     SemaphoreDispatcher.RemoveSemaphore(semaphoreName);
                     break;
             }
+        }
+
+        /// <summary>
+        /// 演绎函数：设置当前章节名字
+        /// </summary>
+        /// <param name="name">章节名</param>
+        private void Chapter(string name)
+        {
+            Director.RunMana.PerformingChapter = name;
         }
 
         /// <summary>
