@@ -37,8 +37,8 @@ namespace Yuri
             this.Title = GlobalConfigContext.GAME_TITLE_NAME;
             this.Width = GlobalConfigContext.GAME_VIEWPORT_WIDTH;
             this.Height = GlobalConfigContext.GAME_VIEWPORT_ACTUALHEIGHT;
-            this.mainCanvas.Width = GlobalConfigContext.GAME_VIEWPORT_WIDTH;
-            this.mainCanvas.Height = GlobalConfigContext.GAME_VIEWPORT_HEIGHT;
+            this.mainCanvas.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.mainCanvas.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
             this.ResizeMode = GlobalConfigContext.GAME_WINDOW_RESIZEABLE ? ResizeMode.CanResize : ResizeMode.NoResize;
             // 加载主页面
             this.mainFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;

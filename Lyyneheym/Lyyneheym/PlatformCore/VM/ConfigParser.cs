@@ -96,6 +96,13 @@ namespace Yuri.PlatformCore.VM
             GDC.GAME_VOCAL_POSTFIX = configDict["GameMusicVocalPostfix"];
             // 杂项
             GDC.GAME_SWITCH_COUNT = Convert.ToInt32(configDict["GameMaxSwitchCount"]);
+            GDC.GAME_WINDOW_FULLSCREEN = configDict["GameFullScreen"] == "True";
+            GDC.GAME_PERFORMANCE_TYPE = (GDC.PerformanceType)Convert.ToInt32(configDict["GamePerformance"]);
+            GDC.GAME_SCAMERA_ENABLE = configDict["GameEnableSCamera"] == "True";
+            GDC.GAME_SOUND_MUTE = configDict["GameMute"] == "True";
+            GDC.GAME_AUTO_POINTER = configDict["GameAutoPointer"] == "True";
+            GDC.GAME_VIEWPORT_WIDTH = Convert.ToInt32(configDict["GameViewportWidth"]);
+            GDC.GAME_VIEWPORT_HEIGHT = Convert.ToInt32(configDict["GameViewportHeight"]);
         }
     }
 }
