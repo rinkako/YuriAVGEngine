@@ -3,6 +3,8 @@
 - **单例安全**：指在一个时间段内，只会被一个堆栈（不一定是主调用堆栈）调用时，它是并行安全的。
 - **Derivator**：对应该属性在进行退化LL(1)文法推导过程中表达式解析树根节点的语法类型。关于该文法的细节，请参照**文法设计**小节。
 
+<br/>
+
 ### 显示对话
 ---
 #### 功能
@@ -23,6 +25,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
+
+<br/>
 
 ### 切换角色状态
 ---
@@ -45,6 +49,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
+
+<br/>
 
 ### 显示图片
 ---
@@ -72,6 +78,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 精灵动画
 ---
 #### 功能
@@ -96,6 +104,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 移除图片
 ---
 #### 功能
@@ -114,6 +124,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
+
+<br/>
 
 ### 放置立绘
 ---
@@ -138,6 +150,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 移除图片
 ---
 #### 功能
@@ -156,6 +170,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
+
+<br/>
 
 ### 放置按钮
 ---
@@ -184,6 +200,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 移除按钮
 ---
 #### 功能
@@ -202,6 +220,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
+
+<br/>
 
 ### 显示背景
 ---
@@ -229,6 +249,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 过渡
 ---
 #### 功能
@@ -247,6 +269,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
+
+<br/>
 
 ### 场景镜头
 ---
@@ -270,6 +294,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
 
+<br/>
+
 ### 切换文本层
 ---
 #### 功能
@@ -288,6 +314,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
+
+<br/>
 
 ### 修改文本层属性
 ---
@@ -310,6 +338,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 直接打印文本
 ---
 #### 功能
@@ -329,6 +359,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
+
+<br/>
 
 ### 分发通知
 ---
@@ -351,6 +383,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 播放BGM
 ---
 #### 功能
@@ -370,6 +404,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
+
+<br/>
 
 ### 播放BGS
 ---
@@ -391,6 +427,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 播放SE
 ---
 #### 功能
@@ -410,6 +448,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
+
+<br/>
 
 ### 播放Vocal
 ---
@@ -431,6 +471,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 停止BGM
 ---
 #### 功能
@@ -449,6 +491,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
+
+<br/>
 
 ### 停止BGS
 ---
@@ -469,6 +513,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 停止Vocal
 ---
 #### 功能
@@ -487,6 +533,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
+
+<br/>
 
 ### 返回
 ---
@@ -507,6 +555,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 返回开头
 ---
 #### 功能
@@ -525,6 +575,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
+
+<br/>
 
 ### 呼叫存档画面
 ---
@@ -545,6 +597,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 单例安全 |
 
+<br/>
+
 ### 呼叫读取画面
 ---
 #### 功能
@@ -563,6 +617,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 单例安全 |
+
+<br/>
 
 ### 选择支
 ---
@@ -583,6 +639,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
 
+<br/>
+
 ### 标签
 ---
 #### 功能
@@ -601,6 +659,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
+
+<br/>
 
 ### 跳转
 ---
@@ -623,6 +683,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 开关操作
 ---
 #### 功能
@@ -642,6 +704,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
+
+<br/>
 
 ### 变量操作
 ---
@@ -663,6 +727,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 中断循环
 ---
 #### 功能
@@ -681,6 +747,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 结束游戏
 ---
 #### 功能
@@ -698,6 +766,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
+
+<br/>
 
 ### 延时等待
 ---
@@ -718,6 +788,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
+<br/>
+
 ### 等待用户
 ---
 #### 功能
@@ -736,6 +808,8 @@ The messages to be print.
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
 
+<br/>
+
 ### 等待动画结束
 ---
 #### 功能
@@ -753,6 +827,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
+
+<br/>
 
 ### 函数调用
 ---
@@ -773,6 +849,8 @@ The messages to be print.
 | 命名空间   | Yuri.YuriPlatform.PlatformCore.Director |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
+
+<br/>
 
 ### 信号量操作
 ---
