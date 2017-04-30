@@ -19,11 +19,9 @@
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.RuntimeManager |
+| 命名空间   | Yuri.PlatformCore.RuntimeManager |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
-
-<br/>
 
 ### 循环
 ---
@@ -42,11 +40,9 @@
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.RuntimeManager |
+| 命名空间   | Yuri.PlatformCore.RuntimeManager |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
-
-<br/>
 
 ### 函数体
 ---

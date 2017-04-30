@@ -22,7 +22,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
 
@@ -46,7 +46,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
 
@@ -74,7 +74,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -100,7 +100,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -121,7 +121,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -146,7 +146,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -167,7 +167,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -196,7 +196,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -217,7 +217,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -245,7 +245,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -266,7 +266,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
 
@@ -290,7 +290,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
 
@@ -311,7 +311,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -334,7 +334,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -356,7 +356,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -379,7 +379,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -401,7 +401,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -423,7 +423,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -445,7 +445,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -467,7 +467,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -488,7 +488,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -509,7 +509,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -530,7 +530,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -551,7 +551,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -572,7 +572,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
 
@@ -593,7 +593,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 单例安全 |
 
@@ -614,7 +614,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 单例安全 |
 
@@ -635,7 +635,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
 
@@ -656,7 +656,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -679,7 +679,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.Director |
+| 命名空间   | Yuri.PlatformCore.Director |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -701,7 +701,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -723,7 +723,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -743,7 +743,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -763,7 +763,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
 
@@ -784,7 +784,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.Director |
+| 命名空间   | Yuri.PlatformCore.Director |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -804,7 +804,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
 
@@ -824,7 +824,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.UpdateRender |
+| 命名空间   | Yuri.PlatformCore.UpdateRender |
 | 最低版本   | 1.0 |
 | 并行安全   | 否 |
 
@@ -846,7 +846,7 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.Director |
+| 命名空间   | Yuri.PlatformCore.Director |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
 
@@ -871,6 +871,6 @@ The messages to be print.
 #### 程序集信息
 | Property | Value |
 | :-------- | :--------: |
-| 命名空间   | Yuri.YuriPlatform.PlatformCore.Director |
+| 命名空间   | Yuri.PlatformCore.Director |
 | 最低版本   | 1.0 |
 | 并行安全   | 是 |
