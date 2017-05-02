@@ -742,6 +742,7 @@ namespace Yuri.PlatformCore
                     this.Stopvocal();
                     break;
                 case SActionType.act_title:
+                    this.Title();
                     break;
                 case SActionType.act_save:
                     this.Save();
