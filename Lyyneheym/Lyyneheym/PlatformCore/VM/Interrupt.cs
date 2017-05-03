@@ -12,40 +12,40 @@ namespace Yuri.PlatformCore.VM
         /// <summary>
         /// 中断类型
         /// </summary>
-        public InterruptType type = InterruptType.NOP;
+        public InterruptType Type = InterruptType.NOP;
 
         /// <summary>
         /// 中断描述
         /// </summary>
-        public string detail = String.Empty;
+        public string Detail = String.Empty;
 
         /// <summary>
         /// <para>中断后执行的中断处理动作</para>
         /// <para>它在中断发生后最优先被执行，但它的后继结点将被忽略</para>
         /// </summary>
-        public SceneAction interruptSA = null;
+        public SceneAction InterruptSA = null;
 
         /// <summary>
         /// <para>中断处理函数调用签名</para>
         /// <para>这个动作将在处理完中断动作后被施加到调用堆栈</para>
         /// </summary>
-        public string interruptFuncSign = String.Empty;
+        public string InterruptFuncSign = String.Empty;
 
         /// <summary>
         /// <para>中断结束后跳转的标签名</para>
         /// <para>这个动作将在处理完中断函数调用后被施加到调用堆栈</para>
         /// </summary>
-        public string returnTarget = null;
+        public string ReturnTarget = null;
 
         /// <summary>
         /// 在执行完中断动作后是否处理后续动作
         /// </summary>
-        public bool pureInterrupt = false;
+        public bool PureInterrupt = false;
 
         /// <summary>
         /// 是否在执行时弹空所有等待
         /// </summary>
-        public bool exitWait = false;
+        public bool ExitWait = false;
     }
 
     /// <summary>

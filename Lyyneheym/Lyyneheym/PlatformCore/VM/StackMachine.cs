@@ -14,7 +14,6 @@ namespace Yuri.PlatformCore.VM
         /// <summary>
         /// 构造函数：建立一个新的栈机
         /// </summary>
-        /// 
         public StackMachine()
         {
             this.Reset();
@@ -104,13 +103,13 @@ namespace Yuri.PlatformCore.VM
                 State = StackMachineState.Interrupt,
                 ScriptName = null,
                 PC = 0,
-                IP = ntr.interruptSA,
-                IR = ntr.interruptSA?.NodeName,
+                IP = ntr.InterruptSA,
+                IR = ntr.InterruptSA?.NodeName,
                 Argv = null,
                 BindingFunctionName = null,
                 BindingSceneName = null,
                 Delay = TimeSpan.FromMilliseconds(0),
-                Tag = ntr.returnTarget,
+                Tag = ntr.ReturnTarget,
                 BindingInterrupt = ntr
             };
             this.coreStack.Push(smf);

@@ -869,13 +869,13 @@ namespace Yuri.PlatformCore.Graphic
             sbutton.Enable = descriptor.Enable;
             sbutton.Ntr = new Interrupt()
             {
-                detail = "ButtonNTRInterrupt",
-                interruptSA = null,
-                type = InterruptType.ButtonJump,
-                interruptFuncSign = descriptor.InterruptFuncSign,
-                returnTarget = descriptor.JumpLabel,
-                pureInterrupt = false,
-                exitWait = !descriptor.Eternal
+                Detail = "ButtonNTRInterrupt",
+                InterruptSA = null,
+                Type = InterruptType.ButtonJump,
+                InterruptFuncSign = descriptor.InterruptFuncSign,
+                ReturnTarget = descriptor.JumpLabel,
+                PureInterrupt = false,
+                ExitWait = !descriptor.Eternal
             };
             Canvas.SetLeft(buttonImage, descriptor.X - bmp.PixelWidth / 2.0);
             Canvas.SetTop(buttonImage, descriptor.Y - bmp.PixelHeight / 2.0);
@@ -926,11 +926,11 @@ namespace Yuri.PlatformCore.Graphic
             bbutton.Text = descriptor.Text;
             bbutton.Ntr = new Interrupt()
             {
-                detail = "BranchButtonNTRInterrupt",
-                interruptSA = null,
-                type = InterruptType.ButtonJump,
-                returnTarget = descriptor.JumpTarget,
-                exitWait = true
+                Detail = "BranchButtonNTRInterrupt",
+                InterruptSA = null,
+                Type = InterruptType.ButtonJump,
+                ReturnTarget = descriptor.JumpTarget,
+                ExitWait = true
             };
             Canvas.SetLeft(buttonTextView, descriptor.X);
             Canvas.SetTop(buttonTextView, descriptor.Y);

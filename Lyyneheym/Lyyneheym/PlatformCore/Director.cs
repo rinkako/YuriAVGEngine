@@ -145,12 +145,12 @@ namespace Yuri.PlatformCore
             Director.RunMana.ExitUserWait();
             Interrupt reactionNtr = new Interrupt()
             {
-                type = InterruptType.LoadReaction,
-                detail = "Reaction for load data",
-                interruptSA = Director.RunMana.DashingPureSa,
-                interruptFuncSign = String.Empty,
-                returnTarget = null,
-                pureInterrupt = true
+                Type = InterruptType.LoadReaction,
+                Detail = "Reaction for load data",
+                InterruptSA = Director.RunMana.DashingPureSa,
+                InterruptFuncSign = String.Empty,
+                ReturnTarget = null,
+                PureInterrupt = true
             };
             // 提交中断
             Director.RunMana.CallStack.Submit(reactionNtr);
@@ -278,9 +278,9 @@ namespace Yuri.PlatformCore
                         var interruptSa = Director.RunMana.CallStack.ESP.IP;
                         var interruptExitPoint = Director.RunMana.CallStack.ESP.Tag;
                         // 退出中断
-                        var pureInt = Director.RunMana.CallStack.ESP.BindingInterrupt.pureInterrupt;
-                        var interruptFuncCalling = Director.RunMana.CallStack.ESP.BindingInterrupt.interruptFuncSign;
-                        var needExitWait = Director.RunMana.CallStack.ESP.BindingInterrupt.exitWait;
+                        var pureInt = Director.RunMana.CallStack.ESP.BindingInterrupt.PureInterrupt;
+                        var interruptFuncCalling = Director.RunMana.CallStack.ESP.BindingInterrupt.InterruptFuncSign;
+                        var needExitWait = Director.RunMana.CallStack.ESP.BindingInterrupt.ExitWait;
                         Director.RunMana.ExitCall(Director.RunMana.CallStack);
                         // 处理中断优先动作
                         if (interruptSa != null)

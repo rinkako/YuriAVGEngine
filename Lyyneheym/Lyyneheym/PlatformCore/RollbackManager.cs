@@ -128,12 +128,12 @@ namespace Yuri.PlatformCore
             Director.RunMana.ExitUserWait();
             Interrupt reactionNtr = new Interrupt()
             {
-                type = InterruptType.LoadReaction,
-                detail = "Reaction for rollback",
-                interruptSA = ssp.ReactionRef,
-                interruptFuncSign = String.Empty,
-                returnTarget = null,
-                pureInterrupt = true
+                Type = InterruptType.LoadReaction,
+                Detail = "Reaction for rollback",
+                InterruptSA = ssp.ReactionRef,
+                InterruptFuncSign = String.Empty,
+                ReturnTarget = null,
+                PureInterrupt = true
             };
             // 提交中断到主调用堆栈
             Director.RunMana.CallStack.Submit(reactionNtr);
