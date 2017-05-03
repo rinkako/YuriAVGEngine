@@ -18,7 +18,10 @@ namespace Yuri.PlatformCore.VM
         /// <param name="varObj">要存入的对象引用</param>
         public virtual void Assign(string varName, object varObj)
         {
-            this.symbols[varName] = varObj;
+            lock (this)
+            {
+                this.symbols[varName] = varObj;
+            }
         }
 
         /// <summary>
@@ -28,7 +31,10 @@ namespace Yuri.PlatformCore.VM
         /// <returns>是否移除成功（变量原本是否存在）</returns>
         public virtual bool Remove(string varName)
         {
-            return this.symbols.Remove(varName);
+            lock (this)
+            {
+                return this.symbols.Remove(varName);
+            }
         }
 
         /// <summary>
@@ -38,7 +44,10 @@ namespace Yuri.PlatformCore.VM
         /// <returns>变量是否存在</returns>
         public virtual bool Exist(string varName)
         {
-            return this.symbols.ContainsKey(varName);
+            lock (this)
+            {
+                return this.symbols.ContainsKey(varName);
+            }
         }
 
         /// <summary>
@@ -48,12 +57,15 @@ namespace Yuri.PlatformCore.VM
         /// <returns>变量代表的对象引用</returns>
         public virtual object Fetch(string varName)
         {
-            if (this.symbols.ContainsKey(varName))
+            lock (this)
             {
-                return this.symbols[varName];
+                if (this.symbols.ContainsKey(varName))
+                {
+                    return this.symbols[varName];
+                }
+                CommonUtils.ConsoleLine("变量 " + varName + " 在作为左值之前被引用", "EvaluatableContext", OutputStyle.Error);
+                throw new NullReferenceException("变量 " + varName + " 在作为左值之前被引用");
             }
-            CommonUtils.ConsoleLine("变量 " + varName + " 在作为左值之前被引用", "EvaluatableContext", OutputStyle.Error);
-            throw new NullReferenceException("变量 " + varName + " 在作为左值之前被引用");
         }
 
         /// <summary>
@@ -61,7 +73,10 @@ namespace Yuri.PlatformCore.VM
         /// </summary>
         public virtual void Clear()
         {
-            this.symbols.Clear();
+            lock (this)
+            {
+                this.symbols.Clear();
+            }
         }
 
         /// <summary>
@@ -71,7 +86,10 @@ namespace Yuri.PlatformCore.VM
         /// <returns>满足约束的键值对</returns>
         public virtual List<KeyValuePair<string, object>> GetSymbols(Predicate<string> varNamePred)
         {
-            return this.symbols.Where(kvp => varNamePred(kvp.Key)).ToList();
+            lock (this)
+            {
+                return this.symbols.Where(kvp => varNamePred(kvp.Key)).ToList();
+            }
         }
 
         /// <summary>

@@ -174,7 +174,7 @@
   <ItemGroup>
     <Compile Include="PlatformCore\Graphic\BranchButton.cs" />
     <Compile Include="PlatformCore\Graphic\BranchButtonDescriptor.cs" />
-    <Compile Include="PlatformCore\GlobalDataContext.cs" />
+    <Compile Include="PlatformCore\GlobalConfigContext.cs" />
     <Compile Include="PlatformCore\VM\Interrupt.cs" />
     <Compile Include="PlatformCore\Graphic\MessageLayer.cs" />
     <Compile Include="PlatformCore\Graphic\MessageLayerDescriptor.cs" />
