@@ -84,11 +84,11 @@ namespace Yuri.PlatformCore.VM
         /// </summary>
         /// <param name="varNamePred">变量名筛选谓词</param>
         /// <returns>满足约束的键值对</returns>
-        public virtual List<KeyValuePair<string, object>> GetSymbols(Predicate<string> varNamePred)
+        public virtual List<KeyValuePair<string, object>> GetSymbols(Predicate<string> varNamePred = null)
         {
             lock (this)
             {
-                return this.symbols.Where(kvp => varNamePred(kvp.Key)).ToList();
+                return varNamePred == null ? this.symbols.ToList() : this.symbols.Where(kvp => varNamePred(kvp.Key)).ToList();
             }
         }
 

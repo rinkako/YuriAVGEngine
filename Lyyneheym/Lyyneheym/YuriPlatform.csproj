@@ -96,6 +96,7 @@
     <Compile Include="PageView\SplashPage.xaml.cs">
       <DependentUpon>SplashPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PlatformCore\Audio\NAudioChannelPlayer.cs" />
     <Compile Include="PlatformCore\Director.cs" />
     <Compile Include="PlatformCore\Evaluator\IEvaluator.cs" />
     <Compile Include="PlatformCore\Graphic3D\ParticleDescriptor3D.cs" />

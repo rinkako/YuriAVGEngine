@@ -6,6 +6,7 @@ using IronPython.Hosting;
 using System.Collections.Generic;
 using Microsoft.Scripting.Hosting;
 using Yuri.Utils;
+using Yuri.PlatformCore.VM;
 
 namespace Yuri.PlatformCore
 {
@@ -19,9 +20,9 @@ namespace Yuri.PlatformCore
         /// <para>此方法使用互斥锁保证线程安全，因此同一时刻此方法只能被一个线程所执行</para>
         /// </summary>
         /// <param name="pyExpr">要执行的Python命令</param>
-        /// <param name="paras">参数字典</param>
+        /// <param name="ctx">上下文</param>
         /// <returns>执行的结果</returns>
-        public static dynamic Execute(string pyExpr, Dictionary<string, object> paras)
+        public static dynamic Execute(string pyExpr, EvaluatableContext ctx)
         {
             dynamic execResult = null;
             try
@@ -29,7 +30,7 @@ namespace Yuri.PlatformCore
                 lock (YuririWorld.executionMutex)
                 {
                     ScriptScope scope = YuririWorld.contextEngine.CreateScope();
-                    foreach (var kvp in paras)
+                    foreach (var kvp in ctx.GetSymbols())
                     {
                         scope.SetVariable(kvp.Key, kvp.Value);
                     }
@@ -51,9 +52,9 @@ namespace Yuri.PlatformCore
         /// <para>此方法使用互斥锁保证线程安全，因此同一时刻此方法只能被一个线程所执行</para>
         /// </summary>
         /// <param name="pyPath">要执行的Python命令</param>
-        /// <param name="paras">参数字典</param>
+        /// <param name="ctx">上下文</param>
         /// <returns>执行的结果</returns>
-        public static dynamic ExecuteFile(string pyPath, Dictionary<string, object> paras)
+        public static dynamic ExecuteFile(string pyPath, EvaluatableContext ctx)
         {
             dynamic execResult = null;
             try
@@ -61,7 +62,7 @@ namespace Yuri.PlatformCore
                 lock (YuririWorld.executionMutex)
                 {
                     ScriptScope scope = YuririWorld.contextEngine.CreateScope();
-                    foreach (var kvp in paras)
+                    foreach (var kvp in ctx.GetSymbols())
                     {
                         scope.SetVariable(kvp.Key, kvp.Value);
                     }
@@ -82,15 +83,15 @@ namespace Yuri.PlatformCore
         /// <para>为Python脚本字符串创建一个与其他脚本以及游戏运行时环境隔离性的上下文并执行它</para>
         /// </summary>
         /// <param name="pyExpr">要执行的Python命令</param>
-        /// <param name="paras">参数字典</param>
+        /// <param name="ctx">上下文</param>
         /// <returns>执行的结果</returns>
-        public static dynamic ExecuteIsolation(string pyExpr, Dictionary<string, object> paras)
+        public static dynamic ExecuteIsolation(string pyExpr, EvaluatableContext ctx)
         {
             try
             {
                 ScriptEngine engine = Python.CreateEngine();
                 ScriptScope scope = engine.CreateScope();
-                foreach (var kvp in paras)
+                foreach (var kvp in ctx.GetSymbols())
                 {
                     scope.SetVariable(kvp.Key, kvp.Value);
                 }
@@ -109,15 +110,15 @@ namespace Yuri.PlatformCore
         /// <para>为Python脚本文件创建一个与其他脚本以及游戏运行时环境隔离性的上下文并执行它</para>
         /// </summary>
         /// <param name="pyPath">要执行的Python文件</param>
-        /// <param name="paras">参数字典</param>
+        /// <param name="ctx">上下文</param>
         /// <returns>执行的结果</returns>
-        public static dynamic ExecuteFileIsolation(string pyPath, Dictionary<string, object> paras)
+        public static dynamic ExecuteFileIsolation(string pyPath, EvaluatableContext ctx)
         {
             try
             {
                 ScriptEngine engine = Python.CreateEngine();
                 ScriptScope scope = engine.CreateScope();
-                foreach (var kvp in paras)
+                foreach (var kvp in ctx.GetSymbols())
                 {
                     scope.SetVariable(kvp.Key, kvp.Value);
                 }
