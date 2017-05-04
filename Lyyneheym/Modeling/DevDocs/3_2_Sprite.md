@@ -66,3 +66,14 @@ Yuri引擎使用WPF作为底层的画面引擎，并对其提供的API进行了�
 | ToScaleY | 获取或设置精灵在动画结束后的Y缩放 |
 | ToBlurRadius | 获取或设置精灵在动画结束后的模糊半径 |
 | ToShadowRadius | 获取或设置精灵在动画结束后的投影半径 |
+
+### 程序集信息
+| Property | Value |
+| :-------- | :--------: |
+| 层次结构 | Yuri.PlatformCore.Graphic.YuriSprite |
+| 最低版本 | 1.0 |
+| 并行安全 | 是 |
+|||
+| 层次结构 | Yuri.PlatformCore.Graphic.SpriteDescriptor |
+| 最低版本 | 1.0 |
+| 并行安全 | 是 |

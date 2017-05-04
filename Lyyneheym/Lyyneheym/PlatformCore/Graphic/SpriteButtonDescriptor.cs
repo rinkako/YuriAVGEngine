@@ -42,7 +42,7 @@ namespace Yuri.PlatformCore.Graphic
         public string JumpLabel { get; set; }
 
         /// <summary>
-        /// 获取或设置按钮终端调用函数
+        /// 获取或设置按钮中断调用函数
         /// </summary>
         public string InterruptFuncSign { get; set; }
 

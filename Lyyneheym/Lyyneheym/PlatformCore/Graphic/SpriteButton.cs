@@ -14,7 +14,7 @@ namespace Yuri.PlatformCore.Graphic
         /// <summary>
         /// 构造精灵按钮
         /// </summary>
-        /// <param name="bid"></param>
+        /// <param name="bid">按钮ID</param>
         public SpriteButton(int bid)
         {
             this.Id = bid;
@@ -28,12 +28,12 @@ namespace Yuri.PlatformCore.Graphic
         }
 
         /// <summary>
-        /// 按钮编号
+        /// 获取或设置按钮编号
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// 按下时的中断
+        /// 获取或设置按下时的中断
         /// </summary>
         public Interrupt Ntr { get; set; }
 
