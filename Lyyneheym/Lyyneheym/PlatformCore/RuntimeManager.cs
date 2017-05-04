@@ -188,14 +188,15 @@ namespace Yuri.PlatformCore
             // 基础调用
             this.CallStack.Submit(scene, target);
             // 如果当前有并行，而又调用了带有并行的场景，那么就要暂停现在的并行
-            if (this.ParallelExecutorStack.Count != 0)
-            {
-                var parasBeforeCalling = this.ParallelExecutorStack.Peek();
-                parasBeforeCalling.ForEach(t => t.Dispatcher.Stop());
-            }
-            // 处理场景的并行函数
             if (this.LastScenario != scene.Scenario)
             {
+                // fix:这块本来在外面的
+                if (this.ParallelExecutorStack.Count != 0)
+                {
+                    var parasBeforeCalling = this.ParallelExecutorStack.Peek();
+                    parasBeforeCalling.ForEach(t => t.Dispatcher.Stop());
+                }
+                // 处理场景的并行函数
                 this.ConstructParallel(scene);
             }
             // 更新场景名字记录

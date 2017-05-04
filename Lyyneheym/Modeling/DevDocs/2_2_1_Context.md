@@ -40,8 +40,7 @@ IRuntimeContext接口为YRE的上下文提供了一些常用接口的声明，�
 通常来说，它被存放在YRE的堆区中**Permanent Space**区域。
 
 ### 上下文的继承关系
-
-【TODO 图ContextRelationship】
+![ContextRelationship](./ContextRelationship.png)
 
 ### 程序集信息
 | Property | Value |
