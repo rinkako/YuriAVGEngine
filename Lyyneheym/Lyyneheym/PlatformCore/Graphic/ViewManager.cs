@@ -18,7 +18,7 @@ using Yuri.PlatformCore.Graphic3D;
 namespace Yuri.PlatformCore.Graphic
 {
     /// <summary>
-    /// 视窗管理器：负责将画面管理器的内容渲染为前端2D/3D视图
+    /// 前端管理器：负责将画面管理器的内容渲染为前端2D/3D视图
     /// </summary>
     internal sealed class ViewManager
     {
@@ -1333,17 +1333,17 @@ namespace Yuri.PlatformCore.Graphic
         }
 
         /// <summary>
-        /// 2D主舞台页面的引用
+        /// 获取2D主舞台页面的引用
         /// </summary>
         public static Stage2D View2D => ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage) as Stage2D;
 
         /// <summary>
-        /// 3D主舞台页面的引用
+        /// 获取3D主舞台页面的引用
         /// </summary>
         public static Stage3D View3D => ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage) as Stage3D;
 
         /// <summary>
-        /// 获取或设置当前是否使用3D镜头系统
+        /// 获取当前是否使用3D镜头系统
         /// </summary>
         public static bool Is3DStage => GlobalConfigContext.GAME_IS3D;
 

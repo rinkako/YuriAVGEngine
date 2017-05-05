@@ -7,7 +7,7 @@ using Yuri.Utils;
 namespace Yuri.PlatformCore.Graphic
 {
     /// <summary>
-    /// 前端页面管理器类：为游戏窗体提供对前端页的通用接口
+    /// WPF页面导航器类：为游戏窗体提供对前端页的通用接口
     /// </summary>
     internal static class ViewPageManager
     {
@@ -36,7 +36,7 @@ namespace Yuri.PlatformCore.Graphic
         }
 
         /// <summary>
-        /// 清空页面管理器中储存的页引用
+        /// 清空管理器中所有的WPF页引用
         /// </summary>
         public static void Clear()
         {

@@ -147,7 +147,7 @@ namespace Yuri.PlatformCore.Graphic
         }
 
         /// <summary>
-        /// 获取或设置文字层横坐标
+        /// 获取或设置文字层X坐标
         /// </summary>
         public double X
         {
@@ -162,7 +162,7 @@ namespace Yuri.PlatformCore.Graphic
         }
 
         /// <summary>
-        /// 获取或设置文字层纵坐标
+        /// 获取或设置文字层Y坐标
         /// </summary>
         public double Y
         {

@@ -66,7 +66,7 @@ namespace Yuri.PlatformCore.Graphic
         }
 
         /// <summary>
-        /// 为屏幕增加一个立绘精灵描述子
+        /// 为屏幕增加一个2D立绘精灵描述子
         /// </summary>
         /// <param name="id">立绘位置id号</param>
         /// <param name="source">资源名称</param>
