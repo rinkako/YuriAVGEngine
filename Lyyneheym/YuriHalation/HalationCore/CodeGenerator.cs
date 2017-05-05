@@ -17,7 +17,7 @@ namespace Yuri.YuriHalation.HalationCore
         /// <param name="thread">线程数量</param>
         public List<KeyValuePair<string, string>> Generate(int thread = 4)
         {
-            thread = (thread > 8 || thread < 1) ? 8 : thread;
+            //thread = (thread > 8 || thread < 1) ? 8 : thread;
             // 将所有待翻译项目加入队列
             this.splitQueue = new Queue<ScenePackage>();
             foreach (var sc in Halation.project.GetScene())

@@ -63,10 +63,6 @@ namespace Yuri.YuriHalation.HalationCore
             try
             {
                 Stream myStream = File.Open(savePath, FileMode.Create);
-                if (myStream == null)
-                {
-                    throw new IOException();
-                }
                 BinaryFormatter bf = new BinaryFormatter();
                 bf.Serialize(myStream, instance);
                 myStream.Close();
@@ -88,10 +84,6 @@ namespace Yuri.YuriHalation.HalationCore
             try
             {
                 Stream s = File.Open(loadPath, FileMode.Open);
-                if (s == null)
-                {
-                    throw new IOException();
-                }
                 BinaryFormatter bf = new BinaryFormatter();
                 object ob = bf.Deserialize(s);
                 s.Close();
@@ -106,7 +98,7 @@ namespace Yuri.YuriHalation.HalationCore
         /// <summary>
         /// 为项目保存全局配置信息
         /// </summary>
-        /// <param name="savePath">保存的路径</param>
+        /// <param name="savePath">文件路径</param>
         /// <param name="kvpList">config包装的成员变量反射向量</param>
         public static void SaveConfigData(string savePath, List<Tuple<string, object, int>> kvpList)
         {
@@ -123,7 +115,7 @@ namespace Yuri.YuriHalation.HalationCore
         /// <summary>
         /// 为项目读取全局配置信息
         /// </summary>
-        /// <param name="loadPath"></param>
+        /// <param name="loadPath">文件路径</param>
         /// <returns>行分割对象向量</returns>
         public static List<Tuple<string, string, int>> LoadConfigData(string loadPath)
         {
