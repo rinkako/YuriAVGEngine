@@ -32,7 +32,7 @@
 | ObserverTag | 订阅者的附加值 |
 
 YRE中的可订阅对象和订阅者对象都继承这两个抽象类。在信号分发机制中，可订阅对象是`YuriSemaphore`，订阅者是`SemaphoreHandler`。<br/>
-信号量对象`YuriSemaphore`的每一个实例代表某一个命名信号量，它的激活属性`Activated`在发生改变时会通知所有订阅该信号量的信号量处理器`SemaphoreHandler`执行对应的动作：在`Activated`被变更为激活时，执行**激活函数**；在`Activated`被熄灭时，执行**反激活函数**。在信号分发系统中，类的层次关系入图：
+信号量对象`YuriSemaphore`的每一个实例代表某一个命名信号量，它的激活属性`Activated`在发生改变时会通知所有订阅该信号量的信号量处理器`SemaphoreHandler`执行对应的动作：在`Activated`被变更为激活时，执行**激活函数**；在`Activated`被熄灭时，执行**反激活函数**。在信号分发系统中，类的层次关系如图：
 
 ![SemaphoreClassesUML](./Semaphore.png)
 
