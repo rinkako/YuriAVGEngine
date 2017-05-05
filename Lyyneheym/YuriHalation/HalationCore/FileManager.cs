@@ -108,16 +108,39 @@ namespace Yuri.YuriHalation.HalationCore
         /// </summary>
         /// <param name="savePath">保存的路径</param>
         /// <param name="kvpList">config包装的成员变量反射向量</param>
-        public static void SaveConfigData(string savePath, List<KeyValuePair<string, object>> kvpList)
+        public static void SaveConfigData(string savePath, List<Tuple<string, object, int>> kvpList)
         {
             FileStream fs = new FileStream(savePath, FileMode.Create);
             StreamWriter sw = new StreamWriter(fs);
             foreach (var kvp in kvpList)
             {
-                sw.WriteLine(String.Format("{0} => {1}", kvp.Key, kvp.Value.ToString()));
+                sw.WriteLine("{0}=>{1}=>{2}", kvp.Item1, kvp.Item2, kvp.Item3);
             }
             sw.Close();
             fs.Close();
+        }
+
+        /// <summary>
+        /// 为项目读取全局配置信息
+        /// </summary>
+        /// <param name="loadPath"></param>
+        /// <returns>行分割对象向量</returns>
+        public static List<Tuple<string, string, int>> LoadConfigData(string loadPath)
+        {
+            FileStream fs = new FileStream(loadPath, FileMode.Open);
+            StreamReader sr = new StreamReader(fs);
+            var resList = new List<Tuple<string, string, int>>();
+            while (sr.EndOfStream == false)
+            {
+                var lineitems = sr.ReadLine().Split(new[] {"=>"}, StringSplitOptions.RemoveEmptyEntries);
+                if (lineitems.Length == 3)
+                {
+                    resList.Add(new Tuple<string, string, int>(lineitems[0], lineitems[1], Convert.ToInt32(lineitems[2])));
+                }
+            }
+            sr.Close();
+            fs.Close();
+            return resList;
         }
 
         /// <summary>

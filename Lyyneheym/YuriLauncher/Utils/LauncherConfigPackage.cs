@@ -20,8 +20,8 @@ namespace Yuri.YuriLauncher.Utils
             while (sr.EndOfStream == false)
             {
                 string aline = sr.ReadLine();
-                var lineitems = aline?.Split(new[] { " => " }, StringSplitOptions.RemoveEmptyEntries);
-                if (lineitems?.Length == 2)
+                var lineitems = aline?.Split(new[] { "=>" }, StringSplitOptions.RemoveEmptyEntries);
+                if (lineitems?.Length == 3)
                 {
                     configDict.Add(lineitems[0], lineitems[1]);
                 }

@@ -41,14 +41,40 @@ namespace Yuri.YuriHalation
         }
 
         /// <summary>
+        /// 将设置的类型转化方便记录的数字
+        /// </summary>
+        /// <param name="t">类型对象</param>
+        /// <returns>类型对应描述数字</returns>
+        public static int MapTypeToNum(Type t)
+        {
+            if (t == typeof(string))
+            {
+                return 1;
+            }
+            if (t == typeof(bool))
+            {
+                return 2;
+            }
+            if (t == typeof(int))
+            {
+                return 3;
+            }
+            if (t == typeof(double) || t == typeof(float))
+            {
+                return 4;
+            }
+            return 0;
+        }
+
+        /// <summary>
         /// 遍历一个类的所有值字段
         /// </summary>
         /// <typeparam name="T">要遍历的类型</typeparam>
         /// <param name="t">类型的实例</param>
         /// <returns>一个包含了字段与字段值键值对的向量</returns>
-        public static List<KeyValuePair<string, object>> GetNameAndValue<T>(T t)
+        public static List<Tuple<string, object, int>> GetNameAndValue<T>(T t)
         {
-            var resList = new List<KeyValuePair<string, object>>();
+            var resList = new List<Tuple<string, object, int>>();
             if (t == null)
             {
                 return resList;
@@ -58,8 +84,45 @@ namespace Yuri.YuriHalation
             {
                 return resList;
             }
-            resList.AddRange(properties.Select(item => new KeyValuePair<string, object>(item.Name, item.GetValue(t))));
+            resList.AddRange(properties.Select(item => new Tuple<string, object, int>(item.Name, item.GetValue(t), Halation.MapTypeToNum(item.FieldType))));
             return resList;
+        }
+
+        /// <summary>
+        /// 将字符串映射为一个类的指定字段的值
+        /// </summary>
+        /// <typeparam name="T">要处理的类型</typeparam>
+        /// <param name="t">类型的实例</param>
+        /// <param name="proName">字段名字</param>
+        /// <param name="proValue">字段的值字符串</param>
+        /// <param name="typeNum">字段类型对应的数值</param>
+        public static void SetValueByName<T>(T t, string proName, string proValue, int typeNum)
+        {
+            var properties = t.GetType().GetFields();
+            if (properties.Length <= 0)
+            {
+                return;
+            }
+            object tobj;
+            switch (typeNum)
+            {
+                case 1:
+                    tobj = proValue;
+                    break;
+                case 2:
+                    tobj = Convert.ToBoolean(proValue);
+                    break;
+                case 3:
+                    tobj = Convert.ToInt32(proValue);
+                    break;
+                case 4:
+                    tobj = Convert.ToDouble(proValue);
+                    break;
+                default:
+                    tobj = proValue;
+                    break;
+            }
+            properties.First(tt => tt.Name == proName).SetValue(t, tobj);
         }
         #endregion
 
@@ -669,7 +732,7 @@ namespace Yuri.YuriHalation
         public void NewProject(string path, string projName)
         {
             FileManager.CreateInitFolder(string.Format("{0}\\{1}", path, projName));
-            Halation.project = new Yuri.YuriHalation.ScriptPackage.ProjectPackage(projName);
+            Halation.project = new ProjectPackage(projName);
             Halation.project.AddScene("main");
             ActionPackage initap = new ActionPackage() { nodeType = ActionPackageType.act_dialog };
             initap.argsDict.Add("context", new ArgumentPackage() { aType = ArgType.unknown, valueExp = "欢迎来到Yuri世界！" });
@@ -685,7 +748,10 @@ namespace Yuri.YuriHalation
         /// </summary>
         public void SaveProject()
         {
+            var refConf = Halation.project.Config;
+            Halation.project.Config = null;
             FileManager.Serialization(Halation.project, string.Format("{0}\\game.yrproj", projectFolder));
+            Halation.project.Config = refConf;
         }
 
         /// <summary>
@@ -697,6 +763,13 @@ namespace Yuri.YuriHalation
             FileInfo fileinf = new FileInfo(projFile);
             Halation.projectFolder = fileinf.DirectoryName;
             Halation.project = (ProjectPackage)FileManager.Unserialization(projFile);
+            Halation.project.Config = new ConfigPackage();
+            var lconfig = FileManager.LoadConfigData(Halation.projectFolder + "\\YuriConfig.dat");
+            foreach (var configKVP in lconfig)
+            {
+                Halation.SetValueByName<ConfigPackage>(Halation.project.Config, configKVP.Item1, configKVP.Item2,
+                    configKVP.Item3);
+            }
             Halation.projectName = Halation.project.Config.GameProjName;
             foreach (var sc in Halation.project.GetScene())
             {
