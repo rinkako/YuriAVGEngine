@@ -1,0 +1,912 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>信号分发 | Yuri AVG Engine</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.6.7">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../../gitbook/style.css">
+    
+        
+        <link rel="stylesheet" href="../../gitbook/plugins/gitbook-plugin-highlight/website.css">
+        
+    
+        
+        <link rel="stylesheet" href="../../gitbook/plugins/gitbook-plugin-search/search.css">
+        
+    
+        
+        <link rel="stylesheet" href="../../gitbook/plugins/gitbook-plugin-fontsettings/website.css">
+        
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_6_RollbackSnapshot.html" />
+    
+    
+    <link rel="prev" href="../../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_4_Parallel.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book"
+        data-level="2.2.5"
+        data-chapter-title="信号分发"
+        data-filepath="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_5_Semaphore.md"
+        data-basepath="../.."
+        data-revision="Sat May 06 2017 11:57:24 GMT+0800 (CST)"
+        data-innerlanguage="">
+    
+
+<div class="book-summary">
+    <nav role="navigation">
+        <ul class="summary">
+            
+            
+            
+            
+
+            
+
+            
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../../index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                        Introduction
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="1_YuriInterpreter/index.html">
+            
+                
+                    <a href="../../1_YuriInterpreter/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        YuriInterpreter
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1" data-path="1_YuriInterpreter/1_1_GrammarDesign.html">
+            
+                
+                    <a href="../../1_YuriInterpreter/1_1_GrammarDesign.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.1.</b>
+                        
+                        文法设计
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="1_YuriInterpreter/1_2_YuririAction.html">
+            
+                
+                    <a href="../../1_YuriInterpreter/1_2_YuririAction.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.2.</b>
+                        
+                        Yuriri动作语法
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="1_YuriInterpreter/1_3_YuririLogical.html">
+            
+                
+                    <a href="../../1_YuriInterpreter/1_3_YuririLogical.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.3.</b>
+                        
+                        Yuriri逻辑语法
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="1_YuriInterpreter/1_4_Lexer.html">
+            
+                
+                    <a href="../../1_YuriInterpreter/1_4_Lexer.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.4.</b>
+                        
+                        词法分析
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="1_YuriInterpreter/1_5_Parser.html">
+            
+                
+                    <a href="../../1_YuriInterpreter/1_5_Parser.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.5.</b>
+                        
+                        语法分析
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="1_YuriInterpreter/1_6_Semantice.html">
+            
+                
+                    <a href="../../1_YuriInterpreter/1_6_Semantice.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.6.</b>
+                        
+                        语义分析和代码优化
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="2_YuriPlatform/index.html">
+            
+                
+                    <a href="../../2_YuriPlatform/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        YuriPlatform
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1" data-path="2_YuriPlatform/2_1_Entity/index.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_1_Entity/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.</b>
+                        
+                        实体
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.1" data-path="2_YuriPlatform/2_1_Entity/2_1_1_Scene.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_1_Entity/2_1_1_Scene.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.1.</b>
+                        
+                        场景
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2" data-path="2_YuriPlatform/2_1_Entity/2_1_2_Function.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_1_Entity/2_1_2_Function.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.2.</b>
+                        
+                        函数
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3" data-path="2_YuriPlatform/2_1_Entity/2_1_3_Var.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_1_Entity/2_1_3_Var.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.3.</b>
+                        
+                        变量
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.4" data-path="2_YuriPlatform/2_1_Entity/2_1_4_Resource.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_1_Entity/2_1_4_Resource.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.4.</b>
+                        
+                        资源
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.5" data-path="2_YuriPlatform/2_1_Entity/2_1_5_IL.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_1_Entity/2_1_5_IL.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.5.</b>
+                        
+                        IL
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/index.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_2_RuntimeEnvironment/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.</b>
+                        
+                        运行时环境
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.2.1" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_1_Context.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_1_Context.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.1.</b>
+                        
+                        上下文
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.2" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_2_Evaluator.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_2_Evaluator.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.2.</b>
+                        
+                        求值器
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.3" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_3_CallStack.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_3_CallStack.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.3.</b>
+                        
+                        对用堆栈和消息循环
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.4" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_4_Parallel.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_4_Parallel.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.4.</b>
+                        
+                        并行处理
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.2.5" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_5_Semaphore.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_5_Semaphore.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.5.</b>
+                        
+                        信号分发
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.6" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_6_RollbackSnapshot.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_6_RollbackSnapshot.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.6.</b>
+                        
+                        快照回滚
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.7" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_7_IoC.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_7_IoC.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.7.</b>
+                        
+                        依赖注入
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="2_YuriPlatform/2_3_Action/index.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_3_Action/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.</b>
+                        
+                        画音渲染
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.3.1" data-path="2_YuriPlatform/2_3_Action/2_3_1_Audio.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_3_Action/2_3_1_Audio.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.1.</b>
+                        
+                        音声
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.2" data-path="2_YuriPlatform/2_3_Action/2_3_2_Sprite.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_3_Action/2_3_2_Sprite.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.2.</b>
+                        
+                        精灵
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.3" data-path="2_YuriPlatform/2_3_Action/2_3_2_SpriteButton.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_3_Action/2_3_2_SpriteButton.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.3.</b>
+                        
+                        按钮
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.4" data-path="2_YuriPlatform/2_3_Action/2_3_3_Animation.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_3_Action/2_3_3_Animation.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.4.</b>
+                        
+                        动画
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.5" data-path="2_YuriPlatform/2_3_Action/2_3_4_MessageLayer.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_3_Action/2_3_4_MessageLayer.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.5.</b>
+                        
+                        文本层
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.6" data-path="2_YuriPlatform/2_3_Action/2_3_5_Notification.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_3_Action/2_3_5_Notification.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.6.</b>
+                        
+                        通知
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.7" data-path="2_YuriPlatform/2_3_Action/2_3_6_ViewScreen.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_3_Action/2_3_6_ViewScreen.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.7.</b>
+                        
+                        前端的渲染
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.8" data-path="2_YuriPlatform/2_3_Action/2_3_7_World2D.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_3_Action/2_3_7_World2D.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.8.</b>
+                        
+                        2D世界和过场
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.9" data-path="2_YuriPlatform/2_3_Action/2_3_8_World3D.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_3_Action/2_3_8_World3D.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.9.</b>
+                        
+                        3D世界和场景镜头
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.10" data-path="2_YuriPlatform/2_3_Action/2_3_9_WPFPage.html">
+            
+                
+                    <a href="../../2_YuriPlatform/2_3_Action/2_3_9_WPFPage.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.10.</b>
+                        
+                        WPF页级别的UI
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="3_Halation/index.html">
+            
+                
+                    <a href="../../3_Halation/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        Halation
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1" data-path="3_Halation/3_1_Layout.html">
+            
+                
+                    <a href="../../3_Halation/3_1_Layout.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.1.</b>
+                        
+                        布局信息的存储
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="3_Halation/3_2_CmdPattern.html">
+            
+                
+                    <a href="../../3_Halation/3_2_CmdPattern.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.2.</b>
+                        
+                        命令模式
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="3_Halation/3_3_Spectrum.html">
+            
+                
+                    <a href="../../3_Halation/3_3_Spectrum.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.3.</b>
+                        
+                        可拓展代码翻译Spectrum
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+
+            
+            <li class="divider"></li>
+            <li>
+                <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                    Published with GitBook
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header" role="navigation">
+    <!-- Actions Left -->
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../../" >Yuri AVG Engine</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1" role="main">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <p>&#xFEFF;</p>
+<h2 id="&#x4FE1;&#x53F7;&#x5206;&#x53D1;&#x673A;&#x5236;">&#x4FE1;&#x53F7;&#x5206;&#x53D1;&#x673A;&#x5236;</h2>
+<p>&#x5E76;&#x884C;&#x8C03;&#x5EA6;&#x673A;&#x5236;&#x4E3A;YRE&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x79CD;&#x5E76;&#x53D1;&#x7684;&#x80FD;&#x529B;&#xFF0C;&#x4F46;&#x5BF9;&#x4E8E;&#x4E00;&#x4E9B;&#x5E94;&#x7528;&#x573A;&#x666F;&#xFF0C;&#x8FD9;&#x79CD;&#x7B56;&#x7565;&#x663E;&#x7136;&#x4E0D;&#x662F;&#x4E00;&#x4E2A;&#x660E;&#x667A;&#x7684;&#x9009;&#x62E9;&#x3002;&#x4F8B;&#x5982;&#x5F53;&#x6309;&#x4E0B;&#x952E;&#x76D8;&#x4E0A;&#x67D0;&#x4E2A;&#x952E;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x5C4F;&#x5E55;&#x4E0A;&#x663E;&#x793A;&#x4E00;&#x5F20;&#x56FE;&#x7247;&#xFF0C;&#x677E;&#x5F00;&#x65F6;&#x56FE;&#x7247;&#x6D88;&#x5931;&#xFF0C;&#x867D;&#x7136;&#x5E76;&#x884C;&#x5904;&#x7406;&#x4E5F;&#x53EF;&#x4EE5;&#x505A;&#x5230;&#xFF0C;&#x4F46;&#x5B83;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;&#x76F8;&#x5F53;&#x4E8E;<strong>&#x8F6E;&#x8BE2;</strong>&#xFF0C;&#x5728;&#x8FD9;&#x4E2A;&#x5E94;&#x7528;&#x573A;&#x666F;&#x4E0B;&#x5B58;&#x5728;&#x6548;&#x7387;&#x95EE;&#x9898;&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x5BF9;&#x4E8E;IO&#x54CD;&#x5E94;&#x8FD9;&#x4E9B;&#x573A;&#x666F;&#xFF0C;YRE&#x63D0;&#x4F9B;&#x4E86;&#x4FE1;&#x53F7;&#x5206;&#x53D1;&#x673A;&#x5236;&#x4EE5;&#x89E3;&#x51B3;&#x8FD9;&#x4E00;&#x95EE;&#x9898;&#x3002;<br>
+&#x4FE1;&#x53F7;&#x5206;&#x53D1;&#x673A;&#x5236;&#x6709;&#x4E24;&#x4E2A;&#x7EC4;&#x6210;&#x90E8;&#x5206;&#xFF1A;&#x4FE1;&#x53F7;&#x91CF;&#x548C;&#xFF08;&#x53CD;&#xFF09;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#xFF1A;</p>
+<ul>
+<li>&#x4FE1;&#x53F7;&#x91CF;&#xFF08;Semaphore&#xFF09;&#xFF1A;&#x8FD0;&#x884C;&#x65F6;&#x73AF;&#x5883;&#x4E2D;&#x7684;&#x4E00;&#x4E2A;&#x4FE1;&#x53F7;&#x6807;&#x8BB0;&#xFF0C;&#x5B83;&#x53EA;&#x6709;&#x4E24;&#x79CD;&#x72B6;&#x6001;&#xFF1A;&#x6FC0;&#x6D3B;&#x3001;&#x7184;&#x706D;&#x3002;&#x5F53;&#x67D0;&#x4E9B;&#x6761;&#x4EF6;&#x88AB;&#x6EE1;&#x8DB3;&#x65F6;&#xFF0C;&#x8BE5;&#x4FE1;&#x53F7;&#x4F1A;&#x4ECE;&#x7184;&#x706D;&#x53D8;&#x6210;&#x6FC0;&#x6D3B;&#x3002;&#x8BF7;&#x6CE8;&#x610F;&#x8FD9;&#x4E2A;&#x6982;&#x5FF5;&#x4E0E;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x4E2D;&#x7684;&#x4FE1;&#x53F7;&#x91CF;&#x4E0D;&#x4E00;&#x81F4;&#x3002;</li>
+<li>&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#xFF08;Activator&#xFF09;&#xFF1A;&#x5F53;&#x4FE1;&#x53F7;&#x91CF;&#x88AB;&#x6FC0;&#x6D3B;&#x65F6;&#xFF0C;&#x5B83;&#x5C31;&#x4F1A;&#x6267;&#x884C;&#x7ED1;&#x5B9A;&#x5728;&#x5B83;&#x4E0A;&#x9762;&#x7684;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#xFF0C;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x4E0E;&#x666E;&#x901A;&#x7684;&#x573A;&#x666F;&#x51FD;&#x6570;&#x6CA1;&#x6709;&#x533A;&#x522B;</li>
+<li>&#x53CD;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#xFF08;Deactivator&#xFF09;&#xFF1A;&#x4E0E;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x7C7B;&#x4F3C;&#xFF0C;&#x53EA;&#x662F;&#x5B83;&#x89E6;&#x53D1;&#x7684;&#x65F6;&#x673A;&#x662F;&#x4FE1;&#x53F7;&#x91CF;&#x7184;&#x706D;&#x65F6;</li>
+</ul>
+<p>&#x4E00;&#x4E2A;&#x4FE1;&#x53F7;&#x91CF;&#x53EF;&#x4EE5;&#x7ED1;&#x5B9A;&#x591A;&#x4E2A;&#xFF08;&#x53CD;&#xFF09;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#xFF0C;&#x4E00;&#x4E2A;&#xFF08;&#x53CD;&#xFF09;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x4E5F;&#x53EF;&#x4EE5;&#x88AB;&#x7ED1;&#x5B9A;&#x5230;&#x591A;&#x4E2A;&#x4FE1;&#x53F7;&#x91CF;&#x4E0A;&#x3002;</p>
+<h3 id="&#x4F53;&#x7CFB;&#x7ED3;&#x6784;">&#x4F53;&#x7CFB;&#x7ED3;&#x6784;</h3>
+<p>&#x4FE1;&#x53F7;&#x5206;&#x53D1;&#x7CFB;&#x7EDF;&#x662F;&#x91C7;&#x7528;<strong>&#x89C2;&#x5BDF;&#x8005;&#x6A21;&#x5F0F;</strong>&#x8FDB;&#x884C;&#x5B9E;&#x73B0;&#x7684;&#x3002;YRE&#x4E2D;&#x63D0;&#x4F9B;&#x4E86;&#x4E24;&#x79CD;&#x57FA;&#x7840;&#x89C2;&#x5BDF;&#x8005;&#x6A21;&#x5F0F;&#x62BD;&#x8C61;&#x7C7B;&#xFF1A;&#x8BA2;&#x9605;&#x53F7;&#x62BD;&#x8C61;&#x7C7B;<code>YuriObservable</code>&#x548C;&#x8BA2;&#x9605;&#x8005;&#x62BD;&#x8C61;&#x7C7B;<code>YuriObserver</code>&#x3002;<br>
+&#x8BA2;&#x9605;&#x53F7;&#x62BD;&#x8C61;&#x7C7B;&#x63D0;&#x4F9B;&#x8FD9;&#x4E9B;&#x670D;&#x52A1;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">&#x51FD;&#x6570;&#x6216;&#x5C5E;&#x6027;&#x540D;</th>
+<th style="text-align:left">&#x4F5C;&#x7528;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Attach</td>
+<td style="text-align:left">&#x5C06;&#x8BA2;&#x9605;&#x8005;&#x52A0;&#x5165;&#x8BA2;&#x9605;&#x53F7;&#x7684;&#x901A;&#x77E5;&#x5217;&#x8868;</td>
+</tr>
+<tr>
+<td style="text-align:left">Detach</td>
+<td style="text-align:left">&#x5C06;&#x8BA2;&#x9605;&#x8005;&#x4ECE;&#x8BA2;&#x9605;&#x53F7;&#x7684;&#x901A;&#x77E5;&#x5217;&#x8868;&#x4E2D;&#x79FB;&#x9664;</td>
+</tr>
+<tr>
+<td style="text-align:left">ClearObserver</td>
+<td style="text-align:left">&#x6E05;&#x7A7A;&#x6240;&#x6709;&#x7684;&#x8BA2;&#x9605;&#x8005;</td>
+</tr>
+<tr>
+<td style="text-align:left">NotifyAll</td>
+<td style="text-align:left">&#x5E7F;&#x64AD;&#x66F4;&#x65B0;&#x901A;&#x77E5;</td>
+</tr>
+<tr>
+<td style="text-align:left">NotifyGroup</td>
+<td style="text-align:left">&#x5C06;&#x66F4;&#x65B0;&#x901A;&#x77E5;&#x5206;&#x53D1;&#x7ED9;&#x6307;&#x5B9A;Group&#x7684;&#x8BA2;&#x9605;&#x8005;</td>
+</tr>
+<tr>
+<td style="text-align:left">Notify</td>
+<td style="text-align:left">&#x5C06;&#x66F4;&#x65B0;&#x901A;&#x77E5;&#x5206;&#x53D1;&#x7ED9;&#x6307;&#x5B9A;Tag&#x7684;&#x8BA2;&#x9605;&#x8005;</td>
+</tr>
+<tr>
+<td style="text-align:left">ObservableTag</td>
+<td style="text-align:left">&#x8BA2;&#x9605;&#x53F7;&#x7684;&#x9644;&#x52A0;&#x503C;</td>
+</tr>
+<tr>
+<td style="text-align:left">UpdateInfo</td>
+<td style="text-align:left">&#x83B7;&#x53D6;&#x6700;&#x540E;&#x4E00;&#x6B21;&#x66F4;&#x65B0;&#x7684;&#x9644;&#x52A0;&#x4FE1;&#x606F;</td>
+</tr>
+</tbody>
+</table>
+<p>&#x8BA2;&#x9605;&#x8005;&#x62BD;&#x8C61;&#x7C7B;&#x63D0;&#x4F9B;&#x8FD9;&#x4E9B;&#x670D;&#x52A1;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">&#x51FD;&#x6570;&#x6216;&#x5C5E;&#x6027;&#x540D;</th>
+<th style="text-align:left">&#x4F5C;&#x7528;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Notified</td>
+<td style="text-align:left">&#x88AB;&#x8BA2;&#x9605;&#x8005;&#x901A;&#x77E5;&#x66F4;&#x65B0;&#x65F6;&#x6267;&#x884C;&#x7684;&#x52A8;&#x4F5C;</td>
+</tr>
+<tr>
+<td style="text-align:left">ObGroup</td>
+<td style="text-align:left">&#x8BA2;&#x9605;&#x8005;&#x7684;&#x5206;&#x7EC4;&#x540D;</td>
+</tr>
+<tr>
+<td style="text-align:left">ObserverTag</td>
+<td style="text-align:left">&#x8BA2;&#x9605;&#x8005;&#x7684;&#x9644;&#x52A0;&#x503C;</td>
+</tr>
+</tbody>
+</table>
+<p>YRE&#x4E2D;&#x7684;&#x53EF;&#x8BA2;&#x9605;&#x5BF9;&#x8C61;&#x548C;&#x8BA2;&#x9605;&#x8005;&#x5BF9;&#x8C61;&#x90FD;&#x7EE7;&#x627F;&#x8FD9;&#x4E24;&#x4E2A;&#x62BD;&#x8C61;&#x7C7B;&#x3002;&#x5728;&#x4FE1;&#x53F7;&#x5206;&#x53D1;&#x673A;&#x5236;&#x4E2D;&#xFF0C;&#x53EF;&#x8BA2;&#x9605;&#x5BF9;&#x8C61;&#x662F;<code>YuriSemaphore</code>&#xFF0C;&#x8BA2;&#x9605;&#x8005;&#x662F;<code>SemaphoreHandler</code>&#x3002;<br>
+&#x4FE1;&#x53F7;&#x91CF;&#x5BF9;&#x8C61;<code>YuriSemaphore</code>&#x7684;&#x6BCF;&#x4E00;&#x4E2A;&#x5B9E;&#x4F8B;&#x4EE3;&#x8868;&#x67D0;&#x4E00;&#x4E2A;&#x547D;&#x540D;&#x4FE1;&#x53F7;&#x91CF;&#xFF0C;&#x5B83;&#x7684;&#x6FC0;&#x6D3B;&#x5C5E;&#x6027;<code>Activated</code>&#x5728;&#x53D1;&#x751F;&#x6539;&#x53D8;&#x65F6;&#x4F1A;&#x901A;&#x77E5;&#x6240;&#x6709;&#x8BA2;&#x9605;&#x8BE5;&#x4FE1;&#x53F7;&#x91CF;&#x7684;&#x4FE1;&#x53F7;&#x91CF;&#x5904;&#x7406;&#x5668;<code>SemaphoreHandler</code>&#x6267;&#x884C;&#x5BF9;&#x5E94;&#x7684;&#x52A8;&#x4F5C;&#xFF1A;&#x5728;<code>Activated</code>&#x88AB;&#x53D8;&#x66F4;&#x4E3A;&#x6FC0;&#x6D3B;&#x65F6;&#xFF0C;&#x6267;&#x884C;<strong>&#x6FC0;&#x6D3B;&#x51FD;&#x6570;</strong>&#xFF1B;&#x5728;<code>Activated</code>&#x88AB;&#x7184;&#x706D;&#x65F6;&#xFF0C;&#x6267;&#x884C;<strong>&#x53CD;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;</strong>&#x3002;&#x5728;&#x4FE1;&#x53F7;&#x5206;&#x53D1;&#x7CFB;&#x7EDF;&#x4E2D;&#xFF0C;&#x7C7B;&#x7684;&#x5C42;&#x6B21;&#x5173;&#x7CFB;&#x5165;&#x56FE;&#xFF1A;</p>
+<p><img src="Semaphore.png" alt="SemaphoreClassesUML"></p>
+<p>&#x4FE1;&#x53F7;&#x91CF;&#x5904;&#x7406;&#x5668;<code>SemaphoreHandler</code>&#x6709;&#x4E00;&#x4E2A;&#x5B57;&#x6BB5;<code>Type</code>&#x6765;&#x6807;&#x8BB0;&#x5B83;&#x4F7F;&#x7528;&#x600E;&#x6837;&#x7684;&#x6267;&#x884C;&#x65B9;&#x5F0F;&#x53BB;&#x8C03;&#x5EA6;&#x4FE1;&#x53F7;&#x7684;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#xFF0C;&#x76EE;&#x524D;YRE&#x652F;&#x6301;&#x8FD9;&#x51E0;&#x79CD;&#x8C03;&#x5EA6;&#x7C7B;&#x578B;&#xFF1A;</p>
+<ul>
+<li><strong>ScheduleOnce</strong>&#xFF1A;&#x5728;&#x4FE1;&#x53F7;&#x6539;&#x53D8;&#x65F6;&#x6267;&#x884C;&#x4E00;&#x6B21;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;</li>
+<li><strong>ScheduleForever</strong>&#xFF1A;&#x5728;&#x4FE1;&#x53F7;&#x88AB;&#x6FC0;&#x6D3B;&#x65F6;&#x5FAA;&#x73AF;&#x6267;&#x884C;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x76F4;&#x5230;&#x51FD;&#x6570;&#x4E3B;&#x52A8;&#x9000;&#x51FA;&#x5E76;&#x6267;&#x884C;&#x4E00;&#x6B21;&#x53CD;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;</li>
+<li><strong>ScheduleWhenActivated</strong>&#xFF1A;&#x5728;&#x4FE1;&#x53F7;&#x88AB;&#x6FC0;&#x6D3B;&#x65F6;&#x5FAA;&#x73AF;&#x6267;&#x884C;&#x5904;&#x7406;&#x51FD;&#x6570;&#x76F4;&#x5230;&#x4FE1;&#x53F7;&#x88AB;&#x7184;&#x706D;&#x88AB;&#x6267;&#x884C;&#x4E00;&#x6B21;&#x53CD;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;</li>
+</ul>
+<p>&#x6CE8;&#x610F;&#x5230;&#x53CD;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x603B;&#x662F;<strong>&#x53EA;&#x4F1A;&#x88AB;&#x6267;&#x884C;&#x4E00;&#x6B21;</strong>&#x3002;</p>
+<h3 id="&#x4FE1;&#x53F7;&#x91CF;&#x5206;&#x53D1;&#x5668;">&#x4FE1;&#x53F7;&#x91CF;&#x5206;&#x53D1;&#x5668;</h3>
+<p>YRE&#x7EF4;&#x62A4;&#x7740;&#x4E00;&#x4E2A;&#x5168;&#x5C40;&#x9759;&#x6001;&#x7684;&#x4FE1;&#x53F7;&#x91CF;&#x5206;&#x53D1;&#x5668;<code>SemaphoreDispatcher</code>&#xFF0C;&#x4E3A;&#x6E38;&#x620F;&#x63D0;&#x4F9B;&#x4FE1;&#x53F7;&#x91CF;&#x5206;&#x53D1;&#x670D;&#x52A1;&#x3002;&#x5B83;&#x6240;&#x63D0;&#x4F9B;&#x7684;&#x65B9;&#x6CD5;&#x5982;&#x4E0B;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">&#x51FD;&#x6570;&#x6216;&#x5C5E;&#x6027;&#x540D;</th>
+<th style="text-align:left">&#x4F5C;&#x7528;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Schedule</td>
+<td style="text-align:left">&#x8C03;&#x5EA6;&#x4E00;&#x4E2A;&#x4FE1;&#x53F7;&#x5904;&#x7406;&#x673A;&#xFF0C;&#x8FD9;&#x662F;<code>SemaphoreHandler</code>&#x88AB;<code>YuriSemaphore</code>&#x901A;&#x77E5;&#x66F4;&#x65B0;&#x5E76;&#x8C03;&#x7528;<code>Notified</code>&#x65B9;&#x6CD5;&#x540E;&#x4F1A;&#x8C03;&#x7528;&#x7684;&#x51FD;&#x6570;</td>
+</tr>
+<tr>
+<td style="text-align:left">ReBinding</td>
+<td style="text-align:left">&#x6CE8;&#x9500;&#x73B0;&#x6709;&#x7684;&#x4FE1;&#x53F7;&#x5904;&#x7406;&#x673A;&#x5E76;&#x4F9D;&#x7167;&#x5B57;&#x5178;&#x91CD;&#x7ED1;&#x5B9A;&#x4FE1;&#x53F7;&#x4E0E;&#x5904;&#x7406;&#x673A;&#xFF0C;&#x7528;&#x4E8E;&#x8BFB;&#x6863;&#x548C;&#x56DE;&#x6EDA;</td>
+</tr>
+<tr>
+<td style="text-align:left">RegisterSemaphoreService</td>
+<td style="text-align:left">&#x4E3A;&#x5F53;&#x524D;&#x573A;&#x666F;&#x6CE8;&#x518C;&#x67D0;&#x4E2A;&#x4FE1;&#x53F7;&#x7684;&#x8C03;&#x5EA6;&#x670D;&#x52A1;</td>
+</tr>
+<tr>
+<td style="text-align:left">UnregisterSemaphoreService</td>
+<td style="text-align:left">&#x4E3A;&#x5F53;&#x524D;&#x573A;&#x666F;&#x6CE8;&#x9500;&#x6240;&#x6709;&#x4FE1;&#x53F7;&#x7684;&#x8C03;&#x5EA6;&#x670D;&#x52A1;</td>
+</tr>
+<tr>
+<td style="text-align:left">SetSemaphore</td>
+<td style="text-align:left">&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;&#x4FE1;&#x53F7;&#x91CF;</td>
+</tr>
+<tr>
+<td style="text-align:left">RemoveSemaphore</td>
+<td style="text-align:left">&#x79FB;&#x9664;&#x4E00;&#x4E2A;&#x4FE1;&#x53F7;&#x91CF;</td>
+</tr>
+<tr>
+<td style="text-align:left">Activate</td>
+<td style="text-align:left">&#x6FC0;&#x6D3B;&#x4E00;&#x4E2A;&#x547D;&#x540D;&#x4FE1;&#x53F7;&#x91CF;&#xFF0C;&#x5982;&#x679C;&#x4FE1;&#x53F7;&#x91CF;&#x4E0D;&#x5B58;&#x5728;&#xFF0C;&#x5C06;&#x88AB;&#x521D;&#x59CB;&#x5316;&#x5E76;&#x6FC0;&#x6D3B;</td>
+</tr>
+<tr>
+<td style="text-align:left">Deactivate</td>
+<td style="text-align:left">&#x7184;&#x706D;&#x4E00;&#x4E2A;&#x547D;&#x540D;&#x4FE1;&#x53F7;&#x91CF;</td>
+</tr>
+<tr>
+<td style="text-align:left">DeactivateAll</td>
+<td style="text-align:left">&#x7184;&#x706D;&#x6240;&#x6709;&#x7684;&#x4FE1;&#x53F7;&#x91CF;</td>
+</tr>
+<tr>
+<td style="text-align:left">AbortHandlerGroup</td>
+<td style="text-align:left">&#x505C;&#x6B62;&#x5206;&#x7EC4;&#x4E2D;&#x7684;&#x6240;&#x6709;&#x4FE1;&#x53F7;&#x5904;&#x7406;&#x673A;&#x5E76;&#x9500;&#x6BC1;</td>
+</tr>
+<tr>
+<td style="text-align:left">AbortHandlerAll</td>
+<td style="text-align:left">&#x505C;&#x6B62;&#x6240;&#x6709;&#x7684;&#x4FE1;&#x53F7;&#x5904;&#x7406;&#x673A;&#x5E76;&#x9500;&#x6BC1;</td>
+</tr>
+<tr>
+<td style="text-align:left">InitSystemSemaphore</td>
+<td style="text-align:left">&#x521D;&#x59CB;&#x5316;&#x7CFB;&#x7EDF;&#x9ED8;&#x8BA4;&#x4FE1;&#x53F7;&#x91CF;</td>
+</tr>
+<tr>
+<td style="text-align:left">EnableDispatcher</td>
+<td style="text-align:left">&#x83B7;&#x53D6;&#x6216;&#x8BBE;&#x7F6E;&#x662F;&#x5426;&#x542F;&#x7528;&#x4FE1;&#x53F7;&#x8C03;&#x5EA6;&#x670D;&#x52A1;</td>
+</tr>
+</tbody>
+</table>
+<p>&#x8FDB;&#x884C;&#x4FE1;&#x53F7;&#x8C03;&#x5EA6;&#x7684;&#x672C;&#x8D28;&#x548C;&#x5E76;&#x884C;&#x5904;&#x7406;&#x662F;&#x4E00;&#x6837;&#x7684;&#xFF0C;&#x90FD;&#x662F;&#x4F7F;&#x7528;&#x4E00;&#x4E2A;&#x5E76;&#x884C;&#x6267;&#x884C;&#x5668;<code>ParallelExecutor</code>&#x5C01;&#x88C5;&#x4E00;&#x4E2A;&#x6808;&#x673A;&#x548C;&#x4F18;&#x5148;&#x5EA6;&#x65F6;&#x949F;&#x53BB;&#x8FDB;&#x884C;&#x6D88;&#x606F;&#x5FAA;&#x73AF;&#xFF0C;&#x533A;&#x522B;&#x5728;&#x4E8E;&#x4FE1;&#x53F7;&#x7CFB;&#x7EDF;&#x6D88;&#x606F;&#x5FAA;&#x73AF;&#x5728;&#x5904;&#x7406;&#x51FD;&#x6570;&#x7684;&#x811A;&#x672C;&#x6267;&#x884C;&#x5B8C;&#x4E4B;&#x540E;&#x7684;&#x52A8;&#x4F5C;&#x6839;&#x636E;&#x4FE1;&#x53F7;&#x5904;&#x7406;&#x5668;&#x7684;&#x7C7B;&#x578B;&#x4F1A;&#x6709;&#x533A;&#x522B;&#x3002;<br></p>
+<h3 id="&#x4FE1;&#x53F7;&#x91CF;&#x7684;&#x4F7F;&#x7528;">&#x4FE1;&#x53F7;&#x91CF;&#x7684;&#x4F7F;&#x7528;</h3>
+<p>&#x5728;Yuriri&#x811A;&#x672C;&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;<code>@semaphore</code>&#x6307;&#x4EE4;&#x53EF;&#x4EE5;&#x64CD;&#x4F5C;&#x4FE1;&#x53F7;&#x91CF;&#x5206;&#x53D1;&#x5668;&#x3002;&#x901A;&#x5E38;&#x6765;&#x8BF4;&#xFF0C;&#x5728;&#x573A;&#x666F;&#x4E2D;&#x4F7F;&#x7528;&#x8BE5;&#x6307;&#x4EE4;&#x7ED1;&#x5B9A;&#x8981;&#x76D1;&#x542C;&#x7684;&#x4FE1;&#x53F7;&#x91CF;&#x548C;&#x76F8;&#x5E94;&#x7684;&#x51FD;&#x6570;&#xFF0C;&#x6765;&#x8FBE;&#x5230;&#x6240;&#x9700;&#x7684;&#x6548;&#x679C;&#x3002;<br>
+&#x672C;&#x8282;&#x5F00;&#x5934;&#x6240;&#x8FF0;&#x7684;&#x6309;&#x4E0B;&#x952E;&#x76D8;&#x6309;&#x94AE;&#x663E;&#x793A;&#x56FE;&#x7247;&#x677E;&#x5F00;&#x65F6;&#x6D88;&#x5931;&#x7684;&#x9700;&#x6C42;&#xFF0C;&#x4F7F;&#x7528;&#x4FE1;&#x53F7;&#x7CFB;&#x7EDF;&#x53EF;&#x4EE5;&#x5F88;&#x65B9;&#x4FBF;&#x7684;&#x5B8C;&#x6210;&#xFF1A;&#x9996;&#x5148;&#x4E66;&#x5199;&#x4E24;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x4E00;&#x4E2A;&#x663E;&#x793A;&#x56FE;&#x7247;&#xFF0C;&#x4E00;&#x4E2A;&#x6D88;&#x53BB;&#x56FE;&#x7247;&#xFF0C;&#x5E76;&#x628A;&#x5B83;&#x4EEC;&#x5206;&#x522B;&#x4F5C;&#x4E3A;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x548C;&#x53CD;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x7ED1;&#x5B9A;&#x5230;&#x6307;&#x5B9A;&#x7684;&#x952E;&#x76D8;&#x6309;&#x952E;&#x7684;&#x4FE1;&#x53F7;&#x91CF;&#x4E0A;&#xFF08;&#x952E;&#x76D8;&#x8F93;&#x5165;&#x662F;&#x4E00;&#x4E2A;&#x7CFB;&#x7EDF;&#x4FE1;&#x53F7;&#x91CF;&#xFF0C;&#x7531;YRE&#x8D1F;&#x8D23;&#x6FC0;&#x6D3B;&#x548C;&#x7184;&#x706D;&#xFF0C;&#x65E0;&#x9700;&#x7528;&#x6237;&#x64CD;&#x4F5C;&#xFF09;&#xFF0C;&#x8FD9;&#x6837;&#x5C31;&#x5B9E;&#x73B0;&#x4E86;&#x9700;&#x6C42;&#x529F;&#x80FD;&#x3002;</p>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_4_Parallel.html" class="navigation navigation-prev " aria-label="Previous page: 并行处理"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_6_RollbackSnapshot.html" class="navigation navigation-next " aria-label="Next page: 快照回滚"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../../gitbook/app.js"></script>
+
+    
+    <script src="../../gitbook/plugins/gitbook-plugin-search/lunr.min.js"></script>
+    
+
+    
+    <script src="../../gitbook/plugins/gitbook-plugin-search/search.js"></script>
+    
+
+    
+    <script src="../../gitbook/plugins/gitbook-plugin-sharing/buttons.js"></script>
+    
+
+    
+    <script src="../../gitbook/plugins/gitbook-plugin-fontsettings/buttons.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>

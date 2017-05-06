@@ -1,0 +1,760 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>YuriInterpreter | Yuri AVG Engine</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.6.7">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../gitbook/style.css">
+    
+        
+        <link rel="stylesheet" href="../gitbook/plugins/gitbook-plugin-highlight/website.css">
+        
+    
+        
+        <link rel="stylesheet" href="../gitbook/plugins/gitbook-plugin-search/search.css">
+        
+    
+        
+        <link rel="stylesheet" href="../gitbook/plugins/gitbook-plugin-fontsettings/website.css">
+        
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../1_YuriInterpreter/1_1_GrammarDesign.html" />
+    
+    
+    <link rel="prev" href="../index.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book"
+        data-level="1"
+        data-chapter-title="YuriInterpreter"
+        data-filepath="1_YuriInterpreter/README.md"
+        data-basepath=".."
+        data-revision="Sat May 06 2017 11:57:24 GMT+0800 (CST)"
+        data-innerlanguage="">
+    
+
+<div class="book-summary">
+    <nav role="navigation">
+        <ul class="summary">
+            
+            
+            
+            
+
+            
+
+            
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                        Introduction
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="1" data-path="1_YuriInterpreter/index.html">
+            
+                
+                    <a href="../1_YuriInterpreter/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        YuriInterpreter
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1" data-path="1_YuriInterpreter/1_1_GrammarDesign.html">
+            
+                
+                    <a href="../1_YuriInterpreter/1_1_GrammarDesign.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.1.</b>
+                        
+                        文法设计
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="1_YuriInterpreter/1_2_YuririAction.html">
+            
+                
+                    <a href="../1_YuriInterpreter/1_2_YuririAction.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.2.</b>
+                        
+                        Yuriri动作语法
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="1_YuriInterpreter/1_3_YuririLogical.html">
+            
+                
+                    <a href="../1_YuriInterpreter/1_3_YuririLogical.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.3.</b>
+                        
+                        Yuriri逻辑语法
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="1_YuriInterpreter/1_4_Lexer.html">
+            
+                
+                    <a href="../1_YuriInterpreter/1_4_Lexer.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.4.</b>
+                        
+                        词法分析
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="1_YuriInterpreter/1_5_Parser.html">
+            
+                
+                    <a href="../1_YuriInterpreter/1_5_Parser.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.5.</b>
+                        
+                        语法分析
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="1_YuriInterpreter/1_6_Semantice.html">
+            
+                
+                    <a href="../1_YuriInterpreter/1_6_Semantice.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.6.</b>
+                        
+                        语义分析和代码优化
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="2_YuriPlatform/index.html">
+            
+                
+                    <a href="../2_YuriPlatform/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        YuriPlatform
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1" data-path="2_YuriPlatform/2_1_Entity/index.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_1_Entity/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.</b>
+                        
+                        实体
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.1" data-path="2_YuriPlatform/2_1_Entity/2_1_1_Scene.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_1_Entity/2_1_1_Scene.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.1.</b>
+                        
+                        场景
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2" data-path="2_YuriPlatform/2_1_Entity/2_1_2_Function.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_1_Entity/2_1_2_Function.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.2.</b>
+                        
+                        函数
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3" data-path="2_YuriPlatform/2_1_Entity/2_1_3_Var.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_1_Entity/2_1_3_Var.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.3.</b>
+                        
+                        变量
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.4" data-path="2_YuriPlatform/2_1_Entity/2_1_4_Resource.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_1_Entity/2_1_4_Resource.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.4.</b>
+                        
+                        资源
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.5" data-path="2_YuriPlatform/2_1_Entity/2_1_5_IL.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_1_Entity/2_1_5_IL.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.5.</b>
+                        
+                        IL
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/index.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_2_RuntimeEnvironment/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.</b>
+                        
+                        运行时环境
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.2.1" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_1_Context.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_1_Context.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.1.</b>
+                        
+                        上下文
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.2" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_2_Evaluator.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_2_Evaluator.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.2.</b>
+                        
+                        求值器
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.3" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_3_CallStack.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_3_CallStack.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.3.</b>
+                        
+                        对用堆栈和消息循环
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.4" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_4_Parallel.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_4_Parallel.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.4.</b>
+                        
+                        并行处理
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.5" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_5_Semaphore.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_5_Semaphore.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.5.</b>
+                        
+                        信号分发
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.6" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_6_RollbackSnapshot.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_6_RollbackSnapshot.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.6.</b>
+                        
+                        快照回滚
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.7" data-path="2_YuriPlatform/2_2_RuntimeEnvironment/2_2_7_IoC.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_2_RuntimeEnvironment/2_2_7_IoC.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.7.</b>
+                        
+                        依赖注入
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="2_YuriPlatform/2_3_Action/index.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_3_Action/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.</b>
+                        
+                        画音渲染
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.3.1" data-path="2_YuriPlatform/2_3_Action/2_3_1_Audio.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_3_Action/2_3_1_Audio.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.1.</b>
+                        
+                        音声
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.2" data-path="2_YuriPlatform/2_3_Action/2_3_2_Sprite.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_3_Action/2_3_2_Sprite.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.2.</b>
+                        
+                        精灵
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.3" data-path="2_YuriPlatform/2_3_Action/2_3_2_SpriteButton.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_3_Action/2_3_2_SpriteButton.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.3.</b>
+                        
+                        按钮
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.4" data-path="2_YuriPlatform/2_3_Action/2_3_3_Animation.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_3_Action/2_3_3_Animation.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.4.</b>
+                        
+                        动画
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.5" data-path="2_YuriPlatform/2_3_Action/2_3_4_MessageLayer.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_3_Action/2_3_4_MessageLayer.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.5.</b>
+                        
+                        文本层
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.6" data-path="2_YuriPlatform/2_3_Action/2_3_5_Notification.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_3_Action/2_3_5_Notification.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.6.</b>
+                        
+                        通知
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.7" data-path="2_YuriPlatform/2_3_Action/2_3_6_ViewScreen.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_3_Action/2_3_6_ViewScreen.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.7.</b>
+                        
+                        前端的渲染
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.8" data-path="2_YuriPlatform/2_3_Action/2_3_7_World2D.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_3_Action/2_3_7_World2D.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.8.</b>
+                        
+                        2D世界和过场
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.9" data-path="2_YuriPlatform/2_3_Action/2_3_8_World3D.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_3_Action/2_3_8_World3D.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.9.</b>
+                        
+                        3D世界和场景镜头
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.10" data-path="2_YuriPlatform/2_3_Action/2_3_9_WPFPage.html">
+            
+                
+                    <a href="../2_YuriPlatform/2_3_Action/2_3_9_WPFPage.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.10.</b>
+                        
+                        WPF页级别的UI
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="3_Halation/index.html">
+            
+                
+                    <a href="../3_Halation/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        Halation
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1" data-path="3_Halation/3_1_Layout.html">
+            
+                
+                    <a href="../3_Halation/3_1_Layout.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.1.</b>
+                        
+                        布局信息的存储
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="3_Halation/3_2_CmdPattern.html">
+            
+                
+                    <a href="../3_Halation/3_2_CmdPattern.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.2.</b>
+                        
+                        命令模式
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="3_Halation/3_3_Spectrum.html">
+            
+                
+                    <a href="../3_Halation/3_3_Spectrum.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.3.</b>
+                        
+                        可拓展代码翻译Spectrum
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+
+            
+            <li class="divider"></li>
+            <li>
+                <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                    Published with GitBook
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header" role="navigation">
+    <!-- Actions Left -->
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../" >Yuri AVG Engine</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1" role="main">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <p>&#xFEFF;</p>
+<h2 id="yuri-interpreter">Yuri Interpreter</h2>
+<p>&#x5728;&#x6E38;&#x620F;&#x903B;&#x8F91;&#x6CA1;&#x6709;&#x88AB;&#x4EE5;&#x6E38;&#x620F;&#x811A;&#x672C;&#x7684;&#x5F62;&#x5F0F;&#x5206;&#x79BB;&#x51FA;&#x6765;&#x4EE5;&#x524D;&#xFF0C;&#x5B83;&#x662F;&#x4EE5;&#x786C;&#x7F16;&#x7801;&#x7684;&#x5F62;&#x5F0F;&#x7ED3;&#x5408;&#x5230;&#x6E38;&#x620F;&#x7684;&#x4E3B;&#x7A0B;&#x5E8F;&#x4E4B;&#x4E2D;&#xFF0C;&#x4E0E;&#x6E38;&#x620F;&#x5404;&#x90E8;&#x5206;&#x8FD0;&#x884C;&#x65F6;&#x73AF;&#x5883;&#x7EF4;&#x62A4;&#x6A21;&#x5757;&#x7D27;&#x5BC6;&#x8026;&#x5408;&#x7684;&#x3002;&#x8FD9;&#x79CD;&#x7F16;&#x7801;&#x65B9;&#x5F0F;&#x7ED9;&#x901A;&#x5E38;&#x53EA;&#x9700;&#x4F7F;&#x7528;&#x53EF;&#x88AB;&#x5C01;&#x88C5;&#x7684;&#x57FA;&#x672C;&#x529F;&#x80FD;&#x7684;AVG&#x6E38;&#x620F;&#x5F00;&#x53D1;&#x5E26;&#x6765;&#x4E0D;&#x4FBF;&#xFF1A;&#x5176;&#x4E00;&#x662F;&#x5F00;&#x53D1;&#x8C03;&#x8BD5;&#x9700;&#x8981;&#x91CD;&#x590D;&#x7F16;&#x8BD1;&#x6574;&#x4E2A;&#x5DE5;&#x7A0B;&#xFF0C;&#x975E;&#x5E38;&#x8017;&#x8D39;&#x65F6;&#x95F4;&#xFF1B;&#x5176;&#x4E8C;&#x662F;&#x6F14;&#x51FA;&#x3001;&#x7D20;&#x6750;&#x548C;&#x7A0B;&#x5E8F;&#x5185;&#x90E8;&#x7C7B;&#x6DF7;&#x6742;&#x5728;&#x4E00;&#x8D77;&#xFF0C;&#x53EF;&#x7EF4;&#x62A4;&#x6027;&#x4F4E;&#xFF0C;&#x4EE3;&#x7801;&#x91CD;&#x7528;&#x6027;&#x5DEE;&#xFF0C;&#x7A0B;&#x5E8F;&#x5458;&#x548C;&#x6F14;&#x51FA;&#x4EBA;&#x5458;&#x4E4B;&#x95F4;&#x5206;&#x5DE5;&#x96BE;&#x4EE5;&#x660E;&#x786E;&#xFF0C;&#x964D;&#x4F4E;&#x4E86;&#x5F00;&#x53D1;&#x6548;&#x7387;&#x3002;</p>
+<p>&#x6E38;&#x620F;&#x811A;&#x672C;&#x7CFB;&#x7EDF;&#x7684;&#x5F15;&#x5165;&#x5C31;&#x662F;&#x4E3A;&#x4E86;&#x89E3;&#x51B3;&#x4E0A;&#x8FF0;&#x95EE;&#x9898;&#xFF0C;&#x5B83;&#x5C06;&#x6E38;&#x620F;&#x8FD0;&#x884C;&#x65F6;&#x73AF;&#x5883;&#x4E0E;&#x6E38;&#x620F;&#x6F14;&#x51FA;&#x7684;&#x4E1A;&#x52A1;&#x903B;&#x8F91;&#x5206;&#x79BB;&#x5F00;&#x6765;&#xFF0C;&#x4F7F;&#x5F97;&#x4E0A;&#x5C42;&#x5F00;&#x53D1;&#x8005;&#x4E0D;&#x5FC5;&#x8003;&#x8651;&#x5E95;&#x5C42;&#x7684;&#x5B9E;&#x73B0;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x4ECE;&#x811A;&#x672C;&#x91CC;&#x8C03;&#x7528;&#x5C01;&#x88C5;&#x597D;&#x7684;&#x63A5;&#x53E3;&#x5C31;&#x53EF;&#x4EE5;&#x5B9E;&#x73B0;&#x76F8;&#x5E94;&#x7684;&#x529F;&#x80FD;&#x3002;&#x6E38;&#x620F;&#x811A;&#x672C;&#x7684;&#x5B58;&#x5728;&#x8FD8;&#x6709;&#x5982;&#x4E0B;&#x7684;&#x597D;&#x5904;&#xFF1A;&#x5B83;&#x964D;&#x4F4E;&#x4E86;&#x7F16;&#x8BD1;&#x7684;&#x65F6;&#x95F4;&#x6210;&#x672C;&#xFF0C;&#x811A;&#x672C;&#x865A;&#x62DF;&#x673A;&#x4E00;&#x65E6;&#x5B8C;&#x6210;&#x5C31;&#x4E0D;&#x9700;&#x8981;&#x5728;&#x4E4B;&#x540E;&#x7684;&#x6E38;&#x620F;&#x903B;&#x8F91;&#x6539;&#x53D8;&#x65F6;&#x91CD;&#x65B0;&#x7F16;&#x7801;&#x548C;&#x7F16;&#x8BD1;&#xFF1B;&#x964D;&#x4F4E;&#x4E86;&#x5404;&#x6A21;&#x5757;&#x8026;&#x5408;&#x7A0B;&#x5EA6;&#xFF0C;&#x5E95;&#x5C42;&#x7684;&#x56FE;&#x5F62;&#x6E32;&#x67D3;&#x3001;&#x5E76;&#x884C;&#x5904;&#x7406;&#x3001;&#x6D88;&#x606F;&#x961F;&#x5217;&#x7B49;&#x7EC6;&#x8282;&#x88AB;&#x9690;&#x85CF;&#x8D77;&#x6765;&#xFF0C;&#x4E1A;&#x4F59;&#x5F00;&#x53D1;&#x8005;&#x53EA;&#x5173;&#x5FC3;&#x663E;&#x793A;&#x6587;&#x672C;&#x3001;&#x663E;&#x793A;&#x56FE;&#x7247;&#x3001;&#x64AD;&#x653E;&#x97F3;&#x6548;&#x8FD9;&#x4E9B;&#x7B80;&#x5355;&#x63A5;&#x53E3;&#x5C31;&#x53EF;&#x4EE5;&#x8FDB;&#x884C;&#x5F00;&#x53D1;&#xFF0C;&#x964D;&#x4F4E;&#x4E86;&#x5F00;&#x53D1;&#x95E8;&#x69DB;&#xFF0C;&#x6709;&#x5229;&#x4E8E;&#x6A21;&#x5757;&#x7684;&#x590D;&#x7528;&#xFF1B;&#x6E38;&#x620F;&#x5F15;&#x64CE;&#x62D3;&#x5C55;&#x811A;&#x672C;&#x6280;&#x672F;&#x4F7F;&#x5F97;&#x5F00;&#x53D1;&#x8005;&#x5728;&#x80FD;&#x591F;&#x4F7F;&#x7528;&#x7B80;&#x5355;&#x5C01;&#x88C5;&#x63A5;&#x53E3;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x4ECD;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x811A;&#x672C;&#x6765;&#x81EA;&#x5B9A;&#x4E49;&#x4E2A;&#x6027;&#x5316;&#x7684;&#x6E38;&#x620F;&#x7CFB;&#x7EDF;&#x3002;</p>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../index.html" class="navigation navigation-prev " aria-label="Previous page: Introduction"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../1_YuriInterpreter/1_1_GrammarDesign.html" class="navigation navigation-next " aria-label="Next page: 文法设计"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../gitbook/app.js"></script>
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-search/lunr.min.js"></script>
+    
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-search/search.js"></script>
+    
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-sharing/buttons.js"></script>
+    
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-fontsettings/buttons.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>
