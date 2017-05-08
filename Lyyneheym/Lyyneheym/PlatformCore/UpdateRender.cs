@@ -987,6 +987,14 @@ namespace Yuri.PlatformCore
                 case "remove":
                     SemaphoreDispatcher.RemoveSemaphore(semaphoreName);
                     break;
+                case "globalbinding":
+                    var gbindActivator = activatorName == String.Empty ? null : curScene.FuncContainer.Find(t => t.Callname == activatorName);
+                    var gbindDeactivator = deactivatorName == String.Empty ? null : curScene.FuncContainer.Find(t => t.Callname == deactivatorName);
+                    SemaphoreDispatcher.RegisterGlobalSemaphoreService(semaphoreName, gbindActivator, gbindDeactivator, null, "Global");
+                    break;
+                case "globalunbind":
+                    SemaphoreDispatcher.UnregisterGlobalSemaphoreService(semaphoreName);
+                    break;
             }
         }
 

@@ -140,6 +140,61 @@ namespace Yuri.PlatformCore.Semaphore
         }
 
         /// <summary>
+        /// 注册全局信号调度服务
+        /// </summary>
+        /// <param name="semaphoreName">信号名</param>
+        /// <param name="activator">激活函数</param>
+        /// <param name="deactivator">反激活函数</param>
+        /// <param name="tag">信号附加值</param>
+        /// <param name="groupName">信号分组名</param>
+        public static void RegisterGlobalSemaphoreService(string semaphoreName, SceneFunction activator, SceneFunction deactivator, object tag = null, string groupName = "")
+        {
+            lock (SemaphoreDispatcher.syncMutex)
+            {
+                semaphoreName = semaphoreName.ToUpper();
+                if (SemaphoreDispatcher.semaphoreDict.ContainsKey(semaphoreName) == false)
+                {
+                    CommonUtils.ConsoleLine("global semaphore not exist for binding to " + activator?.GlobalName + ", " + deactivator?.GlobalName,
+                        "SemaphoreDispatcher", OutputStyle.Error);
+                    return;
+                }
+                var hdObject = new SemaphoreHandler(groupName, tag)
+                {
+                    ActivateFunc = activator,
+                    DeActivateFunc = deactivator,
+                    Type = SemaphoreHandlerType.ScheduleOnce,
+                    IsGlobal = true
+                };
+                SemaphoreDispatcher.semaphoreDict[semaphoreName].Attach(hdObject);
+                SemaphoreDispatcher.globalHandlerList.Add(new KeyValuePair<string, SemaphoreHandler>(semaphoreName, hdObject));
+            }
+        }
+        
+        /// <summary>
+        /// 注销全局某个信号调度服务
+        /// </summary>
+        /// <param name="semaphoreName">信号名</param>
+        public static void UnregisterGlobalSemaphoreService(string semaphoreName)
+        {
+            lock (SemaphoreDispatcher.syncMutex)
+            {
+                var pRmList = new List<KeyValuePair<string, SemaphoreHandler>>();
+                foreach (var kvp in SemaphoreDispatcher.globalHandlerList)
+                {
+                    if (String.Compare(kvp.Key, semaphoreName, StringComparison.OrdinalIgnoreCase) == 0)
+                    {
+                        SemaphoreDispatcher.semaphoreDict[kvp.Key].Detach(kvp.Value);
+                        pRmList.Add(kvp);
+                    }
+                }
+                foreach (var kvp in pRmList)
+                {
+                    SemaphoreDispatcher.globalHandlerList.Remove(kvp);
+                }
+            }
+        }
+
+        /// <summary>
         /// 添加一个信号量
         /// </summary>
         /// <param name="semaphoreName">信号量的名字</param>
@@ -259,15 +314,20 @@ namespace Yuri.PlatformCore.Semaphore
         public static bool EnableDispatcher { get; set; } = true;
 
         /// <summary>
-        /// 信号处理机向量
+        /// 场景信号处理机向量
         /// </summary>
         private static readonly List<KeyValuePair<string, SemaphoreHandler>> handlerList = new List<KeyValuePair<string, SemaphoreHandler>>();
-        
+
+        /// <summary>
+        /// 全局信号处理机向量
+        /// </summary>
+        private static readonly List<KeyValuePair<string, SemaphoreHandler>> globalHandlerList = new List<KeyValuePair<string, SemaphoreHandler>>();
+
         /// <summary>
         /// 信号量字典
         /// </summary>
         private static readonly Dictionary<string, YuriSemaphore> semaphoreDict = new Dictionary<string, YuriSemaphore>();
-
+        
         /// <summary>
         /// 同步互斥量
         /// </summary>

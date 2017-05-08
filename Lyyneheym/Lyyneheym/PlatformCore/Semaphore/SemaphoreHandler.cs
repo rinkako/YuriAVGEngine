@@ -48,9 +48,14 @@ namespace Yuri.PlatformCore.Semaphore
         public SceneFunction DeActivateFunc { get; set; }
 
         /// <summary>
-        /// 线程分发器
+        /// 获取或设置线程分发器
         /// </summary>
         public DispatcherTimer Dispatcher { get; set; } = null;
+
+        /// <summary>
+        /// 获取或设置该处理机是否是全局的
+        /// </summary>
+        public bool IsGlobal { get; set; } = false;
 
         /// <summary>
         /// 获取或设置信号处理机类型
