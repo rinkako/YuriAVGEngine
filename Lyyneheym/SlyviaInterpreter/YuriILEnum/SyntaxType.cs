@@ -113,6 +113,8 @@
         synr_semaphore,
         // 章节设置
         synr_chapter,
+        // 消息弹窗
+        synr_alert,
         // 参数：类型
         para_type,
         // 参数：函数签名

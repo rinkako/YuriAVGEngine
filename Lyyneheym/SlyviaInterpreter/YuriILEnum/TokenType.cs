@@ -177,6 +177,8 @@
         Token_o_semaphore,
         // 章节设置
         Token_o_chapter,
+        // 弹窗
+        Token_o_alert,
         // 参数：类型
         Token_p_type,
         // 参数：函数签名

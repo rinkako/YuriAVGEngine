@@ -46,7 +46,12 @@ namespace Yuri.YuriHalation.YuriForms
             int nrows = this.argsGridDataView.Rows.Count - 1;
             for (int i = 0; i < nrows; i++)
             {
-                string varname = this.argsGridDataView.Rows[i].Cells[0].Value.ToString();
+                var tvarname = this.argsGridDataView.Rows[i].Cells[0].Value;
+                if (tvarname == null)
+                {
+                    continue;
+                }
+                string varname = tvarname.ToString();
                 // 符号合法性
                 if (Halation.IsValidVarname(varname) == false)
                 {

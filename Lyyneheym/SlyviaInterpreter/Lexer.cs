@@ -395,7 +395,7 @@ namespace Yuri.YuriInterpreter
             if (okFlag) { return true; }
             okFlag = this.ReservedRouter(res, 6, "`button", "`branch", "`switch", "`freeze", "`cstand", "`return", "`endfor", "`notify", "*target", "*normal", "*xscale", "*yscale");
             if (okFlag) { return true; }
-            okFlag = this.ReservedRouter(res, 5, "`label", "`trans", "`endif", "`vocal", "`break", "`title", "*state");
+            okFlag = this.ReservedRouter(res, 5, "`label", "`trans", "`endif", "`vocal", "`break", "`alert", "`title", "*state");
             if (okFlag) { return true; }
             okFlag = this.ReservedRouter(res, 4, "`move", "`jump", "`wait", "`else", "`menu", "`call", "`draw", "`save", "`load", "*name", "*face", "*time", "*link", "*dash", "*cond", "*type", "*over", "*sign");
             if (okFlag) { return true; }

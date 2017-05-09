@@ -140,7 +140,7 @@ namespace Yuri.PlatformCore.Semaphore
         }
 
         /// <summary>
-        /// 注册全局信号调度服务
+        /// 注册全局信号调度服务，它不会被存档所保存，必须在游戏开头做绑定动作
         /// </summary>
         /// <param name="semaphoreName">信号名</param>
         /// <param name="activator">激活函数</param>

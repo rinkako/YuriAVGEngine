@@ -70,7 +70,7 @@ namespace Yuri.PlatformCore.Audio
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Play audio failed." + ex.ToString(), "NAudioPlayer", OutputStyle.Error);
+                CommonUtils.ConsoleLine("Play audio failed." + ex, "NAudioPlayer", OutputStyle.Warning);
                 return false;
             }
         }

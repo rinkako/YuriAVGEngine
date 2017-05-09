@@ -1001,6 +1001,9 @@ namespace Yuri.YuriInterpreter
                     case TokenType.Token_o_yurimsg:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_yurimsg, "sign");
                         break;
+                    case TokenType.Token_o_alert:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_alert, "target");
+                        break;
                     case TokenType.Token_o_chapter:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_chapter, "name");
                         break;

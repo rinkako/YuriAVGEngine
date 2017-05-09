@@ -839,6 +839,11 @@ namespace Yuri.PlatformCore
                         this.ParseDirectString(action.ArgsDict["dash"], String.Empty)
                         );
                     break;
+                case SActionType.act_alert:
+                    this.Alert(
+                        this.ParseDirectString(action.ArgsDict["target"], String.Empty)
+                        );
+                    break;
                 case SActionType.act_dialog:
                     this.Dialog(
                         action.Tag.Substring(0, action.Tag.Length - 2),
@@ -1453,6 +1458,15 @@ namespace Yuri.PlatformCore
             SpriteAnimation.SkipAllAnimation();
             var rm = (RuntimeManager)IOUtils.Unserialization(IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\" + loadFileName + GlobalConfigContext.GAME_SAVE_POSTFIX));
             Director.ResumeFromSaveData(rm);
+        }
+
+        /// <summary>
+        /// 弹窗通知
+        /// </summary>
+        /// <param name="text">要显示的表达式</param>
+        public void Alert(string text)
+        {
+            MessageBox.Show(text);
         }
 
         /// <summary>
