@@ -15,15 +15,15 @@ namespace Yuri.YuriInterpreter
         /// </summary>
         public InterpreterException()
         {
-            this.Message = "用户脚本编译错误";
-            try
-            {
-                System.Windows.Forms.MessageBox.Show(this.ToStringImpl());
-            }
-            catch
-            {
-                Console.WriteLine("Compile Error");
-            }
+            //this.Message = "用户脚本编译错误";
+            //try
+            //{
+            //    System.Windows.Forms.MessageBox.Show(this.ToStringImpl());
+            //}
+            //catch
+            //{
+            //    Console.WriteLine("Compile Error");
+            //}
         }
 
         /// <summary>

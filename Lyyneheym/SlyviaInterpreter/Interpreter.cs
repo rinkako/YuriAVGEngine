@@ -176,6 +176,7 @@ namespace Yuri.YuriInterpreter
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
+                    System.Windows.Forms.MessageBox.Show(ex.ToString());
                 }
             }
             // 递增完成信号量

@@ -236,9 +236,18 @@ namespace Yuri.YuriHalation
             var scripts = CodeGenerator.GetInstance().Generate();
             FileManager.SaveByLineItem(Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO, ".sls", scripts);
             // 编译
-            Interpreter ip = new Interpreter(Halation.projectName, Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO);
-            ip.Dash(InterpreterType.RELEASE_WITH_IL, 4);
-            ip.GenerateIL(Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO + @"\main.sil");
+            try
+            {
+                Interpreter ip = new Interpreter(Halation.projectName,
+                    Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO);
+                ip.Dash(InterpreterType.RELEASE_WITH_IL, 4);
+                ip.GenerateIL(Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO + @"\main.sil");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("编译失败" + Environment.NewLine + ex);
+                throw ex;
+            }
         }
 
         /// <summary>

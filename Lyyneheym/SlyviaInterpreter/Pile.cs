@@ -41,7 +41,7 @@ namespace Yuri.YuriInterpreter
                 {
                     // 词法分析
                     this.lexer.Init(this.scenario, sourceCodeItem[line]);
-                    List<Token> tokenStream = this.lexer.Analyse();
+                    var tokenStream = this.lexer.Analyse();
                     // 语法分析
                     if (tokenStream.Count > 0)
                     {
@@ -50,22 +50,19 @@ namespace Yuri.YuriInterpreter
                     }
                 }
                 // 语义分析
-                KeyValuePair<SceneAction, List<SceneFunction>> r = this.Semanticer(this.parseTree);
+                var r = this.Semanticer(this.parseTree);
                 this.rootScene = this.ConstructScene(r);
                 string il = this.ILGenerator(this.rootScene);
                 if (itype == InterpreterType.DEBUG)
                 {
                     return this.rootScene;
                 }
-                else
-                {
-                    return il;
-                }
+                return il;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                return null;
+                throw;
             }
         }
 

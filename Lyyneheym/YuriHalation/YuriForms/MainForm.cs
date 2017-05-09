@@ -945,7 +945,11 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void 生成工程ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.core.DashParse();
+            try
+            {
+                this.core.DashParse();
+            }
+            catch (Exception ex) { }
         }
 
         /// <summary>
@@ -953,9 +957,13 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void 生成并运行ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.core.DashParse();
-            DebugForm df = new DebugForm(Halation.projectFolder);
-            df.ShowDialog(this);
+            try
+            {
+                this.core.DashParse();
+                DebugForm df = new DebugForm(Halation.projectFolder);
+                df.ShowDialog(this);
+            }
+            catch (Exception ex) { }
         }
 
         /// <summary>
