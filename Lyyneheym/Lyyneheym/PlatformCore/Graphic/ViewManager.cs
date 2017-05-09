@@ -881,6 +881,7 @@ namespace Yuri.PlatformCore.Graphic
             Canvas.SetTop(buttonImage, descriptor.Y - bmp.PixelHeight / 2.0);
             Panel.SetZIndex(buttonImage, descriptor.Z);
             buttonImage.Visibility = Visibility.Visible;
+            //buttonImage.MouseMove += sbutton.MouseMoveHandler;
             buttonImage.MouseDown += sbutton.MouseOnHandler;
             buttonImage.MouseEnter += sbutton.MouseEnterHandler;
             buttonImage.MouseLeave += sbutton.MouseLeaveHandler;
@@ -895,7 +896,7 @@ namespace Yuri.PlatformCore.Graphic
             }
             sbutton.InitAnimationRenderTransform();
         }
-
+        
         /// <summary>
         /// 为主窗体描绘一个选择支
         /// </summary>

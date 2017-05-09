@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -201,6 +202,39 @@ namespace Yuri.PlatformCore.Graphic
         }
 
         /// <summary>
+        /// 提供精灵按钮在鼠标移动时的处理函数
+        /// </summary>
+        /// <param name="sender">触发者</param>
+        /// <param name="e">鼠标参数</param>
+        public void MouseMoveHandler(object sender, MouseEventArgs e)
+        {
+            if (this.Enable && this.DisplayBinding != null)
+            {
+                var pPos = e.GetPosition(this.DisplayBinding);
+                var eFlag = this.ImageNormal.IsEmptyRegion(pPos.X, pPos.Y, 0);
+                this.DisplayBinding.IsHitTestVisible = !eFlag;
+                if (eFlag != this.lastPixelHitFlag)
+                {
+                    if (!eFlag)
+                    {
+                        BitmapImage myBitmapImage = this.ImageMouseOver.SpriteBitmapImage;
+                        this.DisplayBinding.Width = myBitmapImage.PixelWidth;
+                        this.DisplayBinding.Height = myBitmapImage.PixelHeight;
+                        this.DisplayBinding.Source = myBitmapImage;
+                    }
+                    else
+                    {
+                        BitmapImage myBitmapImage = this.ImageNormal.SpriteBitmapImage;
+                        this.DisplayBinding.Width = myBitmapImage.PixelWidth;
+                        this.DisplayBinding.Height = myBitmapImage.PixelHeight;
+                        this.DisplayBinding.Source = myBitmapImage;
+                    }
+                    this.lastPixelHitFlag = eFlag;
+                }
+            }
+        }
+
+        /// <summary>
         /// 提供精灵按钮鼠标离开时的处理函数
         /// </summary>
         /// <param name="sender">触发者</param>
@@ -324,6 +358,11 @@ namespace Yuri.PlatformCore.Graphic
                 this.IsMouseOn = false;
             }
         }
+
+        /// <summary>
+        /// 上一次移动指针之前是否可点击
+        /// </summary>
+        private bool lastPixelHitFlag = false;
 
         /// <summary>
         /// 动画锚点类型
