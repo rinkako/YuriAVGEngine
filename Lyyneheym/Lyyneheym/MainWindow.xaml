@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:Yuri"
         mc:Ignorable="d"
         Title="MainWindow" Height="752" Width="1280" Closing="Window_Closing" StateChanged="window_StateChanged" PreviewKeyDown="window_PreviewKeyDown" PreviewKeyUp="window_PreviewKeyUp" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" Background="Black" WindowStartupLocation="CenterScreen">
-    <Viewbox x:Name="viewbox" Stretch="Uniform"  Width="1280" Height="720">
-        <Canvas x:Name="mainCanvas" Width="1280" Height="720">
+    <Viewbox x:Name="viewbox" Stretch="Uniform"  Width="{Binding ElementName=window, Mode=OneWay}" Height="{Binding ElementName=window, Mode=OneWay}">
+        <Canvas x:Name="mainCanvas" Width="{Binding ElementName=viewbox, Mode=OneWay}" Height="{Binding ElementName=viewbox, Mode=OneWay}">
             <!-- 主舞台层 -->
             <Frame x:Name="mainFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="Black"/>
             <!-- 遮罩层 -->

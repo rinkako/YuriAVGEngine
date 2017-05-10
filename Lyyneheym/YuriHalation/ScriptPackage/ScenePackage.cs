@@ -27,7 +27,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         /// <returns>操作成功与否</returns>
         public bool AddFunction(string funcName, List<string> argv)
         {
-            if (this.funcList.Find((x) => x.functionName == funcName) != null)
+            if (this.funcList.Find(x => x.functionName == funcName) != null)
             {
                 return false;
             }

@@ -232,7 +232,7 @@ namespace Yuri.YuriHalation.YuriForms
             }
             var dr =MessageBox.Show("真的要删除场景吗" + Environment.NewLine + "这是一个不可撤销的动作",
                 "确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-            if (dr == System.Windows.Forms.DialogResult.OK)
+            if (dr == DialogResult.OK)
             {
                 this.core.DashDeleteScene(this.projTreeView.SelectedNode.Text);
             }
@@ -243,9 +243,15 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void button35_Click_1(object sender, EventArgs e)
         {
+            if (this.projTreeView.SelectedNode.Parent.Text == "main" &&
+                this.projTreeView.SelectedNode.Text == "rclick@main")
+            {
+                MessageBox.Show("main场景下的rclick函数不可以被删除");
+                return;
+            }
             var dr = MessageBox.Show("真的要删除函数吗" + Environment.NewLine + "这是一个不可撤销的动作",
                 "确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-            if (dr == System.Windows.Forms.DialogResult.OK)
+            if (dr == DialogResult.OK)
             {
                 this.core.DashDeleteFunction(this.projTreeView.SelectedNode.Parent.Text, this.projTreeView.SelectedNode.Text);
             }

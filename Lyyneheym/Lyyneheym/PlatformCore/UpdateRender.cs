@@ -200,12 +200,37 @@ namespace Yuri.PlatformCore
             if (UpdateRender.KS_MOUSE_Dict[MouseButton.Right] == MouseButtonState.Pressed)
             {
                 // 要松开才生效的情况下
-                if (this.MouseRightUpFlag == true)
+                if (this.MouseRightUpFlag)
                 {
-                    // 正在显示对话则隐藏对话
+                    // 正在显示对话
                     if (this.isShowingDialog)
                     {
                         var mainMsgLayer = this.viewMana.GetMessageLayer(0).DisplayBinding;
+
+                        //switch (rclickCounter)
+                        //{
+                        //    // 隐藏对话框
+                        //    case 0:
+                        //        mainMsgLayer.Visibility = Visibility.Hidden;
+                        //        MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Hidden;
+                        //        break;
+                        //    // 呼叫菜单
+                        //    case 1:
+                        //        break;
+                        //    // 退出菜单
+                        //    case 2:
+                        //        break;
+                        //    // 回复对话框
+                        //    case 3:
+                        //        mainMsgLayer.Visibility = Visibility.Visible;
+                        //        MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Visible;
+                        //        break;
+                        //}
+                        //if (++rclickCounter >= 4)
+                        //{
+                        //    rclickCounter = 0;
+                        //}
+
                         if (mainMsgLayer.Visibility == Visibility.Hidden)
                         {
                             mainMsgLayer.Visibility = Visibility.Visible;
@@ -231,6 +256,8 @@ namespace Yuri.PlatformCore
                 this.MouseRightUpFlag = true;
             }
         }
+
+        private int rclickCounter = 0;
 
         /// <summary>
         /// 更新函数：根据键盘状态更新游戏，它的优先级低于精灵按钮

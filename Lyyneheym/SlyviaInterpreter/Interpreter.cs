@@ -17,10 +17,15 @@ namespace Yuri.YuriInterpreter
         /// </summary>
         /// <param name="project">项目名称</param>
         /// <param name="scdir">项目剧本路径</param>
-        public Interpreter(string project, string scdir)
+        /// <param name="key">密钥</param>
+        public Interpreter(string project, string scdir, string key)
         {
             this.projectName = project;
             this.sceneDirectory = scdir;
+            if (key == String.Empty)
+            {
+                key = "yurayuri";
+            }
         }
 
         /// <summary>

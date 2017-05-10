@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Yuri.YuriHalation.ScriptPackage;
 
@@ -113,6 +114,11 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
+            if (!Regex.IsMatch(this.textBox4.Text, "^[a-zA-Z]{8}$"))
+            {
+                MessageBox.Show("工程密钥必须是半角英文字母，8位长度");
+                return;
+            }
             ConfigPackage config = Halation.project.Config;
             // 工程页
             config.GameProjName = this.textBox2.Text;

@@ -284,11 +284,11 @@
             // 
             this.label7.AutoSize = true;
             this.label7.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label7.Location = new System.Drawing.Point(331, 187);
+            this.label7.Location = new System.Drawing.Point(133, 187);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(197, 12);
+            this.label7.Size = new System.Drawing.Size(395, 12);
             this.label7.TabIndex = 10;
-            this.label7.Text = "验证存档文件是否属于本游戏的标志";
+            this.label7.Text = "验证文件是否属于本游戏的标志，工程密钥必须是半角英文字母，8位长度";
             // 
             // label6
             // 

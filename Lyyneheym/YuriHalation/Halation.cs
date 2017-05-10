@@ -239,7 +239,7 @@ namespace Yuri.YuriHalation
             try
             {
                 Interpreter ip = new Interpreter(Halation.projectName,
-                    Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO);
+                    Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO, Halation.project.Config.GameProjKey);
                 ip.Dash(InterpreterType.RELEASE_WITH_IL, 4);
                 ip.GenerateIL(Halation.projectFolder + "\\" + FileManager.DevURI_RT_SCENARIO + @"\main.sil");
             }
@@ -746,6 +746,7 @@ namespace Yuri.YuriHalation
             ActionPackage initap = new ActionPackage() { nodeType = ActionPackageType.act_dialog };
             initap.argsDict.Add("context", new ArgumentPackage() { aType = ArgType.unknown, valueExp = "欢迎来到Yuri世界！" });
             Halation.project.GetScene("main").AddAction(initap, 0);
+            Halation.project.GetScene("main").AddFunction("rclick", new List<string>());
             Halation.projectName = projName;
             Halation.mainView.Text = String.Format("Yuri Halation - [{0}]", Halation.projectName);
             FileManager.Serialization(Halation.project, string.Format("{0}\\{1}\\game.yrproj", path, projName));

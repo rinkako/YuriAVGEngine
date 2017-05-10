@@ -5,6 +5,7 @@ namespace Yuri.PlatformCore.VM
 {
     /// <summary>
     /// 缓冲池类
+    /// TODO 这个模块有逻辑错误，要改，前100总不会被置换出来
     /// </summary>
     internal static class ResourceCachePool
     {
@@ -24,7 +25,7 @@ namespace Yuri.PlatformCore.VM
             CacheBlock cBlock = null;
             if (cType == ResourceCacheType.Eden || (inPermanentFlag == false && cType == ResourceCacheType.Unknown))
             {
-                var edenIdx = ResourceCachePool.EdenQueue.FindIndex((x) => x.CacheId == resourceId);
+                var edenIdx = ResourceCachePool.EdenQueue.FindIndex(x => x.CacheId == resourceId);
                 if (edenIdx == -1)
                 {
                     return null;
@@ -74,6 +75,7 @@ namespace Yuri.PlatformCore.VM
 
         /// <summary>
         /// 临时资源缓冲优先队列
+        /// TODO add a dictionary to maintain reference count for replacing block already in eden
         /// </summary>
         private static readonly PriorityQueue<CacheBlock> EdenQueue = new PriorityQueue<CacheBlock>();
 

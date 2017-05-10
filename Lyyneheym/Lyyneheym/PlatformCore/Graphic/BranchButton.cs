@@ -261,7 +261,7 @@ namespace Yuri.PlatformCore.Graphic
         /// </summary>
         public void MouseOnHandler(object sender, MouseEventArgs e)
         {
-            if (this.Enable)
+            if (this.Enable && e.LeftButton == MouseButtonState.Pressed)
             {
                 this.IsMouseOn = true;
                 if (this.DisplayBinding != null && this.ImageMouseOn != null)
