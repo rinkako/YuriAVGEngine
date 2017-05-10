@@ -634,12 +634,12 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
-        /// 处理函数调用
+        /// 处理主调用堆栈上的函数调用
         /// </summary>
-        /// <param name="callFunc">函数名</param>
+        /// <param name="callFunc">函数的全局名字</param>
         /// <param name="signFunc">参数签名</param>
         /// <param name="vsm">关于哪个虚拟机做动作</param>
-        private void FunctionCalling(string callFunc, string signFunc, StackMachine vsm)
+        public void FunctionCalling(string callFunc, string signFunc, StackMachine vsm)
         {
             if (signFunc != String.Empty && (!signFunc.StartsWith("(") || !signFunc.EndsWith(")")))
             {

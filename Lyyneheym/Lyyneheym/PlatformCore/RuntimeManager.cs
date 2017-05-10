@@ -538,6 +538,16 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 获取当前是否处于右键菜单调用状态
+        /// </summary>
+        /// <returns>栈顶是否为右键菜单栈帧</returns>
+        public bool GetRclickingState()
+        {
+            return this.CallStack.Count() > 0 && this.CallStack.EBP.BindingFunction != null &&
+                   this.CallStack.EBP.BindingFunction.GlobalName == "__YuriFunc@rclick?main";
+        }
+
+        /// <summary>
         /// 设置场景管理器引用
         /// </summary>
         public void SetScreenManager(ScreenManager scr)

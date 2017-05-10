@@ -310,6 +310,7 @@ namespace Yuri.PlatformCore.Graphic
                     }
                     // 向运行时环境提交中断
                     Director.GetInstance().SubmitInterrupt(this.Ntr);
+                    Director.GetInstance().GetMainRender().IsBranching = false;
                     // 移除按钮
                     if (!this.Eternal)
                     {

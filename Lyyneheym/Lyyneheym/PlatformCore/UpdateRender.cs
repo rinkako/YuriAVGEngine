@@ -202,45 +202,66 @@ namespace Yuri.PlatformCore
                 // 要松开才生效的情况下
                 if (this.MouseRightUpFlag)
                 {
-                    // 正在显示对话
-                    if (this.isShowingDialog)
+                    // 可以右键的情况
+                    if (this.IsShowingDialog || this.IsBranching)
                     {
                         var mainMsgLayer = this.viewMana.GetMessageLayer(0).DisplayBinding;
-
-                        //switch (rclickCounter)
-                        //{
-                        //    // 隐藏对话框
-                        //    case 0:
-                        //        mainMsgLayer.Visibility = Visibility.Hidden;
-                        //        MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Hidden;
-                        //        break;
-                        //    // 呼叫菜单
-                        //    case 1:
-                        //        break;
-                        //    // 退出菜单
-                        //    case 2:
-                        //        break;
-                        //    // 回复对话框
-                        //    case 3:
-                        //        mainMsgLayer.Visibility = Visibility.Visible;
-                        //        MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Visible;
-                        //        break;
-                        //}
-                        //if (++rclickCounter >= 4)
-                        //{
-                        //    rclickCounter = 0;
-                        //}
-
-                        if (mainMsgLayer.Visibility == Visibility.Hidden)
+                        switch (this.RclickCounter)
                         {
-                            mainMsgLayer.Visibility = Visibility.Visible;
-                            MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Visible;
+                            // 隐藏对话框
+                            case 0:
+                                mainMsgLayer.Visibility = Visibility.Hidden;
+                                MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Hidden;
+                                break;
+                            // 呼叫菜单
+                            case 1:
+                                Director.GetInstance().FunctionCalling("rclick@main", "()", this.VsmReference);
+                                break;
+                            // 退出菜单
+                            case 2:
+                                if (Director.RunMana.GetRclickingState())
+                                {
+                                    var rfunc = this.VsmReference.EBP.BindingFunction;
+                                    if (rfunc.LabelDictionary.ContainsKey("~finalizer"))
+                                    {
+                                        this.VsmReference.EBP.IP = this.VsmReference.EBP.BindingFunction.LabelDictionary["~finalizer"];
+                                        Director.RunMana.ExitUserWait();
+                                    }
+                                    else
+                                    {
+                                        while (this.VsmReference.ESP != this.VsmReference.EBP)
+                                        {
+                                            Director.RunMana.ExitCall(this.VsmReference);
+                                        }
+                                        Director.RunMana.ExitCall(this.VsmReference);
+                                    }
+                                }
+                                if (this.IsBranching)
+                                {
+                                    this.RclickCounter = 3;
+                                }
+                                break;
+                            // 恢复对话框
+                            case 3:
+                                mainMsgLayer.Visibility = Visibility.Visible;
+                                MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Visible;
+                                break;
                         }
-                        else
+                        if (++this.RclickCounter >= 4)
                         {
-                            mainMsgLayer.Visibility = Visibility.Hidden;
-                            MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Hidden;
+                            this.RclickCounter = this.IsBranching ? 1 : 0;
                         }
+
+                        //if (mainMsgLayer.Visibility == Visibility.Hidden)
+                        //{
+                        //    mainMsgLayer.Visibility = Visibility.Visible;
+                        //    MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Visible;
+                        //}
+                        //else
+                        //{
+                        //    mainMsgLayer.Visibility = Visibility.Hidden;
+                        //    MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Hidden;
+                        //}
                     }
                 }
                 // 连续按压生效的情况下
@@ -257,7 +278,7 @@ namespace Yuri.PlatformCore
             }
         }
 
-        private int rclickCounter = 0;
+        public int RclickCounter { get; set; } = 0;
 
         /// <summary>
         /// 更新函数：根据键盘状态更新游戏，它的优先级低于精灵按钮
@@ -291,7 +312,7 @@ namespace Yuri.PlatformCore
                 ViewManager.Is3DStage == false && SCamera2D.IsAnyAnimation == false)
             {
                 // 正在显示对话
-                if (this.isShowingDialog && Director.IsButtonClicking == false)
+                if (this.IsShowingDialog && Director.IsButtonClicking == false)
                 {
                     // 如果还在播放打字动画就跳跃
                     if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() < 1.0)
@@ -305,7 +326,7 @@ namespace Yuri.PlatformCore
                     {
                         // 弹掉用户等待状态
                         Director.RunMana.ExitCall(Director.RunMana.CallStack);
-                        this.isShowingDialog = false;
+                        this.IsShowingDialog = false;
                         this.dialogPreStr = String.Empty;
                         // 非连续对话时消除对话框
                         if (this.IsContinousDialog == false)
@@ -351,7 +372,7 @@ namespace Yuri.PlatformCore
             this.viewMana.GetMessageLayer(0).Text = String.Empty;
             this.dialogPreStr = String.Empty;
             // 标记显示
-            this.isShowingDialog = true;
+            this.IsShowingDialog = true;
             string[] strRuns = this.DialogToRuns(str);
             foreach (string run in strRuns)
             {
@@ -542,16 +563,16 @@ namespace Yuri.PlatformCore
         /// 当前正在操作的文字层
         /// </summary>
         private int currentMsgLayer = 0;
-
-        /// <summary>
-        /// 是否正在显示对话
-        /// </summary>
-        private bool isShowingDialog = false;
-
+        
         /// <summary>
         /// 获取当前是否正在显示对话
         /// </summary>
-        public bool IsShowingDialog => this.isShowingDialog;
+        public bool IsShowingDialog { get; private set; } = false;
+
+        /// <summary>
+        /// 获取或设置当前是否正在显示选择支
+        /// </summary>
+        public bool IsBranching { get; set; } = false;
 
         /// <summary>
         /// 是否下一动作仍为对话
@@ -1640,7 +1661,8 @@ namespace Yuri.PlatformCore
                 this.viewMana.Draw(i, ResourceType.BranchButton);
             }
             // 更改状态
-            this.isShowingDialog = false;
+            this.IsShowingDialog = false;
+            this.IsBranching = true;
             // 追加等待
             Director.RunMana.UserWait("UpdateRender", String.Format("BranchWaitFor:{0}", linkStr));
         }

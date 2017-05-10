@@ -23,6 +23,11 @@ namespace Yuri.YuriHalation.YuriForms
                 MessageBox.Show(@"请填写标签");
                 return;
             }
+            if (!Halation.IsValidVarname(this.textBox1.Text) && this.textBox1.Text != @"~finalizer")
+            {
+                MessageBox.Show(@"标签名只能是由下划线、数字和字母组成，并且不能以数字开头。");
+                return;
+            }
             if (this.isEditing)
             {
                 Halation.GetInstance().DashEditLabel(this.textBox1.Text);

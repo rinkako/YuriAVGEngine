@@ -30,7 +30,11 @@ namespace Yuri.Yuriri
         /// <returns>新的符号实例</returns>
         public SceneFunction Fork(bool pureFork)
         {
-            SceneFunction nsf = new SceneFunction(this.Callname, this.ParentSceneName, this.Sa) { Param = this.Param };
+            SceneFunction nsf = new SceneFunction(this.Callname, this.ParentSceneName, this.Sa)
+            {
+                Param = this.Param,
+                LabelDictionary = this.LabelDictionary
+            };
             if (pureFork) { return nsf; }
             foreach (var svar in this.Symbols)
             {

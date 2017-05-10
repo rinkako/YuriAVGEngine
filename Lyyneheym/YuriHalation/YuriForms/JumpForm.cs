@@ -50,7 +50,7 @@ namespace Yuri.YuriHalation.YuriForms
             }
             else
             {
-                Halation.GetInstance().DashJump(this.textBox1.Text, this.comboBox1.SelectedItem.ToString(), this.textBox2.Text);
+                Halation.GetInstance().DashJump(this.textBox1.Text, comboBox1.SelectedItem?.ToString() ?? String.Empty, this.textBox2.Text);
             }
             this.Close();
         }
