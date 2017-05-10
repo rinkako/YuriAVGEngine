@@ -11,6 +11,7 @@ namespace Yuri.YuriHalation.YuriForms
         {
             InitializeComponent();
             var vList = Halation.project.GetScene();
+            this.comboBox1.Items.Add(String.Empty);
             foreach (var v in vList)
             {
                 this.comboBox1.Items.Add(v.sceneName);

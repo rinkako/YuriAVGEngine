@@ -33,6 +33,11 @@ namespace Yuri.YuriHalation.YuriForms
             this.numericUpDown1.Value = config.GameViewWindowWidth;
             this.numericUpDown2.Value = config.GameViewWindowHeight;
             this.checkBox1.Checked = config.GameViewWindowResizeable;
+            this.checkBox3.Checked = config.Game3DStage;
+            if (this.checkBox3.Checked)
+            {
+                this.groupBox2.Enabled = false;
+            }
             this.numericUpDown3.Value = config.GameViewCStandLeftX;
             this.numericUpDown4.Value = config.GameViewCStandLeftY;
             this.numericUpDown5.Value = config.GameViewCStandMidleftY;
@@ -117,6 +122,7 @@ namespace Yuri.YuriHalation.YuriForms
             config.GameViewWindowWidth = (int)this.numericUpDown1.Value;
             config.GameViewWindowHeight = (int)this.numericUpDown2.Value;
             config.GameViewWindowResizeable = this.checkBox1.Checked;
+            config.Game3DStage = this.checkBox3.Checked;
             config.GameViewCStandLeftX = (int)this.numericUpDown3.Value;
             config.GameViewCStandLeftY = (int)this.numericUpDown4.Value;
             config.GameViewCStandMidleftY = (int)this.numericUpDown5.Value;
@@ -183,6 +189,11 @@ namespace Yuri.YuriHalation.YuriForms
             Halation.project.CharacterList = charaList;
             // 关闭窗体
             this.Close();
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            this.groupBox2.Enabled = !this.checkBox3.Checked;
         }
     }
 }

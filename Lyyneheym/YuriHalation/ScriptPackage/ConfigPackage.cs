@@ -313,5 +313,6 @@ namespace Yuri.YuriHalation.ScriptPackage
         public bool GameAutoPointer = false;
         public int GameViewportWidth = 1280;
         public int GameViewportHeight = 720;
+        public bool Game3DStage = true;
     }
 }
