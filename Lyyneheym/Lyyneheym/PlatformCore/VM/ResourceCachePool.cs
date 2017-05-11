@@ -5,7 +5,6 @@ namespace Yuri.PlatformCore.VM
 {
     /// <summary>
     /// 缓冲池类
-    /// TODO 这个模块有逻辑错误，要改，前100总不会被置换出来
     /// </summary>
     internal static class ResourceCachePool
     {
@@ -22,17 +21,19 @@ namespace Yuri.PlatformCore.VM
             {
                 inPermanentFlag = ResourceCachePool.PermanentDictionary.ContainsKey(resourceId);
             }
-            CacheBlock cBlock = null;
+            CacheBlock cBlock;
             if (cType == ResourceCacheType.Eden || (inPermanentFlag == false && cType == ResourceCacheType.Unknown))
             {
                 var edenIdx = ResourceCachePool.EdenQueue.FindIndex(x => x.CacheId == resourceId);
-                if (edenIdx == -1)
+                if (edenIdx == -1 || edenIdx > GlobalConfigContext.EdenResourceCacheSize)
                 {
                     return null;
                 }
                 cBlock = ResourceCachePool.EdenQueue.ElementAt(edenIdx);
+                cBlock.Referred();
                 ResourceCachePool.EdenQueue.Exchange(edenIdx, ResourceCachePool.EdenQueue.Count() - 1);
                 ResourceCachePool.EdenQueue.Adjust();
+                ResourceCachePool.EdenQueue.ForEachFrom(GlobalConfigContext.EdenResourceCacheSize, t => t.Abandon());
             }
             else
             {
@@ -40,7 +41,7 @@ namespace Yuri.PlatformCore.VM
                     ? ResourceCachePool.PermanentDictionary[resourceId]
                     : null;
             }
-            return cBlock?.Referred().AllocReference;
+            return cBlock?.AllocReference;
         }
 
         /// <summary>
@@ -52,14 +53,26 @@ namespace Yuri.PlatformCore.VM
         /// <param name="priority">初始引用计数</param>
         public static void Register(string resourceId, byte[] allocPtr, ResourceCacheType cType, long priority = 1)
         {
-            CacheBlock cb = new CacheBlock(resourceId, allocPtr, priority);
             switch (cType)
             {
                 case ResourceCacheType.Eden:
-                    ResourceCachePool.EdenQueue.Push(cb);
+                    var edenIdx = ResourceCachePool.EdenQueue.FindIndex(x => x.CacheId == resourceId);
+                    if (edenIdx == -1)
+                    {
+                        ResourceCachePool.EdenQueue.Push(new CacheBlock(resourceId, allocPtr, priority));
+                    }
+                    else
+                    {
+                        var cBlock = ResourceCachePool.EdenQueue.ElementAt(edenIdx);
+                        cBlock.Referred();
+                        cBlock.AllocReference = allocPtr;
+                        ResourceCachePool.EdenQueue.Exchange(edenIdx, ResourceCachePool.EdenQueue.Count() - 1);
+                        ResourceCachePool.EdenQueue.Adjust();
+                        ResourceCachePool.EdenQueue.ForEachFrom(GlobalConfigContext.EdenResourceCacheSize, t => t.Abandon());
+                    }
                     break;
                 case ResourceCacheType.Permanent:
-                    ResourceCachePool.PermanentDictionary.Add(resourceId, cb);
+                    ResourceCachePool.PermanentDictionary.Add(resourceId, new CacheBlock(resourceId, allocPtr, priority));
                     break;
             }
         }
@@ -75,7 +88,6 @@ namespace Yuri.PlatformCore.VM
 
         /// <summary>
         /// 临时资源缓冲优先队列
-        /// TODO add a dictionary to maintain reference count for replacing block already in eden
         /// </summary>
         private static readonly PriorityQueue<CacheBlock> EdenQueue = new PriorityQueue<CacheBlock>();
 
@@ -117,6 +129,7 @@ namespace Yuri.PlatformCore.VM
             /// </summary>
             public void Abandon()
             {
+                this.AllocReference = null;
                 this.referenceCount = 0;
             }
 
@@ -135,7 +148,7 @@ namespace Yuri.PlatformCore.VM
             public byte[] AllocReference
             {
                 get;
-                private set;
+                set;
             }
 
             /// <summary>
@@ -205,7 +218,7 @@ namespace Yuri.PlatformCore.VM
             /// <returns>队列能接受的最大项目数</returns>
             public int Capacity()
             {
-                return this.defaultCapacity;
+                return this.buffer.Length;
             }
 
             /// <summary>
@@ -238,8 +251,7 @@ namespace Yuri.PlatformCore.VM
                 // 注意：这里不拓展，直接替换掉队尾
                 if (this.heapLength == this.buffer.Length)
                 {
-                    //this.expand();
-                    this.heapLength = this.buffer.Length - 1;
+                    this.expand();
                 }
                 // 维护堆的属性
                 this.buffer[heapLength] = obj;
@@ -308,6 +320,51 @@ namespace Yuri.PlatformCore.VM
             }
 
             /// <summary>
+            /// 从某个下标开始对队列中的元素执行动作
+            /// </summary>
+            /// <param name="beginIdx">开始下标（含）</param>
+            /// <param name="act">动作委托</param>
+            public void ForEachFrom(int beginIdx, Action<T> act)
+            {
+                int border = Math.Max(0, Math.Min(beginIdx, this.Capacity()));
+                int capa = this.Capacity();
+                for (int i = border; i < capa; i++)
+                {
+                    act(this.buffer[i]);
+                }
+            }
+
+            /// <summary>
+            /// 以某个下标为结束对队列中的元素执行动作
+            /// </summary>
+            /// <param name="endIdx">结束下标（含）</param>
+            /// <param name="act">动作委托</param>
+            public void ForEachTo(int endIdx, Action<T> act)
+            {
+                int border = Math.Max(0, Math.Min(endIdx + 1, this.Capacity()));
+                for (int i = 0; i < border; i++)
+                {
+                    act(this.buffer[i]);
+                }
+            }
+
+            /// <summary>
+            /// 以某个下标为开始对队列中的后续N个元素执行动作
+            /// </summary>
+            /// <param name="beginIdx">开始下标（含）</param>
+            /// <param name="n">最大处理个数</param>
+            /// <param name="act">动作委托</param>
+            public void ForEachTo(int beginIdx, int n, Action<T> act)
+            {
+                int beginT = Math.Max(0, Math.Min(beginIdx, this.Capacity()));
+                int endT = Math.Max(0, Math.Min(beginIdx + n, this.Capacity()));
+                for (int i = beginT; i < endT; i++)
+                {
+                    act(this.buffer[i]);
+                }
+            }
+
+            /// <summary>
             /// 获取指定位置的对象
             /// </summary>
             /// <param name="index">下标</param>
@@ -362,7 +419,7 @@ namespace Yuri.PlatformCore.VM
             /// <summary>
             /// 堆的原始尺寸
             /// </summary>
-            private readonly int defaultCapacity = 128;
+            private const int defaultCapacity = 128;
         }
 
         /// <summary>

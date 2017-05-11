@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Yuri.Yuriri
 {
+    /// <summary>
+    /// 可执行的Yuriri代码块包装
+    /// </summary>
     [Serializable]
     public abstract class RunnableYuriri
     {

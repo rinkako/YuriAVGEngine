@@ -64,8 +64,6 @@ namespace Yuri.PlatformCore
         {
             // 还有得回滚且不在动画时才滚
             if (RollbackManager.forwardStack.Count > 0 &&
-                ((ViewManager.Is3DStage == false && SCamera2D.IsAnyAnimation == false) ||
-                (ViewManager.Is3DStage && SCamera3D.IsAnyAnimation == false)) &&
                 Director.RunMana.GameState(Director.RunMana.CallStack) != StackMachineState.WaitAnimation)
             {
                 // 如果还未回滚过就要将自己先移除

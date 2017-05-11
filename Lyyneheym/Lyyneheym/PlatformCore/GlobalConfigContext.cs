@@ -484,6 +484,10 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static readonly int MaxRollbackStep = 100;
         /// <summary>
+        /// 最大缓存资源个数
+        /// </summary>
+        public static readonly int EdenResourceCacheSize = 128;
+        /// <summary>
         /// 入口前端页面名称
         /// </summary>
         public static readonly string FirstViewPage = "stagePage";

@@ -141,7 +141,10 @@ namespace Yuri.PlatformCore
             // 更新变量
             UpdateRender.KS_MOUSE_WHEEL_DELTA = delta;
             // 上滚
-            if (delta > 0)
+            if (delta > 0 &&
+                (!ViewManager.Is3DStage && !SCamera2D.IsAnyAnimation ||
+                ViewManager.Is3DStage && !SCamera3D.IsAnyAnimation) &&
+                !Director.IsRClicking)
             {
                  RollbackManager.SteadyBackward();
             }
@@ -552,7 +555,10 @@ namespace Yuri.PlatformCore
         private void ShowMessageTria(double opacity = 1.0f)
         {
             this.MainMsgTriangleSprite.DisplayOpacity = opacity;
-            this.MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Visible;
+            if (this.viewMana.GetMessageLayer(0)?.Visibility == Visibility.Visible)
+            {
+                this.MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Visible;
+            }
         }
 
         /// <summary>
@@ -666,12 +672,12 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 2D主舞台的引用
         /// </summary>
-        private Stage2D view2d => (PageView.Stage2D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
+        private Stage2D view2d => (Stage2D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
 
         /// <summary>
         /// 3D主舞台的引用
         /// </summary>
-        private Stage3D view3d => (PageView.Stage3D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
+        private Stage3D view3d => (Stage3D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
 
         /// <summary>
         /// 音乐引擎
