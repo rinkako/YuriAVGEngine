@@ -1,0 +1,29 @@
+﻿<controls:MetroWindow x:Class="Yuri.Hemerocallis.Forms.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        mc:Ignorable="d"
+		TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType"
+        xmlns:local="clr-namespace:Hemerocallis"
+        Title="Hemerocallis" Height="720" Width="1280">
+    <Grid>
+        
+        <RichTextBox Padding="10,10,10,10" FontSize="22" HorizontalAlignment="Left" Height="560" Margin="182,119,0,0" VerticalAlignment="Top" Width="1080" FontFamily="Source Han Serif SC" Background="#FFFAFAFA">
+            <RichTextBox.Effect>
+                <DropShadowEffect Color="Black" Direction="45" ShadowDepth="5" Opacity="0.5" />
+            </RichTextBox.Effect>
+            <FlowDocument LineHeight="10" Foreground="#FF2C3F51">
+                <Paragraph>
+                    <Run Text="Hemerocallis 233 萱草">
+                    </Run>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="Hemerocallis 233 萱草">
+                    </Run>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+    </Grid>
+</controls:MetroWindow>

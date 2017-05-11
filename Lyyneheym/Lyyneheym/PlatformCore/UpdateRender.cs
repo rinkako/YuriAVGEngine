@@ -1734,7 +1734,7 @@ namespace Yuri.PlatformCore
                         break;
                     case "fc":
                     case "fontcolor":
-                        string[] rgbItem = valueStr.Split(',');
+                        var rgbItem = valueStr.Split(',');
                         if (rgbItem.Length != 3)
                         {
                             CommonUtils.ConsoleLine("Font Color should be RGB format", "UpdateRender", OutputStyle.Error);
@@ -1777,7 +1777,7 @@ namespace Yuri.PlatformCore
                         break;
                     case "p":
                     case "padding":
-                        string[] padItem = valueStr.Split(',');
+                        var padItem = valueStr.Split(',');
                         ml.Padding = new Thickness(Convert.ToDouble(padItem[0]), Convert.ToDouble(padItem[1]), Convert.ToDouble(padItem[2]), Convert.ToDouble(padItem[3]));
                         mld.Padding = new MyThickness(ml.Padding);
                         break;
@@ -1815,7 +1815,7 @@ namespace Yuri.PlatformCore
         /// 把字符串描绘到指定的文字层上
         /// </summary>
         /// <param name="id">文字层id</param>
-        /// <param name="str"></param>
+        /// <param name="str">要描绘的文本</param>
         private void DrawCommand(int id, string str)
         {
             this.Drawtext(id, str);
