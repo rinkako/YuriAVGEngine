@@ -9,21 +9,34 @@
         xmlns:local="clr-namespace:Hemerocallis"
         Title="Hemerocallis" Height="720" Width="1280">
     <Grid>
-        
-        <RichTextBox Padding="10,10,10,10" FontSize="22" HorizontalAlignment="Left" Height="560" Margin="182,119,0,0" VerticalAlignment="Top" Width="1080" FontFamily="Source Han Serif SC" Background="#FFFAFAFA">
-            <RichTextBox.Effect>
-                <DropShadowEffect Color="Black" Direction="45" ShadowDepth="5" Opacity="0.5" />
-            </RichTextBox.Effect>
-            <FlowDocument LineHeight="10" Foreground="#FF2C3F51">
-                <Paragraph>
-                    <Run Text="Hemerocallis 233 萱草">
-                    </Run>
-                </Paragraph>
-                <Paragraph>
-                    <Run Text="Hemerocallis 233 萱草">
-                    </Run>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        <ScrollViewer Margin="182,119,30,30" Background="#FFFAFAFA">
+            <RichTextBox Name="textarea" Padding="10,10,10,10" FontSize="22" HorizontalAlignment="Left" Height="540" Margin="0,0,0,0" VerticalAlignment="Top" Width="1040" FontFamily="Source Han Serif SC" Background="Transparent" BorderBrush="{x:Null}" CaretBrush="Black" BorderThickness="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <RichTextBox.Effect>
+                    <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.5" />
+                </RichTextBox.Effect>
+                <FlowDocument LineHeight="10" Foreground="#FF2C3F51">
+                    <Paragraph>
+                        <Run Text="Hemerocallis 233 萱草">
+                        </Run>
+                    </Paragraph>
+                    <Paragraph>
+                        <Run Text="Hemerocallis 233 萱草">
+                        </Run>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
+        </ScrollViewer>
+        <Canvas Name="TipCanvas">
+            <Canvas Height="320" Width="404" Canvas.Left="492" Canvas.Top="133" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseMove="Canvas_MouseMove" MouseLeftButtonUp="Canvas_MouseLeftButtonUp">
+                <Canvas.Background>
+                    <ImageBrush ImageSource="/Hemerocallis;component/QuestionPaper.png"/>
+                </Canvas.Background>
+                <Canvas.Effect>
+                    <DropShadowEffect Opacity="0.3" ShadowDepth="6" BlurRadius="10"/>
+                </Canvas.Effect>
+
+            </Canvas>
+        </Canvas>
+
     </Grid>
 </controls:MetroWindow>
