@@ -9,7 +9,7 @@ namespace Yuri.Yuriri
     /// <para>通常，一个场景拥有一个动作序列和依存她的函数</para>
     /// <para>演绎剧本就是在调用堆栈上遍历这个序列的过程</para>
     /// </summary>
-    public sealed class Scene
+    public sealed class Scene : RunnableYuriri
     {
         /// <summary>
         /// 构造器
@@ -62,12 +62,7 @@ namespace Yuri.Yuriri
         /// 场景名称
         /// </summary>
         public string Scenario { get; set; }
-
-        /// <summary>
-        /// 场景的构造序列
-        /// </summary>
-        public SceneAction Ctor { get; set; }
-
+        
         /// <summary>
         /// 场景命令集的索引
         /// </summary>
@@ -82,10 +77,5 @@ namespace Yuri.Yuriri
         /// 场景内的并行处理器向量
         /// </summary>
         public List<SceneFunction> ParallellerContainer { get; set; }
-        
-        /// <summary>
-        /// 场景标签字典
-        /// </summary>
-        public Dictionary<string, SceneAction> LabelDictionary { get; set; }
     }
 }

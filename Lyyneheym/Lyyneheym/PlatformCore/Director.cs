@@ -17,8 +17,8 @@ using Yuri.Yuriri;
 namespace Yuri.PlatformCore
 {
     /// <summary>
-    /// <para>导演类：管理整个游戏生命周期的类</para>
-    /// <para>她是一个单例类，只有唯一实例</para>
+    /// <para>控制器类：管理整个游戏生命周期的类</para>
+    /// <para>她是一个单例类</para>
     /// </summary>
     internal class Director
     {
@@ -305,14 +305,22 @@ namespace Yuri.PlatformCore
                         // 处理跳转（与中断调用互斥）
                         if (interruptExitPoint != String.Empty)
                         {
-                            var curScene = this.resMana.GetScene(Director.RunMana.CallStack.EBP.BindingSceneName);
-                            if (!curScene.LabelDictionary.ContainsKey(interruptExitPoint))
+                            RunnableYuriri curRunnable;
+                            if (Director.RunMana.CallStack.EBP.BindingFunction == null)
                             {
-                                CommonUtils.ConsoleLine( String.Format("Ignored Interrupt jump Instruction (target not exist): {0}",
+                                curRunnable = this.resMana.GetScene(Director.RunMana.CallStack.EBP.BindingSceneName);
+                            }
+                            else
+                            {
+                                curRunnable = Director.RunMana.CallStack.EBP.BindingFunction;
+                            }
+                            if (!curRunnable.LabelDictionary.ContainsKey(interruptExitPoint))
+                            {
+                                CommonUtils.ConsoleLine(String.Format("Ignored Interrupt jump Instruction (target not exist): {0}",
                                         interruptExitPoint), "Director", OutputStyle.Error);
                                 break;
                             }
-                            Director.RunMana.CallStack.EBP.MircoStep(curScene.LabelDictionary[interruptExitPoint]);
+                            Director.RunMana.CallStack.EBP.MircoStep(curRunnable.LabelDictionary[interruptExitPoint]);
                         }
                         // 处理中断函数调用
                         else if (interruptFuncCalling != String.Empty)
@@ -362,8 +370,7 @@ namespace Yuri.PlatformCore
                             {
                                 if (stackState == StackMachineState.Interpreting)
                                 {
-                                    var currentScene =
-                                        this.resMana.GetScene(Director.RunMana.CallStack.ESP.BindingSceneName);
+                                    var currentScene = this.resMana.GetScene(Director.RunMana.CallStack.ESP.BindingSceneName);
                                     if (!currentScene.LabelDictionary.ContainsKey(jumpToTarget))
                                     {
                                         CommonUtils.ConsoleLine(
@@ -720,10 +727,22 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 获取当前是否正在呼叫右键菜单
+        /// </summary>
+        public static bool IsRClicking
+        {
+            get
+            {
+                var ebpFunc = Director.RunMana.CallStack.EBP.BindingFunction;
+                return ebpFunc != null && ebpFunc.GlobalName == "__YuriFunc@rclick?main";
+            }
+        }
+
+        /// <summary>
         /// 获取或设置当前是否正在点击按钮
         /// </summary>
         public static bool IsButtonClicking { get; set; } = false;
-
+        
         /// <summary>
         /// 获取或设置当前是否处于全屏态
         /// </summary>

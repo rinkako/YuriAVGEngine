@@ -62,6 +62,11 @@ namespace Yuri.Yuriri
         public string Tag { get; set; } = null;
 
         /// <summary>
+        /// 对话合并脏位
+        /// </summary>
+        public bool DialogDirtyBit { get; set; } = false;
+
+        /// <summary>
         /// 带SAP项的构造函数
         /// </summary>
         /// <param name="sap">SceneActionPackage项目</param>
@@ -85,11 +90,6 @@ namespace Yuri.Yuriri
         {
             return rhs?.Next;
         }
-
-        /// <summary>
-        /// 对话合并脏位
-        /// </summary>
-        public bool DialogDirtyBit = false;
 
         /// <summary>
         /// 将动作转化为可序列化字符串

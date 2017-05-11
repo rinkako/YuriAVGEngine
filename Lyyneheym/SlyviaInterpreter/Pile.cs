@@ -794,7 +794,7 @@ namespace Yuri.YuriInterpreter
             sb.Append(this.ILGenerator(mainSa));
             foreach (SceneFunction scenefunc in sf)
             {
-                sb.Append(this.ILGenerator(scenefunc.Sa));
+                sb.Append(this.ILGenerator(scenefunc.Ctor));
             }
             return sb.ToString();
         }

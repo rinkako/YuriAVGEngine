@@ -178,7 +178,7 @@ namespace Yuri.PlatformCore
             // 按下了鼠标左键
             if (UpdateRender.KS_MOUSE_Dict[MouseButton.Left] == MouseButtonState.Pressed)
             {
-                // 要松开左键，并且场景镜头动画播放完毕才生效
+                // 松开按键之后
                 if (this.MouseLeftUpFlag)
                 {
                     this.ForwardToNextSteadyState();
@@ -215,9 +215,13 @@ namespace Yuri.PlatformCore
                                 break;
                             // 呼叫菜单
                             case 1:
+                                if (this.IsBranching)
+                                {
+                                    this.viewMana.DisableBranchButtonHitTest();
+                                }
                                 Director.GetInstance().FunctionCalling("rclick@main", "()", this.VsmReference);
                                 break;
-                            // 退出菜单
+                            // 退出菜单并恢复对话框
                             case 2:
                                 if (Director.RunMana.GetRclickingState())
                                 {
@@ -236,18 +240,18 @@ namespace Yuri.PlatformCore
                                         Director.RunMana.ExitCall(this.VsmReference);
                                     }
                                 }
-                                if (this.IsBranching)
+                                if (this.IsShowingDialog)
                                 {
-                                    this.RclickCounter = 3;
+                                    mainMsgLayer.Visibility = Visibility.Visible;
+                                    MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Visible;
+                                }
+                                else if (this.IsBranching)
+                                {
+                                    this.viewMana.EnableBranchButtonHitTest();
                                 }
                                 break;
-                            // 恢复对话框
-                            case 3:
-                                mainMsgLayer.Visibility = Visibility.Visible;
-                                MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Visible;
-                                break;
                         }
-                        if (++this.RclickCounter >= 4)
+                        if (++this.RclickCounter >= 3)
                         {
                             this.RclickCounter = this.IsBranching ? 1 : 0;
                         }
@@ -312,7 +316,7 @@ namespace Yuri.PlatformCore
                 ViewManager.Is3DStage == false && SCamera2D.IsAnyAnimation == false)
             {
                 // 正在显示对话
-                if (this.IsShowingDialog && Director.IsButtonClicking == false)
+                if (this.IsShowingDialog && Director.IsButtonClicking == false && Director.IsRClicking == false)
                 {
                     // 如果还在播放打字动画就跳跃
                     if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() < 1.0)
@@ -1663,6 +1667,7 @@ namespace Yuri.PlatformCore
             // 更改状态
             this.IsShowingDialog = false;
             this.IsBranching = true;
+            this.RclickCounter = 1;
             // 追加等待
             Director.RunMana.UserWait("UpdateRender", String.Format("BranchWaitFor:{0}", linkStr));
         }

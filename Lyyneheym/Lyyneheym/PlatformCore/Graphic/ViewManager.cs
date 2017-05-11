@@ -396,6 +396,34 @@ namespace Yuri.PlatformCore.Graphic
         }
 
         /// <summary>
+        /// 禁止所有选择支按钮的响应
+        /// </summary>
+        public void DisableBranchButtonHitTest()
+        {
+            foreach (var t in this.branchButtonVec)
+            {
+                if (t?.DisplayBinding != null)
+                {
+                    t.DisplayBinding.IsHitTestVisible = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 恢复所有选择支按钮的响应
+        /// </summary>
+        public void EnableBranchButtonHitTest()
+        {
+            foreach (var t in this.branchButtonVec)
+            {
+                if (t?.DisplayBinding != null)
+                {
+                    t.DisplayBinding.IsHitTestVisible = true;
+                }
+            }
+        }
+
+        /// <summary>
         /// 在过渡效果完成时触发
         /// </summary>
         private void TransitionEnded(object sender, TransitionEventArgs e)

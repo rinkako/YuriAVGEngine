@@ -6,17 +6,17 @@ namespace Yuri.Yuriri
 {
     /// <summary>
     /// <para>场景函数类：封装场景里的函数</para>
-    /// <para>在发生函数调用时，场景函数将作为模板产生一个深拷贝对象提交给调用堆栈，它负责维护自身的符号表</para>
+    /// <para>在发生函数调用时，场景函数将作为模板产生一个拷贝对象提交给调用堆栈，它负责维护自身的符号表</para>
     /// </summary>
     [Serializable]
-    public class SceneFunction
+    public class SceneFunction : RunnableYuriri
     {
         /// <summary>
         /// 构造器
         /// </summary>
         public SceneFunction(string callname, string parent, SceneAction sa = null)
         {
-            this.Sa = sa;
+            this.Ctor = sa;
             this.Callname = callname;
             this.ParentSceneName = parent;
             this.Symbols = new Dictionary<string, object>();
@@ -30,11 +30,13 @@ namespace Yuri.Yuriri
         /// <returns>新的符号实例</returns>
         public SceneFunction Fork(bool pureFork)
         {
-            SceneFunction nsf = new SceneFunction(this.Callname, this.ParentSceneName, this.Sa)
+            // 拷贝对象共享代码和标签字典
+            SceneFunction nsf = new SceneFunction(this.Callname, this.ParentSceneName, this.Ctor)
             {
                 Param = this.Param,
                 LabelDictionary = this.LabelDictionary
             };
+            // 使用新的上下文
             if (pureFork) { return nsf; }
             foreach (var svar in this.Symbols)
             {
@@ -66,12 +68,7 @@ namespace Yuri.Yuriri
         /// 获取或设置函数的全局名称
         /// </summary>
         public string GlobalName => String.Format("__YuriFunc@{0}?{1}", this.Callname, this.ParentSceneName);
-
-        /// <summary>
-        /// 函数动作序列入口
-        /// </summary>
-        public SceneAction Sa { get; set; }
-
+        
         /// <summary>
         /// 函数名
         /// </summary>
@@ -91,10 +88,5 @@ namespace Yuri.Yuriri
         /// 绑定符号表
         /// </summary>
         public Dictionary<string, object> Symbols { get; set; }
-
-        /// <summary>
-        /// 场景标签字典
-        /// </summary>
-        public Dictionary<string, SceneAction> LabelDictionary { get; set; }
     }
 }
