@@ -7,36 +7,113 @@
         mc:Ignorable="d"
 		TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType"
         xmlns:local="clr-namespace:Hemerocallis"
-        Title="Hemerocallis" Height="720" Width="1280">
+        Title="Hemerocallis" Height="720" Width="1280" MinWidth="1024" MinHeight="576" WindowStartupLocation="CenterScreen">
+
+    <controls:MetroWindow.LeftWindowCommands>
+        <controls:WindowCommands ShowSeparators="False">
+            <Button Content="4"
+                    FontFamily="Wingdings"
+                    FontSize="20"
+                    Click="Button_Click_TitleTreeToggle"/>
+        </controls:WindowCommands>
+    </controls:MetroWindow.LeftWindowCommands>
+
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Button Content="z"
+                    FontFamily="Wingdings"
+                    FontSize="20" />
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl x:Name="FlyoutsControl">
+            <controls:Flyout Name="Flyout_Menu"
+                             Width="250"
+                             Header="Hemerocallis"
+                             Position="Right"
+                             IsPinned="False"
+                             Background="SteelBlue">
+                <StackPanel HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <Button Content="导出工程文件" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False"/>
+                    <Button Content="导出文本文件" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False"/>
+                    <Button Content="导出PDF" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False"/>
+                    <Rectangle Height="2" Fill="White" Opacity="0.2" Margin="20,30,0,0"/>
+                    <Button Content="统计" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False"/>
+                    <Button Content="分类管理" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False"/>
+                    <Button Content="删除文档" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False"/>
+                    <Rectangle Height="2" Fill="White" Opacity="0.2" Margin="20,30,0,0"/>
+                    <Button Content="关于" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False" Click="Button_Click_Menu_About"/>
+                </StackPanel>
+            </controls:Flyout>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
+
     <Grid>
-        <ScrollViewer Margin="182,119,30,30" Background="#FFFAFAFA">
-            <RichTextBox Name="textarea" Padding="10,10,10,10" FontSize="22" HorizontalAlignment="Left" Height="540" Margin="0,0,0,0" VerticalAlignment="Top" Width="1040" FontFamily="Source Han Serif SC" Background="Transparent" BorderBrush="{x:Null}" CaretBrush="Black" BorderThickness="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <RichTextBox.Effect>
-                    <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.5" />
-                </RichTextBox.Effect>
-                <FlowDocument LineHeight="10" Foreground="#FF2C3F51">
-                    <Paragraph>
-                        <Run Text="Hemerocallis 233 萱草">
-                        </Run>
-                    </Paragraph>
-                    <Paragraph>
-                        <Run Text="Hemerocallis 233 萱草">
-                        </Run>
-                    </Paragraph>
-                </FlowDocument>
-            </RichTextBox>
-        </ScrollViewer>
-        <Canvas Name="TipCanvas">
-            <Canvas Height="320" Width="404" Canvas.Left="492" Canvas.Top="133" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseMove="Canvas_MouseMove" MouseLeftButtonUp="Canvas_MouseLeftButtonUp">
-                <Canvas.Background>
-                    <ImageBrush ImageSource="/Hemerocallis;component/QuestionPaper.png"/>
-                </Canvas.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Name="MainGrid_Row_0" Height="7*" MaxHeight="48" MinHeight="48"/>
+            <RowDefinition Height="93*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Name="MainGrid_Col_0"  Width="2*" MaxWidth="256" MinWidth="256"/>
+            <ColumnDefinition Width="8*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="1" Grid.RowSpan="2">
+            <Grid.Background>
+                <ImageBrush ImageSource="/Hemerocallis;component/Assets/bg_Hemo.jpg" TileMode="Tile" Viewport="0,0,1500,1334" ViewportUnits="Absolute"/>
+            </Grid.Background>
+        </Grid>
+
+        <RichTextBox Name="RichTextBox_TextArea" Grid.Column="1" Grid.Row="1" Margin="0,0,0,25" Padding="10,0,10,5" FontSize="22" Height="{Binding ActualHeight, ElementName=mainCanvas, Mode=OneWay}" FontFamily="Microsoft YaHei" BorderBrush="{x:Null}" CaretBrush="Black" BorderThickness="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="{Binding ActualWidth, ElementName=mainCanvas, Mode=OneWay}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="{x:Null}">
+            <RichTextBox.Effect>
+                <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.3" />
+            </RichTextBox.Effect>
+            <FlowDocument LineHeight="10" Foreground="#FF2C3F51">
+                <Paragraph>
+                    <Run Text="Hemerocallis 233 萱草">
+                    </Run>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="爱若执炬迎风，炽烈而哀恸，诸般滋味皆在其中。">
+                    </Run>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+        <TextBlock Name="TextBlock_StateBar" Grid.Row="1" Grid.Column="1" Text="Line: 2     Column: 16     Word: 3612" FontSize="16" TextAlignment="Right" Padding="0,1.3,10,0" Foreground="Gray" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="466"/>
+        <TextBlock Name="TextBlock_MsgBar" Grid.Row="1" Grid.Column="1" Text="Saved" FontSize="16" TextAlignment="Left" Padding="10,1.3,0,0" Foreground="Gray" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="550"/>
+
+        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Image Source="/Hemerocallis;component/Assets/UI_Btn_Refer.png" Opacity="0.4" Height="48" Width="48"/>
+            <Image Source="/Hemerocallis;component/Assets/UI_Btn_Note.png" Opacity="0.4" Height="48" Width="48"/>
+            <Rectangle Width="2" Margin="10,5,10,5" Fill="Black" Opacity="0.1"/>
+            <Image Source="/Hemerocallis;component/Assets/UI_Btn_New.png" Opacity="0.4" Height="48" Width="48"/>
+            <Image Source="/Hemerocallis;component/Assets/UI_Btn_Save.png" Opacity="0.4" Height="48" Width="48"/>
+            <Image Source="/Hemerocallis;component/Assets/UI_Btn_Menu.png" Opacity="0.4" Height="48" Width="48" MouseLeftButtonUp="Image_MouseLeftButtonUp_MenuBtn"/>
+        </StackPanel>
+
+        <TextBlock Grid.Column="1" Grid.Row="0" Foreground="LightSteelBlue" Text="Chapter 2 - 恋恋不舍" FontSize="22" Padding="50,8,0,0" TextAlignment="Left" IsHitTestVisible="False">
+            <TextBlock.Effect>
+                <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.1" />
+            </TextBlock.Effect>
+        </TextBlock>
+
+        <TreeView Name="TreeView_ProjectTree" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TreeView.Effect>
+                <DropShadowEffect Direction="0" Opacity="0.2" BlurRadius="10" RenderingBias="Performance"/>
+            </TreeView.Effect>
+        </TreeView>
+
+        <Canvas Visibility="Collapsed" Name="TipCanvas" Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <Canvas Height="115" Width="202" Canvas.Left="694" Canvas.Top="338" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseMove="Canvas_MouseMove" MouseLeftButtonUp="Canvas_MouseLeftButtonUp" Background="#FFE2B3B3">
                 <Canvas.Effect>
                     <DropShadowEffect Opacity="0.3" ShadowDepth="6" BlurRadius="10"/>
                 </Canvas.Effect>
 
             </Canvas>
         </Canvas>
-
     </Grid>
 </controls:MetroWindow>

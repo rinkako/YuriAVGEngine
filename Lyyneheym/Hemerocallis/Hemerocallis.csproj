@@ -58,6 +58,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Forms\AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -65,6 +69,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -95,7 +102,24 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="QuestionPaper.png" />
+    <Resource Include="Assets\bg_Hemo.jpg" />
+    <Resource Include="Assets\QuestionPaper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\UI_Btn_Menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\UI_Btn_New.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\UI_Btn_Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\UI_Btn_Note.png" />
+    <Resource Include="Assets\UI_Btn_Refer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\logo_hemerocallis.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
