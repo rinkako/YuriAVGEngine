@@ -1,0 +1,58 @@
+﻿<controls:MetroWindow x:Class="Yuri.Hemerocallis.Forms.AppearanceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Yuri.Hemerocallis.Forms"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="Appearance" Height="346" Width="496" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <GroupBox Header="正文" HorizontalAlignment="Left" Height="297" Margin="10,10,0,0" VerticalAlignment="Top" Width="231">
+            <Grid>
+                <Button Name="Button_Font_Select" Content="设置字体" FontSize="12" Margin="30,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" Click="Button_Font_Select_Click"/>
+                <CheckBox Name="CheckBox_Font_Ze" Content="晕染" HorizontalAlignment="Left" Margin="0,43,0,0" VerticalAlignment="Top" Width="59" FontFamily="Microsoft YaHei" Checked="CheckBox_Font_Ze_Checked" Unchecked="CheckBox_Font_Ze_Unchecked"/>
+                <Slider Name="Slider_Font_ZeRadius" Margin="59,43,10,0" Height="23" VerticalAlignment="Top" Value="3" Maximum="10" ValueChanged="Slider_Font_ZeRadius_ValueChanged"/>
+                <Label Content="段距" HorizontalAlignment="Left" Margin="19,67,0,0" VerticalAlignment="Top" Width="38"/>
+                <Slider Name="Slider_Font_LineHeight" Margin="59,71,10,0" Height="23" VerticalAlignment="Top" Value="10" Maximum="19" Minimum="1" ValueChanged="Slider_Font_LineHeight_ValueChanged"/>
+                <Rectangle Margin="0,99,0,0" Fill="LightYellow"/>
+                <RichTextBox IsReadOnly="True" Background="Transparent" Name="RichTextBox_Font_Preview" FontFamily="Microsoft YaHei" FontSize="22" Margin="0,100,0,0" Padding="10,10,10,10" BorderThickness="0,0,0,0">
+                    <FlowDocument x:Name="RichTextBox_Preview_FlowDocument" LineHeight="10" Foreground="#FF2C3F51">
+                        <Paragraph >
+                            <Run Text="Hemerocallis"/>
+                        </Paragraph>
+                        <Paragraph>
+                            <Run Text="萱草，是优理理最爱的花。"/>
+                        </Paragraph>
+                        <Paragraph>
+                            <Run Text="ユリリちゃん"/>
+                        </Paragraph>
+                    </FlowDocument>
+                    <RichTextBox.Effect>
+                        <DropShadowEffect x:Name="RichTextBox_Preview_DropShadowEffect" Color="Black" Direction="0" ShadowDepth="0" Opacity="0.3"/>
+                    </RichTextBox.Effect>
+                </RichTextBox>
+
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="背景" Height="191" Margin="249,10,10,0" VerticalAlignment="Top">
+            <Canvas>
+                <RadioButton Name="RadioButton_Bg_1" Content="默认背景" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Microsoft YaHei"/>
+                <RadioButton Name="RadioButton_Bg_2" Content="纯色背景" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Microsoft YaHei" Canvas.Top="52" Checked="RadioButton_Bg_2_Checked" Unchecked="RadioButton_Bg_2_Unchecked"/>
+                <RadioButton Name="RadioButton_Bg_3" Content="图片背景" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Microsoft YaHei" Canvas.Top="106" Checked="RadioButton_Bg_3_Checked" Unchecked="RadioButton_Bg_3_Unchecked"/>
+                <Label Content="R" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" Canvas.Left="93" Canvas.Top="27" Width="39"/>
+                <Label Content="G" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" Canvas.Left="137" Canvas.Top="27" Width="39"/>
+                <Label Content="B" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" Canvas.Left="181" Canvas.Top="27" Width="39"/>
+                <TextBox Name="TextBox_Bg_R" IsEnabled="False" HorizontalAlignment="Left" MaxLength="3" Height="23" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="39" Canvas.Left="93" Canvas.Top="47"/>
+                <TextBox Name="TextBox_Bg_G" IsEnabled="False" HorizontalAlignment="Left" MaxLength="3" Height="23" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="39" Canvas.Left="137" Canvas.Top="47"/>
+                <TextBox Name="TextBox_Bg_B" IsEnabled="False" HorizontalAlignment="Left" MaxLength="3" Height="23" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="39" Canvas.Left="181" Canvas.Top="47"/>
+                <Button Name="Button_Bg_SelectPic" IsEnabled="False" Content="选择" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Canvas.Left="93" Canvas.Top="97" Height="34" FontFamily="Microsoft YaHei" Click="Button_Bg_SelectPic_Click"/>
+                <Label Name="Label_Bg_PicName" Content="N/A" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Right" Canvas.Top="131" Width="220" Height="25"/>
+            </Canvas>
+        </GroupBox>
+        <Button Content="确定" FontSize="16" Margin="360,268,10,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" Height="39" Click="Button_OK_Click"/>
+        <Button Content="恢复默认" FontSize="12" Margin="271,277,150,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" Height="30" Click="Button_Default_Click"/>
+
+
+    </Grid>
+</controls:MetroWindow>

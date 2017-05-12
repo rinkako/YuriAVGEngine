@@ -38,6 +38,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\packages\MahApps.Metro.1.4.3\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -62,6 +64,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\AppearanceWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -70,6 +76,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controller.cs" />
+    <Compile Include="Entity\ConfigDescriptor.cs" />
     <Compile Include="Entity\HArticle.cs" />
     <Compile Include="Entity\HMilestone.cs" />
     <Compile Include="Entity\HNote.cs" />
@@ -77,6 +85,9 @@
     <Compile Include="Entity\TipDescriptor.cs" />
     <Compile Include="Forms\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AppearanceWindow.xaml.cs">
+      <DependentUpon>AppearanceWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -107,7 +118,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\bg_Hemo.jpg" />
+    <Resource Include="Assets\bg_Hemo.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\QuestionPaper.png" />
   </ItemGroup>
   <ItemGroup>

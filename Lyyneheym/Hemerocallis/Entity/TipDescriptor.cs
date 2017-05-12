@@ -3,7 +3,7 @@
 namespace Yuri.Hemerocallis.Entity
 {
     /// <summary>
-    /// 屏幕贴纸描述子实体
+    /// 屏幕贴纸描述子
     /// </summary>
     [Serializable]
     internal sealed class TipDescriptor

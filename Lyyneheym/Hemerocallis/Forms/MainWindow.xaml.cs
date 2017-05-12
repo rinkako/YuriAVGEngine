@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 
@@ -14,6 +15,9 @@ namespace Yuri.Hemerocallis.Forms
         public MainWindow()
         {
             InitializeComponent();
+
+            this.DefaultBgBrush = this.MainAreaBackgroundBrush;
+
             var item = new TreeViewItem()
             {
                 Header = "萱草，忘却的爱"
@@ -103,5 +107,14 @@ namespace Yuri.Hemerocallis.Forms
         {
             (sender as Image).Opacity = 0.4;
         }
+
+        private void Button_Appearance_Click(object sender, RoutedEventArgs e)
+        {
+            this.Flyout_Menu.IsOpen = false;
+            AppearanceWindow aw = new AppearanceWindow();
+            aw.ShowDialog();
+        }
+
+        private readonly ImageBrush DefaultBgBrush;
     }
 }
