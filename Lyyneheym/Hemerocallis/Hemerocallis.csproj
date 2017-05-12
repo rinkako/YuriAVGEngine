@@ -70,6 +70,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Entity\HArticle.cs" />
+    <Compile Include="Entity\HMilestone.cs" />
+    <Compile Include="Entity\HNote.cs" />
+    <Compile Include="Entity\HNotifier.cs" />
+    <Compile Include="Entity\TipDescriptor.cs" />
     <Compile Include="Forms\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>

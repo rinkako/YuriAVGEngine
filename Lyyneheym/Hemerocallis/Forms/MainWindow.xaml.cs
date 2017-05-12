@@ -93,5 +93,15 @@ namespace Yuri.Hemerocallis.Forms
             AboutWindow aw = new AboutWindow();
             aw.ShowDialog();
         }
+
+        private void Image_TRBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            (sender as Image).Opacity = 0.85;
+        }
+
+        private void Image_TRBtn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            (sender as Image).Opacity = 0.4;
+        }
     }
 }
