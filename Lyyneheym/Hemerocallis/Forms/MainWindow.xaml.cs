@@ -1,7 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 
@@ -12,12 +15,60 @@ namespace Yuri.Hemerocallis.Forms
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        private readonly Controller core = Controller.GetInstance();
+
         public MainWindow()
         {
             InitializeComponent();
-
+            this.core.mainWndRef = this;
             this.DefaultBgBrush = this.MainAreaBackgroundBrush;
 
+            switch (this.core.ConfigDesc.BgType)
+            {
+                case Entity.AppearanceBackgroundType.Pure:
+                    var rgbItems = this.core.ConfigDesc.BgTag.Split(',');
+                    if (Byte.TryParse(rgbItems[0], out byte tr) &&
+                        Byte.TryParse(rgbItems[1], out byte tg) &&
+                        Byte.TryParse(rgbItems[2], out byte tb))
+                    {
+                        this.core.mainWndRef.Grid_MainArea.Background = new SolidColorBrush(Color.FromRgb(tr, tg, tb));
+                    }
+                    else
+                    {
+                        this.core.ConfigDesc.BgType = Entity.AppearanceBackgroundType.Default;
+                        this.core.WriteConfigToSteady();
+                    }
+                    break;
+                case Entity.AppearanceBackgroundType.Picture:
+                    var bgPicFilePath = App.ParseURIToURL(App.AppDataDirectory, App.AppearanceDirectory, this.core.ConfigDesc.BgTag);
+                    try
+                    {
+                        var bmp = new BitmapImage(new Uri(bgPicFilePath));
+                        this.core.mainWndRef.Grid_MainArea.Background = new ImageBrush(bmp)
+                        {
+                            TileMode = TileMode.Tile,
+                            ViewportUnits = BrushMappingMode.Absolute,
+                            Viewport = new Rect(0, 0, bmp.PixelWidth, bmp.PixelHeight)
+                        };
+                    }
+                    catch
+                    {
+                        this.core.ConfigDesc.BgType = Entity.AppearanceBackgroundType.Default;
+                        this.core.WriteConfigToSteady();
+                    }
+                    break;
+            }
+            var fontColorItem = this.core.ConfigDesc.FontColor.Split(',');
+            if (Byte.TryParse(fontColorItem[0], out byte fr) &&
+                  Byte.TryParse(fontColorItem[1], out byte fg) &&
+                  Byte.TryParse(fontColorItem[2], out byte fb))
+            {
+                this.RichTextBox_FlowDocument.Foreground = new SolidColorBrush(Color.FromRgb(fr, fg, fb));
+            }
+            this.RichTextBox_TextArea.FontSize = this.core.ConfigDesc.FontSize;
+            this.RichTextBox_TextArea.FontFamily = new FontFamily(this.core.ConfigDesc.FontName);
+            this.RichTextBox_DropShadowEffect.Opacity = this.core.ConfigDesc.ZeOpacity;
+            this.RichTextBox_FlowDocument.LineHeight = this.core.ConfigDesc.LineHeight;
             var item = new TreeViewItem()
             {
                 Header = "萱草，忘却的爱"
@@ -115,6 +166,6 @@ namespace Yuri.Hemerocallis.Forms
             aw.ShowDialog();
         }
 
-        private readonly ImageBrush DefaultBgBrush;
+        public ImageBrush DefaultBgBrush { get; private set; }
     }
 }

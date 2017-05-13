@@ -1,7 +1,6 @@
-﻿<Application x:Class="Hemerocallis.App"
+﻿<Application x:Class="Yuri.Hemerocallis.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Hemerocallis"
              StartupUri="Forms/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>

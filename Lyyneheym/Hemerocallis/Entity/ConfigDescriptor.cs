@@ -19,7 +19,7 @@ namespace Yuri.Hemerocallis.Entity
         /// <summary>
         /// 获取或设置正文字号
         /// </summary>
-        public string FontSize { get; set; }
+        public double FontSize { get; set; }
 
         /// <summary>
         /// 获取或设置是否开启晕染效果
@@ -45,6 +45,11 @@ namespace Yuri.Hemerocallis.Entity
         /// 获取或设置当前背景样式下的描述文本
         /// </summary>
         public string BgTag { get; set; }
+
+        /// <summary>
+        /// 获取或设置当前文字颜色
+        /// </summary>
+        public string FontColor { get; set; }
     }
 
     /// <summary>

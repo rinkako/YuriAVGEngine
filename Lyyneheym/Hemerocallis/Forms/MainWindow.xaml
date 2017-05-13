@@ -6,8 +6,7 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
 		TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType"
-        xmlns:local="clr-namespace:Hemerocallis"
-        Title="Hemerocallis" Height="720" Width="1280" MinWidth="1024" MinHeight="576" WindowStartupLocation="CenterScreen">
+                      Title="Hemerocallis" Height="720" Width="1280" MinWidth="1024" MinHeight="576" WindowStartupLocation="CenterScreen">
 
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands ShowSeparators="False">
@@ -64,7 +63,7 @@
             <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="1" Grid.RowSpan="2">
+        <Grid x:Name="Grid_MainArea" Grid.Column="1" Grid.RowSpan="2">
             <Grid.Background>
                 <ImageBrush x:Name="MainAreaBackgroundBrush" ImageSource="/Hemerocallis;component/Assets/bg_Hemo.jpg" TileMode="Tile" Viewport="0,0,1500,1334" ViewportUnits="Absolute"/>
             </Grid.Background>
@@ -72,9 +71,9 @@
 
         <RichTextBox Name="RichTextBox_TextArea" Grid.Column="1" Grid.Row="1" Margin="0,0,0,25" Padding="10,0,10,5" FontSize="22" Height="{Binding ActualHeight, ElementName=mainCanvas, Mode=OneWay}" FontFamily="Microsoft YaHei" BorderBrush="{x:Null}" CaretBrush="Black" BorderThickness="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="{Binding ActualWidth, ElementName=mainCanvas, Mode=OneWay}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="{x:Null}">
             <RichTextBox.Effect>
-                <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.3"/>
+                <DropShadowEffect x:Name="RichTextBox_DropShadowEffect" Color="Black" Direction="0" ShadowDepth="0" Opacity="0.3"/>
             </RichTextBox.Effect>
-            <FlowDocument LineHeight="10" Foreground="#FF2C3F51">
+            <FlowDocument Name="RichTextBox_FlowDocument" LineHeight="10" Foreground="#FF2C3F51">
                 <Paragraph>
                     <Run Text="Hemerocallis 233 萱草">
                     </Run>

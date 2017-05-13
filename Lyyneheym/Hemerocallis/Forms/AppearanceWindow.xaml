@@ -35,7 +35,7 @@
 
             </Grid>
         </GroupBox>
-        <GroupBox Header="背景" Height="191" Margin="249,10,10,0" VerticalAlignment="Top">
+        <GroupBox Header="色彩" Height="253" Margin="249,10,10,0" VerticalAlignment="Top">
             <Canvas>
                 <RadioButton Name="RadioButton_Bg_1" Content="默认背景" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Microsoft YaHei"/>
                 <RadioButton Name="RadioButton_Bg_2" Content="纯色背景" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Microsoft YaHei" Canvas.Top="52" Checked="RadioButton_Bg_2_Checked" Unchecked="RadioButton_Bg_2_Unchecked"/>
@@ -43,15 +43,26 @@
                 <Label Content="R" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" Canvas.Left="93" Canvas.Top="27" Width="39"/>
                 <Label Content="G" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" Canvas.Left="137" Canvas.Top="27" Width="39"/>
                 <Label Content="B" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" Canvas.Left="181" Canvas.Top="27" Width="39"/>
-                <TextBox Name="TextBox_Bg_R" IsEnabled="False" HorizontalAlignment="Left" MaxLength="3" Height="23" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="39" Canvas.Left="93" Canvas.Top="47"/>
-                <TextBox Name="TextBox_Bg_G" IsEnabled="False" HorizontalAlignment="Left" MaxLength="3" Height="23" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="39" Canvas.Left="137" Canvas.Top="47"/>
-                <TextBox Name="TextBox_Bg_B" IsEnabled="False" HorizontalAlignment="Left" MaxLength="3" Height="23" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="39" Canvas.Left="181" Canvas.Top="47"/>
+                <TextBox Name="TextBox_Bg_R" IsEnabled="False" HorizontalAlignment="Left" MaxLength="3" Height="23" TextWrapping="Wrap" Text="255" VerticalAlignment="Top" Width="39" Canvas.Left="93" Canvas.Top="47" TextChanged="TextBox_Bg_TextChanged"/>
+                <TextBox Name="TextBox_Bg_G" IsEnabled="False" HorizontalAlignment="Left" MaxLength="3" Height="23" TextWrapping="Wrap" Text="255" VerticalAlignment="Top" Width="39" Canvas.Left="137" Canvas.Top="47" TextChanged="TextBox_Bg_TextChanged"/>
+                <TextBox Name="TextBox_Bg_B" IsEnabled="False" HorizontalAlignment="Left" MaxLength="3" Height="23" TextWrapping="Wrap" Text="255" VerticalAlignment="Top" Width="39" Canvas.Left="181" Canvas.Top="47" TextChanged="TextBox_Bg_TextChanged"/>
                 <Button Name="Button_Bg_SelectPic" IsEnabled="False" Content="选择" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Width="127" Canvas.Left="93" Canvas.Top="97" Height="34" FontFamily="Microsoft YaHei" Click="Button_Bg_SelectPic_Click"/>
                 <Label Name="Label_Bg_PicName" Content="N/A" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Right" Canvas.Top="131" Width="220" Height="25"/>
+
+                <Label Content="R" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" Canvas.Left="93" Canvas.Top="161" Width="39"/>
+                <Label Content="G" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" Canvas.Left="137" Canvas.Top="161" Width="39"/>
+                <Label Content="B" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" Canvas.Left="181" Canvas.Top="161" Width="39"/>
+                <TextBox Name="TextBox_Ft_R" HorizontalAlignment="Left" MaxLength="3" Height="23" TextWrapping="Wrap" Text="44" VerticalAlignment="Top" Width="39" Canvas.Left="93" Canvas.Top="181" TextChanged="TextBox_Ft_TextChanged"/>
+                <TextBox Name="TextBox_Ft_G" HorizontalAlignment="Left" MaxLength="3" Height="23" TextWrapping="Wrap" Text="63" VerticalAlignment="Top" Width="39" Canvas.Left="137" Canvas.Top="181" TextChanged="TextBox_Ft_TextChanged"/>
+                <TextBox Name="TextBox_Ft_B" HorizontalAlignment="Left" MaxLength="3" Height="23" TextWrapping="Wrap" Text="81" VerticalAlignment="Top" Width="39" Canvas.Left="181" Canvas.Top="181" TextChanged="TextBox_Ft_TextChanged"/>
+                <Label Content="文字颜色" HorizontalAlignment="Left" VerticalAlignment="Top" Width="69" Canvas.Left="19" Canvas.Top="180"/>
+                <Ellipse Name="Ellipse_Bg" Fill="White" HorizontalAlignment="Left" Height="20" Stroke="Transparent" VerticalAlignment="Top" Width="20" Canvas.Left="199" Canvas.Top="75"/>
+                <Ellipse Name="Ellipse_Font" Fill="#FF2C3F51" HorizontalAlignment="Left" Height="20" Stroke="Transparent" VerticalAlignment="Top" Width="20" Canvas.Top="182"/>
             </Canvas>
         </GroupBox>
-        <Button Content="确定" FontSize="16" Margin="360,268,10,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" Height="39" Click="Button_OK_Click"/>
-        <Button Content="恢复默认" FontSize="12" Margin="271,277,150,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" Height="30" Click="Button_Default_Click"/>
+        <Button Content="确定" FontSize="12" Margin="400,277,10,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" Height="30" Click="Button_OK_Click"/>
+        <Button Content="应用" FontSize="12" Margin="325,277,105,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" Height="30" Click="Button_Apply_Click"/>
+        <Button Content="恢复默认" FontSize="12" Margin="249,277,181,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" Height="30" Click="Button_Default_Click"/>
 
 
     </Grid>
