@@ -1,0 +1,39 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:uiSupport="clr-namespace:Yuri.Hemerocallis.UISupport">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="SizeChrome.xaml"/>
+        <ResourceDictionary Source="ResizeRotateChrome.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <ControlTemplate x:Key="MoveThumbTemplate"  TargetType="{x:Type uiSupport:MoveThumb}">
+        <Rectangle Fill="Transparent"/>
+    </ControlTemplate>
+
+    <Style x:Key="DesignerItemStyle" TargetType="ContentControl">
+        <Setter Property="MinHeight" Value="50"/>
+        <Setter Property="MinWidth" Value="50"/>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContentControl">
+                    <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                        <uiSupport:MoveThumb Cursor="SizeAll" Template="{StaticResource MoveThumbTemplate}" />
+                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                              Margin="{TemplateBinding Padding}"/>
+                        <uiSupport:DesignerItemDecorator x:Name="ItemDecorator" ShowDecorator="True"/>
+                    </Grid>
+                    <!--<ControlTemplate.Triggers>
+            <Trigger Property="Selector.IsSelected" Value="True">
+              <Setter TargetName="ItemDecorator" Property="ShowDecorator" Value="True"/>
+            </Trigger>
+          </ControlTemplate.Triggers>-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+</ResourceDictionary>

@@ -167,5 +167,19 @@ namespace Yuri.Hemerocallis.Forms
         }
 
         public ImageBrush DefaultBgBrush { get; private set; }
+
+        private void Canvas_Tip_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                (sender as Canvas).Width *= 1.1;
+                (sender as Canvas).Height *= 1.1;
+            }
+            else
+            {
+                (sender as Canvas).Width /= 1.1;
+                (sender as Canvas).Height /= 1.1;
+            }
+        }
     }
 }

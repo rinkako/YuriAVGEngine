@@ -1,0 +1,99 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:uiSupport="clr-namespace:Yuri.Hemerocallis.UISupport">
+
+    <Style TargetType="{x:Type Shape}" x:Key="ThumbCorner">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="Stroke" Value="#FFC8C8C8" />
+        <Setter Property="StrokeThickness" Value=".5" />
+        <Setter Property="Width" Value="7" />
+        <Setter Property="Height" Value="7" />
+        <Setter Property="Margin" Value="-2" />
+        <Setter Property="Fill">
+            <Setter.Value>
+                <RadialGradientBrush Center="0.2, 0.2" GradientOrigin="0.2, 0.2" RadiusX="0.8" RadiusY="0.8">
+                    <GradientStop Color="White" Offset="0.0" />
+                    <GradientStop Color="Gray" Offset="0.8" />
+                </RadialGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type uiSupport:DesignerItemDecorator}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type uiSupport:DesignerItemDecorator}">
+                    <Grid>
+                        <Grid Opacity="0" Margin="-3">
+                            <uiSupport:RotateThumb Width="7"
+                             Height="7"
+                             Margin="0,-20,0,0"
+                             Cursor="Hand"
+                             VerticalAlignment="Top"
+                             HorizontalAlignment="Center"/>
+                            <uiSupport:ResizeThumb Height="3"
+                             Cursor="SizeNS"
+                             VerticalAlignment="Top"
+                             HorizontalAlignment="Stretch"/>
+                            <uiSupport:ResizeThumb Width="3"
+                             Cursor="SizeWE"
+                             VerticalAlignment="Stretch"
+                             HorizontalAlignment="Left"/>
+                            <uiSupport:ResizeThumb Width="3"
+                             Cursor="SizeWE"
+                             VerticalAlignment="Stretch"
+                             HorizontalAlignment="Right"/>
+                            <uiSupport:ResizeThumb Height="3"
+                             Cursor="SizeNS"
+                             VerticalAlignment="Bottom"
+                             HorizontalAlignment="Stretch"/>
+                            <uiSupport:ResizeThumb Width="7"
+                             Height="7"
+                             Margin="-2"
+                             Cursor="SizeNWSE"
+                             VerticalAlignment="Top"
+                             HorizontalAlignment="Left"/>
+                            <uiSupport:ResizeThumb Width="7"
+                             Height="7"
+                             Margin="-2"
+                             Cursor="SizeNESW"
+                             VerticalAlignment="Top"
+                             HorizontalAlignment="Right"/>
+                            <uiSupport:ResizeThumb Width="7"
+                             Height="7"
+                             Margin="-2"
+                             Cursor="SizeNESW"
+                             VerticalAlignment="Bottom"
+                             HorizontalAlignment="Left"/>
+                            <uiSupport:ResizeThumb Width="7"
+                             Height="7"
+                             Margin="-2"
+                             Cursor="SizeNWSE"
+                             VerticalAlignment="Bottom"
+                             HorizontalAlignment="Right"/>
+                        </Grid>
+                        <Grid IsHitTestVisible="False" Opacity="1" Margin="-3">
+                            <Rectangle SnapsToDevicePixels="True"
+                         StrokeThickness="1"
+                         Margin="1"
+                         Stroke="White"
+                         Opacity="0.3"/>
+                            <Line StrokeThickness="1" X1="0" Y1="0" X2="0" Y2="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Margin="0,-19,0,0"
+                    Stroke="White"
+                    Opacity="0.3"/>
+                            <Ellipse Opacity="0.3" Style="{StaticResource ThumbCorner}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-1,-20,0,0"/>
+                            <Ellipse Opacity="0" Style="{StaticResource ThumbCorner}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <Ellipse Opacity="0" Style="{StaticResource ThumbCorner}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                            <Ellipse Opacity="0" Style="{StaticResource ThumbCorner}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                            <Ellipse Opacity="0" Style="{StaticResource ThumbCorner}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
