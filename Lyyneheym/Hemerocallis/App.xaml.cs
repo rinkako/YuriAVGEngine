@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using Yuri.Hemerocallis.Entity;
+using Yuri.Hemerocallis.Utils;
 
 namespace Yuri.Hemerocallis
 {
@@ -12,7 +14,7 @@ namespace Yuri.Hemerocallis
     public partial class App : Application
     {
         /// <summary>
-        /// 程序初始化
+        /// 程序初始化过程
         /// </summary>
         static App()
         {
@@ -29,15 +31,23 @@ namespace Yuri.Hemerocallis
                 if (!bgDirExistFlag)
                 {
                     Directory.CreateDirectory(App.ParseURIToURL(App.AppDataDirectory, App.AppearanceDirectory));
-                    ctr.ConfigDesc.BgType = Entity.AppearanceBackgroundType.Default;
+                    ctr.ConfigDesc.BgType = AppearanceBackgroundType.Default;
                     ctr.WriteConfigToSteady();
                 }
                 var bkFiles = appDataDirInfo.GetFiles();
                 foreach (var bk in bkFiles)
                 {
-                    if (String.Equals(bk.Extension, App.AppBookDataExtension, StringComparison.OrdinalIgnoreCase))
+                    if (String.Equals(bk.Extension, "." + App.AppBookDataExtension, StringComparison.OrdinalIgnoreCase))
                     {
-                        // TODO 在这里载入书籍工程
+                        try
+                        {
+                            var bkObj = IOUtil.Unserialization(bk.FullName) as HBook;
+                            ctr.BookVector.Add(new BookCacheDescriptor(bkObj, false));
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Unable to load book project: " + bk.FullName + Environment.NewLine + ex);
+                        }
                     }
                 }
             }

@@ -60,6 +60,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Forms\NewBookWindow.xaml.cs">
+      <DependentUpon>NewBookWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UISupport\DesignerItemDecorator.cs" />
     <Compile Include="UISupport\MoveThumb.cs" />
     <Compile Include="UISupport\ResizeRotateAdorner.cs" />
@@ -103,6 +106,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Forms\NewBookWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\DesignerItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

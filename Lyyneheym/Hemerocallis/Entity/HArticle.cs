@@ -20,12 +20,7 @@ namespace Yuri.Hemerocallis.Entity
         /// 获取或设置文章的名字
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// 获取或设置文章在系统缓存文件中的位置
-        /// </summary>
-        public string FileName { get; set; }
-
+        
         /// <summary>
         /// 获取或设置文章创建时间戳
         /// </summary>
@@ -42,9 +37,9 @@ namespace Yuri.Hemerocallis.Entity
         public string ParentId { get; set; }
         
         /// <summary>
-        /// 获取节点的孩子ID向量
+        /// 获取节点的孩子向量
         /// </summary>
-        public List<string> ChildrenIdList { get; } = new List<string>();
+        public List<HArticle> ChildrenList { get; } = new List<HArticle>();
 
         /// <summary>
         /// 获取或设置该实体的文章内容的元数据

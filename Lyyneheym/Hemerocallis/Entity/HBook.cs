@@ -20,6 +20,16 @@ namespace Yuri.Hemerocallis.Entity
         /// 获取或设置书籍的名字
         /// </summary>
         public string Name { get; set; }
+        
+        /// <summary>
+        /// 获取或设置书籍在系统缓存文件中的位置
+        /// </summary>
+        public string FileName { get; set; }
+
+        /// <summary>
+        /// 获取或设置书籍的首页文章
+        /// </summary>
+        public HArticle HomePage { get; set; }
 
         /// <summary>
         /// 获取或设置文章创建时间戳

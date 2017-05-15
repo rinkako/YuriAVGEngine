@@ -1,19 +1,20 @@
-﻿<controls:MetroWindow x:Class="Yuri.Hemerocallis.Forms.MainWindow"
+﻿<controls:MetroWindow
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:UISupport="clr-namespace:Yuri.Hemerocallis.UISupport" x:Class="Yuri.Hemerocallis.Forms.MainWindow"
         mc:Ignorable="d"
 		TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType"
-                      Title="Hemerocallis" Height="720" Width="1280" MinWidth="1024" MinHeight="576" WindowStartupLocation="CenterScreen">
-    <Window.Resources>
+                      Title="Hemerocallis" Height="720" Width="1280" MinWidth="1024" MinHeight="576" WindowStartupLocation="CenterScreen" KeyDown="MetroWindow_KeyDown">
+    <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Hemerocallis;component/Resources/DesignerItem.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </Window.Resources>
+    </controls:MetroWindow.Resources>
     <!-- 标题栏按钮 -->
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands ShowSeparators="False">
@@ -36,7 +37,7 @@
     <!-- 右侧弹出菜单 -->
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl x:Name="FlyoutsControl">
-            <controls:Flyout Name="Flyout_Menu"
+            <controls:Flyout x:Name="Flyout_Menu"
                              Width="250"
                              Header="Hemerocallis"
                              Position="Right"
@@ -61,11 +62,11 @@
     <!-- 主体 -->
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Name="MainGrid_Row_0" Height="7*" MaxHeight="48" MinHeight="48"/>
+            <RowDefinition x:Name="MainGrid_Row_0" Height="7*" MaxHeight="48" MinHeight="48"/>
             <RowDefinition Height="93*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Name="MainGrid_Col_0"  Width="2*" MaxWidth="256" MinWidth="256"/>
+            <ColumnDefinition x:Name="MainGrid_Col_0"  Width="2*" MaxWidth="256" MinWidth="256"/>
             <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
         <!-- 正文背景 -->
@@ -75,24 +76,22 @@
             </Grid.Background>
         </Grid>
         <!-- 正文文本框 -->
-        <RichTextBox Name="RichTextBox_TextArea" Grid.Column="1" Grid.Row="1" Margin="0,0,0,25" Padding="10,0,10,5" FontSize="22" Height="{Binding ActualHeight, ElementName=mainCanvas, Mode=OneWay}" FontFamily="Microsoft YaHei" BorderBrush="{x:Null}" CaretBrush="Black" BorderThickness="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="{Binding ActualWidth, ElementName=mainCanvas, Mode=OneWay}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="{x:Null}">
+        <RichTextBox x:Name="RichTextBox_TextArea" Grid.Column="1" Grid.Row="1" Margin="0,0,0,25" Padding="10,0,10,5" FontSize="22" Height="{Binding ActualHeight, ElementName=mainCanvas, Mode=OneWay}" FontFamily="Microsoft YaHei" BorderBrush="{x:Null}" CaretBrush="Black" BorderThickness="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="{Binding ActualWidth, ElementName=mainCanvas, Mode=OneWay}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="{x:Null}">
             <RichTextBox.Effect>
                 <DropShadowEffect x:Name="RichTextBox_DropShadowEffect" Color="Black" Direction="0" ShadowDepth="0" Opacity="0.3"/>
             </RichTextBox.Effect>
-            <FlowDocument Name="RichTextBox_FlowDocument" LineHeight="10" Foreground="#FF2C3F51">
+            <FlowDocument x:Name="RichTextBox_FlowDocument" LineHeight="10" Foreground="#FF2C3F51">
                 <Paragraph>
-                    <Run Text="Hemerocallis 233 萱草">
-                    </Run>
+                    <Run Text="Hemerocallis 233 萱草"/>
                 </Paragraph>
                 <Paragraph>
-                    <Run Text="爱若执炬迎风，炽烈而哀恸，诸般滋味皆在其中。">
-                    </Run>
+                    <Run Text="爱若执炬迎风，炽烈而哀恸，诸般滋味皆在其中。"/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
         <!-- 状态栏 -->
-        <TextBlock Name="TextBlock_StateBar" Grid.Row="1" Grid.Column="1" Text="Line: 2     Column: 16     Word: 3612" FontSize="16" TextAlignment="Right" Padding="0,1.3,10,0" Foreground="Gray" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="466"/>
-        <TextBlock Name="TextBlock_MsgBar" Grid.Row="1" Grid.Column="1" Text="Saved" FontSize="16" TextAlignment="Left" Padding="10,1.3,0,0" Foreground="Gray" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="550"/>
+        <TextBlock x:Name="TextBlock_StateBar" Grid.Row="1" Grid.Column="1" Text="Line: 2     Column: 16     Word: 3612" FontSize="16" TextAlignment="Right" Padding="0,1.3,10,0" Foreground="Gray" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="466"/>
+        <TextBlock x:Name="TextBlock_MsgBar" Grid.Row="1" Grid.Column="1" Text="Saved" FontSize="16" TextAlignment="Left" Padding="10,1.3,0,0" Foreground="Gray" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="550"/>
         <!-- 右上角命令栏 -->
         <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
             <Image ToolTip="创建一个贴纸" Source="/Hemerocallis;component/Assets/UI_Btn_Refer.png" Opacity="0.4" Height="48" Width="48" MouseEnter="Image_TRBtn_MouseEnter" MouseLeave="Image_TRBtn_MouseLeave"/>
@@ -109,31 +108,26 @@
             </TextBlock.Effect>
         </TextBlock>
         <!-- 工程树 -->
-        <TreeView Name="TreeView_ProjectTree" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <TreeView x:Name="TreeView_ProjectTree" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedItemChanged="TreeView_ProjectTree_SelectedItemChanged">
             <TreeView.Effect>
                 <DropShadowEffect Direction="0" Opacity="0.2" BlurRadius="10" RenderingBias="Performance"/>
             </TreeView.Effect>
         </TreeView>
         <!-- 便签层 -->
-        <Canvas Visibility="Visible" Name="TipCanvas" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
-            <Canvas Height="115" Width="202" Canvas.Left="694" Canvas.Top="338" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseMove="Canvas_MouseMove" MouseLeftButtonUp="Canvas_MouseLeftButtonUp" Background="#FFE2B3B3" MouseWheel="Canvas_Tip_MouseWheel">
-                <Canvas.Effect>
-                    <DropShadowEffect Opacity="0.3" ShadowDepth="6" BlurRadius="10"/>
-                </Canvas.Effect>
-            </Canvas>
+        <Canvas Visibility="Visible" x:Name="TipCanvas" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <ContentControl Width="100"
                       Height="100"
                       Padding="1"
                       Canvas.Left="710"
                       Canvas.Top="300"
                       Style="{StaticResource DesignerItemStyle}">
-                <Ellipse IsHitTestVisible="False" >
-                    <Shape.Fill>
+                <Ellipse IsHitTestVisible="False">
+                    <Ellipse.Fill>
                         <RadialGradientBrush Center="0.2, 0.2" GradientOrigin="0.2, 0.2" RadiusX="0.8" RadiusY="0.8">
                             <GradientStop Color="LightBlue" Offset="0"/>
                             <GradientStop Color="Blue" Offset="0.9"/>
                         </RadialGradientBrush>
-                    </Shape.Fill>
+                    </Ellipse.Fill>
                 </Ellipse>
             </ContentControl>
         </Canvas>
