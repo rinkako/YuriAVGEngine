@@ -36,7 +36,7 @@ namespace Yuri.Hemerocallis.Forms
             // 根据配置恢复外观
             switch (this.core.ConfigDesc.BgType)
             {
-                case Entity.AppearanceBackgroundType.Pure:
+                case AppearanceBackgroundType.Pure:
                     var rgbItems = this.core.ConfigDesc.BgTag.Split(',');
                     if (Byte.TryParse(rgbItems[0], out byte tr) &&
                         Byte.TryParse(rgbItems[1], out byte tg) &&
@@ -46,11 +46,11 @@ namespace Yuri.Hemerocallis.Forms
                     }
                     else
                     {
-                        this.core.ConfigDesc.BgType = Entity.AppearanceBackgroundType.Default;
+                        this.core.ConfigDesc.BgType = AppearanceBackgroundType.Default;
                         this.core.WriteConfigToSteady();
                     }
                     break;
-                case Entity.AppearanceBackgroundType.Picture:
+                case AppearanceBackgroundType.Picture:
                     var bgPicFilePath = App.ParseURIToURL(App.AppDataDirectory, App.AppearanceDirectory,
                         this.core.ConfigDesc.BgTag);
                     try
@@ -65,30 +65,41 @@ namespace Yuri.Hemerocallis.Forms
                     }
                     catch
                     {
-                        this.core.ConfigDesc.BgType = Entity.AppearanceBackgroundType.Default;
+                        this.core.ConfigDesc.BgType = AppearanceBackgroundType.Default;
                         this.core.WriteConfigToSteady();
                     }
                     break;
             }
-            var fontColorItem = this.core.ConfigDesc.FontColor.Split(',');
-            if (Byte.TryParse(fontColorItem[0], out byte fr) &&
-                Byte.TryParse(fontColorItem[1], out byte fg) &&
-                Byte.TryParse(fontColorItem[2], out byte fb))
-            {
-                this.RichTextBox_FlowDocument.Foreground = new SolidColorBrush(Color.FromRgb(fr, fg, fb));
-            }
-            this.RichTextBox_TextArea.FontSize = this.core.ConfigDesc.FontSize;
-            this.RichTextBox_TextArea.FontFamily = new FontFamily(this.core.ConfigDesc.FontName);
-            this.RichTextBox_DropShadowEffect.Opacity = this.core.ConfigDesc.ZeOpacity;
-            this.RichTextBox_FlowDocument.LineHeight = this.core.ConfigDesc.LineHeight;
+            RTBPage.CFontColorItem = this.core.ConfigDesc.FontColor.Split(',');
+            RTBPage.CFontSize = this.core.ConfigDesc.FontSize;
+            RTBPage.CFontName = this.core.ConfigDesc.FontName;
+            RTBPage.CZeOpacity = this.core.ConfigDesc.ZeOpacity;
+            RTBPage.CLineHeight = this.core.ConfigDesc.LineHeight;
+            this.MainAreaBrush = this.Grid_MainArea.Background;
             // 刷新项目树
             this.ReDrawProjectTree();
             // 起始页
-            var startPage = new TreeViewItem() {Header = "起始页"};
+            this.IndexBackgroundBrush =
+                new ImageBrush(new BitmapImage(new Uri(App.ParseURIToURL("Assets/bg_Index.jpg"), UriKind.RelativeOrAbsolute)))
+                {
+                    Stretch = Stretch.UniformToFill,
+                    AlignmentX = AlignmentX.Left
+                };
+            this.IndexPageRef = new IndexPage();
+            var startPage = new TreeViewItem() { Header = "起始页", Tag = "HemeIndexPage" };
             this.TreeView_ProjectTree.Items.Insert(0, startPage);
             startPage.IsSelected = true;
-            
         }
+
+        /// <summary>
+        /// 获取当前活跃的RTB页
+        /// </summary>
+        public RTBPage CurrentActivePage { get; private set; } = null;
+
+        /// <summary>
+        /// RTB页缓存字典
+        /// </summary>
+        public readonly Dictionary<string, RTBPage> RTBPageCacheDict = new Dictionary<string, RTBPage>();
 
         #region 辅助函数
 
@@ -122,6 +133,12 @@ namespace Yuri.Hemerocallis.Forms
             aw.ShowDialog();
         }
 
+        public Brush MainAreaBrush { get; set; }
+
+        public ImageBrush IndexBackgroundBrush { get; set; }
+
+        public IndexPage IndexPageRef { get; set; }
+
         /// <summary>
         /// 工程树：选择项改变
         /// </summary>
@@ -129,10 +146,30 @@ namespace Yuri.Hemerocallis.Forms
         {
             try
             {
+                // 保存更改
+                if (this.CurrentActivePage != null)
+                {
+                    this.core.PageCommit();
+                }
+                // 分析Tag
                 var selectedTag = (this.TreeView_ProjectTree.SelectedItem as TreeViewItem)?.Tag;
                 if (selectedTag == null)
                 {
                     return;
+                }
+                if (selectedTag.ToString() == "HemeIndexPage")
+                {
+                    this.Grid_MainArea.Background = this.IndexBackgroundBrush;
+                    this.Frame_RTB.NavigationService.Navigate(this.IndexPageRef);
+                    this.StackPanel_Commands.Visibility = this.TextBlock_CurrentChapterName.Visibility =
+                        this.TextBlock_MsgBar.Visibility = this.TextBlock_StateBar.Visibility = Visibility.Hidden;
+                    return;
+                }
+                else
+                {
+                    this.StackPanel_Commands.Visibility = this.TextBlock_CurrentChapterName.Visibility =
+                        this.TextBlock_MsgBar.Visibility = this.TextBlock_StateBar.Visibility = Visibility.Visible;
+                    this.Grid_MainArea.Background = this.MainAreaBrush;
                 }
                 var sType = selectedTag.ToString().Split('#');
                 // 书籍
@@ -142,21 +179,41 @@ namespace Yuri.Hemerocallis.Forms
                     if (hb != null)
                     {
                         var hp = hb.BookRef.HomePage;
-                        TextRange t = new TextRange(this.RichTextBox_TextArea.Document.ContentStart,
-                            this.RichTextBox_TextArea.Document.ContentEnd);
+                        if (this.RTBPageCacheDict.ContainsKey(hp.Id))
+                        {
+                            this.CurrentActivePage = this.RTBPageCacheDict[hp.Id];
+                        }
+                        else
+                        {
+                            RTBPage np = new RTBPage() {ArticalId = hp.Id};
+                            this.CurrentActivePage = np;
+                            this.RTBPageCacheDict.Add(hp.Id, np);
+                        }
+                        TextRange t = new TextRange(this.CurrentActivePage.RichTextBox_TextArea.Document.ContentStart,
+                            this.CurrentActivePage.RichTextBox_TextArea.Document.ContentEnd);
                         t.Load(hp.DocumentMetadata, DataFormats.XamlPackage);
-                        // TODO 此处应该是PAGE切换而不能直接换内容
+                        this.Frame_RTB.NavigationService.Navigate(this.CurrentActivePage);
                     }
-                    this.CurrentBookId = sType[1];
+                    this.CurrentBookId = selectedTag.ToString();
                 }
                 // 文章
                 else
                 {
-                    TextRange t = new TextRange(this.RichTextBox_TextArea.Document.ContentStart,
-                           this.RichTextBox_TextArea.Document.ContentEnd);
+                    if (this.RTBPageCacheDict.ContainsKey(sType[1]))
+                    {
+                        this.CurrentActivePage = this.RTBPageCacheDict[sType[1]];
+                    }
+                    else
+                    {
+                        RTBPage np = new RTBPage() {ArticalId = sType[1]};
+                        this.CurrentActivePage = np;
+                        this.RTBPageCacheDict.Add(sType[1], np);
+                    }
+                    TextRange t = new TextRange(this.CurrentActivePage.RichTextBox_TextArea.Document.ContentStart,
+                           this.CurrentActivePage.RichTextBox_TextArea.Document.ContentEnd);
                     var p = this.core.ArticleDict[sType[1]];
                     t.Load(p.DocumentMetadata, DataFormats.XamlPackage);
-                    // TODO 此处应该是PAGE切换而不能直接换内容
+                    this.Frame_RTB.NavigationService.Navigate(this.CurrentActivePage);
                 }
             }
             catch (Exception ex)
@@ -275,7 +332,7 @@ namespace Yuri.Hemerocallis.Forms
                         break;
                     // 强制保存
                     case Key.S:
-                        this.core.FullCommit();
+                        this.core.FullCommit(); // todo 这里应该用DirtyCommit比较好
                         break;
                 }
             }

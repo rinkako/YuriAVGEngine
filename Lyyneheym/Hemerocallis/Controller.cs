@@ -24,6 +24,16 @@ namespace Yuri.Hemerocallis
         {
             try
             {
+                foreach (var pKvp in this.mainWndRef.RTBPageCacheDict)
+                {
+                    var page = pKvp.Value;
+                    TextRange st = new TextRange(page.RichTextBox_FlowDocument.ContentStart, page.RichTextBox_FlowDocument.ContentEnd);
+                    MemoryStream metadata = new MemoryStream();
+                    st.Save(metadata, System.Windows.DataFormats.XamlPackage);
+                    var updateId = pKvp.Key.StartsWith("HBook#") ?
+                        this.BookVector.Find(t => t.BookRef.Id == pKvp.Key).BookRef.HomePage.Id : pKvp.Key;
+                    this.ArticleDict[updateId].DocumentMetadata = metadata;
+                }
                 foreach (var p in this.BookVector)
                 {
                     IOUtil.Serialization(p.BookRef, App.ParseURIToURL(App.AppDataDirectory, $"{p.BookRef.Id}.{App.AppBookDataExtension}"));
@@ -56,6 +66,33 @@ namespace Yuri.Hemerocallis
                         p.DirtyBit = false;
                     }
                 }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"提交到磁盘时发生了错误，请手动备份数据" + Environment.NewLine +
+                                @"Failed to commit data to steady memory, please backup your data" + Environment.NewLine +
+                                ex);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 提交当前书籍到稳定储存器
+        /// </summary>
+        /// <returns>操作成功或否</returns>
+        public bool PageCommit()
+        {
+            try
+            {
+                TextRange st = new TextRange(this.mainWndRef.CurrentActivePage.RichTextBox_FlowDocument.ContentStart,
+                    this.mainWndRef.CurrentActivePage.RichTextBox_FlowDocument.ContentEnd);
+                MemoryStream metadata = new MemoryStream();
+                st.Save(metadata, System.Windows.DataFormats.XamlPackage);
+                this.ArticleDict[this.mainWndRef.CurrentActivePage.ArticalId].DocumentMetadata = metadata;
+                var curBB = this.BookVector.Find(t => t.BookRef.Id == this.mainWndRef.CurrentBookId);
+                IOUtil.Serialization(curBB.BookRef, App.ParseURIToURL(App.AppDataDirectory, $"{curBB.BookRef.Id}.{App.AppBookDataExtension}"));
+                curBB.DirtyBit = false;
                 return true;
             }
             catch (Exception ex)
@@ -317,6 +354,11 @@ namespace Yuri.Hemerocallis
         /// 获取书籍向量（对象，脏位）
         /// </summary>
         public List<BookCacheDescriptor> BookVector { get; private set; } = new List<BookCacheDescriptor>();
+
+        /// <summary>
+        /// 前端RTB对象的引用
+        /// </summary>
+        public List<KeyValuePair<string, RichTextBox>> ViewRTBList = new List<KeyValuePair<string, RichTextBox>>();
 
         /// <summary>
         /// 获取文章字典

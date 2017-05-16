@@ -269,17 +269,26 @@ namespace Yuri.Hemerocallis.Forms
                 MessageBox.Show("RGB值必须是0到255的整数值");
                 return;
             }
-            this.core.mainWndRef.RichTextBox_FlowDocument.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(fr, fg, fb));
-            this.core.mainWndRef.RichTextBox_TextArea.FontSize = this.curFontSize;
-            this.core.mainWndRef.RichTextBox_TextArea.FontFamily = new System.Windows.Media.FontFamily(this.curFontName);
-            this.core.mainWndRef.RichTextBox_DropShadowEffect.Opacity = this.Slider_Font_ZeRadius.Value / 10.0;
-            this.core.mainWndRef.RichTextBox_FlowDocument.LineHeight = this.Slider_Font_LineHeight.Value;
+            foreach (var tp in this.core.mainWndRef.RTBPageCacheDict)
+            {
+                var p = tp.Value;
+                p.RichTextBox_FlowDocument.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(fr, fg, fb));
+                p.RichTextBox_TextArea.FontSize = this.curFontSize;
+                p.RichTextBox_TextArea.FontFamily = new System.Windows.Media.FontFamily(this.curFontName);
+                p.RichTextBox_DropShadowEffect.Opacity = this.Slider_Font_ZeRadius.Value / 10.0;
+                p.RichTextBox_FlowDocument.LineHeight = this.Slider_Font_LineHeight.Value;
+            }
             this.core.ConfigDesc.FontName = this.curFontName;
             this.core.ConfigDesc.FontSize = this.curFontSize;
             this.core.ConfigDesc.LineHeight = this.Slider_Font_LineHeight.Value;
             this.core.ConfigDesc.ZeOpacity = this.Slider_Font_ZeRadius.Value / 10.0;
             this.core.ConfigDesc.IsEnableZe = this.CheckBox_Font_Ze.IsChecked == true;
             this.core.ConfigDesc.FontColor = $"{fr},{fg},{fb}";
+            RTBPage.CFontColorItem = this.core.ConfigDesc.FontColor.Split(',');
+            RTBPage.CFontSize = this.core.ConfigDesc.FontSize;
+            RTBPage.CFontName = this.core.ConfigDesc.FontName;
+            RTBPage.CZeOpacity = this.core.ConfigDesc.ZeOpacity;
+            RTBPage.CLineHeight = this.core.ConfigDesc.LineHeight;
             this.core.WriteConfigToSteady();
         }
     }

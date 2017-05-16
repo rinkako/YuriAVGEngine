@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace Yuri.Hemerocallis
             bool existAppDataFlag = dirs.Any(td => String.Equals(td.Name, App.AppDataDirectory, StringComparison.OrdinalIgnoreCase));
             if (existAppDataFlag)
             {
+                // 读取配置信息
                 var ctr = Controller.GetInstance();
                 ctr.ReadConfigToMemory();
                 DirectoryInfo appDataDirInfo = new DirectoryInfo(App.ParseURIToURL(App.AppDataDirectory));
@@ -34,7 +36,9 @@ namespace Yuri.Hemerocallis
                     ctr.ConfigDesc.BgType = AppearanceBackgroundType.Default;
                     ctr.WriteConfigToSteady();
                 }
+                // 读取书籍信息
                 var bkFiles = appDataDirInfo.GetFiles();
+                var openList = new Queue<HArticle>();
                 foreach (var bk in bkFiles)
                 {
                     if (String.Equals(bk.Extension, "." + App.AppBookDataExtension, StringComparison.OrdinalIgnoreCase))
@@ -43,11 +47,22 @@ namespace Yuri.Hemerocallis
                         {
                             var bkObj = IOUtil.Unserialization(bk.FullName) as HBook;
                             ctr.BookVector.Add(new BookCacheDescriptor(bkObj, false));
+                            openList.Enqueue(bkObj.HomePage);
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show("Unable to load book project: " + bk.FullName + Environment.NewLine + ex);
                         }
+                    }
+                }
+                // 处理文章的引用
+                while (openList.Any())
+                {
+                    var curNode = openList.Dequeue();
+                    ctr.ArticleDict[curNode.Id] = curNode;
+                    foreach (var sn in curNode.ChildrenList)
+                    {
+                        openList.Enqueue(sn);
                     }
                 }
             }
