@@ -8,11 +8,31 @@
       d:DesignHeight="576" d:DesignWidth="1024"
       Title="IndexPage" ShowsNavigationUI="False">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300*"/>
+            <ColumnDefinition Width="350*"/>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="300*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35*"/>
-            <RowDefinition Height="20*" MinHeight="136"/>
-            <RowDefinition Height="45*"/>
+            <RowDefinition Height="150*"/>
+            <RowDefinition Height="250*"/>
+            <RowDefinition Height="200*" MinHeight="136"/>
+            <RowDefinition Height="300*"/>
+            <RowDefinition Height="150*"/>
         </Grid.RowDefinitions>
-        <Image Grid.Row="1" Source="/Hemerocallis;component/Assets/HemerocallisLable.png" Margin="0,0,40,0" HorizontalAlignment="Right" Width="300"/>
+        <Image Grid.Row="2" Grid.Column="3" Source="/Hemerocallis;component/Assets/HemerocallisLable.png" Margin="0,0,38,0"/>
+        <Grid Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Visibility="Hidden">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Offset="0"/>
+                    <GradientStop Offset="1"/>
+                    <GradientStop Color="#B2FFFFFF" Offset="0.12"/>
+                    <GradientStop Color="#B2FFFFFF" Offset="0.88"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <StackPanel Margin="0,70">
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

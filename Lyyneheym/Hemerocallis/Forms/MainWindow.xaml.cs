@@ -159,6 +159,7 @@ namespace Yuri.Hemerocallis.Forms
                 }
                 if (selectedTag.ToString() == "HemeIndexPage")
                 {
+                    this.CurrentActivePage = null;
                     this.Grid_MainArea.Background = this.IndexBackgroundBrush;
                     this.Frame_RTB.NavigationService.Navigate(this.IndexPageRef);
                     this.StackPanel_Commands.Visibility = this.TextBlock_CurrentChapterName.Visibility =
@@ -170,6 +171,7 @@ namespace Yuri.Hemerocallis.Forms
                     this.StackPanel_Commands.Visibility = this.TextBlock_CurrentChapterName.Visibility =
                         this.TextBlock_MsgBar.Visibility = this.TextBlock_StateBar.Visibility = Visibility.Visible;
                     this.Grid_MainArea.Background = this.MainAreaBrush;
+                    this.TextBlock_CurrentChapterName.Text = (this.TreeView_ProjectTree.SelectedItem as TreeViewItem).Header.ToString();
                 }
                 var sType = selectedTag.ToString().Split('#');
                 // 书籍
@@ -185,7 +187,7 @@ namespace Yuri.Hemerocallis.Forms
                         }
                         else
                         {
-                            RTBPage np = new RTBPage() {ArticalId = hp.Id};
+                            RTBPage np = new RTBPage() { ArticalRef = hp };
                             this.CurrentActivePage = np;
                             this.RTBPageCacheDict.Add(hp.Id, np);
                         }
@@ -199,19 +201,19 @@ namespace Yuri.Hemerocallis.Forms
                 // 文章
                 else
                 {
+                    var p = this.core.ArticleDict[sType[1]];
                     if (this.RTBPageCacheDict.ContainsKey(sType[1]))
                     {
                         this.CurrentActivePage = this.RTBPageCacheDict[sType[1]];
                     }
                     else
                     {
-                        RTBPage np = new RTBPage() {ArticalId = sType[1]};
+                        RTBPage np = new RTBPage() { ArticalRef = p };
                         this.CurrentActivePage = np;
                         this.RTBPageCacheDict.Add(sType[1], np);
                     }
                     TextRange t = new TextRange(this.CurrentActivePage.RichTextBox_TextArea.Document.ContentStart,
                            this.CurrentActivePage.RichTextBox_TextArea.Document.ContentEnd);
-                    var p = this.core.ArticleDict[sType[1]];
                     t.Load(p.DocumentMetadata, DataFormats.XamlPackage);
                     this.Frame_RTB.NavigationService.Navigate(this.CurrentActivePage);
                 }
@@ -314,6 +316,13 @@ namespace Yuri.Hemerocallis.Forms
             this.Flyout_Menu.IsOpen = true;
         }
 
+        /// <summary>
+        /// 命令栏按钮：保存
+        /// </summary>
+        private void Image_MouseLeftButtonDown_SaveBtn(object sender, MouseButtonEventArgs e)
+        {
+            this.core.FullCommit();
+        }
         #endregion
 
         /// <summary>
@@ -330,12 +339,14 @@ namespace Yuri.Hemerocallis.Forms
                     case Key.N:
                         new NewBookWindow().ShowDialog();
                         break;
-                    // 强制保存
+                    // 页保存
                     case Key.S:
-                        this.core.FullCommit(); // todo 这里应该用DirtyCommit比较好
+                        this.core.PageCommit();
                         break;
                 }
             }
         }
+
+        
     }
 }

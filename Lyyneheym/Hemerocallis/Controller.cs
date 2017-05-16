@@ -89,7 +89,7 @@ namespace Yuri.Hemerocallis
                     this.mainWndRef.CurrentActivePage.RichTextBox_FlowDocument.ContentEnd);
                 MemoryStream metadata = new MemoryStream();
                 st.Save(metadata, System.Windows.DataFormats.XamlPackage);
-                this.ArticleDict[this.mainWndRef.CurrentActivePage.ArticalId].DocumentMetadata = metadata;
+                this.ArticleDict[this.mainWndRef.CurrentActivePage.ArticalRef.Id].DocumentMetadata = metadata;
                 var curBB = this.BookVector.Find(t => t.BookRef.Id == this.mainWndRef.CurrentBookId);
                 IOUtil.Serialization(curBB.BookRef, App.ParseURIToURL(App.AppDataDirectory, $"{curBB.BookRef.Id}.{App.AppBookDataExtension}"));
                 curBB.DirtyBit = false;
@@ -129,6 +129,7 @@ namespace Yuri.Hemerocallis
                 LastEditTimeStamp = createTime,
                 DocumentMetadata = metadata
             };
+            this.ArticleDict[homePage.Id] = homePage;
             // 构造书籍对象
             var bookId = "HBook#" + Guid.NewGuid();
             HBook hb = new HBook()

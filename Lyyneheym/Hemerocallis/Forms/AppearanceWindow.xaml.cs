@@ -207,7 +207,11 @@ namespace Yuri.Hemerocallis.Forms
             if (this.RadioButton_Bg_1.IsChecked == true)
             {
                 this.core.ConfigDesc.BgType = Entity.AppearanceBackgroundType.Default;
-                this.core.mainWndRef.Grid_MainArea.Background = this.core.mainWndRef.DefaultBgBrush;
+                this.core.mainWndRef.MainAreaBrush = this.core.mainWndRef.DefaultBgBrush;
+                if (this.core.mainWndRef.CurrentActivePage != null)
+                {
+                    this.core.mainWndRef.Grid_MainArea.Background = this.core.mainWndRef.MainAreaBrush;
+                }
             }
             else if (this.RadioButton_Bg_2.IsChecked == true)
             {
@@ -220,7 +224,11 @@ namespace Yuri.Hemerocallis.Forms
                 }
                 this.core.ConfigDesc.BgType = Entity.AppearanceBackgroundType.Pure;
                 this.core.ConfigDesc.BgTag = $"{tr},{tg},{tb}";
-                this.core.mainWndRef.Grid_MainArea.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(tr, tg, tb));
+                this.core.mainWndRef.MainAreaBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(tr, tg, tb));
+                if (this.core.mainWndRef.CurrentActivePage != null)
+                {
+                    this.core.mainWndRef.Grid_MainArea.Background = this.core.mainWndRef.MainAreaBrush;
+                }
             }
             else if (this.RadioButton_Bg_3.IsChecked == true)
             {
@@ -255,12 +263,16 @@ namespace Yuri.Hemerocallis.Forms
                 this.core.ConfigDesc.BgType = Entity.AppearanceBackgroundType.Picture;
                 this.core.ConfigDesc.BgTag = this.bgPicPath.Split('\\').Last();
                 var bmp = new BitmapImage(new Uri(this.bgPicPath));
-                this.core.mainWndRef.Grid_MainArea.Background = new ImageBrush(bmp)
+                this.core.mainWndRef.MainAreaBrush = new ImageBrush(bmp)
                 {
                     TileMode = TileMode.Tile,
                     ViewportUnits = BrushMappingMode.Absolute,
                     Viewport = new Rect(0, 0, bmp.PixelWidth, bmp.PixelHeight)
                 };
+                if (this.core.mainWndRef.CurrentActivePage != null)
+                {
+                    this.core.mainWndRef.Grid_MainArea.Background = this.core.mainWndRef.MainAreaBrush;
+                }
             }
             if (!(Byte.TryParse(this.TextBox_Ft_R.Text, out byte fr) &&
                   Byte.TryParse(this.TextBox_Ft_G.Text, out byte fg) &&
