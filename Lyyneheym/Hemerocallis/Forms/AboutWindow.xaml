@@ -5,10 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Yuri.Hemerocallis.Forms"
         mc:Ignorable="d"
-        Title="About" Height="260" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Canvas Background="LightGray">
-        <Image Name="Image_Logo" Height="200" Width="200" Source="/Hemerocallis;component/Assets/logo_hemerocallis.png" Canvas.Left="10" Canvas.Top="10"/>
-        <TextBlock Height="145" Canvas.Left="220" TextWrapping="Wrap" Canvas.Top="65" Width="264" Background="White">
+        Title="About" Height="360" Width="560" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None" MouseRightButtonUp="Window_MouseRightButtonUp" KeyDown="Window_KeyDown" AllowsTransparency="True" Background="Transparent">
+    <Canvas>
+        <Canvas.Background>
+            <ImageBrush ImageSource="/Hemerocallis;component/Assets/bg_About.png"/>
+        </Canvas.Background>
+        <Image Name="Image_Logo" Height="158" Width="158" Source="/Hemerocallis;component/Assets/logo_hemerocallis.png" Canvas.Left="66" Canvas.Top="150"/>
+        <TextBlock Height="158" Canvas.Left="253" TextWrapping="Wrap" Canvas.Top="150" Width="262" Background="White">
             Hemerocallis is a part of Project Yuri. She is expected to provide convenience for the creation of the story.
             <LineBreak/><LineBreak/>
             Hemerocallis is licensed under the Microsoft Public License (Ms-PL).
@@ -16,7 +19,5 @@
             To get the source code of Hemerocallis, visit the Github page of
             <Hyperlink NavigateUri="https://github.com/rinkako/YuriAVGEngine" RequestNavigate="Hyperlink_RequestNavigate">Project Yuri</Hyperlink>.
         </TextBlock>
-        <Label Content="Hemerocallis" FontSize="18" Canvas.Left="220" Canvas.Top="12" Width="264" Height="28" HorizontalContentAlignment="Right"/>
-        <Label Content="Project Yuri" FontSize="14" Canvas.Left="220" Canvas.Top="36" Width="264" Height="28" HorizontalContentAlignment="Right"/>
     </Canvas>
 </Window>
