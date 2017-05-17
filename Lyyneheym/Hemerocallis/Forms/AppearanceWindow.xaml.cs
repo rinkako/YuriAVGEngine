@@ -139,14 +139,14 @@ namespace Yuri.Hemerocallis.Forms
             var fontDialog = new System.Windows.Forms.FontDialog
             {
                 AllowVerticalFonts = false,
-                AllowScriptChange = false,
+                AllowScriptChange = true,
                 MinSize = 8,
                 ShowEffects = false,
                 ShowColor = false,
                 ShowHelp = false,
                 ShowApply = false,
                 FontMustExist = true,
-                Font = cFont
+                Font = cFont,
             };
             fontDialog.ShowDialog();
             if (fontDialog.Font.Name != cFont.Name || Math.Abs(fontDialog.Font.Size - cFont.Size) >= 1)
@@ -281,15 +281,6 @@ namespace Yuri.Hemerocallis.Forms
                 MessageBox.Show("RGB值必须是0到255的整数值");
                 return;
             }
-            foreach (var tp in this.core.mainWndRef.RTBPageCacheDict)
-            {
-                var p = tp.Value;
-                p.RichTextBox_FlowDocument.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(fr, fg, fb));
-                p.RichTextBox_TextArea.FontSize = this.curFontSize;
-                p.RichTextBox_TextArea.FontFamily = new System.Windows.Media.FontFamily(this.curFontName);
-                p.RichTextBox_DropShadowEffect.Opacity = this.Slider_Font_ZeRadius.Value / 10.0;
-                p.RichTextBox_FlowDocument.LineHeight = this.Slider_Font_LineHeight.Value;
-            }
             this.core.ConfigDesc.FontName = this.curFontName;
             this.core.ConfigDesc.FontSize = this.curFontSize;
             this.core.ConfigDesc.LineHeight = this.Slider_Font_LineHeight.Value;
@@ -301,6 +292,10 @@ namespace Yuri.Hemerocallis.Forms
             RTBPage.CFontName = this.core.ConfigDesc.FontName;
             RTBPage.CZeOpacity = this.core.ConfigDesc.ZeOpacity;
             RTBPage.CLineHeight = this.core.ConfigDesc.LineHeight;
+            foreach (var tp in this.core.mainWndRef.RTBPageCacheDict)
+            {
+                tp.Value.UpdateRTBStyle();
+            }
             this.core.WriteConfigToSteady();
         }
     }

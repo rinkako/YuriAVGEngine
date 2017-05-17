@@ -24,6 +24,15 @@ namespace Yuri.Hemerocallis.Forms
         {
             InitializeComponent();
 
+            this.UpdateRTBStyle();
+            
+            DataObject.AddPastingHandler(this.RichTextBox_TextArea, new DataObjectPastingEventHandler(OnRichTextBoxPaste));
+
+            this.RichTextBox_TextArea.TextChanged += this.RichTextBox_TextArea_TextChanged;
+        }
+
+        public void UpdateRTBStyle()
+        {
             if (Byte.TryParse(CFontColorItem[0], out byte fr) &&
                 Byte.TryParse(CFontColorItem[1], out byte fg) &&
                 Byte.TryParse(CFontColorItem[2], out byte fb))
@@ -34,10 +43,12 @@ namespace Yuri.Hemerocallis.Forms
             this.RichTextBox_TextArea.FontFamily = new FontFamily(RTBPage.CFontName);
             this.RichTextBox_DropShadowEffect.Opacity = RTBPage.CZeOpacity;
             this.RichTextBox_FlowDocument.LineHeight = RTBPage.CLineHeight;
-            
-            DataObject.AddPastingHandler(this.RichTextBox_TextArea, new DataObjectPastingEventHandler(OnRichTextBoxPaste));
-
-            this.RichTextBox_TextArea.TextChanged += this.RichTextBox_TextArea_TextChanged;
+            foreach (var block in this.RichTextBox_TextArea.Document.Blocks)
+            {
+                block.FontSize = RTBPage.CFontSize;
+                block.FontFamily = new FontFamily(RTBPage.CFontName);
+                block.LineHeight = RTBPage.CLineHeight;
+            }
         }
         
         /// <summary>

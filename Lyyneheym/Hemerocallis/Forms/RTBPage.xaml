@@ -8,7 +8,7 @@
       d:DesignHeight="300" d:DesignWidth="300"
       Title="RTBPage" ShowsNavigationUI="False">
     <Grid x:Name="grid">
-        <RichTextBox x:Name="RichTextBox_TextArea" Margin="0,0,0,0" Padding="10,0,10,25" FontSize="22" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}" FontFamily="Microsoft YaHei" BorderBrush="{x:Null}" CaretBrush="Black" BorderThickness="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="{x:Null}">
+        <RichTextBox x:Name="RichTextBox_TextArea" Background="Transparent" Margin="0,0,0,0" Padding="10,0,10,25" FontSize="22" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}" FontFamily="Microsoft YaHei" BorderBrush="Transparent" CaretBrush="Black" BorderThickness="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
             <RichTextBox.Effect>
                 <DropShadowEffect x:Name="RichTextBox_DropShadowEffect" Color="Black" Direction="0" ShadowDepth="0" Opacity="0.3"/>
             </RichTextBox.Effect>

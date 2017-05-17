@@ -89,6 +89,10 @@ namespace Yuri.Hemerocallis.Forms
             var startPage = new TreeViewItem() { Header = "起始页", Tag = "HemeIndexPage" };
             this.TreeView_ProjectTree.Items.Insert(0, startPage);
             startPage.IsSelected = true;
+
+
+
+            
         }
 
         /// <summary>
@@ -194,6 +198,7 @@ namespace Yuri.Hemerocallis.Forms
                         TextRange t = new TextRange(this.CurrentActivePage.RichTextBox_TextArea.Document.ContentStart,
                             this.CurrentActivePage.RichTextBox_TextArea.Document.ContentEnd);
                         t.Load(hp.DocumentMetadata, DataFormats.XamlPackage);
+                        this.CurrentActivePage.UpdateRTBStyle();
                         this.Frame_RTB.NavigationService.Navigate(this.CurrentActivePage);
                     }
                     this.CurrentBookId = selectedTag.ToString();
@@ -215,6 +220,7 @@ namespace Yuri.Hemerocallis.Forms
                     TextRange t = new TextRange(this.CurrentActivePage.RichTextBox_TextArea.Document.ContentStart,
                            this.CurrentActivePage.RichTextBox_TextArea.Document.ContentEnd);
                     t.Load(p.DocumentMetadata, DataFormats.XamlPackage);
+                    this.CurrentActivePage.UpdateRTBStyle();
                     this.Frame_RTB.NavigationService.Navigate(this.CurrentActivePage);
                 }
             }
@@ -347,6 +353,9 @@ namespace Yuri.Hemerocallis.Forms
             }
         }
 
-        
+        private void Image_MouseLeftButtonUp_NewBtn(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

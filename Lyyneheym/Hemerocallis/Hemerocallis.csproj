@@ -69,6 +69,9 @@
     <Compile Include="Forms\RTBPage.xaml.cs">
       <DependentUpon>RTBPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\StatisticsWindow.xaml.cs">
+      <DependentUpon>StatisticsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UISupport\DesignerItemDecorator.cs" />
     <Compile Include="UISupport\MoveThumb.cs" />
     <Compile Include="UISupport\ResizeRotateAdorner.cs" />
@@ -121,6 +124,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\RTBPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\StatisticsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
