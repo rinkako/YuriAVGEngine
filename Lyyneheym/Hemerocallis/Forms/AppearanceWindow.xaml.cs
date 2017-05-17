@@ -146,7 +146,7 @@ namespace Yuri.Hemerocallis.Forms
                 ShowHelp = false,
                 ShowApply = false,
                 FontMustExist = true,
-                Font = cFont,
+                Font = cFont
             };
             fontDialog.ShowDialog();
             if (fontDialog.Font.Name != cFont.Name || Math.Abs(fontDialog.Font.Size - cFont.Size) >= 1)

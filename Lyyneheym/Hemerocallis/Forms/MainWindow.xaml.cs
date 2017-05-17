@@ -292,8 +292,16 @@ namespace Yuri.Hemerocallis.Forms
         private void Button_Click_Menu_About(object sender, RoutedEventArgs e)
         {
             this.Flyout_Menu.IsOpen = false;
-            AboutWindow aw = new AboutWindow();
-            aw.ShowDialog();
+            new AboutWindow().ShowDialog();
+        }
+
+        /// <summary>
+        /// 侧边菜单按钮：统计
+        /// </summary>
+        private void Button_Click_Menu_Statistics(object sender, RoutedEventArgs e)
+        {
+            this.Flyout_Menu.IsOpen = false;
+            new StatisticsWindow().ShowDialog();
         }
         #endregion
 
@@ -355,7 +363,19 @@ namespace Yuri.Hemerocallis.Forms
 
         private void Image_MouseLeftButtonUp_NewBtn(object sender, MouseButtonEventArgs e)
         {
-
+            FileStream f = new FileStream("ff.zip", FileMode.Create);
+            TextRange st = new TextRange(this.CurrentActivePage.RichTextBox_FlowDocument.ContentStart, this.CurrentActivePage.RichTextBox_FlowDocument.ContentEnd);
+            st.Save(f, DataFormats.XamlPackage);
         }
+
+        /// <summary>
+        /// 事件：主窗体关闭
+        /// </summary>
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.core.FullCommit();
+        }
+
+        
     }
 }

@@ -7,7 +7,7 @@
         xmlns:UISupport="clr-namespace:Yuri.Hemerocallis.UISupport" x:Class="Yuri.Hemerocallis.Forms.MainWindow"
         mc:Ignorable="d" WindowTransitionsEnabled="False"
 		TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType"
-                      Title="Hemerocallis" Height="720" Width="1280" MinWidth="1024" MinHeight="576" WindowStartupLocation="CenterScreen" KeyDown="MetroWindow_KeyDown">
+                      Title="Hemerocallis" Height="720" Width="1280" MinWidth="1024" MinHeight="576" WindowStartupLocation="CenterScreen" KeyDown="MetroWindow_KeyDown" Closing="MetroWindow_Closing">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -50,7 +50,7 @@
                     <Button Content="导出文本文件" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False"/>
                     <Button Content="导出PDF" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False"/>
                     <Rectangle Height="2" Fill="White" Opacity="0.2" Margin="20,30,0,0"/>
-                    <Button Content="统计" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False"/>
+                    <Button Content="统计" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False" Click="Button_Click_Menu_Statistics"/>
                     <Button Content="分类管理" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False"/>
                     <Button Content="删除文档" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False"/>
                     <Rectangle Height="2" Fill="White" Opacity="0.2" Margin="20,30,0,0"/>
