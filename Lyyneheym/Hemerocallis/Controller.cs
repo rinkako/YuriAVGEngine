@@ -154,7 +154,26 @@ namespace Yuri.Hemerocallis
         /// <returns>操作成功或否</returns>
         public bool DeleteBook(string bookId)
         {
-            throw new NotImplementedException();
+            var bkRef = this.BookVector.Find(t => t.BookRef.Id == bookId);
+            if (bkRef != null)
+            {
+                try
+                {
+                    // 移除该书籍的缓存
+                    this.BookVector.Remove(bkRef);
+                    // 移除文件
+                    File.Move(App.ParseURIToURL(App.AppDataDirectory, $"{bkRef.BookRef.Id}.{App.AppBookDataExtension}"),
+                        App.ParseURIToURL(App.AppDataDirectory, App.BackupDirectory,
+                            $"{bkRef.BookRef.Id}.{App.AppBookDataExtension}"));
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(@"删除失败" + Environment.NewLine + ex);
+                    return false;
+                }
+            }
+            return false;
         }
 
         /// <summary>

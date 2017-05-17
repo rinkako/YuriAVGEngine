@@ -52,7 +52,7 @@
                     <Rectangle Height="2" Fill="White" Opacity="0.2" Margin="20,30,0,0"/>
                     <Button Content="统计" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False" Click="Button_Click_Menu_Statistics"/>
                     <Button Content="分类管理" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False"/>
-                    <Button Content="删除文档" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False"/>
+                    <Button Content="删除" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False" Click="Button_Click_Menu_Delete"/>
                     <Rectangle Height="2" Fill="White" Opacity="0.2" Margin="20,30,0,0"/>
                     <Button Content="关于" Height="40" FontSize="16" Foreground="White" Background="Transparent" HorizontalContentAlignment="Right" Padding="0,0,10,0" BorderThickness="0,0,0,0" FontFamily="Microsoft YaHei" IsTabStop="False" Click="Button_Click_Menu_About"/>
                 </StackPanel>
@@ -90,7 +90,7 @@
             <Image ToolTip="菜单" Source="/Hemerocallis;component/Assets/UI_Btn_Menu.png" Opacity="0.4" Height="48" Width="48" MouseLeftButtonUp="Image_MouseLeftButtonUp_MenuBtn" MouseEnter="Image_TRBtn_MouseEnter" MouseLeave="Image_TRBtn_MouseLeave"/>
         </StackPanel>
         <!-- 左上角章节名 -->
-        <TextBlock Name="TextBlock_CurrentChapterName" Grid.Column="1" Grid.Row="0" Foreground="LightSteelBlue" Text="Chapter 2 - 恋恋不舍" FontSize="22" Padding="50,8,0,0" TextAlignment="Left" IsHitTestVisible="False">
+        <TextBlock Name="TextBlock_CurrentChapterName" Grid.Column="1" Grid.Row="0" Foreground="LightSteelBlue" Text="Title" FontSize="22" Padding="50,8,0,0" TextAlignment="Left" IsHitTestVisible="False">
             <TextBlock.Effect>
                 <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.1" />
             </TextBlock.Effect>

@@ -36,6 +36,10 @@ namespace Yuri.Hemerocallis
                     ctr.ConfigDesc.BgType = AppearanceBackgroundType.Default;
                     ctr.WriteConfigToSteady();
                 }
+                if (!appDirs.Any(adirs => String.Equals(adirs.Name, App.BackupDirectory, StringComparison.OrdinalIgnoreCase)))
+                {
+                    Directory.CreateDirectory(App.ParseURIToURL(App.AppDataDirectory, App.BackupDirectory));
+                }
                 // 读取书籍信息
                 var bkFiles = appDataDirInfo.GetFiles();
                 var openList = new Queue<HArticle>();
@@ -104,10 +108,15 @@ namespace Yuri.Hemerocallis
         public static readonly string AppearanceDirectory = ".YuriHemerocallisAppearance";
 
         /// <summary>
+        /// 程序回收站文件夹名
+        /// </summary>
+        public static readonly string BackupDirectory = ".YuririBackup";
+
+        /// <summary>
         /// 书籍工程文件后缀名
         /// </summary>
         public static readonly string AppBookDataExtension = "hbk";
-
+        
         /// <summary>
         /// 程序配置文件名
         /// </summary>

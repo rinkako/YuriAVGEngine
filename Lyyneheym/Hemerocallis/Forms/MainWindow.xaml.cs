@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Collections.Generic;
+using System.Threading;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Yuri.Hemerocallis.Entity;
@@ -78,22 +79,13 @@ namespace Yuri.Hemerocallis.Forms
             this.MainAreaBrush = this.Grid_MainArea.Background;
             // 刷新项目树
             this.ReDrawProjectTree();
-            // 起始页
-            this.IndexBackgroundBrush =
-                new ImageBrush(new BitmapImage(new Uri(App.ParseURIToURL("Assets/bg_Index.jpg"), UriKind.RelativeOrAbsolute)))
-                {
-                    Stretch = Stretch.UniformToFill,
-                    AlignmentX = AlignmentX.Left
-                };
-            this.IndexPageRef = new IndexPage();
-            var startPage = new TreeViewItem() { Header = "起始页", Tag = "HemeIndexPage" };
-            this.TreeView_ProjectTree.Items.Insert(0, startPage);
-            startPage.IsSelected = true;
-
-
-
-            
+            this.StartPageViewItem.IsSelected = true;
         }
+
+        /// <summary>
+        /// 获取首页菜单项的引用
+        /// </summary>
+        public TreeViewItem StartPageViewItem { get; private set; }
 
         /// <summary>
         /// 获取当前活跃的RTB页
@@ -267,6 +259,16 @@ namespace Yuri.Hemerocallis.Forms
                     rootStack.Push(tvi);
                 }
             }
+            // 起始页
+            this.IndexBackgroundBrush =
+                new ImageBrush(new BitmapImage(new Uri(App.ParseURIToURL("Assets/bg_Index.jpg"), UriKind.RelativeOrAbsolute)))
+                {
+                    Stretch = Stretch.UniformToFill,
+                    AlignmentX = AlignmentX.Left
+                };
+            this.IndexPageRef = new IndexPage();
+            this.StartPageViewItem = new TreeViewItem() { Header = "起始页", Tag = "HemeIndexPage" };
+            this.TreeView_ProjectTree.Items.Insert(0, this.StartPageViewItem);
         }
 
         /// <summary>
@@ -302,6 +304,50 @@ namespace Yuri.Hemerocallis.Forms
         {
             this.Flyout_Menu.IsOpen = false;
             new StatisticsWindow().ShowDialog();
+        }
+
+        /// <summary>
+        /// 侧边菜单按钮：删除
+        /// </summary>
+        private void Button_Click_Menu_Delete(object sender, RoutedEventArgs e)
+        {
+            this.Flyout_Menu.IsOpen = false;
+            // 分析Tag
+            var selectedTag = (this.TreeView_ProjectTree.SelectedItem as TreeViewItem)?.Tag;
+            if (selectedTag == null)
+            {
+                return;
+            }
+            if (selectedTag.ToString() == "HemeIndexPage")
+            {
+                MessageBox.Show("你为什么会想删掉这个页面呢……");
+                return;
+            }
+            var sType = selectedTag.ToString().Split('#');
+            if (sType[0] == "HBook")
+            {
+                var dr1 = MessageBox.Show("你正在删除书籍[" + (this.TreeView_ProjectTree.SelectedItem as TreeViewItem).Header +
+                    "]，这会使得该书籍下的所有文章都被永久删除。你确定要这么做吗？", "确认删除动作", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+                if (dr1 == MessageBoxResult.Yes)
+                {
+                    Thread.Sleep(1000);
+                    var dr2 = MessageBox.Show("删除动作不能被回滚。你真的真的要这么做吗？",
+                    "确认删除动作", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+                    if (dr2 == MessageBoxResult.Yes)
+                    {
+                        // 提交后台
+                        this.core.DeleteBook(selectedTag.ToString());
+                        // 刷新
+                        this.CurrentActivePage = null;
+                        this.ReDrawProjectTree();
+                        this.StartPageViewItem.IsSelected = true;
+                    }
+                }
+            }
+            else
+            {
+                
+            }
         }
         #endregion
 
@@ -376,6 +422,7 @@ namespace Yuri.Hemerocallis.Forms
             this.core.FullCommit();
         }
 
+        
         
     }
 }
