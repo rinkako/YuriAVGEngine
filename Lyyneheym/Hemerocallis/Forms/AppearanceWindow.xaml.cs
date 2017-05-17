@@ -56,6 +56,10 @@ namespace Yuri.Hemerocallis.Forms
             this.RichTextBox_Font_Preview.FontSize = this.curFontSize = cfg.FontSize;
             this.Slider_Font_LineHeight.Value = cfg.LineHeight;
             this.Slider_Font_ZeRadius.Value = cfg.ZeOpacity * 10;
+            var ftcItems = cfg.FontColor.Split(',');
+            this.TextBox_Ft_R.Text = ftcItems[0];
+            this.TextBox_Ft_G.Text = ftcItems[1];
+            this.TextBox_Ft_B.Text = ftcItems[2];
         }
 
         private void CheckBox_Font_Ze_Checked(object sender, RoutedEventArgs e)

@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 
 namespace Yuri.Hemerocallis.Forms
@@ -53,6 +45,7 @@ namespace Yuri.Hemerocallis.Forms
             };
             this.core.mainWndRef.TreeView_ProjectTree.Items.Add(item);
             item.IsSelected = true;
+            item.PreviewMouseRightButtonDown += this.core.mainWndRef.TreeViewItem_PreviewMouseRightButtonDown;
             this.Close();
         }
 

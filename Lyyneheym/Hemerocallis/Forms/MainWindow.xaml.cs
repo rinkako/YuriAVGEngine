@@ -241,6 +241,7 @@ namespace Yuri.Hemerocallis.Forms
                 this.TreeView_ProjectTree.Items.Add(tvi);
                 workStack.Push(this.core.BookVector[i].BookRef.HomePage);
                 rootStack.Push(tvi);
+                tvi.PreviewMouseRightButtonDown += this.TreeViewItem_PreviewMouseRightButtonDown;
             }
             while (workStack.Any())
             {
@@ -257,6 +258,7 @@ namespace Yuri.Hemerocallis.Forms
                     croot.Items.Add(tvi);
                     workStack.Push(top.ChildrenList[j]);
                     rootStack.Push(tvi);
+                    tvi.PreviewMouseRightButtonDown += this.TreeViewItem_PreviewMouseRightButtonDown;
                 }
             }
             // 起始页
@@ -269,6 +271,7 @@ namespace Yuri.Hemerocallis.Forms
             this.IndexPageRef = new IndexPage();
             this.StartPageViewItem = new TreeViewItem() { Header = "起始页", Tag = "HemeIndexPage" };
             this.TreeView_ProjectTree.Items.Insert(0, this.StartPageViewItem);
+            this.StartPageViewItem.PreviewMouseRightButtonDown += this.TreeViewItem_PreviewMouseRightButtonDown;
         }
 
         /// <summary>
@@ -422,7 +425,40 @@ namespace Yuri.Hemerocallis.Forms
             this.core.FullCommit();
         }
 
-        
-        
+        /// <summary>
+        /// 工程树：右键按下
+        /// </summary>
+        public void TreeViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var treeViewItem = VisualUpwardSearch<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
+            if (treeViewItem != null)
+            {
+                treeViewItem.Focus();
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// 在WPF可视化树上搜索指定类型的父节点
+        /// </summary>
+        /// <typeparam name="T">T是父节点的类型</typeparam>
+        /// <param name="source">开始冒泡搜索的可视化依赖项对象</param>
+        /// <returns>冒泡过程中遇到的第一个满足类型条件的依赖项父节点</returns>
+        private static DependencyObject VisualUpwardSearch<T>(DependencyObject source)
+        {
+            while (source != null && source.GetType() != typeof(T))
+            {
+                source = VisualTreeHelper.GetParent(source);
+            }
+            return source;
+        }
+
+        /// <summary>
+        /// 工程树右键菜单：删除
+        /// </summary>
+        private void TreeViewContextMenu_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            this.Button_Click_Menu_Delete(null, null);
+        }
     }
 }

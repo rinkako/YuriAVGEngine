@@ -100,6 +100,14 @@
             <TreeView.Effect>
                 <DropShadowEffect Direction="0" Opacity="0.2" BlurRadius="10" RenderingBias="Performance"/>
             </TreeView.Effect>
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Name="TreeViewContextMenu_New" Header="新建子级"/>
+                    <MenuItem Name="TreeViewContextMenu_Rename" Header="重命名"/>
+                    <MenuItem Name="TreeViewContextMenu_Delete" Header="删除" Click="TreeViewContextMenu_Delete_Click"/>
+                    <MenuItem Name="TreeViewContextMenu_Information" Header="信息"/>
+                </ContextMenu>
+            </TreeView.ContextMenu>
         </TreeView>
         <!-- 便签层 -->
         <Canvas Visibility="Visible" x:Name="TipCanvas" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
