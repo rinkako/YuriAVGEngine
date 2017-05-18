@@ -17,6 +17,7 @@ namespace Yuri.YuriLauncher.Utils
         {
             FileStream fs = new FileStream(IOUtils.ParseURItoURL("YuriConfig.dat"), FileMode.Open);
             StreamReader sr = new StreamReader(fs);
+            typeVec = new List<string>();
             while (sr.EndOfStream == false)
             {
                 string aline = sr.ReadLine();
@@ -24,11 +25,14 @@ namespace Yuri.YuriLauncher.Utils
                 if (lineitems?.Length == 3)
                 {
                     configDict.Add(lineitems[0], lineitems[1]);
+                    typeVec.Add(lineitems[2]);
                 }
             }
             sr.Close();
             fs.Close();
         }
+
+        private List<string> typeVec;
 
         /// <summary>
         /// 将配置信息写到稳定储存器
@@ -39,9 +43,10 @@ namespace Yuri.YuriLauncher.Utils
             {
                 FileStream fs = new FileStream(IOUtils.ParseURItoURL("YuriConfig.dat"), FileMode.Create);
                 StreamWriter sw = new StreamWriter(fs);
+                int ctr = 0;
                 foreach (var kvp in this.configDict)
                 {
-                    sw.WriteLine("{0} => {1}", kvp.Key, kvp.Value);
+                    sw.WriteLine("{0}=>{1}=>{2}", kvp.Key, kvp.Value, this.typeVec[ctr++]);
                 }
                 sw.Close();
                 fs.Close();
@@ -51,7 +56,7 @@ namespace Yuri.YuriLauncher.Utils
                 MessageBox.Show(@"保存配置信息失败" + Environment.NewLine + ex);
             }
         }
-
+        
         /// <summary>
         /// 注册一个设置
         /// </summary>

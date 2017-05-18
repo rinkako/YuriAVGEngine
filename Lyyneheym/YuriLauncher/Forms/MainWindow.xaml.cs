@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -267,7 +268,7 @@ namespace Yuri.YuriLauncher.Forms
                 this.cp["GameEnableSCamera"] = "True";
             }
             // 打字动画
-            if (radioButton_Screen_Typing_2.IsChecked == true)
+            if (radioButton_Screen_Typing_1.IsChecked == true)
             {
                 this.cp["GameMsgLayerTypeSpeed"] = this.slider_Screen_Typing.Value.ToString("0");
             }
@@ -278,7 +279,7 @@ namespace Yuri.YuriLauncher.Forms
             // 字体
             try
             {
-                this.cp["GameMsgLayerFontName"] = textblock_Screen_Typing.FontFamily.FamilyNames.First().ToString();
+                this.cp["GameMsgLayerFontName"] = textblock_Screen_Typing.FontFamily.FamilyNames.Last().Value.ToString();
             }
             catch (Exception)
             {
@@ -567,7 +568,11 @@ namespace Yuri.YuriLauncher.Forms
         /// </summary>
         private void button_System_Launch_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
+            ProcessStartInfo p;
+            Process Proc;
+            p = new ProcessStartInfo("Yuri.exe") { WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory };
+            Proc = System.Diagnostics.Process.Start(p);
         }
 
         /// <summary>
