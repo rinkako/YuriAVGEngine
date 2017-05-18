@@ -570,9 +570,8 @@ namespace Yuri.YuriLauncher.Forms
         {
             this.Close();
             ProcessStartInfo p;
-            Process Proc;
             p = new ProcessStartInfo("Yuri.exe") { WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory };
-            Proc = System.Diagnostics.Process.Start(p);
+            Process.Start(p);
         }
 
         /// <summary>

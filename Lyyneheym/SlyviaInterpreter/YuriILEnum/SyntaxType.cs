@@ -115,6 +115,8 @@
         synr_chapter,
         // 消息弹窗
         synr_alert,
+        // 截图
+        synr_snapshot,
         // 参数：类型
         para_type,
         // 参数：函数签名

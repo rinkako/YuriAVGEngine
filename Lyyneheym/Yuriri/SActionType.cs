@@ -116,6 +116,8 @@
         // 章节设置
         act_chapter,
         // 消息弹窗
-        act_alert
+        act_alert,
+        // 截图
+        act_snapshot
     }
 }

@@ -102,7 +102,7 @@ namespace Yuri.PlatformCore
                 // 移动下一指令指针，为下次处理做准备
                 if (ret.Type != SActionType.act_for)
                 {
-                    vsm.ESP.MacroStep(ret);
+                    ret = vsm.ESP.MacroStep(ret);
                 }
                 // 返回当前要执行的指令实例
                 return ret;
@@ -136,7 +136,7 @@ namespace Yuri.PlatformCore
                             ret = vsm.ESP.MacroStep(ret);
                         }
                         // 再移动一次指针，为下次处理做准备
-                        vsm.ESP.MacroStep(ret);
+                        // ret = vsm.ESP.MacroStep(ret);
                         // 返回当前要执行的指令实例
                         return ret;
                     // FOR语句
@@ -154,7 +154,7 @@ namespace Yuri.PlatformCore
                             ret = vsm.ESP.MacroStep(ret);
                         }
                         // 再移动一次指针，为下次处理做准备
-                        vsm.ESP.MacroStep(ret);
+                        // ret = vsm.ESP.MacroStep(ret);
                         // 返回当前要执行的指令实例
                         return ret;
                     // 除此以外，带了cond的语句，为真才执行
@@ -165,7 +165,7 @@ namespace Yuri.PlatformCore
                             ret = vsm.ESP.MacroStep(ret);
                         }
                         // 移动下一指令指针，为下次处理做准备
-                        vsm.ESP.MacroStep(ret);
+                        //ret = vsm.ESP.MacroStep(ret);
                         // 返回当前要执行的指令实例
                         return ret;
                 }

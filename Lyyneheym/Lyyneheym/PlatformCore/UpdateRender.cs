@@ -213,6 +213,7 @@ namespace Yuri.PlatformCore
                         {
                             // 隐藏对话框
                             case 0:
+                                this.SaveSnapshot();
                                 mainMsgLayer.Visibility = Visibility.Hidden;
                                 MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Hidden;
                                 break;
@@ -816,6 +817,10 @@ namespace Yuri.PlatformCore
                         );
                     break;
                 case SActionType.act_label:
+                    this.Label(action.ArgsDict["name"]);
+                    break;
+                case SActionType.act_snapshot:
+                    this.SaveSnapshot();
                     break;
                 case SActionType.act_switch:
                     this.Switch(
@@ -1020,6 +1025,28 @@ namespace Yuri.PlatformCore
         private void Break(SceneAction breakSa)
         {
             Director.RunMana.CallStack.ESP.MircoStep(breakSa.Next);
+        }
+
+        /// <summary>
+        /// 演绎函数：标签
+        /// </summary>
+        /// <param name="labelName">标签的名字</param>
+        private void Label(string labelName)
+        {
+            if (Director.IsRClicking && labelName == "~finalizer")
+            {
+                if (this.IsShowingDialog)
+                {
+                    var mainMsgLayer = this.viewMana.GetMessageLayer(0).DisplayBinding;
+                    mainMsgLayer.Visibility = Visibility.Visible;
+                    MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Visible;
+                }
+                else if (this.IsBranching)
+                {
+                    this.viewMana.EnableBranchButtonHitTest();
+                }
+                this.RclickCounter = this.IsBranching ? 1 : 0;
+            }
         }
 
         /// <summary>
@@ -1244,6 +1271,16 @@ namespace Yuri.PlatformCore
                         "UpdateRender", OutputStyle.Warning);
                     break;
             }
+        }
+
+        /// <summary>
+        /// 演绎函数：为保存拍摄屏幕快照
+        /// </summary>
+        private void SaveSnapshot()
+        {
+            ViewManager.RenderFrameworkElementToJPEG(
+                ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid,
+                GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
         }
 
         /// <summary>

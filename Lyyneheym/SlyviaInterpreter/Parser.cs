@@ -1010,6 +1010,9 @@ namespace Yuri.YuriInterpreter
                     case TokenType.Token_o_semaphore:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_semaphore, "name", "target", "dash", "activator", "deactivator");
                         break;
+                    case TokenType.Token_o_snapshot:
+                        statementNode.NodeSyntaxType = SyntaxType.synr_snapshot;
+                        break;
                     case TokenType.Token_o_stopbgm:
                         statementNode.NodeSyntaxType = SyntaxType.synr_stopbgm;
                         break;
