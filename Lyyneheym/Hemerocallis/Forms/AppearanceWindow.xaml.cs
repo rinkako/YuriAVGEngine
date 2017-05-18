@@ -21,8 +21,29 @@ namespace Yuri.Hemerocallis.Forms
     /// </summary>
     public partial class AppearanceWindow : MetroWindow
     {
+        /// <summary>
+        /// 后台的引用
+        /// </summary>
         private readonly Controller core = Controller.GetInstance();
 
+        /// <summary>
+        /// 当前的背景图片
+        /// </summary>
+        private string bgPicPath = String.Empty;
+
+        /// <summary>
+        /// 当前字体名字
+        /// </summary>
+        private string curFontName;
+
+        /// <summary>
+        /// 当前字号
+        /// </summary>
+        private double curFontSize;
+
+        /// <summary>
+        /// 构造外观页面
+        /// </summary>
         public AppearanceWindow()
         {
             InitializeComponent();
@@ -62,6 +83,7 @@ namespace Yuri.Hemerocallis.Forms
             this.TextBox_Ft_B.Text = ftcItems[2];
         }
 
+        #region 前端响应事件
         private void CheckBox_Font_Ze_Checked(object sender, RoutedEventArgs e)
         {
             this.Slider_Font_ZeRadius.Value = 3;
@@ -115,10 +137,6 @@ namespace Yuri.Hemerocallis.Forms
                 this.RichTextBox_Font_Preview.FontSize = curFontSize;
             }
         }
-
-        private string curFontName;
-
-        private double curFontSize;
         
         private void Slider_Font_ZeRadius_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -178,7 +196,7 @@ namespace Yuri.Hemerocallis.Forms
             }
         }
 
-        private string bgPicPath = String.Empty;
+        
 
         private void TextBox_Ft_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -302,5 +320,6 @@ namespace Yuri.Hemerocallis.Forms
             }
             this.core.WriteConfigToSteady();
         }
+        #endregion
     }
 }
