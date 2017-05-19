@@ -83,6 +83,15 @@ namespace Yuri.PlatformCore.VM
         }
 
         /// <summary>
+        /// 是否分支的拷贝
+        /// </summary>
+        public bool IsBranchingRefer
+        {
+            get;
+            set;
+        }
+        
+        /// <summary>
         /// 时间戳
         /// </summary>
         public DateTime TimeStamp

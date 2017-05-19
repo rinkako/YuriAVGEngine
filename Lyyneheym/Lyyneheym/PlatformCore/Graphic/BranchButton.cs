@@ -299,6 +299,7 @@ namespace Yuri.PlatformCore.Graphic
                             this.Enable = false;
                             Director.GetInstance().RemoveAllBranchButton();
                         }
+                        Director.GetInstance().GetMainRender().IsBranching = false;
                         return;
                     }
                     if (this.DisplayBinding != null)

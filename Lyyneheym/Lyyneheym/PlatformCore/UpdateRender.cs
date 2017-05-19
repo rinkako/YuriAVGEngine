@@ -221,6 +221,7 @@ namespace Yuri.PlatformCore
                             case 1:
                                 if (this.IsBranching)
                                 {
+                                    this.SaveSnapshot();
                                     this.viewMana.DisableBranchButtonHitTest();
                                 }
                                 Director.GetInstance().FunctionCalling("rclick@main", "()", this.VsmReference);
@@ -303,8 +304,6 @@ namespace Yuri.PlatformCore
             }
             if (UpdateRender.KS_KEY_Dict[Key.L] == KeyStates.Down && ViewPageManager.IsAtMainStage())
             {
-                Canvas mainCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
-                ViewManager.RenderFrameworkElementToJPEG(mainCanvas, IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg"));
                 SLPage p = (SLPage)ViewPageManager.RetrievePage("LoadPage");
                 p.ReLoadFileInfo();
                 ViewPageManager.NavigateTo("LoadPage");
@@ -583,7 +582,23 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置当前是否正在显示选择支
         /// </summary>
-        public bool IsBranching { get; set; } = false;
+        public bool IsBranching {
+            get => this.isBranching;
+            set
+            {
+                if (this.isBranching = value)
+                {
+                    this.RclickCounter = 1;
+                }
+                else
+                {
+                    this.RclickCounter = 0;
+                }
+            }
+        }
+
+
+        private bool isBranching = false;
 
         /// <summary>
         /// 是否下一动作仍为对话
@@ -1511,8 +1526,6 @@ namespace Yuri.PlatformCore
         public void Save()
         {
             Director.PauseUpdateContext();
-            var renderCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
-            ViewManager.RenderFrameworkElementToJPEG(renderCanvas, GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
             ((SLPage)ViewPageManager.RetrievePage("SavePage")).ReLoadFileInfo();
             ViewPageManager.NavigateTo("SavePage");
         }
@@ -1710,7 +1723,6 @@ namespace Yuri.PlatformCore
             // 更改状态
             this.IsShowingDialog = false;
             this.IsBranching = true;
-            this.RclickCounter = 1;
             // 追加等待
             Director.RunMana.UserWait("UpdateRender", String.Format("BranchWaitFor:{0}", linkStr));
         }

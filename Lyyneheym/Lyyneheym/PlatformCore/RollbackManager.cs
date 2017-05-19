@@ -39,6 +39,7 @@ namespace Yuri.PlatformCore
                 RollbackableSnapshot ssp = new RollbackableSnapshot()
                 {
                     TimeStamp = DateTime.Now,
+                    IsBranchingRefer = Director.GetInstance().GetMainRender().IsBranching,
                     MusicRef = playingBGM,
                     ReactionRef = saPtr,
                     VMRef = vm,
@@ -114,6 +115,7 @@ namespace Yuri.PlatformCore
             Director.ScrMana = ScreenManager.GetInstance();
             // 刷新主渲染器上的堆栈绑定
             Director.GetInstance().RefreshMainRenderVMReference();
+            Director.GetInstance().GetMainRender().IsBranching = ssp.IsBranchingRefer;
             // 重绘整个画面
             ViewManager.GetInstance().ReDraw();
             // 恢复背景音乐

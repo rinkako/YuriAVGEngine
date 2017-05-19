@@ -1159,7 +1159,7 @@ namespace Yuri.PlatformCore.Graphic
             try
             {
                 System.IO.FileStream ms = new System.IO.FileStream(filename, System.IO.FileMode.Create);
-                RenderTargetBitmap bmp = new RenderTargetBitmap((int)ui.ActualWidth, (int)ui.ActualHeight, 96d, 96d, PixelFormats.Pbgra32);
+                RenderTargetBitmap bmp = new RenderTargetBitmap((int)(ui.ActualWidth * (48.0 / 96)), (int)(ui.ActualHeight * (48.0 / 96)), 48d, 48d, PixelFormats.Pbgra32);
                 bmp.Render(ui);
                 JpegBitmapEncoder encoder = new JpegBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(bmp));

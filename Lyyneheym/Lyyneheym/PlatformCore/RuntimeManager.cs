@@ -82,30 +82,30 @@ namespace Yuri.PlatformCore
                         // 优先进入trueRouting
                         if (ret.TrueRouting != null && ret.TrueRouting.Count > 0)
                         {
-                            ret = vsm.ESP.MircoStep(ret.TrueRouting[0]);
-                            break;
+                            return vsm.ESP.MircoStep(ret.TrueRouting[0]);
+                            
                         }
                         // falseRouting
                         if (ret.FalseRouting != null && ret.FalseRouting.Count > 0)
                         {
-                            ret = vsm.ESP.MircoStep(ret.FalseRouting[0]);
-                            break;
+                            return vsm.ESP.MircoStep(ret.FalseRouting[0]);
+                            
                         }
                         // next
-                        ret = vsm.ESP.MacroStep(ret);
-                        break;
+                        return vsm.ESP.MacroStep(ret);
+                        
                     case SActionType.act_endfor:
                         // endfor直接跳过
-                        ret = vsm.ESP.MacroStep(ret);
-                        break;
+                        return vsm.ESP.MacroStep(ret);
+                        
                 }
                 // 移动下一指令指针，为下次处理做准备
-                if (ret.Type != SActionType.act_for)
-                {
-                    ret = vsm.ESP.MacroStep(ret);
-                }
+                //if (ret.Type != SActionType.act_for)
+                //{
+                return vsm.ESP.MacroStep(ret);
+                //}
                 // 返回当前要执行的指令实例
-                return ret;
+                //return ret;
             }
             // 条件子句不为空时
             else
