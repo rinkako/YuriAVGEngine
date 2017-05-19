@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Collections.Generic;
 using System.Threading;
+using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Yuri.Hemerocallis.Entity;
@@ -80,6 +81,27 @@ namespace Yuri.Hemerocallis.Forms
             // 刷新项目树
             this.ReDrawProjectTree();
             this.StartPageViewItem.IsSelected = true;
+
+
+
+
+            ContentControl cc = new ContentControl()
+            {
+                Width = 100,
+                Height = 100,
+                Padding = new Thickness(1),
+                Visibility = Visibility.Visible,
+                Style = this.FindResource("DesignerItemStyle") as Style,
+                Content = new Ellipse()
+                {
+                    Fill = new SolidColorBrush(Colors.Red),
+                    IsHitTestVisible = false
+                },
+            };
+            Canvas.SetLeft(cc, 233);
+            Canvas.SetTop(cc, 233);
+            this.TipCanvas.Children.Add(cc);
+
         }
 
         /// <summary>
@@ -99,10 +121,25 @@ namespace Yuri.Hemerocallis.Forms
 
         #region 辅助函数
 
-        
+
         #endregion
 
         #region 标题栏和工程树
+        /// <summary>
+        /// 获取或设置当前主编辑区的背景画笔
+        /// </summary>
+        public Brush MainAreaBrush { get; set; }
+
+        /// <summary>
+        /// 获取或设置首页的背景画笔
+        /// </summary>
+        public ImageBrush IndexBackgroundBrush { get; set; }
+
+        /// <summary>
+        /// 获取或设置首页页面的引用
+        /// </summary>
+        public IndexPage IndexPageRef { get; set; }
+
         /// <summary>
         /// 标题栏按钮：打开关闭工程栏
         /// </summary>
@@ -129,11 +166,26 @@ namespace Yuri.Hemerocallis.Forms
             aw.ShowDialog();
         }
 
-        public Brush MainAreaBrush { get; set; }
+        /// <summary>
+        /// 工程树右键菜单：删除
+        /// </summary>
+        private void TreeViewContextMenu_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            this.Button_Click_Menu_Delete(null, null);
+        }
 
-        public ImageBrush IndexBackgroundBrush { get; set; }
-
-        public IndexPage IndexPageRef { get; set; }
+        /// <summary>
+        /// 工程树：右键按下
+        /// </summary>
+        public void TreeViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var treeViewItem = VisualUpwardSearch<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
+            if (treeViewItem != null)
+            {
+                treeViewItem.Focus();
+                e.Handled = true;
+            }
+        }
 
         /// <summary>
         /// 工程树：选择项改变
@@ -425,18 +477,7 @@ namespace Yuri.Hemerocallis.Forms
             this.core.FullCommit();
         }
 
-        /// <summary>
-        /// 工程树：右键按下
-        /// </summary>
-        public void TreeViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var treeViewItem = VisualUpwardSearch<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
-            if (treeViewItem != null)
-            {
-                treeViewItem.Focus();
-                e.Handled = true;
-            }
-        }
+
 
         /// <summary>
         /// 在WPF可视化树上搜索指定类型的父节点
@@ -452,13 +493,13 @@ namespace Yuri.Hemerocallis.Forms
             }
             return source;
         }
-
+        
         /// <summary>
-        /// 工程树右键菜单：删除
+        /// 命令栏按钮：添加贴纸
         /// </summary>
-        private void TreeViewContextMenu_Delete_Click(object sender, RoutedEventArgs e)
+        private void Image_MouseLeftButtonUp_TipBtn(object sender, MouseButtonEventArgs e)
         {
-            this.Button_Click_Menu_Delete(null, null);
+            new AddTipWindow().ShowDialog();
         }
     }
 }
