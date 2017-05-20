@@ -110,13 +110,13 @@
             </TreeView.ContextMenu>
         </TreeView>
         <!-- 便签层 -->
-        <Canvas Visibility="Hidden" x:Name="TipCanvas" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
+        <Canvas Visibility="Visible" x:Name="TipCanvas" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <ContentControl Width="100"
                       Height="100"
                       Padding="1"
                       Canvas.Left="746"
                       Canvas.Top="579"
-                      Visibility="Visible"
+                      Visibility="Hidden"
                       Style="{StaticResource DesignerItemStyle}">
                 <Ellipse IsHitTestVisible="False">
                     <Ellipse.Fill>

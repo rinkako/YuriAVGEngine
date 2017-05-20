@@ -81,27 +81,7 @@ namespace Yuri.Hemerocallis.Forms
             // 刷新项目树
             this.ReDrawProjectTree();
             this.StartPageViewItem.IsSelected = true;
-
-
-
-
-            ContentControl cc = new ContentControl()
-            {
-                Width = 100,
-                Height = 100,
-                Padding = new Thickness(1),
-                Visibility = Visibility.Visible,
-                Style = this.FindResource("DesignerItemStyle") as Style,
-                Content = new Ellipse()
-                {
-                    Fill = new SolidColorBrush(Colors.Red),
-                    IsHitTestVisible = false
-                },
-            };
-            Canvas.SetLeft(cc, 233);
-            Canvas.SetTop(cc, 233);
-            this.TipCanvas.Children.Add(cc);
-
+            
         }
 
         /// <summary>
@@ -485,7 +465,7 @@ namespace Yuri.Hemerocallis.Forms
         /// <typeparam name="T">T是父节点的类型</typeparam>
         /// <param name="source">开始冒泡搜索的可视化依赖项对象</param>
         /// <returns>冒泡过程中遇到的第一个满足类型条件的依赖项父节点</returns>
-        private static DependencyObject VisualUpwardSearch<T>(DependencyObject source)
+        public static DependencyObject VisualUpwardSearch<T>(DependencyObject source)
         {
             while (source != null && source.GetType() != typeof(T))
             {
@@ -493,7 +473,22 @@ namespace Yuri.Hemerocallis.Forms
             }
             return source;
         }
-        
+
+        /// <summary>
+        /// 在WPF可视化树上搜索指定类型的父节点
+        /// </summary>
+        /// <typeparam name="T">T是父节点的类型</typeparam>
+        /// <param name="source">开始冒泡搜索的可视化依赖项对象</param>
+        /// <returns>冒泡过程中遇到的第一个满足类型条件的依赖项父节点</returns>
+        public static DependencyObject VisualUpwardSearch<T>(DependencyObject source, string tname)
+        {
+            while (source != null && source.GetType() != typeof(T) && (source as FrameworkElement).Name != tname)
+            {
+                source = VisualTreeHelper.GetParent(source);
+            }
+            return source;
+        }
+
         /// <summary>
         /// 命令栏按钮：添加贴纸
         /// </summary>

@@ -233,16 +233,19 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\bg_tip_blue.png">
+    <Resource Include="Assets\bg_tip_0.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Assets\bg_tip_green.png">
+    <Resource Include="Assets\bg_tip_1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Assets\bg_tip_pink.png">
+    <Resource Include="Assets\bg_tip_2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Assets\bg_tip_purple.png">
+    <Resource Include="Assets\bg_tip_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\bg_tip_4.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
