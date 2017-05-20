@@ -26,7 +26,6 @@ namespace Yuri.Hemerocallis.Forms
         public AddTipWindow()
         {
             InitializeComponent();
-            
         }
         
 
@@ -57,65 +56,13 @@ namespace Yuri.Hemerocallis.Forms
             }
             else if (this.radioButton2.IsChecked == true)
             {
-                var fd = new System.Windows.Forms.OpenFileDialog() {Filter = @"支持的图片类型|*.jpg;*.png"};
+                var fd = new System.Windows.Forms.OpenFileDialog() { Filter = @"支持的图片类型|*.jpg;*.png" };
                 fd.ShowDialog();
                 if (fd.FileName == String.Empty)
                 {
                     return;
                 }
-                var bmp = new BitmapImage(new Uri(fd.FileName, UriKind.RelativeOrAbsolute));
-                ContentControl cc = new ContentControl()
-                {
-                    Width = 200,
-                    Height = 200 * (bmp.Height / bmp.Width),
-                    MinWidth = 64,
-                    MinHeight = 64,
-                    Padding = new Thickness(1),
-                    Visibility = Visibility.Visible,
-                    Style = AddTipWindow.core.mainWndRef.FindResource("DesignerItemStyle") as Style,
-                    Effect = new DropShadowEffect()
-                    {
-                        Color = Colors.Black,
-                        Direction = 0,
-                        ShadowDepth = 0,
-                        Opacity = 1,
-                        BlurRadius = 5
-                    }
-                };
-                Grid inGrid = new Grid()
-                {
-                    Background = new SolidColorBrush(Colors.White),
-                    Width = cc.Width,
-                    Height = cc.Height,
-                    Margin = new Thickness(5)
-                };
-                cc.Content = inGrid;
-                Binding resizeWBinding = new Binding()
-                {
-                    Source = cc,
-                    Path = new PropertyPath("Width"),
-                    Mode = BindingMode.OneWay,
-                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-                };
-                Binding resizeHBinding = new Binding()
-                {
-                    Source = cc,
-                    Path = new PropertyPath("Height"),
-                    Mode = BindingMode.OneWay,
-                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-                };
-                BindingOperations.SetBinding(inGrid, Grid.WidthProperty, resizeWBinding);
-                BindingOperations.SetBinding(inGrid, Grid.HeightProperty, resizeHBinding);
-                Image img = new Image()
-                {
-                    Margin = new Thickness(0),
-                    Source = bmp,
-                    Stretch = Stretch.Fill
-                };
-                inGrid.Children.Add(img);
-                Canvas.SetLeft(cc, 255);
-                Canvas.SetTop(cc, 255);
-                AddTipWindow.core.mainWndRef.TipCanvas.Children.Add(cc);
+                AddTipWindow.AddPictureTip(fd.FileName);
             }
             this.Close();
         }
@@ -186,6 +133,68 @@ namespace Yuri.Hemerocallis.Forms
             inGrid.Children.Add(tb);
             Canvas.SetLeft(cc, 233);
             Canvas.SetTop(cc, 233);
+            AddTipWindow.core.mainWndRef.TipCanvas.Children.Add(cc);
+        }
+
+        /// <summary>
+        /// 添加一个图片小贴纸
+        /// </summary>
+        /// <param name="picPath">图片的绝对路径</param>
+        public static void AddPictureTip(string picPath)
+        {
+            var bmp = new BitmapImage(new Uri(picPath, UriKind.RelativeOrAbsolute));
+            ContentControl cc = new ContentControl()
+            {
+                Width = 200,
+                Height = 200 * (bmp.Height / bmp.Width),
+                MinWidth = 64,
+                MinHeight = 64,
+                Padding = new Thickness(1),
+                Visibility = Visibility.Visible,
+                Style = AddTipWindow.core.mainWndRef.FindResource("DesignerItemStyle") as Style,
+                Effect = new DropShadowEffect()
+                {
+                    Color = Colors.Black,
+                    Direction = 0,
+                    ShadowDepth = 0,
+                    Opacity = 1,
+                    BlurRadius = 5
+                }
+            };
+            Grid inGrid = new Grid()
+            {
+                Background = new SolidColorBrush(Colors.White),
+                Width = cc.Width,
+                Height = cc.Height,
+                Margin = new Thickness(5),
+                IsHitTestVisible = false
+            };
+            cc.Content = inGrid;
+            Binding resizeWBinding = new Binding()
+            {
+                Source = cc,
+                Path = new PropertyPath("Width"),
+                Mode = BindingMode.OneWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+            Binding resizeHBinding = new Binding()
+            {
+                Source = cc,
+                Path = new PropertyPath("Height"),
+                Mode = BindingMode.OneWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+            BindingOperations.SetBinding(inGrid, Grid.WidthProperty, resizeWBinding);
+            BindingOperations.SetBinding(inGrid, Grid.HeightProperty, resizeHBinding);
+            Image img = new Image()
+            {
+                Margin = new Thickness(0),
+                Source = bmp,
+                Stretch = Stretch.Fill
+            };
+            inGrid.Children.Add(img);
+            Canvas.SetLeft(cc, 255);
+            Canvas.SetTop(cc, 255);
             AddTipWindow.core.mainWndRef.TipCanvas.Children.Add(cc);
         }
 
