@@ -32,7 +32,7 @@ namespace Yuri.PlatformCore
             {
                 // 读取游戏设置
                 ConfigParser.ConfigParse();
-                // 第一次打开游戏就创建持久性上下文
+                // 第一次打开游戏就创建持久性上下文 todo 持久性上下文存在声明问题，后续解决
                 if (System.IO.File.Exists(GlobalConfigContext.PersistenceFileName) == false)
                 {
                     PersistContextDAO.Assign("___YURIRI@ACCDURATION___", 0);
@@ -852,14 +852,8 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static ScreenManager ScrMana
         {
-            get
-            {
-                return Director.RunMana.Screen;
-            }
-            set
-            {
-                Director.RunMana.Screen = value;
-            }
+            get => Director.RunMana.Screen;
+            set => Director.RunMana.Screen = value;
         }
         
         /// <summary>
