@@ -14,7 +14,10 @@ namespace Yuri.PlatformCore.VM
         /// <param name="filename">文件名字</param>
         public void SaveToSteadyMemory(string filename)
         {
-            IOUtils.Serialization(this.symbols, filename);
+            lock (this)
+            {
+                IOUtils.Serialization(this.symbols, filename);
+            }
         }
 
         /// <summary>
@@ -23,7 +26,23 @@ namespace Yuri.PlatformCore.VM
         /// <param name="filename">文件名字</param>
         public void LoadFromSteadyMemory(string filename)
         {
-            this.symbols = IOUtils.Unserialization(filename) as Dictionary<string, object>;
+            lock (this)
+            {
+                this.symbols = IOUtils.Unserialization(filename) as Dictionary<string, object>;
+            }
+        }
+
+        /// <summary>
+        /// 从此上下文中取一个变量名对应的对象
+        /// </summary>
+        /// <param name="varName">变量名</param>
+        /// <returns>变量代表的对象引用</returns>
+        public override object Fetch(string varName)
+        {
+            lock (this)
+            {
+                return this.symbols.ContainsKey(varName) ? this.symbols[varName] : 0;
+            }
         }
     }
 }
