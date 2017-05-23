@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 
 namespace Yuri.PlatformCore.Audio
 {
@@ -17,6 +18,7 @@ namespace Yuri.PlatformCore.Audio
             this.wavePlayer = new WaveOut();
             this.playingStream = new StreamMediaFoundationReader(this.BindingStream = playStream);
             this.volumeProvider = new VolumeWaveProvider16(playingStream) { Volume = volume };
+            this.fadeInOutProvicer = new FadeInOutSampleProvider(this.playingStream.ToSampleProvider());
             this.wavePlayer.Init(this.volumeProvider);
             this.IsLoop = loop;
             this.stopCallback = stopCallback;
@@ -51,6 +53,30 @@ namespace Yuri.PlatformCore.Audio
             {
                 this.wavePlayer.Pause();
                 this.IsPlaying = false;
+            }
+        }
+
+        /// <summary>
+        /// 淡入音乐
+        /// </summary>
+        /// <param name="fadems">淡入动作毫秒数</param>
+        public void FadeIn(double fadems)
+        {
+            if (this.IsPlaying)
+            {
+                this.fadeInOutProvicer.BeginFadeIn(fadems);
+            }
+        }
+
+        /// <summary>
+        /// 淡出音乐
+        /// </summary>
+        /// <param name="fadems">淡出动作毫秒数</param>
+        public void FadeOut(double fadems)
+        {
+            if (this.IsPlaying)
+            {
+                this.fadeInOutProvicer.BeginFadeOut(fadems);
             }
         }
 
@@ -119,10 +145,7 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public float Volume
         {
-            get
-            {
-                return this.volumeProvider.Volume;
-            }
+            get => this.volumeProvider.Volume;
             set
             {
                 if (this.volumeProvider != null)
@@ -176,5 +199,10 @@ namespace Yuri.PlatformCore.Audio
         /// 可控制流音量的波形提供器
         /// </summary>
         private VolumeWaveProvider16 volumeProvider = null;
+
+        /// <summary>
+        /// 可淡入淡出的波形提供器
+        /// </summary>
+        private FadeInOutSampleProvider fadeInOutProvicer = null;
     }
 }

@@ -50,7 +50,7 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("No config file is detected, use defualt value." + ex.ToString(), "Director", OutputStyle.Error);
+                CommonUtils.ConsoleLine("No config file is detected, use defualt value." + ex, "Director", OutputStyle.Error);
             }
         }
 

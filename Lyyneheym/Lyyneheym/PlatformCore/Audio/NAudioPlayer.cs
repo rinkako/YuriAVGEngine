@@ -76,6 +76,56 @@ namespace Yuri.PlatformCore.Audio
         }
 
         /// <summary>
+        /// 淡入通道
+        /// </summary>
+        /// <param name="handle">通道句柄</param>
+        /// <param name="ms">淡入时间</param>
+        /// <returns>动作是否成功</returns>
+        public bool FadeIn(int handle, double ms)
+        {
+            try
+            {
+                if (this.channelDict.ContainsKey(handle) == false)
+                {
+                    CommonUtils.ConsoleLine("Fadein audio in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
+                    return false;
+                }
+                this.channelDict[handle].FadeIn(ms);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                CommonUtils.ConsoleLine("Fadein audio failed." + ex, "NAudioPlayer", OutputStyle.Error);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 淡出通道
+        /// </summary>
+        /// <param name="handle">通道句柄</param>
+        /// <param name="ms">淡出时间</param>
+        /// <returns>动作是否成功</returns>
+        public bool FadeOut(int handle, double ms)
+        {
+            try
+            {
+                if (this.channelDict.ContainsKey(handle) == false)
+                {
+                    CommonUtils.ConsoleLine("Fadeout audio in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
+                    return false;
+                }
+                this.channelDict[handle].FadeOut(ms);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                CommonUtils.ConsoleLine("Fadeout audio failed." + ex, "NAudioPlayer", OutputStyle.Error);
+                return false;
+            }
+        }
+
+        /// <summary>
         /// 停止通道并释放资源
         /// </summary>
         /// <param name="handle">通道句柄</param>
@@ -118,7 +168,7 @@ namespace Yuri.PlatformCore.Audio
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Pause audio failed." + ex.ToString(), "NAudioPlayer", OutputStyle.Error);
+                CommonUtils.ConsoleLine("Pause audio failed." + ex, "NAudioPlayer", OutputStyle.Error);
                 return false;
             }
         }
@@ -142,7 +192,7 @@ namespace Yuri.PlatformCore.Audio
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Resume play audio failed." + ex.ToString(), "NAudioPlayer", OutputStyle.Error);
+                CommonUtils.ConsoleLine("Resume play audio failed." + ex, "NAudioPlayer", OutputStyle.Error);
                 return false;
             }
         }
@@ -167,7 +217,7 @@ namespace Yuri.PlatformCore.Audio
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Set volume failed." + ex.ToString(), "NAudioPlayer", OutputStyle.Error);
+                CommonUtils.ConsoleLine("Set volume failed." + ex, "NAudioPlayer", OutputStyle.Error);
                 return false;
             }
         }
@@ -190,7 +240,7 @@ namespace Yuri.PlatformCore.Audio
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Get playing state failed." + ex.ToString(), "NAudioPlayer", OutputStyle.Error);
+                CommonUtils.ConsoleLine("Get playing state failed." + ex, "NAudioPlayer", OutputStyle.Error);
                 return false;
             }
         }
