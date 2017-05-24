@@ -227,6 +227,43 @@ namespace Yuri.Hemerocallis
         }
 
         /// <summary>
+        /// 新增一篇文章
+        /// </summary>
+        /// <param name="parentId">上级id</param>
+        /// <param name="name">文章的名字</param>
+        /// <returns>新增的文章的唯一标识符</returns>
+        public string AddArtical(string parentId, string name)
+        {
+            if (parentId.StartsWith("HBook"))
+            {
+                parentId = this.BookVector.Find(t => t.BookRef.Id == parentId).BookRef.HomePage.Id;
+            }
+            var parent = this.ArticleDict[parentId];
+            // 记录时间戳
+            var createTime = DateTime.Now;
+            // 构造主页文章
+            FlowDocument flowDoc = new FlowDocument();
+            TextRange st = new TextRange(flowDoc.ContentStart, flowDoc.ContentEnd);
+            MemoryStream metadata = new MemoryStream();
+            st.Save(metadata, System.Windows.DataFormats.XamlPackage);
+            HArticle ao = new HArticle()
+            {
+                Id = "HArticle#" + Guid.NewGuid(),
+                ParentId = parentId,
+                Name = name,
+                CreateTimeStamp = createTime,
+                LastEditTimeStamp = createTime,
+                DocumentMetadata = metadata,
+                BookId = parent.BookId
+            };
+            this.ArticleDict[ao.Id] = ao;
+            parent.ChildrenList.Add(ao);
+            // 提交到稳定储存器
+            this.BookCommit(parent.BookId);
+            return ao.Id;
+        }
+
+        /// <summary>
         /// 将一篇文章移动到一个新的书籍或文档的下属
         /// </summary>
         /// <param name="articalId">要移动的文章的唯一标识符</param>

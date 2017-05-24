@@ -11,7 +11,14 @@
         <controls:MetroAnimatedSingleRowTabControl Name="TabControl">
             <TabItem Header="   里程碑   ">
                 <Grid Background="SteelBlue">
-                    
+                    <RichTextBox HorizontalAlignment="Left" Height="215" Margin="64,61,0,0" VerticalAlignment="Top" Width="578">
+                        <FlowDocument>
+                            <Paragraph>
+                                <Run Text="RichTextBox"/>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+
                 </Grid>
             </TabItem>
             <TabItem Header="   时间轴   ">

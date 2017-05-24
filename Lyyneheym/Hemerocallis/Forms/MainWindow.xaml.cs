@@ -201,6 +201,7 @@ namespace Yuri.Hemerocallis.Forms
                 // 保存更改
                 if (this.CurrentActivePage != null)
                 {
+                    this.CurrentBookId = this.CurrentActivePage.ArticalRef.BookId;
                     this.core.PageCommit();
                 }
                 // 分析Tag
@@ -254,16 +255,18 @@ namespace Yuri.Hemerocallis.Forms
                 // 文章
                 else
                 {
-                    var p = this.core.ArticleDict[sType[1]];
-                    if (this.RTBPageCacheDict.ContainsKey(sType[1]))
+                    var pid = $"HArticle#{sType[1]}";
+                    var p = this.core.ArticleDict[pid];
+                    this.CurrentBookId = p.BookId;
+                    if (this.RTBPageCacheDict.ContainsKey(pid))
                     {
-                        this.CurrentActivePage = this.RTBPageCacheDict[sType[1]];
+                        this.CurrentActivePage = this.RTBPageCacheDict[pid];
                     }
                     else
                     {
                         RTBPage np = new RTBPage() { ArticalRef = p };
                         this.CurrentActivePage = np;
-                        this.RTBPageCacheDict.Add(sType[1], np);
+                        this.RTBPageCacheDict.Add(pid, np);
                     }
                     TextRange t = new TextRange(this.CurrentActivePage.RichTextBox_TextArea.Document.ContentStart,
                            this.CurrentActivePage.RichTextBox_TextArea.Document.ContentEnd);
