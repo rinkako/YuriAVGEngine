@@ -37,6 +37,11 @@ namespace Yuri.Hemerocallis.Entity
         public string ParentId { get; set; }
         
         /// <summary>
+        /// 获取或设置所属书籍的唯一ID
+        /// </summary>
+        public string BookId { get; set; }
+
+        /// <summary>
         /// 获取节点的孩子向量
         /// </summary>
         public List<HArticle> ChildrenList { get; } = new List<HArticle>();

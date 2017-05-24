@@ -95,6 +95,30 @@ namespace Yuri.Hemerocallis.Forms
         public RTBPage CurrentActivePage { get; private set; } = null;
 
         /// <summary>
+        /// 获取当前是否选中根目录的书
+        /// </summary>
+        public bool IsChoosingBook
+        {
+            get
+            {
+                var t = this.TreeView_ProjectTree.SelectedItem;
+                return t != null && (t as TreeViewItem).Tag.ToString().StartsWith("HBook", StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        /// <summary>
+        /// 获取当前是否选中首页
+        /// </summary>
+        public bool IsChoosingIndex
+        {
+            get
+            {
+                var t = this.TreeView_ProjectTree.SelectedItem;
+                return t != null && (t as TreeViewItem).Tag.ToString() == "HemeIndexPage";
+            }
+        }
+
+        /// <summary>
         /// RTB页缓存字典
         /// </summary>
         public readonly Dictionary<string, RTBPage> RTBPageCacheDict = new Dictionary<string, RTBPage>();
@@ -324,6 +348,48 @@ namespace Yuri.Hemerocallis.Forms
 
         #region 侧边栏
         /// <summary>
+        /// 侧边菜单按钮：导出文本文件
+        /// </summary>
+        private void Button_Click_Menu_Txt(object sender, RoutedEventArgs e)
+        {
+            this.Flyout_Menu.IsOpen = false;
+            try
+            {
+                if (this.CurrentActivePage != null)
+                {
+                    var fd = new System.Windows.Forms.SaveFileDialog
+                    {
+                        Filter = @"文本文件|*.txt;",
+                        FileName = this.CurrentActivePage.ArticalRef?.Name
+                    };
+                    fd.ShowDialog();
+                    if (fd.FileName != String.Empty)
+                    {
+                        var pureTxt = this.CurrentActivePage.GetText();
+                        FileStream fs = new FileStream(fd.FileName, FileMode.Create);
+                        StreamWriter sw = new StreamWriter(fs);
+                        sw.Write(pureTxt);
+                        sw.Close();
+                        fs.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"导出TXT文件失败" + Environment.NewLine + ex);
+            }
+        }
+
+        /// <summary>
+        /// 侧边菜单按钮：导出halation文件
+        /// </summary>
+        private void Button_Click_Menu_Halation(object sender, RoutedEventArgs e)
+        {
+            this.Flyout_Menu.IsOpen = false;
+            MessageBox.Show(@"暂未实装本功能");
+        }
+
+        /// <summary>
         /// 侧边菜单按钮：关于项目
         /// </summary>
         private void Button_Click_Menu_About(object sender, RoutedEventArgs e)
@@ -418,6 +484,14 @@ namespace Yuri.Hemerocallis.Forms
         {
             this.core.FullCommit();
         }
+
+        /// <summary>
+        /// 命令栏按钮：管理工程
+        /// </summary>
+        private void Image_MouseLeftButtonUp_WorldBtn(object sender, MouseButtonEventArgs e)
+        {
+            new WorldWindow().ShowDialog();
+        }
         #endregion
 
         /// <summary>
@@ -432,12 +506,29 @@ namespace Yuri.Hemerocallis.Forms
                 {
                     // 新建
                     case Key.N:
-                        new NewBookWindow().ShowDialog();
+                        if (this.IsChoosingIndex)
+                        {
+                            new NewBookWindow("新书", "取一个书名吧：", String.Empty, "我的新坑").ShowDialog();
+                        }
+                        else
+                        {
+                            new NewBookWindow("新建", "取一个章节名吧：",
+                                (this.TreeView_ProjectTree.SelectedItem as TreeViewItem).Tag.ToString(), String.Empty).ShowDialog();
+                        }
                         break;
                     // 页保存
                     case Key.S:
                         this.core.PageCommit();
                         break;
+                }
+            }
+            // 其他按键
+            if (e.Key == Key.F2)
+            {
+                if (!this.IsChoosingIndex)
+                {
+                    new NewBookWindow("重命名", "你想要的名字是：", (this.TreeView_ProjectTree.SelectedItem as TreeViewItem).Tag.ToString(),
+                        (this.TreeView_ProjectTree.SelectedItem as TreeViewItem).Header.ToString()).ShowDialog();
                 }
             }
         }
@@ -496,5 +587,7 @@ namespace Yuri.Hemerocallis.Forms
         {
             new AddTipWindow().ShowDialog();
         }
+
+        
     }
 }

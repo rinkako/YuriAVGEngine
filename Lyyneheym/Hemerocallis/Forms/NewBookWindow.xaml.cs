@@ -17,11 +17,25 @@ namespace Yuri.Hemerocallis.Forms
         private readonly Controller core = Controller.GetInstance();
 
         /// <summary>
+        /// 父级的唯一标识符
+        /// </summary>
+        private string parentId = String.Empty;
+
+        /// <summary>
         /// 构造一个新建书籍窗体
         /// </summary>
-        public NewBookWindow()
+        /// <param name="title">窗体标题</param>
+        /// <param name="label">窗体说明文本</param>
+        /// <param name="parentId">父级ID</param>
+        /// <param name="box">文本框内容</param>
+        public NewBookWindow(string title, string label, string parentId, string box)
         {
             InitializeComponent();
+            this.Label_Title.Content = title;
+            this.Label_Description.Content = label;
+            this.Title = title;
+            this.TextBox_BookName.Text = box;
+            this.parentId = parentId;
         }
 
         /// <summary>
@@ -32,20 +46,43 @@ namespace Yuri.Hemerocallis.Forms
             var bname = this.TextBox_BookName.Text.Trim();
             if (bname == String.Empty)
             {
-                MessageBox.Show("书名不可以为空");
+                MessageBox.Show("名字不可以为空");
                 return;
             }
-            // 更新后台
-            var adb = this.core.AddBook(bname);
-            // 更新前台
-            var item = new TreeViewItem()
+            // 书籍
+            if (this.Title == "新书")
             {
-                Header = bname,
-                Tag = adb
-            };
-            this.core.mainWndRef.TreeView_ProjectTree.Items.Add(item);
-            item.IsSelected = true;
-            item.PreviewMouseRightButtonDown += this.core.mainWndRef.TreeViewItem_PreviewMouseRightButtonDown;
+                // 更新后台
+                var adb = this.core.AddBook(bname);
+                // 更新前台
+                var item = new TreeViewItem()
+                {
+                    Header = bname,
+                    Tag = adb
+                };
+                this.core.mainWndRef.TreeView_ProjectTree.Items.Add(item);
+                item.IsSelected = true;
+                item.PreviewMouseRightButtonDown += this.core.mainWndRef.TreeViewItem_PreviewMouseRightButtonDown;
+            }
+            // 文章
+            else if (this.Title == "新建")
+            {
+                // 更新后台
+
+
+            }
+            // 重命名
+            else
+            {
+                var flag = this.parentId.StartsWith("HBook")
+                    ? this.core.RenameBook(this.parentId, bname)
+                    : this.core.RenameArtical(this.parentId, bname);
+                if (flag)
+                {
+                    (this.core.mainWndRef.TreeView_ProjectTree.SelectedItem as TreeViewItem).Header = bname;
+                    this.core.mainWndRef.TextBlock_CurrentChapterName.Text = bname;
+                }
+            }
             this.Close();
         }
 

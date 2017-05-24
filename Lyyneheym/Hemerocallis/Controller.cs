@@ -44,8 +44,45 @@ namespace Yuri.Hemerocallis
             catch (Exception ex)
             {
                 MessageBox.Show(@"提交到磁盘时发生了错误，请手动备份数据" + Environment.NewLine +
-                                @"Failed to commit data to steady memory, please backup your data" + Environment.NewLine +
-                                ex);
+                                @"Failed to commit data to steady memory, please backup your data" + Environment.NewLine + ex);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 提交一本书籍到稳定储存器
+        /// </summary>
+        /// <param name="id">书籍的唯一标识符</param>
+        /// <returns>操作成功或否</returns>
+        public bool BookCommit(string id)
+        {
+            try
+            {
+                // 写更改
+                foreach (var pKvp in this.mainWndRef.RTBPageCacheDict)
+                {
+                    var page = pKvp.Value;
+                    if (page.ArticalRef.BookId != id)
+                    {
+                        continue;
+                    }
+                    TextRange st = new TextRange(page.RichTextBox_FlowDocument.ContentStart, page.RichTextBox_FlowDocument.ContentEnd);
+                    MemoryStream metadata = new MemoryStream();
+                    st.Save(metadata, System.Windows.DataFormats.XamlPackage);
+                    var updateId = pKvp.Key.StartsWith("HBook#") ?
+                        this.BookVector.Find(t => t.BookRef.Id == pKvp.Key).BookRef.HomePage.Id : pKvp.Key;
+                    this.ArticleDict[updateId].DocumentMetadata = metadata;
+                }
+                // 写稳定储存器
+                var bp = this.BookVector.Find(t => t.BookRef.Id == id);
+                IOUtil.Serialization(bp.BookRef, App.ParseURIToURL(App.AppDataDirectory, $"{bp.BookRef.Id}.{App.AppBookDataExtension}"));
+                bp.DirtyBit = false;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"提交到磁盘时发生了错误，请手动备份数据" + Environment.NewLine +
+                                @"Failed to commit data to steady memory, please backup your data" + Environment.NewLine + ex);
             }
             return false;
         }
@@ -71,14 +108,13 @@ namespace Yuri.Hemerocallis
             catch (Exception ex)
             {
                 MessageBox.Show(@"提交到磁盘时发生了错误，请手动备份数据" + Environment.NewLine +
-                                @"Failed to commit data to steady memory, please backup your data" + Environment.NewLine +
-                                ex);
+                                @"Failed to commit data to steady memory, please backup your data" + Environment.NewLine + ex);
             }
             return false;
         }
 
         /// <summary>
-        /// 提交当前书籍到稳定储存器
+        /// 提交当前页面到稳定储存器
         /// </summary>
         /// <returns>操作成功或否</returns>
         public bool PageCommit()
@@ -98,8 +134,7 @@ namespace Yuri.Hemerocallis
             catch (Exception ex)
             {
                 MessageBox.Show(@"提交到磁盘时发生了错误，请手动备份数据" + Environment.NewLine +
-                                @"Failed to commit data to steady memory, please backup your data" + Environment.NewLine +
-                                ex);
+                                @"Failed to commit data to steady memory, please backup your data" + Environment.NewLine + ex);
             }
             return false;
         }
@@ -142,6 +177,7 @@ namespace Yuri.Hemerocallis
                 FileName = $"{bookId}.{App.AppBookDataExtension}"
             };
             this.BookVector.Add(new BookCacheDescriptor(hb, true));
+            homePage.BookId = bookId;
             // 提交到稳定储存器
             this.FullCommit();
             return bookId;
@@ -184,7 +220,10 @@ namespace Yuri.Hemerocallis
         /// <returns>操作成功或否</returns>
         public bool RenameBook(string bookId, string newBookName)
         {
-            throw new NotImplementedException();
+            var bk = this.BookVector.Find(t => t.BookRef.Id == bookId);
+            if (bk == null) { return false; }
+            bk.BookRef.Name = newBookName;
+            return true;
         }
 
         /// <summary>
@@ -195,7 +234,23 @@ namespace Yuri.Hemerocallis
         /// <returns>操作成功或否</returns>
         public bool MoveArtical(string articalId, string newParentId)
         {
-            throw new NotImplementedException();
+            if (!this.ArticleDict.ContainsKey(articalId))
+            {
+                return false;
+            }
+            try
+            {
+                var ao = this.ArticleDict[articalId];
+                var orgParent = this.ArticleDict[ao.ParentId];
+                orgParent.ChildrenList.Remove(ao);
+                var newParent = this.ArticleDict[newParentId];
+                newParent.ChildrenList.Add(ao);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -206,7 +261,29 @@ namespace Yuri.Hemerocallis
         /// <returns>操作成功或否</returns>
         public bool RetrieveArtical(string articalId, out MemoryStream dataPackage)
         {
-            throw new NotImplementedException();
+            if (!this.ArticleDict.ContainsKey(articalId))
+            {
+                dataPackage = null;
+                return false;
+            }
+            dataPackage = this.ArticleDict[articalId].DocumentMetadata;
+            return true;
+        }
+
+        /// <summary>
+        /// 重命名一篇文章
+        /// </summary>
+        /// <param name="articalId">文章id</param>
+        /// <param name="newName">新的名字</param>
+        /// <returns>操作成功或否</returns>
+        public bool RenameArtical(string articalId, string newName)
+        {
+            if (!this.ArticleDict.ContainsKey(articalId))
+            {
+                return false;
+            }
+            this.ArticleDict[articalId].Name = newName;
+            return true;
         }
 
         /// <summary>
@@ -217,7 +294,12 @@ namespace Yuri.Hemerocallis
         /// <returns>操作成功或否</returns>
         public bool UpdateArtical(string articalId, MemoryStream dataPackage)
         {
-            throw new NotImplementedException();
+            if (!this.ArticleDict.ContainsKey(articalId))
+            {
+                return false;
+            }
+            this.ArticleDict[articalId].DocumentMetadata = dataPackage;
+            return true;
         }
         #endregion
 

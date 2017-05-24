@@ -93,6 +93,9 @@
     <Compile Include="Forms\StatisticsWindow.xaml.cs">
       <DependentUpon>StatisticsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\WorldWindow.xaml.cs">
+      <DependentUpon>WorldWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UISupport\DesignerItemDecorator.cs" />
     <Compile Include="UISupport\MoveThumb.cs" />
     <Compile Include="UISupport\ResizeRotateAdorner.cs" />
@@ -153,6 +156,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\StatisticsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\WorldWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

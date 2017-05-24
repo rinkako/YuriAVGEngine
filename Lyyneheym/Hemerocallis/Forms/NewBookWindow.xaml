@@ -10,7 +10,7 @@
     <Grid>
         <TextBox Name="TextBox_BookName" HorizontalAlignment="Left" Height="23" Margin="10,65,0,0" TextWrapping="Wrap" Text="我的新坑" VerticalAlignment="Top" Width="274"/>
         <Button Content="确定" FontSize="12" HorizontalAlignment="Left" Margin="185,101,0,0" VerticalAlignment="Top" Width="99" FontFamily="Microsoft YaHei" Click="Button_OK_Click"/>
-        <Label Content="新书" Foreground="DarkCyan" FontSize="28" HorizontalAlignment="Left" VerticalAlignment="Top" Height="43" Width="117" Margin="1,-3,0,0"/>
-        <Label Content="取一个书名吧：" Foreground="Gray" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Width="117" Margin="6,39,0,0"/>
+        <Label Name="Label_Title" Content="新书" Foreground="DarkCyan" FontSize="28" HorizontalAlignment="Left" VerticalAlignment="Top" Height="43" Width="117" Margin="1,-3,0,0"/>
+        <Label Name="Label_Description" Content="取一个书名吧：" Foreground="Gray" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Width="117" Margin="6,39,0,0"/>
     </Grid>
 </controls:MetroWindow>
