@@ -61,7 +61,7 @@ namespace Yuri.Hemerocallis.Entity
         /// <summary>
         /// 获取或设置该里程碑完成时刻
         /// </summary>
-        public DateTime FinishTimeStamp { get; set; }
+        public DateTime? FinishTimeStamp { get; set; }
     }
 
     /// <summary>

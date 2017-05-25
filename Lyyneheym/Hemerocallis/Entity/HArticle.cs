@@ -42,6 +42,11 @@ namespace Yuri.Hemerocallis.Entity
         public string BookId { get; set; }
 
         /// <summary>
+        /// 获取或设置该文章的字数缓存
+        /// </summary>
+        public int WordCountCache { get; set; } = 0;
+
+        /// <summary>
         /// 获取节点的孩子向量
         /// </summary>
         public List<HArticle> ChildrenList { get; } = new List<HArticle>();

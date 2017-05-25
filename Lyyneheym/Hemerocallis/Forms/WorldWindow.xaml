@@ -26,7 +26,7 @@
                         </ListBoxItem>
                     </ListBox>
                     <Grid Grid.Column="2">
-                        <ComboBox Name="ComboBox_Chapters" Margin="137,20,92,0" VerticalAlignment="Top"/>
+                        <ComboBox Name="ComboBox_Chapters" Margin="137,20,92,0" VerticalAlignment="Top" SelectionChanged="ComboBox_Chapters_SelectionChanged"/>
                         <Label Content="里程碑的章节" HorizontalAlignment="Left" Margin="10,21,0,0" VerticalAlignment="Top" Width="122"/>
                         <Label Content="里程碑的名字" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="122"/>
                         <TextBox Name="TextBox_MilestoneName" Height="23" Margin="137,59,92,0" TextWrapping="Wrap" Text="Milestone" VerticalAlignment="Top"/>
@@ -39,13 +39,14 @@
                                                 Value="1000"
                                                 HasDecimals="True"
                                                 HorizontalContentAlignment="Left"
+                                                ValueChanged="Numberic_WordThreshold_ValueChanged"
                                                 Speedup="True" Margin="137,100,92,0" Height="26" VerticalAlignment="Top" />
                         <Label Content="当前字数" HorizontalAlignment="Left" Margin="10,216,0,0" VerticalAlignment="Top" Width="122"/>
-                        <Label Name="Label_WordNow" Content="233" HorizontalAlignment="Left" Margin="137,216,0,0" VerticalAlignment="Top" Width="313"/>
+                        <Label Name="Label_WordNow" Content="0" HorizontalAlignment="Left" Margin="137,216,0,0" VerticalAlignment="Top" Width="313"/>
                         <ProgressBar Name="ProgessBar_Process"
                                      Margin="137,246,92,0"
                                      Maximum="100"
-                                     Value="50" VerticalAlignment="Top" />
+                                     Value="0" VerticalAlignment="Top" />
                         <controls:MetroProgressBar x:Name="MetroProgressBar_Working"
                                                    Margin="137,256,92,0"
                                                    IsIndeterminate="True"
@@ -53,10 +54,10 @@
                                                    Minimum="0"
                                                    Height="12" VerticalAlignment="Top"/>
                         <Label Content="计划完成时刻" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="122"/>
-                        <controls:DateTimePicker
+                        <controls:DateTimePicker Name="DateTimePicker_endTime"
                                     Margin="136,140,92,0"
                                     controls:TextBoxHelper.Watermark="Select a date" Height="36" VerticalAlignment="Top" />
-                        <Button Content="保存" FontSize="12" Margin="10,291,0,0" FontFamily="Microsoft YaHei" HorizontalAlignment="Left" Width="100" Height="30" VerticalAlignment="Top"/>
+                        <Button Content="保存" FontSize="12" Margin="10,291,0,0" FontFamily="Microsoft YaHei" HorizontalAlignment="Left" Width="100" Height="30" VerticalAlignment="Top" Click="Button_Save_Click"/>
                         <Button Name="Button_Milestone_Delete" Content="删除" FontSize="12" HorizontalAlignment="Left" Margin="115,291,0,0" Width="100" FontFamily="Microsoft YaHei" Height="30" VerticalAlignment="Top"/>
                     </Grid>
                 </Grid>

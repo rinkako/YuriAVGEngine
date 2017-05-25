@@ -463,44 +463,86 @@ namespace Yuri.Hemerocallis
         /// <returns>所添加的里程碑的唯一标识符</returns>
         public string AddMilestone(MilestoneType type, string id, long destination, string detail, DateTime beginTime, DateTime endTime)
         {
-            throw new NotImplementedException();
+            var hid = "HMilestone#" + Guid.NewGuid();
+            if (type == MilestoneType.Aritical)
+            {
+                var articleRef = this.ArticleDict[id];
+                var bookRef = this.BookVector.Find(t => t.BookRef.Id == articleRef.BookId).BookRef;
+                HMilestone hm = new HMilestone()
+                {
+                    Type = type,
+                    Id = hid,
+                    ArticleId = id,
+                    BookId = bookRef.Id,
+                    BeginTimeStamp = beginTime,
+                    EndTimeStamp = endTime,
+                    Destination = destination,
+                    Detail = detail,
+                    IsFinished = false,
+                    IsNotified = false,
+                    FinishTimeStamp = null
+                };
+                bookRef.Milestones.Add(hm);
+                return hid;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         /// <summary>
         /// 更新一个里程碑
         /// </summary>
+        /// <param name="bookId">里程碑所在书籍的唯一标识符</param>
         /// <param name="milestoneId">里程碑的唯一标识符</param>
         /// <param name="destination">目标字数</param>
         /// <param name="detail">里程碑备注</param>
-        /// <param name="beginTime">里程碑开始时刻</param>
         /// <param name="endTime">里程碑结束时刻</param>
         /// <param name="isFinished">是否已经完成</param>
         /// <param name="finishTime">完成时刻</param>
         /// <returns>操作成功或否</returns>
-        public bool UpdateMilestone(string milestoneId, long destination, string detail, DateTime beginTime,
+        public bool UpdateMilestone(string bookId, string milestoneId, long destination, string detail, 
             DateTime endTime, bool isFinished, DateTime finishTime)
         {
-            throw new NotImplementedException();
+            var bkObj = this.BookVector.Find(t => t.BookRef.Id == bookId);
+            var msObj = bkObj?.BookRef.Milestones.Find(t => t.Id == milestoneId);
+            if (msObj == null) { return false; }
+            msObj.Destination = destination;
+            msObj.Detail = detail;
+            msObj.EndTimeStamp = endTime;
+            msObj.IsFinished = isFinished;
+            msObj.FinishTimeStamp = finishTime;
+            return true;
         }
 
         /// <summary>
         /// 完成一个里程碑
         /// </summary>
+        /// <param name="bookId">里程碑所在书籍的唯一标识符</param>
         /// <param name="milestoneId">里程碑的唯一标识符</param>
         /// <returns>操作成功或否</returns>
-        public bool FinishMilestone(string milestoneId)
+        public bool FinishMilestone(string bookId, string milestoneId)
         {
-            throw new NotImplementedException();
+            var bkObj = this.BookVector.Find(t => t.BookRef.Id == bookId);
+            var msObj = bkObj?.BookRef.Milestones.Find(t => t.Id == milestoneId);
+            if (msObj == null) { return false; }
+            return msObj.IsFinished = true;
         }
 
         /// <summary>
         /// 删除一个里程碑
         /// </summary>
+        /// <param name="bookId">里程碑所在书籍的唯一标识符</param>
         /// <param name="milestoneId">里程碑的唯一标识符</param>
         /// <returns>操作成功或否</returns>
-        public bool DeleteMilestone(string milestoneId)
+        public bool DeleteMilestone(string bookId, string milestoneId)
         {
-            throw new NotImplementedException();
+            var bkObj = this.BookVector.Find(t => t.BookRef.Id == bookId);
+            var msObj = bkObj?.BookRef.Milestones.Find(t => t.Id == milestoneId);
+            if (msObj == null) { return false; }
+            bkObj.BookRef.Milestones.Remove(msObj);
+            return true;
         }
 
         /// <summary>
@@ -530,7 +572,20 @@ namespace Yuri.Hemerocallis
         /// <returns>操作成功或否</returns>
         public bool RetrieveMilestone(string id, out HMilestone ms)
         {
-            throw new NotImplementedException();
+            foreach (var bk in this.BookVector)
+            {
+                var bkObj = bk.BookRef;
+                foreach (var m in bkObj.Milestones)
+                {
+                    if (m.Id == id)
+                    {
+                        ms = m;
+                        return true;
+                    }
+                }
+            }
+            ms = null;
+            return false;
         }
         
         #endregion
