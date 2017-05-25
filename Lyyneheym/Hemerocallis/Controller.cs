@@ -503,7 +503,7 @@ namespace Yuri.Hemerocallis
         /// <param name="finishTime">完成时刻</param>
         /// <returns>操作成功或否</returns>
         public bool UpdateMilestone(string bookId, string milestoneId, long destination, string detail, 
-            DateTime endTime, bool isFinished, DateTime finishTime)
+            DateTime endTime, bool isFinished, DateTime? finishTime)
         {
             var bkObj = this.BookVector.Find(t => t.BookRef.Id == bookId);
             var msObj = bkObj?.BookRef.Milestones.Find(t => t.Id == milestoneId);

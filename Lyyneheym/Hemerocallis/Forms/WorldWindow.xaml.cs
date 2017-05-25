@@ -36,6 +36,11 @@ namespace Yuri.Hemerocallis.Forms
         private readonly List<HMilestone> MsList;
 
         /// <summary>
+        /// 里程碑id向量
+        /// </summary>
+        private List<string> milestoneIdList;
+
+        /// <summary>
         /// 文章字数缓存
         /// </summary>
         private int wordCountCache;
@@ -56,6 +61,7 @@ namespace Yuri.Hemerocallis.Forms
                 this.ComboBox_Chapters.Items.Add(ci.Name);
             }
             WorldWindow.core.RetrieveMilestone(this.BookRef.Id, t => true, out this.MsList);
+            this.milestoneIdList = new List<string>();
             foreach (var msi in this.MsList)
             {
                 var lbi = new ListBoxItem();
@@ -69,12 +75,13 @@ namespace Yuri.Hemerocallis.Forms
                     MaxHeight = 12,
                     MaxWidth = 12,
                     Width = 25,
-                    Visibility = Visibility.Hidden
+                    Visibility = msi.IsFinished ? Visibility.Visible : Visibility.Hidden
                 };
                 lbiGrid.Children.Add(lbiLabel);
                 lbiGrid.Children.Add(flagEllipse);
                 lbi.Content = lbiGrid;
                 this.Listbox_Milestone.Items.Add(lbi);
+                this.milestoneIdList.Add(msi.Id);
             }
             this.Listbox_Milestone.SelectedIndex = 0;
         }
@@ -90,8 +97,15 @@ namespace Yuri.Hemerocallis.Forms
             }
             if (e.AddedItems[0] == this.Listbox_Milestone.Items[0])
             {
+                this.ComboBox_Chapters.SelectedIndex = -1;
+                this.TextBox_MilestoneName.Text = String.Empty;
+                this.DateTimePicker_endTime.SelectedDate = null;
+                this.DateTimePicker_endTime.SelectedTime = null;
+                this.Numberic_WordThreshold.Value = 1000;
                 this.Button_Milestone_Delete.Visibility = Visibility.Hidden;
                 this.ComboBox_Chapters.IsEnabled = true;
+                this.ProgessBar_Process.Value = 0;
+                this.MetroProgressBar_Working.Visibility = Visibility.Hidden;
             }
             else
             {
@@ -110,6 +124,7 @@ namespace Yuri.Hemerocallis.Forms
                 this.TextBox_MilestoneName.Text = msObj.Detail;
                 this.Numberic_WordThreshold.Value = msObj.Destination;
                 this.wordCountCache = StatisticsWindow.GetSimpleWordCountByMetadata(articleObj);
+                this.DateTimePicker_endTime.SelectedDate = msObj.EndTimeStamp;
                 this.Label_WordNow.Content = this.wordCountCache.ToString();
                 this.ProgessBar_Process.Value = this.wordCountCache / (double)this.Numberic_WordThreshold.Value * 100.0;
                 this.MetroProgressBar_Working.Visibility =
@@ -166,6 +181,24 @@ namespace Yuri.Hemerocallis.Forms
                     MessageBox.Show(@"请完整填写");
                     return;
                 }
+                // 重复性检查
+                if (this.BookRef.Milestones.Any(ems => ems.Detail == tname 
+                    && ems.Id != this.milestoneIdList[this.ComboBox_Chapters.SelectedIndex]))
+                {
+                    MessageBox.Show(@"重复的里程碑名");
+                    return;
+                }
+                // 更新后台
+                var finishFlag = this.wordCountCache >= (long) this.Numberic_WordThreshold.Value;
+                var mo = WorldWindow.core.BookVector.Find(t => t.BookRef.Id == this.BookRef.Id).BookRef.Milestones
+                    .Find(t => t.Id == this.milestoneIdList[this.ComboBox_Chapters.SelectedIndex]);
+                WorldWindow.core.UpdateMilestone(this.BookRef.Id, this.milestoneIdList[this.ComboBox_Chapters.SelectedIndex],
+                    (long)this.Numberic_WordThreshold.Value, tname, (DateTime)this.DateTimePicker_endTime.SelectedDate,
+                    finishFlag, mo.FinishTimeStamp);
+                // 更新前台
+                (((this.Listbox_Milestone.SelectedItem as ListBoxItem).Content as Grid).Children[0] as Label).Content = tname;
+                (((this.Listbox_Milestone.SelectedItem as ListBoxItem).Content as Grid).Children[1] as Ellipse).Visibility
+                    = finishFlag ? Visibility.Visible : Visibility.Hidden;
             }
             // 新建
             else
@@ -189,8 +222,9 @@ namespace Yuri.Hemerocallis.Forms
                 // 更新后台
                 WorldWindow.core.RetrieveOffspringArticle(this.BookRef.HomePage.Id, true, out var chapterVec);
                 var ao = chapterVec[this.ComboBox_Chapters.SelectedIndex];
-                var msObj = WorldWindow.core.AddMilestone(MilestoneType.Aritical, ao.Id, (long)this.Numberic_WordThreshold.Value,
+                var msid = WorldWindow.core.AddMilestone(MilestoneType.Aritical, ao.Id, (long)this.Numberic_WordThreshold.Value,
                     tname, DateTime.Now, (DateTime)this.DateTimePicker_endTime.SelectedDate);
+                this.MsList.Add(this.BookRef.Milestones.Find(t => t.Id == msid));
                 // 更新前台
                 var lbi = new ListBoxItem();
                 var lbiGrid = new Grid();
@@ -209,6 +243,7 @@ namespace Yuri.Hemerocallis.Forms
                 lbiGrid.Children.Add(flagEllipse);
                 lbi.Content = lbiGrid;
                 this.Listbox_Milestone.Items.Add(lbi);
+                this.milestoneIdList.Add(msid);
             }
         }
     }
