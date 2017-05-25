@@ -6,6 +6,7 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:UISupport="clr-namespace:Yuri.Hemerocallis.UISupport"
         mc:Ignorable="d" WindowTransitionsEnabled="False"
+        GlowBrush="{DynamicResource AccentColorBrush}"
 		TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType"
                       Title="Hemerocallis" Height="720" Width="1280" MinWidth="1024" MinHeight="576" WindowStartupLocation="CenterScreen" KeyDown="MetroWindow_KeyDown" Closing="MetroWindow_Closing">
     <controls:MetroWindow.Resources>

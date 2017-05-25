@@ -493,7 +493,15 @@ namespace Yuri.Hemerocallis.Forms
         /// </summary>
         private void Image_MouseLeftButtonUp_WorldBtn(object sender, MouseButtonEventArgs e)
         {
-            new WorldWindow().ShowDialog();
+            new WorldWindow(this.CurrentBookId).ShowDialog();
+        }
+
+        /// <summary>
+        /// 命令栏按钮：添加贴纸
+        /// </summary>
+        private void Image_MouseLeftButtonUp_TipBtn(object sender, MouseButtonEventArgs e)
+        {
+            new AddTipWindow().ShowDialog();
         }
         #endregion
 
@@ -582,15 +590,6 @@ namespace Yuri.Hemerocallis.Forms
             }
             return source;
         }
-
-        /// <summary>
-        /// 命令栏按钮：添加贴纸
-        /// </summary>
-        private void Image_MouseLeftButtonUp_TipBtn(object sender, MouseButtonEventArgs e)
-        {
-            new AddTipWindow().ShowDialog();
-        }
-
         
     }
 }

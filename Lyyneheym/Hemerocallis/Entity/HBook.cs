@@ -30,7 +30,7 @@ namespace Yuri.Hemerocallis.Entity
         /// 获取或设置书籍的首页文章
         /// </summary>
         public HArticle HomePage { get; set; }
-
+        
         /// <summary>
         /// 获取或设置文章创建时间戳
         /// </summary>
@@ -45,5 +45,10 @@ namespace Yuri.Hemerocallis.Entity
         /// 获取或设置书籍的一级下属文章向量
         /// </summary>
         public List<HArticle> Children { get; set; } = new List<HArticle>();
+
+        /// <summary>
+        /// 获取或设置书籍拥有的里程碑向量
+        /// </summary>
+        public List<HMilestone> Milestones { get; set; } = new List<HMilestone>();
     }
 }

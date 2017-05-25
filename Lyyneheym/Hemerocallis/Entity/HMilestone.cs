@@ -9,9 +9,19 @@ namespace Yuri.Hemerocallis.Entity
     internal sealed class HMilestone
     {
         /// <summary>
-        /// 获取或设置里程碑对象的唯一标示ID
+        /// 获取或设置里程碑对象的唯一标识ID
         /// </summary>
         public string Id { get; set; }
+
+        /// <summary>
+        /// 获取或设置绑定的文章唯一标识ID
+        /// </summary>
+        public string ArticleId { get; set; }
+
+        /// <summary>
+        /// 获取或设置绑定的书籍唯一标识ID
+        /// </summary>
+        public string BookId { get; set; }
 
         /// <summary>
         /// 获取或设置里程碑类型

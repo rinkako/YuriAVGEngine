@@ -68,7 +68,7 @@ namespace Yuri.Hemerocallis.Forms
             else if (this.Title == "新建")
             {
                 // 更新后台
-                var articalId = this.core.AddArtical(this.parentId, bname);
+                var articalId = this.core.AddArticle(this.parentId, bname);
                 // 更新前台
                 var parentView = this.core.mainWndRef.TreeView_ProjectTree.SelectedItem as TreeViewItem;
                 var addItem = new TreeViewItem()
@@ -86,7 +86,7 @@ namespace Yuri.Hemerocallis.Forms
                 // 更新后台
                 var flag = this.parentId.StartsWith("HBook")
                     ? this.core.RenameBook(this.parentId, bname)
-                    : this.core.RenameArtical(this.parentId, bname);
+                    : this.core.RenameArticle(this.parentId, bname);
                 // 更新前台
                 if (flag)
                 {

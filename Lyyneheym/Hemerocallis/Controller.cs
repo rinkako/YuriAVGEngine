@@ -232,7 +232,7 @@ namespace Yuri.Hemerocallis
         /// <param name="parentId">上级id</param>
         /// <param name="name">文章的名字</param>
         /// <returns>新增的文章的唯一标识符</returns>
-        public string AddArtical(string parentId, string name)
+        public string AddArticle(string parentId, string name)
         {
             if (parentId.StartsWith("HBook"))
             {
@@ -269,7 +269,7 @@ namespace Yuri.Hemerocallis
         /// <param name="articalId">要移动的文章的唯一标识符</param>
         /// <param name="newParentId">要成为该文章的新下属文章或书籍的唯一标识符</param>
         /// <returns>操作成功或否</returns>
-        public bool MoveArtical(string articalId, string newParentId)
+        public bool MoveArticle(string articalId, string newParentId)
         {
             if (!this.ArticleDict.ContainsKey(articalId))
             {
@@ -296,7 +296,7 @@ namespace Yuri.Hemerocallis
         /// <param name="articalId">文章的唯一标识符</param>
         /// <param name="dataPackage">[out] 文章的数据包装内存流</param>
         /// <returns>操作成功或否</returns>
-        public bool RetrieveArtical(string articalId, out MemoryStream dataPackage)
+        public bool RetrieveArticle(string articalId, out MemoryStream dataPackage)
         {
             if (!this.ArticleDict.ContainsKey(articalId))
             {
@@ -308,12 +308,50 @@ namespace Yuri.Hemerocallis
         }
 
         /// <summary>
+        /// 取出某篇文章及其所有子孙文章
+        /// </summary>
+        /// <param name="articleId">文章的唯一标识符</param>
+        /// <param name="selfContain">是否包含自己</param>
+        /// <param name="retVec">[out] 结果向量</param>
+        /// <returns>操作成功或否</returns>
+        public bool RetrieveOffspringArticle(string articleId, bool selfContain, out List<HArticle> retVec)
+        {
+            if (!this.ArticleDict.ContainsKey(articleId))
+            {
+                retVec = null;
+                return false;
+            }
+            var ret = new List<HArticle>();
+            var beginNode = this.ArticleDict[articleId];
+            if (selfContain)
+            {
+                ret.Add(beginNode);
+            }
+            var openList = new Queue<HArticle>();
+            foreach (var sn in beginNode.ChildrenList)
+            {
+                openList.Enqueue(sn);
+            }
+            while (openList.Any())
+            {
+                var curNode = openList.Dequeue();
+                ret.Add(curNode);
+                foreach (var sn in curNode.ChildrenList)
+                {
+                    openList.Enqueue(sn);
+                }
+            }
+            retVec = ret;
+            return true;
+        }
+
+        /// <summary>
         /// 重命名一篇文章
         /// </summary>
         /// <param name="articalId">文章id</param>
         /// <param name="newName">新的名字</param>
         /// <returns>操作成功或否</returns>
-        public bool RenameArtical(string articalId, string newName)
+        public bool RenameArticle(string articalId, string newName)
         {
             if (!this.ArticleDict.ContainsKey(articalId))
             {
@@ -329,7 +367,7 @@ namespace Yuri.Hemerocallis
         /// <param name="articalId">文章的唯一标识符</param>
         /// <param name="dataPackage">文章的数据包装内存流</param>
         /// <returns>操作成功或否</returns>
-        public bool UpdateArtical(string articalId, MemoryStream dataPackage)
+        public bool UpdateArticle(string articalId, MemoryStream dataPackage)
         {
             if (!this.ArticleDict.ContainsKey(articalId))
             {
@@ -468,12 +506,20 @@ namespace Yuri.Hemerocallis
         /// <summary>
         /// 检索里程碑
         /// </summary>
+        /// <param name="bookId">里程碑所属书籍的唯一标识符</param>
         /// <param name="pred">筛选谓词</param>
         /// <param name="msVec">[out] 结果向量</param>
         /// <returns>操作成功或否</returns>
-        public bool RetrieveMilestone(Predicate<HMilestone> pred, out List<HMilestone> msVec)
+        public bool RetrieveMilestone(string bookId, Predicate<HMilestone> pred, out List<HMilestone> msVec)
         {
-            throw new NotImplementedException();
+            var bk = this.BookVector.Find(t => t.BookRef.Id == bookId);
+            if (bk == null)
+            {
+                msVec = null;
+                return false;
+            }
+            msVec = bk.BookRef.Milestones.Where(ms => pred(ms)).ToList();
+            return true;
         }
 
         /// <summary>
@@ -486,6 +532,7 @@ namespace Yuri.Hemerocallis
         {
             throw new NotImplementedException();
         }
+        
         #endregion
 
         #region 运行时信息
@@ -503,7 +550,7 @@ namespace Yuri.Hemerocallis
         /// 获取文章字典
         /// </summary>
         public Dictionary<string, HArticle> ArticleDict { get; private set; } = new Dictionary<string, HArticle>();
-
+        
         /// <summary>
         /// 获取或设置程序的配置信息
         /// </summary>
