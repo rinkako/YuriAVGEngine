@@ -1295,7 +1295,7 @@ namespace Yuri.PlatformCore
         {
             ViewManager.RenderFrameworkElementToJPEG(
                 ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid,
-                GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg");
+                IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg"));
         }
 
         /// <summary>
