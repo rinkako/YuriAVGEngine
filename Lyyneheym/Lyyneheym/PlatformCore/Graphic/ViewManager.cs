@@ -52,17 +52,27 @@ namespace Yuri.PlatformCore.Graphic
             // 重绘背景
             for (int i = 0; i < this.backgroundSpriteVec.Count; i++)
             {
-                this.ReDrawSprite(i, this.backgroundSpriteVec, ResourceType.Background, Director.ScrMana.GetSpriteDescriptor(i, ResourceType.Background), false);
+                this.ReDrawSprite(i, this.backgroundSpriteVec, ResourceType.Background, Director.ScrMana.GetSpriteDescriptor(i, ResourceType.Background), null, false);
             }
             // 重绘立绘
-            for (int i = 0; i < this.characterStandSpriteVec.Count; i++)
+            if (ViewManager.Is3DStage)
             {
-                this.ReDrawSprite(i, this.characterStandSpriteVec, ResourceType.Stand, Director.ScrMana.GetSpriteDescriptor(i, ResourceType.Stand), false);
+                for (int i = 0; i < this.characterStandSpriteVec.Count; i++)
+                {
+                    this.ReDrawSprite(i, this.characterStandSpriteVec, ResourceType.Stand, null, Director.ScrMana.GetCharacter3DDescriptor(i), false);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < this.characterStandSpriteVec.Count; i++)
+                {
+                    this.ReDrawSprite(i, this.characterStandSpriteVec, ResourceType.Stand, Director.ScrMana.GetSpriteDescriptor(i, ResourceType.Stand), null, false);
+                }
             }
             // 重绘图片
             for (int i = 0; i < this.pictureSpriteVec.Count; i++)
             {
-                this.ReDrawSprite(i, this.pictureSpriteVec, ResourceType.Pictures, Director.ScrMana.GetSpriteDescriptor(i, ResourceType.Pictures), false);
+                this.ReDrawSprite(i, this.pictureSpriteVec, ResourceType.Pictures, Director.ScrMana.GetSpriteDescriptor(i, ResourceType.Pictures), null, false);
             }
             // 重绘文字层
             for (int i = 0; i < this.messageLayerVec.Count; i++)
@@ -91,13 +101,20 @@ namespace Yuri.PlatformCore.Graphic
             switch (rType)
             {
                 case ResourceType.Background:
-                    this.ReDrawSprite(id, this.backgroundSpriteVec, ResourceType.Background, Director.ScrMana.GetSpriteDescriptor(id, ResourceType.Background), true);
+                    this.ReDrawSprite(id, this.backgroundSpriteVec, ResourceType.Background, Director.ScrMana.GetSpriteDescriptor(id, ResourceType.Background), null, true);
                     break;
                 case ResourceType.Stand:
-                    this.ReDrawSprite(id, this.characterStandSpriteVec, ResourceType.Stand, Director.ScrMana.GetSpriteDescriptor(id, ResourceType.Stand), true);
+                    if (ViewManager.Is3DStage)
+                    {
+                        this.ReDrawSprite(id, this.characterStandSpriteVec, ResourceType.Stand, Director.ScrMana.GetSpriteDescriptor(id, ResourceType.Stand), null, true);
+                    }
+                    else
+                    {
+                        this.ReDrawSprite(id, this.characterStandSpriteVec, ResourceType.Stand, null, Director.ScrMana.GetCharacter3DDescriptor(id), true);
+                    }
                     break;
                 case ResourceType.Pictures:
-                    this.ReDrawSprite(id, this.pictureSpriteVec, ResourceType.Pictures, Director.ScrMana.GetSpriteDescriptor(id, ResourceType.Pictures), true);
+                    this.ReDrawSprite(id, this.pictureSpriteVec, ResourceType.Pictures, Director.ScrMana.GetSpriteDescriptor(id, ResourceType.Pictures), null, true);
                     break;
                 case ResourceType.MessageLayerBackground:
                     this.ReDrawMessageLayer(id, Director.ScrMana.GetMsgLayerDescriptor(id), true);
@@ -472,11 +489,12 @@ namespace Yuri.PlatformCore.Graphic
         /// <param name="vector">精灵所在向量</param>
         /// <param name="rType">资源类型</param>
         /// <param name="descriptor">精灵描述子</param>
+        /// <param name="descriptor3D">3D描述子</param>
         /// <param name="forceReload">是否强制重新载入资源文件</param>
-        private void ReDrawSprite(int id, List<YuriSprite> vector, ResourceType rType, SpriteDescriptor descriptor, bool forceReload)
+        private void ReDrawSprite(int id, List<YuriSprite> vector, ResourceType rType, SpriteDescriptor descriptor, ModelDescriptor3D descriptor3D, bool forceReload)
         {
             // 不需要重绘的情况
-            if (descriptor == null)
+            if (descriptor == null && descriptor3D == null)
             {
                 if (vector[id] != null)
                 {
@@ -498,7 +516,8 @@ namespace Yuri.PlatformCore.Graphic
             YuriSprite sprite = vector[id], newSprite = null;
             // 强制重新载入或资源名称不同时重新加载资源文件
             if (sprite == null ||
-                sprite.ResourceName != descriptor.ResourceName ||
+                (descriptor != null && sprite.ResourceName != descriptor.ResourceName) ||
+                (descriptor3D != null && sprite.ResourceName != descriptor3D.Source) ||
                 forceReload)
             {
                 switch (rType)
@@ -507,7 +526,14 @@ namespace Yuri.PlatformCore.Graphic
                         vector[id] = newSprite = ResourceManager.GetInstance().GetBackground(descriptor.ResourceName, descriptor.CutRect);
                         break;
                     case ResourceType.Stand:
-                        vector[id] = newSprite = ResourceManager.GetInstance().GetCharacterStand(descriptor.ResourceName, descriptor.CutRect);
+                        if (ViewManager.Is3DStage)
+                        {
+                            vector[id] = newSprite = ResourceManager.GetInstance().GetCharacterStand(descriptor3D.Source, ResourceManager.FullImageRect);
+                        }
+                        else
+                        {
+                            vector[id] = newSprite = ResourceManager.GetInstance().GetCharacterStand(descriptor.ResourceName, descriptor.CutRect);
+                        }
                         break;
                     case ResourceType.Pictures:
                         vector[id] = newSprite = ResourceManager.GetInstance().GetPicture(descriptor.ResourceName, descriptor.CutRect);
@@ -521,7 +547,14 @@ namespace Yuri.PlatformCore.Graphic
             newSprite.Descriptor = descriptor;
             // 重绘精灵
             this.RemoveSprite(rType, sprite);
-            this.DrawSprite(newSprite, descriptor, rType, id);
+            if (descriptor3D != null)
+            {
+                this.DrawSprite(newSprite, descriptor3D, rType, id);
+            }
+            else
+            {
+                this.DrawSprite(newSprite, descriptor, rType, id);
+            }
         }
 
         /// <summary>
@@ -640,7 +673,7 @@ namespace Yuri.PlatformCore.Graphic
         /// <param name="descriptor">精灵描述子</param>
         /// <param name="rType">资源类型</param>
         /// <param name="idx">描述子在向量的下标</param>
-        private void DrawSprite(YuriSprite sprite, SpriteDescriptor descriptor, ResourceType rType, int idx)
+        private void DrawSprite(YuriSprite sprite, CloneableDescriptor descriptor, ResourceType rType, int idx)
         {
             if (sprite == null) { return; }
             if (ViewManager.Is3DStage)
@@ -649,7 +682,7 @@ namespace Yuri.PlatformCore.Graphic
             }
             else
             {
-                this.DrawSprite2D(sprite, descriptor, rType, idx);
+                this.DrawSprite2D(sprite, descriptor as SpriteDescriptor, rType, idx);
             }
         }
 
@@ -705,18 +738,18 @@ namespace Yuri.PlatformCore.Graphic
         /// <param name="sprite">精灵</param>
         /// <param name="descriptor">精灵描述子</param>
         /// <param name="rType">资源类型</param>
-        private void DrawSprite3D(YuriSprite sprite, SpriteDescriptor descriptor, ResourceType rType)
+        private void DrawSprite3D(YuriSprite sprite, CloneableDescriptor descriptor, ResourceType rType)
         {
             switch (rType)
             {
                 case ResourceType.Background:
                     var bgModel = ViewManager.View3D.ST3D_Background_Fore;
                     var bgGeomtry = bgModel.Geometry as MeshGeometry3D;
-                    if (bgGeomtry.Positions[0].Z != descriptor.Deepth3D)
+                    if (bgGeomtry.Positions[0].Z != (descriptor as SpriteDescriptor).Deepth3D)
                     {
                         var gPointList = bgGeomtry.Positions.Select(orgP => new Point3D
                         {
-                            X = orgP.X, Y = orgP.Y, Z = descriptor.Deepth3D
+                            X = orgP.X, Y = orgP.Y, Z = (descriptor as SpriteDescriptor).Deepth3D
                         }).ToList();
                         bgGeomtry.Positions.Clear();
                         foreach (var nvP in gPointList)
@@ -736,22 +769,41 @@ namespace Yuri.PlatformCore.Graphic
                         TileMode = TileMode.None
                     };
                     ((DiffuseMaterial)bgMaterial).Brush = bgMaterialBrush;
+                    sprite.Descriptor = descriptor as SpriteDescriptor;
                     break;
                 case ResourceType.Stand:
-                    var slotModel = this.GetCharacterModel3D(descriptor.Slot3D);
-                    var csGeomtry = slotModel.Geometry as MeshGeometry3D;
-                    if (csGeomtry.Positions[0].Z != descriptor.Deepth3D)
+                    var cdescriptor = descriptor as ModelDescriptor3D;
+                    var slotModel = this.GetCharacterModel3D(cdescriptor.SlotId);
+                    if (slotModel.Transform == null)
                     {
-                        var gPointList = csGeomtry.Positions.Select(orgP => new Point3D
-                        {
-                            X = orgP.X, Y = orgP.Y, Z = descriptor.Deepth3D
-                        }).ToList();
-                        csGeomtry.Positions.Clear();
-                        foreach (var nvP in gPointList)
-                        {
-                            csGeomtry.Positions.Add(nvP);
-                        }
+                        slotModel.Transform = new Transform3DGroup();
+                        var translate = new TranslateTransform3D(cdescriptor.OffsetX, cdescriptor.OffsetY, cdescriptor.OffsetZ);
+                        (slotModel.Transform as Transform3DGroup).Children.Add(translate);
                     }
+                    var translator = (slotModel.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D) as TranslateTransform3D;
+                    translator.OffsetX = cdescriptor.OffsetX;
+                    translator.OffsetY = cdescriptor.OffsetY;
+                    translator.OffsetZ = cdescriptor.OffsetZ;
+                    //// 转为基准点
+                    //var fPoint = new List<Point3D>
+                    //{
+                    //    CloneableDescriptor.DeepCopyByReflection(SCamera3D.CharacterBlockList[cdescriptor.SlotId].Item1),
+                    //    CloneableDescriptor.DeepCopyByReflection(SCamera3D.CharacterBlockList[cdescriptor.SlotId].Item2),
+                    //    CloneableDescriptor.DeepCopyByReflection(SCamera3D.CharacterBlockList[cdescriptor.SlotId].Item3),
+                    //    CloneableDescriptor.DeepCopyByReflection(SCamera3D.CharacterBlockList[cdescriptor.SlotId].Item4)
+                    //};
+                    //// 处理偏移量
+                    //var gPointList = fPoint.Select(orgP => new Point3D
+                    //{
+                    //    X = orgP.X + cdescriptor.OffsetX, Y = orgP.Y + cdescriptor.OffsetY, Z = orgP.Z + cdescriptor.OffsetZ
+                    //}).ToList();
+                    //// 重绘
+                    //csGeomtry.Positions.Clear();
+                    //foreach (var nvP in gPointList)
+                    //{
+                    //    csGeomtry.Positions.Add(nvP);
+                    //}
+
                     var csMaterial = slotModel.Material;
                     if (!(csMaterial is DiffuseMaterial))
                     {
@@ -761,18 +813,19 @@ namespace Yuri.PlatformCore.Graphic
                     {
                         AlignmentX = AlignmentX.Center,
                         AlignmentY = AlignmentY.Center,
-                        TileMode = TileMode.None
+                        TileMode = TileMode.None,
+                        Opacity = cdescriptor.Opacity
                     };
                     ((DiffuseMaterial)csMaterial).Brush = csMaterialBrush;
                     break;
                 case ResourceType.Frontier:
                     var ftModel = ViewManager.View3D.ST3D_Frontier_1;
                     var ftGeomtry = ftModel.Geometry as MeshGeometry3D;
-                    if (ftGeomtry.Positions[0].Z != descriptor.Deepth3D)
+                    if (ftGeomtry.Positions[0].Z != (descriptor as SpriteDescriptor).Deepth3D)
                     {
                         var gPointList = ftGeomtry.Positions.Select(orgP => new Point3D
                         {
-                            X = orgP.X, Y = orgP.Y, Z = descriptor.Deepth3D
+                            X = orgP.X, Y = orgP.Y, Z = (descriptor as SpriteDescriptor).Deepth3D
                         }).ToList();
                         ftGeomtry.Positions.Clear();
                         foreach (var nvP in gPointList)
@@ -792,31 +845,33 @@ namespace Yuri.PlatformCore.Graphic
                         TileMode = TileMode.None
                     };
                     ((DiffuseMaterial)ftMaterial).Brush = ftMaterialBrush;
+                    sprite.Descriptor = descriptor as SpriteDescriptor;
                     break;
                 default:
+                    var tdescriptor = descriptor as SpriteDescriptor;
                     Image spriteImage = new Image();
                     BitmapImage bmp = sprite.SpriteBitmapImage;
                     spriteImage.Width = bmp.PixelWidth;
                     spriteImage.Height = bmp.PixelHeight;
                     spriteImage.Source = bmp;
-                    spriteImage.Opacity = descriptor.Opacity;
-                    sprite.CutRect = descriptor.CutRect;
+                    spriteImage.Opacity = tdescriptor.Opacity;
+                    sprite.CutRect = tdescriptor.CutRect;
                     sprite.DisplayBinding = spriteImage;
-                    sprite.Anchor = descriptor.AnchorType;
-                    Canvas.SetLeft(spriteImage, descriptor.X - bmp.PixelWidth / 2.0);
-                    Canvas.SetTop(spriteImage, descriptor.Y - bmp.PixelHeight / 2.0);
-                    Panel.SetZIndex(spriteImage, descriptor.Z);
+                    sprite.Anchor = tdescriptor.AnchorType;
+                    Canvas.SetLeft(spriteImage, tdescriptor.X - bmp.PixelWidth / 2.0);
+                    Canvas.SetTop(spriteImage, tdescriptor.Y - bmp.PixelHeight / 2.0);
+                    Panel.SetZIndex(spriteImage, tdescriptor.Z);
                     spriteImage.Visibility = Visibility.Visible;
                     ViewManager.View3D.BO_MainGrid.Children.Add(spriteImage);
                     sprite.InitAnimationRenderTransform();
                     sprite.AnimationElement = sprite.DisplayBinding;
-                    descriptor.ToScaleX = descriptor.ScaleX;
-                    descriptor.ToScaleY = descriptor.ScaleY;
-                    SpriteAnimation.RotateToAnimation(sprite, TimeSpan.Zero, descriptor.Angle);
-                    SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.Zero, descriptor.ScaleX, descriptor.ScaleY);
+                    tdescriptor.ToScaleX = tdescriptor.ScaleX;
+                    tdescriptor.ToScaleY = tdescriptor.ScaleY;
+                    SpriteAnimation.RotateToAnimation(sprite, TimeSpan.Zero, tdescriptor.Angle);
+                    SpriteAnimation.ScaleToAnimation(sprite, TimeSpan.Zero, tdescriptor.ScaleX, tdescriptor.ScaleY);
+                    sprite.Descriptor = tdescriptor;
                     break;
             }
-            sprite.Descriptor = descriptor;
         }
 
         /// <summary>
@@ -824,7 +879,7 @@ namespace Yuri.PlatformCore.Graphic
         /// </summary>
         /// <param name="cSlot">槽中心在屏幕分块的编号</param>
         /// <returns>模型对象</returns>
-        private GeometryModel3D GetCharacterModel3D(int cSlot) => ViewManager.View3D.ST3D_Character_Group.Children[cSlot] as GeometryModel3D;
+        public GeometryModel3D GetCharacterModel3D(int cSlot) => ViewManager.View3D.ST3D_Character_Group.Children[cSlot] as GeometryModel3D;
 
         /// <summary>
         /// 为主窗体描绘一个文字层

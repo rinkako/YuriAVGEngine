@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
+using Yuri.PlatformCore.Graphic3D;
 using Yuri.PlatformCore.VM;
 using Yuri.Utils;
 
@@ -92,7 +93,7 @@ namespace Yuri.PlatformCore.Graphic
                 AnchorType = anchor,
                 CutRect = cut
             };
-            this.characterDescVec[id] = sd;
+            this.characterDescVec2D[id] = sd;
         }
 
         /// <summary>
@@ -106,12 +107,12 @@ namespace Yuri.PlatformCore.Graphic
         /// <param name="Opacity">不透明度</param>
         /// <param name="anchor">锚点类型</param>
         /// <param name="cut">纹理切割矩</param>
-        public void AddCharacterStand2D(int id, string source, CharacterStandType cst, int Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
+        public void AddCharacterStand2D(int id, string source, CharacterStand2DType cst, int Z, double Angle, double Opacity, SpriteAnchorType anchor, Int32Rect cut)
         {
             SpriteDescriptor sd = null;
             switch (cst)
             {
-                case CharacterStandType.Left:
+                case CharacterStand2DType.Left:
                     sd = new SpriteDescriptor()
                     {
                         Id = id,
@@ -126,7 +127,7 @@ namespace Yuri.PlatformCore.Graphic
                         CutRect = cut
                     };
                     break;
-                case CharacterStandType.MidLeft:
+                case CharacterStand2DType.MidLeft:
                     sd = new SpriteDescriptor()
                     {
                         Id = id,
@@ -141,7 +142,7 @@ namespace Yuri.PlatformCore.Graphic
                         CutRect = cut
                     };
                     break;
-                case CharacterStandType.Mid:
+                case CharacterStand2DType.Mid:
                     sd = new SpriteDescriptor()
                     {
                         Id = id,
@@ -156,7 +157,7 @@ namespace Yuri.PlatformCore.Graphic
                         CutRect = cut
                     };
                     break;
-                case CharacterStandType.MidRight:
+                case CharacterStand2DType.MidRight:
                     sd = new SpriteDescriptor()
                     {
                         Id = id,
@@ -171,7 +172,7 @@ namespace Yuri.PlatformCore.Graphic
                         CutRect = cut
                     };
                     break;
-                case CharacterStandType.Right:
+                case CharacterStand2DType.Right:
                     sd = new SpriteDescriptor()
                     {
                         Id = id,
@@ -187,7 +188,7 @@ namespace Yuri.PlatformCore.Graphic
                     };
                     break;
             }
-            this.characterDescVec[id] = sd;
+            this.characterDescVec2D[id] = sd;
         }
 
         /// <summary>
@@ -195,20 +196,13 @@ namespace Yuri.PlatformCore.Graphic
         /// </summary>
         /// <param name="id">立绘位置id号</param>
         /// <param name="source">资源名称</param>
-        /// <param name="depth">景深Z坐标</param>
+        /// <param name="depth">[弃用的] 景深Z坐标</param>
         public void AddCharacterStand3D(int id, string source, int depth)
         {
-            this.characterDescVec[id] = new SpriteDescriptor()
+            this.characterDescVec3D[id] = new ModelDescriptor3D()
             {
-                Id = id,
-                Slot3D = id,
-                Deepth3D = depth,
-                ResourceType = ResourceType.Stand,
-                ResourceName = source,
-                X = GlobalConfigContext.GAME_CHARACTERSTAND_LEFT_X,
-                Y = GlobalConfigContext.GAME_CHARACTERSTAND_LEFT_Y,
-                Z = 0,
-                CutRect = ResourceManager.FullImageRect
+                SlotId = id,
+                Source = source
             };
         }
         
@@ -366,7 +360,14 @@ namespace Yuri.PlatformCore.Graphic
                     this.backgroundDescVec[spriteId] = null;
                     break;
                 case ResourceType.Stand:
-                    this.characterDescVec[spriteId] = null;
+                    if (ViewManager.Is3DStage)
+                    {
+                        this.characterDescVec3D[spriteId] = null;
+                    }
+                    else
+                    {
+                        this.characterDescVec2D[spriteId] = null;
+                    }
                     break;
                 case ResourceType.Pictures:
                     this.pictureDescVec[spriteId] = null;
@@ -426,7 +427,7 @@ namespace Yuri.PlatformCore.Graphic
                     case ResourceType.Background:
                         return this.backgroundDescVec[id];
                     case ResourceType.Stand:
-                        return this.characterDescVec[id];
+                        return this.characterDescVec2D[id];
                     case ResourceType.Pictures:
                         return this.pictureDescVec[id];
                     default:
@@ -438,6 +439,16 @@ namespace Yuri.PlatformCore.Graphic
                 CommonUtils.ConsoleLine(ex.ToString(), "ScreenManager / CLR", OutputStyle.Error);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 获取一个3D立绘的描述子
+        /// </summary>
+        /// <param name="id">立绘ID号</param>
+        /// <returns>描述子实例</returns>
+        public ModelDescriptor3D GetCharacter3DDescriptor(int id)
+        {
+            return this.characterDescVec3D[id];
         }
 
         /// <summary>
@@ -596,7 +607,8 @@ namespace Yuri.PlatformCore.Graphic
             this.branchDescVec = new List<BranchButtonDescriptor>();
             this.buttonDescVec = new List<SpriteButtonDescriptor>();
             this.backgroundDescVec = new List<SpriteDescriptor>();
-            this.characterDescVec = new List<SpriteDescriptor>();
+            this.characterDescVec2D = new List<SpriteDescriptor>();
+            this.characterDescVec3D = new List<ModelDescriptor3D>();
             this.viewboxDescVec = new List<Viewport2DDescriptor>();
             this.pictureDescVec = new List<SpriteDescriptor>();
             for (int i = 0; i < 3; i++)
@@ -607,12 +619,19 @@ namespace Yuri.PlatformCore.Graphic
             {
                 this.backgroundDescVec.Add(null);
             }
-            var charaBorder = ViewManager.Is3DStage
-                ? GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT
-                : GlobalConfigContext.GAME_CHARACTERSTAND_COUNT;
-            for (int i = 0; i < charaBorder; i++)
+            if (ViewManager.Is3DStage)
             {
-                this.characterDescVec.Add(null);
+                for (int i = 0; i < GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT; i++)
+                {
+                    this.characterDescVec3D.Add(null);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < GlobalConfigContext.GAME_CHARACTERSTAND_COUNT; i++)
+                {
+                    this.characterDescVec2D.Add(null);
+                }
             }
             for (int i = 0; i < GlobalConfigContext.GAME_IMAGELAYER_COUNT; i++)
             {
@@ -710,9 +729,14 @@ namespace Yuri.PlatformCore.Graphic
         private readonly List<SpriteDescriptor> backgroundDescVec;
 
         /// <summary>
-        /// 立绘描述向量
+        /// 2D立绘描述向量
         /// </summary>
-        private readonly List<SpriteDescriptor> characterDescVec;
+        private readonly List<SpriteDescriptor> characterDescVec2D;
+
+        /// <summary>
+        /// 3D立绘描述向量
+        /// </summary>
+        private readonly List<ModelDescriptor3D> characterDescVec3D;
 
         /// <summary>
         /// 图片描述向量
@@ -736,9 +760,9 @@ namespace Yuri.PlatformCore.Graphic
     }
 
     /// <summary>
-    /// 枚举：立绘位置
+    /// 枚举：2D立绘位置
     /// </summary>
-    internal enum CharacterStandType
+    internal enum CharacterStand2DType
     {
         Left,
         MidLeft,

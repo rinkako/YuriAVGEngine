@@ -1341,31 +1341,31 @@ namespace Yuri.PlatformCore
             }
             else
             {
-                CharacterStandType cst;
+                CharacterStand2DType cst;
                 switch (locationStr)
                 {
                     case "l":
                     case "left":
-                        cst = CharacterStandType.Left;
+                        cst = CharacterStand2DType.Left;
                         if (id == -1) { id = 0; }
                         break;
                     case "ml":
                     case "midleft":
-                        cst = CharacterStandType.MidLeft;
+                        cst = CharacterStand2DType.MidLeft;
                         if (id == -1) { id = 1; }
                         break;
                     case "mr":
                     case "midright":
-                        cst = CharacterStandType.MidRight;
+                        cst = CharacterStand2DType.MidRight;
                         if (id == -1) { id = 3; }
                         break;
                     case "r":
                     case "right":
-                        cst = CharacterStandType.Right;
+                        cst = CharacterStand2DType.Right;
                         if (id == -1) { id = 4; }
                         break;
                     default:
-                        cst = CharacterStandType.Mid;
+                        cst = CharacterStand2DType.Mid;
                         if (id == -1) { id = 2; }
                         break;
                 }
