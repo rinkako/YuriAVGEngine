@@ -104,7 +104,7 @@ namespace Yuri.PlatformCore.Graphic
                     this.ReDrawSprite(id, this.backgroundSpriteVec, ResourceType.Background, Director.ScrMana.GetSpriteDescriptor(id, ResourceType.Background), null, true);
                     break;
                 case ResourceType.Stand:
-                    if (ViewManager.Is3DStage)
+                    if (!ViewManager.Is3DStage)
                     {
                         this.ReDrawSprite(id, this.characterStandSpriteVec, ResourceType.Stand, Director.ScrMana.GetSpriteDescriptor(id, ResourceType.Stand), null, true);
                     }
@@ -297,7 +297,7 @@ namespace Yuri.PlatformCore.Graphic
                     {
                         removeOne = this.backgroundSpriteVec[id];
                         this.backgroundSpriteVec[id] = null;
-                        this.RemoveSprite(ResourceType.Background, removeOne);
+                        this.RemoveSprite(ResourceType.Background, removeOne, null);
                     }
                     else
                     {
@@ -310,12 +310,13 @@ namespace Yuri.PlatformCore.Graphic
                 case ResourceType.Stand:
                     removeOne = this.characterStandSpriteVec[id];
                     this.characterStandSpriteVec[id] = null;
-                    this.RemoveSprite(ResourceType.Stand, removeOne);
+                    this.RemoveSprite(ResourceType.Stand, removeOne,
+                        !ViewManager.Is3DStage ? null : Director.ScrMana.GetCharacter3DDescriptor(id));
                     break;
                 case ResourceType.Pictures:
                     removeOne = this.pictureSpriteVec[id];
                     this.pictureSpriteVec[id] = null;
-                    this.RemoveSprite(ResourceType.Pictures, removeOne);
+                    this.RemoveSprite(ResourceType.Pictures, removeOne, null);
                     break;
             }
         }
@@ -546,7 +547,7 @@ namespace Yuri.PlatformCore.Graphic
             }
             newSprite.Descriptor = descriptor;
             // 重绘精灵
-            this.RemoveSprite(rType, sprite);
+            this.RemoveSprite(rType, sprite, descriptor3D);
             if (descriptor3D != null)
             {
                 this.DrawSprite(newSprite, descriptor3D, rType, id);
@@ -774,7 +775,7 @@ namespace Yuri.PlatformCore.Graphic
                 case ResourceType.Stand:
                     var cdescriptor = descriptor as ModelDescriptor3D;
                     var slotModel = this.GetCharacterModel3D(cdescriptor.SlotId);
-                    if (slotModel.Transform == null)
+                    if (!(slotModel.Transform is Transform3DGroup))
                     {
                         slotModel.Transform = new Transform3DGroup();
                         var translate = new TranslateTransform3D(cdescriptor.OffsetX, cdescriptor.OffsetY, cdescriptor.OffsetZ);
@@ -803,7 +804,6 @@ namespace Yuri.PlatformCore.Graphic
                     //{
                     //    csGeomtry.Positions.Add(nvP);
                     //}
-
                     var csMaterial = slotModel.Material;
                     if (!(csMaterial is DiffuseMaterial))
                     {
@@ -1100,7 +1100,8 @@ namespace Yuri.PlatformCore.Graphic
         /// </summary>
         /// <param name="rType">资源类型</param>
         /// <param name="sprite">精灵实例</param>
-        private void RemoveSprite(ResourceType rType, YuriSprite sprite)
+        /// <param name="descriptor3D">3D模型的描述子</param>
+        private void RemoveSprite(ResourceType rType, YuriSprite sprite, ModelDescriptor3D descriptor3D)
         {
             if (sprite == null)
             {
@@ -1120,12 +1121,15 @@ namespace Yuri.PlatformCore.Graphic
                         bgModelGeometry.Material = null;
                         return;
                     case ResourceType.Stand:
-                        var slotModelGeometry = this.GetCharacterModel3D(sprite.Descriptor.Slot3D);
-                        if (!(slotModelGeometry?.Material is DiffuseMaterial))
+                        if (descriptor3D != null)
                         {
-                            return;
+                            var slotModelGeometry = this.GetCharacterModel3D(descriptor3D.SlotId);
+                            if (!(slotModelGeometry?.Material is DiffuseMaterial))
+                            {
+                                return;
+                            }
+                            slotModelGeometry.Material = null;
                         }
-                        slotModelGeometry.Material = null;
                         return;
                     case ResourceType.Frontier:
                         var ftModelGeometry = ViewManager.View3D.ST3D_Frontier_1;

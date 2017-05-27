@@ -136,98 +136,6 @@ namespace Yuri.PlatformCore.Graphic
         }
 
         /// <summary>
-        /// 在3D空间的X轴方向移动模型
-        /// </summary>
-        /// <param name="geom">模型实例</param>
-        /// <param name="descriptor3D">模型的描述子</param>
-        /// <param name="duration">动画时长</param>
-        /// <param name="fromX">起始X</param>
-        /// <param name="toX">目标X</param>
-        /// <param name="accX">加速度X</param>
-        public static void XMoveAnimation3D(GeometryModel3D geom, ModelDescriptor3D descriptor3D, Duration duration, double fromX, double toX, double accX)
-        {
-            if (duration.TimeSpan.TotalMilliseconds == 0
-                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
-            {
-                var translator = (geom.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D) as TranslateTransform3D;
-                translator.OffsetX = descriptor3D.OffsetX = descriptor3D.ToOffsetX;
-            }
-            else
-            {
-                DoubleAnimation cardAnimation = new DoubleAnimation
-                {
-                    From = fromX,
-                    To = toX,
-                    Duration = duration,
-                    FillBehavior = FillBehavior.Stop
-                };
-                if (accX >= 0)
-                {
-                    cardAnimation.AccelerationRatio = accX;
-                }
-                else
-                {
-                    cardAnimation.DecelerationRatio = -accX;
-                }
-                var transform = (geom.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D);
-                var flagSb = new Storyboard { Name = "FlagSb_" + Guid.NewGuid() };
-                SpriteAnimation.aniDict[flagSb] = null;
-                cardAnimation.Completed += delegate
-                {
-                    (transform as TranslateTransform3D).OffsetX = descriptor3D.OffsetX = descriptor3D.ToOffsetX;
-                    SpriteAnimation.aniDict.Remove(flagSb);
-                };
-                transform.BeginAnimation(TranslateTransform3D.OffsetXProperty, cardAnimation);
-            }
-        }
-
-        /// <summary>
-        /// 在3D空间的Y轴方向移动模型
-        /// </summary>
-        /// <param name="geom">模型实例</param>
-        /// <param name="descriptor3D">模型的描述子</param>
-        /// <param name="duration">动画时长</param>
-        /// <param name="fromX">起始X</param>
-        /// <param name="toX">目标X</param>
-        /// <param name="accX">加速度X</param>
-        public static void YMoveAnimation3D(GeometryModel3D geom, ModelDescriptor3D descriptor3D, Duration duration, double fromY, double toY, double accY)
-        {
-            if (duration.TimeSpan.TotalMilliseconds == 0
-                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
-            {
-                var translator = (geom.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D) as TranslateTransform3D;
-                translator.OffsetY = descriptor3D.OffsetY = descriptor3D.ToOffsetY;
-            }
-            else
-            {
-                DoubleAnimation cardAnimation = new DoubleAnimation
-                {
-                    From = fromY,
-                    To = toY,
-                    Duration = duration,
-                    FillBehavior = FillBehavior.Stop
-                };
-                if (accY >= 0)
-                {
-                    cardAnimation.AccelerationRatio = accY;
-                }
-                else
-                {
-                    cardAnimation.DecelerationRatio = -accY;
-                }
-                var transform = (geom.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D);
-                var flagSb = new Storyboard { Name = "FlagSb_" + Guid.NewGuid() };
-                SpriteAnimation.aniDict[flagSb] = null;
-                cardAnimation.Completed += delegate
-                {
-                    (transform as TranslateTransform3D).OffsetY = descriptor3D.OffsetY = descriptor3D.ToOffsetY;
-                    SpriteAnimation.aniDict.Remove(flagSb);
-                };
-                transform.BeginAnimation(TranslateTransform3D.OffsetYProperty, cardAnimation);
-            }
-        }
-
-        /// <summary>
         /// 在笛卡尔平面上竖直移动精灵
         /// </summary>
         /// <param name="sprite">精灵实例</param>
@@ -338,7 +246,7 @@ namespace Yuri.PlatformCore.Graphic
                 story.Begin();
             }
         }
-
+        
         /// <summary>
         /// 在笛卡尔平面上关于锚点放缩精灵
         /// </summary>
@@ -524,6 +432,190 @@ namespace Yuri.PlatformCore.Graphic
                 story.Completed += (sender, args) =>
                 {
                     sprite.AnimateCount--;
+                    SpriteAnimation.aniDict.Remove(story);
+                };
+                story.Begin();
+            }
+        }
+        
+        /// <summary>
+        /// 在3D空间的X轴方向移动模型
+        /// </summary>
+        /// <param name="geom">模型实例</param>
+        /// <param name="descriptor3D">模型的描述子</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="fromX">起始X</param>
+        /// <param name="toX">目标X</param>
+        /// <param name="accX">加速度X</param>
+        public static void XMoveAnimation3D(GeometryModel3D geom, ModelDescriptor3D descriptor3D, Duration duration, double fromX, double toX, double accX)
+        {
+            if (duration.TimeSpan.TotalMilliseconds == 0
+                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
+            {
+                var translator = (geom.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D) as TranslateTransform3D;
+                translator.OffsetX = descriptor3D.OffsetX = descriptor3D.ToOffsetX;
+            }
+            else
+            {
+                DoubleAnimation cardAnimation = new DoubleAnimation
+                {
+                    From = fromX,
+                    To = toX,
+                    Duration = duration,
+                    FillBehavior = FillBehavior.Stop
+                };
+                if (accX >= 0)
+                {
+                    cardAnimation.AccelerationRatio = accX;
+                }
+                else
+                {
+                    cardAnimation.DecelerationRatio = -accX;
+                }
+                var transform = (geom.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D);
+                var flagSb = new Storyboard { Name = "FlagSb_" + Guid.NewGuid() };
+                SpriteAnimation.aniDict[flagSb] = null;
+                cardAnimation.Completed += delegate
+                {
+                    (transform as TranslateTransform3D).OffsetX = descriptor3D.OffsetX = descriptor3D.ToOffsetX;
+                    SpriteAnimation.aniDict.Remove(flagSb);
+                };
+                transform.BeginAnimation(TranslateTransform3D.OffsetXProperty, cardAnimation);
+            }
+        }
+
+        /// <summary>
+        /// 在3D空间的Y轴方向移动模型
+        /// </summary>
+        /// <param name="geom">模型实例</param>
+        /// <param name="descriptor3D">模型的描述子</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="fromY">起始Y</param>
+        /// <param name="toY">目标Y</param>
+        /// <param name="accY">加速度Y</param>
+        public static void YMoveAnimation3D(GeometryModel3D geom, ModelDescriptor3D descriptor3D, Duration duration, double fromY, double toY, double accY)
+        {
+            if (duration.TimeSpan.TotalMilliseconds == 0
+                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
+            {
+                var translator = (geom.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D) as TranslateTransform3D;
+                translator.OffsetY = descriptor3D.OffsetY = descriptor3D.ToOffsetY;
+            }
+            else
+            {
+                DoubleAnimation cardAnimation = new DoubleAnimation
+                {
+                    From = fromY,
+                    To = toY,
+                    Duration = duration,
+                    FillBehavior = FillBehavior.Stop
+                };
+                if (accY >= 0)
+                {
+                    cardAnimation.AccelerationRatio = accY;
+                }
+                else
+                {
+                    cardAnimation.DecelerationRatio = -accY;
+                }
+                var transform = (geom.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D);
+                var flagSb = new Storyboard { Name = "FlagSb_" + Guid.NewGuid() };
+                SpriteAnimation.aniDict[flagSb] = null;
+                cardAnimation.Completed += delegate
+                {
+                    (transform as TranslateTransform3D).OffsetY = descriptor3D.OffsetY = descriptor3D.ToOffsetY;
+                    SpriteAnimation.aniDict.Remove(flagSb);
+                };
+                transform.BeginAnimation(TranslateTransform3D.OffsetYProperty, cardAnimation);
+            }
+        }
+        
+        /// <summary>
+        /// 在3D空间的Y轴方向移动模型
+        /// </summary>
+        /// <param name="geom">模型实例</param>
+        /// <param name="descriptor3D">模型的描述子</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="fromZ">起始Z</param>
+        /// <param name="toZ">目标Z</param>
+        /// <param name="accZ">加速度Z</param>
+        public static void ZMoveAnimation3D(GeometryModel3D geom, ModelDescriptor3D descriptor3D, Duration duration, double fromZ, double toZ, double accZ)
+        {
+            if (duration.TimeSpan.TotalMilliseconds == 0
+                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
+            {
+                var translator = (geom.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D) as TranslateTransform3D;
+                translator.OffsetZ = descriptor3D.OffsetZ = descriptor3D.ToOffsetZ;
+            }
+            else
+            {
+                DoubleAnimation cardAnimation = new DoubleAnimation
+                {
+                    From = fromZ,
+                    To = toZ,
+                    Duration = duration,
+                    FillBehavior = FillBehavior.Stop
+                };
+                if (accZ >= 0)
+                {
+                    cardAnimation.AccelerationRatio = accZ;
+                }
+                else
+                {
+                    cardAnimation.DecelerationRatio = -accZ;
+                }
+                var transform = (geom.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D);
+                var flagSb = new Storyboard { Name = "FlagSb_" + Guid.NewGuid() };
+                SpriteAnimation.aniDict[flagSb] = null;
+                cardAnimation.Completed += delegate
+                {
+                    (transform as TranslateTransform3D).OffsetZ = descriptor3D.OffsetZ = descriptor3D.ToOffsetZ;
+                    SpriteAnimation.aniDict.Remove(flagSb);
+                };
+                transform.BeginAnimation(TranslateTransform3D.OffsetZProperty, cardAnimation);
+            }
+        }
+
+        /// <summary>
+        /// 变更3D模型的不透明度
+        /// </summary>
+        /// <param name="geom">模型实例</param>
+        /// <param name="descriptor3D">模型的描述子</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="fromOpacity">起始不透明度</param>
+        /// <param name="toOpacity">目标不透明度</param>
+        /// <param name="acc">加速度</param>
+        public static void OpacityAnimation3D(GeometryModel3D geom, ModelDescriptor3D descriptor3D, Duration duration, double fromOpacity, double toOpacity, double acc)
+        {
+            if (duration.TimeSpan.TotalMilliseconds == 0
+                || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
+            {
+                ((geom.Material as DiffuseMaterial).Brush as ImageBrush).Opacity = toOpacity;
+                descriptor3D.Opacity = descriptor3D.ToOpacity;
+            }
+            else
+            {
+                Storyboard story = new Storyboard();
+                DoubleAnimation doubleAniOpacity = new DoubleAnimation(fromOpacity, toOpacity, duration);
+                if (acc >= 0)
+                {
+                    doubleAniOpacity.AccelerationRatio = acc;
+                }
+                else
+                {
+                    doubleAniOpacity.DecelerationRatio = -acc;
+                }
+                var ibrush = (geom.Material as DiffuseMaterial)?.Brush as ImageBrush;
+                if (ibrush == null) { return; }
+                Storyboard.SetTarget(doubleAniOpacity, ibrush);
+                Storyboard.SetTargetProperty(doubleAniOpacity, new PropertyPath(Brush.OpacityProperty));
+                story.Children.Add(doubleAniOpacity);
+                story.Duration = duration;
+                story.FillBehavior = FillBehavior.Stop;
+                SpriteAnimation.aniDict[story] = null;
+                story.Completed += delegate
+                {
+                    ibrush.Opacity = descriptor3D.Opacity = descriptor3D.ToOpacity;
                     SpriteAnimation.aniDict.Remove(story);
                 };
                 story.Begin();
@@ -802,6 +894,62 @@ namespace Yuri.PlatformCore.Graphic
         }
 
         /// <summary>
+        /// 在3D空间的X轴方向移动模型到目标点
+        /// </summary>
+        /// <param name="geom">模型实例</param>
+        /// <param name="descriptor">模型的描述子</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="toX">目标X</param>
+        /// <param name="accX">加速度X</param>
+        public static void XMoveToAnimation3D(GeometryModel3D geom, ModelDescriptor3D descriptor, Duration duration, double toX, double accX = 0)
+        {
+            if (geom == null) { return; }
+            SpriteAnimation.XMoveAnimation3D(geom, descriptor, duration, descriptor.OffsetX, toX, accX);
+        }
+
+        /// <summary>
+        /// 在3D空间的Y轴方向移动模型到目标点
+        /// </summary>
+        /// <param name="geom">模型实例</param>
+        /// <param name="descriptor">模型的描述子</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="toY">目标Y</param>
+        /// <param name="accY">加速度Y</param>
+        public static void YMoveToAnimation3D(GeometryModel3D geom, ModelDescriptor3D descriptor, Duration duration, double toY, double accY = 0)
+        {
+            if (geom == null) { return; }
+            SpriteAnimation.YMoveAnimation3D(geom, descriptor, duration, descriptor.OffsetY, toY, accY);
+        }
+
+        /// <summary>
+        /// 在3D空间的Z轴方向移动模型到目标点
+        /// </summary>
+        /// <param name="geom">模型实例</param>
+        /// <param name="descriptor">模型的描述子</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="toZ">目标Z</param>
+        /// <param name="accZ">加速度Z</param>
+        public static void ZMoveToAnimation3D(GeometryModel3D geom, ModelDescriptor3D descriptor, Duration duration, double toZ, double accZ = 0)
+        {
+            if (geom == null) { return; }
+            SpriteAnimation.ZMoveAnimation3D(geom, descriptor, duration, descriptor.OffsetZ, toZ, accZ);
+        }
+
+        /// <summary>
+        /// 在3D空间模型将不透明度更改到目标值
+        /// </summary>
+        /// <param name="geom">模型实例</param>
+        /// <param name="descriptor">模型的描述子</param>
+        /// <param name="duration">动画时长</param>
+        /// <param name="toOpacity">目标不透明度</param>
+        /// <param name="acc">加速度</param>
+        public static void OpacityToAnimation3D(GeometryModel3D geom, ModelDescriptor3D descriptor, Duration duration, double toOpacity, double acc = 0)
+        {
+            if (geom == null) { return; }
+            SpriteAnimation.OpacityAnimation3D(geom, descriptor, duration, descriptor.Opacity, toOpacity, acc);
+        }
+
+        /// <summary>
         /// 为精灵的指定依赖属性作用一个双精度动画
         /// </summary>
         /// <param name="sprite">精灵实例</param>
@@ -870,7 +1018,10 @@ namespace Yuri.PlatformCore.Graphic
         {
             foreach (var ani in SpriteAnimation.aniDict)
             {
-                ani.Key.SkipToFill();
+                if (!ani.Key.Name.StartsWith("FlagSb_"))
+                {
+                    ani.Key.SkipToFill();
+                }
             }
         }
 

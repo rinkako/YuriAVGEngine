@@ -34,6 +34,9 @@ namespace Yuri.YuriHalation.YuriForms
                     case "focus":
                         this.radioButton5.Checked = true;
                         break;
+                    case "resetslot":
+                        this.radioButton7.Checked = true;
+                        break;
                     default:
                         this.radioButton6.Checked = true;
                         break;
@@ -116,11 +119,24 @@ namespace Yuri.YuriHalation.YuriForms
         }
 
         /// <summary>
+        /// 单选：复位立绘位置
+        /// </summary>
+        private void radioButton7_CheckedChanged(object sender, EventArgs e)
+        {
+            this.groupBox2.Enabled = !this.radioButton7.Checked;
+            if (this.radioButton7.Checked)
+            {
+                this.scameraAct = "resetslot";
+            }
+
+        }
+
+        /// <summary>
         /// 按钮：确定
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            if (this.radioButton5.Checked && this.textBox1.Text.Trim() == String.Empty)
+             if (this.radioButton5.Checked && this.textBox1.Text.Trim() == String.Empty)
             {
                 MessageBox.Show(@"聚焦比不能为空");
                 return;

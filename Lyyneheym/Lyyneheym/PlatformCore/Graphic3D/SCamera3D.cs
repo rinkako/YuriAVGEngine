@@ -277,6 +277,19 @@ namespace Yuri.PlatformCore.Graphic3D
         }
 
         /// <summary>
+        /// 将立绘槽位置恢复到初始状态
+        /// </summary>
+        public static void ResetAllSlot()
+        {
+            for (int i = 0; i <= GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT; i++)
+            {
+                var desc = Director.ScrMana.GetCharacter3DDescriptor(i);
+                desc.OffsetX = desc.OffsetY = desc.OffsetZ = desc.ToOffsetX = desc.ToOffsetY = desc.ToOffsetZ = 0;
+                ViewManager.GetInstance().Draw(i, ResourceType.Stand);
+            }
+        }
+
+        /// <summary>
         /// 初始化镜头系统，必须在使用场景镜头系统前调用它
         /// </summary>
         public static void Init()

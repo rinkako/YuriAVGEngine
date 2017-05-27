@@ -621,7 +621,7 @@ namespace Yuri.PlatformCore.Graphic
             }
             if (ViewManager.Is3DStage)
             {
-                for (int i = 0; i < GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT; i++)
+                for (int i = 0; i <= GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT; i++)
                 {
                     this.characterDescVec3D.Add(null);
                 }
