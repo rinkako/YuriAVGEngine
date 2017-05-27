@@ -846,7 +846,7 @@ namespace Yuri.PlatformCore
                     break;
                 case SActionType.act_var:
                     this.Var(
-                        this.ParseDirectString(action.ArgsDict["name"], "$__LyynehermTempVar"),
+                        this.ParseDirectString(action.ArgsDict["name"], "$__LyyneheymTempVar"),
                         this.ParseDirectString(action.ArgsDict["dash"], "1")
                         );
                     break;
