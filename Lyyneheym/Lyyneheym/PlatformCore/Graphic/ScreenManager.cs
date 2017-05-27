@@ -199,11 +199,19 @@ namespace Yuri.PlatformCore.Graphic
         /// <param name="depth">[弃用的] 景深Z坐标</param>
         public void AddCharacterStand3D(int id, string source, int depth)
         {
-            this.characterDescVec3D[id] = new ModelDescriptor3D()
+            if (this.characterDescVec3D[id] == null)
             {
-                SlotId = id,
-                Source = source
-            };
+                this.characterDescVec3D[id] = new ModelDescriptor3D()
+                {
+                    SlotId = id,
+                    Source = source
+                };
+            }
+            else
+            {
+                this.characterDescVec3D[id].SlotId = id;
+                this.characterDescVec3D[id].Source = source;
+            }
         }
         
         /// <summary>

@@ -1234,7 +1234,46 @@ namespace Yuri.PlatformCore
         /// <param name="duration">完成所需时间</param>
         private void Move(int id, ResourceType rType, string property, double toValue, double acc, Duration duration)
         {
-            if (rType == ResourceType.Pictures || ViewManager.Is3DStage == false)
+            if (rType == ResourceType.Stand && ViewManager.Is3DStage)
+            {
+                GeometryModel3D geom = this.viewMana.GetCharacterModel3D(id);
+                ModelDescriptor3D descriptor3d = Director.ScrMana.GetCharacter3DDescriptor(id);
+                if (descriptor3d == null)
+                {
+                    CommonUtils.ConsoleLine(
+                        String.Format("Ignored move (target 3d model is null): {0}, {1}", rType, id),
+                        "UpdateRender", OutputStyle.Warning);
+                    return;
+                }
+                switch (property)
+                {
+                    case "x":
+                        var orgXP = SCamera3D.GetScreenCoordination(0, descriptor3d.SlotId);
+                        var newXP = SCamera3D.GetScreenCoordination(0, (int) toValue);
+                        descriptor3d.ToOffsetX = SCamera3D.GetManhattanDistance(newXP, orgXP).X;
+                        SpriteAnimation.XMoveToAnimation3D(geom, descriptor3d, duration, descriptor3d.ToOffsetX, acc);
+                        break;
+                    case "y":
+                        descriptor3d.ToOffsetY = toValue;
+                        SpriteAnimation.YMoveToAnimation3D(geom, descriptor3d, duration, descriptor3d.ToOffsetY, acc);
+                        break;
+                    case "z":
+                        descriptor3d.ToOffsetZ = toValue;
+                        SpriteAnimation.ZMoveToAnimation3D(geom, descriptor3d, duration, toValue, acc);
+                        break;
+                    case "o":
+                    case "opacity":
+                        descriptor3d.ToOpacity = toValue;
+                        SpriteAnimation.OpacityToAnimation3D(geom, descriptor3d, duration, toValue, acc);
+                        break;
+                    default:
+                        CommonUtils.ConsoleLine(
+                            String.Format("3D Move instruction without valid parameters: {0}", property),
+                            "UpdateRender", OutputStyle.Warning);
+                        break;
+                }
+            }
+            else
             {
                 YuriSprite actionSprite = this.viewMana.GetSprite(id, rType);
                 SpriteDescriptor descriptor = Director.ScrMana.GetSpriteDescriptor(id, rType);
@@ -1288,43 +1327,6 @@ namespace Yuri.PlatformCore
                     default:
                         CommonUtils.ConsoleLine(
                             String.Format("Move instruction without valid parameters: {0}", property),
-                            "UpdateRender", OutputStyle.Warning);
-                        break;
-                }
-            }
-            else if (rType == ResourceType.Stand && ViewManager.Is3DStage)
-            {
-                GeometryModel3D geom = this.viewMana.GetCharacterModel3D(id);
-                ModelDescriptor3D descriptor3d = Director.ScrMana.GetCharacter3DDescriptor(id);
-                if (descriptor3d == null)
-                {
-                    CommonUtils.ConsoleLine(
-                        String.Format("Ignored move (target 3d model is null): {0}, {1}", rType, id),
-                        "UpdateRender", OutputStyle.Warning);
-                    return;
-                }
-                switch (property)
-                {
-                    case "x":
-                        descriptor3d.ToOffsetX = toValue;
-                        SpriteAnimation.XMoveToAnimation3D(geom, descriptor3d, duration, toValue, acc);
-                        break;
-                    case "y":
-                        descriptor3d.ToOffsetY = toValue;
-                        SpriteAnimation.YMoveToAnimation3D(geom, descriptor3d, duration, toValue, acc);
-                        break;
-                    case "z":
-                        descriptor3d.ToOffsetZ = toValue;
-                        SpriteAnimation.ZMoveToAnimation3D(geom, descriptor3d, duration, toValue, acc);
-                        break;
-                    case "o":
-                    case "opacity":
-                        descriptor3d.ToOpacity = toValue;
-                        SpriteAnimation.OpacityToAnimation3D(geom, descriptor3d, duration, toValue, acc);
-                        break;
-                    default:
-                        CommonUtils.ConsoleLine(
-                            String.Format("3D Move instruction without valid parameters: {0}", property),
                             "UpdateRender", OutputStyle.Warning);
                         break;
                 }

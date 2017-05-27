@@ -37,8 +37,7 @@ namespace Yuri.PlatformCore.Graphic3D
             };
             EasingPoint3DKeyFrame k2 = new EasingPoint3DKeyFrame()
             {
-                Value =
-                    new Point3D(actualBeginPoint.X + delta.X, actualBeginPoint.Y + delta.Y, SCamera3D.lastZIndex),
+                Value = new Point3D(actualBeginPoint.X + delta.X, actualBeginPoint.Y + delta.Y, SCamera3D.lastZIndex),
                 KeyTime = TimeSpan.FromMilliseconds(SCamera3D.animationTimeMS),
                 EasingFunction = new CubicEase() {EasingMode = EasingMode.EaseOut}
             };
@@ -284,8 +283,13 @@ namespace Yuri.PlatformCore.Graphic3D
             for (int i = 0; i <= GlobalConfigContext.GAME_SCAMERA_SCR_COLCOUNT; i++)
             {
                 var desc = Director.ScrMana.GetCharacter3DDescriptor(i);
-                desc.OffsetX = desc.OffsetY = desc.OffsetZ = desc.ToOffsetX = desc.ToOffsetY = desc.ToOffsetZ = 0;
-                ViewManager.GetInstance().Draw(i, ResourceType.Stand);
+                if (desc != null)
+                {
+                    desc.Source = null;
+                    desc.OffsetX = desc.OffsetY = desc.OffsetZ = 0;
+                    desc.Opacity = desc.ScaleX = desc.ScaleY = 1;
+                    ViewManager.GetInstance().Draw(i, ResourceType.Stand);
+                }
             }
         }
 

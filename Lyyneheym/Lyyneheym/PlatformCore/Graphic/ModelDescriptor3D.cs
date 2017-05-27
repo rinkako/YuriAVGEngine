@@ -16,7 +16,7 @@ namespace Yuri.PlatformCore.Graphic
         /// <summary>
         /// 获取或设置资源名
         /// </summary>
-        public string Source { get; set; } = String.Empty;
+        public string Source { get; set; } = null;
 
         /// <summary>
         /// 获取或设置X方向累计变化量

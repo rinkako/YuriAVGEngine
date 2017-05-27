@@ -225,6 +225,9 @@ namespace Yuri.YuriHalation.ScriptPackage
                         case "enterscene":
                             desSb.Append("动作:复位并退出黑场 ");
                             break;
+                        case "resetslot":
+                            desSb.Append("动作:重置立绘 ");
+                            break;
                     }
                     if (this.argsDict["name"].valueExp == "translate" || this.argsDict["name"].valueExp == "focus")
                     {

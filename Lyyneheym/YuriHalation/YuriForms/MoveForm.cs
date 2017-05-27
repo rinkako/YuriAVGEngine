@@ -50,7 +50,7 @@ namespace Yuri.YuriHalation.YuriForms
                     this.numericUpDown1.Maximum = Halation.project.Config.GameViewPicturesCount - 1;
                     break;
                 case 1:
-                    this.numericUpDown1.Maximum = 4;
+                    this.numericUpDown1.Maximum = Halation.project.Config.Game3DStage ? 32 : 4;
                     break;
                 case 2:
                     this.numericUpDown1.Maximum = 1;

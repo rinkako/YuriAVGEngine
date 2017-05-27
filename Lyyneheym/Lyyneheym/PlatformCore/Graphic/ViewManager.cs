@@ -310,8 +310,9 @@ namespace Yuri.PlatformCore.Graphic
                 case ResourceType.Stand:
                     removeOne = this.characterStandSpriteVec[id];
                     this.characterStandSpriteVec[id] = null;
+                    var descriptor3d = Director.ScrMana.GetCharacter3DDescriptor(id) ?? new ModelDescriptor3D() {SlotId = id};
                     this.RemoveSprite(ResourceType.Stand, removeOne,
-                        !ViewManager.Is3DStage ? null : Director.ScrMana.GetCharacter3DDescriptor(id));
+                        !ViewManager.Is3DStage ? null : descriptor3d);
                     break;
                 case ResourceType.Pictures:
                     removeOne = this.pictureSpriteVec[id];
@@ -529,7 +530,15 @@ namespace Yuri.PlatformCore.Graphic
                     case ResourceType.Stand:
                         if (ViewManager.Is3DStage)
                         {
-                            vector[id] = newSprite = ResourceManager.GetInstance().GetCharacterStand(descriptor3D.Source, ResourceManager.FullImageRect);
+                            if (descriptor3D.Source != null)
+                            {
+                                vector[id] = newSprite = ResourceManager.GetInstance()
+                                    .GetCharacterStand(descriptor3D.Source, ResourceManager.FullImageRect);
+                            }
+                            else
+                            {
+                                vector[id] = newSprite = null;
+                            }
                         }
                         else
                         {
@@ -545,7 +554,10 @@ namespace Yuri.PlatformCore.Graphic
             {
                 newSprite = sprite;
             }
-            newSprite.Descriptor = descriptor;
+            if (newSprite != null)
+            {
+                newSprite.Descriptor = descriptor;
+            }
             // 重绘精灵
             this.RemoveSprite(rType, sprite, descriptor3D);
             if (descriptor3D != null)
@@ -758,18 +770,25 @@ namespace Yuri.PlatformCore.Graphic
                             bgGeomtry.Positions.Add(nvP);
                         }
                     }
-                    var bgMaterial = bgModel.Material;
-                    if (!(bgMaterial is DiffuseMaterial))
+                    if (sprite != null)
                     {
-                        bgMaterial = bgModel.Material = new DiffuseMaterial();
+                        var bgMaterial = bgModel.Material;
+                        if (!(bgMaterial is DiffuseMaterial))
+                        {
+                            bgMaterial = bgModel.Material = new DiffuseMaterial();
+                        }
+                        var bgMaterialBrush = new ImageBrush(sprite.SpriteBitmapImage)
+                        {
+                            AlignmentX = AlignmentX.Center,
+                            AlignmentY = AlignmentY.Center,
+                            TileMode = TileMode.None
+                        };
+                        ((DiffuseMaterial) bgMaterial).Brush = bgMaterialBrush;
                     }
-                    var bgMaterialBrush = new ImageBrush(sprite.SpriteBitmapImage)
+                    else
                     {
-                        AlignmentX = AlignmentX.Center,
-                        AlignmentY = AlignmentY.Center,
-                        TileMode = TileMode.None
-                    };
-                    ((DiffuseMaterial)bgMaterial).Brush = bgMaterialBrush;
+                        bgModel.Material = null;
+                    }
                     sprite.Descriptor = descriptor as SpriteDescriptor;
                     break;
                 case ResourceType.Stand:
@@ -785,38 +804,26 @@ namespace Yuri.PlatformCore.Graphic
                     translator.OffsetX = cdescriptor.OffsetX;
                     translator.OffsetY = cdescriptor.OffsetY;
                     translator.OffsetZ = cdescriptor.OffsetZ;
-                    //// 转为基准点
-                    //var fPoint = new List<Point3D>
-                    //{
-                    //    CloneableDescriptor.DeepCopyByReflection(SCamera3D.CharacterBlockList[cdescriptor.SlotId].Item1),
-                    //    CloneableDescriptor.DeepCopyByReflection(SCamera3D.CharacterBlockList[cdescriptor.SlotId].Item2),
-                    //    CloneableDescriptor.DeepCopyByReflection(SCamera3D.CharacterBlockList[cdescriptor.SlotId].Item3),
-                    //    CloneableDescriptor.DeepCopyByReflection(SCamera3D.CharacterBlockList[cdescriptor.SlotId].Item4)
-                    //};
-                    //// 处理偏移量
-                    //var gPointList = fPoint.Select(orgP => new Point3D
-                    //{
-                    //    X = orgP.X + cdescriptor.OffsetX, Y = orgP.Y + cdescriptor.OffsetY, Z = orgP.Z + cdescriptor.OffsetZ
-                    //}).ToList();
-                    //// 重绘
-                    //csGeomtry.Positions.Clear();
-                    //foreach (var nvP in gPointList)
-                    //{
-                    //    csGeomtry.Positions.Add(nvP);
-                    //}
-                    var csMaterial = slotModel.Material;
-                    if (!(csMaterial is DiffuseMaterial))
+                    if (sprite != null)
                     {
-                        csMaterial = slotModel.Material = new DiffuseMaterial();
+                        var csMaterial = slotModel.Material;
+                        if (!(csMaterial is DiffuseMaterial))
+                        {
+                            csMaterial = slotModel.Material = new DiffuseMaterial();
+                        }
+                        var csMaterialBrush = new ImageBrush(sprite.SpriteBitmapImage)
+                        {
+                            AlignmentX = AlignmentX.Center,
+                            AlignmentY = AlignmentY.Center,
+                            TileMode = TileMode.None,
+                            Opacity = cdescriptor.Opacity
+                        };
+                        ((DiffuseMaterial) csMaterial).Brush = csMaterialBrush;
                     }
-                    var csMaterialBrush = new ImageBrush(sprite.SpriteBitmapImage)
+                    else
                     {
-                        AlignmentX = AlignmentX.Center,
-                        AlignmentY = AlignmentY.Center,
-                        TileMode = TileMode.None,
-                        Opacity = cdescriptor.Opacity
-                    };
-                    ((DiffuseMaterial)csMaterial).Brush = csMaterialBrush;
+                        slotModel.Material = null;
+                    }
                     break;
                 case ResourceType.Frontier:
                     var ftModel = ViewManager.View3D.ST3D_Frontier_1;
@@ -833,19 +840,26 @@ namespace Yuri.PlatformCore.Graphic
                             ftGeomtry.Positions.Add(nvP);
                         }
                     }
-                    var ftMaterial = ftModel.Material;
-                    if (!(ftMaterial is DiffuseMaterial))
+                    if (sprite != null)
                     {
-                        ftMaterial = ftModel.Material = new DiffuseMaterial();
+                        var ftMaterial = ftModel.Material;
+                        if (!(ftMaterial is DiffuseMaterial))
+                        {
+                            ftMaterial = ftModel.Material = new DiffuseMaterial();
+                        }
+                        var ftMaterialBrush = new ImageBrush(sprite.SpriteBitmapImage)
+                        {
+                            AlignmentX = AlignmentX.Center,
+                            AlignmentY = AlignmentY.Center,
+                            TileMode = TileMode.None
+                        };
+                        ((DiffuseMaterial) ftMaterial).Brush = ftMaterialBrush;
+                        sprite.Descriptor = descriptor as SpriteDescriptor;
                     }
-                    var ftMaterialBrush = new ImageBrush(sprite.SpriteBitmapImage)
+                    else
                     {
-                        AlignmentX = AlignmentX.Center,
-                        AlignmentY = AlignmentY.Center,
-                        TileMode = TileMode.None
-                    };
-                    ((DiffuseMaterial)ftMaterial).Brush = ftMaterialBrush;
-                    sprite.Descriptor = descriptor as SpriteDescriptor;
+                        ftModel.Material = null;
+                    }
                     break;
                 default:
                     var tdescriptor = descriptor as SpriteDescriptor;

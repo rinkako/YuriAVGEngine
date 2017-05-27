@@ -130,12 +130,12 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void codeListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            Brush FontBrush = null;
             ListBox listBox = sender as ListBox;
             if (e.Index > -1)
             {
                 string itemFull = listBox.Items[e.Index].ToString();
                 string trimItem = itemFull.Trim().Split(' ')[0];
+                Brush FontBrush;
                 if (trimItem.Length == 0)
                 {
                     FontBrush = Brushes.Black;

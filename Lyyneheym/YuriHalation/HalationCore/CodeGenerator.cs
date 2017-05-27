@@ -231,6 +231,23 @@ namespace Yuri.YuriHalation.HalationCore
                         aCode += String.Format("loc=\"{0}\"", act.argsDict["loc"].valueExp);
                         codeBuilder.AppendLine(aCode);
                         break;
+                    case ActionPackageType.act_scamera:
+                        string scCode = "@scamera ";
+                        scCode += String.Format("name=\"{0}\"", act.argsDict["name"].valueExp);
+                        switch (act.argsDict["name"].valueExp)
+                        {
+                            case "focus":
+                                scCode += String.Format(" x=\"{0}\" ", act.argsDict["x"].valueExp);
+                                scCode += String.Format("y=\"{0}\" ", act.argsDict["y"].valueExp);
+                                scCode += String.Format("ro=\"{0}\"", act.argsDict["ro"].valueExp);
+                                break;
+                            case "translate":
+                                scCode += String.Format(" x=\"{0}\" ", act.argsDict["x"].valueExp);
+                                scCode += String.Format("y=\"{0}\"", act.argsDict["y"].valueExp);
+                                break;
+                        }
+                        codeBuilder.AppendLine(scCode);
+                        break;
                     case ActionPackageType.act_dialog:
                         codeBuilder.AppendLine("[");
                         codeBuilder.AppendLine(act.argsDict["context"].valueExp);

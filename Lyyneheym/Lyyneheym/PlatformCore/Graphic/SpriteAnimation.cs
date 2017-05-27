@@ -473,7 +473,7 @@ namespace Yuri.PlatformCore.Graphic
                     cardAnimation.DecelerationRatio = -accX;
                 }
                 var transform = (geom.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D);
-                var flagSb = new Storyboard { Name = "FlagSb_" + Guid.NewGuid() };
+                var flagSb = new Storyboard { Name = "FlagSb_" + DateTime.Now.Ticks };
                 SpriteAnimation.aniDict[flagSb] = null;
                 cardAnimation.Completed += delegate
                 {
@@ -519,7 +519,7 @@ namespace Yuri.PlatformCore.Graphic
                     cardAnimation.DecelerationRatio = -accY;
                 }
                 var transform = (geom.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D);
-                var flagSb = new Storyboard { Name = "FlagSb_" + Guid.NewGuid() };
+                var flagSb = new Storyboard { Name = "FlagSb_" + DateTime.Now.Ticks };
                 SpriteAnimation.aniDict[flagSb] = null;
                 cardAnimation.Completed += delegate
                 {
@@ -565,7 +565,7 @@ namespace Yuri.PlatformCore.Graphic
                     cardAnimation.DecelerationRatio = -accZ;
                 }
                 var transform = (geom.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D);
-                var flagSb = new Storyboard { Name = "FlagSb_" + Guid.NewGuid() };
+                var flagSb = new Storyboard { Name = "FlagSb_" + DateTime.Now.Ticks };
                 SpriteAnimation.aniDict[flagSb] = null;
                 cardAnimation.Completed += delegate
                 {
@@ -590,35 +590,34 @@ namespace Yuri.PlatformCore.Graphic
             if (duration.TimeSpan.TotalMilliseconds == 0
                 || GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.NoEffect)
             {
-                ((geom.Material as DiffuseMaterial).Brush as ImageBrush).Opacity = toOpacity;
-                descriptor3D.Opacity = descriptor3D.ToOpacity;
+                (geom.Material as DiffuseMaterial).Brush.Opacity = descriptor3D.Opacity = descriptor3D.ToOpacity;
             }
             else
             {
-                Storyboard story = new Storyboard();
-                DoubleAnimation doubleAniOpacity = new DoubleAnimation(fromOpacity, toOpacity, duration);
+                DoubleAnimation opAnimation = new DoubleAnimation
+                {
+                    From = fromOpacity,
+                    To = toOpacity,
+                    Duration = duration,
+                    FillBehavior = FillBehavior.Stop
+                };
                 if (acc >= 0)
                 {
-                    doubleAniOpacity.AccelerationRatio = acc;
+                    opAnimation.AccelerationRatio = acc;
                 }
                 else
                 {
-                    doubleAniOpacity.DecelerationRatio = -acc;
+                    opAnimation.DecelerationRatio = -acc;
                 }
-                var ibrush = (geom.Material as DiffuseMaterial)?.Brush as ImageBrush;
-                if (ibrush == null) { return; }
-                Storyboard.SetTarget(doubleAniOpacity, ibrush);
-                Storyboard.SetTargetProperty(doubleAniOpacity, new PropertyPath(Brush.OpacityProperty));
-                story.Children.Add(doubleAniOpacity);
-                story.Duration = duration;
-                story.FillBehavior = FillBehavior.Stop;
-                SpriteAnimation.aniDict[story] = null;
-                story.Completed += delegate
+                var brusher = (geom.Material as DiffuseMaterial).Brush;
+                var flagSb = new Storyboard { Name = "FlagSb_" + DateTime.Now.Ticks };
+                SpriteAnimation.aniDict[flagSb] = null;
+                opAnimation.Completed += delegate
                 {
-                    ibrush.Opacity = descriptor3D.Opacity = descriptor3D.ToOpacity;
-                    SpriteAnimation.aniDict.Remove(story);
+                    (geom.Material as DiffuseMaterial).Brush.Opacity = descriptor3D.Opacity = descriptor3D.ToOpacity;
+                    SpriteAnimation.aniDict.Remove(flagSb);
                 };
-                story.Begin();
+                brusher.BeginAnimation(Brush.OpacityProperty, opAnimation);
             }
         }
 
