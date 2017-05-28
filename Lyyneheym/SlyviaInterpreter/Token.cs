@@ -49,9 +49,9 @@ namespace Yuri.YuriInterpreter
         public bool IsVar = false;
 
         /// <summary>
-        /// 作用域
+        /// 作用域(0局部，1全局，2持久)
         /// </summary>
-        public bool IsGlobal = false;
+        public int ScopeFlag = 0;
 
         /// <summary>
         /// 词类型

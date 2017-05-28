@@ -51,7 +51,7 @@ namespace Yuri.Utils
                     Console.WriteLine(String.Format("时间戳：{0}", DateTime.Now.ToString()));
                     Console.WriteLine(String.Format("工作集：{0:F3} MB", Environment.WorkingSet / 1048576.0));
                     Console.WriteLine(String.Format("信  息：{0}", information));
-                    MessageBox.Show("At: " + causer + Environment.NewLine + information);
+                    MessageBox.Show("At: " + causer + Environment.NewLine + information, @"YuriError");
                     break;
                 case OutputStyle.Simple:
                 default:

@@ -1315,7 +1315,18 @@ namespace Yuri.YuriInterpreter
                 myNode.Column = myToken.Column;
                 if (myToken.IsVar)
                 {
-                    myNode.NodeVarType = myToken.IsGlobal ? VarScopeType.GLOBAL : VarScopeType.LOCAL;
+                    switch (myToken.ScopeFlag)
+                    {
+                        case 1:
+                            myNode.NodeVarType = VarScopeType.GLOBAL;
+                            break;
+                        case 2:
+                            myNode.NodeVarType = VarScopeType.PERSIST;
+                            break;
+                        default:
+                            myNode.NodeVarType = VarScopeType.LOCAL;
+                            break;
+                    }
                 }
             }
             // 取候选向量

@@ -41,7 +41,7 @@ namespace Yuri.PlatformCore.VM
         {
             lock (this)
             {
-                return this.symbols.ContainsKey(varName) ? this.symbols[varName] : 0;
+                return this.symbols.ContainsKey(varName) ? this.symbols[varName] : (double)0;
             }
         }
     }

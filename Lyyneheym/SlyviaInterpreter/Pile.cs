@@ -331,17 +331,20 @@ namespace Yuri.YuriInterpreter
                     }
                     else if (mynode.CandidateFunction.GetCFType() == CFunctionType.deri___wunit__iden_54)
                     {
-                        if (mynode.Children[0].NodeVarType == VarScopeType.GLOBAL)
+                        switch (mynode.Children[0].NodeVarType)
                         {
-                            mynode.Polish = "&" + mynode.Children[0].NodeValue;
-                        }
-                        else if (mynode.Children[0].NodeVarType == VarScopeType.LOCAL)
-                        {
-                            mynode.Polish = "$" + mynode.Children[0].NodeValue;
-                        }
-                        else
-                        {
-                            mynode.Polish = mynode.Children[0].NodeValue;
+                            case VarScopeType.GLOBAL:
+                                mynode.Polish = "&" + mynode.Children[0].NodeValue;
+                                break;
+                            case VarScopeType.LOCAL:
+                                mynode.Polish = "$" + mynode.Children[0].NodeValue;
+                                break;
+                            case VarScopeType.PERSIST:
+                                mynode.Polish = "%" + mynode.Children[0].NodeValue;
+                                break;
+                            default:
+                                mynode.Polish = mynode.Children[0].NodeValue;
+                                break;
                         }
                     }
                     break;
@@ -438,17 +441,20 @@ namespace Yuri.YuriInterpreter
                     }
                     break;
                 case SyntaxType.tail_idenLeave:
-                    if (mynode.NodeVarType == VarScopeType.GLOBAL)
+                    switch (mynode.NodeVarType)
                     {
-                        mynode.Polish = "&" + mynode.NodeValue;
-                    }
-                    else if (mynode.NodeVarType == VarScopeType.LOCAL)
-                    {
-                        mynode.Polish = "$" + mynode.NodeValue;
-                    }
-                    else
-                    {
-                        mynode.Polish = mynode.NodeValue;
+                        case VarScopeType.GLOBAL:
+                            mynode.Polish = "&" + mynode.NodeValue;
+                            break;
+                        case VarScopeType.LOCAL:
+                            mynode.Polish = "$" + mynode.NodeValue;
+                            break;
+                        case VarScopeType.PERSIST:
+                            mynode.Polish = "%" + mynode.NodeValue;
+                            break;
+                        default:
+                            mynode.Polish = mynode.NodeValue;
+                            break;
                     }
                     break;
                 default:
@@ -811,8 +817,8 @@ namespace Yuri.YuriInterpreter
             {
                 return null;
             }
-            Stack<string> polishStack = new Stack<string>();
-            string[] polishItem = polish.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
+            var polishStack = new Stack<string>();
+            var polishItem = polish.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
             foreach (string item in polishItem)
             {
                 OptimizerPolishItemType ptype = this.GetPolishItemType(item);
@@ -949,7 +955,7 @@ namespace Yuri.YuriInterpreter
             {
                 return OptimizerPolishItemType.NONE;
             }
-            else if (item.StartsWith("$") || item.StartsWith("&"))
+            else if (item.StartsWith("$") || item.StartsWith("&") || item.StartsWith("%"))
             {
                 return OptimizerPolishItemType.VAR;
             }
@@ -957,57 +963,34 @@ namespace Yuri.YuriInterpreter
             {
                 return OptimizerPolishItemType.CONSTANT;
             }
-            else if (item == "+")
+            else switch (item)
             {
-                return OptimizerPolishItemType.CAL_PLUS;
-            }
-            else if (item == "-")
-            {
-                return OptimizerPolishItemType.CAL_MINUS;
-            }
-            else if (item == "*")
-            {
-                return OptimizerPolishItemType.CAL_MULTI;
-            }
-            else if (item == "/")
-            {
-                return OptimizerPolishItemType.CAL_DIV;
-            }
-            else if (item == "!")
-            {
-                return OptimizerPolishItemType.CAL_NOT;
-            }
-            else if (item == "&&")
-            {
-                return OptimizerPolishItemType.CAL_ANDAND;
-            }
-            else if (item == "||")
-            {
-                return OptimizerPolishItemType.CAL_OROR;
-            }
-            else if (item == "<>")
-            {
-                return OptimizerPolishItemType.CAL_NOTEQUAL;
-            }
-            else if (item == "==")
-            {
-                return OptimizerPolishItemType.CAL_EQUAL;
-            }
-            else if (item == ">")
-            {
-                return OptimizerPolishItemType.CAL_BIG;
-            }
-            else if (item == "<")
-            {
-                return OptimizerPolishItemType.CAL_SMALL;
-            }
-            else if (item == ">=")
-            {
-                return OptimizerPolishItemType.CAL_BIGEQUAL;
-            }
-            else if (item == "<=")
-            {
-                return OptimizerPolishItemType.CAL_SMALLEQUAL;
+                case "+":
+                    return OptimizerPolishItemType.CAL_PLUS;
+                case "-":
+                    return OptimizerPolishItemType.CAL_MINUS;
+                case "*":
+                    return OptimizerPolishItemType.CAL_MULTI;
+                case "/":
+                    return OptimizerPolishItemType.CAL_DIV;
+                case "!":
+                    return OptimizerPolishItemType.CAL_NOT;
+                case "&&":
+                    return OptimizerPolishItemType.CAL_ANDAND;
+                case "||":
+                    return OptimizerPolishItemType.CAL_OROR;
+                case "<>":
+                    return OptimizerPolishItemType.CAL_NOTEQUAL;
+                case "==":
+                    return OptimizerPolishItemType.CAL_EQUAL;
+                case ">":
+                    return OptimizerPolishItemType.CAL_BIG;
+                case "<":
+                    return OptimizerPolishItemType.CAL_SMALL;
+                case ">=":
+                    return OptimizerPolishItemType.CAL_BIGEQUAL;
+                case "<=":
+                    return OptimizerPolishItemType.CAL_SMALLEQUAL;
             }
             return OptimizerPolishItemType.STRING;
         }
@@ -1041,8 +1024,7 @@ namespace Yuri.YuriInterpreter
         /// <returns>正则式真值</returns>
         public static bool IsMatchRegEx(string parStr, string regEx)
         {
-            Regex myRegex = new Regex(regEx);
-            return myRegex.IsMatch(parStr);
+            return new Regex(regEx).IsMatch(parStr);
         }
 
         /// <summary>

@@ -295,19 +295,25 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void UpdateForKeyboardState()
         {
-            if (UpdateRender.KS_KEY_Dict[Key.S] == KeyStates.Down && ViewPageManager.IsAtMainStage())
+            if ((this.IsShowingDialog || this.IsBranching) && ViewPageManager.IsAtMainStage())
             {
-                Canvas mainCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
-                ViewManager.RenderFrameworkElementToJPEG(mainCanvas, IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg"));
-                SLPage p = (SLPage)ViewPageManager.RetrievePage("SavePage");
-                p.ReLoadFileInfo();
-                ViewPageManager.NavigateTo("SavePage");
-            }
-            if (UpdateRender.KS_KEY_Dict[Key.L] == KeyStates.Down && ViewPageManager.IsAtMainStage())
-            {
-                SLPage p = (SLPage)ViewPageManager.RetrievePage("LoadPage");
-                p.ReLoadFileInfo();
-                ViewPageManager.NavigateTo("LoadPage");
+                if (UpdateRender.KS_KEY_Dict[Key.S] == KeyStates.Down)
+                {
+                    Canvas mainCanvas = ViewManager.Is3DStage
+                        ? ViewManager.View3D.BO_MainGrid
+                        : ViewManager.View2D.BO_MainGrid;
+                    ViewManager.RenderFrameworkElementToJPEG(mainCanvas,
+                        IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg"));
+                    SLPage p = (SLPage) ViewPageManager.RetrievePage("SavePage");
+                    p.ReLoadFileInfo();
+                    ViewPageManager.NavigateTo("SavePage");
+                }
+                if (UpdateRender.KS_KEY_Dict[Key.L] == KeyStates.Down)
+                {
+                    SLPage p = (SLPage) ViewPageManager.RetrievePage("LoadPage");
+                    p.ReLoadFileInfo();
+                    ViewPageManager.NavigateTo("LoadPage");
+                }
             }
         }
 

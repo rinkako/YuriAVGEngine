@@ -7,6 +7,7 @@
     {
         NOTVAR,
         LOCAL,
-        GLOBAL
+        GLOBAL,
+        PERSIST
     }
 }

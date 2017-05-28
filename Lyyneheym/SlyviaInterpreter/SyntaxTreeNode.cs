@@ -110,6 +110,11 @@ namespace Yuri.YuriInterpreter
         }
 
         /// <summary>
+        /// 将树描绘成字符串
+        /// </summary>
+        public string DrawTreeString => this.ToString();
+
+        /// <summary>
         /// 命中语法结构类型
         /// </summary>
         private SyntaxType nodeSyntaxTyper = SyntaxType.Unknown;

@@ -379,10 +379,10 @@ namespace Yuri.PlatformCore.Evaluator
                     };
                 }
                 // 变量时
-                else if ((item.StartsWith("&") || item.StartsWith("$")) && item.Length > 1)
+                else if ((item.StartsWith("&") || item.StartsWith("$") || item.StartsWith("%")) && item.Length > 1)
                 {
                     object varRef = Director.RunMana.Fetch(item, vsm);
-                    if (varRef is double)
+                    if (varRef is ValueType)
                     {
                         poi = new PolishItem()
                         {

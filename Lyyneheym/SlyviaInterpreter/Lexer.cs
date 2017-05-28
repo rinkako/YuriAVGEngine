@@ -461,8 +461,19 @@ namespace Yuri.YuriInterpreter
         /// <returns>是否命中</returns>
         private bool GetIdentifierCalculator(Token res)
         {
-            // 跳过变量引用符号$或&
-            res.IsGlobal = this.GetCharType(this.sourceCode[this.nextCharPointer]) == CharacterType.And;
+            // 跳过变量引用符号$或&或%
+            switch (this.GetCharType(this.sourceCode[this.nextCharPointer]))
+            {
+                case CharacterType.And:
+                    res.ScopeFlag = 1;
+                    break;
+                case CharacterType.Percent:
+                    res.ScopeFlag = 2;
+                    break;
+                default:
+                    res.ScopeFlag = 0;
+                    break;
+            }
             this.Jump(1);
             // 构造标识符
             StringBuilder sb = new StringBuilder();
