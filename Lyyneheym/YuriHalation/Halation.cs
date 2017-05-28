@@ -484,6 +484,18 @@ namespace Yuri.YuriHalation
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
 
+        public void DashVocal(string name, string vid)
+        {
+            IHalationCommand cmd = new VocalCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, name, vid);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashEditVocal(string name, string vid)
+        {
+            IHalationCommand cmd = new EditVocalCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, name, vid);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
         public void DashWait(string span)
         {
             IHalationCommand cmd = new WaitCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, span);

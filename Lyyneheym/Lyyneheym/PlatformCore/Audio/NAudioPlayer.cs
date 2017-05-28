@@ -76,51 +76,27 @@ namespace Yuri.PlatformCore.Audio
         }
 
         /// <summary>
-        /// 淡入通道
+        /// 淡入淡出通道
         /// </summary>
         /// <param name="handle">通道句柄</param>
-        /// <param name="ms">淡入时间</param>
-        /// <returns>动作是否成功</returns>
-        public bool FadeIn(int handle, double ms)
-        {
-            try
-            {
-                if (this.channelDict.ContainsKey(handle) == false)
-                {
-                    CommonUtils.ConsoleLine("Fadein audio in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
-                    return false;
-                }
-                this.channelDict[handle].FadeIn(ms);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                CommonUtils.ConsoleLine("Fadein audio failed." + ex, "NAudioPlayer", OutputStyle.Error);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 淡出通道
-        /// </summary>
-        /// <param name="handle">通道句柄</param>
+        /// <param name="destVol">目标音量</param>
         /// <param name="ms">淡出时间</param>
         /// <returns>动作是否成功</returns>
-        public bool FadeOut(int handle, double ms)
+        public bool Fading(int handle, float destVol, int ms)
         {
             try
             {
                 if (this.channelDict.ContainsKey(handle) == false)
                 {
-                    CommonUtils.ConsoleLine("Fadeout audio in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
+                    CommonUtils.ConsoleLine("Fade audio in empty channel:" + handle, "NAudioPlayer", OutputStyle.Warning);
                     return false;
                 }
-                this.channelDict[handle].FadeOut(ms);
+                this.channelDict[handle].AsyncFadeMusic(destVol / 1000.0f, ms);
                 return true;
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Fadeout audio failed." + ex, "NAudioPlayer", OutputStyle.Error);
+                CommonUtils.ConsoleLine("Fade audio failed." + ex, "NAudioPlayer", OutputStyle.Warning);
                 return false;
             }
         }
@@ -233,7 +209,7 @@ namespace Yuri.PlatformCore.Audio
             {
                 if (this.channelDict.ContainsKey(handle) == false)
                 {
-                    CommonUtils.ConsoleLine("Get playing state in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
+                    //CommonUtils.ConsoleLine("Get playing state in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
                     return false;
                 }
                 return this.channelDict[handle].IsPlaying;

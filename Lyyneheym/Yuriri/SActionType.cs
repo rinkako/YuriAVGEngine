@@ -118,6 +118,8 @@
         // 消息弹窗
         act_alert,
         // 截图
-        act_snapshot
+        act_snapshot,
+        // 调节BGM音量
+        act_bgmfade,
     }
 }

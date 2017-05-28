@@ -179,6 +179,10 @@ namespace Yuri.YuriHalation.ScriptPackage
                     desSb.Append(String.Format("目标值:{0} ", this.argsDict["dash"].valueExp));
                     desSb.Append(String.Format("加速度:{0} ", this.argsDict["acc"].valueExp));
                     break;
+                case ActionPackageType.act_vocal:
+                    desSb.Append(String.Format("角色:{0} ", this.argsDict["name"].valueExp));
+                    desSb.Append(String.Format("编号:{0} ", this.argsDict["vid"].valueExp));
+                    break;
                 case ActionPackageType.act_bg:
                     desSb.Append(String.Format("图层:{0} ", this.argsDict["id"].valueExp == "0" ? "背景" : "前景"));
                     desSb.Append(String.Format("文件:{0} ", this.argsDict["filename"].valueExp));

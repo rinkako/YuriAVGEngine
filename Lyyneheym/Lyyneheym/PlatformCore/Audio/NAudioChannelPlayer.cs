@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -18,7 +20,6 @@ namespace Yuri.PlatformCore.Audio
             this.wavePlayer = new WaveOut();
             this.playingStream = new StreamMediaFoundationReader(this.BindingStream = playStream);
             this.volumeProvider = new VolumeWaveProvider16(playingStream) { Volume = volume };
-            this.fadeInOutProvicer = new FadeInOutSampleProvider(this.playingStream.ToSampleProvider());
             this.wavePlayer.Init(this.volumeProvider);
             this.IsLoop = loop;
             this.stopCallback = stopCallback;
@@ -57,26 +58,46 @@ namespace Yuri.PlatformCore.Audio
         }
 
         /// <summary>
-        /// 淡入音乐
+        /// 异步地过渡音乐音量到目标值
         /// </summary>
-        /// <param name="fadems">淡入动作毫秒数</param>
-        public void FadeIn(double fadems)
+        /// <param name="destVol">目标音量</param>
+        /// <param name="ms">时延毫秒</param>
+        public void AsyncFadeMusic(float destVol, int ms)
         {
-            if (this.IsPlaying)
+            if (ms == 0)
             {
-                this.fadeInOutProvicer.BeginFadeIn(fadems);
+                this.Volume = destVol;
+                return;
+            }
+            if (Math.Abs(this.Volume - destVol) < 0.05)
+            {
+                return;
+            }
+            lock (this.volumeMutex)
+            {
+                Thread t = new Thread(new ParameterizedThreadStart(this.FadeHandler));
+                t.Start(new Tuple<float, float, int>(this.Volume, destVol, ms));
             }
         }
-
+        
         /// <summary>
-        /// 淡出音乐
+        /// 异步音量调节处理器
         /// </summary>
-        /// <param name="fadems">淡出动作毫秒数</param>
-        public void FadeOut(double fadems)
+        /// <param name="tp">参数包装</param>
+        private void FadeHandler(object tp)
         {
-            if (this.IsPlaying)
+            var t = tp as Tuple<float, float, int>;
+            var beginVol = t.Item1;
+            var destVol = t.Item2;
+            var fadeMs = t.Item3;
+            // 计算每次变更的时间间隔
+            var deltaVol = destVol - beginVol;
+            var dv = deltaVol / fadeMs;
+            dv = dv > 0 ? (float)Math.Max(0.0001, dv) : (float)Math.Min(-0.0001, dv);
+            while (Math.Abs(this.Volume - destVol) > 0.025)
             {
-                this.fadeInOutProvicer.BeginFadeOut(fadems);
+                this.Volume += dv;
+                Thread.Sleep(1);
             }
         }
 
@@ -148,12 +169,20 @@ namespace Yuri.PlatformCore.Audio
             get => this.volumeProvider.Volume;
             set
             {
-                if (this.volumeProvider != null)
+                lock (this.volumeMutex)
                 {
-                    this.volumeProvider.Volume = value;
+                    if (this.volumeProvider != null)
+                    {
+                        this.volumeProvider.Volume = value;
+                    }
                 }
             }
         }
+
+        /// <summary>
+        /// 音量互斥量
+        /// </summary>
+        private object volumeMutex = new object();
 
         /// <summary>
         /// 获取该通道是否正在播放音乐
@@ -199,10 +228,5 @@ namespace Yuri.PlatformCore.Audio
         /// 可控制流音量的波形提供器
         /// </summary>
         private VolumeWaveProvider16 volumeProvider = null;
-
-        /// <summary>
-        /// 可淡入淡出的波形提供器
-        /// </summary>
-        private FadeInOutSampleProvider fadeInOutProvicer = null;
     }
 }

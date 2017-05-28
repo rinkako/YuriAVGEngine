@@ -31,6 +31,7 @@ namespace Yuri.YuriHalation.YuriForms
                 this.button1.Visible = false;
             }
         }
+        
 
         /// <summary>
         /// 重新加载列表

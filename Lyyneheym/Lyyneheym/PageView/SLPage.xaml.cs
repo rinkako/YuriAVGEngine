@@ -36,21 +36,21 @@ namespace Yuri.PageView
             try
             {
                 // 背景图
-                var backGroundSprite = ResourceManager.GetInstance().GetPicture("SaveLoad.jpg", ResourceManager.FullImageRect);
+                var backGroundSprite = ResourceManager.GetInstance().GetPicture("UI_SaveLoad_Background.png", ResourceManager.FullImageRect);
                 this.SL_MainGrid.Background = new ImageBrush(backGroundSprite.SpriteBitmapImage);
                 // 返回按钮
-                var backButtonSprite = ResourceManager.GetInstance().GetPicture("SL_Button_BACK.png", ResourceManager.FullImageRect);
+                var backButtonSprite = ResourceManager.GetInstance().GetPicture("UI_SaveLoad_Button_BACK.png", ResourceManager.FullImageRect);
                 this.SL_Button_Back.Source = backButtonSprite.SpriteBitmapImage;
                 // 删除按钮
-                var deleteButtonSprite = ResourceManager.GetInstance().GetPicture("SL_Button_DELETE.png", ResourceManager.FullImageRect);
+                var deleteButtonSprite = ResourceManager.GetInstance().GetPicture("UI_SaveLoad_Button_DELETE.png", ResourceManager.FullImageRect);
                 this.SL_Button_Delete.Source = deleteButtonSprite.SpriteBitmapImage;
                 if (this.isSave)
                 {
                     // 保存按钮
-                    var saveButtonSprite = ResourceManager.GetInstance().GetPicture("SL_Button_SAVE.png", ResourceManager.FullImageRect);
+                    var saveButtonSprite = ResourceManager.GetInstance().GetPicture("UI_SaveLoad_Button_SAVE.png", ResourceManager.FullImageRect);
                     this.SL_Button_SorL.Source = saveButtonSprite.SpriteBitmapImage;
                     // 描述子底层框
-                    var descriptorBoxSprite = ResourceManager.GetInstance().GetPicture("SL_Item_Descriptor.png", ResourceManager.FullImageRect);
+                    var descriptorBoxSprite = ResourceManager.GetInstance().GetPicture("UI_SaveLoad_Item_Descriptor.png", ResourceManager.FullImageRect);
                     this.SL_DescriptorBox.Source = descriptorBoxSprite.SpriteBitmapImage;
                     // 消去描述子的显示框，以填写框代替
                     this.SL_Descriptor_TextBlock.Visibility = Visibility.Collapsed;
@@ -58,7 +58,7 @@ namespace Yuri.PageView
                 else
                 {
                     // 读取按钮
-                    var loadButtonSprite = ResourceManager.GetInstance().GetPicture("SL_Button_LOAD.png", ResourceManager.FullImageRect);
+                    var loadButtonSprite = ResourceManager.GetInstance().GetPicture("UI_SaveLoad_Button_LOAD.png", ResourceManager.FullImageRect);
                     this.SL_Button_SorL.Source = loadButtonSprite.SpriteBitmapImage;
                     // 消去描述子的填写框，以显示框代替
                     this.SL_Descriptor_TextBox.Visibility = Visibility.Collapsed;

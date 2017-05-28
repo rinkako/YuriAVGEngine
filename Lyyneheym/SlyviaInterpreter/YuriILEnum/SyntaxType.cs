@@ -117,6 +117,8 @@
         synr_alert,
         // 截图
         synr_snapshot,
+        // BGM音量淡入淡出
+        synr_bgmfade,
         // 参数：类型
         para_type,
         // 参数：函数签名

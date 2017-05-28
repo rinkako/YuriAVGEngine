@@ -803,6 +803,12 @@ namespace Yuri.PlatformCore
                         this.ParseDouble(action.ArgsDict["vol"], 1000)
                         );
                     break;
+                case SActionType.act_bgmfade:
+                    this.Bgmfade(
+                        this.ParseDouble(action.ArgsDict["vol"], 1000),
+                        this.ParseDouble(action.ArgsDict["time"], 0)
+                    );
+                    break;
                 case SActionType.act_bgm:
                     this.Bgm(
                         this.ParseDirectString(action.ArgsDict["filename"], String.Empty),
@@ -1501,6 +1507,16 @@ namespace Yuri.PlatformCore
             {
                 this.musician.SetBGMVolume((float)volume);
             }
+        }
+
+        /// <summary>
+        /// 演绎函数：淡入淡出BGM
+        /// </summary>
+        /// <param name="vol">目标音量</param>
+        /// <param name="ms">毫秒数</param>
+        public void Bgmfade(double vol, double ms)
+        {
+            this.musician.FadeBgm((float) vol, (int)ms);
         }
 
         /// <summary>

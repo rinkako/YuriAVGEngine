@@ -149,6 +149,7 @@ namespace Yuri.YuriHalation.YuriForms
                             break;
                         case "播放音乐":
                         case "播放声效":
+                        case "播放语音":
                             FontBrush = Brushes.MediumTurquoise;
                             break;
                         case "显示图片":
@@ -186,6 +187,10 @@ namespace Yuri.YuriHalation.YuriForms
                         case "函数调用":
                         case "退出当前场景":
                             FontBrush = Brushes.Purple;
+                            break;
+                        case "等待动画结束":
+                        case "等待用户操作":
+                            FontBrush = Brushes.OrangeRed;
                             break;
                         default:
                             FontBrush = Brushes.Black;
@@ -352,7 +357,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void button15_Click(object sender, EventArgs e)
         {
-            VocalForm vf = new VocalForm();
+            VocalForm vf = new VocalForm(false);
             vf.ShowDialog(this);
         }
 
@@ -650,6 +655,11 @@ namespace Yuri.YuriHalation.YuriForms
                     LabelForm editLf = new LabelForm(true, editPack.argsDict["name"].valueExp);
                     editLf.ShowDialog(this);
                     break;
+                case ActionPackageType.act_vocal:
+                    VocalForm editVocalf = new VocalForm(true, editPack.argsDict["name"].valueExp,
+                        editPack.argsDict["vid"].valueExp);
+                    editVocalf.ShowDialog();
+                    break;
                 case ActionPackageType.act_scamera:
                     SCameraForm editScf = new SCameraForm(true, editPack.argsDict["name"].valueExp,
                         editPack.argsDict["x"].valueExp, editPack.argsDict["y"].valueExp,
@@ -717,9 +727,11 @@ namespace Yuri.YuriHalation.YuriForms
         {
             if (this.codeListBox.SelectedIndex != -1)
             {
+                var selected = this.codeListBox.SelectedIndex;
                 this.core.DeleteCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
                 this.core.RefreshCodeContext();
                 this.actionGroupBox.Enabled = false;
+                this.codeListBox.SelectedIndex = selected;
             }
         }
 
@@ -730,9 +742,11 @@ namespace Yuri.YuriHalation.YuriForms
         {
             if (this.codeListBox.SelectedIndex != -1)
             {
+                var selected = this.codeListBox.SelectedIndex;
                 this.core.CutCode(this.codeListBox.SelectedIndex, this.codeListBox.SelectedIndices.Count);
                 this.core.RefreshCodeContext();
                 this.actionGroupBox.Enabled = false;
+                this.codeListBox.SelectedIndex = selected;
             }
         }
 
@@ -743,9 +757,11 @@ namespace Yuri.YuriHalation.YuriForms
         {
             if (this.codeListBox.SelectedIndex != -1)
             {
+                var selected = this.codeListBox.SelectedIndex;
                 this.core.PasteCode(this.codeListBox.SelectedIndex);
                 this.core.RefreshCodeContext();
                 this.actionGroupBox.Enabled = false;
+                this.codeListBox.SelectedIndex = selected;
             }
         }
 

@@ -535,7 +535,8 @@ namespace Yuri.YuriInterpreter
                     this.removeQueueDict[parent].Enqueue(iterPtr);
                     if (iterPtr.Next != null &&
                         (iterPtr.Next.Type == SActionType.act_dialog ||
-                        iterPtr.Next.Type == SActionType.act_a))
+                        (iterPtr.Next.Type == SActionType.act_a && iterPtr.Next.Next?.Type == SActionType.act_dialog)||
+                        iterPtr.Next.Type == SActionType.act_vocal && iterPtr.Next.Next?.Type == SActionType.act_dialog))
                     {
                         dialogBuilder += "#1";
                     }

@@ -99,6 +99,7 @@
     <Compile Include="Command\ScriptCommand.cs" />
     <Compile Include="Command\ForCommand.cs" />
     <Compile Include="Command\EditWaitCommand.cs" />
+    <Compile Include="Command\EditVocalCommand.cs" />
     <Compile Include="Command\WaitCommand.cs" />
     <Compile Include="Command\WaitaniCommand.cs" />
     <Compile Include="Command\WaituserCommand.cs" />

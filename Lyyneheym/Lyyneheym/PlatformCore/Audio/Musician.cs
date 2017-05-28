@@ -186,6 +186,19 @@ namespace Yuri.PlatformCore.Audio
         }
 
         /// <summary>
+        /// 淡入淡出BGM到指定音量
+        /// </summary>
+        /// <param name="vol">目标音量</param>
+        /// <param name="ms">淡入淡出毫秒数</param>
+        public void FadeBgm(float vol, int ms)
+        {
+            if (this.IsBgmLoaded && this.IsMute == false)
+            {
+                this.audioEngine.Fading(this.BgmHandleContainer.Value, vol, ms);
+            }
+        }
+
+        /// <summary>
         /// 停止语音并释放资源
         /// </summary>
         public void StopAndReleaseVocal()
