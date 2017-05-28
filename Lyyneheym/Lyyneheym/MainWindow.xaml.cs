@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Yuri.PageView;
 using Yuri.PlatformCore;
 using Yuri.PlatformCore.Graphic;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace Yuri
 {
@@ -48,6 +51,7 @@ namespace Yuri
             this.maskFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
             this.maskFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
             ViewManager.MaskFrameRef = this.maskFrame;
+            InputMethod.SetIsInputMethodEnabled(this, false);
         }
 
         /// <summary>

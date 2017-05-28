@@ -237,7 +237,22 @@ namespace Yuri.PlatformCore.Graphic
         }
 
         /// <summary>
-        /// 获取或设置文字层水平对齐属性
+        /// 获取或设置文字层文本水平对齐属性
+        /// </summary>
+        public TextAlignment TextHorizontalAlignment
+        {
+            get
+            {
+                return this.DisplayBinding.TextAlignment;
+            }
+            set
+            {
+                this.DisplayBinding.TextAlignment = value;
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置文字层在窗体中水平对齐属性
         /// </summary>
         public HorizontalAlignment HorizontalAlignment
         {
@@ -252,7 +267,7 @@ namespace Yuri.PlatformCore.Graphic
         }
 
         /// <summary>
-        /// 获取或设置文字层竖直对齐属性
+        /// 获取或设置文字层在窗体中竖直对齐属性
         /// </summary>
         public VerticalAlignment VerticalAlignment
         {

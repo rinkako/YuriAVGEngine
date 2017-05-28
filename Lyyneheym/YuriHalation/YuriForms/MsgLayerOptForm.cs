@@ -22,7 +22,7 @@ namespace Yuri.YuriHalation.YuriForms
             "可见性", "行距", "不透明度",
             "X坐标", "Y坐标", "Z坐标",
             "高度", "宽度", "侧边距",
-            "横向对齐", "纵向对齐", "层背景图名称",
+            "文本对齐", "层背景图名称",
             "重置", "重置风格"
         };
 
@@ -32,7 +32,7 @@ namespace Yuri.YuriHalation.YuriForms
             "visible", "lineheight", "opacity",
             "x", "y", "z",
             "height", "width", "padding",
-            "horizontal", "vertical", "backgroundname",
+            "texthorizontal", "backgroundname",
             "reset", "stylereset"
         };
 
@@ -41,7 +41,7 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            if (this.comboBox1.SelectedIndex < 15 && this.textBox1.Text == String.Empty)
+            if (this.comboBox1.SelectedIndex < 14 && this.textBox1.Text == String.Empty)
             {
                 MessageBox.Show("请正确填写目标值");
                 return;

@@ -897,7 +897,7 @@ namespace Yuri.PlatformCore
                         );
                     break;
                 case SActionType.act_msglayeropt:
-                    var dashMsgoptItem = PolishEvaluator.Evaluate(action.ArgsDict["dash"], this.VsmReference);
+                    var dashMsgoptItem = this.ParseDirectString(action.ArgsDict["dash"], String.Empty);
                     this.MsgLayerOpt(
                         this.ParseInt(action.ArgsDict["id"], 0),
                         this.ParseDirectString(action.ArgsDict["target"], String.Empty),
@@ -1879,8 +1879,8 @@ namespace Yuri.PlatformCore
                         mld.Padding = new MyThickness(ml.Padding);
                         break;
                     case "ha":
-                    case "horizontal":
-                        ml.HorizontalAlignment = mld.HorizonAlign = (HorizontalAlignment)Enum.Parse(typeof(HorizontalAlignment), valueStr, true);
+                    case "texthorizontal":
+                        ml.TextHorizontalAlignment = mld.TextHorizonAlign = (TextAlignment)Enum.Parse(typeof(TextAlignment), valueStr, true);
                         break;
                     case "va":
                     case "vertical":

@@ -95,6 +95,11 @@ namespace Yuri.PlatformCore.Graphic
         public MyThickness Padding { get; set; }
 
         /// <summary>
+        /// 获取或设置文本层文字横向对齐属性
+        /// </summary>
+        public TextAlignment TextHorizonAlign { get; set; }
+
+        /// <summary>
         /// 获取或设置文本层在视窗中横向对齐属性
         /// </summary>
         public HorizontalAlignment HorizonAlign { get; set; }
