@@ -12,12 +12,18 @@ namespace Yuri.YuriHalation.YuriForms
             InitializeComponent();
             this.isEditing = isEdit;
             var namelist = Halation.project.CharacterList;
-            this.comboBox1.Items.Add("不变");
             foreach (var s in namelist)
             {
                 this.comboBox1.Items.Add(s);
             }
-            this.comboBox1.SelectedIndex = 0;
+            if (this.comboBox1.Items.Count > 0)
+            {
+                this.comboBox1.SelectedIndex = 0;
+            }
+            else
+            {
+                this.button1.Enabled = false;
+            }
             if (isEdit)
             {
                 for (int i = 0; i < this.comboBox1.Items.Count; i++)

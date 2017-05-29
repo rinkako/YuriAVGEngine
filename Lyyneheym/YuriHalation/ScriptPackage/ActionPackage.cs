@@ -454,7 +454,17 @@ namespace Yuri.YuriHalation.ScriptPackage
         // 注释
         notation,
         // 代码片段
-        script
+        script,
+        // 信号系统
+        act_semaphore,
+        // 章节设置
+        act_chapter,
+        // 消息弹窗
+        act_alert,
+        // 截图
+        act_snapshot,
+        // 调节BGM音量
+        act_bgmfade,
     }
 
     /// <summary>
@@ -501,9 +511,9 @@ namespace Yuri.YuriHalation.ScriptPackage
         // 调用菜单
         act_menu,
         // 调用存档
-        act_save,
+        呼叫存档画面,
         // 调用读档
-        act_load,
+        呼叫读档画面,
         // 标签
         标签,
         // 标签跳转
@@ -531,7 +541,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         // 退出循环
         中断循环,
         // 退出程序
-        结束程序,
+        结束游戏,
         // 中断事件处理
         退出当前场景,
         // 等待
@@ -571,6 +581,16 @@ namespace Yuri.YuriHalation.ScriptPackage
         // 注释
         注释,
         // 代码片段
-        代码片段
+        代码片段,
+        // 信号系统
+        信号系统,
+        // 章节设置
+        设置章节,
+        // 消息弹窗
+        消息弹窗,
+        // 截图
+        截图,
+        // 调节BGM音量
+        音乐渐变,
     }
 }

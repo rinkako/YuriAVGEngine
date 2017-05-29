@@ -579,7 +579,7 @@ namespace Yuri.YuriHalation
             IHalationCommand cmd = new MoveCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, name, id, time, target, dash, acc);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
-
+        
         public void DashEditMove(string name, string id, string time, string target, string dash, string acc)
         {
             IHalationCommand cmd = new EditMoveCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, name, id, time, target, dash, acc);
@@ -667,6 +667,30 @@ namespace Yuri.YuriHalation
         public void DashEditSCamera(string name, string r, string c, string ro)
         {
             IHalationCommand cmd = new EditSCameraCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage, name, r, c, ro);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashSave()
+        {
+            IHalationCommand cmd = new SaveCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashLoad()
+        {
+            IHalationCommand cmd = new LoadCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashTitle()
+        {
+            IHalationCommand cmd = new TitleCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage);
+            HalationInvoker.Dash(Halation.currentScriptName, cmd);
+        }
+
+        public void DashShutdown()
+        {
+            IHalationCommand cmd = new ShutdownCommand(Halation.CurrentSelectedLine, this.GetIndent(Halation.CurrentSelectedLine), Halation.currentCodePackage);
             HalationInvoker.Dash(Halation.currentScriptName, cmd);
         }
         #endregion

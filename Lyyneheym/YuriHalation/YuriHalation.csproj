@@ -77,10 +77,14 @@
     <Compile Include="Command\EditLabelCommand.cs" />
     <Compile Include="Command\EditJumpCommand.cs" />
     <Compile Include="Command\EditSCameraCommand.cs" />
+    <Compile Include="Command\ShutdownCommand.cs" />
     <Compile Include="Command\SCameraCommand.cs" />
     <Compile Include="Command\EditScriptCommand.cs" />
     <Compile Include="Command\EditVarCommand.cs" />
     <Compile Include="Command\EditSwitchCommand.cs" />
+    <Compile Include="Command\SaveCommand.cs" />
+    <Compile Include="Command\LoadCommand.cs" />
+    <Compile Include="Command\TitleCommand.cs" />
     <Compile Include="Command\VarCommand.cs" />
     <Compile Include="Command\FuncallCommand.cs" />
     <Compile Include="Command\MenuPasteCommand.cs" />

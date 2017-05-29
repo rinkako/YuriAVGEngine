@@ -30,12 +30,13 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            var dr = MessageBox.Show("确定要退出吗" + Environment.NewLine + "未保存的工作将会丢失", "退出Halation",
-                MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-            if (dr == DialogResult.Cancel)
-            {
-                e.Cancel = true;
-            }
+            this.core.SaveProject();
+            //var dr = MessageBox.Show(@"确定要退出吗" + Environment.NewLine + @"未保存的工作将会丢失", @"退出Halation",
+            //    MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            //if (dr == DialogResult.Cancel)
+            //{
+            //    e.Cancel = true;
+            //}
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace Yuri.YuriHalation.YuriForms
                 var allAct = Halation.currentCodePackage.GetAction();
                 for (int i = this.codeListBox.SelectedIndex + 1; i < allAct.Count; i++)
                 {
-                    if (act.indent == allAct[i].indent && allAct[i].nodeType == Yuri.YuriHalation.ScriptPackage.ActionPackageType.act_endfor)
+                    if (act.indent == allAct[i].indent && allAct[i].nodeType == ActionPackageType.act_endfor)
                     {
                         for (int j = this.codeListBox.SelectedIndex; j <= i; j++)
                         {
@@ -92,7 +93,7 @@ namespace Yuri.YuriHalation.YuriForms
                 var allAct = Halation.currentCodePackage.GetAction();
                 for (int i = this.codeListBox.SelectedIndex + 1; i < allAct.Count; i++)
                 {
-                    if (act.indent == allAct[i].indent && allAct[i].nodeType == Yuri.YuriHalation.ScriptPackage.ActionPackageType.act_endif)
+                    if (act.indent == allAct[i].indent && allAct[i].nodeType == ActionPackageType.act_endif)
                     {
                         for (int j = this.codeListBox.SelectedIndex; j <= i; j++)
                         {
@@ -145,7 +146,7 @@ namespace Yuri.YuriHalation.YuriForms
                     switch (trimItem.Substring(1))
                     {
                         case "角色状态":
-                            FontBrush = Brushes.Brown;
+                            FontBrush = Brushes.LightSlateGray;
                             break;
                         case "播放音乐":
                         case "播放声效":
@@ -157,14 +158,14 @@ namespace Yuri.YuriHalation.YuriForms
                         case "显示背景":
                         case "显示立绘":
                         case "执行过渡":
-                            FontBrush = Brushes.Orchid;
+                            FontBrush = Brushes.Plum;
                             break;
                         case "场景镜头":
                             FontBrush = Brushes.DeepSkyBlue;
                             break;
                         case "开关操作":
                         case "变量操作":
-                            FontBrush = Brushes.Red;
+                            FontBrush = Brushes.Brown;
                             break;
                         case "标签":
                         case "标签跳转":
@@ -186,10 +187,15 @@ namespace Yuri.YuriHalation.YuriForms
                             break;
                         case "函数调用":
                         case "退出当前场景":
+                        case "结束游戏":
+                        case "返回标题":
                             FontBrush = Brushes.Purple;
                             break;
                         case "等待动画结束":
                         case "等待用户操作":
+                        case "呼叫存档画面":
+                        case "呼叫读档画面":
+                        case "延时等待":
                             FontBrush = Brushes.OrangeRed;
                             break;
                         default:
@@ -230,13 +236,13 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void button37_Click(object sender, EventArgs e)
         {
-            if (this.projTreeView.SelectedNode.Text == "main")
+            if (this.projTreeView.SelectedNode.Text == @"main")
             {
-                MessageBox.Show("main场景不可以被删除");
+                MessageBox.Show(@"main场景不可以被删除");
                 return;
             }
-            var dr =MessageBox.Show("真的要删除场景吗" + Environment.NewLine + "这是一个不可撤销的动作",
-                "确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            var dr =MessageBox.Show(@"真的要删除场景吗" + Environment.NewLine + @"这是一个不可撤销的动作",
+                @"确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
             if (dr == DialogResult.OK)
             {
                 this.core.DashDeleteScene(this.projTreeView.SelectedNode.Text);
@@ -248,14 +254,14 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void button35_Click_1(object sender, EventArgs e)
         {
-            if (this.projTreeView.SelectedNode.Parent.Text == "main" &&
-                this.projTreeView.SelectedNode.Text == "rclick@main")
+            if (this.projTreeView.SelectedNode.Parent.Text == @"main" &&
+                this.projTreeView.SelectedNode.Text == @"rclick@main")
             {
-                MessageBox.Show("main场景下的rclick函数不可以被删除");
+                MessageBox.Show(@"main场景下的rclick函数不可以被删除");
                 return;
             }
-            var dr = MessageBox.Show("真的要删除函数吗" + Environment.NewLine + "这是一个不可撤销的动作",
-                "确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            var dr = MessageBox.Show(@"真的要删除函数吗" + Environment.NewLine + @"这是一个不可撤销的动作",
+                @"确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
             if (dr == DialogResult.OK)
             {
                 this.core.DashDeleteFunction(this.projTreeView.SelectedNode.Parent.Text, this.projTreeView.SelectedNode.Text);
@@ -561,6 +567,38 @@ namespace Yuri.YuriHalation.YuriForms
         {
             IfForm iff = new IfForm(false);
             iff.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// 按钮：呼叫存档画面
+        /// </summary>
+        private void button38_Click(object sender, EventArgs e)
+        {
+            this.core.DashSave();
+        }
+
+        /// <summary>
+        /// 按钮：呼叫读档画面
+        /// </summary>
+        private void button37_Click_1(object sender, EventArgs e)
+        {
+            this.core.DashLoad();
+        }
+
+        /// <summary>
+        /// 按钮：返回标题画面
+        /// </summary>
+        private void button39_Click(object sender, EventArgs e)
+        {
+            this.core.DashTitle();
+        }
+
+        /// <summary>
+        /// 按钮：结束游戏
+        /// </summary>
+        private void button35_Click_2(object sender, EventArgs e)
+        {
+            this.core.DashShutdown();
         }
         #endregion
 
@@ -882,12 +920,13 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var dr = MessageBox.Show("确定要退出吗" + Environment.NewLine + "未保存的工作将会丢失", "退出Halation",
-                MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-            if (dr == DialogResult.OK)
-            {
-                Environment.Exit(0);
-            }
+            this.core.SaveProject();
+            //var dr = MessageBox.Show(@"确定要退出吗" + Environment.NewLine + @"未保存的工作将会丢失", @"退出Halation",
+            //    MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            //if (dr == DialogResult.OK)
+            //{
+            Environment.Exit(0);
+            //}
         }
 
         /// <summary>
@@ -904,7 +943,7 @@ namespace Yuri.YuriHalation.YuriForms
         private void 打开ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FileDialog fd = new OpenFileDialog();
-            fd.Filter = "Halation工程|*.yrproj";
+            fd.Filter = @"Halation工程|*.yrproj";
             fd.ShowDialog(this);
             if (fd.FileName != String.Empty)
             {
@@ -1006,11 +1045,5 @@ namespace Yuri.YuriHalation.YuriForms
             upf.ShowDialog(this);
         }
         #endregion
-
-        private void button35_Click_2(object sender, EventArgs e)
-        {
-            SCamera3DForm scf = new SCamera3DForm();
-            scf.ShowDialog();
-        }
     }
 }

@@ -10,7 +10,7 @@ namespace Yuri.YuriHalation.YuriForms
         public ButtonForm(bool isEdit, string id = "0", string x = "0", string y = "0", string target = "", string type = "once", string normal = "", string over = "", string on = "")
         {
             InitializeComponent();
-            this.comboBox1.SelectedIndex = 0;
+            this.comboBox1.SelectedIndex = 1;
             this.numericUpDown3.Maximum = Halation.project.Config.GameViewButtonCount - 1;
             this.isEditing = isEdit;
             if (isEdit)
