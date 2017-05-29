@@ -68,7 +68,14 @@ namespace Yuri.YuriHalation.YuriForms
         {
             if (this.textBox1.Text == String.Empty)
             {
-                MessageBox.Show("目标值不能为空");
+                MessageBox.Show(@"目标值不能为空");
+                return;
+            }
+            if (this.propertyItem[this.comboBox2.SelectedIndex] == "opacity"
+                && Double.TryParse(this.textBox1.Text, out double topa)
+                && (topa < 0 || topa > 1))
+            {
+                MessageBox.Show(@"不透明度的范围是[0, 1]之间的浮点数");
                 return;
             }
             if (this.isEditing)

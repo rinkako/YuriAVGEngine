@@ -485,7 +485,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         // 显示图片
         显示图片,
         // 移动图片
-        移动图片,
+        动画,
         // 消去图片
         消去图片,
         // 显示立绘

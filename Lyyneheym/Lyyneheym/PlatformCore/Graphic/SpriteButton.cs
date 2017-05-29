@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Yuri.PlatformCore.Semaphore;
 using Yuri.PlatformCore.VM;
 
 namespace Yuri.PlatformCore.Graphic
@@ -244,6 +245,7 @@ namespace Yuri.PlatformCore.Graphic
             if (this.Enable)
             {
                 this.IsMouseOver = this.IsMouseOn = false;
+                SemaphoreDispatcher.Deactivate($"System_Button_Over_{this.Id}");
                 if (this.DisplayBinding != null && (this.ImageMouseOver != null || this.ImageMouseOn != null))
                 {
                     BitmapImage myBitmapImage = this.ImageNormal.SpriteBitmapImage;
@@ -265,6 +267,7 @@ namespace Yuri.PlatformCore.Graphic
             if (this.Enable)
             {
                 this.IsMouseOver = true;
+                SemaphoreDispatcher.Activate($"System_Button_Over_{this.Id}");
                 if (this.DisplayBinding != null && this.ImageMouseOver != null)
                 {
                     BitmapImage myBitmapImage = this.ImageMouseOver.SpriteBitmapImage;

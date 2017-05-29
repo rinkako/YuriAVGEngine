@@ -1291,7 +1291,12 @@ namespace Yuri.PlatformCore
                 SpriteDescriptor descriptor = Director.ScrMana.GetSpriteDescriptor(id, rType);
                 if (rType == ResourceType.Button)
                 {
-                    actionSprite = this.viewMana.GetSpriteButton(id).ImageNormal;
+                    var btn = this.viewMana.GetSpriteButton(id);
+                    if (btn == null)
+                    {
+                        return;
+                    }
+                    actionSprite = btn.ImageNormal;
                     descriptor = actionSprite.Descriptor;
                 }
                 if (actionSprite == null)

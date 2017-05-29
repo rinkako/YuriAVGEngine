@@ -138,9 +138,6 @@
     <Resource Include="Resources\Sysbg_Izetta.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\CVICON_01.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\About_2.png" />
   </ItemGroup>
   <ItemGroup>

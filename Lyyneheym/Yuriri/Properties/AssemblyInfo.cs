@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("Yuriri")]
+[assembly: AssemblyTitle("Yuriri Language Package")]
 [assembly: AssemblyDescription("Yuriri IL Language Package of Yuri Engine")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Yuri Project")]

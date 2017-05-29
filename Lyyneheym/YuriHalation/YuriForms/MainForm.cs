@@ -154,10 +154,12 @@ namespace Yuri.YuriHalation.YuriForms
                             FontBrush = Brushes.MediumTurquoise;
                             break;
                         case "显示图片":
-                        case "移动图片":
                         case "显示背景":
                         case "显示立绘":
+                            FontBrush = Brushes.Violet;
+                            break;
                         case "执行过渡":
+                        case "动画":
                             FontBrush = Brushes.Plum;
                             break;
                         case "场景镜头":
