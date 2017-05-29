@@ -150,7 +150,7 @@ namespace Yuri.PlatformCore
                  RollbackManager.SteadyBackward();
             }
             // 下滚
-            else
+            else if (GlobalConfigContext.GAME_SCROLLINGMODE != 0)
             {
                 //RollbackManager.SteadyForward(true, null, null);
                 this.ForwardToNextSteadyState();
@@ -1673,7 +1673,7 @@ namespace Yuri.PlatformCore
         /// <param name="ro">缩放比，1.0代表原始尺寸</param>
         private void Scamera(string name, int r, int c, double ro)
         {
-            if (GlobalConfigContext.GAME_SCAMERA_ENABLE == false)
+            if (GlobalConfigContext.GAME_SCAMERA_ENABLE == false && name != "resetslot")
             {
                 return;
             }

@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Yuri.Yuriri</RootNamespace>
-    <AssemblyName>Yuriri</AssemblyName>
+    <AssemblyName>Yuri.Yuriri</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

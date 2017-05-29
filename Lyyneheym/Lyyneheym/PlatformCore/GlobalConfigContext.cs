@@ -39,6 +39,10 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static PerformanceType GAME_PERFORMANCE_TYPE = PerformanceType.HighQuality;
         /// <summary>
+        /// 舞台：鼠标滚轮模式
+        /// </summary>
+        public static int GAME_SCROLLINGMODE = 1;
+        /// <summary>
         /// 舞台：窗体宽度 1280
         /// </summary>
         public static int GAME_WINDOW_WIDTH = 1280;

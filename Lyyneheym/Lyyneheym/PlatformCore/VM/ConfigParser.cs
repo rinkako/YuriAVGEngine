@@ -42,6 +42,7 @@ namespace Yuri.PlatformCore.VM
             GDC.GAME_WINDOW_HEIGHT = Convert.ToInt32(configDict["GameViewWindowHeight"]);
             GDC.GAME_WINDOW_RESIZEABLE = configDict["GameViewWindowResizeable"] == "True";
             GDC.GAME_IS3D = configDict["Game3DStage"] == "True";
+            GDC.GAME_SCROLLINGMODE = Convert.ToInt32(configDict["GameScrollingMode"]);
             // 文本层
             GDC.GAME_MESSAGELAYER_COUNT = Convert.ToInt32(configDict["GameMsgLayerCount"]);
             GDC.GAME_MESSAGELAYER_X = Convert.ToInt32(configDict["GameMsgLayerX"]);

@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>LauncherIco128.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.1.4.3\lib\net40\MahApps.Metro.dll</HintPath>
@@ -126,9 +129,6 @@
     <Compile Include="Utils\NetworkUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Sysbg.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\About_1.png" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +139,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\CVICON_01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\About_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LauncherIco128.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

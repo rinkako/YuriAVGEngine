@@ -306,6 +306,11 @@ namespace Yuri.PlatformCore.Semaphore
             {
                 SemaphoreDispatcher.SetSemaphore($"System_Mouse_{t}");
             }
+            // 按钮信号量
+            for (int i = 0; i < GlobalConfigContext.GAME_BUTTON_COUNT; i++)
+            {
+                SemaphoreDispatcher.SetSemaphore($"System_Button_Over_{i}");
+            }
         }
 
         /// <summary>

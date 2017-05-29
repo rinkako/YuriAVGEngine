@@ -52,6 +52,11 @@ namespace Yuri
             this.maskFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
             ViewManager.MaskFrameRef = this.maskFrame;
             InputMethod.SetIsInputMethodEnabled(this, false);
+            if (GlobalConfigContext.GAME_WINDOW_FULLSCREEN)
+            {
+                Director.IsFullScreen = true;
+                this.FullScreenTransform();
+            }
         }
 
         /// <summary>
