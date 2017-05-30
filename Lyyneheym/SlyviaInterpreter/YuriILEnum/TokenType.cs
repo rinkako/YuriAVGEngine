@@ -183,6 +183,8 @@
         Token_o_snapshot,
         // BGM音量淡入淡出
         Token_o_bgmfade,
+        // 启用禁用功能
+        Token_o_enabler,
         // 参数：类型
         Token_p_type,
         // 参数：函数签名

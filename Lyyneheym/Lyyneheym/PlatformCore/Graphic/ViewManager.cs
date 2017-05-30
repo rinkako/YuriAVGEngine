@@ -624,6 +624,7 @@ namespace Yuri.PlatformCore.Graphic
             sbutton.ImageNormal.Descriptor = descriptor.NormalDescriptor;
             sbutton.ImageMouseOver.Descriptor = descriptor.OverDescriptor;
             sbutton.ImageMouseOn.Descriptor = descriptor.OnDescriptor;
+            sbutton.InterruptVSM = oldButton?.InterruptVSM;
             this.buttonLayerVec[id] = sbutton;
             // 重绘
             this.RemoveButton(oldButton);

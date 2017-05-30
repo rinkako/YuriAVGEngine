@@ -216,6 +216,24 @@ namespace Yuri.PlatformCore.Semaphore
         }
 
         /// <summary>
+        /// 获取信号量上绑定的处理机数量
+        /// </summary>
+        /// <param name="semaphoreName">信号量的名称</param>
+        /// <returns>绑定在该信号量上的所有处理机的数量</returns>
+        public static int CountBinding(string semaphoreName)
+        {
+            semaphoreName = semaphoreName.ToUpper();
+            if (SemaphoreDispatcher.semaphoreDict.ContainsKey(semaphoreName))
+            {
+                return SemaphoreDispatcher.semaphoreDict[semaphoreName].CountObserver();
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        /// <summary>
         /// 激活一个命名信号量，如果信号量不存在，将被初始化并激活
         /// </summary>
         /// <param name="semaphoreName">信号的名字</param>
@@ -311,6 +329,8 @@ namespace Yuri.PlatformCore.Semaphore
             {
                 SemaphoreDispatcher.SetSemaphore($"System_Button_Over_{i}");
             }
+            // 窗口关闭信号量
+            SemaphoreDispatcher.SetSemaphore("System_PreviewShutdown");
         }
 
         /// <summary>

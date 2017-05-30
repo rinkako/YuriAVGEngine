@@ -794,10 +794,13 @@ namespace Yuri.YuriHalation
         /// </summary>
         public void SaveProject()
         {
-            var refConf = Halation.project.Config;
-            Halation.project.Config = null;
-            FileManager.Serialization(Halation.project, string.Format("{0}\\game.yrproj", projectFolder));
-            Halation.project.Config = refConf;
+            if (Halation.project != null)
+            {
+                var refConf = Halation.project.Config;
+                Halation.project.Config = null;
+                FileManager.Serialization(Halation.project, string.Format("{0}\\game.yrproj", projectFolder));
+                Halation.project.Config = refConf;
+            }
         }
 
         /// <summary>

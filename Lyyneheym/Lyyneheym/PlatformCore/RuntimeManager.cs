@@ -662,6 +662,11 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 获取或设置当前是否允许右键菜单
+        /// </summary>
+        public bool EnableRClick { get; set; } = true;
+        
+        /// <summary>
         /// 获取或设置正在演出的章节名
         /// 该字段仅用在存档标记，和调用堆栈无关
         /// </summary>

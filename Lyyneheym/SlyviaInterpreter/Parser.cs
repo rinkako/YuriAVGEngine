@@ -983,6 +983,9 @@ namespace Yuri.YuriInterpreter
                     case TokenType.Token_o_msglayeropt:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_msglayeropt, "id", "target", "dash");
                         break;
+                    case TokenType.Token_o_enabler:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_enabler, "target", "state");
+                        break;
                     case TokenType.Token_o_trans:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_trans, "name");
                         break;

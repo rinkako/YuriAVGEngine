@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Yuri.PageView;
 using Yuri.PlatformCore;
 using Yuri.PlatformCore.Graphic;
+using Yuri.PlatformCore.Semaphore;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace Yuri
@@ -89,8 +90,21 @@ namespace Yuri
         /// </summary>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            SplashPage.LoadingExitFlag = true;
-            Director.CollapseWorld();
+            if (!ViewPageManager.IsAtMainStage())
+            {
+                SplashPage.LoadingExitFlag = true;
+                Director.CollapseWorld();
+                return;
+            }
+            if (SemaphoreDispatcher.CountBinding("System_PreviewShutdown") > 0)
+            {
+                e.Cancel = true;
+                SemaphoreDispatcher.Activate("System_PreviewShutdown");
+            }
+            else
+            {
+                Director.CollapseWorld();
+            }
         }
 
         /// <summary>

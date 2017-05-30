@@ -178,9 +178,9 @@ namespace Yuri.PlatformCore
         /// 向运行时环境发出中断
         /// </summary>
         /// <param name="ntr">中断</param>
-        public void SubmitInterrupt(Interrupt ntr)
+        public void SubmitInterrupt(StackMachine vsm, Interrupt ntr)
         {
-            Director.RunMana.CallStack.Submit(ntr);
+            vsm.Submit(ntr);
         }
 
         /// <summary>
@@ -480,168 +480,260 @@ namespace Yuri.PlatformCore
                 return;
             }
             var paraVM = pdap.IsSemaphore ? pdap.SemaphoreStack : Director.RunMana.ParallelExecutorStack.Peek()[pdap.Index].Executor;
-            // 取得调用堆栈顶部状态
-            StackMachineState stackState = Director.RunMana.GameState(paraVM);
-            GameState paraGameState = GameState.Exit;
-            switch (stackState)
+
+            bool resumeFlag = true;
+            while (true)
             {
-                case StackMachineState.Interpreting:
-                case StackMachineState.FunctionCalling:
-                    paraGameState = GameState.Performing;
-                    break;
-                case StackMachineState.WaitUser:
-                    // 并行器里不应该出现等待用户IO，立即结束本次迭代
-                    dispatcher.Start();
-                    return;
-                case StackMachineState.WaitAnimation:
-                    // 并行器里不应该出现等待动画结束，立即结束本次迭代
-                    dispatcher.Start();
-                    return;
-                case StackMachineState.Await:
-                    paraGameState = GameState.Waiting;
-                    break;
-                case StackMachineState.Interrupt:
-                    // 并行器里不应该出现系统中断，立即结束本次迭代
-                    CommonUtils.ConsoleLine(
-                        "There is a interrupt in parallel function, which may cause system pause",
-                        "Director", OutputStyle.Warning);
-                    dispatcher.Start();
-                    return;
-                case StackMachineState.NOP:
-                    paraGameState = GameState.Exit;
-                    break;
-            }
-            // 根据调用堆栈顶部更新系统
-            switch (paraGameState)
-            {
-                // 等待状态
-                case GameState.Waiting:
-                    // 计算已经等待的时间
-                    if (DateTime.Now - paraVM.ESP.TimeStamp > paraVM.ESP.Delay)
-                    {
-                        paraVM.Consume();
-                    }
-                    break;
-                // 等待动画
-                case GameState.WaitAni:
-                    if (SpriteAnimation.IsAnyAnimation == false)
-                    {
-                        paraVM.Consume();
-                    }
-                    break;
-                // 演绎脚本
-                case GameState.Performing:
-                    // 取下一动作
-                    var nextInstruct = Director.RunMana.MoveNext(paraVM);
-                    // 如果指令空了就立即迭代本次消息循环
-                    if (nextInstruct == null)
-                    {
+
+
+                // 取得调用堆栈顶部状态
+                StackMachineState stackState = Director.RunMana.GameState(paraVM);
+                GameState paraGameState = GameState.Exit;
+                switch (stackState)
+                {
+                    case StackMachineState.Interpreting:
+                    case StackMachineState.FunctionCalling:
+                        resumeFlag = false;
+                        paraGameState = GameState.Performing;
+                        break;
+                    case StackMachineState.WaitUser:
+                        // 并行器里不应该出现等待用户IO，立即结束本次迭代
                         dispatcher.Start();
+                        //resumeFlag = true;
                         return;
-                    }
-                    // 处理影响调用堆栈的动作
-                    if (nextInstruct.Type == SActionType.act_wait)
-                    {
-                        double waitMs = nextInstruct.ArgsDict.ContainsKey("time")
-                            ? (double)PolishEvaluator.Evaluate(nextInstruct.ArgsDict["time"], paraVM)
-                            : 0;
-                        paraVM.Submit("Parallel Time Waiting", DateTime.Now, TimeSpan.FromMilliseconds(waitMs));
-                        break;
-                    }
-                    else if (nextInstruct.Type == SActionType.act_waitani)
-                    {
+                    case StackMachineState.WaitAnimation:
                         // 并行器里不应该出现等待动画结束，立即结束本次迭代
-                        CommonUtils.ConsoleLine(
-                            "There is a animation wait in parallel function, which may cause system pause",
-                            "Director", OutputStyle.Warning);
+                        //dispatcher.Start();
+                        resumeFlag = true;
+                        return;
+                    case StackMachineState.Await:
+                        paraGameState = GameState.Waiting;
+                        resumeFlag = true;
                         break;
-                    }
-                    else if (nextInstruct.Type == SActionType.act_waituser)
-                    {
+                    case StackMachineState.Interrupt:
+                        // 并行器里不应该出现系统中断，立即结束本次迭代
                         CommonUtils.ConsoleLine(
-                            "There is a user wait in parallel function, which may cause system pause",
+                            "There is a interrupt in parallel function, which may cause system pause",
                             "Director", OutputStyle.Warning);
+                        paraGameState = GameState.Interrupt;
+                        resumeFlag = false;
                         break;
-                    }
-                    else if (nextInstruct.Type == SActionType.act_jump)
-                    {
-                        var jumpToScene = nextInstruct.ArgsDict["filename"];
-                        var jumpToTarget = nextInstruct.ArgsDict["target"];
-                        // 场景内跳转
-                        if (jumpToScene == String.Empty)
+                    case StackMachineState.NOP:
+                        paraGameState = GameState.Exit;
+                        resumeFlag = true;
+                        break;
+                }
+                // 根据调用堆栈顶部更新系统
+                switch (paraGameState)
+                {
+                    // 等待状态
+                    case GameState.Waiting:
+                        // 计算已经等待的时间
+                        if (DateTime.Now - paraVM.ESP.TimeStamp > paraVM.ESP.Delay)
                         {
-                            if (stackState == StackMachineState.Interpreting)
-                            {
-                                var currentScene = this.resMana.GetScene(paraVM.ESP.BindingSceneName);
-                                if (!currentScene.LabelDictionary.ContainsKey(jumpToTarget))
-                                {
-                                    CommonUtils.ConsoleLine(
-                                        String.Format("Ignored Jump Instruction (target not exist): {0}",
-                                            jumpToTarget),
-                                        "Director", OutputStyle.Error);
-                                    break;
-                                }
-                                paraVM.ESP.MircoStep(currentScene.LabelDictionary[jumpToTarget]);
-                            }
-                            else if (stackState == StackMachineState.FunctionCalling)
-                            {
-                                var currentFunc = paraVM.ESP.BindingFunction;
-                                if (!currentFunc.LabelDictionary.ContainsKey(jumpToTarget))
-                                {
-                                    CommonUtils.ConsoleLine(
-                                        String.Format("Ignored Jump Instruction (target not exist): {0}",
-                                            jumpToTarget),
-                                        "Director", OutputStyle.Error);
-                                    break;
-                                }
-                                paraVM.ESP.MircoStep(currentFunc.LabelDictionary[jumpToTarget]);
-                            }
+                            paraVM.Consume();
                         }
-                        // 跨场景跳转
-                        else
+                        break;
+                    // 等待动画
+                    case GameState.WaitAni:
+                        if (SpriteAnimation.IsAnyAnimation == false)
+                        {
+                            paraVM.Consume();
+                        }
+                        break;
+                    // 演绎脚本
+                    case GameState.Performing:
+                        // 取下一动作
+                        var nextInstruct = Director.RunMana.MoveNext(paraVM);
+                        // 如果指令空了就立即迭代本次消息循环
+                        if (nextInstruct == null)
+                        {
+                            dispatcher.Start();
+                            return;
+                        }
+                        // 处理影响调用堆栈的动作
+                        if (nextInstruct.Type == SActionType.act_wait)
+                        {
+                            double waitMs = nextInstruct.ArgsDict.ContainsKey("time")
+                                ? (double) PolishEvaluator.Evaluate(nextInstruct.ArgsDict["time"], paraVM)
+                                : 0;
+                            paraVM.Submit("Parallel Time Waiting", DateTime.Now, TimeSpan.FromMilliseconds(waitMs));
+                            break;
+                        }
+                        else if (nextInstruct.Type == SActionType.act_waitani)
+                        {
+                            // 并行器里不应该出现等待动画结束，立即结束本次迭代
+                            CommonUtils.ConsoleLine(
+                                "There is a animation wait in parallel function, which may cause system pause",
+                                "Director", OutputStyle.Warning);
+                            break;
+                        }
+                        else if (nextInstruct.Type == SActionType.act_waituser)
                         {
                             CommonUtils.ConsoleLine(
-                                "There is a jump across scene in parallel function, it will be ignored",
+                                "There is a user wait in parallel function, which may cause system pause",
                                 "Director", OutputStyle.Warning);
+                            paraVM.Submit("Director", nextInstruct.NodeName);
+                            break;
                         }
-                        break;
-                    }
-                    else if (nextInstruct.Type == SActionType.act_call)
-                    {
-                        var callFunc = nextInstruct.ArgsDict["name"];
-                        var signFunc = nextInstruct.ArgsDict["sign"];
-                        this.FunctionCalling(callFunc, signFunc, paraVM);
-                        break;
-                    }
-                    // 处理常规动作
-                    pdap.Render.Execute(nextInstruct);
-                    break;
-                // 退出（其实就是执行完毕了一轮，应该重新开始）
-                case GameState.Exit:
-                    if (pdap.IsSemaphore == false)
-                    {
-                        paraVM.Submit(pdap.BindingSF, new List<object>());
-                    }
-                    else
-                    {
-                        switch (pdap.SemaphoreType)
+                        else if (nextInstruct.Type == SActionType.act_jump)
                         {
-                            case SemaphoreHandlerType.ScheduleOnce:
-                                return;
-                            case SemaphoreHandlerType.ScheduleForever:
-                                paraVM.Submit(pdap.BindingSF, new List<object>());
-                                break;
-                            case SemaphoreHandlerType.ScheduleWhenActivated:
-                                throw new NotImplementedException();
+                            var jumpToScene = nextInstruct.ArgsDict["filename"];
+                            var jumpToTarget = nextInstruct.ArgsDict["target"];
+                            // 场景内跳转
+                            if (jumpToScene == String.Empty)
+                            {
+                                if (stackState == StackMachineState.Interpreting)
+                                {
+                                    var currentScene = this.resMana.GetScene(paraVM.ESP.BindingSceneName);
+                                    if (!currentScene.LabelDictionary.ContainsKey(jumpToTarget))
+                                    {
+                                        CommonUtils.ConsoleLine(
+                                            String.Format("Ignored Jump Instruction (target not exist): {0}",
+                                                jumpToTarget),
+                                            "Director", OutputStyle.Error);
+                                        break;
+                                    }
+                                    paraVM.ESP.MircoStep(currentScene.LabelDictionary[jumpToTarget]);
+                                }
+                                else if (stackState == StackMachineState.FunctionCalling)
+                                {
+                                    var currentFunc = paraVM.ESP.BindingFunction;
+                                    if (!currentFunc.LabelDictionary.ContainsKey(jumpToTarget))
+                                    {
+                                        CommonUtils.ConsoleLine(
+                                            String.Format("Ignored Jump Instruction (target not exist): {0}",
+                                                jumpToTarget),
+                                            "Director", OutputStyle.Error);
+                                        break;
+                                    }
+                                    paraVM.ESP.MircoStep(currentFunc.LabelDictionary[jumpToTarget]);
+                                }
+                            }
+                            // 跨场景跳转
+                            else
+                            {
+                                CommonUtils.ConsoleLine(
+                                    "There is a jump across scene in parallel function, it will be ignored",
+                                    "Director", OutputStyle.Warning);
+                            }
+                            break;
                         }
-                    }
-                    break;
+                        else if (nextInstruct.Type == SActionType.act_call)
+                        {
+                            var callFunc = nextInstruct.ArgsDict["name"];
+                            var signFunc = nextInstruct.ArgsDict["sign"];
+                            this.FunctionCalling(callFunc, signFunc, paraVM);
+                            break;
+                        }
+                        // 处理常规动作
+                        pdap.Render.Execute(nextInstruct);
+                        break;
+                    // 系统中断
+                    case GameState.Interrupt:
+
+
+
+
+
+
+
+                        var interruptSa = paraVM.ESP.IP;
+                        var interruptExitPoint = paraVM.ESP.Tag;
+                        // 退出中断
+                        var pureInt = paraVM.ESP.BindingInterrupt.PureInterrupt;
+                        var interruptFuncCalling = paraVM.ESP.BindingInterrupt.InterruptFuncSign;
+                        var needExitWait = paraVM.ESP.BindingInterrupt.ExitWait;
+                        Director.RunMana.ExitCall(paraVM);
+                        // 处理中断优先动作
+                        if (interruptSa != null)
+                        {
+                            var iterSa = interruptSa;
+                            while (iterSa != null)
+                            {
+                                pdap.Render.Execute(interruptSa);
+                                iterSa = iterSa.Next;
+                            }
+                        }
+                        // 判断中断是否需要处理后续动作
+                        if (pureInt)
+                        {
+                            break;
+                        }
+                        // 跳出所有用户等待
+                        if (needExitWait || interruptExitPoint != String.Empty)
+                        {
+                            while (paraVM.Count() > 0 && paraVM.ESP.State == StackMachineState.WaitUser)
+                            {
+                                Director.RunMana.ExitCall(paraVM);
+                            }
+                        }
+                        // 处理跳转（与中断调用互斥）
+                        if (interruptExitPoint != String.Empty)
+                        {
+                            RunnableYuriri curRunnable;
+                            if (paraVM.EBP.BindingFunction == null)
+                            {
+                                curRunnable = this.resMana.GetScene(paraVM.EBP.BindingSceneName);
+                            }
+                            else
+                            {
+                                curRunnable = paraVM.EBP.BindingFunction;
+                            }
+                            if (!curRunnable.LabelDictionary.ContainsKey(interruptExitPoint))
+                            {
+                                CommonUtils.ConsoleLine(String.Format("Ignored parallel Interrupt jump Instruction (target not exist): {0}",
+                                    interruptExitPoint), "Director", OutputStyle.Error);
+                                break;
+                            }
+                            paraVM.EBP.MircoStep(curRunnable.LabelDictionary[interruptExitPoint]);
+                        }
+                        // 处理中断函数调用
+                        else if (interruptFuncCalling != String.Empty)
+                        {
+                            var ifcItems = interruptFuncCalling.Split('(');
+                            var funPureName = ifcItems[0];
+                            var funParas = "(" + ifcItems[1];
+                            this.FunctionCalling(funPureName, funParas, paraVM);
+                        }
+                        break;
+
+
+
+
+
+
+                    // 退出（其实就是执行完毕了一轮，应该重新开始）
+                    case GameState.Exit:
+                        if (pdap.IsSemaphore == false)
+                        {
+                            paraVM.Submit(pdap.BindingSF, new List<object>());
+                        }
+                        else
+                        {
+                            switch (pdap.SemaphoreType)
+                            {
+                                case SemaphoreHandlerType.ScheduleOnce:
+                                    return;
+                                case SemaphoreHandlerType.ScheduleForever:
+                                    paraVM.Submit(pdap.BindingSF, new List<object>());
+                                    break;
+                                case SemaphoreHandlerType.ScheduleWhenActivated:
+                                    throw new NotImplementedException();
+                            }
+                        }
+                        break;
+                }
+                if (resumeFlag) { break; }
             }
-            dispatcher.Start();
+            if (resumeFlag)
+            {
+                dispatcher.Start();
+            }
         }
 
         /// <summary>
-        /// 处理主调用堆栈上的函数调用
+        /// 处理调用堆栈上的函数调用
         /// </summary>
         /// <param name="callFunc">函数的全局名字</param>
         /// <param name="signFunc">参数签名</param>
@@ -664,7 +756,7 @@ namespace Yuri.PlatformCore
             }
             else
             {
-                sceneFuncContainer = this.resMana.GetScene(Director.RunMana.CallStack.ESP.BindingSceneName).FuncContainer;
+                sceneFuncContainer = this.resMana.GetScene(vsm.ESP.BindingSceneName).FuncContainer;
                 sceneFuncList = from f in sceneFuncContainer where f.Callname == callFunc select f;
                 CommonUtils.ConsoleLine(String.Format("Function calling for current Scene (Scene not explicit): {0}", callFunc),
                     "Director", OutputStyle.Warning);
@@ -798,6 +890,7 @@ namespace Yuri.PlatformCore
             CommonUtils.ConsoleLine("Save persistence context OK", "Director", OutputStyle.Important);
             Musician.GetInstance().Dispose();
             CommonUtils.ConsoleLine("Dispose resource OK, program will shutdown soon", "Director", OutputStyle.Important);
+            Environment.Exit(0);
         }
 
         /// <summary>

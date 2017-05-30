@@ -119,6 +119,8 @@
         synr_snapshot,
         // BGM音量淡入淡出
         synr_bgmfade,
+        // 启用禁用功能
+        synr_enabler,
         // 参数：类型
         para_type,
         // 参数：函数签名

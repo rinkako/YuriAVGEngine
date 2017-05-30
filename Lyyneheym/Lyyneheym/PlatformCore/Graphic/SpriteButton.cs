@@ -329,7 +329,7 @@ namespace Yuri.PlatformCore.Graphic
                         this.DisplayBinding.Height = myBitmapImage2.PixelHeight;
                         this.DisplayBinding.Source = myBitmapImage2;
                         // 向运行时环境提交中断
-                        Director.GetInstance().SubmitInterrupt(this.Ntr);
+                        Director.GetInstance().SubmitInterrupt(this.InterruptVSM ?? Director.RunMana.CallStack, this.Ntr);
                         // 移除按钮
                         if (!this.Eternal)
                         {
@@ -349,7 +349,7 @@ namespace Yuri.PlatformCore.Graphic
                         this.DisplayBinding.Source = myBitmapImage;
                     }
                     // 向运行时环境提交中断
-                    Director.GetInstance().SubmitInterrupt(this.Ntr);
+                    Director.GetInstance().SubmitInterrupt(this.InterruptVSM ?? Director.RunMana.CallStack, this.Ntr);
                     // 移除按钮
                     if (!this.Eternal)
                     {
@@ -361,6 +361,11 @@ namespace Yuri.PlatformCore.Graphic
                 this.IsMouseOn = false;
             }
         }
+
+        /// <summary>
+        /// 生成这个按钮的堆栈
+        /// </summary>
+        public StackMachine InterruptVSM { get; set; } = null;
 
         /// <summary>
         /// 上一次移动指针之前是否可点击

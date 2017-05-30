@@ -465,6 +465,8 @@ namespace Yuri.YuriHalation.ScriptPackage
         act_snapshot,
         // 调节BGM音量
         act_bgmfade,
+        // 启用禁用功能
+        synr_enabler,
     }
 
     /// <summary>
@@ -592,5 +594,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         截图,
         // 调节BGM音量
         音乐渐变,
+        // 启用禁用功能
+        启用禁用功能,
     }
 }

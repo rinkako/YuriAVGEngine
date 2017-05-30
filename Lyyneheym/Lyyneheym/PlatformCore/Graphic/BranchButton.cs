@@ -292,7 +292,7 @@ namespace Yuri.PlatformCore.Graphic
                         this.DisplayBinding.Height = myBitmapImage2.PixelHeight;
                         this.DisplayBinding.Background = new ImageBrush(myBitmapImage2);
                         // 向运行时环境提交中断
-                        Director.GetInstance().SubmitInterrupt(this.Ntr);
+                        Director.GetInstance().SubmitInterrupt(Director.RunMana.CallStack, this.Ntr);
                         // 移除按钮
                         if (!this.Eternal)
                         {
@@ -310,7 +310,7 @@ namespace Yuri.PlatformCore.Graphic
                         this.DisplayBinding.Background = new ImageBrush(myBitmapImage);
                     }
                     // 向运行时环境提交中断
-                    Director.GetInstance().SubmitInterrupt(this.Ntr);
+                    Director.GetInstance().SubmitInterrupt(Director.RunMana.CallStack, this.Ntr);
                     Director.GetInstance().GetMainRender().IsBranching = false;
                     // 移除按钮
                     if (!this.Eternal)

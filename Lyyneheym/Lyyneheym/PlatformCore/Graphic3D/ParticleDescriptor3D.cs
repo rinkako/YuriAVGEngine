@@ -1,11 +1,12 @@
 ﻿using System.Windows.Media.Media3D;
+using Yuri.PlatformCore.Graphic;
 
 namespace Yuri.PlatformCore.Graphic3D
 {
     /// <summary>
     /// 3D粒子描述子类
     /// </summary>
-    internal sealed class ParticleDescriptor3D
+    internal sealed class ParticleDescriptor3D : CloneableDescriptor
     {
         /// <summary>
         /// 当前世界坐标

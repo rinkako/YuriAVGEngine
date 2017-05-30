@@ -1,6 +1,7 @@
 ﻿using System;
+using Yuri.PlatformCore.Graphic;
 
-namespace Yuri.PlatformCore.Graphic
+namespace Yuri.PlatformCore.Graphic3D
 {
     /// <summary>
     /// 3D模型描述子类

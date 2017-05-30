@@ -31,7 +31,16 @@ namespace Yuri.PlatformCore.Semaphore
                 this.observers.Remove(ob);
             }
         }
-        
+
+        /// <summary>
+        /// 获取当前订阅号的订阅者个数
+        /// </summary>
+        /// <returns>订阅者数量</returns>
+        public virtual int CountObserver()
+        {
+            return this.observers.Count;
+        }
+
         /// <summary>
         /// 清空所有的订阅者
         /// </summary>

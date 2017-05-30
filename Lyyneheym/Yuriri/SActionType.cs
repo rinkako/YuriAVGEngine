@@ -121,5 +121,7 @@
         act_snapshot,
         // 调节BGM音量
         act_bgmfade,
+        // 启用禁用功能
+        act_enabler
     }
 }

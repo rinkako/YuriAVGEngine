@@ -106,7 +106,7 @@
     <Compile Include="PlatformCore\Graphic3D\ParticleDescriptor3D.cs" />
     <Compile Include="PlatformCore\Graphic3D\ParticleEmitter3D.cs" />
     <Compile Include="PlatformCore\Graphic3D\ParticleSystem3D.cs" />
-    <Compile Include="PlatformCore\Graphic\ModelDescriptor3D.cs" />
+    <Compile Include="PlatformCore\Graphic3D\ModelDescriptor3D.cs" />
     <Compile Include="PlatformCore\Semaphore\SemaphoreDispatcher.cs" />
     <Compile Include="PlatformCore\Semaphore\SemaphoreHandler.cs" />
     <Compile Include="PlatformCore\Semaphore\YuriObservable.cs" />

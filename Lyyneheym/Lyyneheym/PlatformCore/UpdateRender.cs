@@ -21,7 +21,7 @@ using Yuri.Yuriri;
 namespace Yuri.PlatformCore
 {
     /// <summary>
-    /// 渲染类：负责将场景动作转化为前端事物的类
+    /// 渲染类：将场景动作转化为前端画音
     /// </summary>
     internal class UpdateRender
     {
@@ -207,7 +207,7 @@ namespace Yuri.PlatformCore
                 if (this.MouseRightUpFlag)
                 {
                     // 可以右键的情况
-                    if (this.IsShowingDialog || this.IsBranching)
+                    if ((this.IsShowingDialog || this.IsBranching) && Director.RunMana.EnableRClick)
                     {
                         var mainMsgLayer = this.viewMana.GetMessageLayer(0).DisplayBinding;
                         switch (this.RclickCounter)
@@ -877,6 +877,12 @@ namespace Yuri.PlatformCore
                     break;
                 case SActionType.act_titlepoint:
                     break;
+                case SActionType.act_enabler:
+                    this.Enabler(
+                        this.ParseDirectString(action.ArgsDict["target"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["state"], String.Empty)
+                        );
+                    break;
                 case SActionType.act_trans:
                     this.Trans(
                         this.ParseDirectString(action.ArgsDict["name"], "Fade")
@@ -967,9 +973,10 @@ namespace Yuri.PlatformCore
         public void Shutdown()
         {
             CommonUtils.ConsoleLine("Shutdown is called", "UpdateRender", OutputStyle.Important);
-            ViewManager.GetWindowReference()?.Close();
+            //ViewManager.GetWindowReference()?.Close();
+            Director.CollapseWorld();
         }
-
+        
         /// <summary>
         /// 跳过所有动画
         /// </summary>
@@ -1105,6 +1112,15 @@ namespace Yuri.PlatformCore
                 case "remove":
                     SemaphoreDispatcher.RemoveSemaphore(semaphoreName);
                     break;
+                case "activate":
+                    SemaphoreDispatcher.Activate(semaphoreName);
+                    break;
+                case "deactivate":
+                    SemaphoreDispatcher.Deactivate(semaphoreName);
+                    break;
+                case "deactivateall":
+                    SemaphoreDispatcher.DeactivateAll();
+                    break;
                 case "globalbinding":
                     var gbindActivator = activatorName == String.Empty ? null : curScene.FuncContainer.Find(t => t.Callname == activatorName);
                     var gbindDeactivator = deactivatorName == String.Empty ? null : curScene.FuncContainer.Find(t => t.Callname == deactivatorName);
@@ -1112,6 +1128,24 @@ namespace Yuri.PlatformCore
                     break;
                 case "globalunbind":
                     SemaphoreDispatcher.UnregisterGlobalSemaphoreService(semaphoreName);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 演绎函数：启用禁用功能
+        /// </summary>
+        /// <param name="target">功能描述</param>
+        /// <param name="state">启用与否</param>
+        public void Enabler(string target, string state)
+        {
+            if (target == String.Empty) { return; }
+            state = state == String.Empty ? "on" : state.ToLower();
+            target = target.ToLower();
+            switch (target)
+            {
+                case "rclick":
+                    Director.RunMana.EnableRClick = state == "on";
                     break;
             }
         }
@@ -1160,6 +1194,11 @@ namespace Yuri.PlatformCore
             }
             Director.ScrMana.AddButton(id, enable, x, y, target, funcsign, type, normalDesc, overDesc, onDesc);
             this.viewMana.Draw(id, ResourceType.Button);
+            var btn = this.viewMana.GetSpriteButton(id);
+            if (btn != null)
+            {
+                btn.InterruptVSM = this.VsmReference;
+            }
         }
 
         /// <summary>
@@ -1905,9 +1944,13 @@ namespace Yuri.PlatformCore
                         ml.Padding = new Thickness(Convert.ToDouble(padItem[0]), Convert.ToDouble(padItem[1]), Convert.ToDouble(padItem[2]), Convert.ToDouble(padItem[3]));
                         mld.Padding = new MyThickness(ml.Padding);
                         break;
-                    case "ha":
+                    case "ta":
                     case "texthorizontal":
                         ml.TextHorizontalAlignment = mld.TextHorizonAlign = (TextAlignment)Enum.Parse(typeof(TextAlignment), valueStr, true);
+                        break;
+                    case "ha":
+                    case "horizontal":
+                        ml.HorizontalAlignment = mld.HorizonAlign = (HorizontalAlignment)Enum.Parse(typeof(HorizontalAlignment), valueStr);
                         break;
                     case "va":
                     case "vertical":
