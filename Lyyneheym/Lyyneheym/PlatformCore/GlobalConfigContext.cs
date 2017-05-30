@@ -496,9 +496,13 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static readonly string FirstViewPage = "stagePage";
         /// <summary>
-        /// 入口前端页面名称
+        /// 持久性上下文文件名
         /// </summary>
         public static readonly string PersistenceFileName = "YuriScore.dat";
+        /// <summary>
+        /// 持久性上下文文件名
+        /// </summary>
+        public static readonly string QSaveFileName = "QSave";
         #endregion
 
         #region 枚举类型

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -147,7 +148,8 @@ namespace Yuri.PlatformCore
                 ViewManager.Is3DStage && !SCamera3D.IsAnyAnimation) &&
                 !Director.IsRClicking)
             {
-                 RollbackManager.SteadyBackward();
+                this.Stopvocal();
+                RollbackManager.SteadyBackward();
             }
             // 下滚
             else if (GlobalConfigContext.GAME_SCROLLINGMODE != 0)
@@ -313,6 +315,46 @@ namespace Yuri.PlatformCore
                     SLPage p = (SLPage) ViewPageManager.RetrievePage("LoadPage");
                     p.ReLoadFileInfo();
                     ViewPageManager.NavigateTo("LoadPage");
+                }
+                // quick save
+                if (UpdateRender.KS_KEY_Dict[Key.F2] == KeyStates.Down)
+                {
+                    try
+                    {
+                        Director.PauseUpdateContext();
+                        this.ActualSave(GlobalConfigContext.QSaveFileName);
+                        Director.ResumeUpdateContext();
+                    }
+                    catch (Exception ex)
+                    {
+                        CommonUtils.ConsoleLine("Quick save failed. " + ex, "UpdateRender", OutputStyle.Error);
+                        return;
+                    }
+                }
+                // quick load
+                if (UpdateRender.KS_KEY_Dict[Key.F3] == KeyStates.Down)
+                {
+                    try
+                    {
+                        var url = IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + @"\" +
+                                                        GlobalConfigContext.QSaveFileName + GlobalConfigContext.GAME_SAVE_POSTFIX);
+                        if (File.Exists(url))
+                        {
+                            this.Stopvocal();
+                            Director.PauseUpdateContext();
+                            this.ActualLoad(GlobalConfigContext.QSaveFileName);
+                        }
+                        else
+                        {
+                            MessageBox.Show("当前没有快速存档可以读取");
+                            return;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        CommonUtils.ConsoleLine("Quick load failed. " + ex, "UpdateRender", OutputStyle.Error);
+                        return;
+                    }
                 }
             }
         }
