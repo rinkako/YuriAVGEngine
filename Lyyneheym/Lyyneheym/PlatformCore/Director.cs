@@ -45,8 +45,8 @@ namespace Yuri.PlatformCore
                     PersistContextDAO.LoadFromSteadyMemory();
                     Director.LastGameTimeAcc = TimeSpan.Parse(PersistContextDAO.Exist("___YURIRI@ACCDURATION___") ?
                         PersistContextDAO.Fetch("___YURIRI@ACCDURATION___").ToString() : "0");
-                    Director.StartupTimeStamp = DateTime.Now;
                 }
+                Director.StartupTimeStamp = DateTime.Now;
             }
             catch (Exception ex)
             {
@@ -81,7 +81,7 @@ namespace Yuri.PlatformCore
         public void UpdateKeyboard(KeyEventArgs e, bool isDown)
         {
             this.updateRender.SetKeyboardState(e, isDown);
-            CommonUtils.ConsoleLine(String.Format("Keyboard event: {0} <- {1}", e.Key.ToString(), e.KeyStates.ToString()),
+            CommonUtils.ConsoleLine(String.Format("Keyboard event: {0} <- {1}", e.Key, e.KeyStates),
                 "Director", OutputStyle.Normal);
         }
 
@@ -484,8 +484,6 @@ namespace Yuri.PlatformCore
             bool resumeFlag = true;
             while (true)
             {
-
-
                 // 取得调用堆栈顶部状态
                 StackMachineState stackState = Director.RunMana.GameState(paraVM);
                 GameState paraGameState = GameState.Exit;
@@ -497,21 +495,16 @@ namespace Yuri.PlatformCore
                         paraGameState = GameState.Performing;
                         break;
                     case StackMachineState.WaitUser:
-                        // 并行器里不应该出现等待用户IO，立即结束本次迭代
                         dispatcher.Start();
-                        //resumeFlag = true;
                         return;
                     case StackMachineState.WaitAnimation:
                         // 并行器里不应该出现等待动画结束，立即结束本次迭代
-                        //dispatcher.Start();
-                        resumeFlag = true;
                         return;
                     case StackMachineState.Await:
                         paraGameState = GameState.Waiting;
                         resumeFlag = true;
                         break;
                     case StackMachineState.Interrupt:
-                        // 并行器里不应该出现系统中断，立即结束本次迭代
                         CommonUtils.ConsoleLine(
                             "There is a interrupt in parallel function, which may cause system pause",
                             "Director", OutputStyle.Warning);
@@ -631,13 +624,6 @@ namespace Yuri.PlatformCore
                         break;
                     // 系统中断
                     case GameState.Interrupt:
-
-
-
-
-
-
-
                         var interruptSa = paraVM.ESP.IP;
                         var interruptExitPoint = paraVM.ESP.Tag;
                         // 退出中断
@@ -697,12 +683,6 @@ namespace Yuri.PlatformCore
                             this.FunctionCalling(funPureName, funParas, paraVM);
                         }
                         break;
-
-
-
-
-
-
                     // 退出（其实就是执行完毕了一轮，应该重新开始）
                     case GameState.Exit:
                         if (pdap.IsSemaphore == false)

@@ -30,8 +30,8 @@ namespace Yuri.PlatformCore.Audio
             }
             int handle = this.audioEngine.InvokeChannel();
             this.BgmHandleContainer = new KeyValuePair<string, int>(resourceName, handle);
-            this.bgmVolume = this.IsMute ? 0 : vol;
-            this.audioEngine.InitAndPlay(handle, ms, this.bgmVolume, true);
+            var actualVol = this.IsMute ? 0 : vol * this.bgmVolumeRatio;
+            this.audioEngine.InitAndPlay(handle, ms, (float)actualVol, true);
             this.IsBgmPlaying = this.IsBgmLoaded = true;
             this.IsBgmPaused = false;
         }
@@ -88,8 +88,8 @@ namespace Yuri.PlatformCore.Audio
             if (track >= 0 && track < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM && ms != null)
             {
                 var handle = this.audioEngine.InvokeChannel();
-                this.BgsHandleContainer[track] = new KeyValuePair<int, float>(handle, this.IsMute ? 0 : vol);
-                this.audioEngine.InitAndPlay(handle, ms, this.IsMute ? 0 : vol, true);
+                this.BgsHandleContainer[track] = new KeyValuePair<int, double>(handle, this.IsMute ? 0 : vol * this.bgsVolumeRatio);
+                this.audioEngine.InitAndPlay(handle, ms, this.IsMute ? 0 : (float)(vol * this.bgsVolumeRatio), true);
             }
         }
 
@@ -111,7 +111,7 @@ namespace Yuri.PlatformCore.Audio
                     {
                         int handle = this.BgsHandleContainer[i].Key;
                         this.audioEngine.StopAndRelease(handle);
-                        this.BgsHandleContainer[i] = new KeyValuePair<int, float>(0, this.BGSDefaultVolume);
+                        this.BgsHandleContainer[i] = new KeyValuePair<int, double>(0, 1000 * this.BGSDefaultVolumeRatio);
                     }
                 }
             }
@@ -125,7 +125,7 @@ namespace Yuri.PlatformCore.Audio
         {
             if (this.IsBgmLoaded && this.IsMute == false)
             {
-                this.BGMVolume = vol;
+                this.audioEngine.SetVolume(this.BgmHandleContainer.Value, (float)(vol * this.bgmVolumeRatio));
             }
         }
 
@@ -138,7 +138,7 @@ namespace Yuri.PlatformCore.Audio
         {
             if (track >= 0 && track < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM)
             {
-                this.audioEngine.SetVolume(this.BgsHandleContainer[0].Key, this.IsMute ? 0 : vol);
+                this.audioEngine.SetVolume(this.BgsHandleContainer[0].Key, this.IsMute ? 0 : (float)(vol * this.bgsVolumeRatio));
             }
             else
             {
@@ -146,7 +146,7 @@ namespace Yuri.PlatformCore.Audio
                 {
                     if (t.Key != 0)
                     {
-                        this.audioEngine.SetVolume(t.Key, this.IsMute ? 0 : vol);
+                        this.audioEngine.SetVolume(t.Key, this.IsMute ? 0 : (float)(vol * this.bgsVolumeRatio));
                     }
                 }
             }
@@ -165,7 +165,7 @@ namespace Yuri.PlatformCore.Audio
                 return;
             }
             int handle = this.audioEngine.InvokeChannel();
-            this.audioEngine.InitAndPlay(handle, ms, this.IsMute ? 0 : vol, false);
+            this.audioEngine.InitAndPlay(handle, ms, this.IsMute ? 0 : (float)(vol * this.seVolumeRatio), false);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Yuri.PlatformCore.Audio
             }
             this.StopAndReleaseVocal();
             this.VocalHandle = this.audioEngine.InvokeChannel();
-            this.audioEngine.InitAndPlay(this.VocalHandle, ms, this.IsMute ? 0 : vol, false);
+            this.audioEngine.InitAndPlay(this.VocalHandle, ms, this.IsMute ? 0 : (float)(vol * this.vocalVolumeRatio), false);
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace Yuri.PlatformCore.Audio
         {
             if (this.IsBgmLoaded && this.IsMute == false)
             {
-                this.audioEngine.Fading(this.BgmHandleContainer.Value, vol, ms);
+                this.audioEngine.Fading(this.BgmHandleContainer.Value, (float)(vol * this.bgmVolumeRatio), ms);
             }
         }
 
@@ -220,7 +220,7 @@ namespace Yuri.PlatformCore.Audio
             this.BgmHandleContainer = new KeyValuePair<string, int>(null, 0);
             if (this.BgsHandleContainer == null)
             {
-                this.BgsHandleContainer = new List<KeyValuePair<int, float>>();
+                this.BgsHandleContainer = new List<KeyValuePair<int, double>>();
             }
             else
             {
@@ -228,7 +228,7 @@ namespace Yuri.PlatformCore.Audio
             }
             for (int i = 0; i < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM; i++)
             {
-                this.BgsHandleContainer.Add(new KeyValuePair<int, float>(0, this.BGSDefaultVolume));
+                this.BgsHandleContainer.Add(new KeyValuePair<int, double>(0, this.BGSDefaultVolumeRatio));
             }
             this.IsBgmLoaded = this.IsBgmPaused = this.IsBgmPlaying = this.IsMute = false;
         }
@@ -255,44 +255,43 @@ namespace Yuri.PlatformCore.Audio
         /// <summary>
         /// 获取或设置BGM音量
         /// </summary>
-        public float BGMVolume
+        public double BGMVolumeRatio
         {
             get
             { 
-                return this.bgmVolume; 
+                return this.bgmVolumeRatio; 
             }
             set
             {
-                this.bgmVolume = Math.Max(0, Math.Min(value, 1000));
-                this.audioEngine.SetVolume(this.BgmHandleContainer.Value, this.bgmVolume);
+                this.bgmVolumeRatio = Math.Max(0, Math.Min(value, 1));
             }
         }
 
         /// <summary>
         /// 获取或设置BGS默认音量
         /// </summary>
-        public float BGSDefaultVolume
+        public double BGSDefaultVolumeRatio
         {
-            get { return this.bgsVolume; }
-            set { this.bgsVolume = Math.Max(0, Math.Min(value, 1000)); }
+            get { return this.bgsVolumeRatio; }
+            set { this.bgsVolumeRatio = Math.Max(0, Math.Min(value, 1)); }
         }
         
         /// <summary>
         /// 获取或设置SE默认音量
         /// </summary>
-        public float SEDefaultVolume
+        public double SEDefaultVolumeRatio
         {
-            get { return this.seVolume; }
-            set { this.seVolume = Math.Max(0, Math.Min(value, 1000)); }
+            get { return this.seVolumeRatio; }
+            set { this.seVolumeRatio = Math.Max(0, Math.Min(value, 1)); }
         }
 
         /// <summary>
         /// 获取或设置Vocal默认音量
         /// </summary>
-        public float VocalDefaultVolume
+        public double VocalDefaultVolumeRatio
         {
-            get { return this.vocalVolume; }
-            set { this.vocalVolume = Math.Max(0, Math.Min(value, 1000)); }
+            get { return this.vocalVolumeRatio; }
+            set { this.vocalVolumeRatio = Math.Max(0, Math.Min(value, 1)); }
         }
 
         /// <summary>
@@ -353,22 +352,22 @@ namespace Yuri.PlatformCore.Audio
         /// <summary>
         /// BGM音量值
         /// </summary>
-        private float bgmVolume;
+        private double bgmVolumeRatio;
 
         /// <summary>
         /// BGS音量值
         /// </summary>
-        private float bgsVolume;
+        private double bgsVolumeRatio;
 
         /// <summary>
         /// SE音量值
         /// </summary>
-        private float seVolume;
+        private double seVolumeRatio;
 
         /// <summary>
         /// Vocal音量值
         /// </summary>
-        private float vocalVolume;
+        private double vocalVolumeRatio;
 
         /// <summary>
         /// 唯一实例
@@ -383,7 +382,7 @@ namespace Yuri.PlatformCore.Audio
         /// <summary>
         /// 背景声效容器
         /// </summary>
-        private List<KeyValuePair<int, float>> BgsHandleContainer;
+        private List<KeyValuePair<int, double>> BgsHandleContainer;
 
         /// <summary>
         /// 音频引擎实例
@@ -396,10 +395,10 @@ namespace Yuri.PlatformCore.Audio
         private Musician()
         {
             this.audioEngine = NAudioPlayer.GetInstance();
-            this.bgmVolume = GlobalConfigContext.GAME_SOUND_BGMVOL;
-            this.bgsVolume = GlobalConfigContext.GAME_SOUND_BGSVOL;
-            this.seVolume = GlobalConfigContext.GAME_SOUND_SEVOL;
-            this.vocalVolume = GlobalConfigContext.GAME_SOUND_VOCALVOL;
+            this.bgmVolumeRatio = GlobalConfigContext.GAME_SOUND_BGMVOL / 1000.0;
+            this.bgsVolumeRatio = GlobalConfigContext.GAME_SOUND_BGSVOL / 1000.0;
+            this.seVolumeRatio = GlobalConfigContext.GAME_SOUND_SEVOL / 1000.0;
+            this.vocalVolumeRatio = GlobalConfigContext.GAME_SOUND_VOCALVOL / 1000.0;
             this.Reset();
         }
     }

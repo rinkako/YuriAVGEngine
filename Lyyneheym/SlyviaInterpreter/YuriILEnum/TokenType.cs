@@ -185,6 +185,8 @@
         Token_o_bgmfade,
         // 启用禁用功能
         Token_o_enabler,
+        // 设置系统变量
+        Token_o_sysset,
         // 参数：类型
         Token_p_type,
         // 参数：函数签名

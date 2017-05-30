@@ -43,6 +43,10 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static int GAME_SCROLLINGMODE = 1;
         /// <summary>
+        /// 舞台：右键模式
+        /// </summary>
+        public static RClickType GAME_RCLICKMODE = RClickType.StageAndMenu;
+        /// <summary>
         /// 舞台：窗体宽度 1280
         /// </summary>
         public static int GAME_WINDOW_WIDTH = 1280;

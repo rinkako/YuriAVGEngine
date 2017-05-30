@@ -117,6 +117,8 @@
         synr_alert,
         // 截图
         synr_snapshot,
+        // 设置系统变量
+        synr_sysset,
         // BGM音量淡入淡出
         synr_bgmfade,
         // 启用禁用功能

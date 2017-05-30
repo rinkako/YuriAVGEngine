@@ -499,7 +499,6 @@ namespace Yuri.PlatformCore.Graphic3D
         /// <summary>
         /// Z为0时屏幕纵向尺寸
         /// </summary>
-        private const double scrHeight = 3.76;
-        
+        private const double scrHeight = 3.76;        
     }
 }

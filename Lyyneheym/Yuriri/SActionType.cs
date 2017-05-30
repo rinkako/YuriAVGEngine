@@ -122,6 +122,8 @@
         // 调节BGM音量
         act_bgmfade,
         // 启用禁用功能
-        act_enabler
+        act_enabler,
+        // 设置系统变量
+        act_sysset
     }
 }

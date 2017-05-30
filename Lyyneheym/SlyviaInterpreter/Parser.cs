@@ -971,6 +971,9 @@ namespace Yuri.YuriInterpreter
                     case TokenType.Token_o_var:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_var, "name", "dash");
                         break;
+                    case TokenType.Token_o_sysset:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_sysset, "name", "dash", "sign");
+                        break;
                     case TokenType.Token_o_wait:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_wait, "time");
                         break;

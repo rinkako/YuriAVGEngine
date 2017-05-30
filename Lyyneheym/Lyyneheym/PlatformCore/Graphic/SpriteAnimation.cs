@@ -1017,9 +1017,13 @@ namespace Yuri.PlatformCore.Graphic
         {
             foreach (var ani in SpriteAnimation.aniDict)
             {
-                if (!ani.Key.Name.StartsWith("FlagSb_"))
+                string tn;
+                if ((tn = ani.Key.Name) != null)
                 {
-                    ani.Key.SkipToFill();
+                    if (!tn.StartsWith("FlagSb_"))
+                    {
+                        ani.Key.SkipToFill();
+                    }
                 }
             }
         }

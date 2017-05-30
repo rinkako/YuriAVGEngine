@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -261,7 +262,7 @@ namespace Yuri.PlatformCore
                         }
                         if (++this.RclickCounter >= 3)
                         {
-                            this.RclickCounter = this.IsBranching ? 1 : 0;
+                            this.RclickCounter = this.IsBranching || GlobalConfigContext.GAME_RCLICKMODE == GlobalConfigContext.RClickType.RClickMenu ? 1 : 0;
                         }
 
                         //if (mainMsgLayer.Visibility == Visibility.Hidden)
@@ -290,7 +291,10 @@ namespace Yuri.PlatformCore
             }
         }
 
-        public int RclickCounter { get; set; } = 0;
+        /// <summary>
+        /// 鼠标右键计数器
+        /// </summary>
+        public int RclickCounter { get; set; } = GlobalConfigContext.GAME_RCLICKMODE == GlobalConfigContext.RClickType.RClickMenu ? 1 : 0;
 
         /// <summary>
         /// 更新函数：根据键盘状态更新游戏，它的优先级低于精灵按钮
@@ -324,6 +328,7 @@ namespace Yuri.PlatformCore
                         Director.PauseUpdateContext();
                         this.ActualSave(GlobalConfigContext.QSaveFileName);
                         Director.ResumeUpdateContext();
+                        NotificationManager.SystemMessageNotify("Quick Saved.", 1000);
                     }
                     catch (Exception ex)
                     {
@@ -343,6 +348,7 @@ namespace Yuri.PlatformCore
                             this.Stopvocal();
                             Director.PauseUpdateContext();
                             this.ActualLoad(GlobalConfigContext.QSaveFileName);
+                            NotificationManager.SystemMessageNotify("Quick Loaded.", 1000);
                         }
                         else
                         {
@@ -641,7 +647,7 @@ namespace Yuri.PlatformCore
                 }
                 else
                 {
-                    this.RclickCounter = 0;
+                    this.RclickCounter = GlobalConfigContext.GAME_RCLICKMODE == GlobalConfigContext.RClickType.StageAndMenu ? 0 : 1;
                 }
             }
         }
@@ -864,7 +870,7 @@ namespace Yuri.PlatformCore
                     this.Vocal(
                         this.ParseDirectString(action.ArgsDict["name"], String.Empty),
                         this.ParseInt(action.ArgsDict["vid"], -1),
-                        this.musician.VocalDefaultVolume
+                        1000
                         );
                     break;
                 case SActionType.act_stopvocal:
@@ -951,6 +957,13 @@ namespace Yuri.PlatformCore
                     break;
                 case SActionType.act_style:
                     break;
+                case SActionType.act_sysset:
+                    this.Sysset(
+                        this.ParseDirectString(action.ArgsDict["name"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["dash"], String.Empty),
+                        this.ParseDirectString(action.ArgsDict["sign"], String.Empty)
+                        );
+                    break;
                 case SActionType.act_msglayer:
                     this.MsgLayer(
                         this.ParseInt(action.ArgsDict["id"], 0)
@@ -961,7 +974,7 @@ namespace Yuri.PlatformCore
                     this.MsgLayerOpt(
                         this.ParseInt(action.ArgsDict["id"], 0),
                         this.ParseDirectString(action.ArgsDict["target"], String.Empty),
-                        dashMsgoptItem?.ToString() ?? String.Empty
+                        dashMsgoptItem ?? String.Empty
                         );
                     break;
                 case SActionType.act_scamera:
@@ -1091,7 +1104,7 @@ namespace Yuri.PlatformCore
             }
             if (vid != -1)
             {
-                this.Vocal(name, vid, this.musician.VocalDefaultVolume);
+                this.Vocal(name, vid, 1000);
             }
         }
 
@@ -1122,7 +1135,7 @@ namespace Yuri.PlatformCore
                 {
                     this.viewMana.EnableBranchButtonHitTest();
                 }
-                this.RclickCounter = this.IsBranching ? 1 : 0;
+                this.RclickCounter = this.IsBranching || GlobalConfigContext.GAME_RCLICKMODE == GlobalConfigContext.RClickType.RClickMenu ? 1 : 0;
             }
         }
 
@@ -1428,6 +1441,52 @@ namespace Yuri.PlatformCore
                             "UpdateRender", OutputStyle.Warning);
                         break;
                 }
+            }
+        }
+
+        /// <summary>
+        /// 演绎函数：设置一个系统配置上下文的变量
+        /// </summary>
+        /// <param name="name">变量的名字</param>
+        /// <param name="dash">值的字符串表示</param>
+        /// <param name="sign">值的类型</param>
+        private void Sysset(string name, string dash, string sign)
+        {
+            try
+            {
+                var fVec = typeof(GlobalConfigContext).GetFields(BindingFlags.Static | BindingFlags.Public);
+                var fieldObj = fVec.First(t => t.Name == name);
+                if (fieldObj == null)
+                {
+                    CommonUtils.ConsoleLine($"field reflection failed {name}", "UpdateRender", OutputStyle.Error);
+                    return;
+                }
+                object tvalue;
+                switch (sign.ToLower())
+                {
+                    case "int":
+                        tvalue = Int32.TryParse(dash, out int tInt) ? tInt : 0;
+                        break;
+                    case "boolean":
+                    case "bool":
+                        tvalue = Boolean.TryParse(dash, out bool tBool) && tBool;
+                        break;
+                    case "float":
+                        tvalue = Single.TryParse(dash, out float tFloat) ? tFloat : 0.0f;
+                        break;
+                    case "double":
+                        tvalue = Double.TryParse(dash, out double tDouble) ? tDouble : 0.0;
+                        break;
+                    default:
+                        tvalue = dash;
+                        break;
+                }
+                fieldObj.SetValue(null, tvalue);
+            }
+            catch (Exception ex)
+            {
+                CommonUtils.ConsoleLine($"field reflection failed: {name} , with type signal: {sign} and value: {dash}"
+                    + Environment.NewLine + ex, "UpdateRender", OutputStyle.Error);
             }
         }
 
