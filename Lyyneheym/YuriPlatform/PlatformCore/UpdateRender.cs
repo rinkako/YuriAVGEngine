@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -845,6 +846,13 @@ namespace Yuri.PlatformCore
                         this.ParseInt(action.ArgsDict["id"], 0)
                         );
                     break;
+                case SActionType.act_bgs:
+                    this.Bgs(
+                        this.ParseDirectString(action.ArgsDict["filename"], String.Empty),
+                        this.ParseDouble(action.ArgsDict["vol"], 1000),
+                        0
+                        );
+                    break;
                 case SActionType.act_se:
                     this.Se(
                         this.ParseDirectString(action.ArgsDict["filename"], String.Empty),
@@ -865,6 +873,9 @@ namespace Yuri.PlatformCore
                     break;
                 case SActionType.act_stopbgm:
                     this.Stopbgm();
+                    break;
+                case SActionType.act_stopbgs:
+                    this.Stopbgs(0);
                     break;
                 case SActionType.act_vocal:
                     this.Vocal(
@@ -1629,6 +1640,23 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 演绎函数：播放BGS
+        /// </summary>
+        /// <param name="resourceName">资源名称</param>
+        /// <param name="volume">音量</param>
+        public void Bgs(string resourceName, double volume, int track)
+        {
+            // 空即为停止
+            if (String.IsNullOrEmpty(resourceName))
+            {
+                this.musician.StopBGS(track);
+                return;
+            }
+            var ms = this.resMana.GetBGS(resourceName);
+            this.musician.PlayBGS(ms, (float)volume, track);
+        }
+
+        /// <summary>
         /// 演绎函数：播放BGM，如果是同一个文件将不会重新播放
         /// </summary>
         /// <param name="resourceName">资源名称</param>
@@ -1670,6 +1698,14 @@ namespace Yuri.PlatformCore
         private void Stopbgm()
         {
             this.musician.StopAndReleaseBGM();
+        }
+
+        /// <summary>
+        /// 演绎函数：停止BGS
+        /// </summary>
+        private void Stopbgs(int track)
+        {
+            this.musician.StopBGS(track);
         }
 
         /// <summary>

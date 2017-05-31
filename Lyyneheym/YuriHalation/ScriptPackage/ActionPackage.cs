@@ -499,7 +499,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         // 播放音乐
         播放音乐,
         // 播放bgs
-        播放背景音效,
+        播放BGS,
         // 停止音乐
         停止音乐,
         // 停止背景声效

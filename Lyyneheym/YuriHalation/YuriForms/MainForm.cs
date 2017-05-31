@@ -150,6 +150,7 @@ namespace Yuri.YuriHalation.YuriForms
                             break;
                         case "播放音乐":
                         case "播放声效":
+                        case "播放BGS":
                         case "播放语音":
                             FontBrush = Brushes.MediumTurquoise;
                             break;
