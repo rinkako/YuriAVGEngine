@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriPlatform", "Lyyneheym\YuriPlatform.csproj", "{D513CF82-CCCE-4D15-8F34-D17663C26FA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriInterpreter", "SlyviaInterpreter\YuriInterpreter.csproj", "{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriInterpreter", "YuriInterpreter\YuriInterpreter.csproj", "{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriHalation", "YuriHalation\YuriHalation.csproj", "{CB704EFC-BD27-4422-A61E-E7EBB9370577}"
 EndProject
@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lilium", "Lilium", "{E5281E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hemerocallis", "Hemerocallis\Hemerocallis.csproj", "{2630778F-D267-4B92-8DD8-3C0737E256AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriPacker", "LyynePacker\YuriPacker.csproj", "{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriPacker", "YuriPacker\YuriPacker.csproj", "{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuririCLI", "YuririCLI\YuririCLI.csproj", "{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28}"
 EndProject

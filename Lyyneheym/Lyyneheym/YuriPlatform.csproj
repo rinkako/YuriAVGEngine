@@ -225,7 +225,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SlyviaInterpreter\YuriInterpreter.csproj">
+    <ProjectReference Include="..\YuriInterpreter\YuriInterpreter.csproj">
       <Project>{6194a2aa-1c9d-40cd-8c8f-ea66f679cc0f}</Project>
       <Name>YuriInterpreter</Name>
     </ProjectReference>
