@@ -12,8 +12,6 @@ namespace Yuri.YuriInterpreter
     /// </summary>
     internal sealed class Pile
     {
-        public static string Encryptor = "yurayuri";
-
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -778,7 +776,7 @@ namespace Yuri.YuriInterpreter
                         processStack.Push(topSa.TrueRouting[i]);
                     }
                 }
-                resSb.AppendLine(this.needEncryption
+                resSb.AppendLine(Pile.needEncryption
                     ? YuriEncryptor.EncryptString(topSa.ToIL(), Pile.Encryptor)
                     : topSa.ToIL());
             }
@@ -795,7 +793,7 @@ namespace Yuri.YuriInterpreter
             List<SceneFunction> sf = scene.FuncContainer;
             SceneAction mainSa = scene.Ctor;
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(this.needEncryption
+            sb.AppendLine(Pile.needEncryption
                 ? YuriEncryptor.EncryptString(scene.GetILSign(), Pile.Encryptor)
                 : scene.GetILSign());
             sb.Append(this.ILGenerator(mainSa));
@@ -1029,9 +1027,14 @@ namespace Yuri.YuriInterpreter
         }
 
         /// <summary>
+        /// 工程密钥
+        /// </summary>
+        public static string Encryptor = "yurayuri";
+
+        /// <summary>
         /// 是否加密
         /// </summary>
-        public bool needEncryption = true;
+        public static bool needEncryption = true;
 
         /// <summary>
         /// 场景名称

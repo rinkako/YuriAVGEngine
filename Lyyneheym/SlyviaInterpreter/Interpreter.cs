@@ -18,7 +18,8 @@ namespace Yuri.YuriInterpreter
         /// <param name="project">项目名称</param>
         /// <param name="scdir">项目剧本路径</param>
         /// <param name="key">密钥</param>
-        public Interpreter(string project, string scdir, string key)
+        /// <param name="encrypt">是否加密</param>
+        public Interpreter(string project, string scdir, string key, bool encrypt = true)
         {
             this.projectName = project;
             this.sceneDirectory = scdir;
@@ -27,6 +28,7 @@ namespace Yuri.YuriInterpreter
                 key = "yurayuri";
             }
             Pile.Encryptor = key;
+            Pile.needEncryption = encrypt;
         }
 
         /// <summary>

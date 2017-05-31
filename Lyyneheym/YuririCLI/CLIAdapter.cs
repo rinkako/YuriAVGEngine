@@ -20,11 +20,11 @@ namespace Yuri.YuririCLI
             }
         }
 
-        public static void BeginCompile(string projectName, string dir, string spath, string key = "yurayuri")
+        public static void BeginCompile(string projectName, string dir, string spath, string key = "yurayuri", bool encrypted = true)
         {
             try
             {
-                Interpreter pile = new Interpreter(projectName, dir, key);
+                Interpreter pile = new Interpreter(projectName, dir, key, encrypted);
                 pile.Dash(YuriInterpreter.YuriILEnum.InterpreterType.RELEASE_WITH_IL);
                 pile.GenerateIL(spath);
             }
