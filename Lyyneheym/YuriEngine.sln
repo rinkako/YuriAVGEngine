@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriPlatform", "Lyyneheym\YuriPlatform.csproj", "{D513CF82-CCCE-4D15-8F34-D17663C26FA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriPlatform", "YuriPlatform\YuriPlatform.csproj", "{D513CF82-CCCE-4D15-8F34-D17663C26FA7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriInterpreter", "YuriInterpreter\YuriInterpreter.csproj", "{6194A2AA-1C9D-40CD-8C8F-EA66F679CC0F}"
 EndProject
