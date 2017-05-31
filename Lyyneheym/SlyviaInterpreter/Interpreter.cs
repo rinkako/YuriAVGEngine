@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Collections.Generic;
+using System.Linq;
 using Yuri.YuriInterpreter.YuriILEnum;
 using Yuri.Yuriri;
 
@@ -29,6 +30,7 @@ namespace Yuri.YuriInterpreter
             }
             Pile.Encryptor = key;
             Pile.needEncryption = encrypt;
+            this.parseTreeStringVec = new List<string>();
         }
 
         /// <summary>
@@ -67,6 +69,15 @@ namespace Yuri.YuriInterpreter
                 Console.WriteLine("保存文件出错");
                 Console.WriteLine(ex.ToString());
             }
+        }
+
+        /// <summary>
+        /// 获取整个项目IL的匹配树结构字符串
+        /// </summary>
+        /// <returns>代表匹配森林的字符串</returns>
+        public string GetTreeGraphic()
+        {
+            return this.parseTreeStringVec.Aggregate(String.Empty, (cc, t) => cc + t + Environment.NewLine);
         }
 
         /// <summary>
@@ -167,6 +178,7 @@ namespace Yuri.YuriInterpreter
                             fi.Name.Split('.')[0], (Scene)pile.StartDash(resVec, fi.Name.Split('.')[0], this.compileType));
                         lock (this.SceneVector)
                         {
+                            this.parseTreeStringVec.Add(pile.GetParsedTree());
                             this.SceneVector.Add(yuriResult);
                         }
                     }
@@ -177,6 +189,7 @@ namespace Yuri.YuriInterpreter
                             fi.Name.Split('.')[0], (string)pile.StartDash(resVec, fi.Name.Split('.')[0], this.compileType));
                         lock (this.ILVector)
                         {
+                            this.parseTreeStringVec.Add(pile.GetParsedTree());
                             this.ILVector.Add(yuriIL);
                         }
                     }
@@ -194,6 +207,11 @@ namespace Yuri.YuriInterpreter
                 Console.WriteLine("Thread {0} is Finished", tid);
             }
         }
+
+        /// <summary>
+        /// 语法解析树字符串向量
+        /// </summary>
+        private List<string> parseTreeStringVec;
 
         /// <summary>
         /// 待处理文件队列

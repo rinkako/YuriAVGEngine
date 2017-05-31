@@ -57,10 +57,6 @@
       <Project>{6194a2aa-1c9d-40cd-8c8f-ea66f679cc0f}</Project>
       <Name>YuriInterpreter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Yuriri\Yuriri.csproj">
-      <Project>{2ce410d4-7eb7-473e-acc8-6ef39038188e}</Project>
-      <Name>Yuriri</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CPMainForm.resx">

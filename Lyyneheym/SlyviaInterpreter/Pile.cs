@@ -65,6 +65,15 @@ namespace Yuri.YuriInterpreter
         }
 
         /// <summary>
+        /// 获取解析树的字符串
+        /// </summary>
+        /// <returns>代表解析树的串</returns>
+        public string GetParsedTree()
+        {
+            return this.parseTree != null ? this.parseTree.DrawTreeString : String.Empty;
+        }
+
+        /// <summary>
         /// 进行语义分析
         /// </summary>
         /// <param name="root">语法树根节点</param>
