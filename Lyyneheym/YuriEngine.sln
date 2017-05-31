@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hemerocallis", "Hemerocalli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuriPacker", "LyynePacker\YuriPacker.csproj", "{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuririCLI", "YuririCLI\YuririCLI.csproj", "{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +115,18 @@ Global
 		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Release|x86.ActiveCfg = Release|Any CPU
 		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4}.Release|x86.Build.0 = Release|Any CPU
+		{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28}.Debug|x86.Build.0 = Debug|Any CPU
+		{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28}.Release|x86.ActiveCfg = Release|Any CPU
+		{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,5 +135,6 @@ Global
 		{455F67A2-BF20-40CE-AC4F-C0C294C2A979} = {E5281EB2-D6AF-4C0C-8F00-EC744D7A870E}
 		{2630778F-D267-4B92-8DD8-3C0737E256AB} = {E5281EB2-D6AF-4C0C-8F00-EC744D7A870E}
 		{D32B9BA1-999E-46AC-90B2-3C929CBD06C4} = {E5281EB2-D6AF-4C0C-8F00-EC744D7A870E}
+		{14C23B55-5D0D-4C8A-A6EA-8BC28A501E28} = {E5281EB2-D6AF-4C0C-8F00-EC744D7A870E}
 	EndGlobalSection
 EndGlobal

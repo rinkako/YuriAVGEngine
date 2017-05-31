@@ -12,7 +12,7 @@ namespace Yuri.YuriInterpreter
     /// </summary>
     internal sealed class Pile
     {
-        private const string Encryptor = "yurayuri";
+        public static string Encryptor = "yurayuri";
 
         /// <summary>
         /// 构造函数

@@ -26,6 +26,7 @@ namespace Yuri.YuriInterpreter
             {
                 key = "yurayuri";
             }
+            Pile.Encryptor = key;
         }
 
         /// <summary>
