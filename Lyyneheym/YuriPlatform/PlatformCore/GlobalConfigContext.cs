@@ -500,6 +500,10 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static readonly string FirstViewPage = "stagePage";
         /// <summary>
+        /// 析构标签名
+        /// </summary>
+        public static readonly string DeConstructorName = "~finalizer";
+        /// <summary>
         /// 持久性上下文文件名
         /// </summary>
         public static readonly string PersistenceFileName = "YuriScore.dat";

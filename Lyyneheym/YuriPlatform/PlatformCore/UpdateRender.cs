@@ -236,9 +236,10 @@ namespace Yuri.PlatformCore
                                 if (Director.RunMana.GetRclickingState())
                                 {
                                     var rfunc = this.VsmReference.EBP.BindingFunction;
-                                    if (rfunc.LabelDictionary.ContainsKey("~finalizer"))
+                                    if (rfunc.LabelDictionary.ContainsKey(GlobalConfigContext.DeConstructorName))
                                     {
-                                        this.VsmReference.EBP.IP = this.VsmReference.EBP.BindingFunction.LabelDictionary["~finalizer"];
+                                        // 跳转到析构标签
+                                        this.VsmReference.EBP.IP = this.VsmReference.EBP.BindingFunction.LabelDictionary[GlobalConfigContext.DeConstructorName];
                                         Director.RunMana.ExitUserWait();
                                     }
                                     else
@@ -265,17 +266,6 @@ namespace Yuri.PlatformCore
                         {
                             this.RclickCounter = this.IsBranching || GlobalConfigContext.GAME_RCLICKMODE == GlobalConfigContext.RClickType.RClickMenu ? 1 : 0;
                         }
-
-                        //if (mainMsgLayer.Visibility == Visibility.Hidden)
-                        //{
-                        //    mainMsgLayer.Visibility = Visibility.Visible;
-                        //    MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Visible;
-                        //}
-                        //else
-                        //{
-                        //    mainMsgLayer.Visibility = Visibility.Hidden;
-                        //    MainMsgTriangleSprite.DisplayBinding.Visibility = Visibility.Hidden;
-                        //}
                     }
                 }
                 // 连续按压生效的情况下
