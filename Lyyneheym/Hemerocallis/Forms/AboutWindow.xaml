@@ -10,7 +10,7 @@
         <Canvas.Background>
             <ImageBrush ImageSource="/Hemerocallis;component/Assets/bg_About.png"/>
         </Canvas.Background>
-        <Image Name="Image_Logo" Height="158" Width="158" Source="/Hemerocallis;component/Assets/logo_hemerocallis.png" Canvas.Left="66" Canvas.Top="150"/>
+        <Image Name="Image_Logo" Height="158" Width="158" Source="/Hemerocallis;component/Assets/Logo_HE.png" Canvas.Left="66" Canvas.Top="150"/>
         <TextBlock Height="158" Canvas.Left="253" TextWrapping="Wrap" Canvas.Top="150" Width="262" Background="White">
             Hemerocallis is a part of Project Yuri. She is expected to provide convenience for the creation of the story.
             <LineBreak/><LineBreak/>

@@ -77,6 +77,10 @@
             this.button_AddNewFunc = new System.Windows.Forms.Button();
             this.button36 = new System.Windows.Forms.Button();
             this.actionGroupBox = new System.Windows.Forms.GroupBox();
+            this.button35 = new System.Windows.Forms.Button();
+            this.button39 = new System.Windows.Forms.Button();
+            this.button37 = new System.Windows.Forms.Button();
+            this.button38 = new System.Windows.Forms.Button();
             this.button33 = new System.Windows.Forms.Button();
             this.button34 = new System.Windows.Forms.Button();
             this.button31 = new System.Windows.Forms.Button();
@@ -121,10 +125,6 @@
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button37 = new System.Windows.Forms.Button();
-            this.button38 = new System.Windows.Forms.Button();
-            this.button35 = new System.Windows.Forms.Button();
-            this.button39 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.actionGroupBox.SuspendLayout();
@@ -579,6 +579,50 @@
             this.actionGroupBox.TabIndex = 0;
             this.actionGroupBox.TabStop = false;
             this.actionGroupBox.Text = "动作";
+            // 
+            // button35
+            // 
+            this.button35.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.button35.Location = new System.Drawing.Point(112, 663);
+            this.button35.Name = "button35";
+            this.button35.Size = new System.Drawing.Size(100, 28);
+            this.button35.TabIndex = 38;
+            this.button35.Text = "结束游戏";
+            this.button35.UseVisualStyleBackColor = false;
+            this.button35.Click += new System.EventHandler(this.button35_Click_2);
+            // 
+            // button39
+            // 
+            this.button39.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.button39.Location = new System.Drawing.Point(6, 663);
+            this.button39.Name = "button39";
+            this.button39.Size = new System.Drawing.Size(100, 28);
+            this.button39.TabIndex = 37;
+            this.button39.Text = "返回标题画面";
+            this.button39.UseVisualStyleBackColor = false;
+            this.button39.Click += new System.EventHandler(this.button39_Click);
+            // 
+            // button37
+            // 
+            this.button37.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.button37.Location = new System.Drawing.Point(112, 629);
+            this.button37.Name = "button37";
+            this.button37.Size = new System.Drawing.Size(100, 28);
+            this.button37.TabIndex = 36;
+            this.button37.Text = "呼叫读档画面";
+            this.button37.UseVisualStyleBackColor = false;
+            this.button37.Click += new System.EventHandler(this.button37_Click_1);
+            // 
+            // button38
+            // 
+            this.button38.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.button38.Location = new System.Drawing.Point(6, 629);
+            this.button38.Name = "button38";
+            this.button38.Size = new System.Drawing.Size(100, 28);
+            this.button38.TabIndex = 35;
+            this.button38.Text = "呼叫存档画面";
+            this.button38.UseVisualStyleBackColor = false;
+            this.button38.Click += new System.EventHandler(this.button38_Click);
             // 
             // button33
             // 
@@ -1051,50 +1095,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1030, 705);
             this.panel1.TabIndex = 36;
-            // 
-            // button37
-            // 
-            this.button37.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button37.Location = new System.Drawing.Point(112, 629);
-            this.button37.Name = "button37";
-            this.button37.Size = new System.Drawing.Size(100, 28);
-            this.button37.TabIndex = 36;
-            this.button37.Text = "呼叫读档画面";
-            this.button37.UseVisualStyleBackColor = false;
-            this.button37.Click += new System.EventHandler(this.button37_Click_1);
-            // 
-            // button38
-            // 
-            this.button38.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button38.Location = new System.Drawing.Point(6, 629);
-            this.button38.Name = "button38";
-            this.button38.Size = new System.Drawing.Size(100, 28);
-            this.button38.TabIndex = 35;
-            this.button38.Text = "呼叫存档画面";
-            this.button38.UseVisualStyleBackColor = false;
-            this.button38.Click += new System.EventHandler(this.button38_Click);
-            // 
-            // button35
-            // 
-            this.button35.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button35.Location = new System.Drawing.Point(112, 663);
-            this.button35.Name = "button35";
-            this.button35.Size = new System.Drawing.Size(100, 28);
-            this.button35.TabIndex = 38;
-            this.button35.Text = "结束游戏";
-            this.button35.UseVisualStyleBackColor = false;
-            this.button35.Click += new System.EventHandler(this.button35_Click_2);
-            // 
-            // button39
-            // 
-            this.button39.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button39.Location = new System.Drawing.Point(6, 663);
-            this.button39.Name = "button39";
-            this.button39.Size = new System.Drawing.Size(100, 28);
-            this.button39.TabIndex = 37;
-            this.button39.Text = "返回标题画面";
-            this.button39.UseVisualStyleBackColor = false;
-            this.button39.Click += new System.EventHandler(this.button39_Click);
             // 
             // MainForm
             // 

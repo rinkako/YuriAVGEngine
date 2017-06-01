@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>HalationLogo.ico</ApplicationIcon>
+    <ApplicationIcon>HalaIco2.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -498,13 +498,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="HalationLogo.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\ScrPartition.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\HalationLogo.png" />
+    <Resource Include="HalaIco2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\HalaIco2.ico" />
+    <Resource Include="Assets\Logo_HA2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>LauncherIco128.ico</ApplicationIcon>
+    <ApplicationIcon>LaunIco2.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MahApps.Metro">
@@ -141,7 +141,7 @@
     <Resource Include="Resources\About_2.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="LauncherIco128.ico" />
+    <Resource Include="LaunIco2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

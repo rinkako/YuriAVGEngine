@@ -47,6 +47,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>HemeIco2.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.1.4.3\lib\net40\MahApps.Metro.dll</HintPath>
@@ -219,9 +222,6 @@
     <Resource Include="Assets\UI_Btn_Refer.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\logo_hemerocallis.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\bg_Index.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -255,6 +255,12 @@
     <Resource Include="Assets\bg_tip_4.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="HemeIco2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Logo_HE.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
