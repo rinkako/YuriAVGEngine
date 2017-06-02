@@ -323,7 +323,7 @@ namespace Yuri.PlatformCore.Evaluator
             }
             if (calcStack.Count != 1)
             {
-                Utils.CommonUtils.ConsoleLine("求值器无法计算逆波兰式：" + polish, "PolishEvaluator", Utils.OutputStyle.Error);
+                Utils.LogUtils.LogLine("求值器无法计算逆波兰式：" + polish, "PolishEvaluator", Utils.LogLevel.Error);
                 throw new Exception("表达式有错误");
             }
             return calcStack.Peek().Reference;

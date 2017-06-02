@@ -101,7 +101,7 @@ namespace Yuri.Utils
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Serialization failed. " + ex.ToString(), "IOUtils", OutputStyle.Error);
+                LogUtils.LogLine("Serialization failed. " + ex.ToString(), "IOUtils", LogLevel.Error);
                 throw;
             }
             return true;
@@ -124,7 +124,7 @@ namespace Yuri.Utils
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Unserialization failed. " + ex.ToString(), "IOUtils", OutputStyle.Error);
+                LogUtils.LogLine("Unserialization failed. " + ex.ToString(), "IOUtils", LogLevel.Error);
                 return null;
             }
         }

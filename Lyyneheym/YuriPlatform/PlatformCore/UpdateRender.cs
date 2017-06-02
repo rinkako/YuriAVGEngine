@@ -323,7 +323,7 @@ namespace Yuri.PlatformCore
                     }
                     catch (Exception ex)
                     {
-                        CommonUtils.ConsoleLine("Quick save failed. " + ex, "UpdateRender", OutputStyle.Error);
+                        LogUtils.LogLine("Quick save failed. " + ex, "UpdateRender", LogLevel.Error);
                         return;
                     }
                 }
@@ -349,7 +349,7 @@ namespace Yuri.PlatformCore
                     }
                     catch (Exception ex)
                     {
-                        CommonUtils.ConsoleLine("Quick load failed. " + ex, "UpdateRender", OutputStyle.Error);
+                        LogUtils.LogLine("Quick load failed. " + ex, "UpdateRender", LogLevel.Error);
                         return;
                     }
                 }
@@ -1028,7 +1028,7 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void Shutdown()
         {
-            CommonUtils.ConsoleLine("Shutdown is called", "UpdateRender", OutputStyle.Important);
+            LogUtils.LogLine("Shutdown is called", "UpdateRender", LogLevel.Important);
             //ViewManager.GetWindowReference()?.Close();
             Director.CollapseWorld();
         }
@@ -1080,8 +1080,8 @@ namespace Yuri.PlatformCore
             }
             else
             {
-                CommonUtils.ConsoleLine(String.Format("Drawtext cannot apply on MessageLayer0 (Main MsgLayer): {0}", text), 
-                    "UpdateRender", OutputStyle.Error);
+                LogUtils.LogLine(String.Format("Drawtext cannot apply on MessageLayer0 (Main MsgLayer): {0}", text), 
+                    "UpdateRender", LogLevel.Error);
             }
         }
 
@@ -1347,9 +1347,9 @@ namespace Yuri.PlatformCore
                 ModelDescriptor3D descriptor3d = Director.ScrMana.GetCharacter3DDescriptor(id);
                 if (descriptor3d == null)
                 {
-                    CommonUtils.ConsoleLine(
+                    LogUtils.LogLine(
                         String.Format("Ignored move (target 3d model is null): {0}, {1}", rType, id),
-                        "UpdateRender", OutputStyle.Warning);
+                        "UpdateRender", LogLevel.Warning);
                     return;
                 }
                 switch (property)
@@ -1374,9 +1374,9 @@ namespace Yuri.PlatformCore
                         SpriteAnimation.OpacityToAnimation3D(geom, descriptor3d, duration, toValue, acc);
                         break;
                     default:
-                        CommonUtils.ConsoleLine(
+                        LogUtils.LogLine(
                             String.Format("3D Move instruction without valid parameters: {0}", property),
-                            "UpdateRender", OutputStyle.Warning);
+                            "UpdateRender", LogLevel.Warning);
                         break;
                 }
             }
@@ -1396,9 +1396,9 @@ namespace Yuri.PlatformCore
                 }
                 if (actionSprite == null)
                 {
-                    CommonUtils.ConsoleLine(
+                    LogUtils.LogLine(
                         String.Format("Ignored move (target sprite is null): {0}, {1}", rType.ToString(), id),
-                        "UpdateRender", OutputStyle.Warning);
+                        "UpdateRender", LogLevel.Warning);
                     return;
                 }
                 switch (property)
@@ -1437,9 +1437,9 @@ namespace Yuri.PlatformCore
                         SpriteAnimation.ScaleToAnimation(actionSprite, duration, descriptor.ScaleX, toValue, 0, acc);
                         break;
                     default:
-                        CommonUtils.ConsoleLine(
+                        LogUtils.LogLine(
                             String.Format("Move instruction without valid parameters: {0}", property),
-                            "UpdateRender", OutputStyle.Warning);
+                            "UpdateRender", LogLevel.Warning);
                         break;
                 }
             }
@@ -1459,7 +1459,7 @@ namespace Yuri.PlatformCore
                 var fieldObj = fVec.First(t => t.Name == name);
                 if (fieldObj == null)
                 {
-                    CommonUtils.ConsoleLine($"field reflection failed {name}", "UpdateRender", OutputStyle.Error);
+                    LogUtils.LogLine($"field reflection failed {name}", "UpdateRender", LogLevel.Error);
                     return;
                 }
                 object tvalue;
@@ -1486,8 +1486,8 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine($"field reflection failed: {name} , with type signal: {sign} and value: {dash}"
-                    + Environment.NewLine + ex, "UpdateRender", OutputStyle.Error);
+                LogUtils.LogLine($"field reflection failed: {name} , with type signal: {sign} and value: {dash}"
+                    + Environment.NewLine + ex, "UpdateRender", LogLevel.Error);
             }
         }
 
@@ -1744,8 +1744,8 @@ namespace Yuri.PlatformCore
                 var mainScene = this.resMana.GetScene(GlobalConfigContext.Script_Main);
                 if (mainScene == null)
                 {
-                    CommonUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalConfigContext.Script_Main),
-                        "Director", OutputStyle.Error);
+                    LogUtils.LogLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalConfigContext.Script_Main),
+                        "Director", LogLevel.Error);
                     Environment.Exit(0);
                 }
                 Director.RunMana.CallScene(mainScene);
@@ -1931,8 +1931,8 @@ namespace Yuri.PlatformCore
                 }
                 else
                 {
-                    CommonUtils.ConsoleLine(String.Format("Ignore Branch Item: {0}", linkItem),
-                        "UpdateRender", OutputStyle.Error);
+                    LogUtils.LogLine(String.Format("Ignore Branch Item: {0}", linkItem),
+                        "UpdateRender", LogLevel.Error);
                 }
             }
             if (tagList.Count == 0)
@@ -2027,7 +2027,7 @@ namespace Yuri.PlatformCore
                         var rgbItem = valueStr.Split(',');
                         if (rgbItem.Length != 3)
                         {
-                            CommonUtils.ConsoleLine("Font Color should be RGB format", "UpdateRender", OutputStyle.Error);
+                            LogUtils.LogLine("Font Color should be RGB format", "UpdateRender", LogLevel.Error);
                             return;
                         }
                         mld.FontColorR = Convert.ToByte(rgbItem[0]);
@@ -2100,8 +2100,8 @@ namespace Yuri.PlatformCore
             }
             else
             {
-                CommonUtils.ConsoleLine(String.Format("msglayeropt id out of range: MsgLayer {0}", msglayId),
-                    "UpdateRender", OutputStyle.Error);
+                LogUtils.LogLine(String.Format("msglayeropt id out of range: MsgLayer {0}", msglayId),
+                    "UpdateRender", LogLevel.Error);
             }
         }
 

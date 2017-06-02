@@ -54,8 +54,8 @@ namespace Yuri.PlatformCore.Net
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Post Data to URL " + url + " failed." + Environment.NewLine + ex,
-                    "YuriHttpClient", OutputStyle.Error);
+                LogUtils.LogLine("Post Data to URL " + url + " failed." + Environment.NewLine + ex,
+                    "YuriHttpClient", LogLevel.Error);
                 result = null;
                 return false;
             }
@@ -78,8 +78,8 @@ namespace Yuri.PlatformCore.Net
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Fetch String from URL " + url + " failed." + Environment.NewLine + ex,
-                    "YuriHttpClient", OutputStyle.Error);
+                LogUtils.LogLine("Fetch String from URL " + url + " failed." + Environment.NewLine + ex,
+                    "YuriHttpClient", LogLevel.Error);
                 result = null;
                 return false;
             }
@@ -118,8 +118,8 @@ namespace Yuri.PlatformCore.Net
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Download from URL " + url + " failed." + Environment.NewLine + ex,
-                    "YuriHttpClient", OutputStyle.Error);
+                LogUtils.LogLine("Download from URL " + url + " failed." + Environment.NewLine + ex,
+                    "YuriHttpClient", LogLevel.Error);
                 return false;
             }
         }

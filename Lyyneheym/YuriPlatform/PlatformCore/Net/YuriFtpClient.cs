@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using Yuri.Utils;
@@ -52,8 +51,8 @@ namespace Yuri.PlatformCore.Net
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Upload to URL " + url + " failed." + Environment.NewLine + ex,
-                    "YuriFtpClient", OutputStyle.Error);
+                LogUtils.LogLine("Upload to URL " + url + " failed." + Environment.NewLine + ex,
+                    "YuriFtpClient", LogLevel.Error);
                 return false;
             }
         }
@@ -67,7 +66,7 @@ namespace Yuri.PlatformCore.Net
         /// <param name="username">创建FTP连接的用户名</param>
         /// <param name="password">创建FTP连接的用户名</param>
         /// <returns>操作是否成功</returns>
-        public static bool DownloadFtp(string relativeFilePath, string targetPath, string hostname, string username, string password)
+        public static bool Download(string relativeFilePath, string targetPath, string hostname, string username, string password)
         {
             var url = "ftp://" + hostname + "/" + targetPath;
             try
@@ -95,8 +94,8 @@ namespace Yuri.PlatformCore.Net
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Download from URL " + url + " failed." + Environment.NewLine + ex,
-                    "YuriFtpClient", OutputStyle.Error);
+                LogUtils.LogLine("Download from URL " + url + " failed." + Environment.NewLine + ex,
+                    "YuriFtpClient", LogLevel.Error);
                 return false;
             }
         }

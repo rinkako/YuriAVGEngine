@@ -40,15 +40,15 @@ namespace Yuri.PlatformCore.VM
                 {
                     return (bool)this.globalSwitchList.Fetch(fetchId.ToString()) == true ? 1.0 : 0.0;
                 }
-                CommonUtils.ConsoleLine(String.Format("Invalid Switch id: {0}, TRUE will be returned instead", fetchId),
-                    "SymbolManager", OutputStyle.Error);
+                LogUtils.LogLine(String.Format("Invalid Switch id: {0}, TRUE will be returned instead", fetchId),
+                    "SymbolManager", LogLevel.Error);
                 return 1.0;
             }
             // 如果查无此键
             if (this.globalSymbolTable.Exist(varName) == false)
             {
-                CommonUtils.ConsoleLine(String.Format("Invalid Variable Fetch: {0}, which haven't been left-value yet", varName),
-                        "SymbolManager", OutputStyle.Error);
+                LogUtils.LogLine(String.Format("Invalid Variable Fetch: {0}, which haven't been left-value yet", varName),
+                        "SymbolManager", LogLevel.Error);
                 throw new Exception("变量 " + varName + " 在作为左值之前被引用");
             }
             return this.globalSymbolTable.Fetch(varName);
@@ -84,7 +84,7 @@ namespace Yuri.PlatformCore.VM
                 }
                 else
                 {
-                    CommonUtils.ConsoleLine(String.Format("Invalid Switch id: {0}", fetchId), "SymbolManager", OutputStyle.Error);
+                    LogUtils.LogLine(String.Format("Invalid Switch id: {0}", fetchId), "SymbolManager", LogLevel.Error);
                     return;
                 }
             }
@@ -103,7 +103,7 @@ namespace Yuri.PlatformCore.VM
             {
                 return (bool)this.globalSwitchList.Fetch(id.ToString());
             }
-            CommonUtils.ConsoleLine(String.Format("Invalid Switch Fetch id: {0}, TRUE will be returned instead", id), "SymbolManager", OutputStyle.Error);
+            LogUtils.LogLine(String.Format("Invalid Switch Fetch id: {0}, TRUE will be returned instead", id), "SymbolManager", LogLevel.Error);
             return true;
         }
 
@@ -120,7 +120,7 @@ namespace Yuri.PlatformCore.VM
             }
             else
             {
-                CommonUtils.ConsoleLine(String.Format("Invalid Switch id: {0}", id), "SymbolManager", OutputStyle.Error);
+                LogUtils.LogLine(String.Format("Invalid Switch id: {0}", id), "SymbolManager", LogLevel.Error);
             }
         }
 

@@ -70,7 +70,7 @@ namespace Yuri.PlatformCore.VM
             // 如果查无此键
             if (ctx.Exist(varName) == false)
             {
-                CommonUtils.ConsoleLine("变量 " + varName + " 在作为左值之前被引用", "SymbolTable", OutputStyle.Error);
+                LogUtils.LogLine("变量 " + varName + " 在作为左值之前被引用", "SymbolTable", LogLevel.Error);
                 throw new NullReferenceException("变量 " + varName + " 在作为左值之前被引用");
             }
             return ctx.Fetch(varName);

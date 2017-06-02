@@ -19,7 +19,7 @@ namespace Yuri.PlatformCore.Graphic
         /// <returns>是否发生了覆盖</returns>
         public static bool RegisterPage(string pageId, Page pageRef)
         {
-            CommonUtils.ConsoleLine("Register Page: " + pageId, "ViewPage Manager", OutputStyle.Important);
+            LogUtils.LogLine("Register Page: " + pageId, "ViewPage Manager", LogLevel.Important);
             bool rFlag = ViewPageManager.pageDict.ContainsKey(pageId);
             ViewPageManager.pageDict[pageId] = pageRef;
             return rFlag;
@@ -74,15 +74,15 @@ namespace Yuri.PlatformCore.Graphic
                 }
                 else
                 {
-                    CommonUtils.ConsoleLine(string.Format("Cannot find page: {0}, Navigation service ignored.", toPageName),
-                        "ViewPageManager", OutputStyle.Error);
+                    LogUtils.LogLine(string.Format("Cannot find page: {0}, Navigation service ignored.", toPageName),
+                        "ViewPageManager", LogLevel.Error);
                     Director.GetInstance().GetMainRender().Shutdown();
                 }
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine(string.Format("Cannot find page: {0}, Navigation service ignored. {1}", toPageName, ex),
-                        "ViewPageManager", OutputStyle.Error);
+                LogUtils.LogLine(string.Format("Cannot find page: {0}, Navigation service ignored. {1}", toPageName, ex),
+                        "ViewPageManager", LogLevel.Error);
                 Director.GetInstance().GetMainRender().Shutdown();
             }
             // 如果目标页是主舞台就恢复处理调用堆栈
@@ -107,8 +107,8 @@ namespace Yuri.PlatformCore.Graphic
                 }
                 else
                 {
-                    CommonUtils.ConsoleLine(string.Format("Cannot go back from page: {0}, Navigation service ignored.", ViewPageManager.CurrentPage?.Name),
-                        "ViewPageManager", OutputStyle.Error);
+                    LogUtils.LogLine(string.Format("Cannot go back from page: {0}, Navigation service ignored.", ViewPageManager.CurrentPage?.Name),
+                        "ViewPageManager", LogLevel.Error);
                     Director.GetInstance().GetMainRender().Shutdown();
                 }
                 if (ViewPageManager.CurrentPage is PageView.Stage3D || ViewPageManager.CurrentPage is PageView.Stage2D)
@@ -118,8 +118,8 @@ namespace Yuri.PlatformCore.Graphic
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine(string.Format("Cannot go back from page: {0}, Navigation service ignored. {1}", ViewPageManager.CurrentPage?.Name, ex),
-                        "ViewPageManager", OutputStyle.Error);
+                LogUtils.LogLine(string.Format("Cannot go back from page: {0}, Navigation service ignored. {1}", ViewPageManager.CurrentPage?.Name, ex),
+                        "ViewPageManager", LogLevel.Error);
                 Director.GetInstance().GetMainRender().Shutdown();
             }
             

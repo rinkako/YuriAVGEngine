@@ -63,7 +63,7 @@ namespace Yuri.PlatformCore.VM
                 {
                     return this.symbols[varName];
                 }
-                CommonUtils.ConsoleLine("变量 " + varName + " 在作为左值之前被引用", "EvaluatableContext", OutputStyle.Error);
+                LogUtils.LogLine("变量 " + varName + " 在作为左值之前被引用", "EvaluatableContext", LogLevel.Error);
                 throw new NullReferenceException("变量 " + varName + " 在作为左值之前被引用");
             }
         }

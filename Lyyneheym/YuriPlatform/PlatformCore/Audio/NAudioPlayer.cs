@@ -42,7 +42,7 @@ namespace Yuri.PlatformCore.Audio
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Invoke Channel Failed." + ex.ToString(), "NAudioPlayer", OutputStyle.Error);
+                LogUtils.LogLine("Invoke Channel Failed." + ex.ToString(), "NAudioPlayer", LogLevel.Error);
                 return 0;
             }
         }
@@ -61,7 +61,7 @@ namespace Yuri.PlatformCore.Audio
             {
                 if (this.channelDict.ContainsKey(handle) == false)
                 {
-                    CommonUtils.ConsoleLine("Play audio in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
+                    LogUtils.LogLine("Play audio in empty channel:" + handle, "NAudioPlayer", LogLevel.Error);
                     return false;
                 }
                 this.channelDict[handle].Init(ms, vol / 1000.0f, loop, () => this.channelDict.Remove(handle));
@@ -70,7 +70,7 @@ namespace Yuri.PlatformCore.Audio
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Play audio failed." + ex, "NAudioPlayer", OutputStyle.Warning);
+                LogUtils.LogLine("Play audio failed." + ex, "NAudioPlayer", LogLevel.Warning);
                 return false;
             }
         }
@@ -88,7 +88,7 @@ namespace Yuri.PlatformCore.Audio
             {
                 if (this.channelDict.ContainsKey(handle) == false)
                 {
-                    CommonUtils.ConsoleLine("Fade audio in empty channel:" + handle, "NAudioPlayer", OutputStyle.Warning);
+                    LogUtils.LogLine("Fade audio in empty channel:" + handle, "NAudioPlayer", LogLevel.Warning);
                     return false;
                 }
                 this.channelDict[handle].AsyncFadeMusic(destVol / 1000.0f, ms);
@@ -96,7 +96,7 @@ namespace Yuri.PlatformCore.Audio
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Fade audio failed." + ex, "NAudioPlayer", OutputStyle.Warning);
+                LogUtils.LogLine("Fade audio failed." + ex, "NAudioPlayer", LogLevel.Warning);
                 return false;
             }
         }
@@ -112,7 +112,7 @@ namespace Yuri.PlatformCore.Audio
             {
                 if (this.channelDict.ContainsKey(handle) == false)
                 {
-                    CommonUtils.ConsoleLine("Stop audio in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
+                    LogUtils.LogLine("Stop audio in empty channel:" + handle, "NAudioPlayer", LogLevel.Error);
                     return false;
                 }
                 this.channelDict[handle].StopAndRelease();
@@ -120,7 +120,7 @@ namespace Yuri.PlatformCore.Audio
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Stop and dispose audio failed." + ex.ToString(), "NAudioPlayer", OutputStyle.Error);
+                LogUtils.LogLine("Stop and dispose audio failed." + ex.ToString(), "NAudioPlayer", LogLevel.Error);
                 return false;
             }
         }
@@ -136,7 +136,7 @@ namespace Yuri.PlatformCore.Audio
             {
                 if (this.channelDict.ContainsKey(handle) == false)
                 {
-                    CommonUtils.ConsoleLine("Pause audio in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
+                    LogUtils.LogLine("Pause audio in empty channel:" + handle, "NAudioPlayer", LogLevel.Error);
                     return false;
                 }
                 this.channelDict[handle].Pause();
@@ -144,7 +144,7 @@ namespace Yuri.PlatformCore.Audio
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Pause audio failed." + ex, "NAudioPlayer", OutputStyle.Error);
+                LogUtils.LogLine("Pause audio failed." + ex, "NAudioPlayer", LogLevel.Error);
                 return false;
             }
         }
@@ -160,7 +160,7 @@ namespace Yuri.PlatformCore.Audio
             {
                 if (this.channelDict.ContainsKey(handle) == false)
                 {
-                    CommonUtils.ConsoleLine("Resume play audio in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
+                    LogUtils.LogLine("Resume play audio in empty channel:" + handle, "NAudioPlayer", LogLevel.Error);
                     return false;
                 }
                 this.channelDict[handle].Play();
@@ -168,7 +168,7 @@ namespace Yuri.PlatformCore.Audio
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Resume play audio failed." + ex, "NAudioPlayer", OutputStyle.Error);
+                LogUtils.LogLine("Resume play audio failed." + ex, "NAudioPlayer", LogLevel.Error);
                 return false;
             }
         }
@@ -185,7 +185,7 @@ namespace Yuri.PlatformCore.Audio
             {
                 if (this.channelDict.ContainsKey(handle) == false)
                 {
-                    CommonUtils.ConsoleLine("Set volume in empty channel:" + handle, "NAudioPlayer", OutputStyle.Error);
+                    LogUtils.LogLine("Set volume in empty channel:" + handle, "NAudioPlayer", LogLevel.Error);
                     return false;
                 }
                 this.channelDict[handle].Volume = vol / 1000.0f;
@@ -193,7 +193,7 @@ namespace Yuri.PlatformCore.Audio
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Set volume failed." + ex, "NAudioPlayer", OutputStyle.Error);
+                LogUtils.LogLine("Set volume failed." + ex, "NAudioPlayer", LogLevel.Error);
                 return false;
             }
         }
@@ -216,7 +216,7 @@ namespace Yuri.PlatformCore.Audio
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Get playing state failed." + ex, "NAudioPlayer", OutputStyle.Error);
+                LogUtils.LogLine("Get playing state failed." + ex, "NAudioPlayer", LogLevel.Error);
                 return false;
             }
         }

@@ -73,7 +73,7 @@ namespace Yuri.Utils
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Game Key check failed." + ex, "YuriEncryptor", OutputStyle.Error);
+                LogUtils.LogLine("Game Key check failed." + ex, "YuriEncryptor", LogLevel.Error);
                 Director.GetInstance().GetMainRender().Shutdown();
             }
             return String.Empty;

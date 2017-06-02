@@ -41,8 +41,8 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
-                CommonUtils.AsyncConsoleLine("Execute isolation python script failed. " + ex, "YuririWorld",
-                    YuririWorld.consoleMutex, OutputStyle.Error);
+                LogUtils.AsyncLogLine("Execute isolation python script failed. " + ex, "YuririWorld",
+                    YuririWorld.consoleMutex, LogLevel.Error);
             }
             return execResult;
         }
@@ -73,8 +73,8 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
-                CommonUtils.AsyncConsoleLine("Execute isolation python file failed. " + ex, "YuririWorld",
-                    YuririWorld.consoleMutex, OutputStyle.Error);
+                LogUtils.AsyncLogLine("Execute isolation python file failed. " + ex, "YuririWorld",
+                    YuririWorld.consoleMutex, LogLevel.Error);
             }
             return execResult;
         }
@@ -100,8 +100,8 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
-                CommonUtils.AsyncConsoleLine("Execute isolation python script failed. " + ex, "YuririWorld",
-                    YuririWorld.consoleMutex, OutputStyle.Error);
+                LogUtils.AsyncLogLine("Execute isolation python script failed. " + ex, "YuririWorld",
+                    YuririWorld.consoleMutex, LogLevel.Error);
             }
             return null;
         }
@@ -127,8 +127,8 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
-                CommonUtils.AsyncConsoleLine("Execute isolation python script failed. " + ex, "YuririWorld",
-                    YuririWorld.consoleMutex, OutputStyle.Error);
+                LogUtils.AsyncLogLine("Execute isolation python script failed. " + ex, "YuririWorld",
+                    YuririWorld.consoleMutex, LogLevel.Error);
             }
             return null;
         }
@@ -167,8 +167,8 @@ namespace Yuri.PlatformCore
                     Type typeIns = YuririReflector.YuriTypeArr.Find((ty) => String.Compare(ty.Name, typeName, true) == 0);
                     if (typeIns == null)
                     {
-                        CommonUtils.AsyncConsoleLine(String.Format("Invoke static by yuriri failed: {0}->{1} not exist.", typeName, methodName), 
-                            "YuririWorld", YuririWorld.consoleMutex, OutputStyle.Error);
+                        LogUtils.AsyncLogLine(String.Format("Invoke static by yuriri failed: {0}->{1} not exist.", typeName, methodName), 
+                            "YuririWorld", YuririWorld.consoleMutex, LogLevel.Error);
                         return null;
                     }
                     MethodInfo methodIns = typeIns.GetMethod("Display", BindingFlags.NonPublic | BindingFlags.Static, null, new Type[] {}, null);
@@ -176,8 +176,8 @@ namespace Yuri.PlatformCore
                 }
                 catch (Exception ex)
                 {
-                    CommonUtils.AsyncConsoleLine(String.Format("Invoke static by yuriri failed: {0}->{1} , CLR: {2}", typeName, methodName, ex),
-                            "YuririWorld", YuririWorld.consoleMutex, OutputStyle.Error);
+                    LogUtils.AsyncLogLine(String.Format("Invoke static by yuriri failed: {0}->{1} , CLR: {2}", typeName, methodName, ex),
+                            "YuririWorld", YuririWorld.consoleMutex, LogLevel.Error);
                     return null;
                 }
             }
@@ -196,13 +196,13 @@ namespace Yuri.PlatformCore
                     {
                         return Activator.CreateInstance(typeIns);
                     }
-                    CommonUtils.AsyncConsoleLine(String.Format("Create object by yuriri failed: {0} not exist.", typeName),
-                            "YuririWorld", YuririWorld.consoleMutex, OutputStyle.Error);
+                    LogUtils.AsyncLogLine(String.Format("Create object by yuriri failed: {0} not exist.", typeName),
+                            "YuririWorld", YuririWorld.consoleMutex, LogLevel.Error);
                 }
                 catch (Exception ex)
                 {
-                    CommonUtils.AsyncConsoleLine(String.Format("Create object by yuriri failed: {0} , CLR: {1}", typeName, ex),
-                            "YuririWorld", YuririWorld.consoleMutex, OutputStyle.Error);
+                    LogUtils.AsyncLogLine(String.Format("Create object by yuriri failed: {0} , CLR: {1}", typeName, ex),
+                            "YuririWorld", YuririWorld.consoleMutex, LogLevel.Error);
                 }
                 return null;
             }

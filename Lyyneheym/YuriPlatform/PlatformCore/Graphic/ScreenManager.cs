@@ -444,7 +444,7 @@ namespace Yuri.PlatformCore.Graphic
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine(ex.ToString(), "ScreenManager / CLR", OutputStyle.Error);
+                LogUtils.LogLine(ex.ToString(), "ScreenManager / CLR", LogLevel.Error);
                 return null;
             }
         }

@@ -95,8 +95,8 @@ namespace Yuri.PlatformCore.Semaphore
                 semaphoreName = semaphoreName.ToUpper();
                 if (SemaphoreDispatcher.semaphoreDict.ContainsKey(semaphoreName) == false)
                 {
-                    CommonUtils.ConsoleLine("semaphore not exist for binding to " + activator?.GlobalName + ", " + deactivator?.GlobalName,
-                        "SemaphoreDispatcher", OutputStyle.Error);
+                    LogUtils.LogLine("semaphore not exist for binding to " + activator?.GlobalName + ", " + deactivator?.GlobalName,
+                        "SemaphoreDispatcher", LogLevel.Error);
                     return;
                 }
                 var hdObject = new SemaphoreHandler(groupName, tag)
@@ -154,8 +154,8 @@ namespace Yuri.PlatformCore.Semaphore
                 semaphoreName = semaphoreName.ToUpper();
                 if (SemaphoreDispatcher.semaphoreDict.ContainsKey(semaphoreName) == false)
                 {
-                    CommonUtils.ConsoleLine("global semaphore not exist for binding to " + activator?.GlobalName + ", " + deactivator?.GlobalName,
-                        "SemaphoreDispatcher", OutputStyle.Error);
+                    LogUtils.LogLine("global semaphore not exist for binding to " + activator?.GlobalName + ", " + deactivator?.GlobalName,
+                        "SemaphoreDispatcher", LogLevel.Error);
                     return;
                 }
                 var hdObject = new SemaphoreHandler(groupName, tag)

@@ -39,7 +39,7 @@ namespace Yuri.PlatformCore.Graphic
             }
             else
             {
-                CommonUtils.ConsoleLine(String.Format("Sprite Init again: {0}", resName), "MySprite", OutputStyle.Error);
+                LogUtils.LogLine(String.Format("Sprite Init again: {0}", resName), "MySprite", LogLevel.Error);
             }
         }
 
@@ -69,7 +69,7 @@ namespace Yuri.PlatformCore.Graphic
             }
             else
             {
-                CommonUtils.ConsoleLine(String.Format("Sprite Init again: {0}", resName), "MySprite", OutputStyle.Error);
+                LogUtils.LogLine(String.Format("Sprite Init again: {0}", resName), "MySprite", LogLevel.Error);
             }
         }
 

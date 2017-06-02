@@ -122,6 +122,7 @@
     <Compile Include="PlatformCore\VM\SaveableContext.cs" />
     <Compile Include="PlatformCore\VM\SceneContextDAO.cs" />
     <Compile Include="PlatformCore\VM\SimpleContext.cs" />
+    <Compile Include="Utils\CommonUtils.cs" />
     <Compile Include="Utils\EncryptUtils.cs" />
     <Compile Include="PageView\SLPage.xaml.cs">
       <DependentUpon>SLPage.xaml</DependentUpon>
@@ -146,7 +147,7 @@
     <Compile Include="PageView\Stage2D.xaml.cs">
       <DependentUpon>Stage2D.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\CommonUtils.cs" />
+    <Compile Include="Utils\LogUtils.cs" />
     <Compile Include="Utils\IOUtils.cs" />
     <Compile Include="Utils\PackageUtils.cs" />
     <Page Include="MainWindow.xaml">

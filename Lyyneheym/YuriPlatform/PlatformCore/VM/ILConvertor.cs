@@ -97,7 +97,7 @@ namespace Yuri.PlatformCore.VM
                         labelDictList.Add(labelDict);
                     }
                 }
-                CommonUtils.ConsoleLine(String.Format("Finished SAP Relation Recovery: {0}", sceneName), "YuriIL Convertor", OutputStyle.Normal);
+                LogUtils.LogLine(String.Format("Finished SAP Relation Recovery: {0}", sceneName), "YuriIL Convertor", LogLevel.Normal);
                 Scene parseScene = null;
                 if (saHeaderList.Count > 0)
                 {
@@ -116,7 +116,7 @@ namespace Yuri.PlatformCore.VM
                     };
                 }
                 resList.Add(parseScene);
-                CommonUtils.ConsoleLine(String.Format("Finished SAP Function Recovery: {0}", sceneName), "YuriIL Convertor", OutputStyle.Normal);
+                LogUtils.LogLine(String.Format("Finished SAP Function Recovery: {0}", sceneName), "YuriIL Convertor", LogLevel.Normal);
             }
             return resList;
         }
@@ -186,7 +186,7 @@ namespace Yuri.PlatformCore.VM
                     this.iResContainer[currentSceneKey].Add(sa.NodeName, sa);
                 }
             }
-            CommonUtils.ConsoleLine("Finished Convert IL to SAP", "YuriIL Convertor", OutputStyle.Normal);
+            LogUtils.LogLine("Finished Convert IL to SAP", "YuriIL Convertor", LogLevel.Normal);
         }
         
         /// <summary>
@@ -200,11 +200,11 @@ namespace Yuri.PlatformCore.VM
             {
                 if (finfo.Extension != ".sil")
                 {
-                    CommonUtils.ConsoleLine(String.Format("Ignored file: {0}", finfo.FullName), "YuriIL Convertor", OutputStyle.Warning);
+                    LogUtils.LogLine(String.Format("Ignored file: {0}", finfo.FullName), "YuriIL Convertor", LogLevel.Warning);
                     continue;
                 }
                 // 分割文件为行
-                CommonUtils.ConsoleLine(String.Format("Spliting file: {0}", finfo.FullName), "YuriIL Convertor", OutputStyle.Normal);
+                LogUtils.LogLine(String.Format("Spliting file: {0}", finfo.FullName), "YuriIL Convertor", LogLevel.Normal);
                 var fs = new FileStream(finfo.FullName, FileMode.Open);
                 var sr = new StreamReader(fs);
                 // 跳过头部
@@ -250,7 +250,7 @@ namespace Yuri.PlatformCore.VM
             }
             else
             {
-                CommonUtils.ConsoleLine("IL已损坏", "ILConvertor", OutputStyle.Error);
+                LogUtils.LogLine("IL已损坏", "ILConvertor", LogLevel.Error);
                 throw new Exception("IL损坏");
             }
             return sa;

@@ -85,7 +85,7 @@ namespace Yuri.PageView
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Failed to load SLPage Resource. " + ex, "SLPage", OutputStyle.Error);
+                LogUtils.LogLine("Failed to load SLPage Resource. " + ex, "SLPage", LogLevel.Error);
                 throw;
             }
         }
@@ -286,7 +286,7 @@ namespace Yuri.PageView
                 catch (Exception ex)
                 {
                     var exStr = "在删除文件时发生了异常：" + ex.ToString();
-                    CommonUtils.ConsoleLine(exStr, "SLPage", OutputStyle.Warning);
+                    LogUtils.LogLine(exStr, "SLPage", LogLevel.Warning);
                     MessageBox.Show(exStr);
                 }
             }
@@ -339,8 +339,8 @@ namespace Yuri.PageView
                     }
                     catch (Exception ex)
                     {
-                        CommonUtils.ConsoleLine("覆盖存档时，在移除过时文件过程出现异常" + Environment.NewLine + ex.ToString(),
-                        "SLPage", OutputStyle.Error);
+                        LogUtils.LogLine("覆盖存档时，在移除过时文件过程出现异常" + Environment.NewLine + ex.ToString(),
+                        "SLPage", LogLevel.Error);
                     }
                 }
                 // 获得存档时间戳 
@@ -386,8 +386,8 @@ namespace Yuri.PageView
                 }
                 catch (Exception ex)
                 {
-                    CommonUtils.ConsoleLine("保存存档的辅助文件出现异常" + Environment.NewLine + ex.ToString(),
-                        "SLPage", OutputStyle.Warning);
+                    LogUtils.LogLine("保存存档的辅助文件出现异常" + Environment.NewLine + ex.ToString(),
+                        "SLPage", LogLevel.Warning);
                 }
                 // 保存完毕强制刷新页面
                 this.button_MouseEnter(this.lastPointed, null);
@@ -405,7 +405,7 @@ namespace Yuri.PageView
                 catch (Exception ex)
                 {
                     var exStr = "读取存档文件失败，存档是损坏的？" + Environment.NewLine + ex.ToString();
-                    CommonUtils.ConsoleLine(exStr, "SLPage", Utils.OutputStyle.Error);
+                    LogUtils.LogLine(exStr, "SLPage", Utils.LogLevel.Error);
                     MessageBox.Show(exStr);
                 }
             }

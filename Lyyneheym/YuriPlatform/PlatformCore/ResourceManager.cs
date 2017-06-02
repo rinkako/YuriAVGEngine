@@ -346,7 +346,7 @@ namespace Yuri.PlatformCore
                     resContainer.Enqueue(file.FullName);
                 }
             }
-            CommonUtils.ConsoleLine("Total PST: " + resContainer.Count, "ResourceManager", OutputStyle.Important);
+            LogUtils.LogLine("Total PST: " + resContainer.Count, "ResourceManager", LogLevel.Important);
             return resContainer;
         }
 
@@ -372,20 +372,20 @@ namespace Yuri.PlatformCore
                             StringComparison.Ordinal) < 0)
                     {
                         this.resourceTable[typeKey][slot.ResourceName] = slot;
-                        CommonUtils.ConsoleLine(
+                        LogUtils.LogLine(
                             String.Format(
                                 "Resource already exist with later version, to be replaced, type: {0}, name: {1}",
-                                typeKey, slot.ResourceName), "ResourceManager", OutputStyle.Warning);
+                                typeKey, slot.ResourceName), "ResourceManager", LogLevel.Warning);
                         return true;
                     }
-                    CommonUtils.ConsoleLine(
+                    LogUtils.LogLine(
                         String.Format(
                             "Resource already exist without later version, to be ignored, type: {0}, name: {1}",
-                            typeKey, slot.ResourceName), "ResourceManager", OutputStyle.Warning);
+                            typeKey, slot.ResourceName), "ResourceManager", LogLevel.Warning);
                     return false;
                 }
-                CommonUtils.ConsoleLine(String.Format("Resource type not exist, type: {0}", typeKey),
-                    "ResourceManager", OutputStyle.Warning);
+                LogUtils.LogLine(String.Format("Resource type not exist, type: {0}", typeKey),
+                    "ResourceManager", LogLevel.Warning);
                 return false;
             }
         }
@@ -454,8 +454,8 @@ namespace Yuri.PlatformCore
                         break;
                     }
                 }
-                CommonUtils.AsyncConsoleLine(String.Format("Loading PST Resource From \"{0}\" At thread {1}", pstPath, tid),
-                    "ResourceManager", this.consoleMutex, OutputStyle.Normal);
+                LogUtils.AsyncLogLine(String.Format("Loading PST Resource From \"{0}\" At thread {1}", pstPath, tid),
+                    "ResourceManager", this.consoleMutex, LogLevel.Normal);
                 // 开始处理文件
                 FileStream fs = new FileStream(pstPath, FileMode.Open);
                 StreamReader sr = new StreamReader(fs);
@@ -463,14 +463,14 @@ namespace Yuri.PlatformCore
                 string header = sr.ReadLine();
                 if (header == null)
                 {
-                    CommonUtils.AsyncConsoleLine(String.Format("Jump null header PST Resource From \"{0}\" At thread {1}", pstPath, tid),
-                    "ResourceManager", this.consoleMutex, OutputStyle.Normal);
+                    LogUtils.AsyncLogLine(String.Format("Jump null header PST Resource From \"{0}\" At thread {1}", pstPath, tid),
+                    "ResourceManager", this.consoleMutex, LogLevel.Normal);
                     continue;
                 }
                 var headerItem = header.Split('@');
                 if (headerItem.Length != GlobalConfigContext.PackHeaderItemNum && headerItem[0] != GlobalConfigContext.PackHeader)
                 {
-                    CommonUtils.AsyncConsoleLine(String.Format("Ignored Pack (Bad Header): {0}", pstPath), "ResourceManager", this.consoleMutex, OutputStyle.Warning);
+                    LogUtils.AsyncLogLine(String.Format("Ignored Pack (Bad Header): {0}", pstPath), "ResourceManager", this.consoleMutex, LogLevel.Warning);
                     continue;
                 }
                 try
@@ -482,7 +482,7 @@ namespace Yuri.PlatformCore
                     var key = keyItem[0];
                     if (key != GlobalConfigContext.GAME_KEY)
                     {
-                        CommonUtils.AsyncConsoleLine(String.Format("Ignored Pack (Key Failed): {0}", pstPath), "ResourceManager", this.consoleMutex, OutputStyle.Warning);
+                        LogUtils.AsyncLogLine(String.Format("Ignored Pack (Key Failed): {0}", pstPath), "ResourceManager", this.consoleMutex, LogLevel.Warning);
                         continue;
                     }
                     // 通过检验的包才载入资源字典
@@ -494,17 +494,17 @@ namespace Yuri.PlatformCore
                         var lineitem = sr.ReadLine()?.Split(':');
                         if (lineitem == null)
                         {
-                            CommonUtils.AsyncConsoleLine(String.Format("Ignored Pack of null body: {0}", pstPath), "ResourceManager", this.consoleMutex, OutputStyle.Warning);
+                            LogUtils.AsyncLogLine(String.Format("Ignored Pack of null body: {0}", pstPath), "ResourceManager", this.consoleMutex, LogLevel.Warning);
                             continue;
                         }
                         if (lineitem[0] == GlobalConfigContext.PackEOF)
                         {
-                            CommonUtils.AsyncConsoleLine(String.Format("Stop PST caching because encountered EOF: {0}", pstPath), "ResourceManager", this.consoleMutex, OutputStyle.Warning);
+                            LogUtils.AsyncLogLine(String.Format("Stop PST caching because encountered EOF: {0}", pstPath), "ResourceManager", this.consoleMutex, LogLevel.Warning);
                             break;
                         }
                         if (lineitem.Length != 3)
                         {
-                            CommonUtils.AsyncConsoleLine(String.Format("Igonred line(Bad lineitem): {0}, In file: {1}", lineEncounter, pstPath), "ResourceManager", this.consoleMutex, OutputStyle.Warning);
+                            LogUtils.AsyncLogLine(String.Format("Igonred line(Bad lineitem): {0}, In file: {1}", lineEncounter, pstPath), "ResourceManager", this.consoleMutex, LogLevel.Warning);
                             continue;
                         }
                         string srcName = lineitem[0];
@@ -520,18 +520,18 @@ namespace Yuri.PlatformCore
                         };
                         this.AddResource(resourceType, resSlot);
                     }
-                    CommonUtils.AsyncConsoleLine(String.Format("Finish Dictionary Init From \"{0}\" At thread {1}", pstPath, tid), "ResourceManager", this.consoleMutex, OutputStyle.Normal);
+                    LogUtils.AsyncLogLine(String.Format("Finish Dictionary Init From \"{0}\" At thread {1}", pstPath, tid), "ResourceManager", this.consoleMutex, LogLevel.Normal);
                 }
                 catch (Exception ex)
                 {
-                    CommonUtils.AsyncConsoleLine(ex.ToString(), "ResourceManager / CLR", this.consoleMutex, OutputStyle.Error);
+                    LogUtils.AsyncLogLine(ex.ToString(), "ResourceManager / CLR", this.consoleMutex, LogLevel.Error);
                 }
                 sr.Close();
                 fs.Close();
             }
             // 递增回到等待
             ++this.threadFinishCounter;
-            CommonUtils.AsyncConsoleLine(String.Format("At ResMana thread {0}, Waiting for callback", tid), "ResourceManager", this.consoleMutex, OutputStyle.Important);
+            LogUtils.AsyncLogLine(String.Format("At ResMana thread {0}, Waiting for callback", tid), "ResourceManager", this.consoleMutex, LogLevel.Important);
         }
 
         /// <summary>
@@ -544,12 +544,12 @@ namespace Yuri.PlatformCore
             {
                 if (this.sceneTable.ContainsKey(sc.Scenario))
                 {
-                    CommonUtils.ConsoleLine(String.Format("Scene already exist: {0}, new one will replace the elder one", sc.Scenario),
-                        "ResourceManager", OutputStyle.Warning);
+                    LogUtils.LogLine(String.Format("Scene already exist: {0}, new one will replace the elder one", sc.Scenario),
+                        "ResourceManager", LogLevel.Warning);
                 }
                 this.sceneTable[sc.Scenario] = sc;
             }
-            CommonUtils.ConsoleLine(String.Format("Finish Load Scenario, Total: {0}", sceneList.Count), "ResourceManager", OutputStyle.Normal);
+            LogUtils.LogLine(String.Format("Finish Load Scenario, Total: {0}", sceneList.Count), "ResourceManager", LogLevel.Normal);
         }
 
         /// <summary>

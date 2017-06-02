@@ -50,7 +50,7 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("No config file is detected, use defualt value." + ex, "Director", OutputStyle.Error);
+                LogUtils.LogLine("No config file is detected, use defualt value." + ex, "Director", LogLevel.Error);
             }
         }
 
@@ -62,8 +62,8 @@ namespace Yuri.PlatformCore
             var mainScene = this.resMana.GetScene(GlobalConfigContext.Script_Main);
             if (mainScene == null)
             {
-                CommonUtils.ConsoleLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalConfigContext.Script_Main),
-                    "Director", OutputStyle.Error);
+                LogUtils.LogLine(String.Format("No Entry Point Scene: {0}, Program will exit.", GlobalConfigContext.Script_Main),
+                    "Director", LogLevel.Error);
                 this.updateRender.Shutdown();
             }
             this.resMana.GetAllScene().ForEach(t => Director.RunMana.Symbols.AddSceneSymbolContext(t));
@@ -81,8 +81,8 @@ namespace Yuri.PlatformCore
         public void UpdateKeyboard(KeyEventArgs e, bool isDown)
         {
             this.updateRender.SetKeyboardState(e, isDown);
-            CommonUtils.ConsoleLine(String.Format("Keyboard event: {0} <- {1}", e.Key, e.KeyStates),
-                "Director", OutputStyle.Normal);
+            LogUtils.LogLine(String.Format("Keyboard event: {0} <- {1}", e.Key, e.KeyStates),
+                "Director", LogLevel.Normal);
         }
 
         /// <summary>
@@ -123,14 +123,14 @@ namespace Yuri.PlatformCore
             // 变更运行时环境
             Director.RunMana = rm;
             Director.RunMana.ParallelHandler = Director.GetInstance().ParallelUpdateContext;
-            CommonUtils.ConsoleLine("RuntimeManager is replaced", "Director", OutputStyle.Important);
+            LogUtils.LogLine("RuntimeManager is replaced", "Director", LogLevel.Important);
             // 缓存指令指针
             var irname = rm.CallStack.ESP.IR;
             var isname = rm.CallStack.ESP.BindingSceneName;
             rm.CallStack.ESP.MircoStep(Director.GetInstance().resMana.GetScene(isname).YuriDict[irname]);
             // 变更屏幕管理器
             ScreenManager.ResetSynObject(Director.RunMana.Screen);
-            CommonUtils.ConsoleLine("ScreenManager is replaced", "Director", OutputStyle.Important);
+            LogUtils.LogLine("ScreenManager is replaced", "Director", LogLevel.Important);
             // 重绘整个画面
             ViewManager.GetInstance().ReDraw();
             // 重新绑定渲染器的作用堆栈
@@ -316,8 +316,8 @@ namespace Yuri.PlatformCore
                             }
                             if (!curRunnable.LabelDictionary.ContainsKey(interruptExitPoint))
                             {
-                                CommonUtils.ConsoleLine(String.Format("Ignored Interrupt jump Instruction (target not exist): {0}",
-                                        interruptExitPoint), "Director", OutputStyle.Error);
+                                LogUtils.LogLine(String.Format("Ignored Interrupt jump Instruction (target not exist): {0}",
+                                        interruptExitPoint), "Director", LogLevel.Error);
                                 break;
                             }
                             Director.RunMana.CallStack.EBP.MircoStep(curRunnable.LabelDictionary[interruptExitPoint]);
@@ -373,10 +373,10 @@ namespace Yuri.PlatformCore
                                     var currentScene = this.resMana.GetScene(Director.RunMana.CallStack.ESP.BindingSceneName);
                                     if (!currentScene.LabelDictionary.ContainsKey(jumpToTarget))
                                     {
-                                        CommonUtils.ConsoleLine(
+                                        LogUtils.LogLine(
                                             String.Format("Ignored Jump Instruction (target not exist): {0}",
                                                 jumpToTarget),
-                                            "Director", OutputStyle.Error);
+                                            "Director", LogLevel.Error);
                                         break;
                                     }
                                     Director.RunMana.CallStack.ESP.MircoStep(currentScene.LabelDictionary[jumpToTarget]);
@@ -386,10 +386,10 @@ namespace Yuri.PlatformCore
                                     var currentFunc = Director.RunMana.CallStack.ESP.BindingFunction;
                                     if (!currentFunc.LabelDictionary.ContainsKey(jumpToTarget))
                                     {
-                                        CommonUtils.ConsoleLine(
+                                        LogUtils.LogLine(
                                             String.Format("Ignored Jump Instruction (target not exist): {0}",
                                                 jumpToTarget),
-                                            "Director", OutputStyle.Error);
+                                            "Director", LogLevel.Error);
                                         break;
                                     }
                                     Director.RunMana.CallStack.ESP.MircoStep(currentFunc.LabelDictionary[jumpToTarget]);
@@ -401,17 +401,17 @@ namespace Yuri.PlatformCore
                                 var jumpScene = this.resMana.GetScene(jumpToScene);
                                 if (jumpScene == null)
                                 {
-                                    CommonUtils.ConsoleLine(
+                                    LogUtils.LogLine(
                                         String.Format("Ignored Jump Instruction (scene not exist): {0}", jumpToScene),
-                                        "Director", OutputStyle.Error);
+                                        "Director", LogLevel.Error);
                                     break;
                                 }
                                 if (jumpToTarget != String.Empty && !jumpScene.LabelDictionary.ContainsKey(jumpToTarget))
                                 {
-                                    CommonUtils.ConsoleLine(
+                                    LogUtils.LogLine(
                                         String.Format("Ignored Jump Instruction (target not exist): {0} -> {1}",
                                             jumpToScene, jumpToTarget),
-                                        "Director", OutputStyle.Error);
+                                        "Director", LogLevel.Error);
                                     break;
                                 }
                                 Director.RunMana.ExitCall(Director.RunMana.CallStack);
@@ -469,13 +469,13 @@ namespace Yuri.PlatformCore
             }
             catch (Exception ex)
             {
-                CommonUtils.ConsoleLine("Parallel Failed " + ex, "Director", OutputStyle.Warning);
+                LogUtils.LogLine("Parallel Failed " + ex, "Director", LogLevel.Warning);
                 dispatcher.Start();
                 return;
             }
             if (pdap == null)
             {
-                CommonUtils.ConsoleLine("Parallel Failed.", "Director", OutputStyle.Warning);
+                LogUtils.LogLine("Parallel Failed.", "Director", LogLevel.Warning);
                 dispatcher.Start();
                 return;
             }
@@ -505,9 +505,9 @@ namespace Yuri.PlatformCore
                         resumeFlag = true;
                         break;
                     case StackMachineState.Interrupt:
-                        CommonUtils.ConsoleLine(
+                        LogUtils.LogLine(
                             "There is a interrupt in parallel function, which may cause system pause",
-                            "Director", OutputStyle.Warning);
+                            "Director", LogLevel.Warning);
                         paraGameState = GameState.Interrupt;
                         resumeFlag = false;
                         break;
@@ -556,16 +556,16 @@ namespace Yuri.PlatformCore
                         else if (nextInstruct.Type == SActionType.act_waitani)
                         {
                             // 并行器里不应该出现等待动画结束，立即结束本次迭代
-                            CommonUtils.ConsoleLine(
+                            LogUtils.LogLine(
                                 "There is a animation wait in parallel function, which may cause system pause",
-                                "Director", OutputStyle.Warning);
+                                "Director", LogLevel.Warning);
                             break;
                         }
                         else if (nextInstruct.Type == SActionType.act_waituser)
                         {
-                            CommonUtils.ConsoleLine(
+                            LogUtils.LogLine(
                                 "There is a user wait in parallel function, which may cause system pause",
-                                "Director", OutputStyle.Warning);
+                                "Director", LogLevel.Warning);
                             paraVM.Submit("Director", nextInstruct.NodeName);
                             break;
                         }
@@ -581,10 +581,10 @@ namespace Yuri.PlatformCore
                                     var currentScene = this.resMana.GetScene(paraVM.ESP.BindingSceneName);
                                     if (!currentScene.LabelDictionary.ContainsKey(jumpToTarget))
                                     {
-                                        CommonUtils.ConsoleLine(
+                                        LogUtils.LogLine(
                                             String.Format("Ignored Jump Instruction (target not exist): {0}",
                                                 jumpToTarget),
-                                            "Director", OutputStyle.Error);
+                                            "Director", LogLevel.Error);
                                         break;
                                     }
                                     paraVM.ESP.MircoStep(currentScene.LabelDictionary[jumpToTarget]);
@@ -594,10 +594,10 @@ namespace Yuri.PlatformCore
                                     var currentFunc = paraVM.ESP.BindingFunction;
                                     if (!currentFunc.LabelDictionary.ContainsKey(jumpToTarget))
                                     {
-                                        CommonUtils.ConsoleLine(
+                                        LogUtils.LogLine(
                                             String.Format("Ignored Jump Instruction (target not exist): {0}",
                                                 jumpToTarget),
-                                            "Director", OutputStyle.Error);
+                                            "Director", LogLevel.Error);
                                         break;
                                     }
                                     paraVM.ESP.MircoStep(currentFunc.LabelDictionary[jumpToTarget]);
@@ -606,9 +606,9 @@ namespace Yuri.PlatformCore
                             // 跨场景跳转
                             else
                             {
-                                CommonUtils.ConsoleLine(
+                                LogUtils.LogLine(
                                     "There is a jump across scene in parallel function, it will be ignored",
-                                    "Director", OutputStyle.Warning);
+                                    "Director", LogLevel.Warning);
                             }
                             break;
                         }
@@ -668,8 +668,8 @@ namespace Yuri.PlatformCore
                             }
                             if (!curRunnable.LabelDictionary.ContainsKey(interruptExitPoint))
                             {
-                                CommonUtils.ConsoleLine(String.Format("Ignored parallel Interrupt jump Instruction (target not exist): {0}",
-                                    interruptExitPoint), "Director", OutputStyle.Error);
+                                LogUtils.LogLine(String.Format("Ignored parallel Interrupt jump Instruction (target not exist): {0}",
+                                    interruptExitPoint), "Director", LogLevel.Error);
                                 break;
                             }
                             paraVM.EBP.MircoStep(curRunnable.LabelDictionary[interruptExitPoint]);
@@ -722,8 +722,8 @@ namespace Yuri.PlatformCore
         {
             if (signFunc != String.Empty && (!signFunc.StartsWith("(") || !signFunc.EndsWith(")")))
             {
-                CommonUtils.ConsoleLine(String.Format("Ignored Function calling (sign not valid): {0} -> {1}", callFunc, signFunc),
-                    "Director", OutputStyle.Error);
+                LogUtils.LogLine(String.Format("Ignored Function calling (sign not valid): {0} -> {1}", callFunc, signFunc),
+                    "Director", LogLevel.Error);
                 return;
             }
             var callFuncItems = callFunc.Split('@');
@@ -738,21 +738,21 @@ namespace Yuri.PlatformCore
             {
                 sceneFuncContainer = this.resMana.GetScene(vsm.ESP.BindingSceneName).FuncContainer;
                 sceneFuncList = from f in sceneFuncContainer where f.Callname == callFunc select f;
-                CommonUtils.ConsoleLine(String.Format("Function calling for current Scene (Scene not explicit): {0}", callFunc),
-                    "Director", OutputStyle.Warning);
+                LogUtils.LogLine(String.Format("Function calling for current Scene (Scene not explicit): {0}", callFunc),
+                    "Director", LogLevel.Warning);
             }
             if (!sceneFuncList.Any())
             {
-                CommonUtils.ConsoleLine(String.Format("Ignored Function calling (function not exist): {0}", callFunc),
-                    "Director", OutputStyle.Error);
+                LogUtils.LogLine(String.Format("Ignored Function calling (function not exist): {0}", callFunc),
+                    "Director", LogLevel.Error);
                 return;
             }
             var sceneFunc = sceneFuncList.First();
             var signItem = signFunc.Replace("(", String.Empty).Replace(")", String.Empty).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             if (sceneFunc.Param.Count != signItem.Length)
             {
-                CommonUtils.ConsoleLine(String.Format("Ignored Function calling (in {0}, require args num: {1}, but actual:{2})", callFunc, sceneFunc.Param.Count, signItem.Length),
-                    "Director", OutputStyle.Error);
+                LogUtils.LogLine(String.Format("Ignored Function calling (in {0}, require args num: {1}, but actual:{2})", callFunc, sceneFunc.Param.Count, signItem.Length),
+                    "Director", LogLevel.Error);
                 return;
             }
             // 处理参数列表
@@ -785,7 +785,7 @@ namespace Yuri.PlatformCore
         {
             Director.IsContextUpdatePaused = true;
             Director.GetInstance().timer.Stop();
-            CommonUtils.ConsoleLine("Context Update Dispatcher is stopped", "Director", OutputStyle.Important);
+            LogUtils.LogLine("Context Update Dispatcher is stopped", "Director", LogLevel.Important);
         }
 
         /// <summary>
@@ -795,7 +795,7 @@ namespace Yuri.PlatformCore
         {
             Director.GetInstance().timer.Start();
             Director.IsContextUpdatePaused = false;
-            CommonUtils.ConsoleLine("Context Update Dispatcher is resumed", "Director", OutputStyle.Important);
+            LogUtils.LogLine("Context Update Dispatcher is resumed", "Director", LogLevel.Important);
         }
 
         /// <summary>
@@ -863,13 +863,13 @@ namespace Yuri.PlatformCore
         public static void CollapseWorld()
         {
             var collaTimeStamp = DateTime.Now;
-            CommonUtils.ConsoleLine("Yuri world began to collapse at " + collaTimeStamp, "Director", OutputStyle.Important);
+            LogUtils.LogLine("Yuri world began to collapse at " + collaTimeStamp, "Director", LogLevel.Important);
             PersistContextDAO.Assign("___YURIRI@LASTPLAYTIMESTAMP___", collaTimeStamp.ToString());
             PersistContextDAO.Assign("___YURIRI@ACCDURATION___", Director.LastGameTimeAcc + (collaTimeStamp - Director.StartupTimeStamp));
             PersistContextDAO.SaveToSteadyMemory();
-            CommonUtils.ConsoleLine("Save persistence context OK", "Director", OutputStyle.Important);
+            LogUtils.LogLine("Save persistence context OK", "Director", LogLevel.Important);
             Musician.GetInstance().Dispose();
-            CommonUtils.ConsoleLine("Dispose resource OK, program will shutdown soon", "Director", OutputStyle.Important);
+            LogUtils.LogLine("Dispose resource OK, program will shutdown soon", "Director", LogLevel.Important);
             Environment.Exit(0);
         }
 
@@ -887,10 +887,10 @@ namespace Yuri.PlatformCore
         /// </summary>
         private Director()
         {
-            CommonUtils.ConsoleLine("======================", "Director", OutputStyle.Simple);
-            CommonUtils.ConsoleLine("Game is launched", "Director", OutputStyle.Normal);
-            CommonUtils.ConsoleLine("CurrentDirectory is: " + Environment.CurrentDirectory, "Director", OutputStyle.Simple);
-            CommonUtils.ConsoleLine("BaseDirectory is: " + AppDomain.CurrentDomain.BaseDirectory, "Director", OutputStyle.Simple);
+            LogUtils.LogLine("======================", "Director", LogLevel.Simple);
+            LogUtils.LogLine("Game is launched", "Director", LogLevel.Normal);
+            LogUtils.LogLine("CurrentDirectory is: " + Environment.CurrentDirectory, "Director", LogLevel.Simple);
+            LogUtils.LogLine("BaseDirectory is: " + AppDomain.CurrentDomain.BaseDirectory, "Director", LogLevel.Simple);
             this.InitConfig();
             this.resMana = ResourceManager.GetInstance();
             Director.RunMana = new RuntimeManager();
