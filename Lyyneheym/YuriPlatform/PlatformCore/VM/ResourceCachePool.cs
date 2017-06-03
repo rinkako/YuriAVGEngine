@@ -78,10 +78,20 @@ namespace Yuri.PlatformCore.VM
         }
 
         /// <summary>
+        /// 立即进行垃圾回收
+        /// </summary>
+        public static void GC()
+        {
+            ResourceCachePool.EdenQueue.ForEachFrom(GlobalConfigContext.EdenResourceCacheSize, t => t.Abandon());
+            System.GC.Collect();
+        }
+
+        /// <summary>
         /// 清空缓冲池
         /// </summary>
         public static void Clear()
         {
+            ResourceCachePool.EdenQueue.ForEachFrom(0, t => t.Abandon());
             ResourceCachePool.EdenQueue.Clear();
             ResourceCachePool.PermanentDictionary.Clear();
         }
