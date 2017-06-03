@@ -1035,8 +1035,8 @@ namespace Yuri.YuriHalation.YuriForms
         /// </summary>
         private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AboutBox1 ab = new AboutBox1();
-            ab.ShowDialog(this);
+            AboutWindow ab = new AboutWindow();
+            ab.ShowDialog();
         }
 
         /// <summary>

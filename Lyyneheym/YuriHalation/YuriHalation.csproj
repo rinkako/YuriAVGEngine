@@ -142,11 +142,8 @@
     <Compile Include="ScriptPackage\RunnablePackage.cs" />
     <Compile Include="ScriptPackage\ScenePackage.cs" />
     <Compile Include="ScriptPackage\VariablePackage.cs" />
-    <Compile Include="YuriForms\AboutBox1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="YuriForms\AboutBox1.Designer.cs">
-      <DependentUpon>AboutBox1.cs</DependentUpon>
+    <Compile Include="YuriForms\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="YuriForms\AddFuncForm.cs">
       <SubType>Form</SubType>
@@ -358,6 +355,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="YuriForms\AboutWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="YuriForms\SCamera3DForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -381,9 +382,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="YuriForms\AboutBox1.resx">
-      <DependentUpon>AboutBox1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="YuriForms\AddFuncForm.resx">
       <DependentUpon>AddFuncForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -506,6 +504,9 @@
   <ItemGroup>
     <Resource Include="Assets\HalaIco2.ico" />
     <Resource Include="Assets\Logo_HA2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\AboutHalation.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,15 @@
+﻿<Window x:Class="Yuri.YuriHalation.YuriForms.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="About" Height="360" Width="560" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None" MouseRightButtonUp="Window_MouseRightButtonUp" KeyDown="Window_KeyDown" AllowsTransparency="True" Background="Transparent">
+    <Canvas>
+        <Canvas.Background>
+            <ImageBrush ImageSource="/YuriHalation;component/Assets/AboutHalation.png"/>
+        </Canvas.Background>
+        <Image Name="Image_Logo" Height="158" Width="158" Source="/YuriHalation;component/Assets/Logo_HA2.png" Canvas.Left="66" Canvas.Top="150"/>
+        <TextBlock Height="158" Canvas.Left="253" TextWrapping="Wrap" Canvas.Top="150" Width="262" Background="White"><Run Text="Halation"/><Run Text=" is a part of Project Yuri. She is expected to provide "/><Run Text="a visual integrated development environment for AVG."/><LineBreak/><LineBreak/><Run Text="Halation "/><Run Text="is"/><Run Text=" distributed"/><Run Text=" under the Microsoft Public License (Ms-PL)."/><LineBreak/><LineBreak/><Run Text="To get the source code of "/><Run Text="Halation"/><Run Text=", visit the Github page of "/><Hyperlink NavigateUri="https://github.com/rinkako/YuriAVGEngine"><Run Text="Project Yuri"/></Hyperlink><Run Text="."/></TextBlock>
+    </Canvas>
+</Window>
