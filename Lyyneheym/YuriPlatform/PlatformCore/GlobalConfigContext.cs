@@ -301,7 +301,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 音频：BGM默认音量
         /// </summary>
-        public static float GAME_SOUND_BGMVOL = 600;
+        public static float GAME_SOUND_BGMVOL = 800;
         /// <summary>
         /// 音频：BGS默认音量
         /// </summary>

@@ -1663,8 +1663,8 @@ namespace Yuri.PlatformCore
             else if (this.musician.CurrentBgm != resourceName)
             {
                 var ms = this.resMana.GetBGM(resourceName);
-                Director.RunMana.PlayingBGM = resourceName;
                 this.musician.PlayBGM(resourceName, ms, (float)volume);
+                Director.RunMana.PlayingBGM = resourceName;
             }
             else
             {
