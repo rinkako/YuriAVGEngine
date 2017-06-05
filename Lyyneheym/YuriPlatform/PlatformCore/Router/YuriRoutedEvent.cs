@@ -36,22 +36,22 @@ namespace Yuri.PlatformCore.Router
         public delegate void OnProcessedHandler(IRouteable sender, EventArgs e);
 
         /// <summary>
-        /// 事件：事件被路由接收并处理时发生
+        /// 消息被路由接收并处理时发生
         /// </summary>
         public event OnRouterAcceptHandler OnRouterAccept;
 
         /// <summary>
-        /// 事件：事件被路由即将开始转发给子路由时发生
+        /// 消息被路由即将开始转发给下一路由时发生
         /// </summary>
         public event OnRouterRoutedHandler OnRouterRouted;
 
         /// <summary>
-        /// 事件：路由器吞下消息时发生
+        /// 路由器吞下消息时发生
         /// </summary>
         public event OnRouterSwallowedHandler OnRouterSwallowed;
 
         /// <summary>
-        /// 事件：路由器处理事件完毕时发生
+        /// 路由器处理消息完毕时发生
         /// </summary>
         public event OnProcessedHandler OnProcessed;
 

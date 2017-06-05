@@ -1622,7 +1622,7 @@ namespace Yuri.PlatformCore
         {
             var ms = this.resMana.GetSE(resourceName);
             //this.musician.PlaySE(ms, (float)volume);
-            var evt = new YuriRoutedEvent();
+            var evt = new YuriRoutedEvent() {Type = YuriRoutedType.Direct};
             var mmsg = new MusicianMessage() {Type = MusicianOperation.PlaySE};
             mmsg.Args["ms"] = ms;
             mmsg.Args["vol"] = (float) volume;
@@ -1630,7 +1630,7 @@ namespace Yuri.PlatformCore
             {
                 MusicianThreadHandler.EnqueueMessage(mmsg);
             };
-            RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
+            RouterManager.Send("MusicianRouter", evt);
         }
 
         /// <summary>
@@ -1640,7 +1640,7 @@ namespace Yuri.PlatformCore
         /// <param name="volume">音量</param>
         public void Bgs(string resourceName, double volume, int track)
         {
-            var evt = new YuriRoutedEvent();
+            var evt = new YuriRoutedEvent() {Type = YuriRoutedType.Direct};
             var mmsg = new MusicianMessage();
             if (String.IsNullOrEmpty(resourceName))
             {
@@ -1661,7 +1661,7 @@ namespace Yuri.PlatformCore
             {
                 MusicianThreadHandler.EnqueueMessage(mmsg);
             };
-            RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
+            RouterManager.Send("MusicianRouter", evt);
         }
 
         /// <summary>
@@ -1671,7 +1671,7 @@ namespace Yuri.PlatformCore
         /// <param name="volume">音量</param>
         public void Bgm(string resourceName, double volume)
         {
-            var evt = new YuriRoutedEvent();
+            var evt = new YuriRoutedEvent() {Type = YuriRoutedType.Direct};
             var mmsg = new MusicianMessage();
             // 空即为停止
             if (String.IsNullOrEmpty(resourceName))
@@ -1702,7 +1702,7 @@ namespace Yuri.PlatformCore
             {
                 MusicianThreadHandler.EnqueueMessage(mmsg);
             };
-            RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
+            RouterManager.Send("MusicianRouter", evt);
         }
 
         /// <summary>
@@ -1713,7 +1713,7 @@ namespace Yuri.PlatformCore
         public void Bgmfade(double vol, double ms)
         {
             //this.musician.FadeBgm((float) vol, (int)ms);
-            var evt = new YuriRoutedEvent();
+            var evt = new YuriRoutedEvent() {Type = YuriRoutedType.Direct};
             var mmsg = new MusicianMessage() {Type = MusicianOperation.FadeBgm};
             mmsg.Args["ms"] = (int)ms;
             mmsg.Args["vol"] = (float)vol;
@@ -1721,7 +1721,7 @@ namespace Yuri.PlatformCore
             {
                 MusicianThreadHandler.EnqueueMessage(mmsg);
             };
-            RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
+            RouterManager.Send("MusicianRouter", evt);
         }
 
         /// <summary>
@@ -1730,13 +1730,13 @@ namespace Yuri.PlatformCore
         public void Stopbgm()
         {
             //this.musician.StopAndReleaseBGM();
-            var evt = new YuriRoutedEvent();
-            var mmsg = new MusicianMessage() { Type = MusicianOperation.StopAndReleaseBGM };
+            var evt = new YuriRoutedEvent() {Type = YuriRoutedType.Direct};
+            var mmsg = new MusicianMessage() {Type = MusicianOperation.StopAndReleaseBGM};
             evt.OnRouterAccept += delegate
             {
                 MusicianThreadHandler.EnqueueMessage(mmsg);
             };
-            RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
+            RouterManager.Send("MusicianRouter", evt);
             Director.RunMana.PlayingBGM = String.Empty;
         }
 
@@ -1746,14 +1746,14 @@ namespace Yuri.PlatformCore
         public void Stopbgs(int track)
         {
             //this.musician.StopBGS(track);
-            var evt = new YuriRoutedEvent();
-            var mmsg = new MusicianMessage() { Type = MusicianOperation.StopBGS };
+            var evt = new YuriRoutedEvent() {Type = YuriRoutedType.Direct};
+            var mmsg = new MusicianMessage() {Type = MusicianOperation.StopBGS};
             mmsg.Args["track"] = track;
             evt.OnRouterAccept += delegate
             {
                 MusicianThreadHandler.EnqueueMessage(mmsg);
             };
-            RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
+            RouterManager.Send("MusicianRouter", evt);
         }
 
         /// <summary>
@@ -1779,7 +1779,7 @@ namespace Yuri.PlatformCore
             {
                 var ms = this.resMana.GetVocal(resourceName);
                 //this.musician.PlayVocal(ms, (float)volume);
-                var evt = new YuriRoutedEvent();
+                var evt = new YuriRoutedEvent() {Type = YuriRoutedType.Direct};
                 var mmsg = new MusicianMessage() { Type = MusicianOperation.PlayVocal };
                 mmsg.Args["ms"] = ms;
                 mmsg.Args["vol"] = (float)volume;
@@ -1787,7 +1787,7 @@ namespace Yuri.PlatformCore
                 {
                     MusicianThreadHandler.EnqueueMessage(mmsg);
                 };
-                RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
+                RouterManager.Send("MusicianRouter", evt);
             }
         }
 
@@ -1797,14 +1797,13 @@ namespace Yuri.PlatformCore
         public void Stopvocal()
         {
             //this.musician.StopAndReleaseVocal();
-            var evt = new YuriRoutedEvent();
+            var evt = new YuriRoutedEvent() {Type = YuriRoutedType.Direct};
             var mmsg = new MusicianMessage() { Type = MusicianOperation.StopAndReleaseVocal };
             evt.OnRouterAccept += delegate
             {
                 MusicianThreadHandler.EnqueueMessage(mmsg);
             };
-            RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
-
+            RouterManager.Send("MusicianRouter", evt);
         }
 
         /// <summary>

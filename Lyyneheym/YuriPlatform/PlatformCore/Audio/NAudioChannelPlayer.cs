@@ -112,10 +112,26 @@ namespace Yuri.PlatformCore.Audio
             if (this.IsPlaying)
             {
                 this.wavePlayer.PlaybackStopped -= this.PlaybackLoopCallback;
-                this.wavePlayer.PlaybackStopped += this.PlaybackStopCallback;
+                this.wavePlayer.PlaybackStopped -= this.PlaybackStopCallback;
                 this.wavePlayer.Stop();
+                this.IsPlaying = false;
             }
-            this.Dispose();
+            this.DisposeWithoutCallback();
+        }
+
+        /// <summary>
+        /// 停止播放该通道并释放资源
+        /// </summary>
+        public void StopAndReleaseWithoutCallback()
+        {
+            if (this.IsPlaying)
+            {
+                this.wavePlayer.PlaybackStopped -= this.PlaybackLoopCallback;
+                this.wavePlayer.PlaybackStopped -= this.PlaybackStopCallback;
+                this.wavePlayer.Stop();
+                this.IsPlaying = false;
+            }
+            this.DisposeWithoutCallback();
         }
 
         /// <summary>
@@ -123,6 +139,7 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public void Dispose()
         {
+            this.IsPlaying = false;
             this.DisposeWithoutCallback();
             this.stopCallback?.Invoke();
         }
@@ -132,10 +149,6 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public void DisposeWithoutCallback()
         {
-            if (this.IsPlaying)
-            {
-                this.wavePlayer.Stop();
-            }
             if (this.playingStream != null)
             {
                 this.playingStream.Dispose();

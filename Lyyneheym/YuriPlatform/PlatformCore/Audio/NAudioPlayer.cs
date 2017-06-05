@@ -226,11 +226,21 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public void Dispose()
         {
-            foreach (var ah in this.channelDict)
+            try
             {
-                ah.Value?.DisposeWithoutCallback();
+                foreach (var ah in this.channelDict)
+                {
+                    ah.Value?.StopAndReleaseWithoutCallback();
+                }
             }
-            this.channelDict.Clear();
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("When disposing NAudioPlayer: " + ex, "NAudioPlayer", LogLevel.Warning);
+            }
+            finally
+            {
+                this.channelDict.Clear();
+            }
         }
 
         /// <summary>
