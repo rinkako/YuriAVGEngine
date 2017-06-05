@@ -361,7 +361,7 @@ namespace Yuri.PageView
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("保存文件失败！在SLPage(in CLR)触发了：" + Environment.NewLine + ex.ToString());
+                    MessageBox.Show("保存文件失败！在SLPage(in CLR)触发了：" + Environment.NewLine + ex);
                     return;
                 }
                 // 可容忍的错误段
@@ -370,7 +370,7 @@ namespace Yuri.PageView
                     // 保存截图文件
                     if (File.Exists(IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg")))
                     {
-                        File.Copy(IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg"),
+                        File.Move(IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + "\\tempSnapshot.jpg"),
                             IOUtils.ParseURItoURL(String.Format("{0}\\{1}{2}{3}", GlobalConfigContext.GAME_SAVE_DIR,
                             GlobalConfigContext.GAME_SAVE_SNAPSHOT_PREFIX, saveIdentity, GlobalConfigContext.GAME_SAVE_SNAPSHOT_POSTFIX)));
                     }

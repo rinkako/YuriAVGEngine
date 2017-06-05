@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Yuri.PlatformCore.Graphic
+namespace Yuri.PlatformCore.VM
 {
     /// <summary>
     /// 可复制的描述子类

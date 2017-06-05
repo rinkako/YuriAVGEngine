@@ -1676,7 +1676,7 @@ namespace Yuri.PlatformCore
             // 空即为停止
             if (String.IsNullOrEmpty(resourceName))
             {
-                Director.RunMana.PlayingBGM = String.Empty;
+                Director.RunMana.Musics.PlayingBGM = String.Empty;
                 //this.musician.StopAndReleaseBGM();
                 mmsg.Type = MusicianOperation.StopAndReleaseBGM;
             }
@@ -1689,14 +1689,14 @@ namespace Yuri.PlatformCore
                 mmsg.Args["ms"] = ms;
                 mmsg.Args["vol"] = (float)volume;
                 mmsg.Args["resourceName"] = resourceName;
-                Director.RunMana.PlayingBGM = resourceName;
+                Director.RunMana.Musics.PlayingBGM = resourceName;
             }
             else
             {
                 //this.musician.SetBGMVolume((float)volume);
                 mmsg.Type = MusicianOperation.SetBGMVolume;
                 mmsg.Args["vol"] = (float)volume;
-                Director.RunMana.PlayingBGM = resourceName;
+                Director.RunMana.Musics.PlayingBGM = resourceName;
             }
             evt.OnRouterAccept += delegate
             {
@@ -1737,7 +1737,7 @@ namespace Yuri.PlatformCore
                 MusicianThreadHandler.EnqueueMessage(mmsg);
             };
             RouterManager.Send("MusicianRouter", evt);
-            Director.RunMana.PlayingBGM = String.Empty;
+            Director.RunMana.Musics.PlayingBGM = String.Empty;
         }
 
         /// <summary>

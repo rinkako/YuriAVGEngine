@@ -20,10 +20,7 @@ namespace Yuri.PlatformCore.Audio
         public void PlayBGM(string resourceName, MemoryStream ms, float vol)
         {
             // 如果有BGM在播放就截断
-            //if (this.IsBgmPlaying || this.IsBgmPaused)
-            //{
-                this.StopAndReleaseBGM();
-            //}
+            this.StopAndReleaseBGM();
             if (ms == null)
             {
                 return;

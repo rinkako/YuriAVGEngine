@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Yuri.PlatformCore.VM;
 
 namespace Yuri.PlatformCore.Graphic
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Yuri.PlatformCore.Audio;
 using Yuri.PlatformCore.Graphic;
 using Yuri.PlatformCore.Graphic3D;
 using Yuri.PlatformCore.Semaphore;
@@ -18,7 +19,7 @@ namespace Yuri.PlatformCore
         /// 系统向前进一个状态
         /// 她只有在对话推进和选择项出现时才被触发
         /// </summary>
-        public static void SteadyForward(bool fromWheel, SceneAction saPtr, string playingBGM)
+        public static void SteadyForward(bool fromWheel, SceneAction saPtr, MusicianDescriptor mdescriptor)
         {
             // 回滚后返回，移栈并演绎
             if (fromWheel && RollbackManager.IsRollingBack)
@@ -40,7 +41,7 @@ namespace Yuri.PlatformCore
                 {
                     TimeStamp = DateTime.Now,
                     IsBranchingRefer = Director.GetInstance().GetMainRender().IsBranching,
-                    MusicRef = playingBGM,
+                    MusicRef = ForkableState.DeepCopyBySerialization(mdescriptor),
                     ReactionRef = saPtr,
                     VMRef = vm,
                     globalDao = SymbolTable.GetInstance().GlobalCtxDao.Fork() as GlobalContextDAO,
@@ -109,7 +110,7 @@ namespace Yuri.PlatformCore
             SymbolTable.GetInstance().SetDAO(ssp.sceneDao.Fork() as SceneContextDAO, ssp.globalDao.Fork() as GlobalContextDAO);
             ScreenManager.ResetSynObject(ssp.ScreenStateRef.Fork() as ScreenManager);
             Director.RunMana.ResetCallstackObject(ssp.VMRef.Fork() as StackMachine);
-            Director.RunMana.PlayingBGM = ssp.MusicRef;
+            Director.RunMana.Musics = ForkableState.DeepCopyBySerialization(ssp.MusicRef);
             Director.RunMana.DashingPureSa = ssp.ReactionRef.Clone(true);
             Director.RunMana.SemaphoreBindings = ForkableState.DeepCopyBySerialization(ssp.SemaphoreDict);
             Director.ScrMana = ScreenManager.GetInstance();
@@ -120,7 +121,7 @@ namespace Yuri.PlatformCore
             ViewManager.GetInstance().ReDraw();
             // 恢复背景音乐
             UpdateRender render = Director.GetInstance().GetMainRender();
-            render.Bgm(Director.RunMana.PlayingBGM, GlobalConfigContext.GAME_SOUND_BGMVOL);
+            render.Bgm(Director.RunMana.Musics.PlayingBGM, GlobalConfigContext.GAME_SOUND_BGMVOL);
             // 清空字符串缓冲
             render.dialogPreStr = String.Empty;
             render.pendingDialogQueue.Clear();

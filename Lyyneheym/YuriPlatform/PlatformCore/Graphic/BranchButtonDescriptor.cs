@@ -1,4 +1,5 @@
 ﻿using System;
+using Yuri.PlatformCore.VM;
 
 namespace Yuri.PlatformCore.Graphic
 {

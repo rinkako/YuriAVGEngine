@@ -70,7 +70,7 @@ namespace Yuri.PlatformCore.Graphic3D
         /// </summary>
         /// <param name="r">区块的横向编号，值域[0, 14]，其中7是屏幕纵向正中</param>
         /// <param name="c">区块的纵向编号，值域[0, 32]，其中0是屏幕横向正中</param>
-        /// <param name="ratio">缩放的倍率，值域(0.0, +∞]，原始尺寸对应于1.0，原始尺寸指设置中所定义的立绘原始缩放比</param>
+        /// <param name="ratio">缩放的倍率，值域(0.0, +∞)，原始尺寸对应于1.0，原始尺寸指设置中所定义的立绘原始缩放比</param>
         /// <param name="immediate">是否立即执行完毕</param>
         public static void FocusOn(int r, int c, double ratio, bool immediate = false)
         {
@@ -175,7 +175,7 @@ namespace Yuri.PlatformCore.Graphic3D
         /// <summary>
         /// 在镜头聚焦的区块上调整焦距
         /// </summary>
-        /// <param name="ratio">缩放的倍率，值域(0.0, +∞]，原始尺寸对应于1.0</param>
+        /// <param name="ratio">缩放的倍率，值域(0.0, +∞)，原始尺寸对应于1.0</param>
         public static void Focus(double ratio)
         {
             SCamera3D.FocusOn(Director.ScrMana.SCameraFocusRow, Director.ScrMana.SCameraFocusCol, ratio);
@@ -186,7 +186,7 @@ namespace Yuri.PlatformCore.Graphic3D
         /// </summary>
         /// <param name="id">立绘id</param>
         /// <param name="blockId">立绘纵向划分区块id，值域[0, 11]，通常眼1，胸3，腹4，膝7，足10</param>
-        /// <param name="ratio">缩放的倍率，值域[0.0, +∞]，原始尺寸对应于1.0，原始尺寸指设置中所定义的立绘原始缩放比</param>
+        /// <param name="ratio">缩放的倍率，值域[0.0, +∞)，原始尺寸对应于1.0，原始尺寸指设置中所定义的立绘原始缩放比</param>
         public static void FocusCharacter(int id, int blockId, double ratio)
         {
 

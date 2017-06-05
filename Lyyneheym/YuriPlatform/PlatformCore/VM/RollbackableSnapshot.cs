@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Yuri.PlatformCore.Audio;
 using Yuri.PlatformCore.Graphic;
 using Yuri.Yuriri;
 
@@ -76,7 +77,7 @@ namespace Yuri.PlatformCore.VM
         /// <summary>
         /// 音乐状态的拷贝
         /// </summary>
-        public string MusicRef
+        public MusicianDescriptor MusicRef
         {
             get;
             set;

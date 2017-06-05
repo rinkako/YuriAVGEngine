@@ -1,5 +1,6 @@
 ﻿using System;
 using Yuri.PlatformCore.Graphic;
+using Yuri.PlatformCore.VM;
 
 namespace Yuri.PlatformCore.Graphic3D
 {

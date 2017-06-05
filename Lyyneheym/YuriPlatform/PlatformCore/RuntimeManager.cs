@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Threading;
 using System.Collections.Generic;
+using Yuri.PlatformCore.Audio;
 using Yuri.PlatformCore.Evaluator;
 using Yuri.PlatformCore.Semaphore;
 using Yuri.PlatformCore.Graphic;
@@ -38,7 +39,7 @@ namespace Yuri.PlatformCore
                 if (this.DashingPureSa.Type == SActionType.act_dialog ||
                     this.DashingPureSa.Type == SActionType.act_branch)
                 {
-                    RollbackManager.SteadyForward(false, this.DashingPureSa, this.PlayingBGM);
+                    RollbackManager.SteadyForward(false, this.DashingPureSa, this.Musics);
                 }
             }
             return fetched;
@@ -83,29 +84,20 @@ namespace Yuri.PlatformCore
                         if (ret.TrueRouting != null && ret.TrueRouting.Count > 0)
                         {
                             return vsm.ESP.MircoStep(ret.TrueRouting[0]);
-                            
                         }
                         // falseRouting
                         if (ret.FalseRouting != null && ret.FalseRouting.Count > 0)
                         {
                             return vsm.ESP.MircoStep(ret.FalseRouting[0]);
-                            
                         }
                         // next
                         return vsm.ESP.MacroStep(ret);
-                        
                     case SActionType.act_endfor:
                         // endfor直接跳过
                         return vsm.ESP.MacroStep(ret);
-                        
                 }
                 // 移动下一指令指针，为下次处理做准备
-                //if (ret.Type != SActionType.act_for)
-                //{
                 return vsm.ESP.MacroStep(ret);
-                //}
-                // 返回当前要执行的指令实例
-                //return ret;
             }
             // 条件子句不为空时
             else
@@ -135,8 +127,6 @@ namespace Yuri.PlatformCore
                             // 跳过if语句
                             ret = vsm.ESP.MacroStep(ret);
                         }
-                        // 再移动一次指针，为下次处理做准备
-                        // ret = vsm.ESP.MacroStep(ret);
                         // 返回当前要执行的指令实例
                         return ret;
                     // FOR语句
@@ -153,8 +143,6 @@ namespace Yuri.PlatformCore
                             // 跳过if语句
                             ret = vsm.ESP.MacroStep(ret);
                         }
-                        // 再移动一次指针，为下次处理做准备
-                        // ret = vsm.ESP.MacroStep(ret);
                         // 返回当前要执行的指令实例
                         return ret;
                     // 除此以外，带了cond的语句，为真才执行
@@ -164,8 +152,6 @@ namespace Yuri.PlatformCore
                             // 跳过当前语句
                             ret = vsm.ESP.MacroStep(ret);
                         }
-                        // 移动下一指令指针，为下次处理做准备
-                        //ret = vsm.ESP.MacroStep(ret);
                         // 返回当前要执行的指令实例
                         return ret;
                 }
@@ -573,7 +559,7 @@ namespace Yuri.PlatformCore
             this.CallStack.SetMachineName("Yuri");
             this.Symbols = SymbolTable.GetInstance();
             this.Screen = null;
-            this.PlayingBGM = String.Empty;
+            this.Musics = new MusicianDescriptor();
             this.ParallelExecutorStack = new Stack<List<ParallelExecutor>>();
             this.SemaphoreBindings = new Dictionary<string, List<Tuple<string, string>>>();
         }
@@ -644,9 +630,9 @@ namespace Yuri.PlatformCore
         }
         
         /// <summary>
-        /// 获取或设置正在播放的BGM
+        /// 获取或设置当前音频描述子
         /// </summary>
-        public string PlayingBGM
+        public MusicianDescriptor Musics
         {
             get;
             set;

@@ -137,7 +137,7 @@ namespace Yuri.PlatformCore
             UpdateRender render = Director.GetInstance().updateRender;
             render.VsmReference = Director.RunMana.CallStack;
             // 恢复背景音乐
-            render.Bgm(Director.RunMana.PlayingBGM, GlobalConfigContext.GAME_SOUND_BGMVOL);
+            render.Bgm(Director.RunMana.Musics.PlayingBGM, GlobalConfigContext.GAME_SOUND_BGMVOL);
             // 清空字符串缓冲
             render.dialogPreStr = String.Empty;
             render.pendingDialogQueue.Clear();

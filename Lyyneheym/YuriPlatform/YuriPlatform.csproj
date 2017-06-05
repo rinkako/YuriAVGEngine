@@ -100,6 +100,7 @@
     <Compile Include="PageView\SplashPage.xaml.cs">
       <DependentUpon>SplashPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PlatformCore\Audio\MusicianDescriptor.cs" />
     <Compile Include="PlatformCore\Audio\MusicianThreadHandler.cs" />
     <Compile Include="PlatformCore\Audio\NAudioChannelPlayer.cs" />
     <Compile Include="PlatformCore\Director.cs" />
@@ -137,7 +138,7 @@
     </Compile>
     <Compile Include="PlatformCore\Audio\NAudioPlayer.cs" />
     <Compile Include="PlatformCore\NotificationManager.cs" />
-    <Compile Include="PlatformCore\Graphic\CloneableDescriptor.cs" />
+    <Compile Include="PlatformCore\VM\CloneableDescriptor.cs" />
     <Compile Include="PlatformCore\VM\PersistContextDAO.cs" />
     <Compile Include="PlatformCore\Evaluator\PolishEvaluator.cs" />
     <Compile Include="PlatformCore\VM\ResourceCachePool.cs" />
