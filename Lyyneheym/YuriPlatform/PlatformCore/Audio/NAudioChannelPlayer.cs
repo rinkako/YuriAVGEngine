@@ -111,6 +111,8 @@ namespace Yuri.PlatformCore.Audio
         {
             if (this.IsPlaying)
             {
+                this.wavePlayer.PlaybackStopped -= this.PlaybackLoopCallback;
+                this.wavePlayer.PlaybackStopped += this.PlaybackStopCallback;
                 this.wavePlayer.Stop();
             }
             this.Dispose();

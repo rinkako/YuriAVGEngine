@@ -118,8 +118,6 @@ namespace Yuri.PlatformCore
             RollbackManager.Clear();
             // 清空画面并停下BGM
             ViewManager.GetInstance().RemoveView(ResourceType.Unknown);
-            //Director.GetInstance().GetMainRender().Stopbgm();
-            Thread.Sleep(100);
             // 检查是否需要回滚当前的并行处理
             Director.RunMana.StopAllParallel();
             // 变更运行时环境
