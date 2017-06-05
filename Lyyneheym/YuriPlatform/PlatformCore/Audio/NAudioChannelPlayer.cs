@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using Yuri.PlatformCore.VM;
 
 namespace Yuri.PlatformCore.Audio
 {
@@ -18,7 +19,9 @@ namespace Yuri.PlatformCore.Audio
         public void Init(MemoryStream playStream, float volume, bool loop, Action stopCallback)
         {
             this.wavePlayer = new WaveOut();
-            this.playingStream = new StreamMediaFoundationReader(this.BindingStream = playStream);
+            MemoryStream tms = new MemoryStream();
+            playStream.CopyTo(tms);
+            this.playingStream = new StreamMediaFoundationReader(this.BindingStream = tms);
             this.volumeProvider = new VolumeWaveProvider16(playingStream) { Volume = volume };
             this.wavePlayer.Init(this.volumeProvider);
             this.IsLoop = loop;
@@ -138,7 +141,7 @@ namespace Yuri.PlatformCore.Audio
             }
             if (this.wavePlayer != null)
             {
-                this.wavePlayer.Dispose();
+                //this.wavePlayer.Dispose();
                 this.wavePlayer = null;
             }
             this.IsPlaying = false;
@@ -149,8 +152,11 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         private void PlaybackLoopCallback(object sender, StoppedEventArgs e)
         {
-            this.playingStream.Position = 0;
-            this.wavePlayer.Play();
+            if (this.playingStream != null && !Director.IsCollapsing)
+            {
+                this.playingStream.Position = 0;
+                this.wavePlayer.Play();
+            }
         }
 
         /// <summary>

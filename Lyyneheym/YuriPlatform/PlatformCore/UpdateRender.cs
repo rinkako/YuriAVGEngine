@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
 using Yuri.PageView;
 using Yuri.PlatformCore.Audio;
+using Yuri.PlatformCore.Router;
 using Yuri.PlatformCore.Evaluator;
 using Yuri.PlatformCore.Graphic;
 using Yuri.PlatformCore.Graphic3D;
@@ -740,11 +740,6 @@ namespace Yuri.PlatformCore
         /// 3D主舞台的引用
         /// </summary>
         private Stage3D view3d => (Stage3D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
-
-        /// <summary>
-        /// 音乐引擎
-        /// </summary>
-        private readonly Musician musician = Musician.GetInstance();
 
         /// <summary>
         /// 资源管理器
@@ -1623,10 +1618,19 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="resourceName">资源名称</param>
         /// <param name="volume">音量</param>
-        private void Se(string resourceName, double volume)
+        public void Se(string resourceName, double volume)
         {
             var ms = this.resMana.GetSE(resourceName);
-            this.musician.PlaySE(ms, (float)volume);
+            //this.musician.PlaySE(ms, (float)volume);
+            var evt = new YuriRoutedEvent();
+            var mmsg = new MusicianMessage() {Type = MusicianOperation.PlaySE};
+            mmsg.Args["ms"] = ms;
+            mmsg.Args["vol"] = (float) volume;
+            evt.OnRouterAccept += delegate
+            {
+                MusicianThreadHandler.EnqueueMessage(mmsg);
+            };
+            RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
         }
 
         /// <summary>
@@ -1636,14 +1640,28 @@ namespace Yuri.PlatformCore
         /// <param name="volume">音量</param>
         public void Bgs(string resourceName, double volume, int track)
         {
-            // 空即为停止
+            var evt = new YuriRoutedEvent();
+            var mmsg = new MusicianMessage();
             if (String.IsNullOrEmpty(resourceName))
             {
-                this.musician.StopBGS(track);
-                return;
+                //this.musician.StopBGS(track);
+                mmsg.Type = MusicianOperation.StopBGS;
+                mmsg.Args["track"] = track;
             }
-            var ms = this.resMana.GetBGS(resourceName);
-            this.musician.PlayBGS(ms, (float)volume, track);
+            else
+            {
+                var ms = this.resMana.GetBGS(resourceName);
+                //this.musician.PlayBGS(ms, (float)volume, track);
+                mmsg.Type = MusicianOperation.PlayBGS;
+                mmsg.Args["ms"] = ms;
+                mmsg.Args["vol"] = (float) volume;
+                mmsg.Args["track"] = track;
+            }
+            evt.OnRouterAccept += delegate
+            {
+                MusicianThreadHandler.EnqueueMessage(mmsg);
+            };
+            RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
         }
 
         /// <summary>
@@ -1653,23 +1671,38 @@ namespace Yuri.PlatformCore
         /// <param name="volume">音量</param>
         public void Bgm(string resourceName, double volume)
         {
+            var evt = new YuriRoutedEvent();
+            var mmsg = new MusicianMessage();
             // 空即为停止
             if (String.IsNullOrEmpty(resourceName))
             {
                 Director.RunMana.PlayingBGM = String.Empty;
-                this.musician.StopAndReleaseBGM();
+                //this.musician.StopAndReleaseBGM();
+                mmsg.Type = MusicianOperation.StopAndReleaseBGM;
             }
             // 如果当前BGM就是此BGM就只调整音量
-            else if (this.musician.CurrentBgm != resourceName)
+            else if (Musician.GetInstance().CurrentBgm != resourceName)
             {
                 var ms = this.resMana.GetBGM(resourceName);
-                this.musician.PlayBGM(resourceName, ms, (float)volume);
+                //this.musician.PlayBGM(resourceName, ms, (float)volume);
+                mmsg.Type = MusicianOperation.PlayBGM;
+                mmsg.Args["ms"] = ms;
+                mmsg.Args["vol"] = (float)volume;
+                mmsg.Args["resourceName"] = resourceName;
                 Director.RunMana.PlayingBGM = resourceName;
             }
             else
             {
-                this.musician.SetBGMVolume((float)volume);
+                //this.musician.SetBGMVolume((float)volume);
+                mmsg.Type = MusicianOperation.SetBGMVolume;
+                mmsg.Args["vol"] = (float)volume;
+                Director.RunMana.PlayingBGM = resourceName;
             }
+            evt.OnRouterAccept += delegate
+            {
+                MusicianThreadHandler.EnqueueMessage(mmsg);
+            };
+            RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
         }
 
         /// <summary>
@@ -1679,23 +1712,48 @@ namespace Yuri.PlatformCore
         /// <param name="ms">毫秒数</param>
         public void Bgmfade(double vol, double ms)
         {
-            this.musician.FadeBgm((float) vol, (int)ms);
+            //this.musician.FadeBgm((float) vol, (int)ms);
+            var evt = new YuriRoutedEvent();
+            var mmsg = new MusicianMessage() {Type = MusicianOperation.FadeBgm};
+            mmsg.Args["ms"] = (int)ms;
+            mmsg.Args["vol"] = (float)vol;
+            evt.OnRouterAccept += delegate
+            {
+                MusicianThreadHandler.EnqueueMessage(mmsg);
+            };
+            RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
         }
 
         /// <summary>
         /// 演绎函数：停止BGM
         /// </summary>
-        private void Stopbgm()
+        public void Stopbgm()
         {
-            this.musician.StopAndReleaseBGM();
+            //this.musician.StopAndReleaseBGM();
+            var evt = new YuriRoutedEvent();
+            var mmsg = new MusicianMessage() { Type = MusicianOperation.StopAndReleaseBGM };
+            evt.OnRouterAccept += delegate
+            {
+                MusicianThreadHandler.EnqueueMessage(mmsg);
+            };
+            RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
+            Director.RunMana.PlayingBGM = String.Empty;
         }
 
         /// <summary>
         /// 演绎函数：停止BGS
         /// </summary>
-        private void Stopbgs(int track)
+        public void Stopbgs(int track)
         {
-            this.musician.StopBGS(track);
+            //this.musician.StopBGS(track);
+            var evt = new YuriRoutedEvent();
+            var mmsg = new MusicianMessage() { Type = MusicianOperation.StopBGS };
+            mmsg.Args["track"] = track;
+            evt.OnRouterAccept += delegate
+            {
+                MusicianThreadHandler.EnqueueMessage(mmsg);
+            };
+            RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
         }
 
         /// <summary>
@@ -1704,7 +1762,7 @@ namespace Yuri.PlatformCore
         /// <param name="name">角色名称</param>
         /// <param name="vid">语音编号</param>
         /// <param name="volume">音量</param>
-        private void Vocal(string name, int vid, double volume)
+        public void Vocal(string name, int vid, double volume)
         {
             if (vid == -1) { return; }
             this.Vocal(String.Format("{0}_{1}{2}", name, vid, GlobalConfigContext.GAME_VOCAL_POSTFIX), (float)volume);
@@ -1715,21 +1773,38 @@ namespace Yuri.PlatformCore
         /// </summary>
         /// <param name="resourceName">资源名称</param>
         /// <param name="volume">音量</param>
-        private void Vocal(string resourceName, double volume)
+        public void Vocal(string resourceName, double volume)
         {
             if (resourceName != String.Empty)
             {
                 var ms = this.resMana.GetVocal(resourceName);
-                this.musician.PlayVocal(ms, (float)volume);
+                //this.musician.PlayVocal(ms, (float)volume);
+                var evt = new YuriRoutedEvent();
+                var mmsg = new MusicianMessage() { Type = MusicianOperation.PlayVocal };
+                mmsg.Args["ms"] = ms;
+                mmsg.Args["vol"] = (float)volume;
+                evt.OnRouterAccept += delegate
+                {
+                    MusicianThreadHandler.EnqueueMessage(mmsg);
+                };
+                RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
             }
         }
 
         /// <summary>
         /// 演绎函数：停止语音
         /// </summary>
-        private void Stopvocal()
+        public void Stopvocal()
         {
-            this.musician.StopAndReleaseVocal();
+            //this.musician.StopAndReleaseVocal();
+            var evt = new YuriRoutedEvent();
+            var mmsg = new MusicianMessage() { Type = MusicianOperation.StopAndReleaseVocal };
+            evt.OnRouterAccept += delegate
+            {
+                MusicianThreadHandler.EnqueueMessage(mmsg);
+            };
+            RouterManager.GetRouter("MusicianRouter").TriggerDirect(evt);
+
         }
 
         /// <summary>

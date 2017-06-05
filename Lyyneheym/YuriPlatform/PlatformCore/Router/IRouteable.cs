@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Yuri.PlatformCore.Router
 {
@@ -23,7 +21,7 @@ namespace Yuri.PlatformCore.Router
         /// <summary>
         /// 直接触发
         /// </summary>
-        void TriggersDirect(YuriRoutedEvent evt);
+        void TriggerDirect(YuriRoutedEvent evt);
 
         /// <summary>
         /// 获取或设置路由的唯一标识符名字

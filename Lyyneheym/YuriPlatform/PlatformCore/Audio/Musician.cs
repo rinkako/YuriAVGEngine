@@ -67,7 +67,6 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public void StopAndReleaseBGM()
         {
-            Director.RunMana.PlayingBGM = String.Empty;
             if (this.IsBgmLoaded)
             {
                 this.audioEngine.StopAndRelease(this.BgmHandleContainer.Value);
@@ -134,7 +133,7 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         /// <param name="vol">音量</param>
         /// <param name="track">轨道（-1为全部变更）</param>
-        public void SetBGSVolume(int vol, int track = 0)
+        public void SetBGSVolume(float vol, int track = 0)
         {
             if (track >= 0 && track < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM)
             {

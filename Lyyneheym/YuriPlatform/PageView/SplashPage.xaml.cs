@@ -57,12 +57,13 @@ namespace Yuri.PageView
                 var sp = resMana.GetPicture(curSplashName, ResourceManager.FullImageRect);
                 this.Splash_Image_Box.Source = sp.SpriteBitmapImage;
                 this.SplashAnimation();
-                var mscMana = Musician.GetInstance();
+                //var mscMana = Musician.GetInstance();
                 string seSplashName;
                 if (resMana.IsResourceExist(seSplashName = String.Format("Splash_{0}.mp3", splashCounter), ResourceType.SE))
                 {
-                    var se = resMana.GetSE(seSplashName);
-                    mscMana.PlaySE(se, GlobalConfigContext.GAME_SOUND_SEVOL);
+                    //var se = resMana.GetSE(seSplashName);
+                    //mscMana.PlaySE(se, GlobalConfigContext.GAME_SOUND_SEVOL);
+                    Director.GetInstance().GetMainRender().Se(seSplashName, GlobalConfigContext.GAME_SOUND_SEVOL);
                 }
             }
             else

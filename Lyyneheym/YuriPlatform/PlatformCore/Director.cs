@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -117,7 +118,8 @@ namespace Yuri.PlatformCore
             RollbackManager.Clear();
             // 清空画面并停下BGM
             ViewManager.GetInstance().RemoveView(ResourceType.Unknown);
-            Musician.GetInstance().StopAndReleaseBGM();
+            //Director.GetInstance().GetMainRender().Stopbgm();
+            Thread.Sleep(100);
             // 检查是否需要回滚当前的并行处理
             Director.RunMana.StopAllParallel();
             // 变更运行时环境
@@ -862,16 +864,20 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static void CollapseWorld()
         {
+            Director.IsCollapsing = true;
             var collaTimeStamp = DateTime.Now;
             LogUtils.LogLine("Yuri world began to collapse at " + collaTimeStamp, "Director", LogLevel.Important);
             PersistContextDAO.Assign("___YURIRI@LASTPLAYTIMESTAMP___", collaTimeStamp.ToString());
             PersistContextDAO.Assign("___YURIRI@ACCDURATION___", Director.LastGameTimeAcc + (collaTimeStamp - Director.StartupTimeStamp));
             PersistContextDAO.SaveToSteadyMemory();
             LogUtils.LogLine("Save persistence context OK", "Director", LogLevel.Important);
+            MusicianThreadHandler.TerminalFlag = true;
             Musician.GetInstance().Dispose();
             LogUtils.LogLine("Dispose resource OK, program will shutdown soon", "Director", LogLevel.Important);
             Environment.Exit(0);
         }
+
+        public static bool IsCollapsing { get; set; } = false;
 
         /// <summary>
         /// 工厂方法：获得唯一实例
@@ -898,7 +904,7 @@ namespace Yuri.PlatformCore
             Director.RunMana.SetScreenManager(ScreenManager.GetInstance());
             Director.RunMana.ParallelHandler = this.ParallelUpdateContext;
             Director.RunMana.PerformingChapter = "Prelogue";
-            //SCamera2D.Init();
+            MusicianThreadHandler.Init();
             this.timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromTicks((long) GlobalConfigContext.DirectorTimerInterval)
