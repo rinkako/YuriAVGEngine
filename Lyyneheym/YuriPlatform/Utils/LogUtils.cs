@@ -68,6 +68,7 @@ namespace Yuri.Utils
         /// <param name="information">信息</param>
         /// <param name="causer">触发者</param>
         /// <param name="consoleMutex">互斥量</param>
+        /// <param name="oStyle">输出的类型</param>
         public static void AsyncLogLine(string information, string causer, Mutex consoleMutex, LogLevel oStyle)
         {
             lock (consoleMutex)
@@ -75,6 +76,25 @@ namespace Yuri.Utils
                 LogUtils.LogLine(information, causer, oStyle);
             }
         }
+
+        /// <summary>
+        /// 提供异步输出运行时信息的方法
+        /// </summary>
+        /// <param name="information">信息</param>
+        /// <param name="causer">触发者</param>
+        /// <param name="oStyle">输出的类型</param>
+        public static void AsyncLogLine(string information, string causer, LogLevel oStyle)
+        {
+            lock (LogUtils.selfLockObject)
+            {
+                LogUtils.LogLine(information, causer, oStyle);
+            }
+        }
+
+        /// <summary>
+        /// 锁对象
+        /// </summary>
+        private static readonly object selfLockObject = new object();
     }
 
     /// <summary>

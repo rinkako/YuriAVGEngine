@@ -13,7 +13,7 @@ namespace Yuri.PlatformCore.Net
         /// <summary>
         /// 将一个文件上载到FTP
         /// </summary>
-        /// <remarks>该方法是同步的，线程安全的</remarks>
+        /// <remarks>该方法是同步的，线程安全的，如果需要异步请利用信号分发机制</remarks>
         /// <param name="relativeFilePath">要上传的文件相对于游戏目录的相对路径</param>
         /// <param name="targetPath">文件在目标主机上的保存路径</param>
         /// <param name="hostname">主机域名</param>
@@ -61,7 +61,7 @@ namespace Yuri.PlatformCore.Net
         /// <summary>
         /// 将一个文件从FTP下载
         /// </summary>
-        /// <remarks>该方法是同步的，线程安全的</remarks>
+        /// <remarks>该方法是同步的，线程安全的，如果需要异步请利用信号分发机制</remarks>
         /// <param name="relativeFilePath">要下载的文件相对于游戏目录的保存路径</param>
         /// <param name="targetPath">文件在目标主机上的保存路径</param>
         /// <param name="hostname">主机域名</param>

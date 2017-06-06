@@ -870,13 +870,16 @@ namespace Yuri.PlatformCore
             PersistContextDAO.Assign("___YURIRI@ACCDURATION___", Director.LastGameTimeAcc + (collaTimeStamp - Director.StartupTimeStamp));
             PersistContextDAO.SaveToSteadyMemory();
             LogUtils.LogLine("Save persistence context OK", "Director", LogLevel.Important);
-            MusicianThreadHandler.TerminalFlag = true;
+            MusicianRouterHandler.TerminalFlag = true;
             Musician.GetInstance().Dispose();
             LogUtils.LogLine("Dispose resource OK, program will shutdown soon", "Director", LogLevel.Important);
             Environment.Exit(0);
         }
 
-        public static bool IsCollapsing { get; set; } = false;
+        /// <summary>
+        /// 获取当前是否正在坍塌YRE
+        /// </summary>
+        public static bool IsCollapsing { get; private set; } = false;
 
         /// <summary>
         /// 工厂方法：获得唯一实例
@@ -903,7 +906,8 @@ namespace Yuri.PlatformCore
             Director.RunMana.SetScreenManager(ScreenManager.GetInstance());
             Director.RunMana.ParallelHandler = this.ParallelUpdateContext;
             Director.RunMana.PerformingChapter = "Prelogue";
-            MusicianThreadHandler.Init();
+            MusicianRouterHandler.Init();
+            Net.HttpServerRouterHandler.Init();
             this.timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromTicks((long) GlobalConfigContext.DirectorTimerInterval)

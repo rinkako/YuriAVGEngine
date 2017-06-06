@@ -11,7 +11,7 @@ namespace Yuri.PlatformCore.Audio
     /// <summary>
     /// 为音乐线程提供服务
     /// </summary>
-    internal sealed class MusicianThreadHandler
+    internal sealed class MusicianRouterHandler
     {
         /// <summary>
         /// 初始化音乐控制线程
@@ -19,7 +19,7 @@ namespace Yuri.PlatformCore.Audio
         /// <returns>是否初始化成功</returns>
         public static bool Init()
         {
-            if (MusicianThreadHandler.IsInitialized)
+            if (MusicianRouterHandler.IsInitialized)
             {
                 LogUtils.LogLine("Duplicated init musician thread", "MusicianThreadHandler", LogLevel.Warning);
                 return false;
@@ -29,7 +29,7 @@ namespace Yuri.PlatformCore.Audio
                 Name = "MusicianRouter"
             };
             RouterManager.SetRouter(musicianRouter);
-            Thread mt = new Thread(new ThreadStart(MusicianThreadHandler.MusicianHandler))
+            Thread mt = new Thread(new ThreadStart(MusicianRouterHandler.MusicianHandler))
             {
                 IsBackground = true
             };
@@ -43,9 +43,9 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="msg">消息对象</param>
         public static void EnqueueMessage(MusicianMessage msg)
         {
-            lock (MusicianThreadHandler.syncObject)
+            lock (MusicianRouterHandler.syncObject)
             {
-                MusicianThreadHandler.messageQueue.Enqueue(msg);
+                MusicianRouterHandler.messageQueue.Enqueue(msg);
             }
         }
 
@@ -57,17 +57,17 @@ namespace Yuri.PlatformCore.Audio
             var musician = Musician.GetInstance();
             while (true)
             {
-                if (MusicianThreadHandler.TerminalFlag)
+                if (MusicianRouterHandler.TerminalFlag)
                 {
-                    MusicianThreadHandler.IsInitialized = false;
+                    MusicianRouterHandler.IsInitialized = false;
                     break;
                 }
                 MusicianMessage mmsg = null;
-                lock (MusicianThreadHandler.syncObject)
+                lock (MusicianRouterHandler.syncObject)
                 {
-                    if (MusicianThreadHandler.messageQueue.Any())
+                    if (MusicianRouterHandler.messageQueue.Any())
                     {
-                        mmsg = MusicianThreadHandler.messageQueue.Dequeue();
+                        mmsg = MusicianRouterHandler.messageQueue.Dequeue();
                     }
                 }
                 if (mmsg == null)

@@ -1627,7 +1627,7 @@ namespace Yuri.PlatformCore
             mmsg.Args["vol"] = (float) volume;
             evt.OnRouterAccept += delegate
             {
-                MusicianThreadHandler.EnqueueMessage(mmsg);
+                MusicianRouterHandler.EnqueueMessage(mmsg);
             };
             RouterManager.Send("MusicianRouter", evt);
         }
@@ -1661,7 +1661,7 @@ namespace Yuri.PlatformCore
             Director.RunMana.Musics.BGSVol[track] = (float)volume;
             evt.OnRouterAccept += delegate
             {
-                MusicianThreadHandler.EnqueueMessage(mmsg);
+                MusicianRouterHandler.EnqueueMessage(mmsg);
             };
             RouterManager.Send("MusicianRouter", evt);
         }
@@ -1700,7 +1700,7 @@ namespace Yuri.PlatformCore
             Director.RunMana.Musics.BGMVol = (float)volume;
             evt.OnRouterAccept += delegate
             {
-                MusicianThreadHandler.EnqueueMessage(mmsg);
+                MusicianRouterHandler.EnqueueMessage(mmsg);
             };
             RouterManager.Send("MusicianRouter", evt);
         }
@@ -1718,7 +1718,7 @@ namespace Yuri.PlatformCore
             mmsg.Args["vol"] = (float)vol;
             evt.OnRouterAccept += delegate
             {
-                MusicianThreadHandler.EnqueueMessage(mmsg);
+                MusicianRouterHandler.EnqueueMessage(mmsg);
             };
             Director.RunMana.Musics.BGMVol = (float)vol;
             RouterManager.Send("MusicianRouter", evt);
@@ -1733,7 +1733,7 @@ namespace Yuri.PlatformCore
             var mmsg = new MusicianMessage() {Type = MusicianOperation.StopAndReleaseBGM};
             evt.OnRouterAccept += delegate
             {
-                MusicianThreadHandler.EnqueueMessage(mmsg);
+                MusicianRouterHandler.EnqueueMessage(mmsg);
             };
             RouterManager.Send("MusicianRouter", evt);
             Director.RunMana.Musics.PlayingBGM = String.Empty;
@@ -1749,7 +1749,7 @@ namespace Yuri.PlatformCore
             mmsg.Args["track"] = track;
             evt.OnRouterAccept += delegate
             {
-                MusicianThreadHandler.EnqueueMessage(mmsg);
+                MusicianRouterHandler.EnqueueMessage(mmsg);
             };
             Director.RunMana.Musics.PlayingBGS[track] = String.Empty;
             RouterManager.Send("MusicianRouter", evt);
@@ -1783,7 +1783,7 @@ namespace Yuri.PlatformCore
                 mmsg.Args["vol"] = (float)volume;
                 evt.OnRouterAccept += delegate
                 {
-                    MusicianThreadHandler.EnqueueMessage(mmsg);
+                    MusicianRouterHandler.EnqueueMessage(mmsg);
                 };
                 RouterManager.Send("MusicianRouter", evt);
             }
@@ -1799,7 +1799,7 @@ namespace Yuri.PlatformCore
             var mmsg = new MusicianMessage() { Type = MusicianOperation.StopAndReleaseVocal };
             evt.OnRouterAccept += delegate
             {
-                MusicianThreadHandler.EnqueueMessage(mmsg);
+                MusicianRouterHandler.EnqueueMessage(mmsg);
             };
             RouterManager.Send("MusicianRouter", evt);
         }

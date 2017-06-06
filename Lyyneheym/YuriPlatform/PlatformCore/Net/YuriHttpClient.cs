@@ -15,7 +15,7 @@ namespace Yuri.PlatformCore.Net
         /// <summary>
         /// 对指定的URL做POST动作
         /// </summary>
-        /// <remarks>这个方法是同步的，如果需要异步请利用信号分发机制</remarks>
+        /// <remarks>该方法是同步的，线程安全的，如果需要异步请利用信号分发机制</remarks>
         /// <param name="url">要访问的URL</param>
         /// <param name="argsDict">POST的参数字典</param>
         /// <param name="result">[out] URL的反馈</param>
@@ -64,7 +64,7 @@ namespace Yuri.PlatformCore.Net
         /// <summary>
         /// 访问指定的URL并下载页面中的内容为字符串
         /// </summary>
-        /// <remarks>这个方法是同步的，如果需要异步请利用信号分发机制</remarks>
+        /// <remarks>该方法是同步的，线程安全的，如果需要异步请利用信号分发机制</remarks>
         /// <param name="url">要访问的URL</param>
         /// <param name="result">[out] 获得的字符串</param>
         /// <returns>操作是否成功</returns>

@@ -101,7 +101,7 @@
       <DependentUpon>SplashPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PlatformCore\Audio\MusicianDescriptor.cs" />
-    <Compile Include="PlatformCore\Audio\MusicianThreadHandler.cs" />
+    <Compile Include="PlatformCore\Audio\MusicianRouterHandler.cs" />
     <Compile Include="PlatformCore\Audio\NAudioChannelPlayer.cs" />
     <Compile Include="PlatformCore\Director.cs" />
     <Compile Include="PlatformCore\Evaluator\IEvaluator.cs" />
@@ -109,8 +109,11 @@
     <Compile Include="PlatformCore\Graphic3D\ParticleEmitter3D.cs" />
     <Compile Include="PlatformCore\Graphic3D\ParticleSystem3D.cs" />
     <Compile Include="PlatformCore\Graphic3D\ModelDescriptor3D.cs" />
+    <Compile Include="PlatformCore\Net\IYuriHttpServer.cs" />
     <Compile Include="PlatformCore\Net\YuriFtpClient.cs" />
     <Compile Include="PlatformCore\Net\YuriHttpClient.cs" />
+    <Compile Include="PlatformCore\Net\HttpServerRouterHandler.cs" />
+    <Compile Include="PlatformCore\Net\YuriHttpServer.cs" />
     <Compile Include="PlatformCore\Router\RouterManager.cs" />
     <Compile Include="PlatformCore\Router\YuriRouter.cs" />
     <Compile Include="PlatformCore\Router\IRouteable.cs" />
