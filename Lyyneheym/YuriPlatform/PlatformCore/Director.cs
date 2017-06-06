@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -907,7 +906,7 @@ namespace Yuri.PlatformCore
             Director.RunMana.ParallelHandler = this.ParallelUpdateContext;
             Director.RunMana.PerformingChapter = "Prelogue";
             MusicianRouterHandler.Init();
-            Net.HttpServerRouterHandler.Init();
+            //Net.HttpServerRouterHandler.Init();
             this.timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromTicks((long) GlobalConfigContext.DirectorTimerInterval)

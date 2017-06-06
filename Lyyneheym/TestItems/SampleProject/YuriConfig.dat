@@ -1,59 +1,69 @@
-GameProjName => testProject
-GameProjVersion => 0
-GameProjKey => mykey
-GameViewWindowWidth => 1024
-GameViewWindowHeight => 576
-GameViewWindowResizeable => False
-GameViewCStandLeftX => 10
-GameViewCStandLeftY => 60
-GameViewCStandMidleftX => 125
-GameViewCStandMidleftY => 60
-GameViewCStandMidX => 255
-GameViewCStandMidY => 60
-GameViewCStandMidrightX => 375
-GameViewCStandMidrightY => 60
-GameViewCStandRightX => 525
-GameViewCStandRightY => 60
-GameViewPicturesCount => 50
-GameViewPicturesZ => 101
-GameViewButtonCount => 50
-GameViewButtonZ => 201
-GameViewBackgroundZ => 0
-GameViewCStandZ => 11
-GameMsgLayerCount => 10
-GameMsgLayerX => 0
-GameMsgLayerY => 410
-GameMsgLayerW => 1024
-GameMsgLayerH => 170
-GameMsgLayerL => 60
-GameMsgLayerU => 45
-GameMsgLayerR => 0
-GameMsgLayerB => 0
-GameMsgLayerTriaName => MessageTria.png
-GameMsgLayerTriaX => 960
-GameMsgLayerTriaY => 530
-GameMsgLayerFontSize => 16
-GameMsgLayerFontLineheight => 22
-GameMsgLayerFontColor => 0,0,0
-GameMsgLayerFontName => 黑体
-GameMsgLayerFontShadow => False
-GameMsgLayerTypeSpeed => 60
-GameMsgLayerBackgroundName => originMessageBox2.png
-GameMsgLayerZ => 51
-GameBranchCount => 8
-GameBranchZ => 251
-GameBranchBackgroundNormal => branchItemNormal.png
-GameBranchBackgroundOver => branchItemSelect.png
-GameBranchW => 400
-GameBranchH => 40
-GameBranchFontSize => 22
-GameBranchFontName => 黑体
-GameBranchFontColor => 255,255,255
-GameBranchPadTop => 7
-GameMusicBGMVol => 800
-GameMusicBGSVol => 800
-GameMusicSEVol => 1000
-GameMusicVocalVol => 1000
-GameMusicBgsCount => 5
-GameMusicVocalPostfix => .mp3
-GameMaxSwitchCount => 100
+GameProjName=>IzettaFramework=>1
+GameProjVersion=>3=>1
+GameProjKey=>yurayuri=>1
+GameViewWindowWidth=>1280=>3
+GameViewWindowHeight=>720=>3
+GameViewWindowResizeable=>True=>2
+GameViewCStandLeftX=>10=>3
+GameViewCStandLeftY=>60=>3
+GameViewCStandMidleftX=>125=>3
+GameViewCStandMidleftY=>60=>3
+GameViewCStandMidX=>255=>3
+GameViewCStandMidY=>60=>3
+GameViewCStandMidrightX=>375=>3
+GameViewCStandMidrightY=>60=>3
+GameViewCStandRightX=>525=>3
+GameViewCStandRightY=>60=>3
+GameViewPicturesCount=>50=>3
+GameViewPicturesZ=>101=>3
+GameViewButtonCount=>50=>3
+GameViewButtonZ=>301=>3
+GameViewBackgroundZ=>3=>3
+GameViewCStandZ=>11=>3
+GameMsgLayerCount=>1=>3
+GameMsgLayerX=>0=>3
+GameMsgLayerY=>550=>3
+GameMsgLayerW=>1280=>3
+GameMsgLayerH=>170=>3
+GameMsgLayerL=>200=>3
+GameMsgLayerU=>25=>3
+GameMsgLayerR=>3=>3
+GameMsgLayerB=>3=>3
+GameMsgLayerTriaName=>MessageTria.png=>1
+GameMsgLayerTriaX=>960=>3
+GameMsgLayerTriaY=>650=>3
+GameMsgLayerFontSize=>18=>3
+GameMsgLayerFontLineheight=>22=>3
+GameMsgLayerFontColor=>0,0,0=>1
+GameMsgLayerFontName=>黑体=>1
+GameMsgLayerFontShadow=>False=>2
+GameMsgLayerTypeSpeed=>60=>3
+GameMsgLayerBackgroundName=>originMessageBox2.png=>1
+GameMsgLayerZ=>251=>3
+GameBranchCount=>8=>3
+GameBranchZ=>251=>3
+GameBranchBackgroundNormal=>branchItemNormal.png=>1
+GameBranchBackgroundOver=>branchItemSelect.png=>1
+GameBranchW=>300=>3
+GameBranchH=>30=>3
+GameBranchFontSize=>22=>3
+GameBranchFontName=>黑体=>1
+GameBranchFontColor=>255,255,255=>1
+GameBranchPadTop=>7=>3
+GameMusicBGMVol=>700=>3
+GameMusicBGSVol=>800=>3
+GameMusicSEVol=>1000=>3
+GameMusicVocalVol=>1000=>3
+GameMusicBgsCount=>5=>3
+GameMusicVocalPostfix=>.mp3=>1
+GameMaxSwitchCount=>100=>3
+GameFullScreen=>False=>2
+GamePerformance=>0=>3
+GameEnableSCamera=>True=>2
+GameMute=>False=>2
+GameRClickMode=>1=>3
+GameScrollingMode=>1=>3
+GameAutoPointer=>False=>2
+GameViewportWidth=>1280=>3
+GameViewportHeight=>720=>3
+Game3DStage=>True=>2

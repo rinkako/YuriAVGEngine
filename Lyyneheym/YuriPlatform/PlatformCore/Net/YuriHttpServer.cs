@@ -89,32 +89,6 @@ namespace Yuri.PlatformCore.Net
     }
 
     /// <summary>  
-    /// HttpListenner监听Post请求参数值实体  
-    /// </summary>  
-    public class HttpListenerPostValue
-    {
-        /// <summary>
-        /// 获取或设置Post键值对的类型：0-参数；1-文件
-        /// </summary>  
-        public int Type = 0;
-
-        /// <summary>
-        /// 获取或设置参数键
-        /// </summary>
-        public string Key { get; set; }
-
-        /// <summary>
-        /// 获取或设置参数键值的字节流
-        /// </summary>
-        public byte[] RawValueData { get; set; }
-
-        /// <summary>
-        /// 获取参数键值字节流的UTF-8编码的裁去末尾换行符号的字符串
-        /// </summary>
-        public string ValueString => Encoding.UTF8.GetString(this.RawValueData).TrimEnd('\r', '\n');
-    } 
-
-    /// <summary>  
     /// 获取Post请求参数键值对的辅助类  
     /// </summary>  
     public class HttpListenerPostParaHelper
@@ -257,5 +231,31 @@ namespace Yuri.PlatformCore.Net
         /// 请求上下文对象
         /// </summary>
         private readonly HttpListenerContext request;
+    }
+
+    /// <summary>  
+    /// HttpListenner监听Post请求参数值实体  
+    /// </summary>  
+    public class HttpListenerPostValue
+    {
+        /// <summary>
+        /// 获取或设置Post键值对的类型：0-参数；1-文件
+        /// </summary>  
+        public int Type = 0;
+
+        /// <summary>
+        /// 获取或设置参数键
+        /// </summary>
+        public string Key { get; set; }
+
+        /// <summary>
+        /// 获取或设置参数键值的字节流
+        /// </summary>
+        public byte[] RawValueData { get; set; }
+
+        /// <summary>
+        /// 获取参数键值字节流的UTF-8编码的裁去末尾换行符号的字符串
+        /// </summary>
+        public string ValueString => Encoding.UTF8.GetString(this.RawValueData).TrimEnd('\r', '\n');
     }
 }
