@@ -11,6 +11,46 @@ namespace Yuri.PlatformCore.Audio
     internal class Musician
     {
         /// <summary>
+        /// 根据音频状态描述子重演绎前端的音频
+        /// </summary>
+        /// <param name="mdescriptor">音频状态描述子</param>
+        public void RePerform(MusicianDescriptor mdescriptor)
+        {
+            // 重演绎背景音乐
+            if (mdescriptor.PlayingBGM == String.Empty)
+            {
+                this.StopAndReleaseBGM();
+            }
+            else if (mdescriptor.PlayingBGM == this.CurrentBgm)
+            {
+                this.SetBGMVolume(mdescriptor.BGMVol * (float) this.bgmVolumeRatio);
+            }
+            else
+            {
+                this.PlayBGM(mdescriptor.PlayingBGM, ResourceManager.GetInstance().GetBGM(mdescriptor.PlayingBGM),
+                    mdescriptor.BGMVol * (float) this.bgmVolumeRatio);
+            }
+            // 重演绎背景音效
+            for (int i = 0; i < mdescriptor.PlayingBGS.Count; i++)
+            {
+                if (mdescriptor.PlayingBGS[i] == String.Empty)
+                {
+                    this.StopBGS(i);
+                }
+                else if (mdescriptor.PlayingBGS[i] == this.BgsHandleContainer[i].Item2)
+                {
+                    this.SetBGSVolume(mdescriptor.BGSVol[i] * (float) this.bgsVolumeRatio, i);
+                }
+                else
+                {
+                    this.PlayBGS(mdescriptor.PlayingBGS[i],
+                        ResourceManager.GetInstance().GetBGS(mdescriptor.PlayingBGS[i]),
+                        mdescriptor.BGSVol[i] * (float) this.bgsVolumeRatio, i);
+                }
+            }
+        }
+
+        /// <summary>
         /// <para>播放背景音乐：从内存读入资源</para>
         /// <para>背景音乐在同一时刻只能播放一个资源</para>
         /// </summary>
@@ -76,16 +116,27 @@ namespace Yuri.PlatformCore.Audio
         /// <para>播放背景音效：从内存读入资源</para>
         /// <para>背景声效可以多个声音资源同时播放，并且可以与BGM同存</para>
         /// </summary>
+        /// <param name="resourceName">BGS资源名</param>
         /// <param name="ms">托管内存流</param>
         /// <param name="vol">音量（1-1000）</param>
         /// <param name="track">播放的轨道</param>
-        public void PlayBGS(MemoryStream ms, float vol, int track = 0)
+        public void PlayBGS(string resourceName, MemoryStream ms, float vol, int track = 0)
         {
             if (track >= 0 && track < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM && ms != null)
             {
                 var handle = this.audioEngine.InvokeChannel();
-                this.BgsHandleContainer[track] = new KeyValuePair<int, double>(handle, this.IsMute ? 0 : vol * this.bgsVolumeRatio);
-                this.audioEngine.InitAndPlay(handle, ms, this.IsMute ? 0 : (float)(vol * this.bgsVolumeRatio), true);
+                if (resourceName == this.BgsHandleContainer[track]?.Item2)
+                {
+                    this.BgsHandleContainer[track] = new Tuple<int, string, double>(handle, resourceName,
+                        this.IsMute ? 0 : vol * this.bgsVolumeRatio);
+                    this.SetBGSVolume(this.IsMute ? 0 : (float) (vol * this.bgsVolumeRatio), track);
+                }
+                else
+                {
+                    this.BgsHandleContainer[track] = new Tuple<int, string, double>(handle, resourceName,
+                        this.IsMute ? 0 : vol * this.bgsVolumeRatio);
+                    this.audioEngine.InitAndPlay(handle, ms, this.IsMute ? 0 : (float) (vol * this.bgsVolumeRatio), true);
+                }
             }
         }
 
@@ -95,19 +146,20 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="track">要停止的BGS轨道，缺省值-1表示全部停止</param>
         public void StopBGS(int track = -1)
         {
-            if (track >= 0 && track < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM && this.BgsHandleContainer[track].Key != 0)
+            if (track >= 0 && track < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM && this.BgsHandleContainer[track].Item1 != 0)
             {
-                this.audioEngine.StopAndRelease(this.BgsHandleContainer[track].Key);
+                this.audioEngine.StopAndRelease(this.BgsHandleContainer[track].Item1);
+                this.BgsHandleContainer[track] = new Tuple<int, string, double>(0, String.Empty, 1000 * this.BGSDefaultVolumeRatio);
             }
-            else
+            else if (track == -1)
             {
                 for (int i = 0; i < this.BgsHandleContainer.Count; i++)
                 {
-                    if (this.BgsHandleContainer[i].Key != 0)
+                    if (this.BgsHandleContainer[i].Item1 != 0)
                     {
-                        int handle = this.BgsHandleContainer[i].Key;
+                        int handle = this.BgsHandleContainer[i].Item1;
                         this.audioEngine.StopAndRelease(handle);
-                        this.BgsHandleContainer[i] = new KeyValuePair<int, double>(0, 1000 * this.BGSDefaultVolumeRatio);
+                        this.BgsHandleContainer[i] = new Tuple<int, string, double>(0, String.Empty, 1000 * this.BGSDefaultVolumeRatio);
                     }
                 }
             }
@@ -134,15 +186,15 @@ namespace Yuri.PlatformCore.Audio
         {
             if (track >= 0 && track < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM)
             {
-                this.audioEngine.SetVolume(this.BgsHandleContainer[0].Key, this.IsMute ? 0 : (float)(vol * this.bgsVolumeRatio));
+                this.audioEngine.SetVolume(this.BgsHandleContainer[0].Item1, this.IsMute ? 0 : (float)(vol * this.bgsVolumeRatio));
             }
             else
             {
                 foreach (var t in this.BgsHandleContainer)
                 {
-                    if (t.Key != 0)
+                    if (t.Item1 != 0)
                     {
-                        this.audioEngine.SetVolume(t.Key, this.IsMute ? 0 : (float)(vol * this.bgsVolumeRatio));
+                        this.audioEngine.SetVolume(t.Item1, this.IsMute ? 0 : (float)(vol * this.bgsVolumeRatio));
                     }
                 }
             }
@@ -216,7 +268,7 @@ namespace Yuri.PlatformCore.Audio
             this.BgmHandleContainer = new KeyValuePair<string, int>(null, 0);
             if (this.BgsHandleContainer == null)
             {
-                this.BgsHandleContainer = new List<KeyValuePair<int, double>>();
+                this.BgsHandleContainer = new List<Tuple<int, string, double>>();
             }
             else
             {
@@ -224,7 +276,7 @@ namespace Yuri.PlatformCore.Audio
             }
             for (int i = 0; i < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM; i++)
             {
-                this.BgsHandleContainer.Add(new KeyValuePair<int, double>(0, this.BGSDefaultVolumeRatio));
+                this.BgsHandleContainer.Add(new Tuple<int, string, double>(0, String.Empty, this.BGSDefaultVolumeRatio));
             }
             this.IsBgmLoaded = this.IsBgmPaused = this.IsBgmPlaying = this.IsMute = false;
         }
@@ -253,14 +305,8 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public double BGMVolumeRatio
         {
-            get
-            { 
-                return this.bgmVolumeRatio; 
-            }
-            set
-            {
-                this.bgmVolumeRatio = Math.Max(0, Math.Min(value, 1));
-            }
+            get => this.bgmVolumeRatio;
+            set => this.bgmVolumeRatio = Math.Max(0, Math.Min(value, 1));
         }
 
         /// <summary>
@@ -268,8 +314,8 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public double BGSDefaultVolumeRatio
         {
-            get { return this.bgsVolumeRatio; }
-            set { this.bgsVolumeRatio = Math.Max(0, Math.Min(value, 1)); }
+            get => this.bgsVolumeRatio;
+            set => this.bgsVolumeRatio = Math.Max(0, Math.Min(value, 1));
         }
         
         /// <summary>
@@ -277,8 +323,8 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public double SEDefaultVolumeRatio
         {
-            get { return this.seVolumeRatio; }
-            set { this.seVolumeRatio = Math.Max(0, Math.Min(value, 1)); }
+            get => this.seVolumeRatio;
+            set => this.seVolumeRatio = Math.Max(0, Math.Min(value, 1));
         }
 
         /// <summary>
@@ -286,8 +332,8 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public double VocalDefaultVolumeRatio
         {
-            get { return this.vocalVolumeRatio; }
-            set { this.vocalVolumeRatio = Math.Max(0, Math.Min(value, 1)); }
+            get => this.vocalVolumeRatio;
+            set => this.vocalVolumeRatio = Math.Max(0, Math.Min(value, 1));
         }
 
         /// <summary>
@@ -325,7 +371,7 @@ namespace Yuri.PlatformCore.Audio
         /// <summary>
         /// 获取是否有BGS在播放
         /// </summary>
-        public bool IsAnyBgs => this.BgsHandleContainer.TrueForAll((x) => x.Key == 0) == false;
+        public bool IsAnyBgs => this.BgsHandleContainer.TrueForAll((x) => x.Item1 == 0) == false;
 
         /// <summary>
         /// 获取或设置是否静音
@@ -378,7 +424,7 @@ namespace Yuri.PlatformCore.Audio
         /// <summary>
         /// 背景声效容器
         /// </summary>
-        private List<KeyValuePair<int, double>> BgsHandleContainer;
+        private List<Tuple<int, string, double>> BgsHandleContainer;
 
         /// <summary>
         /// 音频引擎实例

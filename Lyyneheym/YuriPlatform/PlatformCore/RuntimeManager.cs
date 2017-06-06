@@ -562,6 +562,11 @@ namespace Yuri.PlatformCore
             this.Musics = new MusicianDescriptor();
             this.ParallelExecutorStack = new Stack<List<ParallelExecutor>>();
             this.SemaphoreBindings = new Dictionary<string, List<Tuple<string, string>>>();
+            for (int i = 0; i < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM; i++)
+            {
+                this.Musics.PlayingBGS.Add(String.Empty);
+                this.Musics.BGSVol.Add(GlobalConfigContext.GAME_SOUND_BGSVOL);
+            }
         }
 
         /// <summary>

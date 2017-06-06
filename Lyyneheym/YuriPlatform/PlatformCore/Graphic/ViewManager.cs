@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -1232,7 +1233,11 @@ namespace Yuri.PlatformCore.Graphic
         {
             try
             {
-                System.IO.FileStream ms = new System.IO.FileStream(filename, System.IO.FileMode.Create);
+                if (File.Exists(filename))
+                {
+                    File.Delete(filename);
+                }
+                System.IO.FileStream ms = new System.IO.FileStream(filename, System.IO.FileMode.Create, System.IO.FileAccess.Write);
                 RenderTargetBitmap bmp = new RenderTargetBitmap((int)(ui.ActualWidth * (48.0 / 96)), (int)(ui.ActualHeight * (48.0 / 96)), 48d, 48d, PixelFormats.Pbgra32);
                 bmp.Render(ui);
                 JpegBitmapEncoder encoder = new JpegBitmapEncoder();

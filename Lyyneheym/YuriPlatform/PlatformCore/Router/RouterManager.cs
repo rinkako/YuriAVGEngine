@@ -43,14 +43,14 @@ namespace Yuri.PlatformCore.Router
         /// <summary>
         /// 向一个路由器发送一个消息
         /// </summary>
-        /// <param name="name">起始路由器名字</param>
+        /// <param name="routerName">起始路由器名字</param>
         /// <param name="evt">路由消息</param>
         /// <returns>起始路由是否存在</returns>
-        public static bool Send(string name, YuriRoutedEvent evt)
+        public static bool Send(string routerName, YuriRoutedEvent evt)
         {
-            if (RouterManager.ExistRouter(name))
+            if (RouterManager.ExistRouter(routerName))
             {
-                var router = RouterManager.RouterTable[name];
+                var router = RouterManager.RouterTable[routerName];
                 switch (evt.Type)
                 {
                     case YuriRoutedType.Direct:

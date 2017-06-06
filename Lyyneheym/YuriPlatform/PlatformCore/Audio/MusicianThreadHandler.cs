@@ -95,6 +95,7 @@ namespace Yuri.PlatformCore.Audio
                         break;
                     case MusicianOperation.PlayBGS:
                         musician.PlayBGS(
+                            mmsg.Args["resourceName"] as string,
                             mmsg.Args["ms"] as MemoryStream,
                             (float) mmsg.Args["vol"],
                             (int) mmsg.Args["track"]

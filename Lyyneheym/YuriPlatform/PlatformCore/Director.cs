@@ -116,7 +116,7 @@ namespace Yuri.PlatformCore
             Director.PauseUpdateContext();
             // 清空回滚器
             RollbackManager.Clear();
-            // 清空画面并停下BGM
+            // 清空画面
             ViewManager.GetInstance().RemoveView(ResourceType.Unknown);
             // 检查是否需要回滚当前的并行处理
             Director.RunMana.StopAllParallel();
@@ -137,7 +137,8 @@ namespace Yuri.PlatformCore
             UpdateRender render = Director.GetInstance().updateRender;
             render.VsmReference = Director.RunMana.CallStack;
             // 恢复背景音乐
-            render.Bgm(Director.RunMana.Musics.PlayingBGM, GlobalConfigContext.GAME_SOUND_BGMVOL);
+            Musician.GetInstance().RePerform(Director.RunMana.Musics);
+            //render.Bgm(Director.RunMana.Musics.PlayingBGM, GlobalConfigContext.GAME_SOUND_BGMVOL);
             // 清空字符串缓冲
             render.dialogPreStr = String.Empty;
             render.pendingDialogQueue.Clear();

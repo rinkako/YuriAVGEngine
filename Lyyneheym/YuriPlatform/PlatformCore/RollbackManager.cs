@@ -119,9 +119,9 @@ namespace Yuri.PlatformCore
             Director.GetInstance().GetMainRender().IsBranching = ssp.IsBranchingRefer;
             // 重绘整个画面
             ViewManager.GetInstance().ReDraw();
-            // 恢复背景音乐
+            // 恢复音效
             UpdateRender render = Director.GetInstance().GetMainRender();
-            render.Bgm(Director.RunMana.Musics.PlayingBGM, GlobalConfigContext.GAME_SOUND_BGMVOL);
+            Musician.GetInstance().RePerform(Director.RunMana.Musics);
             // 清空字符串缓冲
             render.dialogPreStr = String.Empty;
             render.pendingDialogQueue.Clear();
