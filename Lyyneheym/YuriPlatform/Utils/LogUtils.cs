@@ -92,7 +92,7 @@ namespace Yuri.Utils
         }
 
         /// <summary>
-        /// 锁对象
+        /// 串行锁对象
         /// </summary>
         private static readonly object selfLockObject = new object();
     }

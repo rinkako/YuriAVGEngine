@@ -95,7 +95,12 @@ namespace Yuri.PageView
         /// </summary>
         public void ReLoadFileInfo()
         {
-            DirectoryInfo dirInfo = new DirectoryInfo(IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR));
+            var saveDirPathStr = IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR);
+            if (!Directory.Exists(saveDirPathStr))
+            {
+                Directory.CreateDirectory(saveDirPathStr);
+            }
+            DirectoryInfo dirInfo = new DirectoryInfo(saveDirPathStr);
             this.saveList = new List<FileInfo>();
             for (int i = 0; i < GlobalConfigContext.GAME_SAVE_MAX; i++)
             {
@@ -104,7 +109,7 @@ namespace Yuri.PageView
             foreach (var fInfo in dirInfo.GetFiles())
             {
                 if (fInfo.Name.StartsWith(GlobalConfigContext.GAME_SAVE_PREFIX + "-") &&
-                    String.Compare(fInfo.Extension, GlobalConfigContext.GAME_SAVE_POSTFIX, true) == 0)
+                    String.Compare(fInfo.Extension, GlobalConfigContext.GAME_SAVE_POSTFIX, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     var timeItems = fInfo.Name.Split('-');
                     var pointedId = Convert.ToInt32(timeItems[1]) - 1;
@@ -339,8 +344,7 @@ namespace Yuri.PageView
                     }
                     catch (Exception ex)
                     {
-                        LogUtils.LogLine("覆盖存档时，在移除过时文件过程出现异常" + Environment.NewLine + ex.ToString(),
-                        "SLPage", LogLevel.Error);
+                        LogUtils.LogLine("覆盖存档时，在移除过时文件过程出现异常" + Environment.NewLine + ex, "SLPage", LogLevel.Error);
                     }
                 }
                 // 获得存档时间戳 
@@ -386,8 +390,7 @@ namespace Yuri.PageView
                 }
                 catch (Exception ex)
                 {
-                    LogUtils.LogLine("保存存档的辅助文件出现异常" + Environment.NewLine + ex.ToString(),
-                        "SLPage", LogLevel.Warning);
+                    LogUtils.LogLine("保存存档的辅助文件出现异常" + Environment.NewLine + ex, "SLPage", LogLevel.Warning);
                 }
                 // 保存完毕强制刷新页面
                 this.button_MouseEnter(this.lastPointed, null);

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
 using Yuri.PageView;
 using Yuri.PlatformCore;

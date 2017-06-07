@@ -140,12 +140,18 @@ namespace Yuri.PlatformCore.Audio
                         throw new ArgumentOutOfRangeException();
                 }
             }
+            MusicianRouterHandler.IsCollapsed = true;
         }
         
         /// <summary>
         /// 音乐消息队列
         /// </summary>
         private static readonly Queue<MusicianMessage> messageQueue = new Queue<MusicianMessage>();
+
+        /// <summary>
+        /// 获取音乐线程是否已经坍塌
+        /// </summary>
+        public static bool IsCollapsed { get; private set; } = false;
 
         /// <summary>
         /// 获取音乐线程是否已经初始化

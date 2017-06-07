@@ -873,6 +873,12 @@ namespace Yuri.PlatformCore
             MusicianRouterHandler.TerminalFlag = true;
             Musician.GetInstance().Dispose();
             LogUtils.LogLine("Dispose resource OK, program will shutdown soon", "Director", LogLevel.Important);
+            var ct = DateTime.Now;
+            GC.Collect();
+            while ((DateTime.Now - ct).TotalSeconds < 2 && !MusicianRouterHandler.IsCollapsed)
+            {
+                System.Threading.Thread.Sleep(10);
+            }
             Environment.Exit(0);
         }
 

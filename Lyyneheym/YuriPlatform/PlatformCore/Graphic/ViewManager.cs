@@ -1233,10 +1233,6 @@ namespace Yuri.PlatformCore.Graphic
         {
             try
             {
-                if (File.Exists(filename))
-                {
-                    File.Delete(filename);
-                }
                 System.IO.FileStream ms = new System.IO.FileStream(filename, System.IO.FileMode.Create, System.IO.FileAccess.Write);
                 RenderTargetBitmap bmp = new RenderTargetBitmap((int)(ui.ActualWidth * (48.0 / 96)), (int)(ui.ActualHeight * (48.0 / 96)), 48d, 48d, PixelFormats.Pbgra32);
                 bmp.Render(ui);
@@ -1247,7 +1243,7 @@ namespace Yuri.PlatformCore.Graphic
             }
             catch (Exception ex)
             {
-                LogUtils.LogLine(String.Format("Saving Snapshot Failed. path: {0} with CLR Error: {1}", filename, ex),
+                LogUtils.LogLine(String.Format("Saving Snapshot Failed. path: {0} with CLR Error: {2}{1}", filename, ex, Environment.NewLine),
                     "ViewManager", LogLevel.Error);
             }
         }
