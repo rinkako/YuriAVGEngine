@@ -5,125 +5,245 @@
     /// </summary>
     public enum SActionType
     {
-        // 无动作
+        /// <summary>
+        /// 无动作
+        /// </summary>
         NOP,
-        // 段落
+        /// <summary>
+        /// 段落
+        /// </summary>
         act_dialog,
-        // 段落结束符
+        /// <summary>
+        /// 段落结束符
+        /// </summary>
         act_dialogTerminator,
-        // 显示文本
+        /// <summary>
+        /// 显示文本
+        /// </summary>
         act_a,
-        // 显示背景
+        /// <summary>
+        /// 显示背景
+        /// </summary>
         act_bg,
-        // 显示图片
+        /// <summary>
+        /// 显示图片
+        /// </summary>
         act_picture,
-        // 移动图片
+        /// <summary>
+        /// 移动图片
+        /// </summary>
         act_move,
-        // 消去图片
+        /// <summary>
+        /// 消去图片
+        /// </summary>
         act_deletepicture,
-        // 显示立绘
+        /// <summary>
+        /// 显示立绘
+        /// </summary>
         act_cstand,
-        // 消去立绘
+        /// <summary>
+        /// 消去立绘
+        /// </summary>
         act_deletecstand,
-        // 播放声效
+        /// <summary>
+        /// 播放声效
+        /// </summary>
         act_se,
-        // 播放音乐
+        /// <summary>
+        /// 播放音乐
+        /// </summary>
         act_bgm,
-        // 播放bgs
+        /// <summary>
+        /// 播放bgs
+        /// </summary>
         act_bgs,
-        // 停止音乐
+        /// <summary>
+        /// 停止音乐
+        /// </summary>
         act_stopbgm,
-        // 停止bgs
+        /// <summary>
+        /// 停止bgs
+        /// </summary>
         act_stopbgs,
-        // 播放语音
+        /// <summary>
+        /// 播放语音
+        /// </summary>
         act_vocal,
-        // 停止语音
+        /// <summary>
+        /// 停止语音
+        /// </summary>
         act_stopvocal,
-        // 返回标题
+        /// <summary>
+        /// 返回标题
+        /// </summary>
         act_title,
-        // 调用菜单
+        /// <summary>
+        /// 调用菜单
+        /// </summary>
         act_menu,
-        // 调用存档
+        /// <summary>
+        /// 调用存档
+        /// </summary>
         act_save,
-        // 调用读档
+        /// <summary>
+        /// 调用读档
+        /// </summary>
         act_load,
-        // 标签
+        /// <summary>
+        /// 标签
+        /// </summary>
         act_label,
-        // 标签跳转
+        /// <summary>
+        /// 标签跳转
+        /// </summary>
         act_jump,
-        // 循环（头）
+        /// <summary>
+        /// 循环（头）
+        /// </summary>
         act_for,
-        // 循环（尾）
+        /// <summary>
+        /// 循环（尾）
+        /// </summary>
         act_endfor,
-        // 条件（头）
+        /// <summary>
+        /// 条件（头）
+        /// </summary>
         act_if,
-        // 条件（分支）
+        /// <summary>
+        /// 条件（分支）
+        /// </summary>
         act_else,
-        // 条件（尾）
+        /// <summary>
+        /// 条件（尾）
+        /// </summary>
         act_endif,
-        // 函数声明（头）
+        /// <summary>
+        /// 函数声明（头）
+        /// </summary>
         act_function,
-        // 函数声明（尾）
+        /// <summary>
+        /// 函数声明（尾）
+        /// </summary>
         act_endfunction,
-        // 剧本跳转
+        /// <summary>
+        /// 剧本跳转
+        /// </summary>
         act_scene,
-        // 开关操作
+        /// <summary>
+        /// 开关操作
+        /// </summary>
         act_switch,
-        // 变量操作
+        /// <summary>
+        /// 变量操作
+        /// </summary>
         act_var,
-        // 退出循环
+        /// <summary>
+        /// 退出循环
+        /// </summary>
         act_break,
-        // 退出程序
+        /// <summary>
+        /// 退出程序
+        /// </summary>
         act_shutdown,
-        // 中断事件处理
+        /// <summary>
+        /// 中断事件处理
+        /// </summary>
         act_return,
-        // 等待
+        /// <summary>
+        /// 等待
+        /// </summary>
         act_wait,
-        // 选择支
+        /// <summary>
+        /// 选择支
+        /// </summary>
         act_branch,
-        // 函数调用
+        /// <summary>
+        /// 函数调用
+        /// </summary>
         act_call,
-        // 回归点
+        /// <summary>
+        /// 回归点
+        /// </summary>
         act_titlepoint,
-        // 准备渐变
+        /// <summary>
+        /// 准备渐变
+        /// </summary>
         act_freeze,
-        // 执行渐变
+        /// <summary>
+        /// 执行渐变
+        /// </summary>
         act_trans,
-        // 按钮
+        /// <summary>
+        /// 按钮
+        /// </summary>
         act_button,
-        // 对话样式
+        /// <summary>
+        /// 对话样式
+        /// </summary>
         act_style,
-        // 切换文字层
+        /// <summary>
+        /// 切换文字层
+        /// </summary>
         act_msglayer,
-        // 修改层属性
+        /// <summary>
+        /// 修改层属性
+        /// </summary>
         act_msglayeropt,
-        // 等待用户操作
+        /// <summary>
+        /// 等待用户操作
+        /// </summary>
         act_waituser,
-        // 等待动画结束
+        /// <summary>
+        /// 等待动画结束
+        /// </summary>
         act_waitani,
-        // 描绘字符串
+        /// <summary>
+        /// 描绘字符串
+        /// </summary>
         act_draw,
-        // 移除按钮
+        /// <summary>
+        /// 移除按钮
+        /// </summary>
         act_deletebutton,
-        // 场景镜头
+        /// <summary>
+        /// 场景镜头
+        /// </summary>
         act_scamera,
-        // 通知
+        /// <summary>
+        /// 通知
+        /// </summary>
         act_notify,
-        // 发送系统消息
+        /// <summary>
+        /// 发送系统消息
+        /// </summary>
         act_yurimsg,
-        // 信号系统
+        /// <summary>
+        /// 信号系统
+        /// </summary>
         act_semaphore,
-        // 章节设置
+        /// <summary>
+        /// 章节设置
+        /// </summary>
         act_chapter,
-        // 消息弹窗
+        /// <summary>
+        /// 消息弹窗
+        /// </summary>
         act_alert,
-        // 截图
+        /// <summary>
+        /// 截图
+        /// </summary>
         act_snapshot,
-        // 调节BGM音量
+        /// <summary>
+        /// 调节BGM音量
+        /// </summary>
         act_bgmfade,
-        // 启用禁用功能
+        /// <summary>
+        /// 启用禁用功能
+        /// </summary>
         act_enabler,
-        // 设置系统变量
+        /// <summary>
+        /// 设置系统变量
+        /// </summary>
         act_sysset
     }
 }

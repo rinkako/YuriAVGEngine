@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 
 
 namespace Yuri.PlatformCore.Net
 {
+    /// <summary>
+    /// 为引擎Http服务提供接口
+    /// </summary>
     public interface IYuriHttpServer
     {
         /// <summary>

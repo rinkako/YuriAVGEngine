@@ -869,77 +869,149 @@ namespace Yuri.YuriInterpreter
     /// </summary>
     public enum CharacterType
     {
-        // 未知
+        /// <summary>
+        /// 未知
+        /// </summary>
         cUnknown,
-        // 字母
+        /// <summary>
+        /// 字母
+        /// </summary>
         Letter,
-        // 中文
+        /// <summary>
+        /// 中文
+        /// </summary>
         Chinese,
-        // 数字
+        /// <summary>
+        /// 数字
+        /// </summary>
         Number,
-        // _
+        /// <summary>
+        /// _
+        /// </summary>
         UnderLine,
-        // .
+        /// <summary>
+        /// .
+        /// </summary>
         Dot,
-        // ,
+        /// <summary>
+        /// ,
+        /// </summary>
         Comma,
-        // +
+        /// <summary>
+        /// +
+        /// </summary>
         Plus,
-        // -
+        /// <summary>
+        /// -
+        /// </summary>
         Minus,
-        // *
+        /// <summary>
+        /// *
+        /// </summary>
         Multiply,
-        // /
+        /// <summary>
+        /// /
+        /// </summary>
         Divide,
-        // %
+        /// <summary>
+        /// %
+        /// </summary>
         Percent,
-        // ^
+        /// <summary>
+        /// ^
+        /// </summary>
         Xor,
-        // &;
+        /// <summary>
+        /// &amp;
+        /// </summary>
         And,
-        // |
+        /// <summary>
+        /// |
+        /// </summary>
         Or,
-        // ~
+        /// <summary>
+        /// ~
+        /// </summary>
         Reverse,
-        // $
+        /// <summary>
+        /// $
+        /// </summary>
         Dollar,
-        // <
+        /// <summary>
+        /// &lt;
+        /// </summary>
         LessThan,
-        // >
+        /// <summary>
+        /// &gt;
+        /// </summary>
         GreaterThan,
-        // (
+        /// <summary>
+        /// (
+        /// </summary>
         LeftParentheses,
-        // )
+        /// <summary>
+        /// )
+        /// </summary>
         RightParentheses,
-        // [
+        /// <summary>
+        /// [
+        /// </summary>
         LeftBracket,
-        // ]
+        /// <summary>
+        /// ]
+        /// </summary>
         RightBracket,
-        // {
+        /// <summary>
+        /// {
+        /// </summary>
         LeftBrace,
-        // }
+        /// <summary>
+        /// }
+        /// </summary>
         RightBrace,
-        // !
+        /// <summary>
+        /// !
+        /// </summary>
         Not,
-        // #
+        /// <summary>
+        /// #
+        /// </summary>
         Pound,
-        // "\\"
+        /// <summary>
+        /// \
+        /// </summary>
         Slash,
-        // ?
+        /// <summary>
+        /// ?
+        /// </summary>
         Question,
-        // '
+        /// <summary>
+        /// '
+        /// </summary>
         Quotation,
-        // "
+        /// <summary>
+        /// "
+        /// </summary>
         DoubleQuotation,
-        // :
+        /// <summary>
+        /// :
+        /// </summary>
         Colon,
-        // ;
+        /// <summary>
+        /// ;
+        /// </summary>
         Semicolon,
-        // =
+        /// <summary>
+        /// =
+        /// </summary>
         Equality,
-        // @
+        /// <summary>
+        /// @
+        /// </summary>
         At,
-        // space Tab \r\n
+        /// <summary>
+        /// space Tab \r\n
+        /// </summary>
         Space
     };
 }

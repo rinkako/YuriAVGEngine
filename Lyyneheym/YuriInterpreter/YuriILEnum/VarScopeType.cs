@@ -5,9 +5,21 @@
     /// </summary>
     public enum VarScopeType
     {
+        /// <summary>
+        /// 非变量
+        /// </summary>
         NOTVAR,
+        /// <summary>
+        /// 局部变量
+        /// </summary>
         LOCAL,
+        /// <summary>
+        /// 全局变量
+        /// </summary>
         GLOBAL,
+        /// <summary>
+        /// 持久性变量
+        /// </summary>
         PERSIST
     }
 }

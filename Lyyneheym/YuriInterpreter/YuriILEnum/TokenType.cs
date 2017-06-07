@@ -5,259 +5,511 @@
     /// </summary>
     public enum TokenType
     {
-        // 未知
+        /// <summary>
+        /// 未知
+        /// </summary>
         unknown,
-        // 标识符
+        /// <summary>
+        /// 标识符
+        /// </summary>
         identifier,
-        // 字符串
+        /// <summary>
+        /// 字符串
+        /// </summary>
         cluster,
-        // 剧本字符串
+        /// <summary>
+        /// 剧本字符串
+        /// </summary>
         scenecluster,
-        // 剧本段落终结符
+        /// <summary>
+        /// 剧本段落终结符
+        /// </summary>
         sceneterminator,
-        // 整数数字
+        /// <summary>
+        /// 整数数字
+        /// </summary>
         number,
-        // 起始终止标记
+        /// <summary>
+        /// 起始终止标记
+        /// </summary>
         startend,
-        // 符号：#
+        /// <summary>
+        /// 符号：#
+        /// </summary>
         Token_Sharp,
-        // 符号：左方括号[
+        /// <summary>
+        /// 符号：左方括号[
+        /// </summary>
         Token_LeftBracket,
-        // 符号：右方括号]
+        /// <summary>
+        /// 符号：右方括号]
+        /// </summary>
         Token_RightBracket,
         // 符号：左花括号{
         //Token_LeftBrace,
-        // 符号：右花括号}
+        /// <summary>
+        /// 符号：右花括号}
+        /// </summary>
         Token_RightBrace,
-        // 符号：单引号'
+        /// <summary>
+        /// 符号：单引号'
+        /// </summary>
         Token_Quotation,
-        // 符号：双引号"
+        /// <summary>
+        /// 符号：双引号"
+        /// </summary>
         Token_DoubleQuotation,
-        // 符号：等号=
+        /// <summary>
+        /// 符号：等号=
+        /// </summary>
         Token_Equality,
-        // 符号：艾特符@
+        /// <summary>
+        /// 符号：艾特符@
+        /// </summary>
         Token_At,
-        // 符号：朵拉符$
+        /// <summary>
+        /// 符号：朵拉符$
+        /// </summary>
         Token_Dollar,
-        // 符号：地址符&
+        /// <summary>
+        /// 符号：地址符&amp;
+        /// </summary>
         Token_Address,
-        // 符号：左括弧(
+        /// <summary>
+        /// 符号：左括弧(
+        /// </summary>
         Token_LeftParentheses,
-        // 符号：右括弧)
+        /// <summary>
+        /// 符号：右括弧)
+        /// </summary>
         Token_RightParentheses,
-        // 符号：加+
+        /// <summary>
+        /// 符号：加+
+        /// </summary>
         Token_Plus,
-        // 符号：减-
+        /// <summary>
+        /// 符号：减-
+        /// </summary>
         Token_Minus,
-        // 符号：乘*
+        /// <summary>
+        /// 符号：乘*
+        /// </summary>
         Token_Multiply,
-        // 符号：除/
+        /// <summary>
+        /// 符号：除/
+        /// </summary>
         Token_Divide,
-        // 符号：不等号<>
+        /// <summary>
+        /// 符号：不等号&lt;&gt;
+        /// </summary>
         Token_LessThan_GreaterThan,
-        // 符号：等于号==
+        /// <summary>
+        /// 符号：等于号==
+        /// </summary>
         Token_Equality_Equality,
-        // 符号：大于号>
+        /// <summary>
+        /// 符号：大于号&gt;
+        /// </summary>
         Token_GreaterThan,
-        // 符号：小于号<
+        /// <summary>
+        /// 符号：小于号&lt;
+        /// </summary>
         Token_LessThan,
-        // 符号：大于等于号>=
+        /// <summary>
+        /// 符号：大于等于号&gt;=
+        /// </summary>
         Token_GreaterThan_Equality,
-        // 符号：小于等于号<=
+        /// <summary>
+        /// 符号：小于等于号&lt;=
+        /// </summary>
         Token_LessThan_Equality,
-        // 符号：逻辑或||
+        /// <summary>
+        /// 符号：逻辑或||
+        /// </summary>
         Token_Or_Or,
-        // 符号：逻辑与&&
+        /// <summary>
+        /// 符号：逻辑与&amp;&amp;
+        /// </summary>
         Token_And_And,
-        // 符号：逻辑否!
+        /// <summary>
+        /// 符号：逻辑否!
+        /// </summary>
         Token_Not,
-        // 空操作
+        /// <summary>
+        /// 空操作
+        /// </summary>
         Token_NOP,
-        // 显示文本
+        /// <summary>
+        /// 显示文本
+        /// </summary>
         Token_o_a,
-        // 显示背景
+        /// <summary>
+        /// 显示背景
+        /// </summary>
         Token_o_bg,
-        // 显示图片
+        /// <summary>
+        /// 显示图片
+        /// </summary>
         Token_o_picture,
-        // 移动图片
+        /// <summary>
+        /// 移动图片
+        /// </summary>
         Token_o_move,
-        // 消去图片
+        /// <summary>
+        /// 消去图片
+        /// </summary>
         Token_o_deletepicture,
-        // 显示立绘
+        /// <summary>
+        /// 显示立绘
+        /// </summary>
         Token_o_cstand,
-        // 消去立绘
+        /// <summary>
+        /// 消去立绘
+        /// </summary>
         Token_o_deletecstand,
-        // 播放声效
+        /// <summary>
+        /// 播放声效
+        /// </summary>
         Token_o_se,
-        // 播放音乐
+        /// <summary>
+        /// 播放音乐
+        /// </summary>
         Token_o_bgm,
-        // 播放bgs
+        /// <summary>
+        /// 播放bgs
+        /// </summary>
         Token_o_bgs,
-        // 停止音乐
+        /// <summary>
+        /// 停止音乐
+        /// </summary>
         Token_o_stopbgm,
-        // 停止BGS
+        /// <summary>
+        /// 停止Bgs
+        /// </summary>
         Token_o_stopbgs,
-        // 播放语音
+        /// <summary>
+        /// 播放语音
+        /// </summary>
         Token_o_vocal,
-        // 停止语音
+        /// <summary>
+        /// 停止语音
+        /// </summary>
         Token_o_stopvocal,
-        // 返回标题
+        /// <summary>
+        /// 返回标题
+        /// </summary>
         Token_o_title,
-        // 调用菜单
+        /// <summary>
+        /// 调用菜单
+        /// </summary>
         Token_o_menu,
-        // 调用存档
+        /// <summary>
+        /// 调用存档
+        /// </summary>
         Token_o_save,
-        // 调用读档
+        /// <summary>
+        /// 调用读档
+        /// </summary>
         Token_o_load,
-        // 标签
+        /// <summary>
+        /// 标签
+        /// </summary>
         Token_o_label,
-        // 标签跳转
+        /// <summary>
+        /// 标签跳转
+        /// </summary>
         Token_o_jump,
-        // 循环（头）
+        /// <summary>
+        /// 循环（头）
+        /// </summary>
         Token_o_for,
-        // 循环（尾）
+        /// <summary>
+        /// 循环（尾）
+        /// </summary>
         Token_o_endfor,
-        // 条件（头）
+        /// <summary>
+        /// 条件（头）
+        /// </summary>
         Token_o_if,
-        // 条件（分支）
+        /// <summary>
+        /// 条件（分支）
+        /// </summary>
         Token_o_else,
-        // 条件（尾）
+        /// <summary>
+        /// 条件（尾）
+        /// </summary>
         Token_o_endif,
-        // 剧本跳转
+        /// <summary>
+        /// 剧本跳转
+        /// </summary>
         Token_o_scene,
-        // 开关操作
+        /// <summary>
+        /// 开关操作
+        /// </summary>
         Token_o_switch,
-        // 变量操作
+        /// <summary>
+        /// 变量操作
+        /// </summary>
         Token_o_var,
-        // 退出循环
+        /// <summary>
+        /// 退出循环
+        /// </summary>
         Token_o_break,
-        // 退出程序
+        /// <summary>
+        /// 退出程序
+        /// </summary>
         Token_o_shutdown,
-        // 中断事件处理
+        /// <summary>
+        /// 中断事件处理
+        /// </summary>
         Token_o_return,
-        // 等待
+        /// <summary>
+        /// 等待
+        /// </summary>
         Token_o_wait,
-        // 选择支
+        /// <summary>
+        /// 选择支
+        /// </summary>
         Token_o_branch,
-        // 函数定义头
+        /// <summary>
+        /// 函数定义头
+        /// </summary>
         Token_o_function,
-        // 函数定义尾
+        /// <summary>
+        /// 函数定义尾
+        /// </summary>
         Token_o_endfunction,
-        // 函数调用
+        /// <summary>
+        /// 函数调用
+        /// </summary>
         Token_o_call,
-        // 标志回归点
+        /// <summary>
+        /// 标志回归点
+        /// </summary>
         Token_o_titlepoint,
-        // 准备渐变
+        /// <summary>
+        /// 准备渐变
+        /// </summary>
         Token_o_freeze,
-        // 执行渐变
+        /// <summary>
+        /// 执行渐变
+        /// </summary>
         Token_o_trans,
-        // 按钮
+        /// <summary>
+        /// 按钮
+        /// </summary>
         Token_o_button,
-        // 对话样式
+        /// <summary>
+        /// 对话样式
+        /// </summary>
         Token_o_style,
-        // 切换文字层
+        /// <summary>
+        /// 切换文字层
+        /// </summary>
         Token_o_msglayer,
-        // 修改层属性
+        /// <summary>
+        /// 修改层属性
+        /// </summary>
         Token_o_msglayeropt,
-        // 等待用户操作
+        /// <summary>
+        /// 等待用户操作
+        /// </summary>
         Token_o_waituser,
-        // 等待动画完成
+        /// <summary>
+        /// 等待动画完成
+        /// </summary>
         Token_o_waitani,
-        // 描绘字符串
+        /// <summary>
+        /// 描绘字符串
+        /// </summary>
         Token_o_draw,
-        // 移除按钮
+        /// <summary>
+        /// 移除按钮
+        /// </summary>
         Token_o_deletebutton,
-        // 场景镜头
+        /// <summary>
+        /// 场景镜头
+        /// </summary>
         Token_o_scamera,
-        // 通知
+        /// <summary>
+        /// 通知
+        /// </summary>
         Token_o_notify,
-        // 发送系统消息
+        /// <summary>
+        /// 发送系统消息
+        /// </summary>
         Token_o_yurimsg,
-        // 信号操作
+        /// <summary>
+        /// 信号操作
+        /// </summary>
         Token_o_semaphore,
-        // 章节设置
+        /// <summary>
+        /// 章节设置
+        /// </summary>
         Token_o_chapter,
-        // 弹窗
+        /// <summary>
+        /// 弹窗
+        /// </summary>
         Token_o_alert,
-        // 截图
+        /// <summary>
+        /// 截图
+        /// </summary>
         Token_o_snapshot,
-        // BGM音量淡入淡出
+        /// <summary>
+        /// BGM音量淡入淡出
+        /// </summary>
         Token_o_bgmfade,
-        // 启用禁用功能
+        /// <summary>
+        /// 启用禁用功能
+        /// </summary>
         Token_o_enabler,
-        // 设置系统变量
+        /// <summary>
+        /// 设置系统变量
+        /// </summary>
         Token_o_sysset,
-        // 参数：类型
+        /// <summary>
+        /// 参数：类型
+        /// </summary>
         Token_p_type,
-        // 参数：函数签名
+        /// <summary>
+        /// 参数：函数签名
+        /// </summary>
         Token_p_sign,
-        // 参数：名称
+        /// <summary>
+        /// 参数：名称
+        /// </summary>
         Token_p_name,
-        // 参数：语音id
+        /// <summary>
+        /// 参数：语音id
+        /// </summary>
         Token_p_vid,
-        // 参数：立绘表情
+        /// <summary>
+        /// 参数：立绘表情
+        /// </summary>
         Token_p_face,
-        // 参数：序号
+        /// <summary>
+        /// 参数：序号
+        /// </summary>
         Token_p_id,
-        // 参数：x坐标
+        /// <summary>
+        /// 参数：x坐标
+        /// </summary>
         Token_p_x,
-        // 参数：y坐标
+        /// <summary>
+        /// 参数：y坐标
+        /// </summary>
         Token_p_y,
-        // 参数：z坐标
+        /// <summary>
+        /// 参数：z坐标
+        /// </summary>
         Token_p_z,
-        // 参数：加速度
+        /// <summary>
+        /// 参数：加速度
+        /// </summary>
         Token_p_acc,
-        // 参数：x加速度
+        /// <summary>
+        /// 参数：x加速度
+        /// </summary>
         Token_p_xacc,
-        // 参数：y加速度
+        /// <summary>
+        /// 参数：y加速度
+        /// </summary>
         Token_p_yacc,
-        // 参数：透明度
+        /// <summary>
+        /// 参数：不透明度
+        /// </summary>
         Token_p_opacity,
-        // 参数：x轴缩放比
+        /// <summary>
+        /// 参数：x轴缩放比
+        /// </summary>
         Token_p_xscale,
-        // 参数：y轴缩放比
+        /// <summary>
+        /// 参数：y轴缩放比
+        /// </summary>
         Token_p_yscale,
-        // 参数：时间
+        /// <summary>
+        /// 参数：时间
+        /// </summary>
         Token_p_time,
-        // 参数：文件名
+        /// <summary>
+        /// 参数：文件名
+        /// </summary>
         Token_p_filename,
-        // 参数：音轨号
+        /// <summary>
+        /// 参数：音轨号
+        /// </summary>
         Token_p_track,
-        // 参数：条件子句
+        /// <summary>
+        /// 参数：条件子句
+        /// </summary>
         Token_p_cond,
-        // 参数：表达式
+        /// <summary>
+        /// 参数：表达式
+        /// </summary>
         Token_p_dash,
-        // 参数：开关状态
+        /// <summary>
+        /// 参数：开关状态
+        /// </summary>
         Token_p_state,
-        // 参数：音量
+        /// <summary>
+        /// 参数：音量
+        /// </summary>
         Token_p_vol,
-        // 参数：位置
+        /// <summary>
+        /// 参数：位置
+        /// </summary>
         Token_p_loc,
-        // 参数：角度
+        /// <summary>
+        /// 参数：角度
+        /// </summary>
         Token_p_ro,
-        // 参数：选择支链
+        /// <summary>
+        /// 参数：选择支链
+        /// </summary>
         Token_p_link,
-        // 参数：宽度
+        /// <summary>
+        /// 参数：宽度
+        /// </summary>
         Token_p_width,
-        // 参数：高度
+        /// <summary>
+        /// 参数：高度
+        /// </summary>
         Token_p_height,
-        // 参数：字体
+        /// <summary>
+        /// 参数：字体
+        /// </summary>
         Token_p_font,
-        // 参数：尺寸
+        /// <summary>
+        /// 参数：尺寸
+        /// </summary>
         Token_p_size,
-        // 参数：颜色
+        /// <summary>
+        /// 参数：颜色
+        /// </summary>
         Token_p_color,
-        // 参数：作用目标
+        /// <summary>
+        /// 参数：作用目标
+        /// </summary>
         Token_p_target,
-        // 参数：正常按钮
+        /// <summary>
+        /// 参数：正常按钮
+        /// </summary>
         Token_p_normal,
-        // 参数：鼠标悬停按钮
+        /// <summary>
+        /// 参数：鼠标悬停按钮
+        /// </summary>
         Token_p_over,
-        // 参数：鼠标按下按钮
+        /// <summary>
+        /// 参数：鼠标按下按钮
+        /// </summary>
         Token_p_on,
-        // 参数：激活函数
+        /// <summary>
+        /// 参数：激活函数
+        /// </summary>
         Token_p_activator,
-        // 参数：反激活函数
+        /// <summary>
+        /// 参数：反激活函数
+        /// </summary>
         Token_p_deactivator
     }
 }

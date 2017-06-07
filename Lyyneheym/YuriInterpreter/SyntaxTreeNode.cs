@@ -139,6 +139,7 @@ namespace Yuri.YuriInterpreter
         /// <param name="builder">字符串构造器</param>
         /// <param name="myNode">当前节点</param>
         /// <param name="identation">缩进量</param>
+        /// <param name="dflag">该节点是否为字典节点</param>
         private void GetTree(StringBuilder builder, SyntaxTreeNode myNode, ref int identation, bool dflag)
         {
             // 如果空就没必要继续了

@@ -177,6 +177,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 向运行时环境发出中断
         /// </summary>
+        /// <param name="vsm">要提交的调用堆栈</param>
         /// <param name="ntr">中断</param>
         public void SubmitInterrupt(StackMachine vsm, Interrupt ntr)
         {

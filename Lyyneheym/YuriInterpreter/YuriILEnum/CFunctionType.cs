@@ -5,113 +5,221 @@
     /// </summary>
     public enum CFunctionType
     {
-        // null
+        /// <summary>
+        /// null
+        /// </summary>
         None,
-        // <disjunct> -> <conjunct> <disjunct_pi>
+        /// <summary>
+        /// (disjunct) -> (conjunct) (disjunct_pi)
+        /// </summary>
         deri___disjunct__conjunct__disjunct_pi_35,
-        // <disjunct_pi> -> "||" <conjunct> <disjunct_pi>
+        /// <summary>
+        /// (disjunct_pi) -> "||" (conjunct) (disjunct_pi)
+        /// </summary>
         deri___disjunct_pi__conjunct__disjunct_pi_36,
-        // <disjunct_pi> -> epsilon
+        /// <summary>
+        /// (disjunct_pi) -> epsilon
+        /// </summary>
         deri___disjunct_pi__epsilon_37,
-        // <conjunct> -> <bool> <conjunct_pi>
+        /// <summary>
+        /// (conjunct) -> (bool) (conjunct_pi)
+        /// </summary>
         deri___conjunct__bool__conjunct_pi_38,
-        // <conjunct_pi> -> "&&" <bool> <conjunct_pi>
+        /// <summary>
+        /// (conjunct_pi) -> "&amp;&amp;" (bool) (conjunct_pi)
+        /// </summary>
         deri___conjunct_pi__bool__conjunct_pi_39,
-        // <conjunct_pi> -> epsilon
+        /// <summary>
+        /// (conjunct_pi) -> epsilon
+        /// </summary>
         deri___conjunct_pi__epsilon_40,
-        // <bool> -> "!" <bool>
+        /// <summary>
+        /// (bool) -> "!" (bool)
+        /// </summary>
         deri___bool__not_bool_42,
-        // <bool> -> <comp>
+        /// <summary>
+        /// (bool) -> (comp)
+        /// </summary>
         deri___bool__comp_43,
-        // <comp> -> <wexpr> <rop> <wexpr>
+        /// <summary>
+        /// (comp) -> (wexpr) (rop) (wexpr)
+        /// </summary>
         deri___comp__wexpr__rop__wexpr_44,
-        // <rop> -> "<>"
+        /// <summary>
+        /// (rop) -> "&lt;&gt;"
+        /// </summary>
         deri___rop__lessgreater_58,
-        // <rop> -> "=="
+        /// <summary>
+        /// (rop) -> "=="
+        /// </summary>
         deri___rop__equalequal_59,
-        // <rop> -> ">"
+        /// <summary>
+        /// (rop) -> "&gt;"
+        /// </summary>
         deri___rop__greater_60,
-        // <rop> -> "<"
+        /// <summary>
+        /// (rop) -> "&lt;"
+        /// </summary>
         deri___rop__less_61,
-        // <rop> -> ">="
+        /// <summary>
+        /// (rop) -> "&gt;="
+        /// </summary>
         deri___rop__greaterequal_62,
-        // <rop> -> "<="
+        /// <summary>
+        /// (rop) -> "&lt;="
+        /// </summary>
         deri___rop__lessequal_63,
-        // <rop> -> epsilon
+        /// <summary>
+        /// (rop) -> epsilon
+        /// </summary>
         deri___rop__epsilon_80,
-        // <wexpr> -> <wmulti> <wexpr_pi>
+        /// <summary>
+        /// (wexpr) -> (wmulti) (wexpr_pi)
+        /// </summary>
         deri___wexpr__wmulti__wexpr_pi_45,
-        // <wexpr> -> epsilon
+        /// <summary>
+        /// (wexpr) -> epsilon
+        /// </summary>
         deri___wexpr__epsilon_81,
-        // <wplus> -> "+" <wmulti>
+        /// <summary>
+        /// (wplus) -> "+" (wmulti)
+        /// </summary>
         deri___wplus__plus_wmulti_46,
-        // <wplus> -> "-" <wmulti>
+        /// <summary>
+        /// (wplus) -> "-" (wmulti)
+        /// </summary>
         deri___wplus__minus_wmulti_47,
-        // <wexpr_pi> -> <wplus> <wexpr_pi>
+        /// <summary>
+        /// (wexpr_pi) -> (wplus) (wexpr_pi)
+        /// </summary>
         deri___wexpr_pi__wplus__wexpr_pi_72,
-        // <wexpr_pi> -> epsilon
+        /// <summary>
+        /// (wexpr_pi) -> epsilon
+        /// </summary>
         deri___wexpr_pi__epsilon_73,
-        // <wmulti> -> <wunit> <wmultiOpt>
+        /// <summary>
+        /// (wmulti) -> (wunit) (wmultiOpt)
+        /// </summary>
         deri___wmulti__wunit__wmultiOpt_49,
-        // <wmultiOpt> -> "*" <wunit> <wmultiOpt>
+        /// <summary>
+        /// (wmultiOpt) -> "*" (wunit) (wmultiOpt)
+        /// </summary>
         deri___wmultiOpt__multi_wunit__wmultiOpt_50,
-        // <wmultiOpt> -> "/" <wunit> <wmultiOpt>
+        /// <summary>
+        /// (wmultiOpt) -> "/" (wunit) (wmultiOpt)
+        /// </summary>
         deri___wmultiOpt__div_wunit__wmultiOpt_51,
-        // <wmultiOpt> -> epsilon
+        /// <summary>
+        /// (wmultiOpt) -> epsilon
+        /// </summary>
         deri___wmultiOpt__epsilon_52,
-        // <wunit> -> number
+        /// <summary>
+        /// (wunit) -> number
+        /// </summary>
         deri___wunit__number_53,
-        // <wunit> -> iden
+        /// <summary>
+        /// (wunit) -> iden
+        /// </summary>
         deri___wunit__iden_54,
-        // <wunit> -> "-" <wunit>
+        /// <summary>
+        /// (wunit) -> "-" (wunit)
+        /// </summary>
         deri___wunit__minus_wunit_55,
-        // <wunit> -> "+" <wunit>
+        /// <summary>
+        /// (wunit) -> "+" (wunit)
+        /// </summary>
         deri___wunit__plus_wunit_56,
-        // <wunit> -> "(" <disjunct> ")"
+        /// <summary>
+        /// (wunit) -> "(" (disjunct) ")"
+        /// </summary>
         deri___wunit__brucket_disjunct_57,
-        // BOUNDARY
+        /// <summary>
+        /// BOUNDARY
+        /// </summary>
         DERI_UMI_BOUNDARY,
-        // LeavePoint identifier
+        /// <summary>
+        /// LeavePoint identifier
+        /// </summary>
         umi_iden,
-        // LeavePoint null
+        /// <summary>
+        /// LeavePoint null
+        /// </summary>
         umi_epsilon,
-        // LeavePoint "("
+        /// <summary>
+        /// LeavePoint "("
+        /// </summary>
         umi_leftParentheses_,
-        // LeavePoint ")"
+        /// <summary>
+        /// LeavePoint ")"
+        /// </summary>
         umi_rightParentheses_,
-        // LeavePoint "="
+        /// <summary>
+        /// LeavePoint "="
+        /// </summary>
         umi_equality_,
-        // LeavePoint "+"
+        /// <summary>
+        /// LeavePoint "+"
+        /// </summary>
         umi_plus_,
-        // LeavePoint "-"
+        /// <summary>
+        /// LeavePoint "-"
+        /// </summary>
         umi_minus_,
-        // LeavePoint "*"
+        /// <summary>
+        /// LeavePoint "*"
+        /// </summary>
         umi_multiply_,
-        // LeavePoint "/"
+        /// <summary>
+        /// LeavePoint "/"
+        /// </summary>
         umi_divide_,
-        // LeavePoint number
+        /// <summary>
+        /// LeavePoint number
+        /// </summary>
         umi_number,
-        // LeavePoint "||"
+        /// <summary>
+        /// LeavePoint "||"
+        /// </summary>
         umi_or_Or_,
-        // LeavePoint "&&"
+        /// <summary>
+        /// LeavePoint "&amp;&amp;"
+        /// </summary>
         umi_and_And_,
-        // LeavePoint "!"
+        /// <summary>
+        /// LeavePoint "!"
+        /// </summary>
         umi_not_,
-        // LeavePoint "<>"
+        /// <summary>
+        /// LeavePoint "&lt;&gt;"
+        /// </summary>
         umi_lessThan_GreaterThan_,
-        // LeavePoint "=="
+        /// <summary>
+        /// LeavePoint "=="
+        /// </summary>
         umi_equality_Equality_,
-        // LeavePoint ">"
+        /// <summary>
+        /// LeavePoint "&gt;"
+        /// </summary>
         umi_greaterThan_,
-        // LeavePoint "<"
+        /// <summary>
+        /// LeavePoint "&lt;"
+        /// </summary>
         umi_lessThan_,
-        // LeavePoint ">="
+        /// <summary>
+        /// LeavePoint "&gt;="
+        /// </summary>
         umi_greaterThan_Equality_,
-        // LeavePoint "<="
+        /// <summary>
+        /// LeavePoint "&lt;="
+        /// </summary>
         umi_lessThan_Equality_,
-        // LeavePoint #
+        /// <summary>
+        /// LeavePoint #
+        /// </summary>
         umi_startEnd,
-        // ERROR
+        /// <summary>
+        /// ERROR
+        /// </summary>
         umi_errorEnd
     }
 }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Yuri.PlatformCore.Router
 {
+    /// <summary>
+    /// Yuri基础路由器类
+    /// </summary>
     public class YuriRouter : IRouteable
     {
         /// <summary>
