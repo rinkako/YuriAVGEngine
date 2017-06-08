@@ -795,7 +795,7 @@ namespace Yuri.PlatformCore
     }
 
     /// <summary>
-    /// 游戏的总体状态
+    /// 枚举：游戏的总体状态
     /// </summary>
     internal enum GameState
     {

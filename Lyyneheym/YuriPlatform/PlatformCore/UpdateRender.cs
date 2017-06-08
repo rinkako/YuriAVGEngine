@@ -643,7 +643,9 @@ namespace Yuri.PlatformCore
             }
         }
 
-
+        /// <summary>
+        /// 是否正在显示选择支
+        /// </summary>
         private bool isBranching = false;
 
         /// <summary>

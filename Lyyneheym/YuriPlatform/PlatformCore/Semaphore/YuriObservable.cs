@@ -109,7 +109,7 @@ namespace Yuri.PlatformCore.Semaphore
         }
 
         /// <summary>
-        /// 该订阅号的Tag
+        /// 获取或设置该订阅号的Tag
         /// </summary>
         public object ObservableTag { get; set; } = null;
 

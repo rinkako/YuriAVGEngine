@@ -14,7 +14,7 @@ namespace Yuri.PlatformCore.Graphic
     /// <para>注意所有效果在施加到主调用堆栈上后该函数即刻结束，不等待动画完成，因此一般不应该在并行处理堆栈中调用她</para>
     /// <para>她是一个静态类，被画音渲染器UpdateRender引用</para>
     /// </summary>
-    public static class SCamera2D
+    internal static class SCamera2D
     {
         /// <summary>
         /// 将镜头中心平移到指定的区块

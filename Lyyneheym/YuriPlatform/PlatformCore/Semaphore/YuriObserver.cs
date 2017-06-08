@@ -25,12 +25,12 @@ namespace Yuri.PlatformCore.Semaphore
         public abstract void Notified(YuriObservable notifier);
 
         /// <summary>
-        /// 该观察者的Group
+        /// 获取或设置该观察者的Group
         /// </summary>
         public string ObGroup { get; set; }
 
         /// <summary>
-        /// 该观察者的Tag
+        /// 获取或设置该观察者的Tag
         /// </summary>
         public object ObserverTag { get; set; }
     }
