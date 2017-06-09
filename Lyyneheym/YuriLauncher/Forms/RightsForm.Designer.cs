@@ -35,8 +35,13 @@
             this.label4 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage6 = new System.Windows.Forms.TabPage();
@@ -45,16 +50,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -143,6 +146,25 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "美术";
             // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(13, 39);
+            this.textBox5.Multiline = true;
+            this.textBox5.Name = "textBox5";
+            this.textBox5.ReadOnly = true;
+            this.textBox5.Size = new System.Drawing.Size(542, 245);
+            this.textBox5.TabIndex = 4;
+            this.textBox5.Text = "CG/立绘 ： 空笼\r\n\r\n背景 ： Isar";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(14, 12);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(497, 12);
+            this.label8.TabIndex = 3;
+            this.label8.Text = "版权：版权归原作者所有，禁止一切（包含但不限于商用和/或非商用）非授权传播和/或使用";
+            // 
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
@@ -154,6 +176,25 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "剧本文案";
             // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(13, 39);
+            this.textBox4.Multiline = true;
+            this.textBox4.Name = "textBox4";
+            this.textBox4.ReadOnly = true;
+            this.textBox4.Size = new System.Drawing.Size(542, 245);
+            this.textBox4.TabIndex = 3;
+            this.textBox4.Text = "剧本作者：\r\n\r\n死蝴蝶\r\n\r\n猫的事务所";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(14, 12);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(497, 12);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "版权：版权归原作者所有，禁止一切（包含但不限于商用和/或非商用）非授权传播和/或使用";
+            // 
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
@@ -164,6 +205,16 @@
             this.tabPage4.Size = new System.Drawing.Size(577, 294);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "人声";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(13, 39);
+            this.textBox3.Multiline = true;
+            this.textBox3.Name = "textBox3";
+            this.textBox3.ReadOnly = true;
+            this.textBox3.Size = new System.Drawing.Size(542, 245);
+            this.textBox3.TabIndex = 2;
+            this.textBox3.Text = "伊泽塔 ： 灵缡心\r\n\r\n奥特菲涅 ： 夷晴\r\n\r\n萝特 ： misya\r\n\r\n比安卡 ： 封肆镜\r\n\r\n提儿 ： 草摩里纱";
             // 
             // label6
             // 
@@ -177,6 +228,8 @@
             // tabPage5
             // 
             this.tabPage5.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage5.Controls.Add(this.textBox6);
+            this.tabPage5.Controls.Add(this.label9);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Size = new System.Drawing.Size(577, 294);
@@ -243,53 +296,24 @@
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "视频动画";
             // 
-            // textBox3
+            // textBox6
             // 
-            this.textBox3.Location = new System.Drawing.Point(13, 39);
-            this.textBox3.Multiline = true;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(542, 245);
-            this.textBox3.TabIndex = 2;
-            this.textBox3.Text = "伊泽塔 ： 灵缡心\r\n\r\n奥特菲涅 ： 夷晴\r\n\r\n萝特 ： misya\r\n\r\n比安卡 ： 封肆镜\r\n\r\n提儿 ： 草摩里纱";
+            this.textBox6.Location = new System.Drawing.Point(15, 38);
+            this.textBox6.Multiline = true;
+            this.textBox6.Name = "textBox6";
+            this.textBox6.ReadOnly = true;
+            this.textBox6.Size = new System.Drawing.Size(542, 245);
+            this.textBox6.TabIndex = 4;
+            this.textBox6.Text = "BGM：\r\n未知瑠\r\n大怪兽Panda\r\n\r\nSE：\r\n灵缡心";
             // 
-            // label7
+            // label9
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(14, 12);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(497, 12);
-            this.label7.TabIndex = 2;
-            this.label7.Text = "版权：版权归原作者所有，禁止一切（包含但不限于商用和/或非商用）非授权传播和/或使用";
-            // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(13, 39);
-            this.textBox4.Multiline = true;
-            this.textBox4.Name = "textBox4";
-            this.textBox4.ReadOnly = true;
-            this.textBox4.Size = new System.Drawing.Size(542, 245);
-            this.textBox4.TabIndex = 3;
-            this.textBox4.Text = "剧本作者：\r\n\r\n死蝴蝶\r\n\r\n猫的事务所";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(14, 12);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(497, 12);
-            this.label8.TabIndex = 3;
-            this.label8.Text = "版权：版权归原作者所有，禁止一切（包含但不限于商用和/或非商用）非授权传播和/或使用";
-            // 
-            // textBox5
-            // 
-            this.textBox5.Location = new System.Drawing.Point(13, 39);
-            this.textBox5.Multiline = true;
-            this.textBox5.Name = "textBox5";
-            this.textBox5.ReadOnly = true;
-            this.textBox5.Size = new System.Drawing.Size(542, 245);
-            this.textBox5.TabIndex = 4;
-            this.textBox5.Text = "CG/立绘 ： 空笼\r\n\r\n背景 ： Isar";
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(16, 12);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(521, 12);
+            this.label9.TabIndex = 3;
+            this.label9.Text = "版权：版权归原作者所有。可能含有未授权的内容，如侵权，请联系本人删除：微博@凛佳_Homura";
             // 
             // RightsForm
             // 
@@ -314,6 +338,8 @@
             this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
             this.ResumeLayout(false);
@@ -344,5 +370,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.Label label9;
     }
 }

@@ -26,7 +26,7 @@ namespace Yuri.PlatformCore.Audio
             }
             var musicianRouter = new YuriRouter()
             {
-                Name = "MusicianRouter"
+                Name = MusicianRouterHandler.MusicianRouterName
             };
             RouterManager.SetRouter(musicianRouter);
             Thread mt = new Thread(new ThreadStart(MusicianRouterHandler.MusicianHandler))
@@ -162,6 +162,11 @@ namespace Yuri.PlatformCore.Audio
         /// 设置是否停止音乐线程
         /// </summary>
         public static bool TerminalFlag { private get; set; } = false;
+
+        /// <summary>
+        /// Musician路由器的名称
+        /// </summary>
+        public const string MusicianRouterName = "MusicianRouter";
 
         /// <summary>
         /// 同步量

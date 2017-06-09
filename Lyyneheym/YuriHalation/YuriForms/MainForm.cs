@@ -1013,7 +1013,7 @@ namespace Yuri.YuriHalation.YuriForms
             {
                 this.core.DashParse();
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
         }
 
         /// <summary>
@@ -1027,7 +1027,7 @@ namespace Yuri.YuriHalation.YuriForms
                 DebugForm df = new DebugForm(Halation.projectFolder);
                 df.ShowDialog(this);
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
         }
 
         /// <summary>

@@ -11,7 +11,7 @@ using Yuri.PlatformCore.VM;
 namespace Yuri.PlatformCore
 {
     /// <summary>
-    /// 世界类：为整个游戏运行时环境和来自外部脚本的过程调用提供上下文服务
+    /// 为整个游戏运行时环境和来自外部脚本的过程调用提供服务
     /// </summary>
     internal static class YuririWorld
     {

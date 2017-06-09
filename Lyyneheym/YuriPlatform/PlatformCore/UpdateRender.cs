@@ -1631,7 +1631,7 @@ namespace Yuri.PlatformCore
             {
                 MusicianRouterHandler.EnqueueMessage(mmsg);
             };
-            RouterManager.Send("MusicianRouter", evt);
+            RouterManager.Send(MusicianRouterHandler.MusicianRouterName, evt);
         }
 
         /// <summary>
@@ -1665,7 +1665,7 @@ namespace Yuri.PlatformCore
             {
                 MusicianRouterHandler.EnqueueMessage(mmsg);
             };
-            RouterManager.Send("MusicianRouter", evt);
+            RouterManager.Send(MusicianRouterHandler.MusicianRouterName, evt);
         }
 
         /// <summary>
@@ -1704,7 +1704,7 @@ namespace Yuri.PlatformCore
             {
                 MusicianRouterHandler.EnqueueMessage(mmsg);
             };
-            RouterManager.Send("MusicianRouter", evt);
+            RouterManager.Send(MusicianRouterHandler.MusicianRouterName, evt);
         }
 
         /// <summary>
@@ -1723,7 +1723,7 @@ namespace Yuri.PlatformCore
                 MusicianRouterHandler.EnqueueMessage(mmsg);
             };
             Director.RunMana.Musics.BGMVol = (float)vol;
-            RouterManager.Send("MusicianRouter", evt);
+            RouterManager.Send(MusicianRouterHandler.MusicianRouterName, evt);
         }
 
         /// <summary>
@@ -1737,7 +1737,7 @@ namespace Yuri.PlatformCore
             {
                 MusicianRouterHandler.EnqueueMessage(mmsg);
             };
-            RouterManager.Send("MusicianRouter", evt);
+            RouterManager.Send(MusicianRouterHandler.MusicianRouterName, evt);
             Director.RunMana.Musics.PlayingBGM = String.Empty;
         }
 
@@ -1754,7 +1754,7 @@ namespace Yuri.PlatformCore
                 MusicianRouterHandler.EnqueueMessage(mmsg);
             };
             Director.RunMana.Musics.PlayingBGS[track] = String.Empty;
-            RouterManager.Send("MusicianRouter", evt);
+            RouterManager.Send(MusicianRouterHandler.MusicianRouterName, evt);
         }
 
         /// <summary>
@@ -1787,7 +1787,7 @@ namespace Yuri.PlatformCore
                 {
                     MusicianRouterHandler.EnqueueMessage(mmsg);
                 };
-                RouterManager.Send("MusicianRouter", evt);
+                RouterManager.Send(MusicianRouterHandler.MusicianRouterName, evt);
             }
         }
 
@@ -1803,7 +1803,7 @@ namespace Yuri.PlatformCore
             {
                 MusicianRouterHandler.EnqueueMessage(mmsg);
             };
-            RouterManager.Send("MusicianRouter", evt);
+            RouterManager.Send(MusicianRouterHandler.MusicianRouterName, evt);
         }
 
         /// <summary>

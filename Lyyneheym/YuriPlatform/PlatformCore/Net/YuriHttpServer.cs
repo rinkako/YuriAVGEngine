@@ -221,7 +221,7 @@ namespace Yuri.PlatformCore.Net
                 }
                 return HttpListenerPostValueList;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
