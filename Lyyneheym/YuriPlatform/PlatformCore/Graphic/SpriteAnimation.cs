@@ -655,7 +655,7 @@ namespace Yuri.PlatformCore.Graphic
                     EasingFunction = new CubicEase(),
                 };
                 sprite.AnimateCount++;
-                var flagSb = new Storyboard { Name = "FlagSb_" + Guid.NewGuid() };
+                var flagSb = new Storyboard { Name = "FlagSb_" + DateTime.Now.Ticks };
                 SpriteAnimation.aniDict[flagSb] = sprite;
                 m_DA.Completed += (sender, args) =>
                 {
