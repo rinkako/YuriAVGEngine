@@ -242,6 +242,10 @@
         /// </summary>
         synr_enabler,
         /// <summary>
+        /// 显示UI页
+        /// </summary>
+        synr_uipage,
+        /// <summary>
         /// 参数：类型
         /// </summary>
         para_type,

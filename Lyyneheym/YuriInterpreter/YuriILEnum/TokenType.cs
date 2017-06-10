@@ -368,6 +368,10 @@
         /// </summary>
         Token_o_sysset,
         /// <summary>
+        /// 显示UI页
+        /// </summary>
+        Token_o_uipage,
+        /// <summary>
         /// 参数：类型
         /// </summary>
         Token_p_type,

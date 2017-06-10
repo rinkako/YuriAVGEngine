@@ -467,6 +467,8 @@ namespace Yuri.YuriHalation.ScriptPackage
         act_bgmfade,
         // 启用禁用功能
         synr_enabler,
+        // 显示UI页
+        synr_uipage,
     }
 
     /// <summary>
@@ -596,5 +598,7 @@ namespace Yuri.YuriHalation.ScriptPackage
         音乐渐变,
         // 启用禁用功能
         启用禁用功能,
+        // 显示UI页
+        显示UI页,
     }
 }

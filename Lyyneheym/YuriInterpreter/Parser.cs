@@ -1019,6 +1019,9 @@ namespace Yuri.YuriInterpreter
                     case TokenType.Token_o_bgmfade:
                         this.ConstructArgumentDict(statementNode, SyntaxType.synr_bgmfade, "vol", "time");
                         break;
+                    case TokenType.Token_o_uipage:
+                        this.ConstructArgumentDict(statementNode, SyntaxType.synr_uipage, "target");
+                        break;
                     case TokenType.Token_o_snapshot:
                         statementNode.NodeSyntaxType = SyntaxType.synr_snapshot;
                         break;

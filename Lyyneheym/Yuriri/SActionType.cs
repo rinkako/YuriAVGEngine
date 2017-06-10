@@ -244,6 +244,10 @@
         /// <summary>
         /// 设置系统变量
         /// </summary>
-        act_sysset
+        act_sysset,
+        /// <summary>
+        /// 显示UI页
+        /// </summary>
+        act_uipage
     }
 }

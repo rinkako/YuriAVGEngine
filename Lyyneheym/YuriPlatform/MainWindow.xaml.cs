@@ -46,16 +46,16 @@ namespace Yuri
             this.mainFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
             this.mainFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
             ViewPageManager.RegisterPage("SplashPage", new SplashPage());
-            this.mainFrame.Content = new ArtPage(); //ViewPageManager.RetrievePage("SplashPage");
-            //this.maskFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
-            //this.maskFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
-            //ViewManager.MaskFrameRef = this.maskFrame;
-            //InputMethod.SetIsInputMethodEnabled(this, false);
-            //if (GlobalConfigContext.GAME_WINDOW_FULLSCREEN)
-            //{
-            //    Director.IsFullScreen = true;
-            //    this.FullScreenTransform();
-            //}
+            this.maskFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.maskFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
+            ViewManager.MaskFrameRef = this.maskFrame;
+            InputMethod.SetIsInputMethodEnabled(this, false);
+            this.mainFrame.Content = ViewPageManager.RetrievePage("SplashPage");
+            if (GlobalConfigContext.GAME_WINDOW_FULLSCREEN)
+            {
+                Director.IsFullScreen = true;
+                this.FullScreenTransform();
+            }
         }
 
         /// <summary>

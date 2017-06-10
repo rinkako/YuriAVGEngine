@@ -128,7 +128,7 @@ namespace Yuri.PageView
             try
             {
                 // 获取当前指向的slot
-                int pointId = 0;
+                int pointId;
                 if (sender is int)
                 {
                     pointId = (int)sender;
@@ -191,8 +191,8 @@ namespace Yuri.PageView
                     var timeItems = saveList[pointId].Name.Split('-');
                     var timeStr = String.Format("{0}-{1}-{2} {3}:{4}:{5}",
                         timeItems[2], timeItems[3], timeItems[4], timeItems[5], timeItems[6], timeItems[7]);
-                    this.SL_TimeStampTextBlock.Text = String.Format("{0}{1}  Time:{2}",
-                        chapterStr == String.Empty ? String.Empty : "Chapter:", chapterStr, timeStr);
+                    this.SL_TimeStampTextBlock.Text = String.Format("{0}{1}  Time: {2}",
+                        chapterStr == String.Empty ? String.Empty : "   Chapter: ", chapterStr, timeStr);
                     this.SL_NameTextBlock.Text = String.Format("< 存档{0} >", pointId + 1);
                     this.SL_Button_SorL.Visibility = this.SL_Button_Delete.Visibility = 
                         this.SL_TimeStampTextBlock.Visibility = this.SL_DescriptorBox.Visibility = Visibility.Visible;
@@ -263,7 +263,7 @@ namespace Yuri.PageView
         private void SL_Button_Delete_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (MessageBoxResult.Yes == MessageBox.Show(String.Format("真的要删除存档[{0}]吗？{1}这个行为不能回滚。",
-                this.slotButtonList[lastPointed].Content.ToString(), Environment.NewLine),
+                this.slotButtonList[lastPointed].Content, Environment.NewLine),
                 "确认", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No))
             {
                 try
@@ -290,7 +290,7 @@ namespace Yuri.PageView
                 }
                 catch (Exception ex)
                 {
-                    var exStr = "在删除文件时发生了异常：" + ex.ToString();
+                    var exStr = "在删除文件时发生了异常：" + ex;
                     LogUtils.LogLine(exStr, "SLPage", LogLevel.Warning);
                     MessageBox.Show(exStr);
                 }
@@ -407,8 +407,8 @@ namespace Yuri.PageView
                 }
                 catch (Exception ex)
                 {
-                    var exStr = "读取存档文件失败，存档是损坏的？" + Environment.NewLine + ex.ToString();
-                    LogUtils.LogLine(exStr, "SLPage", Utils.LogLevel.Error);
+                    var exStr = "读取存档文件失败，存档是损坏的？" + Environment.NewLine + ex;
+                    LogUtils.LogLine(exStr, "SLPage", LogLevel.Error);
                     MessageBox.Show(exStr);
                 }
             }

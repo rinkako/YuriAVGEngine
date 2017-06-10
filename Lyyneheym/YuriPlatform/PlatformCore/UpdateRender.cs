@@ -29,6 +29,7 @@ namespace Yuri.PlatformCore
     internal class UpdateRender
     {
         #region 辅助函数
+
         /// <summary>
         /// <para>将逆波兰式计算为等价的Double类型实例</para>
         /// <para>如果逆波兰式为空，则返回参数nullValue的值</para>
@@ -80,11 +81,13 @@ namespace Yuri.PlatformCore
         /// <returns>String实例</returns>
         private string ParseDirectString(string polish, string nullValue)
         {
-            return polish == String.Empty? nullValue : polish;
+            return polish == String.Empty ? nullValue : polish;
         }
+
         #endregion
 
         #region 键位按钮状态
+
         /// <summary>
         /// 获取键盘上某个按键当前状态
         /// </summary>
@@ -147,7 +150,7 @@ namespace Yuri.PlatformCore
             // 上滚
             if (delta > 0 &&
                 (!ViewManager.Is3DStage && !SCamera2D.IsAnyAnimation ||
-                ViewManager.Is3DStage && !SCamera3D.IsAnyAnimation) &&
+                 ViewManager.Is3DStage && !SCamera3D.IsAnyAnimation) &&
                 !Director.IsRClicking)
             {
                 this.Stopvocal();
@@ -169,15 +172,18 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 鼠标按钮状态字典
         /// </summary>
-        private static readonly Dictionary<MouseButton, MouseButtonState> KS_MOUSE_Dict = new Dictionary<MouseButton, MouseButtonState>();
+        private static readonly Dictionary<MouseButton, MouseButtonState> KS_MOUSE_Dict =
+            new Dictionary<MouseButton, MouseButtonState>();
 
         /// <summary>
         /// 键盘按钮状态字典
         /// </summary>
         private static readonly Dictionary<Key, KeyStates> KS_KEY_Dict = new Dictionary<Key, KeyStates>();
+
         #endregion
 
         #region 周期性调用
+
         /// <summary>
         /// 更新函数：根据鼠标状态更新游戏，它的优先级低于精灵按钮
         /// </summary>
@@ -239,7 +245,9 @@ namespace Yuri.PlatformCore
                                     if (rfunc.LabelDictionary.ContainsKey(GlobalConfigContext.DeConstructorName))
                                     {
                                         // 跳转到析构标签
-                                        this.VsmReference.EBP.IP = this.VsmReference.EBP.BindingFunction.LabelDictionary[GlobalConfigContext.DeConstructorName];
+                                        this.VsmReference.EBP.IP =
+                                            this.VsmReference.EBP.BindingFunction.LabelDictionary[
+                                                GlobalConfigContext.DeConstructorName];
                                         Director.RunMana.ExitUserWait();
                                     }
                                     else
@@ -264,7 +272,11 @@ namespace Yuri.PlatformCore
                         }
                         if (++this.RclickCounter >= 3)
                         {
-                            this.RclickCounter = this.IsBranching || GlobalConfigContext.GAME_RCLICKMODE == GlobalConfigContext.RClickType.RClickMenu ? 1 : 0;
+                            this.RclickCounter =
+                                this.IsBranching || GlobalConfigContext.GAME_RCLICKMODE ==
+                                GlobalConfigContext.RClickType.RClickMenu
+                                    ? 1
+                                    : 0;
                         }
                     }
                 }
@@ -285,7 +297,10 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 鼠标右键计数器
         /// </summary>
-        public int RclickCounter { get; set; } = GlobalConfigContext.GAME_RCLICKMODE == GlobalConfigContext.RClickType.RClickMenu ? 1 : 0;
+        public int RclickCounter { get; set; } = GlobalConfigContext.GAME_RCLICKMODE ==
+                                                 GlobalConfigContext.RClickType.RClickMenu
+            ? 1
+            : 0;
 
         /// <summary>
         /// 更新函数：根据键盘状态更新游戏，它的优先级低于精灵按钮
@@ -333,7 +348,8 @@ namespace Yuri.PlatformCore
                     try
                     {
                         var url = IOUtils.ParseURItoURL(GlobalConfigContext.GAME_SAVE_DIR + @"\" +
-                                                        GlobalConfigContext.QSaveFileName + GlobalConfigContext.GAME_SAVE_POSTFIX);
+                                                        GlobalConfigContext.QSaveFileName +
+                                                        GlobalConfigContext.GAME_SAVE_POSTFIX);
                         if (File.Exists(url))
                         {
                             this.Stopvocal();
@@ -411,9 +427,11 @@ namespace Yuri.PlatformCore
         /// 鼠标右键是否松开标志位
         /// </summary>
         private bool MouseRightUpFlag = true;
+
         #endregion
 
         #region 文字层相关
+
         /// <summary>
         /// 把文字描绘到指定的文字层上
         /// </summary>
@@ -459,7 +477,8 @@ namespace Yuri.PlatformCore
                     wordDelay = false;
                 }
                 // 打字动画
-                this.TypeWriter(0, this.dialogPreStr, currentRun, this.viewMana.GetMessageLayer(0).DisplayBinding, wordDelay ? GlobalConfigContext.GAME_MSG_TYPING_DELAY : 0);
+                this.TypeWriter(0, this.dialogPreStr, currentRun, this.viewMana.GetMessageLayer(0).DisplayBinding,
+                    wordDelay ? GlobalConfigContext.GAME_MSG_TYPING_DELAY : 0);
                 this.dialogPreStr += currentRun;
             }
         }
@@ -490,8 +509,9 @@ namespace Yuri.PlatformCore
                     if (i + 2 < dialogStr.Length && dialogStr[i + 1] == '$' && dialogStr[i + 2] == '{')
                     {
                         int varPtr = i + 3;
-                        while (varPtr < dialogStr.Length && dialogStr[varPtr++] != '}');
-                        string varStr = Director.RunMana.Fetch("$" + dialogStr.Substring(i + 3, varPtr - i - 4), this.VsmReference).ToString();
+                        while (varPtr < dialogStr.Length && dialogStr[varPtr++] != '}') ;
+                        string varStr = Director.RunMana
+                            .Fetch("$" + dialogStr.Substring(i + 3, varPtr - i - 4), this.VsmReference).ToString();
                         dialogStr = dialogStr.Remove(i, varPtr - i);
                         dialogStr = dialogStr.Insert(i, varStr);
                     }
@@ -499,13 +519,14 @@ namespace Yuri.PlatformCore
                     {
                         int varPtr = i + 3;
                         while (varPtr < dialogStr.Length && dialogStr[varPtr++] != '}') ;
-                        string varStr = Director.RunMana.Fetch("&" + dialogStr.Substring(i + 3, varPtr - i - 4), this.VsmReference).ToString();
+                        string varStr = Director.RunMana
+                            .Fetch("&" + dialogStr.Substring(i + 3, varPtr - i - 4), this.VsmReference).ToString();
                         dialogStr = dialogStr.Remove(i, varPtr - i);
                         dialogStr = dialogStr.Insert(i, varStr);
                     }
                 }
             }
-            return dialogStr.Split(new string[] { "\\|" }, StringSplitOptions.None);
+            return dialogStr.Split(new string[] {"\\|"}, StringSplitOptions.None);
         }
 
         /// <summary>
@@ -516,7 +537,8 @@ namespace Yuri.PlatformCore
         /// <param name="appendString">要追加的字符串</param>
         /// <param name="msglayBinding">文字层的控件</param>
         /// <param name="wordTimeSpan">字符之间的打字时间间隔</param>
-        private void TypeWriter(int id, string orgString, string appendString, TextBlock msglayBinding, int wordTimeSpan)
+        private void TypeWriter(int id, string orgString, string appendString, TextBlock msglayBinding,
+            int wordTimeSpan)
         {
             this.HideMessageTria();
             Storyboard MsgLayerTypingStory = new Storyboard();
@@ -546,7 +568,8 @@ namespace Yuri.PlatformCore
         /// </summary>
         private void TypeWriterAnimationCompletedCallback(object sender, EventArgs e)
         {
-            if (this.MsgStoryboardDict.ContainsKey(0) && Math.Abs(this.MsgStoryboardDict[0].GetCurrentProgress() - 1.0) < 0.01)
+            if (this.MsgStoryboardDict.ContainsKey(0) &&
+                Math.Abs(this.MsgStoryboardDict[0].GetCurrentProgress() - 1.0) < 0.01)
             {
                 this.ShowMessageTria();
                 this.BeginMessageTriaUpDownAnimation();
@@ -619,7 +642,7 @@ namespace Yuri.PlatformCore
         /// 当前正在操作的文字层
         /// </summary>
         private int currentMsgLayer = 0;
-        
+
         /// <summary>
         /// 获取当前是否正在显示对话
         /// </summary>
@@ -628,7 +651,8 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置当前是否正在显示选择支
         /// </summary>
-        public bool IsBranching {
+        public bool IsBranching
+        {
             get => this.isBranching;
             set
             {
@@ -638,7 +662,10 @@ namespace Yuri.PlatformCore
                 }
                 else
                 {
-                    this.RclickCounter = GlobalConfigContext.GAME_RCLICKMODE == GlobalConfigContext.RClickType.StageAndMenu ? 0 : 1;
+                    this.RclickCounter = GlobalConfigContext.GAME_RCLICKMODE ==
+                                         GlobalConfigContext.RClickType.StageAndMenu
+                        ? 0
+                        : 1;
                 }
             }
         }
@@ -672,9 +699,11 @@ namespace Yuri.PlatformCore
         /// 对话故事板容器
         /// </summary>
         private Dictionary<int, Storyboard> MsgStoryboardDict = new Dictionary<int, Storyboard>();
+
         #endregion
 
         #region 渲染器类自身相关方法和引用
+
         /// <summary>
         /// 初始化前端显示
         /// </summary>
@@ -736,12 +765,12 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 2D主舞台的引用
         /// </summary>
-        private Stage2D view2d => (Stage2D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
+        private Stage2D view2d => (Stage2D) ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
 
         /// <summary>
         /// 3D主舞台的引用
         /// </summary>
-        private Stage3D view3d => (Stage3D)ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
+        private Stage3D view3d => (Stage3D) ViewPageManager.RetrievePage(GlobalConfigContext.FirstViewPage);
 
         /// <summary>
         /// 资源管理器
@@ -752,9 +781,11 @@ namespace Yuri.PlatformCore
         /// 视窗管理器
         /// </summary>
         private readonly ViewManager viewMana = ViewManager.GetInstance();
+
         #endregion
 
         #region 演绎函数
+
         /// <summary>
         /// 接受一个场景动作并演绎她
         /// </summary>
@@ -769,7 +800,7 @@ namespace Yuri.PlatformCore
                         this.ParseInt(action.ArgsDict["vid"], -1),
                         this.ParseDirectString(action.ArgsDict["face"], String.Empty),
                         this.ParseDirectString(action.ArgsDict["loc"], String.Empty)
-                        );
+                    );
                     break;
                 case SActionType.act_bg:
                     this.Background(
@@ -783,7 +814,7 @@ namespace Yuri.PlatformCore
                         this.ParseDouble(action.ArgsDict["ro"], 0),
                         SpriteAnchorType.Center,
                         new Int32Rect(-1, 0, 0, 0)
-                        );
+                    );
                     break;
                 case SActionType.act_picture:
                     this.Picture(
@@ -797,24 +828,28 @@ namespace Yuri.PlatformCore
                         this.ParseDouble(action.ArgsDict["ro"], 0),
                         SpriteAnchorType.Center,
                         new Int32Rect(-1, 0, 0, 0)
-                        );
+                    );
                     break;
                 case SActionType.act_move:
                     string moveResType = action.ArgsDict["name"];
                     this.Move(
                         this.ParseInt(action.ArgsDict["id"], 0),
-                        moveResType == "picture" ? ResourceType.Pictures : (moveResType == "stand" ? ResourceType.Stand : (moveResType == "button" ? ResourceType.Button : ResourceType.Background)),
+                        moveResType == "picture"
+                            ? ResourceType.Pictures
+                            : (moveResType == "stand"
+                                ? ResourceType.Stand
+                                : (moveResType == "button" ? ResourceType.Button : ResourceType.Background)),
                         this.ParseDirectString(action.ArgsDict["target"], String.Empty),
                         this.ParseDouble(action.ArgsDict["dash"], 1),
                         this.ParseDouble(action.ArgsDict["acc"], 0),
                         TimeSpan.FromMilliseconds(this.ParseDouble(action.ArgsDict["time"], 0))
-                        );
+                    );
                     break;
                 case SActionType.act_deletepicture:
                     this.Deletepicture(
                         this.ParseInt(action.ArgsDict["id"], -1),
                         ResourceType.Pictures
-                        );
+                    );
                     break;
                 case SActionType.act_cstand:
                     this.Cstand(
@@ -826,25 +861,25 @@ namespace Yuri.PlatformCore
                         this.ParseInt(action.ArgsDict["loc"], 0),
                         SpriteAnchorType.Center,
                         new Int32Rect(0, 0, 0, 0)
-                        );
+                    );
                     break;
                 case SActionType.act_deletecstand:
                     this.Deletecstand(
                         this.ParseInt(action.ArgsDict["id"], 0)
-                        );
+                    );
                     break;
                 case SActionType.act_bgs:
                     this.Bgs(
                         this.ParseDirectString(action.ArgsDict["filename"], String.Empty),
                         this.ParseDouble(action.ArgsDict["vol"], 1000),
                         0
-                        );
+                    );
                     break;
                 case SActionType.act_se:
                     this.Se(
                         this.ParseDirectString(action.ArgsDict["filename"], String.Empty),
                         this.ParseDouble(action.ArgsDict["vol"], 1000)
-                        );
+                    );
                     break;
                 case SActionType.act_bgmfade:
                     this.Bgmfade(
@@ -856,7 +891,7 @@ namespace Yuri.PlatformCore
                     this.Bgm(
                         this.ParseDirectString(action.ArgsDict["filename"], String.Empty),
                         this.ParseDouble(action.ArgsDict["vol"], 1000)
-                        );
+                    );
                     break;
                 case SActionType.act_stopbgm:
                     this.Stopbgm();
@@ -869,7 +904,7 @@ namespace Yuri.PlatformCore
                         this.ParseDirectString(action.ArgsDict["name"], String.Empty),
                         this.ParseInt(action.ArgsDict["vid"], -1),
                         1000
-                        );
+                    );
                     break;
                 case SActionType.act_stopvocal:
                     this.Stopvocal();
@@ -888,7 +923,7 @@ namespace Yuri.PlatformCore
                         this.ParseDirectString(action.ArgsDict["name"], String.Empty),
                         this.ParseDirectString(action.ArgsDict["target"], String.Empty),
                         this.ParseDirectString(action.ArgsDict["filename"], String.Empty)
-                        );
+                    );
                     break;
                 case SActionType.act_label:
                     this.Label(action.ArgsDict["name"]);
@@ -900,18 +935,18 @@ namespace Yuri.PlatformCore
                     this.Switch(
                         this.ParseInt(action.ArgsDict["id"], 0),
                         this.ParseDirectString(action.ArgsDict["state"], "on") == "on"
-                        );
+                    );
                     break;
                 case SActionType.act_var:
                     this.Var(
                         this.ParseDirectString(action.ArgsDict["name"], "$__LyyneheymTempVar"),
                         this.ParseDirectString(action.ArgsDict["dash"], "1")
-                        );
+                    );
                     break;
                 case SActionType.act_break:
                     this.Break(
                         action
-                        );
+                    );
                     break;
                 case SActionType.act_shutdown:
                     this.Shutdown();
@@ -919,7 +954,12 @@ namespace Yuri.PlatformCore
                 case SActionType.act_branch:
                     this.Branch(
                         this.ParseDirectString(action.ArgsDict["link"], String.Empty)
-                        );
+                    );
+                    break;
+                case SActionType.act_uipage:
+                    this.Uipage(
+                        this.ParseDirectString(action.ArgsDict["target"], "null")
+                    );
                     break;
                 case SActionType.act_titlepoint:
                     break;
@@ -927,12 +967,12 @@ namespace Yuri.PlatformCore
                     this.Enabler(
                         this.ParseDirectString(action.ArgsDict["target"], String.Empty),
                         this.ParseDirectString(action.ArgsDict["state"], String.Empty)
-                        );
+                    );
                     break;
                 case SActionType.act_trans:
                     this.Trans(
                         this.ParseDirectString(action.ArgsDict["name"], "Fade")
-                        );
+                    );
                     break;
                 case SActionType.act_button:
                     this.Button(
@@ -946,12 +986,12 @@ namespace Yuri.PlatformCore
                         this.ParseDirectString(action.ArgsDict["over"], String.Empty),
                         this.ParseDirectString(action.ArgsDict["on"], String.Empty),
                         this.ParseDirectString(action.ArgsDict["type"], "once")
-                        );
+                    );
                     break;
                 case SActionType.act_deletebutton:
                     this.Deletebutton(
                         this.ParseInt(action.ArgsDict["id"], -1)
-                        );
+                    );
                     break;
                 case SActionType.act_style:
                     break;
@@ -960,12 +1000,12 @@ namespace Yuri.PlatformCore
                         this.ParseDirectString(action.ArgsDict["name"], String.Empty),
                         this.ParseDirectString(action.ArgsDict["dash"], String.Empty),
                         this.ParseDirectString(action.ArgsDict["sign"], String.Empty)
-                        );
+                    );
                     break;
                 case SActionType.act_msglayer:
                     this.MsgLayer(
                         this.ParseInt(action.ArgsDict["id"], 0)
-                        );
+                    );
                     break;
                 case SActionType.act_msglayeropt:
                     var dashMsgoptItem = this.ParseDirectString(action.ArgsDict["dash"], String.Empty);
@@ -973,7 +1013,7 @@ namespace Yuri.PlatformCore
                         this.ParseInt(action.ArgsDict["id"], 0),
                         this.ParseDirectString(action.ArgsDict["target"], String.Empty),
                         dashMsgoptItem ?? String.Empty
-                        );
+                    );
                     break;
                 case SActionType.act_scamera:
                     this.Scamera(
@@ -981,30 +1021,30 @@ namespace Yuri.PlatformCore
                         this.ParseInt(action.ArgsDict["x"], 0),
                         this.ParseInt(action.ArgsDict["y"], GlobalConfigContext.GAME_SCAMERA_SCR_ROWCOUNT / 2),
                         this.ParseDouble(action.ArgsDict["ro"], 0)
-                        );
+                    );
                     break;
                 case SActionType.act_draw:
                     this.DrawCommand(
                         this.ParseInt(action.ArgsDict["id"], 0),
                         this.ParseDirectString(action.ArgsDict["dash"], String.Empty)
-                        );
+                    );
                     break;
                 case SActionType.act_alert:
                     this.Alert(
                         this.ParseDirectString(action.ArgsDict["target"], String.Empty)
-                        );
+                    );
                     break;
                 case SActionType.act_dialog:
                     this.Dialog(
                         action.Tag.Substring(0, action.Tag.Length - 2),
                         action.Tag.Last() == '1'
-                        );
+                    );
                     break;
                 case SActionType.act_chapter:
                     this.Chapter(
-                        this.ParseDirectString(action.ArgsDict["name"], 
-                        Director.RunMana.LastScenario == null ? String.Empty : Director.RunMana.LastScenario)
-                        );
+                        this.ParseDirectString(action.ArgsDict["name"],
+                            Director.RunMana.LastScenario == null ? String.Empty : Director.RunMana.LastScenario)
+                    );
                     break;
                 case SActionType.act_semaphore:
                     this.Semaphore(
@@ -1013,7 +1053,7 @@ namespace Yuri.PlatformCore
                         this.ParseDirectString(action.ArgsDict["activator"], String.Empty),
                         this.ParseDirectString(action.ArgsDict["deactivator"], String.Empty),
                         this.ParseDirectString(action.ArgsDict["dash"], String.Empty)
-                        );
+                    );
                     break;
                 default:
                     break;
@@ -1029,7 +1069,7 @@ namespace Yuri.PlatformCore
             //ViewManager.GetWindowReference()?.Close();
             Director.CollapseWorld();
         }
-        
+
         /// <summary>
         /// 跳过所有动画
         /// </summary>
@@ -1077,7 +1117,7 @@ namespace Yuri.PlatformCore
             }
             else
             {
-                LogUtils.LogLine(String.Format("Drawtext cannot apply on MessageLayer0 (Main MsgLayer): {0}", text), 
+                LogUtils.LogLine(String.Format("Drawtext cannot apply on MessageLayer0 (Main MsgLayer): {0}", text),
                     "UpdateRender", LogLevel.Error);
             }
         }
@@ -1098,7 +1138,8 @@ namespace Yuri.PlatformCore
         {
             if (face != String.Empty)
             {
-                this.Cstand(-1, String.Format("{0}_{1}.png", name, face), locStr, 1, 1, 1, 0, SpriteAnchorType.Center, new Int32Rect(0, 0, 0, 0));
+                this.Cstand(-1, String.Format("{0}_{1}.png", name, face), locStr, 1, 1, 1, 0, SpriteAnchorType.Center,
+                    new Int32Rect(0, 0, 0, 0));
             }
             if (vid != -1)
             {
@@ -1133,7 +1174,10 @@ namespace Yuri.PlatformCore
                 {
                     this.viewMana.EnableBranchButtonHitTest();
                 }
-                this.RclickCounter = this.IsBranching || GlobalConfigContext.GAME_RCLICKMODE == GlobalConfigContext.RClickType.RClickMenu ? 1 : 0;
+                this.RclickCounter = this.IsBranching || GlobalConfigContext.GAME_RCLICKMODE ==
+                                     GlobalConfigContext.RClickType.RClickMenu
+                    ? 1
+                    : 0;
             }
         }
 
@@ -1145,16 +1189,22 @@ namespace Yuri.PlatformCore
         /// <param name="activatorName">激活函数名</param>
         /// <param name="deactivatorName">反激活函数名</param>
         /// <param name="dash">信号量操作目标值</param>
-        private void Semaphore(string cmd, string semaphoreName, string activatorName, string deactivatorName, string dash)
+        private void Semaphore(string cmd, string semaphoreName, string activatorName, string deactivatorName,
+            string dash)
         {
             cmd = cmd.ToLower();
             var curScene = this.resMana.GetScene(Director.RunMana.CallStack.EBP.BindingSceneName);
             switch (cmd)
             {
                 case "binding":
-                    var bindActivator = activatorName == String.Empty ? null : curScene.FuncContainer.Find(t => t.Callname == activatorName);
-                    var bindDeactivator = deactivatorName == String.Empty ? null : curScene.FuncContainer.Find(t => t.Callname == deactivatorName);
-                    SemaphoreDispatcher.RegisterSemaphoreService(semaphoreName, bindActivator, bindDeactivator, null, "UserScene");
+                    var bindActivator = activatorName == String.Empty
+                        ? null
+                        : curScene.FuncContainer.Find(t => t.Callname == activatorName);
+                    var bindDeactivator = deactivatorName == String.Empty
+                        ? null
+                        : curScene.FuncContainer.Find(t => t.Callname == deactivatorName);
+                    SemaphoreDispatcher.RegisterSemaphoreService(semaphoreName, bindActivator, bindDeactivator, null,
+                        "UserScene");
                     break;
                 case "unbind":
                     SemaphoreDispatcher.UnregisterSemaphoreService();
@@ -1175,9 +1225,14 @@ namespace Yuri.PlatformCore
                     SemaphoreDispatcher.DeactivateAll();
                     break;
                 case "globalbinding":
-                    var gbindActivator = activatorName == String.Empty ? null : curScene.FuncContainer.Find(t => t.Callname == activatorName);
-                    var gbindDeactivator = deactivatorName == String.Empty ? null : curScene.FuncContainer.Find(t => t.Callname == deactivatorName);
-                    SemaphoreDispatcher.RegisterGlobalSemaphoreService(semaphoreName, gbindActivator, gbindDeactivator, null, "Global");
+                    var gbindActivator = activatorName == String.Empty
+                        ? null
+                        : curScene.FuncContainer.Find(t => t.Callname == activatorName);
+                    var gbindDeactivator = deactivatorName == String.Empty
+                        ? null
+                        : curScene.FuncContainer.Find(t => t.Callname == deactivatorName);
+                    SemaphoreDispatcher.RegisterGlobalSemaphoreService(semaphoreName, gbindActivator, gbindDeactivator,
+                        null, "Global");
                     break;
                 case "globalunbind":
                     SemaphoreDispatcher.UnregisterGlobalSemaphoreService(semaphoreName);
@@ -1192,7 +1247,10 @@ namespace Yuri.PlatformCore
         /// <param name="state">启用与否</param>
         public void Enabler(string target, string state)
         {
-            if (target == String.Empty) { return; }
+            if (target == String.Empty)
+            {
+                return;
+            }
             state = state == String.Empty ? "on" : state.ToLower();
             target = target.ToLower();
             switch (target)
@@ -1203,6 +1261,22 @@ namespace Yuri.PlatformCore
             }
         }
 
+        /// <summary>
+        /// 演绎函数：显示WPF级UI页面
+        /// </summary>
+        /// <param name="target">目标页面名，null为退出ui页</param>
+        public void Uipage(string target)
+        {
+            if (String.Compare(target, "null", StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                ViewPageManager.CollapseUIPage();
+            }
+            else
+            {
+                ViewPageManager.ShowUIPage(target);
+            }
+        }
+        
         /// <summary>
         /// 演绎函数：设置当前章节名字
         /// </summary>

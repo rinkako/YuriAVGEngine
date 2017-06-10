@@ -164,7 +164,7 @@ namespace Yuri.PlatformCore
             {
                 try
                 {
-                    Type typeIns = YuririReflector.YuriTypeArr.Find((ty) => String.Compare(ty.Name, typeName, true) == 0);
+                    Type typeIns = YuririReflector.YuriTypeVector.Find((ty) => String.Compare(ty.Name, typeName, true) == 0);
                     if (typeIns == null)
                     {
                         LogUtils.AsyncLogLine(String.Format("Invoke static by yuriri failed: {0}->{1} not exist.", typeName, methodName), 
@@ -191,7 +191,7 @@ namespace Yuri.PlatformCore
             {
                 try
                 {
-                    Type typeIns = YuririReflector.YuriTypeArr.Find((ty) => String.Compare(ty.Name, typeName, true) == 0);
+                    Type typeIns = YuririReflector.YuriTypeVector.Find((ty) => String.Compare(ty.Name, typeName, true) == 0);
                     if (typeIns != null)
                     {
                         return Activator.CreateInstance(typeIns);
@@ -225,13 +225,13 @@ namespace Yuri.PlatformCore
             /// </summary>
             static YuririReflector()
             {
-                YuririReflector.YuriTypeArr = Assembly.GetExecutingAssembly().GetTypes().ToList();
+                YuririReflector.YuriTypeVector = Assembly.GetExecutingAssembly().GetTypes().ToList();
             }
 
             /// <summary>
             /// 类型向量，供反射时查找类型
             /// </summary>
-            private static readonly List<Type> YuriTypeArr;
+            public static readonly List<Type> YuriTypeVector;
         }
     }
 }

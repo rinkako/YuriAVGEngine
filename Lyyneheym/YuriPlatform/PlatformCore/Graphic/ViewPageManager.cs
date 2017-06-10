@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using Yuri.Utils;
@@ -121,10 +122,52 @@ namespace Yuri.PlatformCore.Graphic
                 LogUtils.LogLine(string.Format("Cannot go back from page: {0}, Navigation service ignored. {1}", ViewPageManager.CurrentPage?.Name, ex),
                         "ViewPageManager", LogLevel.Error);
                 Director.GetInstance().GetMainRender().Shutdown();
-            }
-            
+            }    
         }
 
+        /// <summary>
+        /// 显示一个用户自定义UI页到UIFrame
+        /// </summary>
+        /// <param name="uiPageName">页面的名字</param>
+        /// <returns>页面是否存在</returns>
+        public static bool ShowUIPage(string uiPageName)
+        {
+            try
+            {
+                var up = ViewPageManager.RetrievePage(uiPageName);
+                if (up == null)
+                {
+                    if (ViewPageManager.typeDict.ContainsKey(uiPageName))
+                    {
+                        var pageType = ViewPageManager.typeDict[uiPageName];
+                        var pageObj = (Page)Activator.CreateInstance(pageType);
+                        ViewPageManager.RegisterPage(uiPageName, pageObj);
+                        ViewManager.mWnd.uiFrame.Visibility = System.Windows.Visibility.Visible;
+                        ViewManager.mWnd.uiFrame.Content = pageObj;
+                        return true;
+                    }
+                    return false;
+                }
+                ViewManager.mWnd.uiFrame.Visibility = System.Windows.Visibility.Visible;
+                ViewManager.mWnd.uiFrame.Content = up;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("Show UI Page in uiframe failed. " + ex, "ViewPageManager", LogLevel.Error);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 退出UIFrame
+        /// </summary>
+        public static void CollapseUIPage()
+        {
+            ViewManager.mWnd.uiFrame.Content = null;
+            ViewManager.mWnd.uiFrame.Visibility = System.Windows.Visibility.Hidden;
+        }
+        
         /// <summary>
         /// 获取当前是否位于主舞台页面
         /// </summary>
@@ -133,6 +176,20 @@ namespace Yuri.PlatformCore.Graphic
         {
             return ViewPageManager.PageCallStack.Count > 0 && 
                 (ViewPageManager.PageCallStack.Peek() is PageView.Stage3D || ViewPageManager.PageCallStack.Peek() is PageView.Stage2D);
+        }
+
+        /// <summary>
+        /// 静态构造函数
+        /// </summary>
+        static ViewPageManager()
+        {
+            var typeVec = from t in YuririWorld.YuririReflector.YuriTypeVector
+                where t.FullName.StartsWith("Yuri.PageView.")
+                select t;
+            foreach (var t in typeVec)
+            {
+                ViewPageManager.typeDict.Add(t.Name, t);
+            }
         }
 
         /// <summary>
@@ -149,5 +206,10 @@ namespace Yuri.PlatformCore.Graphic
         /// 前端页引用字典
         /// </summary>
         private static readonly Dictionary<string, Page> pageDict = new Dictionary<string, Page>();
+
+        /// <summary>
+        /// 前端页类型字典
+        /// </summary>
+        private static readonly Dictionary<string, Type> typeDict = new Dictionary<string, Type>();
     }
 }
