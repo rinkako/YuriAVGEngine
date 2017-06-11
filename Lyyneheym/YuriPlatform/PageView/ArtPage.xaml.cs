@@ -39,6 +39,13 @@ namespace Yuri.PageView
             this.Art_MainGrid.Background = new ImageBrush(rm.GetPicture("UI_Gallery_Background.png", ResourceManager.FullImageRect).SpriteBitmapImage);
             this.Atr_Image_Title.Source = rm.GetPicture("UI_Gallery_Art_Title.png", ResourceManager.FullImageRect).SpriteBitmapImage;
             this.Atr_Image_Back.Source = rm.GetPicture("UI_System_Btn_Back_1.png", ResourceManager.FullImageRect).SpriteBitmapImage;
+
+            this.canvasSprite = new YuriSprite()
+            {
+                DisplayBinding = this.Art_Grid_Controls,
+                AnimationElement = this.Art_Grid_Controls,
+                Descriptor = new SpriteDescriptor()
+            };
         }
 
         private void Page_MouseMove(object sender, MouseEventArgs e)
@@ -78,6 +85,13 @@ namespace Yuri.PageView
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    this.OpenVect[i, j] = false;
+                }
+            }
             string bgFile = "bg_forest.jpg";
             switch (new Random().Next() % 4)
             {
@@ -122,6 +136,8 @@ namespace Yuri.PageView
             var tx = rx * 25;
             var ty = ry * 25;
             this.Art_Image_Background.Margin = new Thickness( -25 + tx, -25 + ty, -25 - tx, -25 - ty);
+            var wnd = Window.GetWindow(this);
+            wnd.KeyDown += this.Art_Image_Viewbox_KeyDown;
         }
 
         private void Art_Image_Preview_MouseEnter(object sender, MouseEventArgs e)
@@ -135,28 +151,36 @@ namespace Yuri.PageView
         }
 
         private YuriSprite viewSprite;
+
+        private YuriSprite canvasSprite;
+
         private void Art_Image_Preview_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var image = sender as Image;
             var row = Grid.GetRow(image) == 2 ? 1 : 0;
             var col = Grid.GetColumn(image);
             var isOpened = this.OpenVect[row, col];
-            viewSprite = rm.GetPicture("CG_" + (row * 4 + col + 1) + ".png", ResourceManager.FullImageRect);
-            SpriteDescriptor desc = new SpriteDescriptor()
-            {
-                ResourceType = ResourceType.Pictures
-            };
-            viewSprite.Descriptor = desc;
             if (isOpened)
             {
+                viewSprite = rm.GetPicture("CG_" + (row * 4 + col + 1) + ".png", ResourceManager.FullImageRect);
+                SpriteDescriptor desc = new SpriteDescriptor()
+                {
+                    ResourceType = ResourceType.Pictures
+                };
+                viewSprite.Descriptor = desc;
+                this.Art_Image_Viewbox.Margin = new Thickness(0, 0, 0, 0);
+                this.RollCounter = 0;
                 this.Art_Image_Viewbox.Source = viewSprite.SpriteBitmapImage;
                 this.Art_Image_Viewbox.Visibility = Visibility.Visible;
                 this.Art_Image_Viewbox.Opacity = 0;
                 desc.ToOpacity = 1;
                 viewSprite.DisplayBinding = viewSprite.AnimationElement = this.Art_Image_Viewbox;
-                SpriteAnimation.BlurMutexAnimation(viewSprite, TimeSpan.Zero, 0, 50);
                 SpriteAnimation.OpacityToAnimation(viewSprite, TimeSpan.FromMilliseconds(500), 1);
-                SpriteAnimation.BlurMutexAnimation(viewSprite, TimeSpan.FromMilliseconds(500), 50, 0);
+                if (GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.HighQuality)
+                {
+                    SpriteAnimation.BlurMutexAnimation(canvasSprite, TimeSpan.FromMilliseconds(800), 0, 50);
+                }
+                this.Art_Grid_Controls.IsHitTestVisible = false;
             }
         }
 
@@ -164,6 +188,109 @@ namespace Yuri.PageView
         {
             this.Art_Image_Viewbox.Source = null;
             this.Art_Image_Viewbox.Visibility = Visibility.Hidden;
+            this.Art_Grid_Controls.IsHitTestVisible = true;
+            if (GlobalConfigContext.GAME_PERFORMANCE_TYPE == GlobalConfigContext.PerformanceType.HighQuality)
+            {
+                SpriteAnimation.BlurMutexAnimation(canvasSprite, TimeSpan.FromMilliseconds(300), 50, 0);
+            }
+        }
+
+        private void Art_Image_Viewbox_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                if (RollCounter < 20)
+                {
+                    var oldMargin = this.Art_Image_Viewbox.Margin;
+                    this.Art_Image_Viewbox.Margin = new Thickness(
+                        oldMargin.Left - 30,
+                        oldMargin.Top - 30,
+                        oldMargin.Right - 30,
+                        oldMargin.Bottom - 30
+                    );
+                    RollCounter++;
+                }
+            }
+            else
+            {
+                if (RollCounter > 0)
+                {
+                    var oldMargin = this.Art_Image_Viewbox.Margin;
+                    this.Art_Image_Viewbox.Margin = new Thickness(
+                        oldMargin.Left + 30,
+                        oldMargin.Top + 30,
+                        oldMargin.Right + 30,
+                        oldMargin.Bottom + 30
+                    );
+                    RollCounter--;
+                }
+            }
+        }
+
+        private int RollCounter = 0;
+
+        private void Art_Image_Viewbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (this.Art_Image_Viewbox.Visibility != Visibility.Visible)
+            {
+                return;
+            }
+            var oldMargin = this.Art_Image_Viewbox.Margin;
+            switch (e.Key)
+            {
+                case Key.Up:
+                    if (oldMargin.Top < 0)
+                    {
+                        this.Art_Image_Viewbox.Margin = new Thickness(
+                            oldMargin.Left,
+                            oldMargin.Top + 10,
+                            oldMargin.Right,
+                            oldMargin.Bottom - 10
+                        );
+                    }
+                    break;
+                case Key.Down:
+                    if (oldMargin.Bottom < 0)
+                    {
+                        this.Art_Image_Viewbox.Margin = new Thickness(
+                            oldMargin.Left,
+                            oldMargin.Top - 10,
+                            oldMargin.Right,
+                            oldMargin.Bottom + 10
+                        );
+                    }
+                    break;
+                case Key.Left:
+                    if (oldMargin.Left < 0)
+                    {
+                        this.Art_Image_Viewbox.Margin = new Thickness(
+                            oldMargin.Left + 10,
+                            oldMargin.Top,
+                            oldMargin.Right - 10,
+                            oldMargin.Bottom
+                        );
+                    }
+                    break;
+                case Key.Right:
+                    if (oldMargin.Right < 0)
+                    {
+                        this.Art_Image_Viewbox.Margin = new Thickness(
+                            oldMargin.Left - 10,
+                            oldMargin.Top,
+                            oldMargin.Right + 10,
+                            oldMargin.Bottom
+                        );
+                    }
+                    break;
+                case Key.Escape:
+                    this.Art_Image_Viewbox_MouseLeftButtonUp(null, null);
+                    break;
+            }
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            ViewManager.mWnd.KeyDown -= this.Art_Image_Viewbox_KeyDown;
         }
     }
 }

@@ -10,10 +10,10 @@
         <Canvas x:Name="mainCanvas" Width="{Binding ElementName=viewbox, Mode=OneWay}" Height="{Binding ElementName=viewbox, Mode=OneWay}">
             <!-- 主舞台层 -->
             <Frame x:Name="mainFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="Black"/>
-            <!-- 遮罩层 -->
-            <Frame x:Name="maskFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="Black" IsHitTestVisible="False" Visibility="Hidden" Panel.ZIndex="9999"/>
             <!-- UI层 -->
-            <Frame x:Name="uiFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="Black" Visibility="Hidden" Panel.ZIndex="10000"/>
+            <Frame x:Name="uiFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="Black" Visibility="Hidden" Panel.ZIndex="9999"/>
+            <!-- 遮罩层 -->
+            <Frame x:Name="maskFrame" Height="720" Width="1280" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" Canvas.Left="0" Canvas.Top="0" Background="Black" IsHitTestVisible="False" Visibility="Hidden" Panel.ZIndex="10000"/>
             <!-- 提示语Label -->
             <Label Name="BO_MessageLabel" Content="" FontSize="25" Foreground="White" Canvas.Left="10" Canvas.Top="10" Visibility="Hidden" IsHitTestVisible="False" Panel.ZIndex="11000">
                 <Label.Effect>

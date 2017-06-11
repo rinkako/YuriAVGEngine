@@ -6,32 +6,34 @@
       xmlns:local="clr-namespace:Yuri.PageView"
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="1280"
-      Title="ArtPage" Loaded="Page_Loaded">
+      Title="ArtPage" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
     <Grid x:Name="Art_MainGrid">
-        <Image Name="Art_Image_Background" Margin="-25,-25,-25,-25"/>
-        <Image MaxWidth="449" MaxHeight="157" Name="Atr_Image_Title" Stretch="UniformToFill" HorizontalAlignment="Right" Width="580" Height="170" VerticalAlignment="Top" Margin="0,-5,-21,0"/>
-        <Image MaxWidth="158" MaxHeight="50" Name="Atr_Image_Back" Stretch="UniformToFill" Height="56" VerticalAlignment="Bottom" Margin="46,0,0,38" HorizontalAlignment="Left" Width="160" MouseEnter="Atr_Image_Back_MouseEnter" MouseLeave="Atr_Image_Back_MouseLeave" MouseLeftButtonUp="Atr_Image_Back_MouseLeftButtonUp"/>
-        <Grid Name="Art_Grid_PreviewPanel" Margin="100,180,100,180">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50*"/>
-                <RowDefinition Height="5*"/>
-                <RowDefinition Height="50*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="25*"/>
-                <ColumnDefinition Width="25*"/>
-                <ColumnDefinition Width="25*"/>
-                <ColumnDefinition Width="25*"/>
-            </Grid.ColumnDefinitions>
-            <Image Name="Art_Image_Preview_11" Grid.Column="0" Grid.Row="0" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
-            <Image Name="Art_Image_Preview_12" Grid.Column="1" Grid.Row="0" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
-            <Image Name="Art_Image_Preview_13" Grid.Column="2" Grid.Row="0" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
-            <Image Name="Art_Image_Preview_14" Grid.Column="3" Grid.Row="0" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
-            <Image Name="Art_Image_Preview_21" Grid.Column="0" Grid.Row="2" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
-            <Image Name="Art_Image_Preview_22" Grid.Column="1" Grid.Row="2" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
-            <Image Name="Art_Image_Preview_23" Grid.Column="2" Grid.Row="2" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
-            <Image Name="Art_Image_Preview_24" Grid.Column="3" Grid.Row="2" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
+        <Grid Name="Art_Grid_Controls">
+            <Image Name="Art_Image_Background" Margin="-25,-25,-25,-25"/>
+            <Image MaxWidth="449" MaxHeight="157" Name="Atr_Image_Title" Stretch="UniformToFill" HorizontalAlignment="Right" Width="580" Height="170" VerticalAlignment="Top" Margin="0,-5,-21,0"/>
+            <Image MaxWidth="158" MaxHeight="50" Name="Atr_Image_Back" Stretch="UniformToFill" Height="56" VerticalAlignment="Bottom" Margin="46,0,0,38" HorizontalAlignment="Left" Width="160" MouseEnter="Atr_Image_Back_MouseEnter" MouseLeave="Atr_Image_Back_MouseLeave" MouseLeftButtonUp="Atr_Image_Back_MouseLeftButtonUp"/>
+            <Grid Name="Art_Grid_PreviewPanel" Margin="100,180,100,180">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50*"/>
+                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="50*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                </Grid.ColumnDefinitions>
+                <Image Name="Art_Image_Preview_11" Grid.Column="0" Grid.Row="0" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
+                <Image Name="Art_Image_Preview_12" Grid.Column="1" Grid.Row="0" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
+                <Image Name="Art_Image_Preview_13" Grid.Column="2" Grid.Row="0" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
+                <Image Name="Art_Image_Preview_14" Grid.Column="3" Grid.Row="0" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
+                <Image Name="Art_Image_Preview_21" Grid.Column="0" Grid.Row="2" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
+                <Image Name="Art_Image_Preview_22" Grid.Column="1" Grid.Row="2" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
+                <Image Name="Art_Image_Preview_23" Grid.Column="2" Grid.Row="2" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
+                <Image Name="Art_Image_Preview_24" Grid.Column="3" Grid.Row="2" Opacity="0.8" MouseEnter="Art_Image_Preview_MouseEnter" MouseLeave="Art_Image_Preview_MouseLeave" MouseLeftButtonUp="Art_Image_Preview_MouseLeftButtonUp"/>
+            </Grid>
         </Grid>
-        <Image Name="Art_Image_Viewbox" Stretch="Uniform" Visibility="Hidden" MouseLeftButtonUp="Art_Image_Viewbox_MouseLeftButtonUp"/>
+        <Image Name="Art_Image_Viewbox" Stretch="Uniform" Visibility="Hidden" MouseLeftButtonUp="Art_Image_Viewbox_MouseLeftButtonUp" MouseWheel="Art_Image_Viewbox_MouseWheel"/>
     </Grid>
 </Page>

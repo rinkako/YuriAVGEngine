@@ -131,7 +131,7 @@ namespace Yuri
                     this.FullScreenTransform();
                 }
             }
-            PlatformCore.Semaphore.SemaphoreDispatcher.Activate($"System_Key_{e.Key}");
+            SemaphoreDispatcher.Activate($"System_Key_{e.Key}");
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Yuri
             {
                 MainWindow.altDown = false;
             }
-            PlatformCore.Semaphore.SemaphoreDispatcher.Deactivate($"System_Key_{e.Key}");
+            SemaphoreDispatcher.Deactivate($"System_Key_{e.Key}");
         }
         
         /// <summary>
@@ -171,7 +171,6 @@ namespace Yuri
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
             this.world.UpdateKeyboard(e, false);
-            
         }
         #endregion
 
