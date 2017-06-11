@@ -1,4 +1,6 @@
-﻿namespace Yuri.PlatformCore.VM
+﻿using Yuri.Utils;
+
+namespace Yuri.PlatformCore.VM
 {
     /// <summary>
     /// 持久类DAO：为游戏提供持久性上下文包装，它不会被回滚和存读档影响
@@ -8,12 +10,12 @@
         /// <summary>
         /// 保存持久上下文到稳定储存器
         /// </summary>
-        public static void SaveToSteadyMemory() => PersistContextDAO.persistenceContext.SaveToSteadyMemory(GlobalConfigContext.PersistenceFileName);
+        public static void SaveToSteadyMemory() => PersistContextDAO.persistenceContext.SaveToSteadyMemory(IOUtils.ParseURItoURL(GlobalConfigContext.PersistenceFileName));
 
         /// <summary>
         /// 从稳定储存器将持久上下文读入内存
         /// </summary>
-        public static void LoadFromSteadyMemory() => PersistContextDAO.persistenceContext.LoadFromSteadyMemory(GlobalConfigContext.PersistenceFileName);
+        public static void LoadFromSteadyMemory() => PersistContextDAO.persistenceContext.LoadFromSteadyMemory(IOUtils.ParseURItoURL(GlobalConfigContext.PersistenceFileName));
 
         /// <summary>
         /// 将一个变量放入持久上下文中，如果指定变量名已存在，就覆盖原来的对象

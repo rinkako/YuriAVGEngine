@@ -11,7 +11,7 @@ namespace Yuri.PlatformCore.VM
         /// <summary>
         /// 保存持久上下文到稳定储存器
         /// </summary>
-        /// <param name="filename">文件名字</param>
+        /// <param name="filename">文件路径</param>
         public void SaveToSteadyMemory(string filename)
         {
             lock (this)
@@ -23,7 +23,7 @@ namespace Yuri.PlatformCore.VM
         /// <summary>
         /// 从稳定储存器将持久上下文读入内存
         /// </summary>
-        /// <param name="filename">文件名字</param>
+        /// <param name="filename">文件路径</param>
         public void LoadFromSteadyMemory(string filename)
         {
             lock (this)
