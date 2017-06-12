@@ -136,8 +136,14 @@ namespace Yuri.PlatformCore
             UpdateRender render = Director.GetInstance().updateRender;
             render.VsmReference = Director.RunMana.CallStack;
             // 恢复背景音乐
-            Musician.GetInstance().RePerform(Director.RunMana.Musics);
-            //render.Bgm(Director.RunMana.Musics.PlayingBGM, GlobalConfigContext.GAME_SOUND_BGMVOL);
+            if (GlobalConfigContext.UseBassEngine)
+            {
+                MusicianBass.GetInstance().RePerform(Director.RunMana.Musics);
+            }
+            else
+            {
+                Musician.GetInstance().RePerform(Director.RunMana.Musics);
+            }
             // 清空字符串缓冲
             render.dialogPreStr = String.Empty;
             render.pendingDialogQueue.Clear();
@@ -870,14 +876,20 @@ namespace Yuri.PlatformCore
             PersistContextDAO.Assign("___YURIRI@ACCDURATION___", Director.LastGameTimeAcc + (collaTimeStamp - Director.StartupTimeStamp));
             PersistContextDAO.SaveToSteadyMemory();
             LogUtils.LogLine("Save persistence context OK", "Director", LogLevel.Important);
-            MusicianRouterHandler.TerminalFlag = true;
-            Musician.GetInstance().Dispose();
+            if (GlobalConfigContext.UseBassEngine == false)
+            {
+                MusicianRouterHandler.TerminalFlag = true;
+                Musician.GetInstance().Dispose();
+            }
             LogUtils.LogLine("Dispose resource OK, program will shutdown soon", "Director", LogLevel.Important);
             var ct = DateTime.Now;
             GC.Collect();
-            while ((DateTime.Now - ct).TotalSeconds < 2 && !MusicianRouterHandler.IsCollapsed)
+            if (GlobalConfigContext.UseBassEngine == false)
             {
-                System.Threading.Thread.Sleep(10);
+                while ((DateTime.Now - ct).TotalSeconds < 2 && !MusicianRouterHandler.IsCollapsed)
+                {
+                    System.Threading.Thread.Sleep(10);
+                }
             }
             Environment.Exit(0);
         }
@@ -912,7 +924,10 @@ namespace Yuri.PlatformCore
             Director.RunMana.SetScreenManager(ScreenManager.GetInstance());
             Director.RunMana.ParallelHandler = this.ParallelUpdateContext;
             Director.RunMana.PerformingChapter = "Prelogue";
-            MusicianRouterHandler.Init();
+            if (GlobalConfigContext.UseBassEngine == false)
+            {
+                MusicianRouterHandler.Init();
+            }
             //Net.HttpServerRouterHandler.Init();
             this.timer = new DispatcherTimer
             {

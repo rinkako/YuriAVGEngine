@@ -121,7 +121,14 @@ namespace Yuri.PlatformCore
             ViewManager.GetInstance().ReDraw();
             // 恢复音效
             UpdateRender render = Director.GetInstance().GetMainRender();
-            Musician.GetInstance().RePerform(Director.RunMana.Musics);
+            if (GlobalConfigContext.UseBassEngine)
+            {
+                MusicianBass.GetInstance().RePerform(Director.RunMana.Musics);
+            }
+            else
+            {
+                Musician.GetInstance().RePerform(Director.RunMana.Musics);
+            }
             // 清空字符串缓冲
             render.dialogPreStr = String.Empty;
             render.pendingDialogQueue.Clear();

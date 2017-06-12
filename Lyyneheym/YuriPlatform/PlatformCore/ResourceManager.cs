@@ -4,6 +4,7 @@ using System.Windows;
 using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Yuri.PlatformCore.Graphic;
 using Yuri.PlatformCore.VM;
 using Yuri.Utils;
@@ -94,6 +95,46 @@ namespace Yuri.PlatformCore
         public MemoryStream GetVocal(string sourceName)
         {
             return this.GetMusicMemoryStream(sourceName, ResourceType.VOCAL);
+        }
+
+        /// <summary>
+        /// 获得一个指定BGM音频资源的内存数组
+        /// </summary>
+        /// <param name="sourceName">资源名称</param>
+        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
+        public KeyValuePair<GCHandle?, long> GetBGMGCHandle(string sourceName)
+        {
+            return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.BGM);
+        }
+
+        /// <summary>
+        /// 获得一个指定BGS音频资源的内存数组
+        /// </summary>
+        /// <param name="sourceName">资源名称</param>
+        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
+        public KeyValuePair<GCHandle?, long> GetBGSGCHandle(string sourceName)
+        {
+            return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.BGS);
+        }
+
+        /// <summary>
+        /// 获得一个指定SE音频资源的内存数组
+        /// </summary>
+        /// <param name="sourceName">资源名称</param>
+        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
+        public KeyValuePair<GCHandle?, long> GetSEGCHandle(string sourceName)
+        {
+            return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.SE);
+        }
+
+        /// <summary>
+        /// 获得一个指定Vocal音频资源的内存数组
+        /// </summary>
+        /// <param name="sourceName">资源名称</param>
+        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
+        public KeyValuePair<GCHandle?, long> GetVocalGCHandle(string sourceName)
+        {
+            return this.GetMusicGCHandleLengthKVP(sourceName, ResourceType.VOCAL);
         }
 
         /// <summary>
@@ -327,6 +368,67 @@ namespace Yuri.PlatformCore
                 {
                     MessageBox.Show("[错误] 资源文件不存在：" + sourceName);
                     return null;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 从资源文件中获取声音资源并返回句柄
+        /// </summary>
+        /// <param name="sourceName">资源名称</param>
+        /// <param name="rtype">资源类型</param>
+        /// <returns>一个键值对：该音频的内存托管句柄 - 内存长度</returns>
+        private KeyValuePair<GCHandle?, long> GetMusicGCHandleLengthKVP(string sourceName, ResourceType rtype)
+        {
+            if (sourceName == String.Empty) { return new KeyValuePair<GCHandle?, long>(null, 0); }
+            string DevURI = null, PackURI = null;
+            // 处理路径
+            switch (rtype)
+            {
+                case ResourceType.BGM:
+                    DevURI = GlobalConfigContext.DevURI_SO_BGM;
+                    PackURI = GlobalConfigContext.PackURI_SO_BGM;
+                    break;
+                case ResourceType.BGS:
+                    DevURI = GlobalConfigContext.DevURI_SO_BGS;
+                    PackURI = GlobalConfigContext.PackURI_SO_BGS;
+                    break;
+                case ResourceType.SE:
+                    DevURI = GlobalConfigContext.DevURI_SO_SE;
+                    PackURI = GlobalConfigContext.PackURI_SO_SE;
+                    break;
+                case ResourceType.VOCAL:
+                    DevURI = GlobalConfigContext.DevURI_SO_VOCAL;
+                    PackURI = GlobalConfigContext.PackURI_SO_VOCAL;
+                    break;
+                default:
+                    throw new Exception("调用了音乐获取方法，但却不是获取音乐资源");
+            }
+            // 总是先查看是否有为封包的数据
+            if (this.resourceTable.ContainsKey(DevURI) &&
+                this.resourceTable[DevURI].ContainsKey(sourceName))
+            {
+                var slot = this.resourceTable[DevURI][sourceName];
+                var sourceLocation = new KeyValuePair<long, long>(slot.Position, slot.Length);
+                GCHandle ptr = PackageUtils.GetObjectManagedHandle(IOUtils.ParseURItoURL(PackURI + GlobalConfigContext.PackPostfix),
+                    sourceName, sourceLocation.Key, sourceLocation.Value);
+                return new KeyValuePair<GCHandle?, long>(ptr, sourceLocation.Value);
+            }
+            // 没有封包数据再搜索开发目录
+            else
+            {
+                string furi = IOUtils.JoinPath(GlobalConfigContext.DevURI_RT_SOUND, DevURI, sourceName);
+                if (File.Exists(IOUtils.ParseURItoURL(furi)))
+                {
+                    byte[] bytes = File.ReadAllBytes(IOUtils.ParseURItoURL(furi));
+                    return new KeyValuePair<GCHandle?, long>(GCHandle.Alloc(bytes, GCHandleType.Pinned), bytes.Length);
+                }
+                else
+                {
+                    MessageBox.Show("[错误] 资源文件不存在：" + sourceName);
+                    Director.GetInstance().GetMainRender().Shutdown();
+                    throw new FileNotFoundException();
                 }
             }
         }

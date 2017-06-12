@@ -511,6 +511,11 @@ namespace Yuri.PlatformCore
         /// 持久性上下文文件名
         /// </summary>
         public static readonly string QSaveFileName = "QSave";
+
+        /// <summary>
+        /// DEBUG：音频引擎控制
+        /// </summary>
+        public static bool UseBassEngine = false;
         #endregion
 
         #region 枚举类型
