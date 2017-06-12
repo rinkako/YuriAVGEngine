@@ -18,7 +18,7 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public void Init(MemoryStream playStream, float volume, bool loop, Action stopCallback)
         {
-            this.wavePlayer = new WaveOut();
+            this.wavePlayer = new WaveOutEvent();
             MemoryStream tms = new MemoryStream();
             playStream.CopyTo(tms);
             this.playingStream = new StreamMediaFoundationReader(this.BindingStream = tms);
@@ -156,7 +156,7 @@ namespace Yuri.PlatformCore.Audio
             }
             if (this.wavePlayer != null)
             {
-                //this.wavePlayer.Dispose();
+                this.wavePlayer.Dispose();
                 this.wavePlayer = null;
             }
             this.IsPlaying = false;

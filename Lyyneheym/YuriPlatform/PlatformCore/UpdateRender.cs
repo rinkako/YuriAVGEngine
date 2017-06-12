@@ -1787,7 +1787,7 @@ namespace Yuri.PlatformCore
             }
             else
             {
-                var evt = new YuriRoutedEvent() {Type = YuriRoutedType.Direct};
+                var evt = new YuriRoutedEvent() { Type = YuriRoutedType.Direct };
                 var mmsg = new MusicianMessage();
                 // 空即为停止
                 if (String.IsNullOrEmpty(resourceName))
@@ -1802,17 +1802,17 @@ namespace Yuri.PlatformCore
                     var ms = this.resMana.GetBGM(resourceName);
                     mmsg.Type = MusicianOperation.PlayBGM;
                     mmsg.Args["ms"] = ms;
-                    mmsg.Args["vol"] = (float) volume;
+                    mmsg.Args["vol"] = (float)volume;
                     mmsg.Args["resourceName"] = resourceName;
                     Director.RunMana.Musics.PlayingBGM = resourceName;
                 }
                 else
                 {
                     mmsg.Type = MusicianOperation.SetBGMVolume;
-                    mmsg.Args["vol"] = (float) volume;
+                    mmsg.Args["vol"] = (float)volume;
                     Director.RunMana.Musics.PlayingBGM = resourceName;
                 }
-                Director.RunMana.Musics.BGMVol = (float) volume;
+                Director.RunMana.Musics.BGMVol = (float)volume;
                 evt.OnRouterAccept += delegate
                 {
                     MusicianRouterHandler.EnqueueMessage(mmsg);
