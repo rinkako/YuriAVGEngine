@@ -26,7 +26,7 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="mdescriptor">音频状态描述子</param>
         public void RePerform(MusicianDescriptor mdescriptor)
         {
-           throw new NotImplementedException();
+           throw new NotSupportedException();
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="vol">音量（1-1000）</param>
         public void PlayBGM(string resourceName, string filename, float vol)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="vol">音量（1-1000）</param>
         public void PlayBGM(string resourceName, GCHandle? gch, long len, float vol)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public void PauseBGM()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public void ResumeBGM()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public void StopAndReleaseBGM()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="track">播放的轨道</param>
         public void PlayBGS(string filename, float vol, int track = 0)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="track">播放的轨道</param>
         public void PlayBGS(GCHandle? gch, long len, float vol, int track = 0)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="track">要停止的BGS轨道，缺省值-1表示全部停止</param>
         public void StopBGS(int track = -1)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="vol"></param>
         public void SetBGMVolume(float vol)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="track">轨道（-1为全部变更）</param>
         public void SetBGSVolume(int vol, int track = 0)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="offset">声道偏移（-1到1，从左向右偏移，0为立体声）</param>
         public void SetBGMStereo(float offset)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="vol">音量（1-1000）</param>
         public void PlaySE(string filename, float vol)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="vol">音量（1-1000）</param>
         public void PlaySE(GCHandle? gch, long len, float vol)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="vol">音量（1-1000）</param>
         public void PlayVocal(string filename, float vol)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="vol">音量（1-1000）</param>
         public void PlayVocal(GCHandle? gch, long len, float vol)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public void StopAndReleaseVocal()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         public void Reset()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace Yuri.PlatformCore.Audio
         /// </summary>
         private void musicianTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -397,12 +397,12 @@ namespace Yuri.PlatformCore.Audio
     {
         public static BassPlayer GetInstance()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }
