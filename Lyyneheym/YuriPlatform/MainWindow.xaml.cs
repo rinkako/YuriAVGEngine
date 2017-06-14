@@ -48,6 +48,8 @@ namespace Yuri
             ViewPageManager.RegisterPage("SplashPage", new SplashPage());
             this.maskFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
             this.maskFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
+            this.uiFrame.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
+            this.uiFrame.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
             ViewManager.MaskFrameRef = this.maskFrame;
             InputMethod.SetIsInputMethodEnabled(this, false);
             this.mainFrame.Content = ViewPageManager.RetrievePage("SplashPage");
@@ -154,6 +156,7 @@ namespace Yuri
             if (this.WindowState == WindowState.Maximized)
             {
                 this.FullScreenTransform();
+                Director.IsFullScreen = true;
             }
         }
 
