@@ -475,6 +475,37 @@ namespace Yuri.PlatformCore
             return null;
         }
 
+        public EvaluatableContext GetContext(string varName, StackMachine vsm)
+        {
+            // 处理局部变量
+            if (varName.StartsWith("$"))
+            {
+                // 非函数调用
+                if (this.GameState(vsm) != StackMachineState.FunctionCalling)
+                {
+                    return this.Symbols.SceneCtxDao.FindSceneContext(vsm.EBP.ScriptName);
+                }
+                // 函数调用
+                var funFrame = vsm.ESP.BindingFunction;
+                return new SimpleContext(funFrame.Symbols);
+            }
+            // 处理全局变量
+            if (SymbolTable.IsSwitchExpression(varName))
+            {
+                return this.Symbols.GlobalCtxDao.GlobalSwitchList;
+            }
+            else if (varName.StartsWith("&"))
+            {
+                return this.Symbols.GlobalCtxDao.GlobalSymbolTable;
+            }
+            // 处理持久化变量
+            if (varName.StartsWith("%"))
+            {
+                return PersistContextDAO.PersistenceContext;
+            }
+            return null;
+        }
+
         /// <summary>
         /// 预备存档，保存时必须先调用此方法
         /// </summary>

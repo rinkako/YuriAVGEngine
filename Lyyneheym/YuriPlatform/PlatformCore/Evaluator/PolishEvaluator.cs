@@ -8,8 +8,31 @@ namespace Yuri.PlatformCore.Evaluator
     /// <summary>
     /// 逆波兰式求值器
     /// </summary>
-    internal class PolishEvaluator
+    internal class PolishEvaluator : IEvaluator
     {
+        /// <summary>
+        /// 计算表达式的值
+        /// </summary>
+        /// <param name="expr">表达式字符串</param>
+        /// <param name="ctx">求值上下文</param>
+        /// <returns>计算结果的值（Double/字符串）</returns>
+        public object Eval(string expr, EvaluatableContext ctx)
+        {
+            var calcList = PolishEvaluator.GetPolishItemList(expr, null, ctx);
+            return PolishEvaluator.HandleEval(expr, calcList);
+        }
+
+        /// <summary>
+        /// 计算表达式的真值
+        /// </summary>
+        /// <param name="polish">表达式字符串</param>
+        /// <param name="ctx">求值上下文</param>
+        /// <returns>表达式的真值</returns>
+        public bool EvalBoolean(string polish, EvaluatableContext ctx)
+        {
+            return Convert.ToBoolean(this.Eval(polish, ctx));
+        }
+
         /// <summary>
         /// 计算表达式
         /// </summary>
@@ -18,7 +41,29 @@ namespace Yuri.PlatformCore.Evaluator
         /// <returns>计算结果的值（Double/字符串）</returns>
         public static object Evaluate(string polish, StackMachine vsm)
         {
-            var calcList = PolishEvaluator.GetPolishItemList(polish, vsm);
+            var calcList = PolishEvaluator.GetPolishItemList(polish, vsm, null);
+            return PolishEvaluator.HandleEval(polish, calcList);
+        }
+
+        /// <summary>
+        /// 计算表达式的真值
+        /// </summary>
+        /// <param name="polish">表达式的逆波兰式</param>
+        /// <param name="vsm">关于哪个调用堆栈做动作</param>
+        /// <returns>表达式的真值</returns>
+        public static bool EvaluateBoolean(string polish, StackMachine vsm)
+        {
+            return Convert.ToBoolean(PolishEvaluator.Evaluate(polish, vsm));
+        }
+
+        /// <summary>
+        /// 执行实际的运算操作
+        /// </summary>
+        /// <param name="polish">要计算的逆波兰式</param>
+        /// <param name="calcList">逆波兰计算项向量</param>
+        /// <returns>逆波兰式折叠结果</returns>
+        private static object HandleEval(string polish, List<PolishItem> calcList)
+        {
             if (calcList.Count == 0)
             {
                 return null;
@@ -71,16 +116,16 @@ namespace Yuri.PlatformCore.Evaluator
                 {
                     PolishItem operand2 = calcStack.Pop();
                     PolishItem operand1 = calcStack.Pop();
-                    if (PolishItem.isOperatable(operand1, operand2))
+                    if (PolishItem.IsOperatable(operand1, operand2, poi))
                     {
                         PolishItem newPoi;
                         double tempDouble;
                         switch (poi.ItemType)
                         {
                             case PolishItemType.CAL_PLUS:
-                                if (operand1.Reference is string)
+                                if (operand1.Reference is string || operand2.Reference is string)
                                 {
-                                    var tempString = (string)operand1.Reference + (string)operand2.Reference;
+                                    var tempString = Convert.ToString(operand1.Reference) + Convert.ToString(operand2.Reference);
                                     newPoi = new PolishItem()
                                     {
                                         Cluster = tempString,
@@ -90,7 +135,7 @@ namespace Yuri.PlatformCore.Evaluator
                                 }
                                 else
                                 {
-                                    tempDouble = (double)operand1.Reference + (double)operand2.Reference;
+                                    tempDouble = Convert.ToDouble(operand1.Reference) + Convert.ToDouble(operand2.Reference);
                                     newPoi = new PolishItem()
                                     {
                                         Number = tempDouble,
@@ -100,9 +145,9 @@ namespace Yuri.PlatformCore.Evaluator
                                 }
                                 break;
                             case PolishItemType.CAL_MINUS:
-                                if (operand1.Reference is double)
+                                if (operand1.Reference is ValueType)
                                 {
-                                    tempDouble = (double)operand1.Reference - (double)operand2.Reference;
+                                    tempDouble = Convert.ToDouble(operand1.Reference) - Convert.ToDouble(operand2.Reference);
                                     newPoi = new PolishItem()
                                     {
                                         Number = tempDouble,
@@ -116,9 +161,9 @@ namespace Yuri.PlatformCore.Evaluator
                                 }
                                 break;
                             case PolishItemType.CAL_MULTI:
-                                if (operand1.Reference is double)
+                                if (operand1.Reference is ValueType)
                                 {
-                                    tempDouble = (double)operand1.Reference * (double)operand2.Reference;
+                                    tempDouble = Convert.ToDouble(operand1.Reference) * Convert.ToDouble(operand2.Reference);
                                     newPoi = new PolishItem()
                                     {
                                         Number = tempDouble,
@@ -132,13 +177,13 @@ namespace Yuri.PlatformCore.Evaluator
                                 }
                                 break;
                             case PolishItemType.CAL_DIV:
-                                if (operand1.Reference is double)
+                                if (operand1.Reference is ValueType)
                                 {
                                     if (Math.Abs((double)operand2.Reference) < 0)
                                     {
                                         throw new Exception("除零错误");
                                     }
-                                    tempDouble = (double)operand1.Reference / (double)operand2.Reference;
+                                    tempDouble = Convert.ToDouble(operand1.Reference) / Convert.ToDouble(operand2.Reference);
                                     newPoi = new PolishItem()
                                     {
                                         Number = tempDouble,
@@ -152,9 +197,9 @@ namespace Yuri.PlatformCore.Evaluator
                                 }
                                 break;
                             case PolishItemType.CAL_ANDAND:
-                                if (operand1.Reference is double)
+                                if (operand1.Reference is ValueType)
                                 {
-                                    tempDouble = (Math.Abs((double)operand1.Reference) > 0 && Math.Abs((double)operand2.Reference) > 0) ? 1 : 0;
+                                    tempDouble = (Math.Abs(Convert.ToDouble(operand1.Reference)) > 0 && Math.Abs(Convert.ToDouble(operand2.Reference)) > 0) ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
                                         Number = tempDouble,
@@ -168,9 +213,9 @@ namespace Yuri.PlatformCore.Evaluator
                                 }
                                 break;
                             case PolishItemType.CAL_OROR:
-                                if (operand1.Reference is double)
+                                if (operand1.Reference is ValueType)
                                 {
-                                    tempDouble = (Math.Abs((double)operand1.Reference) > 0 || Math.Abs((double)operand2.Reference) > 0) ? 1 : 0;
+                                    tempDouble = (Math.Abs(Convert.ToDouble(operand1.Reference)) > 0 || Math.Abs(Convert.ToDouble(operand2.Reference)) > 0) ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
                                         Number = tempDouble,
@@ -184,9 +229,9 @@ namespace Yuri.PlatformCore.Evaluator
                                 }
                                 break;
                             case PolishItemType.CAL_EQUAL:
-                                if (operand1.Reference is double)
+                                if (operand1.Reference is ValueType)
                                 {
-                                    tempDouble = (double)operand1.Reference == (double)operand2.Reference ? 1 : 0;
+                                    tempDouble = Convert.ToDouble(operand1.Reference) == Convert.ToDouble(operand2.Reference) ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
                                         Number = tempDouble,
@@ -206,9 +251,9 @@ namespace Yuri.PlatformCore.Evaluator
                                 }
                                 break;
                             case PolishItemType.CAL_NOTEQUAL:
-                                if (operand1.Reference is double)
+                                if (operand1.Reference is ValueType)
                                 {
-                                    tempDouble = (double)operand1.Reference != (double)operand2.Reference ? 1 : 0;
+                                    tempDouble = Convert.ToDouble(operand1.Reference) != Convert.ToDouble(operand2.Reference) ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
                                         Number = tempDouble,
@@ -228,9 +273,9 @@ namespace Yuri.PlatformCore.Evaluator
                                 }
                                 break;
                             case PolishItemType.CAL_BIG:
-                                if (operand1.Reference is double)
+                                if (operand1.Reference is ValueType)
                                 {
-                                    tempDouble = (double)operand1.Reference > (double)operand2.Reference ? 1 : 0;
+                                    tempDouble = Convert.ToDouble(operand1.Reference) > Convert.ToDouble(operand2.Reference) ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
                                         Number = tempDouble,
@@ -250,9 +295,9 @@ namespace Yuri.PlatformCore.Evaluator
                                 }
                                 break;
                             case PolishItemType.CAL_BIGEQUAL:
-                                if (operand1.Reference is double)
+                                if (operand1.Reference is ValueType)
                                 {
-                                    tempDouble = (double)operand1.Reference >= (double)operand2.Reference ? 1 : 0;
+                                    tempDouble = Convert.ToDouble(operand1.Reference) >= Convert.ToDouble(operand2.Reference) ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
                                         Number = tempDouble,
@@ -272,9 +317,9 @@ namespace Yuri.PlatformCore.Evaluator
                                 }
                                 break;
                             case PolishItemType.CAL_SMALL:
-                                if (operand1.Reference is double)
+                                if (operand1.Reference is ValueType)
                                 {
-                                    tempDouble = (double)operand1.Reference < (double)operand2.Reference ? 1 : 0;
+                                    tempDouble = Convert.ToDouble(operand1.Reference) < Convert.ToDouble(operand2.Reference) ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
                                         Number = tempDouble,
@@ -294,9 +339,9 @@ namespace Yuri.PlatformCore.Evaluator
                                 }
                                 break;
                             case PolishItemType.CAL_SMALLEQUAL:
-                                if (operand1.Reference is double)
+                                if (operand1.Reference is ValueType)
                                 {
-                                    tempDouble = (double)operand1.Reference <= (double)operand2.Reference ? 1 : 0;
+                                    tempDouble = Convert.ToDouble(operand1.Reference) <= Convert.ToDouble(operand2.Reference) ? 1 : 0;
                                     newPoi = new PolishItem()
                                     {
                                         Number = tempDouble,
@@ -330,23 +375,12 @@ namespace Yuri.PlatformCore.Evaluator
         }
 
         /// <summary>
-        /// 计算表达式的真值
-        /// </summary>
-        /// <param name="polish">表达式的逆波兰式</param>
-        /// <param name="vsm">关于哪个调用堆栈做动作</param>
-        /// <returns>表达式的真值</returns>
-        public static bool EvaluateBoolean(string polish, StackMachine vsm)
-        {
-            return Convert.ToBoolean(PolishEvaluator.Evaluate(polish, vsm));
-        }
-        
-        /// <summary>
         /// 将逆波兰式转化为可计算的项
         /// </summary>
         /// <param name="polish">逆波兰式字符串</param>
         /// <param name="vsm">关于哪个调用堆栈做动作</param>
         /// <returns>可计算项目向量</returns>
-        private static List<PolishItem> GetPolishItemList(string polish, StackMachine vsm)
+        private static List<PolishItem> GetPolishItemList(string polish, StackMachine vsm, EvaluatableContext ctx)
         {
             var resVec = new List<PolishItem>();
             var polishItem = polish.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -381,12 +415,12 @@ namespace Yuri.PlatformCore.Evaluator
                 // 变量时
                 else if ((item.StartsWith("&") || item.StartsWith("$") || item.StartsWith("%")) && item.Length > 1)
                 {
-                    object varRef = Director.RunMana.Fetch(item, vsm);
+                    object varRef = ctx != null ? ctx.Fetch(item.Substring(1)) : Director.RunMana.Fetch(item, vsm);
                     if (varRef is ValueType)
                     {
                         poi = new PolishItem()
                         {
-                            Number = (double)varRef,
+                            Number = Convert.ToDouble(varRef),
                             Cluster = null,
                             ItemType = PolishItemType.VAR_NUM,
                             Reference = varRef

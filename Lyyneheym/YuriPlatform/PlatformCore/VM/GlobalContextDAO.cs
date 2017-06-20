@@ -19,7 +19,7 @@ namespace Yuri.PlatformCore.VM
         {
             for (int i = 0; i < GlobalConfigContext.GAME_SWITCH_COUNT; i++)
             {
-                this.globalSwitchList.Assign(i.ToString(), true);
+                this.GlobalSwitchList.Assign(i.ToString(), true);
             }
         }
 
@@ -38,20 +38,20 @@ namespace Yuri.PlatformCore.VM
                 int fetchId = Convert.ToInt32(swiItem[1]);
                 if (fetchId >= 0 && fetchId < GlobalConfigContext.GAME_SWITCH_COUNT)
                 {
-                    return (bool)this.globalSwitchList.Fetch(fetchId.ToString()) == true ? 1.0 : 0.0;
+                    return (bool)this.GlobalSwitchList.Fetch(fetchId.ToString()) == true ? 1.0 : 0.0;
                 }
                 LogUtils.LogLine(String.Format("Invalid Switch id: {0}, TRUE will be returned instead", fetchId),
                     "SymbolManager", LogLevel.Error);
                 return 1.0;
             }
             // 如果查无此键
-            if (this.globalSymbolTable.Exist(varName) == false)
+            if (this.GlobalSymbolTable.Exist(varName) == false)
             {
                 LogUtils.LogLine(String.Format("Invalid Variable Fetch: {0}, which haven't been left-value yet", varName),
                         "SymbolManager", LogLevel.Error);
                 throw new Exception("变量 " + varName + " 在作为左值之前被引用");
             }
-            return this.globalSymbolTable.Fetch(varName);
+            return this.GlobalSymbolTable.Fetch(varName);
         }
 
         /// <summary>
@@ -70,15 +70,15 @@ namespace Yuri.PlatformCore.VM
                 {
                     if (value == null)
                     {
-                        this.globalSwitchList.Assign(fetchId.ToString(), false);
+                        this.GlobalSwitchList.Assign(fetchId.ToString(), false);
                     }
                     else if (value is string)
                     {
-                        this.globalSwitchList.Assign(fetchId.ToString(), (string)value == String.Empty);
+                        this.GlobalSwitchList.Assign(fetchId.ToString(), (string)value == String.Empty);
                     }
                     else
                     {
-                        this.globalSwitchList.Assign(fetchId.ToString(), Math.Abs((double)value) > 1e-7);
+                        this.GlobalSwitchList.Assign(fetchId.ToString(), Math.Abs((double)value) > 1e-7);
                     }
                     return;
                 }
@@ -89,7 +89,7 @@ namespace Yuri.PlatformCore.VM
                 }
             }
             // 处理全局符号
-            this.globalSymbolTable.Assign(varName, value);
+            this.GlobalSymbolTable.Assign(varName, value);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Yuri.PlatformCore.VM
         {
             if (id >= 0 && id < GlobalConfigContext.GAME_SWITCH_COUNT)
             {
-                return (bool)this.globalSwitchList.Fetch(id.ToString());
+                return (bool)this.GlobalSwitchList.Fetch(id.ToString());
             }
             LogUtils.LogLine(String.Format("Invalid Switch Fetch id: {0}, TRUE will be returned instead", id), "SymbolManager", LogLevel.Error);
             return true;
@@ -116,7 +116,7 @@ namespace Yuri.PlatformCore.VM
         {
             if (id >= 0 && id < GlobalConfigContext.GAME_SWITCH_COUNT)
             {
-                this.globalSwitchList.Assign(id.ToString(), state);
+                this.GlobalSwitchList.Assign(id.ToString(), state);
             }
             else
             {
@@ -127,12 +127,12 @@ namespace Yuri.PlatformCore.VM
         /// <summary>
         /// 全局符号上下文
         /// </summary>
-        private readonly SaveableContext globalSymbolTable = new SaveableContext("&__YuriGlobal");
+        public readonly SaveableContext GlobalSymbolTable = new SaveableContext("&__YuriGlobal");
 
         /// <summary>
         /// 全局开关上下文
         /// </summary>
-        private readonly SaveableContext globalSwitchList = new SaveableContext("&__YuriSwitches");
+        public readonly SaveableContext GlobalSwitchList = new SaveableContext("&__YuriSwitches");
 
     }
 }

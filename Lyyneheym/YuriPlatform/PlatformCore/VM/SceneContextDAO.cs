@@ -92,7 +92,7 @@ namespace Yuri.PlatformCore.VM
         /// </summary>
         /// <param name="sceneName">场景名</param>
         /// <returns>符号表</returns>
-        private SaveableContext FindSceneContext(string sceneName)
+        public SaveableContext FindSceneContext(string sceneName)
         {
             return this.userSymbolTableContainer.ContainsKey(sceneName)
                 ? this.userSymbolTableContainer[sceneName] : null;

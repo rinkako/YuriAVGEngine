@@ -13,7 +13,7 @@ namespace Yuri.PlatformCore.Evaluator
         /// <param name="expr">表达式字符串</param>
         /// <param name="ctx">求值上下文</param>
         /// <returns>计算结果的值（Double/字符串）</returns>
-        object Evaluate(string expr, EvaluatableContext ctx);
+        object Eval(string expr, EvaluatableContext ctx);
 
         /// <summary>
         /// 计算表达式的真值
@@ -21,6 +21,6 @@ namespace Yuri.PlatformCore.Evaluator
         /// <param name="polish">表达式字符串</param>
         /// <param name="ctx">求值上下文</param>
         /// <returns>表达式的真值</returns>
-        bool EvaluateBoolean(string polish, EvaluatableContext ctx);
+        bool EvalBoolean(string polish, EvaluatableContext ctx);
     }
 }

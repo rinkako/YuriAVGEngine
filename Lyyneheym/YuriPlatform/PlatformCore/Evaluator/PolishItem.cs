@@ -47,9 +47,10 @@
         /// <param name="p1">操作数1</param>
         /// <param name="p2">操作数2</param>
         /// <returns>是否可以作为操作符的双目</returns>
-        public static bool isOperatable(PolishItem p1, PolishItem p2)
+        public static bool IsOperatable(PolishItem p1, PolishItem p2, PolishItem poi)
         {
             if (p1.Reference != null && p2.Reference != null && p1.Reference.GetType() == p2.Reference.GetType()) { return true; }
+            if (poi.ItemType == PolishItemType.CAL_PLUS) { return true; }
             if (p1.ItemType == PolishItemType.CONSTANT && p2.ItemType == PolishItemType.CONSTANT)     { return true; }
             if (p1.ItemType == PolishItemType.CONSTANT && p2.ItemType == PolishItemType.VAR_NUM)      { return true; }
             if (p1.ItemType == PolishItemType.VAR_NUM && p2.ItemType == PolishItemType.VAR_NUM)       { return true; }

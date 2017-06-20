@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Yuri.PlatformCore.VM
 {
@@ -15,6 +16,21 @@ namespace Yuri.PlatformCore.VM
         public SimpleContext(string nameSpace)
         {
             this.ContextNamespace = nameSpace;
+        }
+
+        /// <summary>
+        /// 从指定字典创建一个简单上下文
+        /// </summary>
+        /// <param name="ctxDict">要拷贝的数据源字典</param>
+        public SimpleContext(Dictionary<string, object> ctxDict)
+        {
+            if (ctxDict != null)
+            {
+                foreach (var kvp in ctxDict)
+                {
+                    this.symbols[kvp.Key] = kvp.Value;
+                }
+            }
         }
     }
 }

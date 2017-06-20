@@ -73,6 +73,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\NAudio.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>.\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.mocks">
+      <HintPath>.\nunit.mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="pnunit.framework">
+      <HintPath>.\pnunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -136,6 +145,7 @@
     <Compile Include="PlatformCore\VM\SaveableContext.cs" />
     <Compile Include="PlatformCore\VM\SceneContextDAO.cs" />
     <Compile Include="PlatformCore\VM\SimpleContext.cs" />
+    <Compile Include="Tests\EvaluatorTest.cs" />
     <Compile Include="Utils\CommonUtils.cs" />
     <Compile Include="Utils\EncryptUtils.cs" />
     <Compile Include="PageView\SLPage.xaml.cs">
@@ -258,6 +268,7 @@
   <ItemGroup>
     <Resource Include="PlatformIco128.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
