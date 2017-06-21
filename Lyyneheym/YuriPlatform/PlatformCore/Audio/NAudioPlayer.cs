@@ -54,8 +54,9 @@ namespace Yuri.PlatformCore.Audio
         /// <param name="ms">绑定到通道的内存流</param>
         /// <param name="vol">音量，值域[0, 1000]</param>
         /// <param name="loop">是否循环</param>
+        /// <param name="isVocal">是否语音</param>
         /// <returns>动作是否成功</returns>
-        public bool InitAndPlay(int handle, MemoryStream ms, float vol, bool loop)
+        public bool InitAndPlay(int handle, MemoryStream ms, float vol, bool loop, bool isVocal = false)
         {
             try
             {
@@ -64,7 +65,14 @@ namespace Yuri.PlatformCore.Audio
                     LogUtils.LogLine("Play audio in empty channel:" + handle, "NAudioPlayer", LogLevel.Error);
                     return false;
                 }
-                this.channelDict[handle].Init(ms, vol / 1000.0f, loop, () => this.channelDict.Remove(handle));
+                this.channelDict[handle].Init(ms, vol / 1000.0f, loop, () =>
+                {
+                    this.channelDict.Remove(handle);
+                    if (isVocal)
+                    {
+                        Musician.IsVoicePlaying = false;
+                    }
+                });
                 this.channelDict[handle].Play();
                 return true;
             }

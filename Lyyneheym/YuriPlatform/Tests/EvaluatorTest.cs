@@ -113,6 +113,9 @@ namespace Yuri.Tests
             var res = etor.Eval("\"testnumber:\" $num1 $num2 + +", sc);
             Assert.AreEqual(res, "testnumber:1024");
 
+            res = etor.Eval("\"testnumber:\" $num1 501 - +", sc);
+            Assert.AreEqual(res, "testnumber:499");
+
             res = etor.Eval("$str1 $num1 $str2 $num2 + + +", sc);
             Assert.AreEqual(res, "hello1000world24");
         }

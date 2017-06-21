@@ -230,7 +230,8 @@ namespace Yuri.PlatformCore.Audio
             }
             this.StopAndReleaseVocal();
             this.VocalHandle = this.audioEngine.InvokeChannel();
-            this.audioEngine.InitAndPlay(this.VocalHandle, ms, this.IsMute ? 0 : (float)(vol * this.vocalVolumeRatio), false);
+            Musician.IsVoicePlaying = true;
+            this.audioEngine.InitAndPlay(this.VocalHandle, ms, this.IsMute ? 0 : (float)(vol * this.vocalVolumeRatio), false, true);
         }
 
         /// <summary>
@@ -256,6 +257,7 @@ namespace Yuri.PlatformCore.Audio
                 this.audioEngine.StopAndRelease(this.VocalHandle);
             }
             this.VocalHandle = 0;
+            Musician.IsVoicePlaying = false;
         }
 
         /// <summary>
@@ -343,6 +345,15 @@ namespace Yuri.PlatformCore.Audio
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 获取语音是否正在播放
+        /// </summary>
+        public static bool IsVoicePlaying
+        {
+            get;
+            set;
         }
 
         /// <summary>
