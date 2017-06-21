@@ -139,6 +139,10 @@ namespace Yuri.PlatformCore
         /// </summary>
         public static int GAME_MSG_PASSAGE_DELAY = 120;
         /// <summary>
+        /// 文本展示：自动播放延时毫秒
+        /// </summary>
+        public static int GAME_MSG_AUTOPLAY_DELAY = 2000;
+        /// <summary>
         /// 文本展示：是否已读快进
         /// </summary>
         public static bool GAME_MSG_SKIP = false;

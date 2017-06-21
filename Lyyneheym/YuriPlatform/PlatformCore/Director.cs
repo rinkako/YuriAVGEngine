@@ -147,6 +147,8 @@ namespace Yuri.PlatformCore
             // 清空字符串缓冲
             render.dialogPreStr = String.Empty;
             render.pendingDialogQueue.Clear();
+            // 关闭自动播放
+            Director.RunMana.IsAutoplaying = false;
             // 弹空全部等待，复现保存最后一个动作
             Director.RunMana.ExitUserWait();
             Interrupt reactionNtr = new Interrupt()
@@ -160,15 +162,15 @@ namespace Yuri.PlatformCore
             };
             // 提交中断
             Director.RunMana.CallStack.Submit(reactionNtr);
-            // 重启并行
+            // 重启并行调度系统
             var sc = ResourceManager.GetInstance().GetScene(Director.RunMana.CallStack.EBP.BindingSceneName);
             Director.RunMana.ParallelExecutorStack = new Stack<List<ParallelExecutor>>();
             Director.RunMana.ConstructParallel(sc);
             Director.RunMana.RestartParallel();
             Director.RunMana.LastScenario = sc.Scenario;
-            // 重启信号系统
+            // 重启信号分发系统
             SemaphoreDispatcher.ReBinding(sc, Director.RunMana.SemaphoreBindings);
-            // 重启消息循环
+            // 重启主调用堆栈上的消息循环
             Director.ResumeUpdateContext();
         }
 
@@ -252,6 +254,10 @@ namespace Yuri.PlatformCore
                         this.curState = GameState.Interrupt;
                         resumeFlag = false;
                         break;
+                    case StackMachineState.AutoWait:
+                        this.curState = GameState.AutoPlay;
+                        resumeFlag = true;
+                        break;
                     case StackMachineState.NOP:
                         this.curState = GameState.Exit;
                         resumeFlag = true;
@@ -262,7 +268,7 @@ namespace Yuri.PlatformCore
                 {
                     // 等待状态
                     case GameState.Waiting:
-                        // 计算已经等待的时间（这里，不考虑并行处理）
+                        // 计算已经等待的时间
                         if (DateTime.Now - Director.RunMana.CallStack.ESP.TimeStamp >
                             Director.RunMana.CallStack.ESP.Delay)
                         {

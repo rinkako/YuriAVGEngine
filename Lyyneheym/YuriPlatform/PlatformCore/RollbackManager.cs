@@ -132,6 +132,8 @@ namespace Yuri.PlatformCore
             // 清空字符串缓冲
             render.dialogPreStr = String.Empty;
             render.pendingDialogQueue.Clear();
+            // 关闭自动播放
+            Director.RunMana.IsAutoplaying = false;
             // 弹空全部等待，复现保存最后一个动作
             Director.RunMana.ExitUserWait();
             Interrupt reactionNtr = new Interrupt()

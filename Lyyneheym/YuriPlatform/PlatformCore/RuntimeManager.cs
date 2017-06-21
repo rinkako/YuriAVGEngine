@@ -243,6 +243,14 @@ namespace Yuri.PlatformCore
         }
 
         /// <summary>
+        /// 等待自动播放
+        /// </summary>
+        public void AutoPlayWait()
+        {
+            this.CallStack.Submit(TimeSpan.FromMilliseconds(GlobalConfigContext.GAME_MSG_AUTOPLAY_DELAY));
+        }
+
+        /// <summary>
         /// 延时
         /// </summary>
         /// <param name="causedBy">触发的原因</param>
@@ -475,6 +483,12 @@ namespace Yuri.PlatformCore
             return null;
         }
 
+        /// <summary>
+        /// 获取某个变量关于一个栈机所在的上下文
+        /// </summary>
+        /// <param name="varName">变量名</param>
+        /// <param name="vsm">栈机实例</param>
+        /// <returns>该变量所在的上下文对象</returns>
         public EvaluatableContext GetContext(string varName, StackMachine vsm)
         {
             // 处理局部变量
@@ -686,8 +700,22 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取或设置当前是否允许右键菜单
         /// </summary>
-        public bool EnableRClick { get; set; } = true;
-        
+        public bool EnableRClick
+        {
+            get;
+            set;
+        } = true;
+
+        /// <summary>
+        /// 是否正在自动播放剧情
+        /// 这个字段不会被保存和快照
+        /// </summary>
+        public bool IsAutoplaying
+        {
+            get;
+            set;
+        } = false;
+
         /// <summary>
         /// 获取或设置正在演出的章节名
         /// 该字段仅用在存档标记，和调用堆栈无关
@@ -853,6 +881,10 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 准备退出程序
         /// </summary>
-        Exit
+        Exit,
+        /// <summary>
+        /// 自动播放等待
+        /// </summary>
+        AutoPlay
     }
 }

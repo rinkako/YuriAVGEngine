@@ -451,7 +451,16 @@ namespace Yuri.PlatformCore
             }
             // 主动调用一次显示
             this.DrawDialogRunQueue();
-            Director.RunMana.UserWait("UpdateRender", "DialogWaitForClick");
+            // 如果是自动播放就加自动播放等待栈帧
+            if (Director.RunMana.IsAutoplaying)
+            {
+                Director.RunMana.AutoPlayWait();
+            }
+            // 否则等待用户点击
+            else
+            {
+                Director.RunMana.UserWait("UpdateRender", "DialogWaitForClick");
+            }
         }
 
         /// <summary>

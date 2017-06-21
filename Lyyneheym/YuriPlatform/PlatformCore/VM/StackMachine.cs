@@ -186,6 +186,28 @@ namespace Yuri.PlatformCore.VM
         }
 
         /// <summary>
+        /// 向栈机提交一个自动播放等待
+        /// </summary>
+        /// <param name="autoWaitPending">自动播放延时</param>
+        public void Submit(TimeSpan autoWaitPending)
+        {
+            StackMachineFrame smf = new StackMachineFrame()
+            {
+                State = StackMachineState.AutoWait,
+                ScriptName = null,
+                PC = 0,
+                IP = null,
+                IR = String.Empty,
+                Argv = null,
+                BindingFunctionName = null,
+                BindingSceneName = null,
+                Delay = autoWaitPending,
+                Tag = null
+            };
+            this.coreStack.Push(smf);
+        }
+
+        /// <summary>
         /// 向栈机提交一个栈帧
         /// </summary>
         /// <param name="mySMF">自定义栈帧</param>

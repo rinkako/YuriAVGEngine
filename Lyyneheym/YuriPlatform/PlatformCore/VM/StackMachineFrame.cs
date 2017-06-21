@@ -155,6 +155,10 @@ namespace Yuri.PlatformCore.VM
         /// <summary>
         /// 系统中断
         /// </summary>
-        Interrupt
+        Interrupt,
+        /// <summary>
+        /// 启动播放等待
+        /// </summary>
+        AutoWait
     }
 }
