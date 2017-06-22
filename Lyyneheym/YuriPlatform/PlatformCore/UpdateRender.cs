@@ -145,6 +145,13 @@ namespace Yuri.PlatformCore
         /// </summary>
         public void SetMouseWheelDelta(int delta)
         {
+            // 关闭自动播放
+            Director.RunMana.IsAutoplaying = false;
+            UpdateRender.autowaitFrame = null;
+            if (Director.IsAutoPlayWaiting)
+            {
+                Director.RunMana.ExitCall(Director.RunMana.CallStack);
+            }
             // 更新变量
             UpdateRender.KS_MOUSE_WHEEL_DELTA = delta;
             // 上滚
@@ -274,9 +281,7 @@ namespace Yuri.PlatformCore
                         {
                             this.RclickCounter =
                                 this.IsBranching || GlobalConfigContext.GAME_RCLICKMODE ==
-                                GlobalConfigContext.RClickType.RClickMenu
-                                    ? 1
-                                    : 0;
+                                GlobalConfigContext.RClickType.RClickMenu ? 1 : 0;
                         }
                     }
                 }
@@ -298,9 +303,7 @@ namespace Yuri.PlatformCore
         /// 鼠标右键计数器
         /// </summary>
         public int RclickCounter { get; set; } = GlobalConfigContext.GAME_RCLICKMODE ==
-                                                 GlobalConfigContext.RClickType.RClickMenu
-            ? 1
-            : 0;
+            GlobalConfigContext.RClickType.RClickMenu ? 1 : 0;
 
         /// <summary>
         /// 更新函数：根据键盘状态更新游戏，它的优先级低于精灵按钮
@@ -383,6 +386,9 @@ namespace Yuri.PlatformCore
                 // 正在显示对话
                 if (this.IsShowingDialog && Director.IsButtonClicking == false && Director.IsRClicking == false)
                 {
+                    // 关闭自动播放
+                    Director.RunMana.IsAutoplaying = false;
+                    UpdateRender.autowaitFrame = null;
                     // 如果还在播放打字动画就跳跃
                     if (this.MsgStoryboardDict.ContainsKey(0) && this.MsgStoryboardDict[0].GetCurrentProgress() < 1.0)
                     {
@@ -451,17 +457,20 @@ namespace Yuri.PlatformCore
             }
             // 主动调用一次显示
             this.DrawDialogRunQueue();
-            // 如果是自动播放就加自动播放等待栈帧
             if (Director.RunMana.IsAutoplaying)
             {
-                Director.RunMana.AutoPlayWait();
+                Director.RunMana.UserWait("UpdateRender", "DialogWaitForAuto");
+                UpdateRender.autowaitFrame = Director.RunMana.CallStack.ESP;
             }
-            // 否则等待用户点击
             else
             {
                 Director.RunMana.UserWait("UpdateRender", "DialogWaitForClick");
             }
+            
+
         }
+
+        private static StackMachineFrame autowaitFrame = null;
 
         /// <summary>
         /// 将对话队列里指定趟数的趟显示出来，如果显示完毕后队列已空则结束对话状态
@@ -583,8 +592,21 @@ namespace Yuri.PlatformCore
                 this.ShowMessageTria();
                 this.BeginMessageTriaUpDownAnimation();
             }
+            // 如果是自动播放就加自动播放等待栈帧
+            if (Director.RunMana.IsAutoplaying)
+            {
+                if (UpdateRender.autowaitFrame != null)
+                {
+                    UpdateRender.autowaitFrame.State = StackMachineState.AutoWait;
+                    UpdateRender.autowaitFrame.TimeStamp = DateTime.Now;
+                    UpdateRender.autowaitFrame.Delay = TimeSpan.FromMilliseconds(GlobalConfigContext.GAME_MSG_AUTOPLAY_DELAY);
+                    UpdateRender.autowaitFrame = null;
+                }
+                //Director.RunMana.ExitUserWait();
+                //Director.RunMana.AutoPlayWait();
+            }
         }
-
+        
         /// <summary>
         /// 初始化文字小三角
         /// </summary>
@@ -617,7 +639,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 隐藏对话小三角
         /// </summary>
-        private void HideMessageTria()
+        public void HideMessageTria()
         {
             // 只有主文字层需要作用小三角
             if (this.currentMsgLayer == 0)
@@ -655,7 +677,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 获取当前是否正在显示对话
         /// </summary>
-        public bool IsShowingDialog { get; private set; } = false;
+        public bool IsShowingDialog { get; set; } = false;
 
         /// <summary>
         /// 获取或设置当前是否正在显示选择支
@@ -687,7 +709,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 是否下一动作仍为对话
         /// </summary>
-        private bool IsContinousDialog = false;
+        public bool IsContinousDialog { get; set; } = false;
 
         /// <summary>
         /// 主文字层背景精灵

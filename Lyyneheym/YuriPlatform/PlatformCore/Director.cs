@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -280,6 +281,27 @@ namespace Yuri.PlatformCore
                         if (SpriteAnimation.IsAnyAnimation == false && SCamera2D.IsAnyAnimation == false
                             && SCamera3D.IsAnyAnimation == false)
                         {
+                            Director.RunMana.ExitCall(Director.RunMana.CallStack);
+                        }
+                        break;
+                    case GameState.AutoPlay:
+                        // 等待动画和延时
+                        if (DateTime.Now - Director.RunMana.CallStack.ESP.TimeStamp > Director.RunMana.CallStack.ESP.Delay
+                            && SpriteAnimation.IsAnyAnimation == false 
+                            && SCamera2D.IsAnyAnimation == false
+                            && SCamera3D.IsAnyAnimation == false
+                            && Director.IsRClicking == false
+                            && Musician.IsVoicePlaying == false
+                            && SemaphoreDispatcher.GetSemaphoreState("System_PreviewShutdown") == false
+                            && ViewPageManager.IsAtMainStage() == true)
+                        {
+                            this.updateRender.IsShowingDialog = false;
+                            this.updateRender.dialogPreStr = String.Empty;
+                            if (this.updateRender.IsContinousDialog == false)
+                            {
+                                ViewManager.GetInstance().GetMessageLayer(0).Visibility = Visibility.Hidden;
+                                this.updateRender.HideMessageTria();
+                            }
                             Director.RunMana.ExitCall(Director.RunMana.CallStack);
                         }
                         break;
@@ -820,6 +842,18 @@ namespace Yuri.PlatformCore
             {
                 var ebpFunc = Director.RunMana.CallStack.EBP.BindingFunction;
                 return ebpFunc != null && ebpFunc.GlobalName == "__YuriFunc@rclick?main";
+            }
+        }
+
+        /// <summary>
+        /// 获取当前是否正在自动播放的等待
+        /// </summary>
+        public static bool IsAutoPlayWaiting
+        {
+            get
+            {
+                var esp = Director.RunMana.CallStack.ESP;
+                return esp != null && esp.State == StackMachineState.AutoWait;
             }
         }
 

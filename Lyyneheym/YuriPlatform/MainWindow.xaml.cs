@@ -208,5 +208,12 @@ namespace Yuri
             this.Height = GlobalConfigContext.GAME_WINDOW_ACTUALHEIGHT;
         }
         #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Director.RunMana.IsAutoplaying = true;
+            Director.RunMana.ExitUserWait();
+            Director.RunMana.AutoPlayWait();
+        }
     }
 }

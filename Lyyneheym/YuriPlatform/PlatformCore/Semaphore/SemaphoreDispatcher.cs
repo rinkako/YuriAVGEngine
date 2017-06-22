@@ -282,6 +282,21 @@ namespace Yuri.PlatformCore.Semaphore
         }
 
         /// <summary>
+        /// 获取一个信号量是否激活
+        /// </summary>
+        /// <param name="semaphoreName">信号量的名字</param>
+        /// <returns>信号量是否激活，如果信号量不存在，则返回False</returns>
+        public static bool GetSemaphoreState(string semaphoreName)
+        {
+            lock (SemaphoreDispatcher.syncMutex)
+            {
+                semaphoreName = semaphoreName.ToUpper();
+                return SemaphoreDispatcher.semaphoreDict.ContainsKey(semaphoreName) 
+                    && SemaphoreDispatcher.semaphoreDict[semaphoreName].Activated;
+            }
+        }
+
+        /// <summary>
         /// 停止分组中的所有信号处理机并销毁
         /// </summary>
         /// <param name="group">分组名</param>
