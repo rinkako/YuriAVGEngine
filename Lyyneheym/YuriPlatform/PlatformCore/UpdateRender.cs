@@ -29,7 +29,6 @@ namespace Yuri.PlatformCore
     internal class UpdateRender
     {
         #region 辅助函数
-
         /// <summary>
         /// <para>将逆波兰式计算为等价的Double类型实例</para>
         /// <para>如果逆波兰式为空，则返回参数nullValue的值</para>
@@ -83,11 +82,9 @@ namespace Yuri.PlatformCore
         {
             return polish == String.Empty ? nullValue : polish;
         }
-
         #endregion
 
         #region 键位按钮状态
-
         /// <summary>
         /// 获取键盘上某个按键当前状态
         /// </summary>
@@ -179,18 +176,15 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 鼠标按钮状态字典
         /// </summary>
-        private static readonly Dictionary<MouseButton, MouseButtonState> KS_MOUSE_Dict =
-            new Dictionary<MouseButton, MouseButtonState>();
+        private static readonly Dictionary<MouseButton, MouseButtonState> KS_MOUSE_Dict = new Dictionary<MouseButton, MouseButtonState>();
 
         /// <summary>
         /// 键盘按钮状态字典
         /// </summary>
         private static readonly Dictionary<Key, KeyStates> KS_KEY_Dict = new Dictionary<Key, KeyStates>();
-
         #endregion
 
         #region 周期性调用
-
         /// <summary>
         /// 更新函数：根据鼠标状态更新游戏，它的优先级低于精灵按钮
         /// </summary>
@@ -302,8 +296,7 @@ namespace Yuri.PlatformCore
         /// <summary>
         /// 鼠标右键计数器
         /// </summary>
-        public int RclickCounter { get; set; } = GlobalConfigContext.GAME_RCLICKMODE ==
-            GlobalConfigContext.RClickType.RClickMenu ? 1 : 0;
+        public int RclickCounter { get; set; } = GlobalConfigContext.GAME_RCLICKMODE == GlobalConfigContext.RClickType.RClickMenu ? 1 : 0;
 
         /// <summary>
         /// 更新函数：根据键盘状态更新游戏，它的优先级低于精灵按钮
@@ -433,11 +426,9 @@ namespace Yuri.PlatformCore
         /// 鼠标右键是否松开标志位
         /// </summary>
         private bool MouseRightUpFlag = true;
-
         #endregion
 
         #region 文字层相关
-
         /// <summary>
         /// 把文字描绘到指定的文字层上
         /// </summary>
@@ -466,10 +457,11 @@ namespace Yuri.PlatformCore
             {
                 Director.RunMana.UserWait("UpdateRender", "DialogWaitForClick");
             }
-            
-
         }
 
+        /// <summary>
+        /// 自动播放等待栈帧
+        /// </summary>
         private static StackMachineFrame autowaitFrame = null;
 
         /// <summary>
@@ -555,8 +547,7 @@ namespace Yuri.PlatformCore
         /// <param name="appendString">要追加的字符串</param>
         /// <param name="msglayBinding">文字层的控件</param>
         /// <param name="wordTimeSpan">字符之间的打字时间间隔</param>
-        private void TypeWriter(int id, string orgString, string appendString, TextBlock msglayBinding,
-            int wordTimeSpan)
+        private void TypeWriter(int id, string orgString, string appendString, TextBlock msglayBinding, int wordTimeSpan)
         {
             this.HideMessageTria();
             Storyboard MsgLayerTypingStory = new Storyboard();
@@ -602,8 +593,6 @@ namespace Yuri.PlatformCore
                     UpdateRender.autowaitFrame.Delay = TimeSpan.FromMilliseconds(GlobalConfigContext.GAME_MSG_AUTOPLAY_DELAY);
                     UpdateRender.autowaitFrame = null;
                 }
-                //Director.RunMana.ExitUserWait();
-                //Director.RunMana.AutoPlayWait();
             }
         }
         
@@ -730,7 +719,6 @@ namespace Yuri.PlatformCore
         /// 对话故事板容器
         /// </summary>
         private Dictionary<int, Storyboard> MsgStoryboardDict = new Dictionary<int, Storyboard>();
-
         #endregion
 
         #region 渲染器类自身相关方法和引用
@@ -816,7 +804,6 @@ namespace Yuri.PlatformCore
         #endregion
 
         #region 演绎函数
-
         /// <summary>
         /// 接受一个场景动作并演绎她
         /// </summary>
@@ -1062,7 +1049,7 @@ namespace Yuri.PlatformCore
                     break;
                 case SActionType.act_alert:
                     this.Alert(
-                        this.ParseDirectString(action.ArgsDict["target"], String.Empty)
+                        this.ParseString(action.ArgsDict["target"], String.Empty)
                     );
                     break;
                 case SActionType.act_dialog:
