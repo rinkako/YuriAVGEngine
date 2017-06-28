@@ -37,7 +37,7 @@
                      <TextBlock Name="BO_Information_Detail" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="11" TextWrapping="Wrap"></TextBlock>
                  </Grid>
             </Grid>
-            <Button Width="50" Height="25" Content="AUTO" Click="Button_Click"/>
+            <Button Visibility="Hidden" Width="50" Height="25" Content="AUTO" Click="Button_Click"/>
         </Canvas>
     </Viewbox>
 </Window>

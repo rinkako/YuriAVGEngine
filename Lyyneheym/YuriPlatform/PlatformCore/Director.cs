@@ -284,6 +284,7 @@ namespace Yuri.PlatformCore
                             Director.RunMana.ExitCall(Director.RunMana.CallStack);
                         }
                         break;
+                    // 自动播放
                     case GameState.AutoPlay:
                         // 等待动画和延时
                         if (DateTime.Now - Director.RunMana.CallStack.ESP.TimeStamp > Director.RunMana.CallStack.ESP.Delay
