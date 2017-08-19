@@ -1905,7 +1905,17 @@ namespace Yuri.PlatformCore
                 {
                     MusicianRouterHandler.EnqueueMessage(mmsg);
                 };
-                Director.RunMana.Musics.PlayingBGS[track] = String.Empty;
+                if (track >= 0)
+                {
+                    Director.RunMana.Musics.PlayingBGS[track] = String.Empty;
+                }
+                else
+                {
+                    for (int i = 0; i < GlobalConfigContext.GAME_MUSIC_BGSTRACKNUM; i++)
+                    {
+                        Director.RunMana.Musics.PlayingBGS[i] = String.Empty;
+                    }
+                }
                 RouterManager.Send(MusicianRouterHandler.MusicianRouterName, evt);
             }
         }
@@ -1979,6 +1989,19 @@ namespace Yuri.PlatformCore
         private void Title()
         {
             Director.RunMana.ExitAll();
+            this.viewMana.RemoveView(ResourceType.Background);
+            this.viewMana.RemoveView(ResourceType.Stand);
+            this.viewMana.RemoveView(ResourceType.Pictures);
+            this.viewMana.RemoveView(ResourceType.Button);
+            this.IsShowingDialog = false;
+            this.dialogPreStr = String.Empty;
+            this.viewMana.GetMessageLayer(0).Visibility = Visibility.Hidden;
+            this.HideMessageTria();
+            this.Bgmfade(0, 300);
+            this.Stopvocal();
+            this.Stopbgs(-1);
+            // 标记为非回滚
+            RollbackManager.IsRollingBack = false;
             // 没有标志回归点就从程序入口重新开始
             if (this.titlePointContainer.Key == null || this.titlePointContainer.Value == null)
             {
