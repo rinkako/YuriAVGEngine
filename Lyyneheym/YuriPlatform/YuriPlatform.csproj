@@ -110,6 +110,9 @@
     <Compile Include="PageView\ArtPage.xaml.cs">
       <DependentUpon>ArtPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PageView\MusicPage.xaml.cs">
+      <DependentUpon>MusicPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PageView\SplashPage.xaml.cs">
       <DependentUpon>SplashPage.xaml</DependentUpon>
     </Compile>
@@ -188,6 +191,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PageView\ArtPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PageView\MusicPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

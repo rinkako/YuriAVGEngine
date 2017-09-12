@@ -53,6 +53,7 @@ namespace Yuri
             ViewManager.MaskFrameRef = this.maskFrame;
             InputMethod.SetIsInputMethodEnabled(this, false);
             this.mainFrame.Content = ViewPageManager.RetrievePage("SplashPage");
+            //this.mainFrame.Content = new MusicPage();
             if (GlobalConfigContext.GAME_WINDOW_FULLSCREEN)
             {
                 Director.IsFullScreen = true;

@@ -1,0 +1,28 @@
+﻿<Page x:Class="Yuri.PageView.MusicPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Yuri.PageView"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1280"
+      Title="MusicPage">
+    <Grid Name="Music_MainGrid">
+        <Canvas Name="Music_LightContainer">
+        </Canvas>
+        <Image Name="Music_FloatStaticLayer"/>
+        <Image MaxWidth="158" MaxHeight="50" Name="Music_Image_Back" Stretch="UniformToFill" Height="56" VerticalAlignment="Bottom" Margin="46,0,0,38" HorizontalAlignment="Left" Width="160" MouseEnter="Music_Image_Back_MouseEnter" MouseLeave="Music_Image_Back_MouseLeave" MouseLeftButtonUp="Music_Image_Back_MouseLeftButtonUp"/>
+        <Grid Name="Music_ButtonContainer">
+
+        </Grid>
+        <Image Name="Music_ProgressBar" Margin="0,710,1280,0"/>
+        <Label Name="Music_Label_SongName" HorizontalContentAlignment="Right" Foreground="White" FontSize="22" Content="" Margin="800,520,40,160" FontFamily="Source Han Serif SC"/>
+        <Label Name="Music_Label_SongAuthor" HorizontalContentAlignment="Right" Foreground="White" FontSize="16" Content="" Margin="800,570,40,119" FontFamily="Source Han Serif SC"/>
+        <Label Name="Music_Label_SongDisc" HorizontalContentAlignment="Right" Foreground="White" FontSize="16" Content="" Margin="800,592,40,92" FontFamily="Source Han Serif SC"/>
+        <Label Name="Music_TimeStamp" Foreground="White" FontSize="22" FontFamily="Source Han Serif SC" Margin="0,675,0,0" HorizontalContentAlignment="Center">
+            <Label.Effect>
+                <DropShadowEffect Color="Cyan" ShadowDepth="0" BlurRadius="12"/>
+            </Label.Effect>
+        </Label>
+    </Grid>
+</Page>

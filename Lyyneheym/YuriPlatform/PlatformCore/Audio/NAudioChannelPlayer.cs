@@ -1,10 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
-using Yuri.PlatformCore.VM;
 
 namespace Yuri.PlatformCore.Audio
 {
@@ -224,7 +221,7 @@ namespace Yuri.PlatformCore.Audio
         /// 获取通道播放的位置戳
         /// </summary>
         public TimeSpan CurrentTime => this.playingStream?.CurrentTime ?? TimeSpan.Zero;
-
+        
         /// <summary>
         /// 获取通道音乐总长度
         /// </summary>

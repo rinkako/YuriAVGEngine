@@ -339,6 +339,20 @@ namespace Yuri.PlatformCore.Audio
         }
 
         /// <summary>
+        /// 获取Bgm的已播放时间间隔
+        /// </summary>
+        public TimeSpan BgmPosition => this.IsBgmPlaying == false
+            ? TimeSpan.FromSeconds(0)
+            : this.audioEngine.GetPostion(this.BgmHandleContainer.Value);
+
+        /// <summary>
+        /// 获取Bgm的总长度时间间隔
+        /// </summary>
+        public TimeSpan BgmDuration => this.IsBgmPlaying == false
+            ? TimeSpan.FromSeconds(0)
+            : this.audioEngine.GetDuration(this.BgmHandleContainer.Value);
+
+        /// <summary>
         /// 获取BGM是否正在播放
         /// </summary>
         public bool IsBgmPlaying
@@ -346,7 +360,7 @@ namespace Yuri.PlatformCore.Audio
             get;
             private set;
         }
-
+        
         /// <summary>
         /// 获取语音是否正在播放
         /// </summary>

@@ -230,6 +230,43 @@ namespace Yuri.PlatformCore.Audio
         }
 
         /// <summary>
+        /// 获取轨道已播放时长
+        /// </summary>
+        /// <param name="handle">通道句柄</param>
+        /// <returns>已播放时长的TimeSpan包装</returns>
+        public TimeSpan GetPostion(int handle)
+        {
+            try
+            {
+                return this.channelDict.ContainsKey(handle) == false ? TimeSpan.FromSeconds(0) : this.channelDict[handle].CurrentTime;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("Get playing position failed." + ex, "NAudioPlayer", LogLevel.Error);
+                return TimeSpan.FromSeconds(0);
+            }
+        }
+
+        /// <summary>
+        /// 获取轨道总时长
+        /// </summary>
+        /// <param name="handle">通道句柄</param>
+        /// <returns>总时长的TimeSpan包装</returns>
+        public TimeSpan GetDuration(int handle)
+        {
+            try
+            {
+                return this.channelDict.ContainsKey(handle) == false ? TimeSpan.FromSeconds(0) : this.channelDict[handle].TotalTime;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogLine("Get playing duration failed." + ex, "NAudioPlayer", LogLevel.Error);
+                return TimeSpan.FromSeconds(0);
+            }
+        }
+
+
+        /// <summary>
         /// 释放资源
         /// </summary>
         public void Dispose()
