@@ -34,8 +34,7 @@
                                     <GeometryModel3D.Geometry>
                                         <MeshGeometry3D Positions="-16,-9,-8  16,-9,-8  -16,9,-8  16,9,-8"
                                                         TextureCoordinates="0,1 1,1 0,0 1,0"
-                                                        TriangleIndices="0,1,2 1,3,2"
-                                        />
+                                                        TriangleIndices="0,1,2 1,3,2"/>
                                     </GeometryModel3D.Geometry>
                                 </GeometryModel3D>
                             </Model3DGroup>
@@ -45,7 +44,6 @@
                     <ModelVisual3D x:Name="ST3D_Character_Container">
                         <ModelVisual3D.Content>
                             <Model3DGroup x:Name="ST3D_Character_Group">
-
                             </Model3DGroup>
                         </ModelVisual3D.Content>
                     </ModelVisual3D>
@@ -90,5 +88,6 @@
                 <Button Content="IRON" HorizontalAlignment="Left" Margin="10,485,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_11"/>
             </Canvas>
         </Canvas>
+        <Button Content="Button" Width="160" Height="47" Click="Button_Click_12" Margin="33,31,1087,642"/>
     </Grid>
 </Page>

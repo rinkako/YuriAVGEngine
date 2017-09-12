@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 using Yuri.PlatformCore;
 using Yuri.PlatformCore.Graphic;
@@ -226,6 +227,35 @@ namespace Yuri.PageView
             //    Console.WriteLine(ex.Message);
             //}
             
+        }
+
+
+        bool tflag = false;
+        private Point3DAnimationUsingKeyFrames dakf;
+        private void Button_Click_12(object sender, RoutedEventArgs e)
+        {
+            if (tflag)
+            {
+                dakf.FillBehavior = FillBehavior.Stop;
+                dakf.RepeatBehavior = RepeatBehavior.;
+            }
+            else
+            {
+                var depth = this.ST3D_Camera.Position.Z;
+                dakf = new Point3DAnimationUsingKeyFrames();
+                var rand = new Random();
+                for (int i = 0; i < 50; i++)
+                {
+                    var dx = rand.NextDouble() * (rand.Next(0, 100) >= 50 ? 1 : -1);
+                    var dy = rand.NextDouble() * (rand.Next(0, 100) <= 50 ? 1 : -1);
+                    LinearPoint3DKeyFrame dkf = new LinearPoint3DKeyFrame(new Point3D(dx, dy, depth), TimeSpan.FromMilliseconds(50 * (i + 1)));
+                    dakf.KeyFrames.Add(dkf);
+                }
+                dakf.RepeatBehavior = RepeatBehavior.Forever;
+                dakf.Duration = TimeSpan.FromMilliseconds(50 * 50);
+                this.ST3D_Camera.BeginAnimation(PerspectiveCamera.PositionProperty, dakf);
+            }
+            tflag = !tflag;
         }
     }
     
