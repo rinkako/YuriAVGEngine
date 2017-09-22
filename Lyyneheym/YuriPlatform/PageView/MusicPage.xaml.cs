@@ -68,16 +68,28 @@ namespace Yuri.PageView
             this.Music_ProgressBar.Source = rm.GetPicture("UI_MusicRoom_BarItem.png", ResourceManager.FullImageRect).SpriteBitmapImage;
             this.Music_ProgressBar.Stretch = Stretch.Fill;
 
+            CompositionTarget.Rendering += CompositionTarget_Rendering;
+        }
+
+        private void CompositionTarget_Rendering(object sender, EventArgs e)
+        {
+            foreach (var ballKVP in this.activeBall)
+            {
+                var ball = ballKVP.Value;
+                var left = Convert.ToInt32(ball.Name.Split('_').Last()) == 0;
+                var dt = this.rand.NextDouble() * 0.25;
+                Canvas.SetLeft(ball, Canvas.GetLeft(ball) + (left ? -1 * dt : dt));
+            }
         }
 
         private void RefreshMusicButton()
         {
-            int rowCounter = 0;
-            int colCounter = 0;
-            int xcounter = 0;
+            var rowCounter = 0;
+            var colCounter = 0;
+            var xcounter = 0;
             foreach (var bgmName in this.BgmList)
             {
-                Image btnImg = new Image
+                var btnImg = new Image
                 {
                     Width = 258,
                     Height = 50,
@@ -176,7 +188,7 @@ namespace Yuri.PageView
         private void AddLightBall()
         {
             var rpx = this.rand.Next(15, 50);
-            Ellipse ball = new Ellipse
+            var ball = new Ellipse
             {
                 Width = rpx,
                 Height = rpx,
@@ -187,16 +199,17 @@ namespace Yuri.PageView
             this.Music_LightContainer.Children.Add(ball);
             var duration = Math.Sqrt(rpx);
             var trand = this.rand.Next(15000, 40000);
-            DoubleAnimation daY = new DoubleAnimation(GlobalConfigContext.GAME_WINDOW_HEIGHT, -100, TimeSpan.FromMilliseconds(trand));
+            var daY = new DoubleAnimation(GlobalConfigContext.GAME_WINDOW_HEIGHT, -100, TimeSpan.FromMilliseconds(trand));
             ball.BeginAnimation(Canvas.TopProperty, daY);
             var tsChanging = TimeSpan.FromMilliseconds(duration * 1000);
-            DoubleAnimation daOpa = new DoubleAnimation(0.7, 0, tsChanging);
+            var daOpa = new DoubleAnimation(0.7, 0, tsChanging);
             ball.BeginAnimation(Ellipse.OpacityProperty, daOpa);
-            DoubleAnimation daR = new DoubleAnimation(rpx, 0, tsChanging);
+            var daR = new DoubleAnimation(rpx, 0, tsChanging);
             ball.BeginAnimation(Ellipse.WidthProperty, daR);
             ball.BeginAnimation(Ellipse.HeightProperty, daR);
             lock (this.activeBall)
             {
+                ball.Name = "MB_" + Guid.NewGuid().ToString().Replace('-', '_') + "_" + this.rand.Next(0, 2);
                 this.activeBall.Add(daR, ball);
             }
             daR.Completed += delegate
@@ -262,20 +275,20 @@ namespace Yuri.PageView
             this.Music_Label_SongName.Content = this.BgmList[idx];
             this.Music_Label_SongDisc.Content = this.DiscList[idx];
             this.Music_Label_SongAuthor.Content = this.AuthorList[idx];
-            TimeSpan duration = TimeSpan.FromMilliseconds(1000);
-            ThicknessAnimation taName = new ThicknessAnimation(new Thickness(800, 520, -80, 160), new Thickness(800, 520, 40, 160), duration)
+            var duration = TimeSpan.FromMilliseconds(1000);
+            var taName = new ThicknessAnimation(new Thickness(800, 520, -80, 160), new Thickness(800, 520, 40, 160), duration)
             {
                 DecelerationRatio = 0.75
             };
-            ThicknessAnimation taDisc = new ThicknessAnimation(new Thickness(800, 592, -80, 92), new Thickness(800, 592, 40, 92), duration)
+            var taDisc = new ThicknessAnimation(new Thickness(800, 592, -80, 92), new Thickness(800, 592, 40, 92), duration)
             {
                 DecelerationRatio = 0.75
             };
-            ThicknessAnimation taAuthor = new ThicknessAnimation(new Thickness(800, 570, -80, 119), new Thickness(800, 570, 40, 119), duration)
+            var taAuthor = new ThicknessAnimation(new Thickness(800, 570, -80, 119), new Thickness(800, 570, 40, 119), duration)
             {
                 DecelerationRatio = 0.75
             };
-            DoubleAnimation da = new DoubleAnimation(0, 1, duration);
+            var da = new DoubleAnimation(0, 1, duration);
             this.Music_Label_SongName.BeginAnimation(Label.MarginProperty, taName);
             this.Music_Label_SongDisc.BeginAnimation(Label.MarginProperty, taDisc);
             this.Music_Label_SongAuthor.BeginAnimation(Label.MarginProperty, taAuthor);
@@ -296,7 +309,7 @@ namespace Yuri.PageView
 
         private void Music_MBtn_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Image btn = sender as Image;
+            var btn = sender as Image;
             this.HandlePlay(Convert.ToInt32(btn.Name.Split('_')[2]));
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -231,29 +232,44 @@ namespace Yuri.PageView
 
 
         bool tflag = false;
-        private Point3DAnimationUsingKeyFrames dakf;
+        private DoubleAnimationUsingKeyFrames dakfx;
+        private DoubleAnimationUsingKeyFrames dakfy;
+        private Storyboard sb;
         private void Button_Click_12(object sender, RoutedEventArgs e)
         {
             if (tflag)
             {
-                dakf.FillBehavior = FillBehavior.Stop;
-                dakf.RepeatBehavior = RepeatBehavior.;
+                sb.SkipToFill();
             }
             else
             {
-                var depth = this.ST3D_Camera.Position.Z;
-                dakf = new Point3DAnimationUsingKeyFrames();
+                sb = new Storyboard();
+                var transform = (this.ST3D_Background_Fore.Transform as Transform3DGroup).Children.First(t => t is TranslateTransform3D);
+                dakfx = new DoubleAnimationUsingKeyFrames();
+                dakfy = new DoubleAnimationUsingKeyFrames();
                 var rand = new Random();
                 for (int i = 0; i < 50; i++)
                 {
                     var dx = rand.NextDouble() * (rand.Next(0, 100) >= 50 ? 1 : -1);
                     var dy = rand.NextDouble() * (rand.Next(0, 100) <= 50 ? 1 : -1);
-                    LinearPoint3DKeyFrame dkf = new LinearPoint3DKeyFrame(new Point3D(dx, dy, depth), TimeSpan.FromMilliseconds(50 * (i + 1)));
-                    dakf.KeyFrames.Add(dkf);
+                    LinearDoubleKeyFrame dkfx = new LinearDoubleKeyFrame(dx, TimeSpan.FromMilliseconds(50 * (i + 1)));
+                    LinearDoubleKeyFrame dkfy = new LinearDoubleKeyFrame(dy, TimeSpan.FromMilliseconds(50 * (i + 1)));
+                    dakfx.KeyFrames.Add(dkfx);
+                    dakfy.KeyFrames.Add(dkfy);
                 }
-                dakf.RepeatBehavior = RepeatBehavior.Forever;
-                dakf.Duration = TimeSpan.FromMilliseconds(50 * 50);
-                this.ST3D_Camera.BeginAnimation(PerspectiveCamera.PositionProperty, dakf);
+                dakfx.RepeatBehavior = RepeatBehavior.Forever;
+                dakfy.RepeatBehavior = RepeatBehavior.Forever;
+                dakfx.Duration = TimeSpan.FromMilliseconds(50 * 50);
+                dakfy.Duration = TimeSpan.FromMilliseconds(50 * 50);
+                //this.ST3D_Camera.BeginAnimation(PerspectiveCamera.PositionProperty, dakf);
+                Storyboard.SetTarget(dakfx, transform); //动画的对象
+                Storyboard.SetTargetProperty(dakfx, new PropertyPath(TranslateTransform3D.OffsetXProperty));
+                sb.Duration = TimeSpan.FromMilliseconds(50 * 50);
+                sb.Children.Add(dakfx);
+                sb.Begin(); 
+
+                //transform.BeginAnimation(TranslateTransform3D.OffsetXProperty, dakfx);
+                //transform.BeginAnimation(TranslateTransform3D.OffsetYProperty, dakfy);
             }
             tflag = !tflag;
         }

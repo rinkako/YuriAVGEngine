@@ -759,6 +759,12 @@ namespace Yuri.PlatformCore.Graphic
             {
                 case ResourceType.Background:
                     var bgModel = ViewManager.View3D.ST3D_Background_Fore;
+                    if (!(bgModel.Transform is Transform3DGroup))
+                    {
+                        bgModel.Transform = new Transform3DGroup();
+                        var translate = new TranslateTransform3D(0, 0, 0);
+                        (bgModel.Transform as Transform3DGroup).Children.Add(translate);
+                    }
                     var bgGeomtry = bgModel.Geometry as MeshGeometry3D;
                     if (bgGeomtry.Positions[0].Z != (descriptor as SpriteDescriptor).Deepth3D)
                     {
