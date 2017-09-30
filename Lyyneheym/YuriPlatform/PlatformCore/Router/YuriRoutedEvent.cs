@@ -62,7 +62,7 @@ namespace Yuri.PlatformCore.Router
         /// <param name="e">参数包装</param>
         public void RaiseOnRouterAcceptEvent(IRouteable sender, EventArgs e)
         {
-            OnRouterAccept?.Invoke(sender, e);
+            this.OnRouterAccept?.Invoke(sender, e);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Yuri.PlatformCore.Router
         /// <param name="e">参数包装</param>
         public void RaiseOnRouterRoutedEvent(IRouteable sender, EventArgs e)
         {
-            OnRouterRouted?.Invoke(sender, e);
+            this.OnRouterRouted?.Invoke(sender, e);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Yuri.PlatformCore.Router
         /// <param name="e">参数包装</param>
         public void RaiseRouterSwallowedEvent(IRouteable sender, EventArgs e)
         {
-            OnRouterSwallowed?.Invoke(sender, e);
+            this.OnRouterSwallowed?.Invoke(sender, e);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Yuri.PlatformCore.Router
         /// <param name="e">参数包装</param>
         public void RaiseProcessedEvent(IRouteable sender, EventArgs e)
         {
-            OnProcessed?.Invoke(sender, e);
+            this.OnProcessed?.Invoke(sender, e);
         }
 
         /// <summary>
