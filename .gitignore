@@ -156,3 +156,10 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+/Lyyneheym/.vs/YuriEngine/v15/Server/sqlite3/storage.ide-wal
+/Lyyneheym/.vs/YuriEngine/v15/Server/sqlite3/storage.ide-shm
+/Lyyneheym/.vs/YuriEngine/v15/Server/sqlite3/storage.ide
+/Lyyneheym/.vs/YuriEngine/v15/Server/sqlite3/db.lock
+/Lyyneheym/.vs/YuriEngine/v15/sqlite3/db.lock
+/Lyyneheym/.vs/YuriEngine/v15/sqlite3/storage.ide-shm
+/Lyyneheym/.vs/YuriEngine/v15/sqlite3/storage.ide-wal

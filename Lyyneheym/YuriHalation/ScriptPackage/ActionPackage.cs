@@ -186,7 +186,7 @@ namespace Yuri.YuriHalation.ScriptPackage
                 case ActionPackageType.act_bg:
                     desSb.Append(String.Format("图层:{0} ", this.argsDict["id"].valueExp == "0" ? "背景" : "前景"));
                     desSb.Append(String.Format("文件:{0} ", this.argsDict["filename"].valueExp));
-                    desSb.Append(String.Format("深度:{0} ", this.argsDict["ro"].valueExp));
+                    desSb.Append(String.Format("景深:{0} ", this.argsDict["ro"].valueExp));
                     break;
                 case ActionPackageType.act_cstand:
                     desSb.Append(String.Format("图层:{0} ", this.argsDict["id"].valueExp));
