@@ -44,6 +44,7 @@
             this.textBox1.Size = new System.Drawing.Size(526, 177);
             this.textBox1.TabIndex = 0;
             this.textBox1.WordWrap = false;
+            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
             // button1
             // 
@@ -70,6 +71,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "显示对话";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DialogForm_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

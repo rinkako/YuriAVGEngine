@@ -89,7 +89,7 @@ namespace Yuri.YuriHalation.HalationCore
                 s.Close();
                 return ob;
             }
-            catch
+            catch (Exception ex)
             {
                 return null;
             }

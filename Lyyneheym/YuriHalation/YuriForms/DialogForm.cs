@@ -56,5 +56,21 @@ namespace Yuri.YuriHalation.YuriForms
             }
             this.Close();
         }
+
+        private void DialogForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == (Keys.Control | Keys.Enter))
+            {
+                this.button1_Click(null, null);
+            }
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == (Keys.Control | Keys.Enter))
+            {
+                this.button1_Click(null, null);
+            }
+        }
     }
 }
