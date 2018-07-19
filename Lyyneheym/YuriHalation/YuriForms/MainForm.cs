@@ -18,6 +18,7 @@ namespace Yuri.YuriHalation.YuriForms
         public MainForm()
         {
             InitializeComponent();
+            codeListBox.ItemHeight = codeListBox.Font.Height;
             this.资源ToolStripMenuItem.Enabled = this.编辑ToolStripMenuItem.Enabled =
                 this.工程ToolStripMenuItem.Enabled = this.编译ToolStripMenuItem.Enabled =
                 this.保存ToolStripMenuItem.Enabled = false;
@@ -124,6 +125,18 @@ namespace Yuri.YuriHalation.YuriForms
             this.codeListBox.HorizontalExtent = this.codeListBox.Width - 16;
             this.core.RefreshCodeContext();
             this.core.RefreshRedoUndo();
+        }
+
+        /// <summary>
+        /// 为ListBox的项设置正确的高度。
+        /// <remarks>仅在<see cref="ListBox.DrawMode"/>=<see cref="DrawMode.OwnerDrawVariable"/>时有效。</remarks>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void codeListBox_MeasureItem(object sender, MeasureItemEventArgs e)
+        {
+            ListBox listBox = sender as ListBox;
+            e.ItemHeight = listBox.Font.Height;
         }
 
         /// <summary>
@@ -1048,5 +1061,6 @@ namespace Yuri.YuriHalation.YuriForms
             upf.ShowDialog(this);
         }
         #endregion
+
     }
 }

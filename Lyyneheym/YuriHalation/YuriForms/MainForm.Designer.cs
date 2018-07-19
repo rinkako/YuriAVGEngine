@@ -1027,6 +1027,7 @@
             this.codeListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.codeListBox.Size = new System.Drawing.Size(582, 668);
             this.codeListBox.TabIndex = 6;
+			this.codeListBox.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.codeListBox_MeasureItem);
             this.codeListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.codeListBox_DrawItem);
             this.codeListBox.SelectedIndexChanged += new System.EventHandler(this.codeListBox_SelectedIndexChanged);
             this.codeListBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.codeListBox_MouseUp);
