@@ -10,6 +10,8 @@ namespace Yuri.YuriHalation
     {
         public MainWindow()
         {
+            System.Windows.Forms.Application.EnableVisualStyles();
+            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             InitializeComponent();
             mf = new MainForm();
             mf.ShowDialog();
