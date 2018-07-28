@@ -213,7 +213,7 @@ namespace Yuri.PlatformCore.Graphic
                 this.characterDescVec3D[id].Source = source;
             }
         }
-        
+
         /// <summary>
         /// 为屏幕增加一个图片精灵描述子
         /// </summary>
@@ -544,6 +544,20 @@ namespace Yuri.PlatformCore.Graphic
                 AnchorY = GlobalConfigContext.GAME_WINDOW_HEIGHT / 2.0
             };
             this.viewboxDescVec[(int)ViewportType.VTPictures] = PicTemplate;
+            // Message
+            Viewport2DDescriptor MessageTemplate = new Viewport2DDescriptor()
+            {
+                Type = ViewportType.VTMessage,
+                ZIndex = GlobalConfigContext.GAME_Z_MESSAGELAYER,
+                Left = 0,
+                Top = 0,
+                ScaleX = 1.0,
+                ScaleY = 1.0,
+                Angle = 0.0,
+                AnchorX = GlobalConfigContext.GAME_WINDOW_WIDTH / 2.0,
+                AnchorY = GlobalConfigContext.GAME_WINDOW_HEIGHT / 2.0
+            };
+            this.viewboxDescVec[(int)ViewportType.VTMessage] = MessageTemplate;
         }
 
         /// <summary>
@@ -619,7 +633,7 @@ namespace Yuri.PlatformCore.Graphic
             this.characterDescVec3D = new List<ModelDescriptor3D>();
             this.viewboxDescVec = new List<Viewport2DDescriptor>();
             this.pictureDescVec = new List<SpriteDescriptor>();
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 this.viewboxDescVec.Add(null);
             }
@@ -674,7 +688,7 @@ namespace Yuri.PlatformCore.Graphic
         {
             return ScreenManager.synObject == null ? ScreenManager.synObject = new ScreenManager() : ScreenManager.synObject;
         }
-        
+
         /// <summary>
         /// 唯一实例
         /// </summary>

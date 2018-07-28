@@ -311,7 +311,7 @@ namespace Yuri.PlatformCore.Graphic
                 case ResourceType.Stand:
                     removeOne = this.characterStandSpriteVec[id];
                     this.characterStandSpriteVec[id] = null;
-                    var descriptor3d = Director.ScrMana.GetCharacter3DDescriptor(id) ?? new ModelDescriptor3D() {SlotId = id};
+                    var descriptor3d = Director.ScrMana.GetCharacter3DDescriptor(id) ?? new ModelDescriptor3D() { SlotId = id };
                     this.RemoveSprite(ResourceType.Stand, removeOne,
                         !ViewManager.Is3DStage ? null : descriptor3d);
                     break;
@@ -616,11 +616,11 @@ namespace Yuri.PlatformCore.Graphic
             SpriteButton sbutton = new SpriteButton(id)
             {
                 ImageNormal = descriptor.NormalDescriptor == null ? null
-                        : ResourceManager.GetInstance() .GetPicture(descriptor.NormalDescriptor.ResourceName, ResourceManager.FullImageRect),
+                        : ResourceManager.GetInstance().GetPicture(descriptor.NormalDescriptor.ResourceName, ResourceManager.FullImageRect),
                 ImageMouseOver = descriptor.OverDescriptor == null ? null
-                        : ResourceManager.GetInstance() .GetPicture(descriptor.OverDescriptor.ResourceName, ResourceManager.FullImageRect),
+                        : ResourceManager.GetInstance().GetPicture(descriptor.OverDescriptor.ResourceName, ResourceManager.FullImageRect),
                 ImageMouseOn = descriptor.OnDescriptor == null ? null
-                        : ResourceManager.GetInstance()  .GetPicture(descriptor.OnDescriptor.ResourceName, ResourceManager.FullImageRect)
+                        : ResourceManager.GetInstance().GetPicture(descriptor.OnDescriptor.ResourceName, ResourceManager.FullImageRect)
             };
             sbutton.ImageNormal.Descriptor = descriptor.NormalDescriptor;
             sbutton.ImageMouseOver.Descriptor = descriptor.OverDescriptor;
@@ -650,7 +650,7 @@ namespace Yuri.PlatformCore.Graphic
             {
                 ImageNormal = descriptor.NormalDescriptor == null ? null
                     : ResourceManager.GetInstance().GetPicture(descriptor.NormalDescriptor.ResourceName, ResourceManager.FullImageRect),
-                ImageMouseOver = descriptor.OverDescriptor == null ? null 
+                ImageMouseOver = descriptor.OverDescriptor == null ? null
                     : ResourceManager.GetInstance().GetPicture(descriptor.OverDescriptor.ResourceName, ResourceManager.FullImageRect),
                 ImageMouseOn = descriptor.OnDescriptor == null ? null
                     : ResourceManager.GetInstance().GetPicture(descriptor.OnDescriptor.ResourceName, ResourceManager.FullImageRect)
@@ -676,11 +676,13 @@ namespace Yuri.PlatformCore.Graphic
                     return this.viewbox2dVec[(int)ViewportType.VTCharacterStand].CanvasBinding;
                 case ResourceType.Pictures:
                     return this.viewbox2dVec[(int)ViewportType.VTPictures].CanvasBinding;
+                case ResourceType.MessageLayerBackground:
+                    return this.viewbox2dVec[(int)ViewportType.VTMessage].CanvasBinding;
                 default:
                     return ViewManager.View2D.BO_MainGrid;
             }
         }
-        
+
         /// <summary>
         /// 为主窗体描绘一个精灵
         /// </summary>
@@ -770,7 +772,9 @@ namespace Yuri.PlatformCore.Graphic
                     {
                         var gPointList = bgGeomtry.Positions.Select(orgP => new Point3D
                         {
-                            X = orgP.X, Y = orgP.Y, Z = (descriptor as SpriteDescriptor).Deepth3D
+                            X = orgP.X,
+                            Y = orgP.Y,
+                            Z = (descriptor as SpriteDescriptor).Deepth3D
                         }).ToList();
                         bgGeomtry.Positions.Clear();
                         foreach (var nvP in gPointList)
@@ -791,7 +795,7 @@ namespace Yuri.PlatformCore.Graphic
                             AlignmentY = AlignmentY.Center,
                             TileMode = TileMode.None
                         };
-                        ((DiffuseMaterial) bgMaterial).Brush = bgMaterialBrush;
+                        ((DiffuseMaterial)bgMaterial).Brush = bgMaterialBrush;
                     }
                     else
                     {
@@ -826,7 +830,7 @@ namespace Yuri.PlatformCore.Graphic
                             TileMode = TileMode.None,
                             Opacity = cdescriptor.Opacity
                         };
-                        ((DiffuseMaterial) csMaterial).Brush = csMaterialBrush;
+                        ((DiffuseMaterial)csMaterial).Brush = csMaterialBrush;
                     }
                     else
                     {
@@ -840,7 +844,9 @@ namespace Yuri.PlatformCore.Graphic
                     {
                         var gPointList = ftGeomtry.Positions.Select(orgP => new Point3D
                         {
-                            X = orgP.X, Y = orgP.Y, Z = (descriptor as SpriteDescriptor).Deepth3D
+                            X = orgP.X,
+                            Y = orgP.Y,
+                            Z = (descriptor as SpriteDescriptor).Deepth3D
                         }).ToList();
                         ftGeomtry.Positions.Clear();
                         foreach (var nvP in gPointList)
@@ -861,7 +867,7 @@ namespace Yuri.PlatformCore.Graphic
                             AlignmentY = AlignmentY.Center,
                             TileMode = TileMode.None
                         };
-                        ((DiffuseMaterial) ftMaterial).Brush = ftMaterialBrush;
+                        ((DiffuseMaterial)ftMaterial).Brush = ftMaterialBrush;
                         sprite.Descriptor = descriptor as SpriteDescriptor;
                     }
                     else
@@ -942,11 +948,11 @@ namespace Yuri.PlatformCore.Graphic
             msglay.Visibility = descriptor.Visible ? Visibility.Visible : Visibility.Hidden;
             if (ViewManager.Is3DStage)
             {
-                ViewManager.View3D.BO_MainGrid.Children.Add(msgBlock);
+                ViewManager.View3D.BO_MainGrid.Children.Add(msgBlock);  // TODO fix missing msg layer
             }
             else
             {
-                ViewManager.View2D.BO_MainGrid.Children.Add(msgBlock);
+                this.GetDrawingCanvas2D(ResourceType.MessageLayerBackground).Children.Add(msgBlock);
             }
         }
 
@@ -1001,7 +1007,7 @@ namespace Yuri.PlatformCore.Graphic
             }
             sbutton.InitAnimationRenderTransform();
         }
-        
+
         /// <summary>
         /// 为主窗体描绘一个选择支
         /// </summary>
@@ -1229,7 +1235,7 @@ namespace Yuri.PlatformCore.Graphic
                 }
             }
         }
-        
+
         /// <summary>
         /// 将WPF窗体控件转化为JPEG图片
         /// </summary>
@@ -1279,8 +1285,14 @@ namespace Yuri.PlatformCore.Graphic
                 ViewboxBinding = View2D.BO_Pics_Viewbox,
                 CanvasBinding = View2D.BO_Pics_Canvas
             };
+            this.viewbox2dVec[(int)ViewportType.VTMessage] = new Viewport2D()
+            {
+                Type = ViewportType.VTMessage,
+                ViewboxBinding = View2D.BO_MessageLayer_Viewbox,
+                CanvasBinding = View2D.BO_MessageLayer_Canvas
+            };
             // 初始化变换动画
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 TransformGroup aniGroup = new TransformGroup();
                 TranslateTransform XYTransformer = new TranslateTransform();
@@ -1362,12 +1374,12 @@ namespace Yuri.PlatformCore.Graphic
         /// 背景精灵向量
         /// </summary>
         private readonly List<YuriSprite> backgroundSpriteVec;
-        
+
         /// <summary>
         /// 立绘精灵向量
         /// </summary>
         private readonly List<YuriSprite> characterStandSpriteVec;
-        
+
         /// <summary>
         /// 图片精灵向量
         /// </summary>
@@ -1402,7 +1414,7 @@ namespace Yuri.PlatformCore.Graphic
             {
                 this.LoadTransitions(Assembly.GetAssembly(typeof(Transition)));
                 this.viewbox2dVec = new List<Viewport2D>();
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 4; i++)
                 {
                     this.viewbox2dVec.Add(null);
                 }
@@ -1461,7 +1473,7 @@ namespace Yuri.PlatformCore.Graphic
         /// 获取主窗体的引用
         /// </summary>
         public static MainWindow mWnd { get; private set; } = null;
-        
+
         /// <summary>
         /// 唯一实例
         /// </summary>

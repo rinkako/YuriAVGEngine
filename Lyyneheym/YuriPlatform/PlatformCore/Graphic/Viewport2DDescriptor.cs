@@ -100,6 +100,10 @@ namespace Yuri.PlatformCore.Graphic
         /// <summary>
         /// 前景贴图视窗
         /// </summary>
-        VTPictures = 2
+        VTPictures = 2,
+        /// <summary>
+        /// 文字层视窗
+        /// </summary>
+        VTMessage = 3
     }
 }

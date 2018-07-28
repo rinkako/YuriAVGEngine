@@ -52,6 +52,10 @@ namespace Yuri.PageView
             this.BO_Cstand_Canvas.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
             this.BO_Pics_Canvas.Width = GlobalConfigContext.GAME_WINDOW_WIDTH;
             this.BO_Pics_Canvas.Height = GlobalConfigContext.GAME_WINDOW_HEIGHT;
+            Panel.SetZIndex(this.BO_Bg_Viewbox, GlobalConfigContext.GAME_Z_BACKGROUND);
+            Panel.SetZIndex(this.BO_Cstand_Viewbox, GlobalConfigContext.GAME_Z_CHARACTERSTAND);
+            Panel.SetZIndex(this.BO_Pics_Viewbox, GlobalConfigContext.GAME_Z_PICTURES);
+            Panel.SetZIndex(this.BO_MessageLayer_Viewbox, GlobalConfigContext.GAME_Z_MESSAGELAYER);
         }
 
         /// <summary>
