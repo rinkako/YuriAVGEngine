@@ -311,7 +311,11 @@ namespace Yuri.PlatformCore.Graphic
                 case ResourceType.Stand:
                     removeOne = this.characterStandSpriteVec[id];
                     this.characterStandSpriteVec[id] = null;
-                    var descriptor3d = Director.ScrMana.GetCharacter3DDescriptor(id) ?? new ModelDescriptor3D() { SlotId = id };
+                    ModelDescriptor3D descriptor3d = null;
+                    if (ViewManager.Is3DStage)
+                    {
+                        descriptor3d = Director.ScrMana.GetCharacter3DDescriptor(id) ?? new ModelDescriptor3D() { SlotId = id };
+                    }
                     this.RemoveSprite(ResourceType.Stand, removeOne,
                         !ViewManager.Is3DStage ? null : descriptor3d);
                     break;
