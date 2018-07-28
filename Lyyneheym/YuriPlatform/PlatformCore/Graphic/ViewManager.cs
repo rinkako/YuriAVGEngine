@@ -1088,7 +1088,7 @@ namespace Yuri.PlatformCore.Graphic
             if (msglay != null)
             {
                 TextBlock msglayView = msglay.DisplayBinding;
-                Canvas workCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MainGrid;
+                Canvas workCanvas = ViewManager.Is3DStage ? ViewManager.View3D.BO_MainGrid : ViewManager.View2D.BO_MessageLayer_Canvas;
                 if (msglayView != null && workCanvas.Children.Contains(msglayView))
                 {
                     workCanvas.Children.Remove(msglayView);
