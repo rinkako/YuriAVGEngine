@@ -45,7 +45,7 @@ namespace Yuri.PlatformCore.Graphic
             }
             else
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 4; i++)
                 {
                     this.ReDrawViewport2D((ViewportType)i, Director.ScrMana.GetViewboxDescriptor((ViewportType)i));
                 }
