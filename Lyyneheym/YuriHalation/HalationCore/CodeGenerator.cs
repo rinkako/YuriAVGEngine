@@ -261,8 +261,8 @@ namespace Yuri.YuriHalation.HalationCore
                         break;
                     case ActionPackageType.act_call:
                         string callCode = "@call ";
-                        callCode += String.Format("name=\"{0}\"", act.argsDict["name"].valueExp);
-                        callCode += "(";
+                        callCode += String.Format("name=\"{0}\" sign=", act.argsDict["name"].valueExp);
+                        callCode += "\"(";
                         string[] callsignItems = act.argsDict["sign"].valueExp.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
                         if (callsignItems.Length > 0)
                         {
@@ -270,11 +270,11 @@ namespace Yuri.YuriHalation.HalationCore
                             foreach (var cskvp in callsignItems)
                             {
                                 string[] cskvpItems = cskvp.Split(':');
-                                signBuilder += "," + cskvpItems[1];
+                                signBuilder += "," + cskvpItems[1].Replace("\"", "\\\"");
                             }
                             callCode += signBuilder.Substring(1);
                         }
-                        callCode += ")";
+                        callCode += ")\"";
                         codeBuilder.AppendLine(callCode);
                         break;
                     default:
