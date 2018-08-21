@@ -133,7 +133,7 @@ namespace Yuri.YuriHalation.HalationCore
                                 varCode += String.Format("{0}", varRights[1]);
                                 break;
                             case "2":
-                                varCode += String.Format("\"{0}\"", varRights[1]);
+                                varCode += String.Format("\"\\\"{0}\\\"\"", varRights[1]);
                                 break;
                             case "3":
                                 varCode += String.Format("&{0}", varRights[1]);
