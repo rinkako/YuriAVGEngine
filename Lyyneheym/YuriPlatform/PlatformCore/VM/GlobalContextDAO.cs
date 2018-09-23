@@ -19,7 +19,7 @@ namespace Yuri.PlatformCore.VM
         {
             for (int i = 0; i < GlobalConfigContext.GAME_SWITCH_COUNT; i++)
             {
-                this.GlobalSwitchList.Assign(i.ToString(), true);
+                this.GlobalSwitchList.Assign(i.ToString(), false);
             }
         }
 
