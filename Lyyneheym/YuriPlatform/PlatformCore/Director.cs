@@ -123,6 +123,7 @@ namespace Yuri.PlatformCore
             // 变更运行时环境
             Director.RunMana = rm;
             Director.RunMana.ParallelHandler = Director.GetInstance().ParallelUpdateContext;
+            SymbolTable.ResetSynObject(Director.RunMana.Symbols);
             LogUtils.LogLine("RuntimeManager is replaced", "Director", LogLevel.Important);
             // 缓存指令指针
             var irname = rm.CallStack.ESP.IR;
@@ -321,11 +322,18 @@ namespace Yuri.PlatformCore
                         // 处理中断优先动作
                         if (interruptSa != null)
                         {
-                            var iterSa = interruptSa;
-                            while (iterSa != null)
+                            if (interruptSa.Type == SActionType.act_waituser)
                             {
-                                this.updateRender.Execute(interruptSa);
-                                iterSa = iterSa.Next;
+                                Director.RunMana.UserWait("Director", interruptSa.NodeName);
+                            }
+                            else
+                            {
+                                var iterSa = interruptSa;
+                                while (iterSa != null)
+                                {
+                                    this.updateRender.Execute(interruptSa);
+                                    iterSa = iterSa.Next;
+                                }
                             }
                         }
                         // 判断中断是否需要处理后续动作
@@ -670,11 +678,23 @@ namespace Yuri.PlatformCore
                         // 处理中断优先动作
                         if (interruptSa != null)
                         {
-                            var iterSa = interruptSa;
-                            while (iterSa != null)
+                            if (interruptSa.Type == SActionType.act_waituser)
                             {
-                                pdap.Render.Execute(interruptSa);
-                                iterSa = iterSa.Next;
+                                LogUtils.LogLine(
+                                    "There is a user wait in parallel function, which may cause system pause",
+                                    "Director", LogLevel.Warning);
+                                paraVM.Submit("Director", interruptSa.NodeName);
+                                break;
+                            }
+                            else
+                            {
+                                var iterSa = interruptSa;
+                                while (iterSa != null)
+                                {
+                                    pdap.Render.Execute(interruptSa);
+                                    iterSa = iterSa.Next;
+                                }
+
                             }
                         }
                         // 判断中断是否需要处理后续动作
