@@ -1019,7 +1019,7 @@ namespace Yuri.PlatformCore.Graphic
         /// <param name="descriptor">按钮描述子</param>
         private void DrawBranchButton(BranchButton bbutton, BranchButtonDescriptor descriptor)
         {
-            TextBlock buttonTextView = new TextBlock();
+            Label buttonTextView = new Label();
             BitmapImage bmp = bbutton.ImageNormal.SpriteBitmapImage;
             buttonTextView.Width = bmp.PixelWidth;
             buttonTextView.Height = bmp.PixelHeight;
@@ -1033,7 +1033,8 @@ namespace Yuri.PlatformCore.Graphic
             buttonTextView.FontSize = GlobalConfigContext.GAME_BRANCH_FONTSIZE;
             buttonTextView.Foreground = new SolidColorBrush(GlobalConfigContext.GAME_BRANCH_FONTCOLOR);
             buttonTextView.FontFamily = new FontFamily(GlobalConfigContext.GAME_BRANCH_FONTNAME);
-            buttonTextView.TextAlignment = TextAlignment.Center;
+            buttonTextView.HorizontalContentAlignment = HorizontalAlignment.Center;
+            buttonTextView.VerticalContentAlignment = VerticalAlignment.Center;
             buttonTextView.Padding = new Thickness(0, GlobalConfigContext.GAME_BRANCH_TOPPAD, 0, 0);
             buttonTextView.Background = ib;
             bbutton.DisplayBinding = buttonTextView;

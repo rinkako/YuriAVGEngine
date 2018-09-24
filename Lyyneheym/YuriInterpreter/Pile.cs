@@ -487,7 +487,7 @@ namespace Yuri.YuriInterpreter
         private SceneFunction BackpatchOptimizer(SceneAction saNode, SceneAction parent, bool funcFlag)
         {
             switch (saNode.Type)
-            {    
+            {
                 case SActionType.NOP:
                 case SActionType.act_function:
                     if (saNode.TrueRouting == null || saNode.TrueRouting.Count == 0)
@@ -542,8 +542,10 @@ namespace Yuri.YuriInterpreter
                     this.removeQueueDict[parent].Enqueue(iterPtr);
                     if (iterPtr.Next != null &&
                         (iterPtr.Next.Type == SActionType.act_dialog ||
-                        (iterPtr.Next.Type == SActionType.act_a && iterPtr.Next.Next?.Type == SActionType.act_dialog)||
-                        iterPtr.Next.Type == SActionType.act_vocal && iterPtr.Next.Next?.Type == SActionType.act_dialog))
+                        (iterPtr.Next.Type == SActionType.act_a && iterPtr.Next.Next?.Type == SActionType.act_dialog) ||
+                        iterPtr.Next.Type == SActionType.act_vocal && iterPtr.Next.Next?.Type == SActionType.act_dialog ||
+                        iterPtr.Next.Type == SActionType.act_deletecstand && iterPtr.Next.Next?.Type == SActionType.act_dialog))
+                    // TODO: 是否有更优的判断方式？
                     {
                         dialogBuilder += "#1";
                     }
@@ -556,7 +558,7 @@ namespace Yuri.YuriInterpreter
                     break;
                 case SActionType.act_dialogTerminator:
                     // 处理对话继续标志位
-                    if (saNode.Next != null && 
+                    if (saNode.Next != null &&
                         (saNode.Next.Type == SActionType.act_dialog ||
                         saNode.Next.Type == SActionType.act_a))
                     {
@@ -589,7 +591,7 @@ namespace Yuri.YuriInterpreter
                     {
                         lastFor.Next = saNode.Next;
                     }
-                    else
+                    if (this.IsComplexBlock(lastFor))
                     {
                         this.BackpatchOptimizer(lastFor, saNode, false);
                     }
@@ -617,60 +619,58 @@ namespace Yuri.YuriInterpreter
                     break;
                 case SActionType.act_if:
                     // 处理真分支
-                    if (saNode.TrueRouting == null || saNode.TrueRouting.Count == 0)
+                    if (saNode.TrueRouting != null && saNode.TrueRouting.Count != 0)
                     {
-                        break;
-                    }
-                    // 递归访问子节点
-                    for (int i = 0; i < saNode.TrueRouting.Count - 1; i++)
-                    {
-                        this.BackpatchOptimizer(saNode.TrueRouting[i], saNode, false);
-                    }
-                    // 清理要移除的节点
-                    while (this.removeQueueDict.ContainsKey(saNode) && this.removeQueueDict[saNode].Count != 0)
-                    {
-                        saNode.TrueRouting.Remove(this.removeQueueDict[saNode].Dequeue());
-                    }
-                    // 最后一个孩子的下一节点修改为if子句节点的后继
-                    SceneAction lastIfTrue = saNode.TrueRouting[saNode.TrueRouting.Count - 1];
-                    // 考虑要更变next属性的节点
-                    if (lastIfTrue.Type != SActionType.act_break 
-                        && lastIfTrue.Type != SActionType.act_endfor
-                        && lastIfTrue.Type != SActionType.act_return)
-                    {
-                        lastIfTrue.Next = saNode.Next;
-                    }
-                    else
-                    {
-                        this.BackpatchOptimizer(lastIfTrue, saNode, false);
+                        // 递归访问子节点
+                        for (int i = 0; i < saNode.TrueRouting.Count - 1; i++)
+                        {
+                            this.BackpatchOptimizer(saNode.TrueRouting[i], saNode, false);
+                        }
+                        // 清理要移除的节点
+                        while (this.removeQueueDict.ContainsKey(saNode) && this.removeQueueDict[saNode].Count != 0)
+                        {
+                            saNode.TrueRouting.Remove(this.removeQueueDict[saNode].Dequeue());
+                        }
+                        // 最后一个孩子的下一节点修改为if子句节点的后继
+                        SceneAction lastIfTrue = saNode.TrueRouting[saNode.TrueRouting.Count - 1];
+                        // 考虑要更变next属性的节点
+                        if (lastIfTrue.Type != SActionType.act_break
+                            && lastIfTrue.Type != SActionType.act_endfor
+                            && lastIfTrue.Type != SActionType.act_return)
+                        {
+                            lastIfTrue.Next = saNode.Next;
+                        }
+                        if (this.IsComplexBlock(lastIfTrue))
+                        {
+                            this.BackpatchOptimizer(lastIfTrue, saNode, false);
+                        }
                     }
                     // 处理假分支
-                    if (saNode.FalseRouting == null || saNode.FalseRouting.Count == 0)
+                    if (saNode.FalseRouting != null && saNode.FalseRouting.Count != 0)
                     {
-                        break;
-                    }
-                    // 递归访问子节点
-                    for (int i = 0; i < saNode.FalseRouting.Count - 1; i++)
-                    {
-                        this.BackpatchOptimizer(saNode.FalseRouting[i], saNode, false);
-                    }
-                    // 清理要移除的节点
-                    while (this.removeQueueDict.ContainsKey(saNode) && this.removeQueueDict[saNode].Count != 0)
-                    {
-                        saNode.FalseRouting.Remove(this.removeQueueDict[saNode].Dequeue());
-                    }
-                    // 最后一个孩子的下一节点修改为if子句节点的后继
-                    SceneAction lastIfFalse = saNode.FalseRouting[saNode.FalseRouting.Count - 1];
-                    // 考虑要更变next属性的节点
-                    if (lastIfFalse.Type != SActionType.act_break 
-                        && lastIfFalse.Type != SActionType.act_endfor
-                        && lastIfFalse.Type != SActionType.act_return)
-                    {
-                        lastIfFalse.Next = saNode.Next;
-                    }
-                    else
-                    {
-                        this.BackpatchOptimizer(lastIfFalse, saNode, false);
+                        // 递归访问子节点
+                        for (int i = 0; i < saNode.FalseRouting.Count - 1; i++)
+                        {
+                            this.BackpatchOptimizer(saNode.FalseRouting[i], saNode, false);
+                        }
+                        // 清理要移除的节点
+                        while (this.removeQueueDict.ContainsKey(saNode) && this.removeQueueDict[saNode].Count != 0)
+                        {
+                            saNode.FalseRouting.Remove(this.removeQueueDict[saNode].Dequeue());
+                        }
+                        // 最后一个孩子的下一节点修改为if子句节点的后继
+                        SceneAction lastIfFalse = saNode.FalseRouting[saNode.FalseRouting.Count - 1];
+                        // 考虑要更变next属性的节点
+                        if (lastIfFalse.Type != SActionType.act_break
+                            && lastIfFalse.Type != SActionType.act_endfor
+                            && lastIfFalse.Type != SActionType.act_return)
+                        {
+                            lastIfFalse.Next = saNode.Next;
+                        }
+                        if (this.IsComplexBlock(lastIfFalse))
+                        {
+                            this.BackpatchOptimizer(lastIfFalse, saNode, false);
+                        }
                     }
                     break;
                 default:
@@ -685,6 +685,24 @@ namespace Yuri.YuriInterpreter
             // 最后让递归过程去修改子节点的属性
             saNode.IsBelongFunc = funcFlag;
             return retSF;
+        }
+
+        /// <summary>
+        /// 判断一个动作节点是否是复杂节点，即包含TrueRouting和FalseRouting
+        /// </summary>
+        /// <param name="saNode">节点</param>
+        /// <returns>是否复杂节点</returns>
+        private bool IsComplexBlock(SceneAction saNode)
+        {
+            switch (saNode.Type)
+            {
+                case SActionType.act_function:
+                case SActionType.act_if:
+                case SActionType.act_for:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         /// <summary>
@@ -707,7 +725,7 @@ namespace Yuri.YuriInterpreter
             }
             // 获得函数签名
             string signature = funcSa.ArgsDict["sign"];
-            string[] signItem = signature.Split(new char[] {'(', ')'}, StringSplitOptions.RemoveEmptyEntries);
+            string[] signItem = signature.Split(new char[] { '(', ')' }, StringSplitOptions.RemoveEmptyEntries);
             if (signItem.Length < 1 || !IsSymbol(signItem[0].Trim()))
             {
                 throw new InterpreterException()
@@ -723,7 +741,7 @@ namespace Yuri.YuriInterpreter
             // 如果没有参数就跳过参数遍历
             if (signItem.Length > 1)
             {
-                string[] varItem = signItem[1].Split(new char[] {',', ' '}, StringSplitOptions.RemoveEmptyEntries);
+                string[] varItem = signItem[1].Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string ivar in varItem)
                 {
                     if (ivar.StartsWith("$") && IsSymbol(ivar.Substring(1)))
@@ -791,7 +809,7 @@ namespace Yuri.YuriInterpreter
             }
             return resSb.ToString();
         }
-        
+
         /// <summary>
         /// 将场景做IL序列化
         /// </summary>
@@ -826,7 +844,7 @@ namespace Yuri.YuriInterpreter
                 return null;
             }
             var polishStack = new Stack<string>();
-            var polishItem = polish.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
+            var polishItem = polish.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string item in polishItem)
             {
                 OptimizerPolishItemType ptype = this.GetPolishItemType(item);
@@ -972,34 +990,34 @@ namespace Yuri.YuriInterpreter
                 return OptimizerPolishItemType.CONSTANT;
             }
             else switch (item)
-            {
-                case "+":
-                    return OptimizerPolishItemType.CAL_PLUS;
-                case "-":
-                    return OptimizerPolishItemType.CAL_MINUS;
-                case "*":
-                    return OptimizerPolishItemType.CAL_MULTI;
-                case "/":
-                    return OptimizerPolishItemType.CAL_DIV;
-                case "!":
-                    return OptimizerPolishItemType.CAL_NOT;
-                case "&&":
-                    return OptimizerPolishItemType.CAL_ANDAND;
-                case "||":
-                    return OptimizerPolishItemType.CAL_OROR;
-                case "<>":
-                    return OptimizerPolishItemType.CAL_NOTEQUAL;
-                case "==":
-                    return OptimizerPolishItemType.CAL_EQUAL;
-                case ">":
-                    return OptimizerPolishItemType.CAL_BIG;
-                case "<":
-                    return OptimizerPolishItemType.CAL_SMALL;
-                case ">=":
-                    return OptimizerPolishItemType.CAL_BIGEQUAL;
-                case "<=":
-                    return OptimizerPolishItemType.CAL_SMALLEQUAL;
-            }
+                {
+                    case "+":
+                        return OptimizerPolishItemType.CAL_PLUS;
+                    case "-":
+                        return OptimizerPolishItemType.CAL_MINUS;
+                    case "*":
+                        return OptimizerPolishItemType.CAL_MULTI;
+                    case "/":
+                        return OptimizerPolishItemType.CAL_DIV;
+                    case "!":
+                        return OptimizerPolishItemType.CAL_NOT;
+                    case "&&":
+                        return OptimizerPolishItemType.CAL_ANDAND;
+                    case "||":
+                        return OptimizerPolishItemType.CAL_OROR;
+                    case "<>":
+                        return OptimizerPolishItemType.CAL_NOTEQUAL;
+                    case "==":
+                        return OptimizerPolishItemType.CAL_EQUAL;
+                    case ">":
+                        return OptimizerPolishItemType.CAL_BIG;
+                    case "<":
+                        return OptimizerPolishItemType.CAL_SMALL;
+                    case ">=":
+                        return OptimizerPolishItemType.CAL_BIGEQUAL;
+                    case "<=":
+                        return OptimizerPolishItemType.CAL_SMALLEQUAL;
+                }
             return OptimizerPolishItemType.STRING;
         }
 
@@ -1049,37 +1067,37 @@ namespace Yuri.YuriInterpreter
         /// 场景名称
         /// </summary>
         private string scenario = null;
-        
+
         /// <summary>
         /// 词法分析器
         /// </summary>
         private readonly Lexer lexer = null;
-        
+
         /// <summary>
         /// 语法分析器
         /// </summary>
         private readonly Parser parser = null;
-        
+
         /// <summary>
         /// 剧本场景实例
         /// </summary>
         private Scene rootScene = null;
-        
+
         /// <summary>
         /// 语法树根节点
         /// </summary>
         private SyntaxTreeNode parseTree = null;
-        
+
         /// <summary>
         /// For嵌套栈
         /// </summary>
         private Stack<SceneAction> forStack = null;
-        
+
         /// <summary>
         /// 等待移除节点字典
         /// </summary>
         private Dictionary<SceneAction, Queue<SceneAction>> removeQueueDict = null;
-        
+
         /// <summary>
         /// 标签跳转字典
         /// </summary>

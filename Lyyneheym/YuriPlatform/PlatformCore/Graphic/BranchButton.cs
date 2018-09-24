@@ -40,7 +40,7 @@ namespace Yuri.PlatformCore.Graphic
         /// <summary>
         /// 获取或设置绑定前端显示控件
         /// </summary>
-        public TextBlock DisplayBinding { get; set; }
+        public Label DisplayBinding { get; set; }
 
         /// <summary>
         /// 获取或设置选择项按钮上的文本
@@ -49,11 +49,11 @@ namespace Yuri.PlatformCore.Graphic
         {
             get
             {
-                return this.DisplayBinding.Text;
+                return this.DisplayBinding.Content as string;
             }
             set
             {
-                this.DisplayBinding.Text = value;
+                this.DisplayBinding.Content = value.ToString();
             }
         }
 
