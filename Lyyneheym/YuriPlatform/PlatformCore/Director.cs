@@ -331,7 +331,7 @@ namespace Yuri.PlatformCore
                                 var iterSa = interruptSa;
                                 while (iterSa != null)
                                 {
-                                    this.updateRender.Execute(interruptSa);
+                                    this.updateRender.Execute(iterSa);  // interruptSa -> iterSa
                                     iterSa = iterSa.Next;
                                 }
                             }
